@@ -1,7 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.sonar.plugins</groupId>
+  <parent>
+    <groupId>org.codehaus.sonarplugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
   <artifactId>sonar-plugin-emma</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -54,7 +58,6 @@
       <version>1.5</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -68,14 +71,6 @@
               <Plugin-Class>org.sonar.plugins.emma.EmmaPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
         </configuration>
       </plugin>
     </plugins>
