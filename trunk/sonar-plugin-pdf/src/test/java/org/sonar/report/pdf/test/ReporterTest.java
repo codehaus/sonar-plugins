@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.sonar.report.pdf.PDFReporter;
-import org.sonar.report.pdf.SonarPDFReporter;
+import org.sonar.report.pdf.DefaultPDFReporter;
+import org.sonar.report.pdf.TeamWorkbookReporter;
 import org.testng.annotations.Test;
 
 import com.lowagie.text.DocumentException;
@@ -26,7 +27,7 @@ public class ReporterTest {
     Properties config = new Properties();
     config.load(resource.openStream());
 
-    PDFReporter reporter = new SonarPDFReporter(new URL(config.getProperty("sonar.base.url") + "/images/sonar.png"),
+    PDFReporter reporter = new DefaultPDFReporter(new URL(config.getProperty("sonar.base.url") + "/images/sonar.png"),
         "org.codehaus.sonar:sonar", config.getProperty("sonar.base.url"));
 
     ByteArrayOutputStream baos = reporter.getReport();
