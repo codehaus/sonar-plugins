@@ -15,7 +15,6 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.List;
 import com.lowagie.text.ListItem;
@@ -23,9 +22,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Section;
-import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfCell;
-import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -35,7 +32,7 @@ import java.net.URL;
 /**
  * Concrete PDFReporter. Implements printPdfBody method. This will be the way to extend PDFReport.
  */
-public class SonarPDFReporter extends PDFReporter {
+public class DefaultPDFReporter extends PDFReporter {
 
   private URL logo;
   private String projectKey;
@@ -46,7 +43,7 @@ public class SonarPDFReporter extends PDFReporter {
 
   private Document document;
 
-  public SonarPDFReporter(URL logo, String projectKey, String sonarUrl) {
+  public DefaultPDFReporter(URL logo, String projectKey, String sonarUrl) {
     this.logo = logo;
     this.projectKey = projectKey;
     this.sonarUrl = sonarUrl;

@@ -15,5 +15,6 @@ public class FontStyle {
   public final static Font frontPageFont1 = new Font(Font.HELVETICA, 22, Font.BOLD, Color.BLACK);
   public final static Font frontPageFont2 = new Font(Font.HELVETICA, 18, Font.ITALIC, Color.BLACK);
   public final static Font frontPageFont3 = new Font(Font.HELVETICA, 16, Font.BOLDITALIC, Color.GRAY);
+  public final static Font underlinedFont = new Font(Font.HELVETICA, 14, Font.UNDERLINE, Color.BLACK);
 
 }

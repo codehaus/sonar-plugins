@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URL;
 import java.util.Properties;
 import org.sonar.report.pdf.PDFReporter;
-import org.sonar.report.pdf.SonarPDFReporter;
+import org.sonar.report.pdf.DefaultPDFReporter;
 
 public class ReportController extends HttpServlet {
 
@@ -60,7 +60,7 @@ public class ReportController extends HttpServlet {
       }
 
       // TODO: set the name of the return file
-      PDFReporter reporter = new SonarPDFReporter(new URL(sonarUrl + "/images/sonar-120.png"), projectKey, sonarUrl);
+      PDFReporter reporter = new DefaultPDFReporter(new URL(sonarUrl + "/images/sonar-120.png"), projectKey, sonarUrl);
       ByteArrayOutputStream baos = reporter.getReport();
       resp.setContentLength(baos.size());
       ServletOutputStream out = resp.getOutputStream();
