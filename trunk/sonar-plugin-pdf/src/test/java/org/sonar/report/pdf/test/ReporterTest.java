@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import org.sonar.report.pdf.PDFReporter;
 import org.sonar.report.pdf.DefaultPDFReporter;
-import org.sonar.report.pdf.TeamWorkbookReporter;
+import org.sonar.report.pdf.TeamWorkbookPDFReporter;
 import org.testng.annotations.Test;
 
 import com.lowagie.text.DocumentException;
