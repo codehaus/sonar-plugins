@@ -11,7 +11,7 @@
     <module>parent</module>
     <module>emma</module>
     <module>sonarncss</module>
-    <module>sonar-plugin-pdf</module>
+    <module>pdf-report</module>
   </modules>
 
 </project>
