@@ -8,9 +8,9 @@
   <name>All Sonar plugins</name>
 
   <modules>
-    <module>sonar-plugins-parent</module>
-    <module>sonar-plugin-emma</module>
-    <module>sonar-plugin-sonarncss</module>
+    <module>parent</module>
+    <module>emma</module>
+    <module>sonarncss</module>
     <module>sonar-plugin-pdf</module>
   </modules>
 
