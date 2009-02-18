@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonarplugins</groupId>
-    <artifactId>sonar-plugins-parent</artifactId>
+    <artifactId>parent</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <relativePath>../sonar-plugins-parent</relativePath>
+    <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-plugin-emma</artifactId>
+  <artifactId>emma</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Sonar Emma plugin</name>
