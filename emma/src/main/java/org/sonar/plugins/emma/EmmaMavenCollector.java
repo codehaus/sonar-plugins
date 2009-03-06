@@ -19,23 +19,21 @@
  */
 package org.sonar.plugins.emma;
 
-import org.apache.maven.plugin.logging.Log;
-import org.sonar.plugins.api.maven.*;
-import org.sonar.plugins.api.maven.model.MavenPom;
-
 import java.io.File;
+
+import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
+import org.sonar.plugins.api.maven.CollectsCodeCoverage;
+import org.sonar.plugins.api.maven.CollectsUnitTests;
+import org.sonar.plugins.api.maven.MavenCollectorUtils;
+import org.sonar.plugins.api.maven.MavenPluginHandler;
+import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.maven.model.MavenPom;
 
 public class EmmaMavenCollector extends AbstractJavaMavenCollector implements CollectsCodeCoverage {
 
-  public EmmaMavenCollector(Log log) {
-    super(log);
-  }
-
   public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
-    if (pom.isSonarLightMode()) {
-      return null;
-    }
-    return EmmaMavenPluginHandler.class;
+    // do not execute unit tests when static analysis or when reusing existing reports
+    return pom.getAnalysisType().equals(MavenPom.AnalysisType.DYNAMIC) ? EmmaMavenPluginHandler.class : null;
   }
 
   public boolean shouldStopOnFailure() {
@@ -45,13 +43,17 @@ public class EmmaMavenCollector extends AbstractJavaMavenCollector implements Co
   protected boolean shouldCollectIfNoSources() {
     return false;
   }
+  
+  @Override
+  public boolean shouldCollectOn(MavenPom pom) {
+    return super.shouldCollectOn(pom) &&
+        (pom.getAnalysisType().equals(MavenPom.AnalysisType.DYNAMIC) || pom.getAnalysisType().equals(MavenPom.AnalysisType.REUSE_REPORTS));
+  }
 
-  public void collect(MavenPom pom, ProjectAnalysis analysis) {
-    if (!pom.isSonarLightMode()) {
-      File reportXmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "site/emma/coverage.xml");
-      EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(reportXmlFile, analysis);
-      emmaXmlProcessor.process();
-    }
+  public void collect(MavenPom pom, ProjectContext context) {
+    File reportXmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "site/emma/coverage.xml");
+    EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(reportXmlFile, context);
+    emmaXmlProcessor.process();
   }
 
   public void configure(CollectsUnitTests arg0) {

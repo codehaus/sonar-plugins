@@ -13,7 +13,7 @@
   <name>Sonar Emma plugin</name>
 
   <properties>
-    <sonar.version>1.5.1</sonar.version>
+    <sonar.version>1.7-SNAPSHOT</sonar.version>
   </properties>
 
   <dependencies>
@@ -21,6 +21,11 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.woodstox</groupId>
+      <artifactId>woodstox-core-lgpl</artifactId>
+      <version>4.0.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -51,6 +56,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>

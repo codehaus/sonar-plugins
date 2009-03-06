@@ -19,45 +19,45 @@
  */
 package org.sonar.plugins.emma;
 
-import org.junit.Before;
-import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import org.sonar.plugins.api.maven.JavaClass;
-import org.sonar.plugins.api.maven.JavaPackage;
-import org.sonar.plugins.api.maven.ProjectAnalysis;
-import org.sonar.plugins.api.metrics.CoreMetrics;
 
 import java.io.File;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.plugins.api.Java;
+import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.metrics.CoreMetrics;
+
 public class EmmaXmlProcessorTest {
 
-  private ProjectAnalysis analysis;
+  private ProjectContext context;
 
   @Before
   public void before() throws Exception {
     File xmlReport = new File(getClass().getResource("/org/sonar/plugins/emma/EmmaXmlProcessorTest/coverage.xml").toURI());
-    analysis = mock(ProjectAnalysis.class);
-    EmmaXmlProcessor processor = new EmmaXmlProcessor(xmlReport, analysis);
+    context = mock(ProjectContext.class);
+    EmmaXmlProcessor processor = new EmmaXmlProcessor(xmlReport, context);
     processor.process();
   }
 
   @Test
   public void shouldGenerateProjectMeasures() {
-    verify(analysis).addMeasure(CoreMetrics.CODE_COVERAGE, 66.0);
+    verify(context).addMeasure(CoreMetrics.CODE_COVERAGE, 66.0);
   }
 
   @Test
   public void shouldGeneratePackageMeasures() {
-    verify(analysis).addMeasure(new JavaPackage("org.sonar.plugins.emma"), CoreMetrics.CODE_COVERAGE, 67.0);
-    verify(analysis).addMeasure(new JavaPackage("org.sonar.plugins.gaudin"), CoreMetrics.CODE_COVERAGE, 45.0);
+    verify(context).addMeasure(Java.newPackage("org.sonar.plugins.emma"), CoreMetrics.CODE_COVERAGE, 67.0);
+    verify(context).addMeasure(Java.newPackage("org.sonar.plugins.gaudin"), CoreMetrics.CODE_COVERAGE, 45.0);
   }
 
   @Test
   public void shouldGenerateClassMeasures() {
-    verify(analysis).addMeasure(new JavaClass("org.sonar.plugins.gaudin.EmmaMavenPluginHandler", false, false),
+    verify(context).addMeasure(Java.newClass("org.sonar.plugins.gaudin.EmmaMavenPluginHandler"),
       CoreMetrics.CODE_COVERAGE, 82.0);
-    verify(analysis).addMeasure(new JavaClass("org.sonar.plugins.emma.EmmaMavenPluginHandler", false, false),
+    verify(context).addMeasure(Java.newClass("org.sonar.plugins.emma.EmmaMavenPluginHandler"),
       CoreMetrics.CODE_COVERAGE, 82.0);
   }
 }

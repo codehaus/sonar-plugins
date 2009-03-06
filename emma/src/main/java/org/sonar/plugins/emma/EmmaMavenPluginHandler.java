@@ -19,10 +19,18 @@
  */
 package org.sonar.plugins.emma;
 
+import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.api.maven.*;
 import org.sonar.plugins.api.maven.model.*;
 
 public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
+
+  private Exclusions exclusions;
+  
+  public EmmaMavenPluginHandler(Exclusions exclusions) {
+    super();
+    this.exclusions = exclusions;
+  }
 
   public String getGroupId() {
     return MavenPom.GROUP_ID_CODEHAUS_MOJO;
@@ -53,5 +61,15 @@ public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
     plugin.unsetConfigParameter( "outputDirectory" );
     plugin.setConfigParameter( "format", "xml" );
     plugin.setConfigParameter("quiet", "true" );
+    if (exclusions != null) {
+      for (String pattern : exclusions.getWildcardPatterns()) {
+        if (StringUtils.endsWithIgnoreCase(pattern, ".java")) {
+          pattern = StringUtils.substringBeforeLast(pattern, ".");
+        }
+        pattern = pattern.startsWith("/") ? pattern.substring(1) : pattern;
+        pattern = pattern.replace("**", "*").replace('/', '.');
+        plugin.getConfiguration().addParameter("filters/filter", pattern);
+      }
+    }
   }
 }

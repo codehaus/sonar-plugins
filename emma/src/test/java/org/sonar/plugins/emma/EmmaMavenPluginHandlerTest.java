@@ -19,19 +19,25 @@
  */
 package org.sonar.plugins.emma;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.stub;
+
+import static org.junit.Assert.*;
+import org.junit.*;
+import org.sonar.plugins.api.maven.Exclusions;
 import org.sonar.plugins.api.maven.MavenTestCase;
 import org.sonar.plugins.api.maven.model.MavenPlugin;
 import org.sonar.plugins.api.maven.model.MavenPom;
 
 public class EmmaMavenPluginHandlerTest extends MavenTestCase {
-  protected EmmaMavenPluginHandler handler;
+  
+  private EmmaMavenPluginHandler handler;
 
   @Before
   public void before() {
-    handler = new EmmaMavenPluginHandler();
+    handler = new EmmaMavenPluginHandler(null);
   }
 
   @Test
@@ -57,5 +63,22 @@ public class EmmaMavenPluginHandlerTest extends MavenTestCase {
     assertEquals("xml", plugin.getConfigParameter("format"));
     assertEquals("true", plugin.getConfigParameter("quiet"));
     assertEquals("bar", plugin.getConfigParameter("foo"));
+  }
+  
+  @Test
+  public void testConfigurePluginWithFilterExclusions() {
+    MavenPom pom = readMavenProject("/org/sonar/plugins/emma/EmmaMavenPluginHandlerTest/Emma-pom.xml");
+    handler.configure(pom);
+    Exclusions exclusions = mock(Exclusions.class);
+    
+    handler = new EmmaMavenPluginHandler(exclusions);
+    stub(exclusions.getWildcardPatterns()).toReturn(new String[]{"/com/foo**/bar/Ba*.java"});
+    
+    MavenPlugin plugin = pom.findPlugin(handler.getGroupId(), handler.getArtifactId());
+    handler.configurePlugin(pom, plugin);
+    verify(exclusions);
+
+    assertEquals(1, plugin.getConfiguration().getParameters("filters/filter").length);
+    assertThat(plugin.getConfiguration().getParameters("filters/filter"), is(new String[]{"com.foo*.bar.Ba*"}));
   }
 }
