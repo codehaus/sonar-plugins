@@ -19,74 +19,46 @@
  */
 package org.sonar.plugins.emma;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Locale;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.api.maven.JavaPackage;
+import org.codehaus.stax2.XMLInputFactory2;
+import org.codehaus.stax2.XMLStreamReader2;
+import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
-import org.sonar.plugins.api.maven.ProjectAnalysis;
-import org.sonar.plugins.api.maven.JavaClass;
+import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.xml.XmlParserException;
 import org.sonar.plugins.api.maven.xml.XpathParser;
 import org.sonar.plugins.api.metrics.CoreMetrics;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import java.io.File;
-import java.text.ParseException;
-import java.util.Locale;
 
 public class EmmaXmlProcessor {
 
   private final File xmlReport;
 
-  private final ProjectAnalysis analysis;
+  private final ProjectContext context;
 
   private final XpathParser parser;
 
-  public EmmaXmlProcessor(File xmlReport, ProjectAnalysis analysis) {
+  public EmmaXmlProcessor(File xmlReport, ProjectContext context) {
     this.xmlReport = xmlReport;
-    this.analysis = analysis;
+    this.context = context;
     parser = new XpathParser();
   }
 
   protected void process() {
     try {
       if (xmlReport != null) {
-        parser.parse(xmlReport);
-        collectProjectMeasures(analysis);
-        collectPackageMeasures(analysis);
+        parse(xmlReport);
       }
-
-    } catch (ParseException e) {
+    } catch (Exception e) {
       throw new XmlParserException(e);
-    }
-  }
-
-  private void collectProjectMeasures(ProjectAnalysis analysis) throws ParseException {
-    String emmaCoverageLineValue = parser.executeXPath("/report/data/all/coverage[@type='line, %']/@value");
-    double lineRate = extractEmmaPercentageNumber(emmaCoverageLineValue);
-    analysis.addMeasure(CoreMetrics.CODE_COVERAGE, lineRate);
-  }
-
-  private void collectPackageMeasures(ProjectAnalysis analysis) throws ParseException {
-    NodeList packages = parser.executeXPathNodeList("//package");
-    for (int i = 0; i < packages.getLength(); i++) {
-      Element packageElement = (Element) packages.item(i);
-      String packageName = packageElement.getAttribute("name");
-      String packageCoverage = parser.executeXPath(packageElement, "coverage[@type='line, %']/@value");
-      analysis.addMeasure(new JavaPackage(packageName), CoreMetrics.CODE_COVERAGE, extractEmmaPercentageNumber(packageCoverage));
-
-      collectClassMeasures(packageElement, packageName, analysis);
-    }
-  }
-
-  private void collectClassMeasures(Element packageElement, String packageName, ProjectAnalysis analysis) throws ParseException {
-    NodeList classes = parser.executeXPathNodeList(packageElement, "srcfile/class");
-    for (int i = 0; i < classes.getLength(); i++) {
-      Element classElement = (Element) classes.item(i);
-      String className = classElement.getAttribute("name");
-      String classCoverage = parser.executeXPath(classElement, "coverage[@type='line, %']/@value");
-      analysis.addMeasure(new JavaClass(packageName + "." + className, false, false), CoreMetrics.CODE_COVERAGE,
-        extractEmmaPercentageNumber(classCoverage));
     }
   }
 
@@ -95,4 +67,79 @@ public class EmmaXmlProcessor {
     double doubleCoverage = MavenCollectorUtils.parseNumber(extractedStringValue, Locale.ENGLISH);
     return MavenCollectorUtils.scaleValue(doubleCoverage);
   }
+  
+  private void parse(File xml) throws Exception {
+    XMLInputFactory2 xmlFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
+    InputStream input = new FileInputStream(xml);
+    XMLStreamReader2 reader = (XMLStreamReader2)xmlFactory.createXMLStreamReader(input);
+
+    int event = 0;
+    boolean allNodePassed = false;
+    String currentPackageName = null;
+    while ((event = reader.next()) != XMLStreamConstants.END_DOCUMENT) {
+      if (event == XMLStreamConstants.START_ELEMENT) {
+        String elementName = reader.getName().getLocalPart();
+        if ( !allNodePassed && elementName.equals("all")) {
+          collectProjectMeasures(reader);
+          allNodePassed = true;
+        }
+        if (elementName.equals("package")) {
+          currentPackageName = reader.getAttributeValue(null, "name");
+          collectPackageMeasures(reader, currentPackageName);
+        }
+        if (elementName.equals("class")) {
+          String className = reader.getAttributeValue(null, "name");
+          collectClassMeasures(reader, currentPackageName, className);
+        }
+      }
+    }
+  }
+  
+  private void collectProjectMeasures(XMLStreamReader2 reader) throws XMLStreamException, ParseException {
+    findLineRateMeasure(reader, new LineRateMeasureHandler() {
+      public void handleMeasure(String resourceName, double coverage) {
+        context.addMeasure(CoreMetrics.CODE_COVERAGE, coverage);
+      }
+    }, null);
+  }
+  
+  private void collectPackageMeasures(XMLStreamReader2 reader, String resourceName) throws XMLStreamException, ParseException {
+    findLineRateMeasure(reader, new LineRateMeasureHandler() {
+      public void handleMeasure(String resourceName, double coverage) {
+        context.addMeasure(Java.newPackage(resourceName), CoreMetrics.CODE_COVERAGE, coverage);
+      }
+    }, resourceName);
+  }
+  
+  private void collectClassMeasures(XMLStreamReader2 reader, String packageName, String className) throws XMLStreamException, ParseException {
+    findLineRateMeasure(reader, new LineRateMeasureHandler() {
+      public void handleMeasure(String resourceName, double coverage) {
+        context.addMeasure(Java.newClass(resourceName), CoreMetrics.CODE_COVERAGE,coverage);
+      }
+    }, packageName + "." + className);
+  }
+
+  private void findLineRateMeasure(XMLStreamReader2 reader, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException, ParseException {
+    boolean coverageValFound = false;
+    int coverageTagsCounter = 0;
+    while (!coverageValFound) {
+      int event = reader.nextTag();
+      if (event == XMLStreamConstants.START_ELEMENT && reader.getName().getLocalPart().equals("coverage") ) {
+        String typeAttr = reader.getAttributeValue(null, "type");
+        if ( typeAttr.equals("line, %")) {
+          double coverage = extractEmmaPercentageNumber(reader.getAttributeValue(null, "value"));
+          handler.handleMeasure(resourceName, coverage);
+          coverageValFound = true;
+        }
+      }
+      if (coverageTagsCounter++ == 8) {
+        throw new XMLStreamException("Unable to find coverage element in XML file");
+      }
+    }
+  }
+  
+  private interface LineRateMeasureHandler {
+    public void handleMeasure(String resourceName, double coverage);
+  }
+
 }
