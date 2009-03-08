@@ -25,7 +25,7 @@
   </issueManagement>  
 
   <properties>
-    <sonar.version>1.7M2</sonar.version>
+    <sonar.version>1.7RC1</sonar.version>
   </properties>
 
   <dependencies>
