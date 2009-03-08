@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><documents><document><statistics><success>13</success><failure>0</failure><error>0</error><ignored>1</ignored></statistics><results><![CDATA[<html><h2 id="Celldecoration-Celldecoration">Cell decoration</h2>
+
+<table style="display:none">
+	<tr>
+		<td>Import</td>
+	</tr>
+			<tr>
+			<td>com.greenpepper.seeds</td>
+		</tr>
+			<tr>
+			<td>GreenPepper</td>
+		</tr>
+	</table>
+<p>When the value returned by the SUT is identical to the one expected, the html cell is colored in green, otherwise, it is colored in red.<br/>
+Exceptions are also considered. If an exception is awaiten, the keyword error can be used. If an exception occurs while none was expected, the cell is colored in yellow.</p>
+<table class='confluenceTable'><tbody>
+<tr>
+<th class='confluenceTh'> rule for </th>
+<th class='confluenceTh'> html cell decoration </th>
+</tr>
+<tr>
+<th class='confluenceTh'> expected </th>
+<th class='confluenceTh'> returned </th>
+<th class='confluenceTh'> cell color? </th>
+<th class='confluenceTh'> cell text? </th>
+</tr>
+<tr>
+<td class='confluenceTd'> value1 </td>
+<td class='confluenceTd'> value1 </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> GREEN </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> value1 </td>
+</tr>
+<tr>
+<td class='confluenceTd'> value1 </td>
+<td class='confluenceTd'> value2 </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> RED </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> Expected: value1 Received: value2 </td>
+</tr>
+<tr>
+<td class='confluenceTd'> error </td>
+<td class='confluenceTd'> error </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> GREEN </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> error </td>
+</tr>
+<tr>
+<td class='confluenceTd'> error </td>
+<td class='confluenceTd'> value1 </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> RED </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> Expected: error Received: value1 </td>
+</tr>
+<tr>
+<td class='confluenceTd'> value1 </td>
+<td class='confluenceTd'> error </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> YELLOW </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> error </td>
+</tr>
+<tr>
+<td class='confluenceTd'> </td>
+<td class='confluenceTd'> value1 </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> GREY </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> value1 </td>
+</tr>
+<tr>
+<td class='confluenceTd'> </td>
+<td class='confluenceTd'> </td>
+<td class='confluenceTd' style='background-color: #AAFFAA;'> GREY </td>
+<td class='confluenceTd' style='background-color: #CCCCCC;'></td>
+</tr>
+</tbody></table></html>]]></results></document></documents>
