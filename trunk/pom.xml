@@ -12,6 +12,7 @@
     <module>emma</module>
     <module>sonarncss</module>
     <module>pdf-report</module>
+    <module>greenpepper</module>
   </modules>
 
 </project>
