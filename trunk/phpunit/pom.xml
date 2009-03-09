@@ -27,9 +27,9 @@
     <version>1</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>php</artifactId>
+  <artifactId>phpunit</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar PHP plugin</name>
+  <name>Sonar PHPUnit plugin</name>
 
   <properties>
     <sonar.version>1.6</sonar.version>
@@ -64,7 +64,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.php.Php</Plugin-Class>
+              <Plugin-Class>org.sonar.plugins.phpunit.PhpUnit</Plugin-Class>
             </manifestEntries>
           </archive>
         </configuration>
