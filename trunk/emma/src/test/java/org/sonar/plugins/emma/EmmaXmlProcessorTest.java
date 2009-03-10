@@ -49,12 +49,15 @@ public class EmmaXmlProcessorTest {
 
   @Test
   public void shouldGeneratePackageMeasures() {
+    verify(context).addMeasure(Java.newPackage(""), CoreMetrics.CODE_COVERAGE, 40.0);
     verify(context).addMeasure(Java.newPackage("org.sonar.plugins.emma"), CoreMetrics.CODE_COVERAGE, 67.0);
     verify(context).addMeasure(Java.newPackage("org.sonar.plugins.gaudin"), CoreMetrics.CODE_COVERAGE, 45.0);
   }
 
   @Test
   public void shouldGenerateClassMeasures() {
+    verify(context).addMeasure(Java.newClass("ClassOnDefaultPackage"),
+        CoreMetrics.CODE_COVERAGE, 35.0);
     verify(context).addMeasure(Java.newClass("org.sonar.plugins.gaudin.EmmaMavenPluginHandler"),
       CoreMetrics.CODE_COVERAGE, 82.0);
     verify(context).addMeasure(Java.newClass("org.sonar.plugins.emma.EmmaMavenPluginHandler"),
