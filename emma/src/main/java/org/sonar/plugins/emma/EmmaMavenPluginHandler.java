@@ -61,6 +61,7 @@ public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
     plugin.unsetConfigParameter( "outputDirectory" );
     plugin.setConfigParameter( "format", "xml" );
     plugin.setConfigParameter("quiet", "true" );
+
     if (exclusions != null) {
       for (String pattern : exclusions.getWildcardPatterns()) {
         if (StringUtils.endsWithIgnoreCase(pattern, ".java")) {

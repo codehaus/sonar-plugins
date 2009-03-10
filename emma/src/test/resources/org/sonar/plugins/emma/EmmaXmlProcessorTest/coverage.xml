@@ -14,7 +14,37 @@
       <coverage type="method, %" value="52 % (14/27)"/>
       <coverage type="block, %" value="76 % (216/284)"/>
       <coverage type="line, %" value="66 % (45/68)"/>
+      <package name="default package">
+        <coverage type="class, %" value="0%   (0/1)"/>
+        <coverage type="method, %" value="0%   (0/2)"/>
+        <coverage type="block, %" value="0%   (0/8)"/>
+        <coverage type="line, %" value="40%   (0/4)"/>
 
+        <srcfile name="ClassOnDefaultPackage.java">
+          <coverage type="class, %" value="0%   (0/1)"/>
+          <coverage type="method, %" value="0%   (0/2)"/>
+          <coverage type="block, %" value="0%   (0/8)"/>
+          <coverage type="line, %" value="0%   (0/4)"/>
+
+          <class name="ClassOnDefaultPackage">
+            <coverage type="class, %" value="0%   (0/1)"/>
+            <coverage type="method, %" value="0%   (0/2)"/>
+            <coverage type="block, %" value="0%   (0/8)"/>
+            <coverage type="line, %" value="35%   (0/4)"/>
+
+            <method name="ClassOnDefaultPackage (int): void">
+              <coverage type="method, %" value="0%   (0/1)"/>
+              <coverage type="block, %" value="0%   (0/6)"/>
+              <coverage type="line, %" value="0%   (0/3)"/>
+            </method>
+            <method name="myMethod (): String">
+              <coverage type="method, %" value="0%   (0/1)"/>
+              <coverage type="block, %" value="0%   (0/2)"/>
+              <coverage type="line, %" value="0%   (0/1)"/>
+            </method>
+          </class>
+        </srcfile>
+      </package>
       <package name="org.sonar.plugins.emma">
         <coverage type="class, %" value="67 % (2/3)"/>
         <coverage type="method, %" value="52 % (14/27)"/>

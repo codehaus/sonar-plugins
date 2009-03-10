@@ -19,13 +19,15 @@
  */
 package org.sonar.plugins.emma;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.verify;
 
-import static org.junit.Assert.*;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.sonar.plugins.api.maven.Exclusions;
 import org.sonar.plugins.api.maven.MavenTestCase;
 import org.sonar.plugins.api.maven.model.MavenPlugin;

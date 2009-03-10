@@ -35,21 +35,19 @@ import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.xml.XmlParserException;
-import org.sonar.plugins.api.maven.xml.XpathParser;
 import org.sonar.plugins.api.metrics.CoreMetrics;
 
 public class EmmaXmlProcessor {
+  
+  private final static String EMMA_DEFAULT_PACKAGE = "default package";
 
   private final File xmlReport;
 
   private final ProjectContext context;
 
-  private final XpathParser parser;
-
   public EmmaXmlProcessor(File xmlReport, ProjectContext context) {
     this.xmlReport = xmlReport;
     this.context = context;
-    parser = new XpathParser();
   }
 
   protected void process() {
@@ -85,6 +83,7 @@ public class EmmaXmlProcessor {
         }
         if (elementName.equals("package")) {
           currentPackageName = reader.getAttributeValue(null, "name");
+          currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
           collectPackageMeasures(reader, currentPackageName);
         }
         if (elementName.equals("class")) {
@@ -112,11 +111,12 @@ public class EmmaXmlProcessor {
   }
   
   private void collectClassMeasures(XMLStreamReader2 reader, String packageName, String className) throws XMLStreamException, ParseException {
+    String classFullName = packageName.equals(Java.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
     findLineRateMeasure(reader, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
         context.addMeasure(Java.newClass(resourceName), CoreMetrics.CODE_COVERAGE,coverage);
       }
-    }, packageName + "." + className);
+    }, classFullName);
   }
 
   private void findLineRateMeasure(XMLStreamReader2 reader, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException, ParseException {
