@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Hello world!
  */
-public class PhpUnit implements Plugin {
+public class PhpUnitPlugin implements Plugin {
 
   public String getKey() {
     return "phpunit";

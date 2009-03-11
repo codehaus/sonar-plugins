@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php;
 
 import org.sonar.plugins.api.Extension;
 import org.sonar.plugins.api.Plugin;
@@ -29,22 +29,23 @@ import java.util.List;
 /**
  * Hello world!
  */
-public class PhpDepend implements Plugin {
+public class PhpPlugin implements Plugin {
 
   public String getKey() {
-    return "phpdepend";
+    return "php";
   }
 
   public String getName() {
-    return "PhpDepend";
+    return "PHP";
   }
 
   public String getDescription() {
-    return "PhpDepend";
+    return "PHP language definition.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+    list.add(Php.class);
     return list;
   }
 
