@@ -26,9 +26,6 @@ import org.sonar.plugins.api.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Hello world!
- */
 public class PhpUnitPlugin implements Plugin {
 
   public String getKey() {

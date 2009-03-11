@@ -26,9 +26,6 @@ import org.sonar.plugins.api.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Hello world!
- */
 public class PhpDependPlugin implements Plugin {
 
   public String getKey() {
@@ -45,6 +42,7 @@ public class PhpDependPlugin implements Plugin {
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+    list.add(PhpDependMavenCollector.class);
     return list;
   }
 
