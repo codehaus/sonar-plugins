@@ -20,28 +20,24 @@
 
 package org.sonar.plugins.phpdepend;
 
-import org.sonar.plugins.api.maven.MavenCollector;
-import org.sonar.plugins.api.maven.MavenPluginHandler;
-import org.sonar.plugins.api.maven.ProjectContext;
-import org.sonar.plugins.api.maven.model.MavenPom;
+import org.junit.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.stub;
 
-public class PhpDependMavenCollector implements MavenCollector {
+import java.io.File;
 
-  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
-    return null;
-  }
+public class PhpDependResultsParserTest {
 
-  public boolean shouldCollectOn(MavenPom pom) {
-    return true;
-//    return Php.KEY.equals(pom.getLanguage());
-  }
-
-  public void collect(MavenPom pom, ProjectContext context) {
-    PhpDependConfiguration config = new PhpDependConfiguration(pom);
-    PhpDependExecutor executor = new PhpDependExecutor(config);
-    executor.execute();
-
-    PhpDependResultsParser parser = new PhpDependResultsParser(config, context);
+  @Test(expected = PhpDependExecutionException.class)
+  public void shouldThrowAnExceptionWhenReportNotFound(){
+    PhpDependConfiguration config = mock(PhpDependConfiguration.class);
+    stub(config.getReportFile(PhpDependConfiguration.PHPUNIT_OPT)).toReturn(new File("path/to/nowhere"));
+    PhpDependResultsParser parser = new PhpDependResultsParser(config, null);
     parser.parse();
+  }
+
+  @Test
+  public void shouldCollectMeasures(){
+    PhpDependResultsParser parser = new PhpDependResultsParser();
   }
 }

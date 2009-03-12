@@ -18,30 +18,32 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php.matchers;
 
-import org.sonar.plugins.api.maven.MavenCollector;
-import org.sonar.plugins.api.maven.MavenPluginHandler;
-import org.sonar.plugins.api.maven.ProjectContext;
-import org.sonar.plugins.api.maven.model.MavenPom;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.sonar.commons.resources.Resource;
+import org.sonar.plugins.php.Php;
 
-public class PhpDependMavenCollector implements MavenCollector {
+public class IsPhpDirectory extends BaseMatcher<Resource> {
+  private String key = null;
 
-  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
-    return null;
+  public IsPhpDirectory(String key) {
+    this.key = key;
   }
 
-  public boolean shouldCollectOn(MavenPom pom) {
-    return true;
-//    return Php.KEY.equals(pom.getLanguage());
+  public IsPhpDirectory() {
   }
 
-  public void collect(MavenPom pom, ProjectContext context) {
-    PhpDependConfiguration config = new PhpDependConfiguration(pom);
-    PhpDependExecutor executor = new PhpDependExecutor(config);
-    executor.execute();
+  public boolean matches(Object o) {
+    Resource resource = (Resource)o;
+    boolean result = resource.isDirectory() && Php.KEY.equals(resource.getLanguageKey());
+    if (result && key!=null) {
+      result = key.equals(resource.getKey());
+    }
+    return result;
+  }
 
-    PhpDependResultsParser parser = new PhpDependResultsParser(config, context);
-    parser.parse();
+  public void describeTo(Description arg0) {
   }
 }

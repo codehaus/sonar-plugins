@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metrics ahh="0" andc="0" calls="151" ccn="89" ccn2="92" cloc="463" clsa="0" clsc="7" eloc="473" fanout="43" leafs="7" loc="1073" maxDIT="0" ncloc="610" noc="7" nof="2" noi="1" nom="72" nop="3" roots="0">
+  <files>
+    <file name="C:\projets\_PHP\Money\Money.php" cloc="68" eloc="94" loc="188" ncloc="120"/>
+    <file name="C:\projets\_PHP\Money\Money2.php" cloc="56" eloc="16" loc="78" ncloc="22"/>
+    <file name="C:\projets\_PHP\Money\MoneyBag.php" cloc="56" eloc="150" loc="251" ncloc="195"/>
+    <file name="C:\projets\_PHP\Money\MoneyTest.php" cloc="71" eloc="152" loc="255" ncloc="184"/>
+    <file name="C:\projets\_PHP\Money\MoneyTest2.php" cloc="56" eloc="24" loc="91" ncloc="35"/>
+    <file name="C:\projets\_PHP\Money\MoneyTest3.php" cloc="56" eloc="16" loc="82" ncloc="26"/>
+    <file name="C:\projets\_PHP\Money\Money3.php" cloc="44" eloc="6" loc="54" ncloc="10"/>
+  </files>
+  <package name="PHPUnit" cr="0.15" noc="5" nof="1" noi="1" nom="68" rcr="0.235">
+    <class name="Money" cis="19" cloc="0" cr="0.15" csz="21" dit="0" eloc="72" impl="1" loc="90" ncloc="90" nom="14" rcr="0.21375" vars="2" varsi="2" varsnp="0" wmc="19" wmci="19" wmcnp="19">
+      <file name="C:\projets\_PHP\Money\Money.php"/>
+      <method name="__construct" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+      <method name="add" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="addMoney" ccn="2" ccn2="2" cloc="0" eloc="6" loc="8" ncloc="8" npath="2"/>
+      <method name="addMoneyBag" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="amount" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="appendTo" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="currency" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="equals" ccn="3" ccn2="5" cloc="0" eloc="11" loc="14" ncloc="14" npath="6"/>
+      <method name="hashCode" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="isZero" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="multiply" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="negate" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="subtract" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="toString" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+    </class>
+    <class name="Money2" cis="2" cloc="0" cr="0.15" csz="4" dit="0" eloc="13" impl="0" loc="17" ncloc="17" nom="2" rcr="0.15" vars="2" varsi="2" varsnp="0" wmc="2" wmci="2" wmcnp="2">
+      <file name="C:\projets\_PHP\Money\Money2.php"/>
+      <method name="__construct" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+      <method name="amount" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+    </class>
+    <class name="MoneyBag" cis="32" cloc="0" cr="0.15" csz="40" dit="0" eloc="145" impl="1" loc="188" ncloc="188" nom="18" rcr="0.21375" vars="1" varsi="1" varsnp="0" wmc="39" wmci="39" wmcnp="32">
+      <file name="C:\projets\_PHP\Money\MoneyBag.php"/>
+      <method name="add" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="addMoney" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="addMoneyBag" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="appendBag" ccn="2" ccn2="2" cloc="0" eloc="5" loc="6" ncloc="6" npath="2"/>
+      <method name="appendMoney" ccn="6" ccn2="6" cloc="0" eloc="23" loc="31" ncloc="31" npath="24"/>
+      <method name="appendTo" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="contains" ccn="2" ccn2="2" cloc="0" eloc="7" loc="10" ncloc="10" npath="2"/>
+      <method name="create" ccn="1" ccn2="1" cloc="0" eloc="6" loc="8" ncloc="8" npath="1"/>
+      <method name="equals" ccn="6" ccn2="7" cloc="0" eloc="18" loc="23" ncloc="23" npath="21"/>
+      <method name="findMoney" ccn="3" ccn2="3" cloc="0" eloc="8" loc="10" ncloc="10" npath="3"/>
+      <method name="hashCode" ccn="2" ccn2="2" cloc="0" eloc="7" loc="10" ncloc="10" npath="2"/>
+      <method name="isZero" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="monies" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="multiply" ccn="3" ccn2="3" cloc="0" eloc="9" loc="12" ncloc="12" npath="3"/>
+      <method name="negate" ccn="2" ccn2="2" cloc="0" eloc="7" loc="10" ncloc="10" npath="2"/>
+      <method name="simplify" ccn="2" ccn2="2" cloc="0" eloc="6" loc="8" ncloc="8" npath="2"/>
+      <method name="subtract" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="toString" ccn="2" ccn2="2" cloc="0" eloc="7" loc="10" ncloc="10" npath="2"/>
+    </class>
+    <class name="MoneyTest" cis="23" cloc="15" cr="0.15" csz="30" dit="0" eloc="146" impl="0" loc="190" ncloc="175" nom="24" rcr="0.1925" vars="6" varsi="6" varsnp="0" wmc="24" wmci="24" wmcnp="23">
+      <file name="C:\projets\_PHP\Money\MoneyTest.php"/>
+      <method name="setUp" ccn="1" ccn2="1" cloc="0" eloc="8" loc="10" ncloc="10" npath="1"/>
+      <method name="testAmount" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+      <method name="testBagMultiply" ccn="1" ccn2="1" cloc="1" eloc="6" loc="9" ncloc="8" npath="1"/>
+      <method name="testBagNegate" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testBagNotEquals" ccn="1" ccn2="1" cloc="0" eloc="6" loc="7" ncloc="7" npath="1"/>
+      <method name="testBagSimpleAdd" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testBagSubtract" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testBagSumAdd" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testIsZero" ccn="1" ccn2="1" cloc="1" eloc="3" loc="5" ncloc="4" npath="1"/>
+      <method name="testMixedSimpleAdd" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testMoneyBagEquals" ccn="1" ccn2="1" cloc="0" eloc="9" loc="11" ncloc="11" npath="1"/>
+      <method name="testMoneyBagHash" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+      <method name="testMoneyEquals" ccn="1" ccn2="1" cloc="0" eloc="8" loc="9" ncloc="9" npath="1"/>
+      <method name="testMoneyHash" ccn="1" ccn2="1" cloc="0" eloc="5" loc="6" ncloc="6" npath="1"/>
+      <method name="testNormalize2" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testNormalize3" ccn="1" ccn2="1" cloc="1" eloc="5" loc="7" ncloc="6" npath="1"/>
+      <method name="testNormalize4" ccn="1" ccn2="1" cloc="1" eloc="5" loc="7" ncloc="6" npath="1"/>
+      <method name="testPrint" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+      <method name="testSimpleAdd" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testSimpleBagAdd" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testSimpleMultiply" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testSimpleNegate" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testSimpleSubtract" ccn="1" ccn2="1" cloc="1" eloc="4" loc="6" ncloc="5" npath="1"/>
+      <method name="testSimplify" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+    </class>
+    <class name="MoneyTest2" cis="1" cloc="0" cr="0.15" csz="8" dit="0" eloc="19" impl="0" loc="27" ncloc="27" nom="2" rcr="0.1925" vars="6" varsi="6" varsnp="0" wmc="2" wmci="2" wmcnp="1">
+      <file name="C:\projets\_PHP\Money\MoneyTest2.php"/>
+      <method name="setUp" ccn="1" ccn2="1" cloc="0" eloc="6" loc="8" ncloc="8" npath="1"/>
+      <method name="testBagMultiply" ccn="1" ccn2="1" cloc="0" eloc="3" loc="5" ncloc="5" npath="1"/>
+    </class>
+    <function name="toto" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1">
+      <file name="C:\projets\_PHP\Money\Money.php"/>
+    </function>
+  </package>
+  <package name="Test" cr="0.15" noc="1" nof="1" noi="0" nom="2" rcr="0.1925">
+    <class name="MoneyTest3" cis="1" cloc="0" cr="0.15" csz="3" dit="0" eloc="11" impl="0" loc="18" ncloc="18" nom="2" rcr="0.1925" vars="1" varsi="1" varsnp="0" wmc="2" wmci="2" wmcnp="1">
+      <file name="C:\projets\_PHP\Money\MoneyTest3.php"/>
+      <method name="setUp" ccn="1" ccn2="1" cloc="0" eloc="2" loc="4" ncloc="4" npath="1"/>
+      <method name="testAmount" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+    </class>
+    <function name="amount" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1">
+      <file name="C:\projets\_PHP\Money\Money3.php"/>
+    </function>
+  </package>
+  <package name="Trucmuche" cr="0.15" noc="1" nof="0" noi="0" nom="2" rcr="0.15">
+    <class name="Money2" cis="2" cloc="0" cr="0.15" csz="4" dit="0" eloc="13" impl="0" loc="17" ncloc="17" nom="2" rcr="0.15" vars="2" varsi="2" varsnp="0" wmc="2" wmci="2" wmcnp="2">
+      <file name="C:\projets\_PHP\Money\Money.php"/>
+      <method name="__construct" ccn="1" ccn2="1" cloc="0" eloc="4" loc="5" ncloc="5" npath="1"/>
+      <method name="amount" ccn="1" ccn2="1" cloc="0" eloc="3" loc="4" ncloc="4" npath="1"/>
+    </class>
+  </package>
+</metrics>
