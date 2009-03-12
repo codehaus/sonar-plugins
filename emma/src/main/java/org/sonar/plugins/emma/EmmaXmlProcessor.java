@@ -71,27 +71,27 @@ public class EmmaXmlProcessor {
     InputStream input = new FileInputStream(xml);
     XMLStreamReader2 reader = (XMLStreamReader2)xmlFactory.createXMLStreamReader(input);
 
-    int event = 0;
-    boolean allNodePassed = false;
+    boolean allElementProcessedPassed = false;
     String currentPackageName = null;
-    while ((event = reader.next()) != XMLStreamConstants.END_DOCUMENT) {
-      if (event == XMLStreamConstants.START_ELEMENT) {
-        String elementName = reader.getName().getLocalPart();
-        if ( !allNodePassed && elementName.equals("all")) {
+    while (reader.next() != XMLStreamConstants.END_DOCUMENT) {
+      if (reader.isStartElement()) {
+        String elementName = reader.getLocalName();
+        if ( !allElementProcessedPassed && elementName.equals("all")) {
           collectProjectMeasures(reader);
-          allNodePassed = true;
-        }
-        if (elementName.equals("package")) {
+          allElementProcessedPassed = true;
+        } else if (elementName.equals("package")) {
           currentPackageName = reader.getAttributeValue(null, "name");
           currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
           collectPackageMeasures(reader, currentPackageName);
-        }
-        if (elementName.equals("class")) {
+        } else if (elementName.equals("class")) {
           String className = reader.getAttributeValue(null, "name");
           collectClassMeasures(reader, currentPackageName, className);
+        } else if (elementName.equals("method")) {
+          reader.skipElement();
         }
       }
     }
+    reader.closeCompletely();
   }
   
   private void collectProjectMeasures(XMLStreamReader2 reader) throws XMLStreamException, ParseException {
@@ -123,8 +123,8 @@ public class EmmaXmlProcessor {
     boolean coverageValFound = false;
     int coverageTagsCounter = 0;
     while (!coverageValFound) {
-      int event = reader.nextTag();
-      if (event == XMLStreamConstants.START_ELEMENT && reader.getName().getLocalPart().equals("coverage") ) {
+      reader.nextTag();
+      if (reader.isStartElement() && reader.getLocalName().equals("coverage")) {
         String typeAttr = reader.getAttributeValue(null, "type");
         if ( typeAttr.equals("line, %")) {
           double coverage = extractEmmaPercentageNumber(reader.getAttributeValue(null, "value"));
