@@ -20,26 +20,11 @@
 
 package org.sonar.plugins.phpdepend;
 
-import org.apache.commons.io.FileUtils;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
-
 public class PhpDependConfigurationTest {
-
-  private final File targetDir = new File("target");
-  private File reportDir = new File(targetDir, PhpDependConfiguration.REPORT_DIR);
-
-  @Before
-  public void before() throws IOException {
-    FileUtils.deleteQuietly(reportDir);
-  }
 
   @Test
   public void shouldGetCommandLineForWindows() {
@@ -66,19 +51,6 @@ public class PhpDependConfigurationTest {
     PhpDependConfiguration config = getConfiguration(false, path + "/");
     assertThat(config.getCommandLine(), is(path + "/pdepend"));
   }
-
-  @Test
-  public void shouldCreateReportDir() throws IOException {
-    PhpDependConfiguration config = new PhpDependConfiguration() {
-      protected File getBuildDir() {
-        return targetDir;
-      }
-    };
-    assertFalse(reportDir.exists());
-    config.init();
-    assertTrue(reportDir.exists());
-  }
-
 
   private PhpDependConfiguration getWindowsConfiguration() {
     return getConfiguration(true, "");

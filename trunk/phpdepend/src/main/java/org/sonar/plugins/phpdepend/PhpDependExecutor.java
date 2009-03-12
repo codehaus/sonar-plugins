@@ -22,6 +22,8 @@ package org.sonar.plugins.phpdepend;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,6 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class PhpDependExecutor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(PhpDependExecutor.class);
 
   private PhpDependConfiguration configuration;
 
@@ -40,10 +44,12 @@ public class PhpDependExecutor {
     String commandLine;
 
     try {
-      String[] cmd = {configuration.getCommandLine(), configuration.getSummaryOption(), "."};
+      String[] cmd = {configuration.getCommandLine(), configuration.getPhpunitOption(), configuration.getSourceDir().getAbsolutePath()};
       commandLine = StringUtils.join(cmd, " ");
       ProcessBuilder builder = new ProcessBuilder(cmd);
       builder.redirectErrorStream(true);
+      
+      LOG.info("Execute PHP Depend with command '{}'", commandLine);
       Process p = builder.start();
       new StreamGobbler(p.getInputStream()).start();
       int returnCde = p.waitFor();

@@ -20,28 +20,33 @@
 
 package org.sonar.plugins.phpdepend;
 
-import org.sonar.plugins.api.maven.MavenCollector;
-import org.sonar.plugins.api.maven.MavenPluginHandler;
 import org.sonar.plugins.api.maven.ProjectContext;
-import org.sonar.plugins.api.maven.model.MavenPom;
 
-public class PhpDependMavenCollector implements MavenCollector {
+import java.io.File;
 
-  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
-    return null;
+public class PhpDependResultsParser {
+
+  private PhpDependConfiguration config;
+  private ProjectContext context;
+
+  public PhpDependResultsParser(PhpDependConfiguration config, ProjectContext context) {
+    this.config = config;
+    this.context = context;
   }
 
-  public boolean shouldCollectOn(MavenPom pom) {
-    return true;
-//    return Php.KEY.equals(pom.getLanguage());
+  protected PhpDependResultsParser(){
+    
   }
 
-  public void collect(MavenPom pom, ProjectContext context) {
-    PhpDependConfiguration config = new PhpDependConfiguration(pom);
-    PhpDependExecutor executor = new PhpDependExecutor(config);
-    executor.execute();
+  public void parse() {
+    File reportXml = config.getReportFile(PhpDependConfiguration.PHPUNIT_OPT);
+    if (!reportXml.exists()) {
+      throw new PhpDependExecutionException("Result file not found : " + reportXml.getAbsolutePath());
+    }
+    collectMeasures(reportXml);
+  }
 
-    PhpDependResultsParser parser = new PhpDependResultsParser(config, context);
-    parser.parse();
+  private void collectMeasures(File reportXml) {
+
   }
 }

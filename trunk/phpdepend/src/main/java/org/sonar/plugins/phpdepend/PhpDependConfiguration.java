@@ -35,23 +35,23 @@ public class PhpDependConfiguration {
   protected static final String DEFAUT_PATH = "";
 
   private static final String PHPDEPEND_COMMAND = "pdepend";
-  protected static final String REPORT_DIR = "target";
-  private static final String SUMMARY_FILE = "phpdepend-summary.xml";
-  private static final String SUMMARY_OPT = "--summary-xml="+ REPORT_DIR + SUMMARY_FILE;
+
+  public static final String SUMMARY_OPT = "summary-xml";
+  public static final String PHPUNIT_OPT = "phpunit-xml";
+
 
   public PhpDependConfiguration(MavenPom pom) {
     this.pom = pom;
-    init();
+//    init();
   }
 
   // Only for unit tests
-  protected PhpDependConfiguration(){
+  protected PhpDependConfiguration() {
   }
 
-  protected void init(){
+  protected void init() {
     try {
-      File reportDir = new File(getBuildDir(), REPORT_DIR);
-      FileUtils.forceMkdir(reportDir);
+      FileUtils.forceMkdir(getBuildDir());
     } catch (IOException e) {
       throw new PhpDependExecutionException(e);
     }
@@ -59,8 +59,10 @@ public class PhpDependConfiguration {
 
   public String getCommandLine() {
     String path = getPath();
+    // For Windows
     if (isOsWindows()) {
       return path + PHPDEPEND_COMMAND + ".bat";
+    // For Unix like systems
     } else {
       if (StringUtils.isEmpty(path)) {
         return PHPDEPEND_COMMAND;
@@ -72,18 +74,38 @@ public class PhpDependConfiguration {
   }
 
   public String getSummaryOption() {
-    return SUMMARY_OPT;
+    return getOption(SUMMARY_OPT);
+  }
+
+  public String getPhpunitOption() {
+    return getOption(PHPUNIT_OPT);
   }
 
   public String getPath() {
     return pom.getConfiguration().getString(KEY_PATH, DEFAUT_PATH);
   }
 
-  protected boolean isOsWindows(){
+  public File getSourceDir() {
+    return pom.resolvePath(pom.getBuildSourceDirectory());
+  }
+
+  private String getOption(String option) {
+    try {
+      return "--" + option + "=" + getReportFile(option).getCanonicalPath();
+    } catch (IOException e) {
+      throw new PhpDependExecutionException(e);
+    }
+  }
+
+  protected File getReportFile(String reportFile) {
+    return new File(getBuildDir(), "phpdepend-" + reportFile + ".xml");
+  }
+
+  protected boolean isOsWindows() {
     return SystemUtils.IS_OS_WINDOWS;
   }
 
-  protected File getBuildDir(){
+  private File getBuildDir() {
     return pom.getBuildDir();
   }
 
