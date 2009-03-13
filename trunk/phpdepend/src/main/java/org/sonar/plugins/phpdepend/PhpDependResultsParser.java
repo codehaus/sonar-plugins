@@ -26,6 +26,7 @@ import org.codehaus.stax2.XMLInputFactory2;
 import org.codehaus.stax2.XMLStreamReader2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.commons.Metric;
 import org.sonar.commons.resources.Resource;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.ProjectContext;
@@ -77,9 +78,7 @@ public class PhpDependResultsParser {
 
     while (reader.next() != XMLStreamConstants.END_DOCUMENT) {
       if (reader.isStartElement()) {
-
         String elementName = reader.getLocalName();
-
         if (elementName.equals("metrics")) {
           collectProjectMeasures(reader);
         } else if (elementName.equals("file")) {
@@ -93,17 +92,15 @@ public class PhpDependResultsParser {
   }
 
   private void collectProjectMeasures(XMLStreamReader2 reader) throws ParseException {
-    String value = reader.getAttributeValue(null, "ncloc");
-    context.addMeasure(CoreMetrics.NLOC, MavenCollectorUtils.parseNumber(value));
+    addNlocMeasure(null, reader);
   }
 
   private void collectFileMeasures(XMLStreamReader2 reader) throws ParseException {
-    String value = reader.getAttributeValue(null, "ncloc");
     String name = reader.getAttributeValue(null, "name");
     Resource file = Php.newFileFromAbsolutePath(name, sourcesDir);
-    context.addMeasure(file, CoreMetrics.NLOC, extractValue(value));
 
-    addParentIfExistToDirectories(file, value);
+    addNlocMeasure(file, reader);
+//    addCommentsMeasure(file, reader);
   }
 
   private void addParentIfExistToDirectories(Resource file, String value) {
@@ -119,6 +116,28 @@ public class PhpDependResultsParser {
       Resource directory = (Resource) o;
       Integer value = directoryBag.getCount(directory);
       context.addMeasure(directory, CoreMetrics.NLOC, extractValue(value));
+    }
+  }
+
+  private void addNlocMeasure(Resource resource, XMLStreamReader2 reader) throws ParseException {
+    String value = reader.getAttributeValue(null, "ncloc");
+    Metric metric = CoreMetrics.NLOC;
+    if (resource != null) {
+      context.addMeasure(resource, metric, extractValue(value));
+      addParentIfExistToDirectories(resource, value);
+    } else {
+      context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
+    }
+  }
+
+  private void addCommentsMeasure(Resource resource, XMLStreamReader2 reader) throws ParseException {
+    String value = reader.getAttributeValue(null, "cloc");
+    Metric metric = CoreMetrics.COMMENT_LINES;
+    if (resource != null) {
+      context.addMeasure(resource, metric, extractValue(value));
+      addParentIfExistToDirectories(resource, value);
+    } else {
+      context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
     }
   }
 

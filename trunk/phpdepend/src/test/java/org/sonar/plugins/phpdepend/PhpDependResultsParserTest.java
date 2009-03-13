@@ -60,15 +60,15 @@ public class PhpDependResultsParserTest {
   @Test
   public void shouldGenerateFileMeasures() {
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.NLOC, 120.0);
-    verify(context).addMeasure(Php.newFile("Common/MoneyBag.php"), CoreMetrics.NLOC, 195.0);
-    verify(context).addMeasure(Php.newFile("Test/MoneyTest.php"), CoreMetrics.NLOC, 184.0);
-    verify(context).addMeasure(Php.newFile("Common/IMoney.php"), CoreMetrics.NLOC, 18.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.NLOC, 195.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyTest.php"), CoreMetrics.NLOC, 184.0);
+    verify(context).addMeasure(Php.newFile("Sources/Common/IMoney.php"), CoreMetrics.NLOC, 18.0);
   }
 
   @Test
   public void shouldGenerateDirectoryMeasures() {
-    verify(context).addMeasure(Php.newDirectory("Common"), CoreMetrics.NLOC, 213.0);
-    verify(context).addMeasure(Php.newDirectory("Test"), CoreMetrics.NLOC, 184.0);
+    verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.NLOC, 379.0);
+    verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.NLOC, 18.0);
   }
 
 }
