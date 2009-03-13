@@ -10,7 +10,7 @@
   <artifactId>phpdepend</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>Sonar PHPDepend plugin</name>
-  
+
   <properties>
     <sonar.version>1.8-SNAPSHOT</sonar.version>
   </properties>
@@ -50,7 +50,7 @@
       <artifactId>maven-core</artifactId>
       <version>2.0.9</version>
       <scope>provided</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -73,7 +73,12 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.5.0</version>
-    </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.woodstox</groupId>
+      <artifactId>stax2-api</artifactId>
+      <version>3.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>

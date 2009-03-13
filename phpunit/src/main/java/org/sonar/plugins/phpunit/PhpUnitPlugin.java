@@ -40,7 +40,7 @@ public class PhpUnitPlugin implements Plugin {
     return "Phpunit";
   }
 
-  public Lit<Class<? extends Extension>> getExtensions() {
+  public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     return list;
   }
