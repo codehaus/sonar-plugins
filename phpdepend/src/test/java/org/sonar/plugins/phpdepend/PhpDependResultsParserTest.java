@@ -23,11 +23,14 @@ package org.sonar.plugins.phpdepend;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
+import org.sonar.commons.Metric;
 import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.metrics.CoreMetrics;
 import org.sonar.plugins.php.Php;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PhpDependResultsParserTest {
 
@@ -38,11 +41,16 @@ public class PhpDependResultsParserTest {
   public void before() throws Exception {
     File xmlReport = new File(getClass().getResource("/org/sonar/plugins/phpdepend/PhpDependResultsParserTest/phpunit-report.xml").toURI());
     context = mock(ProjectContext.class);
-
     config = mock(PhpDependConfiguration.class);
     stub(config.getSourceDir()).toReturn(new File("C:\\projets\\_PHP\\Money"));
-    PhpDependResultsParser parser = new PhpDependResultsParser(config, context);
-    parser.collectMeasures(xmlReport);
+    stub(config.getReportFile(PhpDependConfiguration.PHPUNIT_OPT)).toReturn(xmlReport);
+
+    Map<Metric, String> attributeByMetrics = new HashMap<Metric, String>();
+    attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
+    attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
+
+    PhpDependResultsParser parser = new PhpDependResultsParser(config, context, attributeByMetrics);
+    parser.parse();
   }
 
   @Test(expected = PhpDependExecutionException.class)
@@ -53,13 +61,13 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateSomeProjectMeasures() {
+  public void shouldGenerateProjectMeasures() {
     verify(context).addMeasure(CoreMetrics.NLOC, 517.0);
     verify(context).addMeasure(CoreMetrics.COMMENT_LINES, 251.0);
   }
 
   @Test
-  public void shouldGenerateSomeFileMeasures() {
+  public void shouldGenerateFileMeasures() {
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.NLOC, 120.0);
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.COMMENT_LINES, 68.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.NLOC, 195.0);
@@ -71,11 +79,19 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateSomeDirectoryMeasures() {
+  public void shouldGenerateDirectoryMeasures() {
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.NLOC, 379.0);
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.COMMENT_LINES, 127.0);
     verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.NLOC, 18.0);
     verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.COMMENT_LINES, 56.0);
+  }
+
+  @Test
+  public void shouldNotThrowExceptionIfAMetricIsNotPresent() {
+    Map<Metric, String> attributeByMetrics = new HashMap<Metric, String>();
+    attributeByMetrics.put(new Metric("doesnt_exists"), "doesnt_exists");
+    PhpDependResultsParser parser = new PhpDependResultsParser(config, context, attributeByMetrics);
+    parser.parse();
   }
 
 }
