@@ -48,6 +48,9 @@ public class PhpDependResultsParserTest {
     Map<Metric, String> attributeByMetrics = new HashMap<Metric, String>();
     attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
     attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
+    attributeByMetrics.put(CoreMetrics.FUNCTIONS_COUNT, "nom");
+    attributeByMetrics.put(CoreMetrics.CLASSES_COUNT, "classes");
+    attributeByMetrics.put(CoreMetrics.FILES_COUNT, "files");
 
     PhpDependResultsParser parser = new PhpDependResultsParser(config, context, attributeByMetrics);
     parser.parse();
@@ -61,13 +64,13 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateProjectMeasures() {
+  public void shouldGenerateSimpleProjectMeasures() {
     verify(context).addMeasure(CoreMetrics.NLOC, 517.0);
     verify(context).addMeasure(CoreMetrics.COMMENT_LINES, 251.0);
   }
 
   @Test
-  public void shouldGenerateFileMeasures() {
+  public void shouldGenerateSimpleFileMeasures() {
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.NLOC, 120.0);
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.COMMENT_LINES, 68.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.NLOC, 195.0);
@@ -79,7 +82,7 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateDirectoryMeasures() {
+  public void shouldGenerateSimpleDirectoryMeasures() {
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.NLOC, 379.0);
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.COMMENT_LINES, 127.0);
     verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.NLOC, 18.0);
@@ -92,6 +95,37 @@ public class PhpDependResultsParserTest {
     attributeByMetrics.put(new Metric("doesnt_exists"), "doesnt_exists");
     PhpDependResultsParser parser = new PhpDependResultsParser(config, context, attributeByMetrics);
     parser.parse();
+  }
+
+  @Test
+  public void shouldGenerateFunctionsCountMeasure() {
+    verify(context).addMeasure(CoreMetrics.FUNCTIONS_COUNT, 66.0);
+    verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.FUNCTIONS_COUNT, 17.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.FUNCTIONS_COUNT, 18.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyTest.php"), CoreMetrics.FUNCTIONS_COUNT, 24.0);
+    verify(context).addMeasure(Php.newFile("Sources/Common/IMoney.php"), CoreMetrics.FUNCTIONS_COUNT, 8.0);
+
+    verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.FUNCTIONS_COUNT, 42.0);
+    verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.FUNCTIONS_COUNT, 8.0);
+  }
+
+  @Test
+  public void shouldGenerateClassesCountMeasure() {
+    verify(context).addMeasure(CoreMetrics.CLASSES_COUNT, 5.0);
+    verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.CLASSES_COUNT, 2.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.CLASSES_COUNT, 1.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyTest.php"), CoreMetrics.CLASSES_COUNT, 1.0);
+    verify(context).addMeasure(Php.newFile("Sources/Common/IMoney.php"), CoreMetrics.CLASSES_COUNT, 1.0);
+
+    verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.CLASSES_COUNT, 2.0);
+    verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.CLASSES_COUNT, 1.0);
+  }
+
+  @Test
+  public void shouldGenerateFilesCountMeasure() {
+    verify(context).addMeasure(CoreMetrics.FILES_COUNT, 4.0);
+    verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.FILES_COUNT, 2.0);
+    verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.FILES_COUNT, 1.0);
   }
 
 }
