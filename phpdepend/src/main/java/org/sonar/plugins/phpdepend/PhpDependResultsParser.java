@@ -115,7 +115,7 @@ public class PhpDependResultsParser {
       Metric metric = attributeByMetric.getKey();
       String attribute = attributeByMetric.getValue();
       String value = reader.getAttributeValue(null, attribute);
-      // Classes must not be added to the project measures now because we have to add the interfaces to the count
+      // Classes must not be added to the project measures now because we must also add the interfaces
       if (value != null && metric != CoreMetrics.CLASSES_COUNT) {
         addProjectMeasure(metric, value);
       }
