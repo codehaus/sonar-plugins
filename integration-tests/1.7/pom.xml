@@ -59,6 +59,16 @@
             </goals>
           </execution>
           <execution>
+            <id>analyse-projects</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>analyse</goal>
+            </goals>
+            <configuration>
+	           <dir>${basedir}/src/it/projects</dir>
+	        </configuration>
+          </execution>
+          <execution>
             <id>stop-sonar</id>
             <phase>post-integration-test</phase>
             <goals>
