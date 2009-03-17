@@ -53,22 +53,29 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateProjectMeasures() {
+  public void shouldGenerateSomeProjectMeasures() {
     verify(context).addMeasure(CoreMetrics.NLOC, 517.0);
+    verify(context).addMeasure(CoreMetrics.COMMENT_LINES, 251.0);
   }
 
   @Test
-  public void shouldGenerateFileMeasures() {
+  public void shouldGenerateSomeFileMeasures() {
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.NLOC, 120.0);
+    verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.COMMENT_LINES, 68.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.NLOC, 195.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.COMMENT_LINES, 56.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyTest.php"), CoreMetrics.NLOC, 184.0);
+    verify(context).addMeasure(Php.newFile("Sources/MoneyTest.php"), CoreMetrics.COMMENT_LINES, 71.0);
     verify(context).addMeasure(Php.newFile("Sources/Common/IMoney.php"), CoreMetrics.NLOC, 18.0);
+    verify(context).addMeasure(Php.newFile("Sources/Common/IMoney.php"), CoreMetrics.COMMENT_LINES, 56.0);
   }
 
   @Test
-  public void shouldGenerateDirectoryMeasures() {
+  public void shouldGenerateSomeDirectoryMeasures() {
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.NLOC, 379.0);
+    verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.COMMENT_LINES, 127.0);
     verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.NLOC, 18.0);
+    verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.COMMENT_LINES, 56.0);
   }
 
 }
