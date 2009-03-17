@@ -62,6 +62,11 @@ public class PhpDependResultsParser {
     initAttributeByMetrics();
   }
 
+  protected PhpDependResultsParser(PhpDependConfiguration config, ProjectContext context, Map<Metric, String> attributeByMetrics) {
+    this(config, context);
+    this.attributeByMetrics = attributeByMetrics;
+  }
+
   private void initAttributeByMetrics() {
     attributeByMetrics = new HashMap<Metric, String>();
     attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
@@ -106,7 +111,9 @@ public class PhpDependResultsParser {
       Metric metric = attributeByMetric.getKey();
       String attribute = attributeByMetric.getValue();
       String value = reader.getAttributeValue(null, attribute);
-      context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
+      if (value != null) {
+        context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
+      }
     }
   }
 
@@ -119,8 +126,10 @@ public class PhpDependResultsParser {
       String attribute = attributeByMetric.getValue();
 
       String value = reader.getAttributeValue(null, attribute);
-      context.addMeasure(file, metric, extractValue(value));
-      addMetricValueToParent(file, value, metric);
+      if (value != null) {
+        context.addMeasure(file, metric, extractValue(value));
+        addMetricValueToParent(file, value, metric);
+      }
     }
   }
 
