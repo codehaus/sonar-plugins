@@ -24,6 +24,7 @@ import org.sonar.plugins.api.maven.MavenCollector;
 import org.sonar.plugins.api.maven.MavenPluginHandler;
 import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.model.MavenPom;
+import org.sonar.plugins.php.Php;
 
 public class PhpDependMavenCollector implements MavenCollector {
 
@@ -32,8 +33,7 @@ public class PhpDependMavenCollector implements MavenCollector {
   }
 
   public boolean shouldCollectOn(MavenPom pom) {
-    return true;
-//    return Php.KEY.equals(pom.getLanguage());
+    return Php.KEY.equals(pom.getLanguageKey());
   }
 
   public void collect(MavenPom pom, ProjectContext context) {

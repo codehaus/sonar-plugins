@@ -18,14 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php;
 
-import org.apache.commons.lang.SystemUtils;
+import org.sonar.commons.resources.Resource;
+import org.sonar.plugins.api.maven.AbstractImportSourceMavenCollector;
 
-public class Test {
+import java.io.File;
+import java.util.Arrays;
 
-  public static void main (String[] args){
-    System.out.println(SystemUtils.IS_OS_WINDOWS_2000);
-    System.out.println(SystemUtils.IS_OS_WINDOWS_XP);
+public class PhpMavenCollector extends AbstractImportSourceMavenCollector {
+
+  protected String[] getSuffixes() {
+    return Php.SUFFIXES;
   }
+
+  protected Resource createSourceResource(File file, String sourceDir) {
+    return Php.newFileFromAbsolutePath(file.getAbsolutePath(), Arrays.asList(sourceDir));
+  }
+
+  protected Resource createTestResource(File file, String testSourceDir) {
+    return Php.newUnitTestFileFromAbsolutePath(file.getAbsolutePath(), Arrays.asList(testSourceDir));
+  }
+
 }
