@@ -40,7 +40,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PhpDependResultsParser {
 
@@ -49,13 +51,21 @@ public class PhpDependResultsParser {
   private PhpDependConfiguration config;
   private ProjectContext context;
   private List<String> sourcesDir;
-  private Bag directoryBag;
+  private Map<Metric, Bag> directoryBagByMetrics;
+  private Map<Metric, String> attributeByMetrics;
 
   public PhpDependResultsParser(PhpDependConfiguration config, ProjectContext context) {
     this.config = config;
     this.context = context;
     this.sourcesDir = Arrays.asList(config.getSourceDir().getAbsolutePath());
-    this.directoryBag = new HashBag();
+    directoryBagByMetrics = new HashMap<Metric, Bag>();
+    initAttributeByMetrics();
+  }
+
+  private void initAttributeByMetrics() {
+    attributeByMetrics = new HashMap<Metric, String>();
+    attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
+    attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
   }
 
   public void parse() {
@@ -92,52 +102,50 @@ public class PhpDependResultsParser {
   }
 
   private void collectProjectMeasures(XMLStreamReader2 reader) throws ParseException {
-    addNlocMeasure(null, reader);
+    for (Map.Entry<Metric, String> attributeByMetric : attributeByMetrics.entrySet()) {
+      Metric metric = attributeByMetric.getKey();
+      String attribute = attributeByMetric.getValue();
+      String value = reader.getAttributeValue(null, attribute);
+      context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
+    }
   }
 
   private void collectFileMeasures(XMLStreamReader2 reader) throws ParseException {
     String name = reader.getAttributeValue(null, "name");
     Resource file = Php.newFileFromAbsolutePath(name, sourcesDir);
 
-    addNlocMeasure(file, reader);
-//    addCommentsMeasure(file, reader);
+    for (Map.Entry<Metric, String> attributeByMetric : attributeByMetrics.entrySet()) {
+      Metric metric = attributeByMetric.getKey();
+      String attribute = attributeByMetric.getValue();
+
+      String value = reader.getAttributeValue(null, attribute);
+      context.addMeasure(file, metric, extractValue(value));
+      addMetricValueToParent(file, value, metric);
+    }
   }
 
-  private void addParentIfExistToDirectories(Resource file, String value) {
+  private void addMetricValueToParent(Resource file, String value, Metric metric) {
     Resource parent = new Php().getParent(file);
     if (parent != null) {
       int val = Integer.parseInt(value);
+      Bag directoryBag = directoryBagByMetrics.get(metric);
+      if (directoryBag == null) {
+        directoryBag = new HashBag();
+        directoryBagByMetrics.put(metric, directoryBag);
+      }
       directoryBag.add(parent, val);
     }
   }
 
   private void collectDirectoryMeasures() throws ParseException {
-    for (Object o : directoryBag.uniqueSet()) {
-      Resource directory = (Resource) o;
-      Integer value = directoryBag.getCount(directory);
-      context.addMeasure(directory, CoreMetrics.NLOC, extractValue(value));
-    }
-  }
-
-  private void addNlocMeasure(Resource resource, XMLStreamReader2 reader) throws ParseException {
-    String value = reader.getAttributeValue(null, "ncloc");
-    Metric metric = CoreMetrics.NLOC;
-    if (resource != null) {
-      context.addMeasure(resource, metric, extractValue(value));
-      addParentIfExistToDirectories(resource, value);
-    } else {
-      context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
-    }
-  }
-
-  private void addCommentsMeasure(Resource resource, XMLStreamReader2 reader) throws ParseException {
-    String value = reader.getAttributeValue(null, "cloc");
-    Metric metric = CoreMetrics.COMMENT_LINES;
-    if (resource != null) {
-      context.addMeasure(resource, metric, extractValue(value));
-      addParentIfExistToDirectories(resource, value);
-    } else {
-      context.addMeasure(metric, MavenCollectorUtils.parseNumber(value));
+    for (Map.Entry<Metric, Bag> directoryBagByMetric : directoryBagByMetrics.entrySet()) {
+      Metric metric = directoryBagByMetric.getKey();
+      Bag directoryBag = directoryBagByMetric.getValue();
+      for (Object o : directoryBag.uniqueSet()) {
+        Resource directory = (Resource) o;
+        Integer value = directoryBag.getCount(directory);
+        context.addMeasure(directory, metric, extractValue(value));
+      }
     }
   }
 
