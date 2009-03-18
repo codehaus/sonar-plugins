@@ -36,7 +36,6 @@
     <module>greenpepper</module>
     <module>php</module>
     <module>phpunit</module>
-	<module>phpdepend</module>
   </modules>
 
 </project>
