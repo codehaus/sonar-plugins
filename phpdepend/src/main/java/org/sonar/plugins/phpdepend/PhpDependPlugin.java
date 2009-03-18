@@ -22,6 +22,7 @@ package org.sonar.plugins.phpdepend;
 
 import org.sonar.plugins.api.Extension;
 import org.sonar.plugins.api.Plugin;
+import org.sonar.plugins.php.phpdepend.PhpDependMavenCollector;
 
 import java.util.ArrayList;
 import java.util.List;

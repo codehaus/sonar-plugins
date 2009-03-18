@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php.phpdepend;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +48,7 @@ public class PhpDependExecutor {
       commandLine = StringUtils.join(cmd, " ");
       ProcessBuilder builder = new ProcessBuilder(cmd);
       builder.redirectErrorStream(true);
-      
+
       LOG.info("Execute PHP Depend with command '{}'", commandLine);
       Process p = builder.start();
       new StreamGobbler(p.getInputStream()).start();
@@ -64,7 +64,7 @@ public class PhpDependExecutor {
     }
   }
 
-    class StreamGobbler extends Thread {
+  class StreamGobbler extends Thread {
     InputStream is;
 
     StreamGobbler(InputStream is) {

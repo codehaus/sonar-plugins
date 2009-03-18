@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php.phpdepend;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -62,7 +62,7 @@ public class PhpDependConfiguration {
     // For Windows
     if (isOsWindows()) {
       return path + PHPDEPEND_COMMAND + ".bat";
-    // For Unix like systems
+      // For Unix like systems
     } else {
       if (StringUtils.isEmpty(path)) {
         return PHPDEPEND_COMMAND;

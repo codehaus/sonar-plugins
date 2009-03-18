@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php.phpdepend;
 
 public class PhpDependExecutionException extends RuntimeException {
 
