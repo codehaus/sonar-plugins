@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.phpdepend;
+package org.sonar.plugins.php.phpdepend;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,21 +36,19 @@ public class PhpDependResultsParserTest {
 
   private ProjectContext context;
   private PhpDependConfiguration config;
+  private Map<Metric, String> attributeByMetrics;
 
   @Before
-  public void before() throws Exception {
-    File xmlReport = new File(getClass().getResource("/org/sonar/plugins/phpdepend/PhpDependResultsParserTest/phpunit-report.xml").toURI());
+  public void before() {
+    attributeByMetrics = new HashMap<Metric, String>();
+  }
+
+  private void init() throws Exception {
+    File xmlReport = new File(getClass().getResource("/org/sonar/plugins/php/phpdepend/PhpDependResultsParserTest/phpunit-report.xml").toURI());
     context = mock(ProjectContext.class);
     config = mock(PhpDependConfiguration.class);
-    stub(config.getSourceDir()).toReturn(new File("C:\\projets\\_PHP\\Money"));
+    stub(config.getSourceDir()).toReturn(new File("C:\\projets\\PHP\\Money"));
     stub(config.getReportFile(PhpDependConfiguration.PHPUNIT_OPT)).toReturn(xmlReport);
-
-    Map<Metric, String> attributeByMetrics = new HashMap<Metric, String>();
-    attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
-    attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
-    attributeByMetrics.put(CoreMetrics.FUNCTIONS_COUNT, "nom");
-    attributeByMetrics.put(CoreMetrics.CLASSES_COUNT, "classes");
-    attributeByMetrics.put(CoreMetrics.FILES_COUNT, "files");
 
     PhpDependResultsParser parser = new PhpDependResultsParser(config, context, attributeByMetrics);
     parser.parse();
@@ -58,19 +56,27 @@ public class PhpDependResultsParserTest {
 
   @Test(expected = PhpDependExecutionException.class)
   public void shouldThrowAnExceptionWhenReportNotFound() {
+    config = mock(PhpDependConfiguration.class);
+    stub(config.getSourceDir()).toReturn(new File("C:\\projets\\PHP\\Money"));
     stub(config.getReportFile(PhpDependConfiguration.PHPUNIT_OPT)).toReturn(new File("path/to/nowhere"));
     PhpDependResultsParser parser = new PhpDependResultsParser(config, null);
     parser.parse();
   }
 
   @Test
-  public void shouldGenerateSimpleProjectMeasures() {
+  public void shouldGenerateSimpleProjectMeasures() throws Exception {
+    attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
+    attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
+    init();
     verify(context).addMeasure(CoreMetrics.NLOC, 517.0);
     verify(context).addMeasure(CoreMetrics.COMMENT_LINES, 251.0);
   }
 
   @Test
-  public void shouldGenerateSimpleFileMeasures() {
+  public void shouldGenerateSimpleFileMeasures() throws Exception {
+    attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
+    attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
+    init();
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.NLOC, 120.0);
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.COMMENT_LINES, 68.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.NLOC, 195.0);
@@ -82,7 +88,10 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateSimpleDirectoryMeasures() {
+  public void shouldGenerateSimpleDirectoryMeasures() throws Exception {
+    attributeByMetrics.put(CoreMetrics.NLOC, "ncloc");
+    attributeByMetrics.put(CoreMetrics.COMMENT_LINES, "cloc");
+    init();
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.NLOC, 379.0);
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.COMMENT_LINES, 127.0);
     verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.NLOC, 18.0);
@@ -90,15 +99,15 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldNotThrowExceptionIfAMetricIsNotPresent() {
-    Map<Metric, String> attributeByMetrics = new HashMap<Metric, String>();
+  public void shouldNotThrowExceptionIfAMetricIsNotPresent() throws Exception {
     attributeByMetrics.put(new Metric("doesnt_exists"), "doesnt_exists");
-    PhpDependResultsParser parser = new PhpDependResultsParser(config, context, attributeByMetrics);
-    parser.parse();
+    init();
   }
 
   @Test
-  public void shouldGenerateFunctionsCountMeasure() {
+  public void shouldGenerateFunctionsCountMeasure() throws Exception {
+    attributeByMetrics.put(CoreMetrics.FUNCTIONS_COUNT, "nom");
+    init();
     verify(context).addMeasure(CoreMetrics.FUNCTIONS_COUNT, 66.0);
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.FUNCTIONS_COUNT, 17.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.FUNCTIONS_COUNT, 18.0);
@@ -110,7 +119,9 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateClassesCountMeasure() {
+  public void shouldGenerateClassesCountMeasure() throws Exception {
+    attributeByMetrics.put(CoreMetrics.CLASSES_COUNT, "classes");
+    init();
     verify(context).addMeasure(CoreMetrics.CLASSES_COUNT, 5.0);
     verify(context).addMeasure(Php.newFile("Money.php"), CoreMetrics.CLASSES_COUNT, 2.0);
     verify(context).addMeasure(Php.newFile("Sources/MoneyBag.php"), CoreMetrics.CLASSES_COUNT, 1.0);
@@ -122,7 +133,9 @@ public class PhpDependResultsParserTest {
   }
 
   @Test
-  public void shouldGenerateFilesCountMeasure() {
+  public void shouldGenerateFilesCountMeasure() throws Exception {
+    attributeByMetrics.put(CoreMetrics.FILES_COUNT, "files");
+    init();
     verify(context).addMeasure(CoreMetrics.FILES_COUNT, 4.0);
     verify(context).addMeasure(Php.newDirectory("Sources"), CoreMetrics.FILES_COUNT, 2.0);
     verify(context).addMeasure(Php.newDirectory("Sources/Common"), CoreMetrics.FILES_COUNT, 1.0);
