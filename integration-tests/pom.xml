@@ -6,7 +6,11 @@
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>integration-tests</artifactId>
   <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
+  <version>1.7-SNAPSHOT</version>
+
+<properties>
+  <sonar.version>1.7</sonar.version>
+</properties>
 
 <dependencies>
 	<dependency>
@@ -45,7 +49,6 @@
         <artifactId>sonar-dev-mojo</artifactId>
         <version>1.8-SNAPSHOT</version>
         <configuration>
-              <sonar.version>1.7</sonar.version>
               <sonar.pluginsDir>${project.build.directory}/plugins</sonar.pluginsDir>
               <wait>false</wait>
               <database.drop>true</database.drop>
