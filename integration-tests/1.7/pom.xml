@@ -13,7 +13,7 @@
 		<groupId>org.codehaus.sonar-plugins</groupId>
         <artifactId>emma</artifactId>
         <version>1.0-SNAPSHOT</version>
-	</dependency>	
+	</dependency>
 </dependencies>
 
 <build>
@@ -49,7 +49,7 @@
               <sonar.pluginsDir>${project.build.directory}/plugins</sonar.pluginsDir>
               <wait>false</wait>
               <database.drop>true</database.drop>
-            </configuration>
+        </configuration>
         <executions>
           <execution>
             <id>start-sonar</id>
