@@ -23,8 +23,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -74,11 +73,10 @@ public class EmmaMavenPluginHandlerTest extends MavenTestCase {
     Exclusions exclusions = mock(Exclusions.class);
     
     handler = new EmmaMavenPluginHandler(exclusions);
-    stub(exclusions.getWildcardPatterns()).toReturn(new String[]{"/com/foo**/bar/Ba*.java"});
+    when(exclusions.getWildcardPatterns()).thenReturn(new String[]{"/com/foo**/bar/Ba*.java"});
     
     MavenPlugin plugin = pom.findPlugin(handler.getGroupId(), handler.getArtifactId());
     handler.configurePlugin(pom, plugin);
-    verify(exclusions);
 
     assertEquals(1, plugin.getConfiguration().getParameters("filters/filter").length);
     assertThat(plugin.getConfiguration().getParameters("filters/filter"), is(new String[]{"com.foo*.bar.Ba*"}));

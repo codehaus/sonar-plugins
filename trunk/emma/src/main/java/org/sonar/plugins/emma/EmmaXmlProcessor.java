@@ -76,7 +76,7 @@ public class EmmaXmlProcessor {
     while (reader.next() != XMLStreamConstants.END_DOCUMENT) {
       if (reader.isStartElement()) {
         String elementName = reader.getLocalName();
-        if ( !allElementProcessedPassed && elementName.equals("all")) {
+        if (!allElementProcessedPassed && elementName.equals("all")) {
           collectProjectMeasures(reader);
           allElementProcessedPassed = true;
         } else if (elementName.equals("package")) {
@@ -126,7 +126,7 @@ public class EmmaXmlProcessor {
       reader.nextTag();
       if (reader.isStartElement() && reader.getLocalName().equals("coverage")) {
         String typeAttr = reader.getAttributeValue(null, "type");
-        if ( typeAttr.equals("line, %")) {
+        if (typeAttr.equals("line, %")) {
           double coverage = extractEmmaPercentageNumber(reader.getAttributeValue(null, "value"));
           handler.handleMeasure(resourceName, coverage);
           coverageValFound = true;
