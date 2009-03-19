@@ -36,15 +36,13 @@ public class Resource implements Comparable<Resource> {
 
 	protected long loc = 0;
 
-	protected long ncLoc = 0;
+	protected long ncloc = 0;
 	
 	protected long blankLines = 0;
 
 	protected long ncss = 0;
 
-	protected long multiComNumber = 0;
-
-	protected long singleComNumber = 0;
+	protected long commentLines = 0;
 
 	protected long cc = 0;
 
@@ -54,9 +52,9 @@ public class Resource implements Comparable<Resource> {
 
 	protected long packagesNumber = 0;
 
-	protected long javadocLinesNumber = 0;
+	protected long javadocLines = 0;
 
-	protected int javadocBlocksNumber = 0;
+	protected int javadocBlocks = 0;
 
 	private SortedSet<Resource> children = new TreeSet<Resource>();
 
@@ -134,28 +132,21 @@ public class Resource implements Comparable<Resource> {
 		return methodsNumber;
 	}
 
-	public long getSingleComNumber() {
-		return singleComNumber;
+
+	public long getNcloc() {
+		return ncloc;
 	}
 
-	public long getNcLoc() {
-		return ncLoc;
+	public void setNcloc(long ncLoc) {
+		this.ncloc = ncLoc;
 	}
 
-	public void setNcLoc(long ncLoc) {
-		this.ncLoc = ncLoc;
+	public void setCommentLines(long commentLines) {
+		this.commentLines = commentLines;
 	}
 
-	public void setMultiComNumber(long multiComNumber) {
-		this.multiComNumber = multiComNumber;
-	}
-
-	public void setSingleComNumber(long singleComNumber) {
-		this.singleComNumber = singleComNumber;
-	}
-
-	public long getMultiComNumber() {
-		return multiComNumber;
+	public long getCommentLines() {
+		return commentLines;
 	}
 
 	public void setLoc(long loc) {
@@ -191,15 +182,15 @@ public class Resource implements Comparable<Resource> {
 	}
 
 	public long getJavadocBlocksNumber() {
-		return javadocBlocksNumber;
+		return javadocBlocks;
 	}
 
 	public void setJavadocLinesNumber(long javadocLinesNumber) {
-		this.javadocLinesNumber = javadocLinesNumber;
+		this.javadocLines = javadocLinesNumber;
 	}
 
 	public long getJavadocLinesNumber() {
-		return javadocLinesNumber;
+		return javadocLines;
 	}
 
 }

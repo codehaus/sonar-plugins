@@ -44,8 +44,8 @@ public class JavaNcss {
 	private final List<File> filesToAnalyse;
 
 	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new ClassCounter(),
-			new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new NcLocCounter(), new NcssCounter(), new CcCounter(),
-			new CommentCounter(), new JavaDocCounter());
+			new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new CommentCounter(), new NcLocCounter(),
+			new NcssCounter(), new CcCounter(), new JavaDocCounter());
 
 	public JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));

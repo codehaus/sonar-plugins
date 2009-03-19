@@ -1,6 +1,10 @@
 package org.codehaus.javancss;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 import org.codehaus.javancss.Resource.Type;
 
@@ -49,12 +53,12 @@ public class ResourceTreeBuilder {
 	private void aggregateChildrenMetrics(Resource parent) {
 		for (Resource child : parent.getChildren()) {
 			parent.loc += child.loc;
+			parent.ncloc += child.ncloc;
 			parent.cc += child.cc;
 			parent.ncss += child.ncss;
-			parent.javadocBlocksNumber += child.javadocBlocksNumber;
-			parent.multiComNumber += child.multiComNumber;
-			parent.singleComNumber += child.singleComNumber;
-			parent.javadocLinesNumber += child.javadocLinesNumber;
+			parent.javadocBlocks += child.javadocBlocks;
+			parent.commentLines += child.commentLines;
+			parent.javadocLines += child.javadocLines;
 			parent.methodsNumber += child.methodsNumber;
 			parent.classesNumber += child.classesNumber;
 			parent.packagesNumber += child.packagesNumber;
@@ -62,7 +66,7 @@ public class ResourceTreeBuilder {
 		}
 
 	}
-	
+
 	public static List<Resource> findSubChildren(Resource parent, Type childType) {
 		List<Resource> classChildren = new ArrayList<Resource>();
 		for (Resource res : parent.getChildren()) {
