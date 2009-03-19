@@ -21,8 +21,8 @@ package org.codehaus.javancss.metrics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 import org.codehaus.javancss.Resource;
 import org.codehaus.javancss.Resource.Type;
@@ -32,46 +32,46 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 public class MethodCounter extends ASTVisitor {
 
-  @Override
-  public List<Integer> getWantedTokens() {
-    return Arrays.asList(TokenTypes.CTOR_DEF, TokenTypes.METHOD_DEF);
-  }
+	@Override
+	public List<Integer> getWantedTokens() {
+		return Arrays.asList(TokenTypes.CTOR_DEF, TokenTypes.METHOD_DEF);
+	}
 
-  @Override
-  public void visitToken(DetailAST ast) {
-    String methodName = extractMethodName(ast);
-    Resource methodRes = new Resource(methodName, Type.METHOD);
-    resourceTree.addChild(methodRes);
-  }
+	@Override
+	public void visitToken(DetailAST ast) {
+		String methodName = extractMethodName(ast);
+		Resource methodRes = new Resource(methodName, Type.METHOD);
+		resourceTree.addChild(methodRes);
+	}
 
-  public void leaveToken(DetailAST ast) {
-    resourceTree.pop();
-  }
+	public void leaveToken(DetailAST ast) {
+		resourceTree.pop();
+	}
 
-  private String extractMethodName(DetailAST ast) {
-    StringBuilder methodName = new StringBuilder(ast.findFirstToken(TokenTypes.IDENT).getText());
-    methodName.append("(");
-    List<String> parameters = extractMethodParameters(ast);
-    for (String param : parameters) {
-      methodName.append(param).append(" ");
-    }
-    methodName.append(")");
-    return methodName.toString();
-  }
+	private String extractMethodName(DetailAST ast) {
+		StringBuilder methodName = new StringBuilder(ast.findFirstToken(TokenTypes.IDENT).getText());
+		methodName.append("(");
+		List<String> parameters = extractMethodParameters(ast);
+		for (String param : parameters) {
+			methodName.append(param).append(" ");
+		}
+		methodName.append(")");
+		return methodName.toString();
+	}
 
-  private List<String> extractMethodParameters(DetailAST ast) {
-    DetailAST paramAst = ast.findFirstToken(TokenTypes.PARAMETERS);
-    if (paramAst.getChildCount() == 0) {
-      return Collections.emptyList();
-    }
-    List<String> parameters = new ArrayList<String>();
-    DetailAST paramDefAst = paramAst.findFirstToken(TokenTypes.PARAMETER_DEF);
-    parameters.add(paramDefAst.findFirstToken(TokenTypes.TYPE).getLastChild().getText());
-    while ((paramDefAst = (DetailAST) paramDefAst.getNextSibling()) != null) {
-      if (paramDefAst.getType() == TokenTypes.PARAMETER_DEF) {
-        parameters.add(paramDefAst.findFirstToken(TokenTypes.TYPE).getLastChild().getText());
-      }
-    }
-    return parameters;
-  }
+	private List<String> extractMethodParameters(DetailAST ast) {
+		DetailAST paramAst = ast.findFirstToken(TokenTypes.PARAMETERS);
+		if (paramAst.getChildCount() == 0) {
+			return Collections.emptyList();
+		}
+		List<String> parameters = new ArrayList<String>();
+		DetailAST paramDefAst = paramAst.findFirstToken(TokenTypes.PARAMETER_DEF);
+		parameters.add(paramDefAst.findFirstToken(TokenTypes.TYPE).getLastChild().getText());
+		while ((paramDefAst = (DetailAST) paramDefAst.getNextSibling()) != null) {
+			if (paramDefAst.getType() == TokenTypes.PARAMETER_DEF) {
+				parameters.add(paramDefAst.findFirstToken(TokenTypes.TYPE).getLastChild().getText());
+			}
+		}
+		return parameters;
+	}
 }

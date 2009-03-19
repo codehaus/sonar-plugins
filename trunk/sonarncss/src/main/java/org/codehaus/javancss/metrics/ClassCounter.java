@@ -21,9 +21,9 @@ package org.codehaus.javancss.metrics;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.codehaus.javancss.Resource;
+import org.codehaus.javancss.Resource.Type;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -32,40 +32,19 @@ public class ClassCounter extends ASTVisitor {
 
 	@Override
 	public List<Integer> getWantedTokens() {
-		return Arrays.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF);
-	}
-
-	public void beginTree(DetailAST ast) {
-		String className = extractClassNameFromFilePath(fileContents.getFilename());
-		Resource classRes = new Resource(className, Resource.Type.CLASS);
-		resourceTree.addChild(classRes);
+		return Arrays.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF);
 	}
 
 	public void visitToken(DetailAST ast) {
 		String className = ast.findFirstToken(TokenTypes.IDENT).getText();
-		if (!resourceTree.peek().getName().equals(className)) {
-			Resource classRes = new Resource(className, Resource.Type.CLASS);
-			resourceTree.addChild(classRes);
+		if(resourceTree.peek().getType().equals(Type.CLASS)){
+			className = resourceTree.peek().getName() + "#" + className;
 		}
-
+		Resource classRes = new Resource(className, Resource.Type.CLASS);
+		resourceTree.addChild(classRes);
 	}
 
 	public void leaveToken(DetailAST ast) {
 		resourceTree.pop();
-	}
-
-	public void finishTree(DetailAST ast) {
-		if (!resourceTree.peek().getType().equals(Resource.Type.PACKAGE)) {
-			resourceTree.pop();
-		}
-	}
-
-	public static String extractClassNameFromFilePath(String filename) {
-		String className = "";
-		StringTokenizer tokens = new StringTokenizer(filename, "/");
-		while (tokens.hasMoreTokens()) {
-			className = tokens.nextToken();
-		}
-		return className.substring(0, className.indexOf('.'));
 	}
 }

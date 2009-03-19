@@ -1,27 +1,19 @@
 package org.codehaus.javancss;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
+public class JavaNcssTest {
 
-public class JavaNcssTest extends TestCase {
-	
-	JavaNcss javaNcss;
-	
-	public void setUp(){
-		List<File> files = new ArrayList<File>();
-		files.add(new File("target/test-classes/Test113.java"));
-		javaNcss = new JavaNcss(files);
-	}
-	
-	public void testAnalyse(){
+	@Test
+	public void analyseTest102() {
+		JavaNcss javaNcss = new JavaNcss(new File("src/test/resources"));
 		Resource project = javaNcss.analyseSources();
-		Resource defaultPackage = project.getChildren().iterator().next();
-		Resource testClasse = defaultPackage.getChildren().iterator().next();
-		assertNotNull(testClasse);
+		assertEquals(55, project.getFiles());
+		assertEquals(83, project.getClasses());
 	}
 
 }

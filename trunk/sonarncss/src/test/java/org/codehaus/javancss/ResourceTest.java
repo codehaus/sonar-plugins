@@ -53,12 +53,6 @@ public class ResourceTest extends TestCase {
 		assertEquals(pac.hashCode(), pac2.hashCode());
 	}
 	
-	public void testGetClassesNumber(){
-		assertEquals(pac.getClassesNumber(), 2);
-		assertEquals(prj.getClassesNumber(), 2);
-		assertEquals(pac2.getClassesNumber(), 0);
-	}
-	
 	public void testGetFullName(){
 		assertEquals("org.sonar.Toto", cla.getFullName());
 	}

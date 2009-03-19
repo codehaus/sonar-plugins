@@ -18,7 +18,7 @@ public class BlankLinesCounterTest {
 	}
 
 	@Test
-	public void analyseTestTest002() {
+	public void analyseTest002() {
 		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
 		Resource res = javaNcss.analyseSources();
 		assertEquals(3, res.getBlankLines());

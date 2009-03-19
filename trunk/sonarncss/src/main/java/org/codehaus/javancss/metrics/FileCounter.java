@@ -19,27 +19,30 @@
  */
 package org.codehaus.javancss.metrics;
 
+import java.util.StringTokenizer;
+
 import org.codehaus.javancss.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FullIdent;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class PackageCounter extends ASTVisitor {
+public class FileCounter extends ASTVisitor {
 
 	public void beginTree(DetailAST ast) {
-		Resource packageRes;
-		if (ast.getType() != TokenTypes.PACKAGE_DEF) {
-			packageRes = new Resource("[default]", Resource.Type.PACKAGE);
-		} else {
-			String packageName = FullIdent.createFullIdent(ast.getLastChild().getPreviousSibling()).getText();
-			packageRes = new Resource(packageName, Resource.Type.PACKAGE);
+		String fileName = extractFileNameFromFilePath(fileContents.getFilename());
+		Resource fileRes = new Resource(fileName, Resource.Type.FILE);
+		resourceTree.addChild(fileRes);
+	}
+
+	public void finishTree(DetailAST ast) {
+		resourceTree.pop();
+	}
+
+	public static String extractFileNameFromFilePath(String filename) {
+		String className = "";
+		StringTokenizer tokens = new StringTokenizer(filename, "/");
+		while (tokens.hasMoreTokens()) {
+			className = tokens.nextToken();
 		}
-		if (!packageRes.equals(resourceTree.peek())) {
-			if (resourceTree.peek().getType().equals(Resource.Type.PACKAGE)) {
-				resourceTree.pop();
-			}
-			resourceTree.addChild(packageRes);
-		}
+		return className;
 	}
 }
