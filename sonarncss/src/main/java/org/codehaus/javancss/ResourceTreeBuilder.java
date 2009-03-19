@@ -59,9 +59,10 @@ public class ResourceTreeBuilder {
 			parent.javadocBlocks += child.javadocBlocks;
 			parent.commentLines += child.commentLines;
 			parent.javadocLines += child.javadocLines;
-			parent.methodsNumber += child.methodsNumber;
-			parent.classesNumber += child.classesNumber;
-			parent.packagesNumber += child.packagesNumber;
+			parent.methods += child.methods;
+			parent.classes += child.classes;
+			parent.files += child.files;
+			parent.packages += child.packages;
 			parent.blankLines += child.blankLines;
 		}
 

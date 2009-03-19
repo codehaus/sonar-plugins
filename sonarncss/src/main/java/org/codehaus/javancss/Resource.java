@@ -25,7 +25,7 @@ import java.util.TreeSet;
 public class Resource implements Comparable<Resource> {
 
 	public enum Type {
-		PROJECT, FILE, CLASS, METHOD, PACKAGE
+		PROJECT, PACKAGE, FILE, CLASS, METHOD
 	}
 
 	private Type type;
@@ -37,7 +37,7 @@ public class Resource implements Comparable<Resource> {
 	protected long loc = 0;
 
 	protected long ncloc = 0;
-	
+
 	protected long blankLines = 0;
 
 	protected long ncss = 0;
@@ -46,11 +46,13 @@ public class Resource implements Comparable<Resource> {
 
 	protected long cc = 0;
 
-	protected long methodsNumber = 0;
+	protected long methods = 0;
 
-	protected long classesNumber = 0;
+	protected long classes = 0;
 
-	protected long packagesNumber = 0;
+	protected long files = 0;
+
+	protected long packages = 0;
 
 	protected long javadocLines = 0;
 
@@ -61,12 +63,14 @@ public class Resource implements Comparable<Resource> {
 	public Resource(String name, Type type) {
 		this.name = name;
 		this.type = type;
-		if (type.equals(Resource.Type.PACKAGE)) {
-			packagesNumber++;
-		} else if (type.equals(Resource.Type.CLASS)) {
-			classesNumber++;
-		} else if (type.equals(Resource.Type.METHOD)) {
-			methodsNumber++;
+		if(type.equals(Type.PACKAGE)){
+			packages++;
+		} else if(type.equals(Type.FILE)){
+			files++;
+		} else if(type.equals(Type.CLASS)){
+			classes++;
+		} else if(type.equals(Type.METHOD)){
+			methods++;
 		}
 	}
 
@@ -75,6 +79,10 @@ public class Resource implements Comparable<Resource> {
 		if (!children.contains(resource)) {
 			children.add(resource);
 		}
+	}
+
+	public Resource getFirstChild() {
+		return children.first();
 	}
 
 	private void setParent(Resource parent) {
@@ -100,10 +108,6 @@ public class Resource implements Comparable<Resource> {
 		return type;
 	}
 
-	public int getNumberOfClasses() {
-		return children.size();
-	}
-
 	public Resource getParent() {
 		return parent;
 	}
@@ -124,14 +128,13 @@ public class Resource implements Comparable<Resource> {
 		return name.hashCode() + type.hashCode();
 	}
 
-	public long getClassesNumber() {
-		return classesNumber;
+	public long getClasses() {
+		return classes;
 	}
 
-	public long getMethodsNumber() {
-		return methodsNumber;
+	public long getMethods() {
+		return methods;
 	}
-
 
 	public long getNcloc() {
 		return ncloc;
@@ -168,7 +171,7 @@ public class Resource implements Comparable<Resource> {
 	public void incrementCc() {
 		cc++;
 	}
-	
+
 	public long getBlankLines() {
 		return blankLines;
 	}
@@ -181,16 +184,20 @@ public class Resource implements Comparable<Resource> {
 		return cc;
 	}
 
-	public long getJavadocBlocksNumber() {
+	public long getJavadocBlocks() {
 		return javadocBlocks;
 	}
 
-	public void setJavadocLinesNumber(long javadocLinesNumber) {
+	public void setJavadocLines(long javadocLinesNumber) {
 		this.javadocLines = javadocLinesNumber;
 	}
 
-	public long getJavadocLinesNumber() {
+	public long getJavadocLines() {
 		return javadocLines;
+	}
+
+	public long getFiles() {
+		return files;
 	}
 
 }

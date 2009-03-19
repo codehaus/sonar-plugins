@@ -31,6 +31,7 @@ import org.codehaus.javancss.metrics.BlankLinesCounter;
 import org.codehaus.javancss.metrics.CcCounter;
 import org.codehaus.javancss.metrics.ClassCounter;
 import org.codehaus.javancss.metrics.CommentCounter;
+import org.codehaus.javancss.metrics.FileCounter;
 import org.codehaus.javancss.metrics.JavaDocCounter;
 import org.codehaus.javancss.metrics.LocCounter;
 import org.codehaus.javancss.metrics.MethodCounter;
@@ -43,9 +44,9 @@ public class JavaNcss {
 	private final ResourceTreeBuilder resourceTree;
 	private final List<File> filesToAnalyse;
 
-	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new ClassCounter(),
-			new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new CommentCounter(), new NcLocCounter(),
-			new NcssCounter(), new CcCounter(), new JavaDocCounter());
+	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new FileCounter(),
+			new ClassCounter(), new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new CommentCounter(),
+			new NcLocCounter(), new NcssCounter(), new CcCounter(), new JavaDocCounter());
 
 	public JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));

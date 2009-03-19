@@ -101,10 +101,10 @@ public class JavaNcssXmlGenerator {
 		appendValueToElement(resElt, "ncloc", resource.getNcloc());
 		appendValueToElement(resElt, "ncss", resource.getNcss());
 		appendValueToElement(resElt, "ccn", resource.getCc());
-		appendValueToElement(resElt, "classes", resource.getClassesNumber());
-		appendValueToElement(resElt, "functions", resource.getMethodsNumber());
-		appendValueToElement(resElt, "jdocBlocks", resource.getJavadocBlocksNumber());
-		appendValueToElement(resElt, "jdocloc", resource.getJavadocLinesNumber());
+		appendValueToElement(resElt, "classes", resource.getClasses());
+		appendValueToElement(resElt, "functions", resource.getMethods());
+		appendValueToElement(resElt, "jdocBlocks", resource.getJavadocBlocks());
+		appendValueToElement(resElt, "jdocloc", resource.getJavadocLines());
 		appendValueToElement(resElt, "cloc", resource.getCommentLines());
 		elt.addContent(resElt);
 	}
