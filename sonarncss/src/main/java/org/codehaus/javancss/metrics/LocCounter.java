@@ -23,9 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.TextBlock;
 
-public class CommentCounter extends ASTVisitor {
+public class LocCounter extends ASTVisitor {
 
 	@Override
 	public List<Integer> getWantedTokens() {
@@ -33,34 +32,10 @@ public class CommentCounter extends ASTVisitor {
 	}
 	
 	public void beginTree(DetailAST ast){
-		resourceTree.peek().setSingleComNumber(fileContents.getCppComments().size());
-		resourceTree.peek().setMultiComNumber(calculateCCommentsLines());
+		resourceTree.peek().setLoc(fileContents.getLines().length);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
-	}
-	
-	private long calculateCCommentsLines() {
-		int cCommentsLines = 0;
-		for (Object objBlocks : fileContents.getCComments().values()) {
-			List commentBlocks = (List) objBlocks;
-			for (Object objBlock : commentBlocks) {
-				TextBlock commentBlock = (TextBlock) objBlock;
-				if(commentBlock.getStartLineNo() == 1){
-					//skip file header
-					continue;
-				}
-				for(int i = 0; i < commentBlock.getText().length; i++){
-					String commentLine = commentBlock.getText()[i];
-					commentLine = commentLine.replace('*', ' ').replace('/', ' ').trim();
-					if(commentLine.length() != 0){
-						cCommentsLines ++;
-					}
-
-				}
-			}
-		}
-		return cCommentsLines;
 	}
 }

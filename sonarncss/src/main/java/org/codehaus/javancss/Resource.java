@@ -34,7 +34,7 @@ public class Resource implements Comparable<Resource> {
 
 	private Resource parent;
 
-	protected long linesNumber = 0;
+	protected long loc = 0;
 
 	protected long ncss = 0;
 
@@ -146,12 +146,12 @@ public class Resource implements Comparable<Resource> {
 		return multiComNumber;
 	}
 
-	public void setLinesNumber(long linesNumber) {
-		this.linesNumber = linesNumber;
+	public void setLoc(long loc) {
+		this.loc = loc;
 	}
 
-	public long getLinesNumber() {
-		return linesNumber;
+	public long getLoc() {
+		return loc;
 	}
 
 	public void incrementNcss() {

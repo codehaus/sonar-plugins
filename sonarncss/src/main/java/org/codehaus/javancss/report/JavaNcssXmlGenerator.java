@@ -98,7 +98,7 @@ public class JavaNcssXmlGenerator {
 			resElt = new Element("function");
 		}
 		appendValueToElement(resElt, "name", resource.getFullName());
-    appendValueToElement(resElt, "lines", resource.getLinesNumber());
+    appendValueToElement(resElt, "loc", resource.getLoc());
     appendValueToElement(resElt, "ncss", resource.getNcss());
     appendValueToElement(resElt, "ccn", resource.getCc());
     appendValueToElement(resElt, "classes", resource.getClassesNumber());
