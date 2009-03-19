@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.sonar-plugins</groupId>
+  <artifactId>integration-tests</artifactId>
+  <packaging>pom</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+<dependencies>
+	<dependency>
+		<groupId>org.codehaus.sonar-plugins</groupId>
+        <artifactId>emma</artifactId>
+        <version>1.0-SNAPSHOT</version>
+	</dependency>
+</dependencies>
+
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-plugins</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <overWriteReleases>true</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+              <excludeTransitive>true</excludeTransitive>
+              <includeGroupIds>org.codehaus.sonar-plugins</includeGroupIds>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-dev-mojo</artifactId>
+        <version>1.8-SNAPSHOT</version>
+        <configuration>
+              <sonar.version>1.7</sonar.version>
+              <sonar.pluginsDir>${project.build.directory}/plugins</sonar.pluginsDir>
+              <wait>false</wait>
+              <database.drop>true</database.drop>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-sonar</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>analyse-projects</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>analyse</goal>
+            </goals>
+            <configuration>
+	           <dir>${basedir}/src/it/projects</dir>
+	        </configuration>
+          </execution>
+          <execution>
+            <id>stop-sonar</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>selenium-maven-plugin</artifactId>
+        <version>1.0-beta-3</version>
+        <executions>
+          <execution>
+            <id>selenium-suite</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>selenese</goal>
+            </goals>
+            <configuration>
+              <port>4444</port>
+              <browser>${selenium.browser}</browser>
+              <startURL>http://localhost:9000</startURL>
+              <suite>src/it/selenium/index.html</suite>
+              <slowResources>false</slowResources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+    </plugins>
+  </build>
+  
+  <profiles>
+    <profile>
+      <id>firefox</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <selenium.browser>*firefox</selenium.browser>
+      </properties>
+    </profile>
+    <profile>
+      <id>ie</id>
+      <properties>
+        <selenium.browser>*iexplore</selenium.browser>
+      </properties>
+    </profile>
+    <profile>
+      <id>safari</id>
+      <properties>
+        <selenium.browser>*custom /Applications/Safari.app/Contents/MacOS/Safari</selenium.browser>
+      </properties>
+    </profile>
+    </profiles>
+</project>
