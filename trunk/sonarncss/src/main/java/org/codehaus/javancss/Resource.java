@@ -19,8 +19,8 @@ the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */package org.codehaus.javancss;
 
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Resource implements Comparable<Resource> {
 
@@ -36,6 +36,10 @@ public class Resource implements Comparable<Resource> {
 
 	protected long loc = 0;
 
+	protected long ncLoc = 0;
+	
+	protected long blankLines = 0;
+
 	protected long ncss = 0;
 
 	protected long multiComNumber = 0;
@@ -47,7 +51,7 @@ public class Resource implements Comparable<Resource> {
 	protected long methodsNumber = 0;
 
 	protected long classesNumber = 0;
-	
+
 	protected long packagesNumber = 0;
 
 	protected long javadocLinesNumber = 0;
@@ -59,11 +63,11 @@ public class Resource implements Comparable<Resource> {
 	public Resource(String name, Type type) {
 		this.name = name;
 		this.type = type;
-		if(type.equals(Resource.Type.PACKAGE)){
+		if (type.equals(Resource.Type.PACKAGE)) {
 			packagesNumber++;
-		} else if(type.equals(Resource.Type.CLASS)){
+		} else if (type.equals(Resource.Type.CLASS)) {
 			classesNumber++;
-		} else if (type.equals(Resource.Type.METHOD)){
+		} else if (type.equals(Resource.Type.METHOD)) {
 			methodsNumber++;
 		}
 	}
@@ -91,7 +95,7 @@ public class Resource implements Comparable<Resource> {
 		if (parent != null && !parent.getType().equals(Type.PROJECT)) {
 			return new StringBuilder().append(parent.getFullName()).append(".").append(getName()).toString();
 		}
-    return getName();
+		return getName();
 	}
 
 	public Type getType() {
@@ -115,8 +119,8 @@ public class Resource implements Comparable<Resource> {
 			return false;
 		}
 		Resource resource = (Resource) obj;
-    return name.equals(resource.getName()) && type.equals(resource.getType());
-  }
+		return name.equals(resource.getName()) && type.equals(resource.getType());
+	}
 
 	public int hashCode() {
 		return name.hashCode() + type.hashCode();
@@ -132,6 +136,14 @@ public class Resource implements Comparable<Resource> {
 
 	public long getSingleComNumber() {
 		return singleComNumber;
+	}
+
+	public long getNcLoc() {
+		return ncLoc;
+	}
+
+	public void setNcLoc(long ncLoc) {
+		this.ncLoc = ncLoc;
 	}
 
 	public void setMultiComNumber(long multiComNumber) {
@@ -164,6 +176,14 @@ public class Resource implements Comparable<Resource> {
 
 	public void incrementCc() {
 		cc++;
+	}
+	
+	public long getBlankLines() {
+		return blankLines;
+	}
+
+	public void setBlankLines(long blankLines) {
+		this.blankLines = blankLines;
 	}
 
 	public long getCc() {

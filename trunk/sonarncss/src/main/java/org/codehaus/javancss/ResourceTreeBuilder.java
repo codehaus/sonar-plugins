@@ -58,6 +58,7 @@ public class ResourceTreeBuilder {
 			parent.methodsNumber += child.methodsNumber;
 			parent.classesNumber += child.classesNumber;
 			parent.packagesNumber += child.packagesNumber;
+			parent.blankLines += child.blankLines;
 		}
 
 	}
