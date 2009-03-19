@@ -21,10 +21,10 @@ package org.codehaus.javancss.report;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.Writer;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.Writer;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.codehaus.javancss.Resource;
@@ -39,10 +39,9 @@ import org.slf4j.LoggerFactory;
 
 public class JavaNcssXmlGenerator {
 
-  private static Logger logger = LoggerFactory.getLogger(JavaNcssXmlGenerator.class);
+	private static Logger logger = LoggerFactory.getLogger(JavaNcssXmlGenerator.class);
 
-
-  private Resource projectResource;
+	private Resource projectResource;
 	private File reportFilePath;
 
 	public JavaNcssXmlGenerator(File reportFilePath, Resource projectResource) {
@@ -98,27 +97,27 @@ public class JavaNcssXmlGenerator {
 			resElt = new Element("function");
 		}
 		appendValueToElement(resElt, "name", resource.getFullName());
-    appendValueToElement(resElt, "loc", resource.getLoc());
-    appendValueToElement(resElt, "ncss", resource.getNcss());
-    appendValueToElement(resElt, "ccn", resource.getCc());
-    appendValueToElement(resElt, "classes", resource.getClassesNumber());
-    appendValueToElement(resElt, "functions", resource.getMethodsNumber());
-    appendValueToElement(resElt, "javadocs", resource.getJavadocBlocksNumber());
-    appendValueToElement(resElt, "javadoc_lines", resource.getJavadocLinesNumber());
-    appendValueToElement(resElt, "single_comment_lines", resource.getSingleComNumber());
-    appendValueToElement(resElt, "multi_comment_lines", resource.getMultiComNumber());
-    elt.addContent(resElt);
+		appendValueToElement(resElt, "loc", resource.getLoc());
+		appendValueToElement(resElt, "ncloc", resource.getNcloc());
+		appendValueToElement(resElt, "ncss", resource.getNcss());
+		appendValueToElement(resElt, "ccn", resource.getCc());
+		appendValueToElement(resElt, "classes", resource.getClassesNumber());
+		appendValueToElement(resElt, "functions", resource.getMethodsNumber());
+		appendValueToElement(resElt, "jdocBlocks", resource.getJavadocBlocksNumber());
+		appendValueToElement(resElt, "jdocloc", resource.getJavadocLinesNumber());
+		appendValueToElement(resElt, "cloc", resource.getCommentLines());
+		elt.addContent(resElt);
 	}
 
-  private void appendValueToElement(Element elt, String name, long value) {
-    appendValueToElement(elt, name, String.valueOf(value));
-  }
+	private void appendValueToElement(Element elt, String name, long value) {
+		appendValueToElement(elt, name, String.valueOf(value));
+	}
 
-  private void appendValueToElement(Element elt, String name, String value) {
-    elt.addContent(new Element(name).setText(value));
-  }
+	private void appendValueToElement(Element elt, String name, String value) {
+		elt.addContent(new Element(name).setText(value));
+	}
 
-  private void addDateAndTimeHeader(Element sonarncssNode) {
+	private void addDateAndTimeHeader(Element sonarncssNode) {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 		String date = dateFormat.format(new Date());
 		sonarncssNode.addContent(new Element("date").addContent(date));
@@ -133,7 +132,7 @@ public class JavaNcssXmlGenerator {
 			XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 			Writer writer = new FileWriter(reportFilePath);
 			outputter.output(sonarncssDocument, writer);
-    } catch (IOException e) {
+		} catch (IOException e) {
 			logger.error("writeDocumentToFile({})", reportFilePath, e);
 		}
 	}

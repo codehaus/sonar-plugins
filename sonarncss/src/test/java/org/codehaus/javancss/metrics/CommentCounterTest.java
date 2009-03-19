@@ -8,19 +8,19 @@ import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.Resource;
 import org.junit.Test;
 
-public class BlankLinesCounterTest {
+public class CommentCounterTest {
 
 	@Test
 	public void analyseTest025() {
 		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test025.java"));
 		Resource res = javaNcss.analyseSources();
-		assertEquals(5, res.getBlankLines());
+		assertEquals(1, res.getCommentLines());
 	}
 
 	@Test
-	public void analyseTestTest002() {
+	public void analyseTest002() {
 		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
 		Resource res = javaNcss.analyseSources();
-		assertEquals(3, res.getBlankLines());
+		assertEquals(4, res.getCommentLines());
 	}
 }
