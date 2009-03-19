@@ -48,7 +48,7 @@ public class ResourceTreeBuilder {
 
 	private void aggregateChildrenMetrics(Resource parent) {
 		for (Resource child : parent.getChildren()) {
-			parent.linesNumber += child.linesNumber;
+			parent.loc += child.loc;
 			parent.cc += child.cc;
 			parent.ncss += child.ncss;
 			parent.javadocBlocksNumber += child.javadocBlocksNumber;
