@@ -27,22 +27,25 @@ import java.util.List;
 import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
 import org.codehaus.javancss.metrics.ASTVisitor;
+import org.codehaus.javancss.metrics.BlankLinesCounter;
 import org.codehaus.javancss.metrics.CcCounter;
 import org.codehaus.javancss.metrics.ClassCounter;
 import org.codehaus.javancss.metrics.CommentCounter;
 import org.codehaus.javancss.metrics.JavaDocCounter;
 import org.codehaus.javancss.metrics.LocCounter;
 import org.codehaus.javancss.metrics.MethodCounter;
+import org.codehaus.javancss.metrics.NcLocCounter;
 import org.codehaus.javancss.metrics.NcssCounter;
 import org.codehaus.javancss.metrics.PackageCounter;
 
 public class JavaNcss {
 
-  private final ResourceTreeBuilder resourceTree;
+	private final ResourceTreeBuilder resourceTree;
 	private final List<File> filesToAnalyse;
 
 	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new ClassCounter(),
-			new MethodCounter(), new LocCounter(), new NcssCounter(), new CcCounter(), new CommentCounter(), new JavaDocCounter());
+			new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new NcLocCounter(), new NcssCounter(), new CcCounter(),
+			new CommentCounter(), new JavaDocCounter());
 
 	public JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));
