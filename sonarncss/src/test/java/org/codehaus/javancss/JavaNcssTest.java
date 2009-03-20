@@ -10,8 +10,8 @@ public class JavaNcssTest {
 	public void analyseTest102() {
 		Resource project = JavaNcss.analyze("src/test/resources");
 
-		assertEquals(8, project.getFiles());
-		assertEquals(10, project.getClasses());
+		assertEquals(9, project.getFiles());
+		assertEquals(11, project.getClasses());
 	}
 
 }

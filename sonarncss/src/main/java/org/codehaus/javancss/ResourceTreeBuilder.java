@@ -56,7 +56,7 @@ public class ResourceTreeBuilder {
 			parent.ncloc += child.ncloc;
 			parent.complexity += child.complexity;
 			parent.branches += child.branches;
-			parent.ncss += child.ncss;
+			parent.statements += child.statements;
 			parent.javadocBlocks += child.javadocBlocks;
 			parent.commentLines += child.commentLines;
 			parent.javadocLines += child.javadocLines;
