@@ -20,6 +20,7 @@ Boston, MA 02111-1307, USA.  */package org.codehaus.javancss;
 
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 public class Resource implements Comparable<Resource> {
@@ -63,13 +64,13 @@ public class Resource implements Comparable<Resource> {
 	public Resource(String name, Type type) {
 		this.name = name;
 		this.type = type;
-		if(type.equals(Type.PACKAGE)){
+		if (type.equals(Type.PACKAGE)) {
 			packages++;
-		} else if(type.equals(Type.FILE)){
+		} else if (type.equals(Type.FILE)) {
 			files++;
-		} else if(type.equals(Type.CLASS)){
+		} else if (type.equals(Type.CLASS)) {
 			classes++;
-		} else if(type.equals(Type.METHOD)){
+		} else if (type.equals(Type.METHOD)) {
 			methods++;
 		}
 	}
@@ -200,4 +201,30 @@ public class Resource implements Comparable<Resource> {
 		return files;
 	}
 
+	public String toString() {
+		StringBuffer tree = new StringBuffer();
+		tree.append(getType() + " : " + getName() + "\n");
+		for (Resource child : children) {
+			String childTree = child.toString();
+			StringTokenizer tokenizer = new StringTokenizer(childTree, "\n");
+			while (tokenizer.hasMoreTokens()) {
+				tree.append("-" + tokenizer.nextToken() + "\n");
+			}
+
+		}
+		return tree.toString();
+	}
+
+	public boolean contains(Resource resource){
+		return children.contains(resource);
+	}
+
+	public Resource getResource(Resource packageRes) {
+		for(Resource child : children){
+			if(child.equals(packageRes)){
+				return child;
+			}
+		}
+		return null;
+	}
 }

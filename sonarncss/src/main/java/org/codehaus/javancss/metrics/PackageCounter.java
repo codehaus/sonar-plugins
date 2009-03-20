@@ -28,6 +28,19 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 public class PackageCounter extends ASTVisitor {
 
 	public void beginTree(DetailAST ast) {
+		Resource packageRes = extractPackage(ast);
+
+		if (resourceTree.peek().contains(packageRes)) {
+			packageRes = resourceTree.peek().getResource(packageRes);
+		}
+		resourceTree.addChild(packageRes);
+	}
+
+	public void finishTree(DetailAST ast) {
+		resourceTree.pop();
+	}
+
+	private Resource extractPackage(DetailAST ast) {
 		Resource packageRes;
 		if (ast.getType() != TokenTypes.PACKAGE_DEF) {
 			packageRes = new Resource("[default]", Resource.Type.PACKAGE);
@@ -35,11 +48,6 @@ public class PackageCounter extends ASTVisitor {
 			String packageName = FullIdent.createFullIdent(ast.getLastChild().getPreviousSibling()).getText();
 			packageRes = new Resource(packageName, Resource.Type.PACKAGE);
 		}
-		if (!packageRes.equals(resourceTree.peek())) {
-			if (resourceTree.peek().getType().equals(Resource.Type.PACKAGE)) {
-				resourceTree.pop();
-			}
-			resourceTree.addChild(packageRes);
-		}
+		return packageRes;
 	}
 }

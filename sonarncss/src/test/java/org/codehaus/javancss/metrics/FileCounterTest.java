@@ -44,6 +44,7 @@ public class FileCounterTest {
 		files.add(new File("target/test-classes/Test003.java"));
 		JavaNcss javaNcss = new JavaNcss(files);
 		Resource project = javaNcss.analyseSources();
+		
 		assertEquals(2, project.getFiles());
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
