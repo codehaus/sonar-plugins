@@ -37,14 +37,14 @@ public class ClassCounter extends ASTVisitor {
 
 	public void visitToken(DetailAST ast) {
 		String className = ast.findFirstToken(TokenTypes.IDENT).getText();
-		if(resourceTree.peek().getType().equals(Type.CLASS)){
-			className = resourceTree.peek().getName() + "#" + className;
+		if(peekResource().getType().equals(Type.CLASS)){
+			className = peekResource().getName() + "#" + className;
 		}
 		Resource classRes = new Resource(className, Resource.Type.CLASS);
-		resourceTree.addChild(classRes);
+		addResource(classRes);
 	}
 
 	public void leaveToken(DetailAST ast) {
-		resourceTree.pop();
+		popResource();
 	}
 }

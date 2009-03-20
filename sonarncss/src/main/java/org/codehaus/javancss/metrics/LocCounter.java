@@ -24,6 +24,6 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 public class LocCounter extends ASTVisitor {
 
 	public void visitFile(DetailAST ast) {
-		resourceTree.peek().setLoc(fileContents.getLines().length);
+		peekResource().setLoc(getFileContents().getLines().length);
 	}
 }

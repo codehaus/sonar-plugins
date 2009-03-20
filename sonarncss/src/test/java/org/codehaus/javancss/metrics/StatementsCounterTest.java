@@ -33,7 +33,7 @@ public class StatementsCounterTest {
 		Resource res = JavaNcss.analyze(getFile("/statements/NoStatements.java"));
 		assertEquals(10, res.getStatements());
 
-		Resource simpleIf = res.findResource("simpleIf()", Type.METHOD);
+		Resource simpleIf = res.find("simpleIf()", Type.METHOD);
 		assertEquals(3, simpleIf.getStatements());
 	}
 }

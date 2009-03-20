@@ -21,32 +21,45 @@ package org.codehaus.javancss.metrics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import org.codehaus.javancss.Resource;
-import org.codehaus.javancss.ResourceTreeBuilder;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 
 public abstract class ASTVisitor {
 
-	ResourceTreeBuilder resourceTree;
-	FileContents fileContents;
+	private Stack<Resource> resourcesStack;
+	private FileContents fileContents;
 
 	public final void setFileContents(FileContents fileContents) {
 		this.fileContents = fileContents;
+	}
+	
+	public final FileContents getFileContents(){
+		return fileContents;
 	}
 
 	public List<Integer> getWantedTokens() {
 		return new ArrayList<Integer>();
 	}
 
-	public final void setResourcesStack(ResourceTreeBuilder resourceTree) {
-		this.resourceTree = resourceTree;
+	public final void setResourcesStack(Stack<Resource> resourcesStack) {
+		this.resourcesStack = resourcesStack;
 	}
-	
-	public Resource getCurrentResource(){
-		return resourceTree.peek();
+
+	public final void addResource(Resource child) {
+		peekResource().addChild(child);
+		resourcesStack.add(child);
+	}
+
+	public final void popResource() {
+		resourcesStack.pop();
+	}
+
+	public final Resource peekResource() {
+		return resourcesStack.peek();
 	}
 
 	public void visitFile(DetailAST ast) {

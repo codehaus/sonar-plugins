@@ -23,31 +23,33 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
 import org.codehaus.javancss.metrics.ASTVisitor;
 import org.codehaus.javancss.metrics.BlankLinesCounter;
 import org.codehaus.javancss.metrics.BranchesCounter;
-import org.codehaus.javancss.metrics.ComplexityCounter;
 import org.codehaus.javancss.metrics.ClassCounter;
 import org.codehaus.javancss.metrics.CommentCounter;
+import org.codehaus.javancss.metrics.ComplexityCounter;
 import org.codehaus.javancss.metrics.FileCounter;
 import org.codehaus.javancss.metrics.JavaDocCounter;
 import org.codehaus.javancss.metrics.LocCounter;
 import org.codehaus.javancss.metrics.MethodCounter;
 import org.codehaus.javancss.metrics.NcLocCounter;
-import org.codehaus.javancss.metrics.StatementsCounter;
 import org.codehaus.javancss.metrics.PackageCounter;
+import org.codehaus.javancss.metrics.StatementsCounter;
 
 public class JavaNcss {
 
-	private final ResourceTreeBuilder resourceTree;
+	private final Resource project;
 	private final List<File> filesToAnalyse;
 
 	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new FileCounter(),
 			new ClassCounter(), new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new CommentCounter(),
-			new NcLocCounter(), new StatementsCounter(), new BranchesCounter(), new ComplexityCounter(), new JavaDocCounter());
+			new NcLocCounter(), new StatementsCounter(), new BranchesCounter(), new ComplexityCounter(),
+			new JavaDocCounter());
 
 	private JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));
@@ -65,10 +67,11 @@ public class JavaNcss {
 
 	private JavaNcss(List<File> filesToAnalyse) {
 		this.filesToAnalyse = filesToAnalyse;
-		Resource project = new Resource("Project", Resource.Type.PROJECT);
-		resourceTree = new ResourceTreeBuilder(project);
+		project = new Resource("Project", Resource.Type.PROJECT);
+		Stack<Resource> resourcesStack = new Stack<Resource>();
+		resourcesStack.add(project);
 		for (ASTVisitor visitor : javaNcssVisitors) {
-			visitor.setResourcesStack(resourceTree);
+			visitor.setResourcesStack(resourcesStack);
 		}
 		CheckstyleJavaNcssBridge.setJavaNcssASTVisitors(javaNcssVisitors);
 	}
@@ -80,8 +83,8 @@ public class JavaNcss {
 
 	private Resource analyzeSources() {
 		CheckstyleLauncher.launchCheckstyleEngine(filesToAnalyse);
-		resourceTree.processTree();
-		return resourceTree.getRoot();
+		project.compute();
+		return project;
 	}
 
 	/**
