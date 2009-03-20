@@ -18,6 +18,7 @@ along with JavaNCSS; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.metrics;
 
+import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
@@ -40,8 +41,8 @@ public class FileCounterTest {
 	@Test
 	public void analyseTest003() {
 		List<File> files = new ArrayList<File>();
-		files.add(new File("target/test-classes/Test002.java"));
-		files.add(new File("target/test-classes/Test003.java"));
+		files.add(getFile("/Test002.java"));
+		files.add(getFile("/Test003.java"));
 		Resource project = JavaNcss.analyze(files);
 		
 		assertEquals(2, project.getFiles());

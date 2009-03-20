@@ -18,6 +18,7 @@ along with JavaNCSS; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.metrics;
 
+import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.javancss.JavaNcss;
@@ -29,9 +30,9 @@ public class StatementsCounterTest {
 
 	@Test
 	public void testNoStatements() {
-		Resource res = JavaNcss.analyze("target/test-classes/statements/NoStatements.java");
+		Resource res = JavaNcss.analyze(getFile("/statements/NoStatements.java"));
 		assertEquals(10, res.getStatements());
-		
+
 		Resource simpleIf = res.findResource("simpleIf()", Type.METHOD);
 		assertEquals(3, simpleIf.getStatements());
 	}

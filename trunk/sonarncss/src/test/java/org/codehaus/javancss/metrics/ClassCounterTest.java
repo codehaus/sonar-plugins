@@ -18,9 +18,9 @@ along with JavaNCSS; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.metrics;
 
+import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.Iterator;
 
 import org.codehaus.javancss.JavaNcss;
@@ -33,7 +33,7 @@ public class ClassCounterTest {
 
 	@Test
 	public void analyseTest003() {
-		Resource project = JavaNcss.analyze(new File("target/test-classes/Test003.java"));
+		Resource project = JavaNcss.analyze(getFile("/Test003.java"));
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
 		assertEquals(3, file.getClasses());
@@ -53,7 +53,7 @@ public class ClassCounterTest {
 
 	@Test
 	public void analyseClassCounterEnum() {
-		Resource project = JavaNcss.analyze(new File("target/test-classes/ClassCounterEnum.java"));
+		Resource project = JavaNcss.analyze(getFile("/ClassCounterEnum.java"));
 		Resource defaultPackage = project.getFirstChild();
 		assertEquals(1, defaultPackage.getClasses());
 	}
