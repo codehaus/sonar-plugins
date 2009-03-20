@@ -57,7 +57,9 @@ public class Resource implements Comparable<Resource> {
 
 	protected long javadocLines = 0;
 
-	protected int javadocBlocks = 0;
+	protected long javadocBlocks = 0;
+	
+	protected boolean javadoc = false;
 
 	private SortedSet<Resource> children = new TreeSet<Resource>();
 
@@ -189,8 +191,12 @@ public class Resource implements Comparable<Resource> {
 		return javadocBlocks;
 	}
 
-	public void setJavadocLines(long javadocLinesNumber) {
-		this.javadocLines = javadocLinesNumber;
+	public void setJavadocLines(long javadocLines) {
+		this.javadocLines = javadocLines;
+	}
+	
+	public void setJavadocBlocks(long javadocBlocks) {
+		this.javadocBlocks = javadocBlocks;
 	}
 
 	public long getJavadocLines() {
@@ -226,5 +232,13 @@ public class Resource implements Comparable<Resource> {
 			}
 		}
 		return null;
+	}
+
+	public boolean hasJavadoc() {
+		return javadoc;
+	}
+
+	public void setJavadoc(boolean javadoc) {
+		this.javadoc = javadoc;
 	}
 }
