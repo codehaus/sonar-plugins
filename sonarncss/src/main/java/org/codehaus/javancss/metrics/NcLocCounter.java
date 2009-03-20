@@ -19,26 +19,14 @@
  */
 package org.codehaus.javancss.metrics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.codehaus.javancss.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
 public class NcLocCounter extends ASTVisitor {
 
-	@Override
-	public List<Integer> getWantedTokens() {
-		return new ArrayList<Integer>();
-	}
-
-	public void beginTree(DetailAST ast) {
+	public void visitFile(DetailAST ast) {
 		Resource res = resourceTree.peek();
 		resourceTree.peek().setNcloc(res.getLoc() - res.getCommentLines() - res.getBlankLines());
-	}
-
-	@Override
-	public void visitToken(DetailAST ast) {
 	}
 }

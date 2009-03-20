@@ -49,7 +49,7 @@ public abstract class ASTVisitor {
 		return resourceTree.peek();
 	}
 
-	public void beginTree(DetailAST ast) {
+	public void visitFile(DetailAST ast) {
 	}
 
 	public void visitToken(DetailAST ast) {
@@ -58,6 +58,6 @@ public abstract class ASTVisitor {
 	public void leaveToken(DetailAST ast) {
 	}
 
-	public void finishTree(DetailAST ast) {
+	public void leaveFile(DetailAST ast) {
 	}
 }

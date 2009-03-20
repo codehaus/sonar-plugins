@@ -27,7 +27,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 public class PackageCounter extends ASTVisitor {
 
-	public void beginTree(DetailAST ast) {
+	public void visitFile(DetailAST ast) {
 		Resource packageRes = extractPackage(ast);
 
 		if (resourceTree.peek().contains(packageRes)) {
@@ -36,7 +36,7 @@ public class PackageCounter extends ASTVisitor {
 		resourceTree.addChild(packageRes);
 	}
 
-	public void finishTree(DetailAST ast) {
+	public void leaveFile(DetailAST ast) {
 		resourceTree.pop();
 	}
 

@@ -27,13 +27,13 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
 public class FileCounter extends ASTVisitor {
 
-	public void beginTree(DetailAST ast) {
+	public void visitFile(DetailAST ast) {
 		String fileName = extractFileNameFromFilePath(fileContents.getFilename());
 		Resource fileRes = new Resource(fileName, Resource.Type.FILE);
 		resourceTree.addChild(fileRes);
 	}
 
-	public void finishTree(DetailAST ast) {
+	public void leaveFile(DetailAST ast) {
 		resourceTree.pop();
 	}
 
