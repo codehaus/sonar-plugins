@@ -42,6 +42,8 @@ public class JavaDocCounter extends ASTVisitor {
 		TextBlock javadoc = fileContents.getJavadocBefore(ast.getLineNo());
 		if (javadoc != null) {
 			currentResource.setJavadocLines(countRealCommentLines(javadoc));
+			currentResource.setJavadocBlocks(1);
+			currentResource.setJavadoc(true);
 		} else {
 			resourceTree.peek();
 		}

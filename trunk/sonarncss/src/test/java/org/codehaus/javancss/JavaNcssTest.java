@@ -13,8 +13,8 @@ public class JavaNcssTest {
 		JavaNcss javaNcss = new JavaNcss(new File("src/test/resources"));
 		Resource project = javaNcss.analyseSources();
 		
-		assertEquals(4, project.getFiles());
-		assertEquals(6, project.getClasses());
+		assertEquals(5, project.getFiles());
+		assertEquals(7, project.getClasses());
 	}
 
 }
