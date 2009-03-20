@@ -32,8 +32,8 @@ import org.junit.Test;
 public class ClassCounterTest {
 
 	@Test
-	public void analyseTest102() {
-		Resource project = new JavaNcss(new File("target/test-classes/Test102.java")).analyseSources();
+	public void analyseTest003() {
+		Resource project = new JavaNcss(new File("target/test-classes/Test003.java")).analyseSources();
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
 		assertEquals(3, file.getClasses());

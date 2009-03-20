@@ -14,12 +14,12 @@ public class LocCounterTest {
 	public void analyseTest001() {
 		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test001.java"));
 		Resource res = javaNcss.analyseSources();
-		assertEquals(540, res.getLoc());
+		assertEquals(25, res.getLoc());
 	}
 	
 	@Test
-	public void analyseTest025() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test025.java"));
+	public void analyseTest002() {
+		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
 		Resource res = javaNcss.analyseSources();
 		assertEquals(19, res.getLoc());
 	}

@@ -38,16 +38,16 @@ public class FileCounterTest {
 	}
 
 	@Test
-	public void analyseTest102() {
+	public void analyseTest003() {
 		List<File> files = new ArrayList<File>();
-		files.add(new File("target/test-classes/Test102.java"));
-		files.add(new File("target/test-classes/Test103.java"));
+		files.add(new File("target/test-classes/Test002.java"));
+		files.add(new File("target/test-classes/Test003.java"));
 		JavaNcss javaNcss = new JavaNcss(files);
 		Resource project = javaNcss.analyseSources();
 		assertEquals(2, project.getFiles());
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
-		assertEquals("Test102.java", file.getName());
+		assertEquals("Test002.java", file.getName());
 		assertEquals(Type.FILE, file.getType());
 	}
 
