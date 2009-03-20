@@ -61,7 +61,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 		try {
 			for (ASTVisitor visitor : javaNcssVisitors) {
 				visitor.setFileContents(getFileContents());
-				visitor.beginTree(ast);
+				visitor.visitFile(ast);
 			}
 		} catch (RuntimeException e) {
 			// Exception are not propagated by Checkstyle engine
@@ -100,7 +100,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 		try {
 			for (int i = javaNcssVisitors.size() - 1; i >= 0; i--) {
 				ASTVisitor visitor = javaNcssVisitors.get(i);
-				visitor.finishTree(ast);
+				visitor.leaveFile(ast);
 			}
 		} catch (RuntimeException e) {
 			// Exception are not propagated by Checkstyle engine

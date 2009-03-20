@@ -19,19 +19,11 @@
  */
 package org.codehaus.javancss.metrics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
 public class BlankLinesCounter extends ASTVisitor {
 
-	@Override
-	public List<Integer> getWantedTokens() {
-		return new ArrayList<Integer>();
-	}
-
-	public void beginTree(DetailAST ast) {
+	public void visitFile(DetailAST ast) {
 		long blankLines = 0;
 		for (int i = 0; i < fileContents.getLines().length; i++) {
 			if (fileContents.lineIsBlank(i)) {
@@ -41,7 +33,4 @@ public class BlankLinesCounter extends ASTVisitor {
 		resourceTree.peek().setBlankLines(blankLines);
 	}
 
-	@Override
-	public void visitToken(DetailAST ast) {
-	}
 }

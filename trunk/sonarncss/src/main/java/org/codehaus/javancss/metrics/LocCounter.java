@@ -19,23 +19,11 @@
  */
 package org.codehaus.javancss.metrics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
 public class LocCounter extends ASTVisitor {
 
-	@Override
-	public List<Integer> getWantedTokens() {
-		return new ArrayList<Integer>();
-	}
-	
-	public void beginTree(DetailAST ast){
+	public void visitFile(DetailAST ast) {
 		resourceTree.peek().setLoc(fileContents.getLines().length);
-	}
-
-	@Override
-	public void visitToken(DetailAST ast) {
 	}
 }

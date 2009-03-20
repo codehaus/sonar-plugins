@@ -19,7 +19,6 @@
  */
 package org.codehaus.javancss.metrics;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -27,18 +26,9 @@ import com.puppycrawl.tools.checkstyle.api.TextBlock;
 
 public class CommentCounter extends ASTVisitor {
 
-	@Override
-	public List<Integer> getWantedTokens() {
-		return new ArrayList<Integer>();
-	}
-
-	public void beginTree(DetailAST ast) {
+	public void visitFile(DetailAST ast) {
 		long commentLines = fileContents.getCppComments().size() + calculateCCommentsLines();
 		resourceTree.peek().setCommentLines(commentLines);
-	}
-
-	@Override
-	public void visitToken(DetailAST ast) {
 	}
 
 	private long calculateCCommentsLines() {
