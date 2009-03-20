@@ -27,13 +27,13 @@ import com.puppycrawl.tools.checkstyle.api.TextBlock;
 public class CommentCounter extends ASTVisitor {
 
 	public void visitFile(DetailAST ast) {
-		long commentLines = fileContents.getCppComments().size() + calculateCCommentsLines();
-		resourceTree.peek().setCommentLines(commentLines);
+		long commentLines = getFileContents().getCppComments().size() + calculateCCommentsLines();
+		peekResource().setCommentLines(commentLines);
 	}
 
 	private long calculateCCommentsLines() {
 		int cCommentsLines = 0;
-		for (Object objBlocks : fileContents.getCComments().values()) {
+		for (Object objBlocks : getFileContents().getCComments().values()) {
 			List commentBlocks = (List) objBlocks;
 			for (Object objBlock : commentBlocks) {
 				TextBlock commentBlock = (TextBlock) objBlock;

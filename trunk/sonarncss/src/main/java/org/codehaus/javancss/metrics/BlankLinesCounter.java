@@ -25,12 +25,12 @@ public class BlankLinesCounter extends ASTVisitor {
 
 	public void visitFile(DetailAST ast) {
 		long blankLines = 0;
-		for (int i = 0; i < fileContents.getLines().length; i++) {
-			if (fileContents.lineIsBlank(i)) {
+		for (int i = 0; i < getFileContents().getLines().length; i++) {
+			if (getFileContents().lineIsBlank(i)) {
 				blankLines++;
 			}
 		}
-		resourceTree.peek().setBlankLines(blankLines);
+		peekResource().setBlankLines(blankLines);
 	}
 
 }

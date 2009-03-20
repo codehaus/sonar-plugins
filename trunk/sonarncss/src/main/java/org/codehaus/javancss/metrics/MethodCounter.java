@@ -41,11 +41,11 @@ public class MethodCounter extends ASTVisitor {
 	public void visitToken(DetailAST ast) {
 		String methodName = extractMethodName(ast);
 		Resource methodRes = new Resource(methodName, Type.METHOD);
-		resourceTree.addChild(methodRes);
+		addResource(methodRes);
 	}
 
 	public void leaveToken(DetailAST ast) {
-		resourceTree.pop();
+		popResource();
 	}
 
 	private String extractMethodName(DetailAST ast) {

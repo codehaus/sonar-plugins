@@ -30,17 +30,17 @@ public class StatementsCounter extends ASTVisitor {
 	@Override
 	public List<Integer> getWantedTokens() {
 		return Arrays.asList(TokenTypes.VARIABLE_DEF, TokenTypes.CTOR_CALL, TokenTypes.SUPER_CTOR_CALL,
-				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO,
-				TokenTypes.LITERAL_FOR, TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_BREAK,
-				TokenTypes.LITERAL_CONTINUE, TokenTypes.LITERAL_RETURN, TokenTypes.LITERAL_THROW,
-				TokenTypes.LITERAL_SYNCHRONIZED, TokenTypes.LITERAL_CATCH, TokenTypes.LITERAL_FINALLY, TokenTypes.EXPR,
-				TokenTypes.LABELED_STAT, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_DEFAULT);
+				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR,
+				TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_BREAK, TokenTypes.LITERAL_CONTINUE,
+				TokenTypes.LITERAL_RETURN, TokenTypes.LITERAL_THROW, TokenTypes.LITERAL_SYNCHRONIZED,
+				TokenTypes.LITERAL_CATCH, TokenTypes.LITERAL_FINALLY, TokenTypes.EXPR, TokenTypes.LABELED_STAT,
+				TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_DEFAULT);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
 		if (isCountable(ast)) {
-			resourceTree.peek().incrementStatements();
+			peekResource().incrementStatements();
 		}
 	}
 

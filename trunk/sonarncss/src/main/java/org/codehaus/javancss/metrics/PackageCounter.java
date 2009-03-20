@@ -30,14 +30,14 @@ public class PackageCounter extends ASTVisitor {
 	public void visitFile(DetailAST ast) {
 		Resource packageRes = extractPackage(ast);
 
-		if (resourceTree.peek().contains(packageRes)) {
-			packageRes = resourceTree.peek().findResource(packageRes);
+		if (peekResource().contains(packageRes)) {
+			packageRes = peekResource().find(packageRes);
 		}
-		resourceTree.addChild(packageRes);
+		addResource(packageRes);
 	}
 
 	public void leaveFile(DetailAST ast) {
-		resourceTree.pop();
+		popResource();
 	}
 
 	private Resource extractPackage(DetailAST ast) {

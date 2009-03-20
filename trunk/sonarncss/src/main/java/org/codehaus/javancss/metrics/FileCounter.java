@@ -28,13 +28,13 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 public class FileCounter extends ASTVisitor {
 
 	public void visitFile(DetailAST ast) {
-		String fileName = extractFileNameFromFilePath(fileContents.getFilename());
+		String fileName = extractFileNameFromFilePath(getFileContents().getFilename());
 		Resource fileRes = new Resource(fileName, Resource.Type.FILE);
-		resourceTree.addChild(fileRes);
+		addResource(fileRes);
 	}
 
 	public void leaveFile(DetailAST ast) {
-		resourceTree.pop();
+		popResource();
 	}
 
 	public static String extractFileNameFromFilePath(String filename) {

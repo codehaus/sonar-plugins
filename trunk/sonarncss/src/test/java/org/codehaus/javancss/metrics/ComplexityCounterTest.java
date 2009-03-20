@@ -21,7 +21,7 @@ public class ComplexityCounterTest {
 		Resource res = JavaNcss.analyze(getFile("/branches/SimpleBranches.java"));
 		assertEquals(15, res.getComplexity());
 		
-		Resource simpleSwitch = res.findResource("simpleSwitch()", Type.METHOD);
+		Resource simpleSwitch = res.find("simpleSwitch()", Type.METHOD);
 		assertEquals(3, simpleSwitch.getComplexity());		
 	}
 

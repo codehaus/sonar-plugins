@@ -38,14 +38,14 @@ public class JavaDocCounter extends ASTVisitor {
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		Resource currentResource = getCurrentResource();
-		TextBlock javadoc = fileContents.getJavadocBefore(ast.getLineNo());
+		Resource currentResource = peekResource();
+		TextBlock javadoc = getFileContents().getJavadocBefore(ast.getLineNo());
 		if (javadoc != null) {
 			currentResource.setJavadocLines(countRealCommentLines(javadoc));
 			currentResource.setJavadocBlocks(1);
 			currentResource.setJavadoc(true);
 		} else {
-			resourceTree.peek();
+			peekResource();
 		}
 	}
 

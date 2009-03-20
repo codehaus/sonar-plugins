@@ -36,6 +36,6 @@ public class BranchesCounter extends ASTVisitor {
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		resourceTree.peek().incrementBranches();
+		peekResource().incrementBranches();
 	}
 }

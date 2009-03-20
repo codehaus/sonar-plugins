@@ -37,7 +37,7 @@ public class ComplexityCounter extends ASTVisitor {
 
 	@Override
 	public void leaveToken(DetailAST ast) {
-		Resource res = resourceTree.peek();
+		Resource res = peekResource();
 		res.setComplexity(res.getComplexity() + res.getBranches() + 1);
 	}
 }

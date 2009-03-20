@@ -26,7 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 public class NcLocCounter extends ASTVisitor {
 
 	public void visitFile(DetailAST ast) {
-		Resource res = resourceTree.peek();
-		resourceTree.peek().setNcloc(res.getLoc() - res.getCommentLines() - res.getBlankLines());
+		Resource res = peekResource();
+		res.setNcloc(res.getLoc() - res.getCommentLines() - res.getBlankLines());
 	}
 }

@@ -46,7 +46,7 @@ public class Resource implements Comparable<Resource> {
 	protected long commentLines = 0;
 
 	protected long complexity = 0;
-	
+
 	protected long branches = 0;
 
 	protected long methods = 0;
@@ -224,7 +224,7 @@ public class Resource implements Comparable<Resource> {
 	}
 
 	public boolean contains(Resource wantedRes) {
-		if(children.contains(wantedRes)){
+		if (children.contains(wantedRes)) {
 			return true;
 		} else {
 			for (Resource child : children) {
@@ -234,21 +234,22 @@ public class Resource implements Comparable<Resource> {
 		return false;
 	}
 
-	public Resource findResource(Resource wantedRes) {
-		for (Resource child : children) {
-			if (child.equals(wantedRes)) {
-				return child;
-			}
+	public Resource find(Resource wantedRes) {
+		if(wantedRes.equals(this)){
+			return this;
 		}
 		for (Resource child : children) {
-			return child.findResource(wantedRes);
+			Resource res = child.find(wantedRes);
+			if (res != null) {
+				return res;
+			}
 		}
 		return null;
 	}
-	
-	public Resource findResource(String resourceName, Type resourceType) {
+
+	public Resource find(String resourceName, Type resourceType) {
 		Resource wanted = new Resource(resourceName, resourceType);
-		return findResource(wanted);
+		return find(wanted);
 	}
 
 	public boolean hasJavadoc() {
@@ -265,5 +266,28 @@ public class Resource implements Comparable<Resource> {
 
 	public void incrementBranches() {
 		branches++;
+	}
+
+	public final void compute() {
+		for (Resource child : getChildren()) {
+			if (child.getChildren() != null) {
+				child.compute();
+				loc += child.loc;
+				ncloc += child.ncloc;
+				complexity += child.complexity;
+				branches += child.branches;
+				statements += child.statements;
+				javadocBlocks += child.javadocBlocks;
+				commentLines += child.commentLines;
+				javadocLines += child.javadocLines;
+				methods += child.methods;
+				classes += child.classes;
+				files += child.files;
+				packages += child.packages;
+				blankLines += child.blankLines;
+			}
+
+		}
+
 	}
 }

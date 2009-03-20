@@ -20,12 +20,12 @@ Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.metrics;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Iterator;
 
 import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.Resource;
-import org.codehaus.javancss.ResourceTreeBuilder;
 import org.codehaus.javancss.Resource.Type;
 import org.junit.Test;
 
@@ -46,9 +46,9 @@ public class ClassCounterTest {
 		assertEquals("Car", carClass.getName());
 		assertEquals(Type.CLASS, carClass.getType());
 
-		Resource wheelClass = ResourceTreeBuilder.findSubChildren(carClass, Type.CLASS).get(0);
-		assertEquals("Car#Wheel", wheelClass.getName());
-		assertEquals(Type.CLASS, wheelClass.getType());
+		Resource wheelClass = project.find("Car#Wheel", Type.CLASS);
+		assertNotNull(wheelClass);
+		assertEquals(wheelClass.getParent(), carClass);
 	}
 
 	@Test
