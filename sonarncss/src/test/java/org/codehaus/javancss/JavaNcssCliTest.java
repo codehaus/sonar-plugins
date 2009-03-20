@@ -43,7 +43,7 @@ public class JavaNcssCliTest extends TestCase {
 		JXPathContext context = JXPathContext.newContext(dom);	
 		
 		List packages = context.selectNodes("//package");
-		assertEquals(44, packages.size());
+		assertEquals(2, packages.size());
 
 		/*
 		String classesNumber = (String) context.getValue("//package[name='org.apache.commons.logging']/classes");

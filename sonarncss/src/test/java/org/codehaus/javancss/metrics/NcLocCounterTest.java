@@ -11,8 +11,8 @@ import org.junit.Test;
 public class NcLocCounterTest {
 
 	@Test
-	public void analyseTest025() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test025.java"));
+	public void analyseTest002() {
+		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
 		Resource res = javaNcss.analyseSources();
 		assertEquals(13, res.getNcloc());
 	}

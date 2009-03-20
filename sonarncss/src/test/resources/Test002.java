@@ -1,25 +1,19 @@
-/*
- * Header
- */
-package test;
+import InputNeuron;
+import java.util.*;
 
-import nothing;
-//single comment 1
-/**
- * Javadoc 1
- */
-public class Something {
-    public Something() {
-        super();
-    }
+public interface Neuron {
 
-    /**
-     * Javadoc 2
-     */
-    public void sleep();
-
-    public void run() {
-        int i = 5;
-    }
+    public FloatPoint   getWeight();
+    public void         setWeight(FloatPoint fpWeight);
+    
+    public float        distanceTo(Neuron nOtherNeuron);
+ 
+    public void         moveTo(InputNeuron inGoalNeuron, int netDistance);
+    /**schaufelt alle neuen Gewichte zu den alten um*/
+    public void         move();
+   
+    public void         addNeighbor(Neuron neuron);
+    public void         addMetaNeighbor(Neuron neuron);
+    public Enumeration  getNeighbors();
+    public Enumeration  getMetaNeighbors();
 }
-// ncss = 8

@@ -11,15 +11,15 @@ import org.junit.Test;
 public class CommentCounterTest {
 
 	@Test
-	public void analyseTest025() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test025.java"));
+	public void analyseTest002() {
+		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
 		Resource res = javaNcss.analyseSources();
 		assertEquals(1, res.getCommentLines());
 	}
 
 	@Test
-	public void analyseTest002() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
+	public void analyseTest001() {
+		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test001.java"));
 		Resource res = javaNcss.analyseSources();
 		assertEquals(4, res.getCommentLines());
 	}
