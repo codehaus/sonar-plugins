@@ -1,5 +1,6 @@
 package org.codehaus.javancss.metrics;
 
+import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.javancss.JavaNcss;
@@ -11,13 +12,13 @@ public class ComplexityCounterTest {
 
 	@Test
 	public void testNoBranches() {
-		Resource res = JavaNcss.analyze("target/test-classes/branches/NoBranches.java");
+		Resource res = JavaNcss.analyze(getFile("/branches/NoBranches.java"));
 		assertEquals(3, res.getComplexity());
 	}
 
 	@Test
 	public void testSimpleBranches() {
-		Resource res = JavaNcss.analyze("target/test-classes/branches/SimpleBranches.java");
+		Resource res = JavaNcss.analyze(getFile("/branches/SimpleBranches.java"));
 		assertEquals(15, res.getComplexity());
 		
 		Resource simpleSwitch = res.findResource("simpleSwitch()", Type.METHOD);
@@ -26,8 +27,7 @@ public class ComplexityCounterTest {
 
 	@Test
 	public void testInstanceAndStaticInitBlocks() {
-		Resource res = JavaNcss.analyze("target/test-classes/complexity/InstanceAndStaticInitBlocks.java");
-		System.out.println(res);
+		Resource res = JavaNcss.analyze(getFile("/complexity/InstanceAndStaticInitBlocks.java"));
 		assertEquals(2, res.getComplexity());
 	}
 }

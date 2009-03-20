@@ -1,8 +1,7 @@
 package org.codehaus.javancss.metrics;
 
+import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
-
-import java.io.File;
 
 import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.Resource;
@@ -12,13 +11,13 @@ public class BlankLinesCounterTest {
 
 	@Test
 	public void analyseTest002() {
-		Resource res = JavaNcss.analyze(new File("target/test-classes/Test002.java"));
+		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
 		assertEquals(5, res.getBlankLines());
 	}
 
 	@Test
 	public void analyseTest001() {
-		Resource res = JavaNcss.analyze(new File("target/test-classes/Test001.java"));
+		Resource res = JavaNcss.analyze(getFile("/Test001.java"));
 		assertEquals(3, res.getBlankLines());
 	}
 }
