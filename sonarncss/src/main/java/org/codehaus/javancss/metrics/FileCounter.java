@@ -39,7 +39,7 @@ public class FileCounter extends ASTVisitor {
 
 	public static String extractFileNameFromFilePath(String filename) {
 		String className = "";
-		StringTokenizer tokens = new StringTokenizer(filename, "/");
+		StringTokenizer tokens = new StringTokenizer(filename, "/\\");
 		while (tokens.hasMoreTokens()) {
 			className = tokens.nextToken();
 		}
