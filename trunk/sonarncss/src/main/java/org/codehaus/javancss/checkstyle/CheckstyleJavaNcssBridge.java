@@ -64,7 +64,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 				visitor.beginTree(ast);
 			}
 		} catch (RuntimeException e) {
-			//Exception are not propagated by Checkstyle engine
+			// Exception are not propagated by Checkstyle engine
 			logger.error("Error occurs when analysing :" + getFileContents().getFilename(), e);
 		}
 	}
@@ -77,31 +77,33 @@ public class CheckstyleJavaNcssBridge extends Check {
 				}
 			}
 		} catch (RuntimeException e) {
-			//Exception are not propagated by Checkstyle engine
+			// Exception are not propagated by Checkstyle engine
 			logger.error("Error occurs when analysing :" + getFileContents().getFilename(), e);
 		}
 	}
 
 	public void leaveToken(DetailAST ast) {
 		try {
-			for (ASTVisitor visitor : javaNcssVisitors) {
+			for (int i = javaNcssVisitors.size() - 1; i >= 0; i--) {
+				ASTVisitor visitor = javaNcssVisitors.get(i);
 				if (visitor.getWantedTokens().contains(ast.getType())) {
 					visitor.leaveToken(ast);
 				}
 			}
 		} catch (RuntimeException e) {
-			//Exception are not propagated by Checkstyle engine
+			// Exception are not propagated by Checkstyle engine
 			logger.error("Error occurs when analysing :" + getFileContents().getFilename(), e);
 		}
 	}
 
 	public void finishTree(DetailAST ast) {
 		try {
-			for (ASTVisitor visitor : javaNcssVisitors) {
+			for (int i = javaNcssVisitors.size() - 1; i >= 0; i--) {
+				ASTVisitor visitor = javaNcssVisitors.get(i);
 				visitor.finishTree(ast);
 			}
 		} catch (RuntimeException e) {
-			//Exception are not propagated by Checkstyle engine
+			// Exception are not propagated by Checkstyle engine
 			logger.error("Error occurs when analysing :" + getFileContents().getFilename(), e);
 		}
 	}

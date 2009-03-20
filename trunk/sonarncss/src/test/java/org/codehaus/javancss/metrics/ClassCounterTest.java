@@ -51,4 +51,11 @@ public class ClassCounterTest {
 		assertEquals(Type.CLASS, wheelClass.getType());
 	}
 
+	@Test
+	public void analyseClassCounterEnum() {
+		Resource project = new JavaNcss(new File("target/test-classes/ClassCounterEnum.java")).analyseSources();
+		Resource defaultPackage = project.getFirstChild();
+		assertEquals(1, defaultPackage.getClasses());
+	}
+
 }
