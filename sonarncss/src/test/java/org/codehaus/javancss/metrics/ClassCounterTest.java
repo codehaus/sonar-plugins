@@ -33,7 +33,7 @@ public class ClassCounterTest {
 
 	@Test
 	public void analyseTest003() {
-		Resource project = new JavaNcss(new File("target/test-classes/Test003.java")).analyseSources();
+		Resource project = JavaNcss.analyze(new File("target/test-classes/Test003.java"));
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
 		assertEquals(3, file.getClasses());
@@ -53,7 +53,7 @@ public class ClassCounterTest {
 
 	@Test
 	public void analyseClassCounterEnum() {
-		Resource project = new JavaNcss(new File("target/test-classes/ClassCounterEnum.java")).analyseSources();
+		Resource project = JavaNcss.analyze(new File("target/test-classes/ClassCounterEnum.java"));
 		Resource defaultPackage = project.getFirstChild();
 		assertEquals(1, defaultPackage.getClasses());
 	}

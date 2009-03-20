@@ -12,15 +12,13 @@ public class CommentCounterTest {
 
 	@Test
 	public void analyseTest002() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
-		Resource res = javaNcss.analyseSources();
+		Resource res = JavaNcss.analyze(new File("target/test-classes/Test002.java"));
 		assertEquals(1, res.getCommentLines());
 	}
 
 	@Test
 	public void analyseTest001() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test001.java"));
-		Resource res = javaNcss.analyseSources();
+		Resource res = JavaNcss.analyze(new File("target/test-classes/Test001.java"));
 		assertEquals(4, res.getCommentLines());
 	}
 }

@@ -54,7 +54,8 @@ public class ResourceTreeBuilder {
 		for (Resource child : parent.getChildren()) {
 			parent.loc += child.loc;
 			parent.ncloc += child.ncloc;
-			parent.cc += child.cc;
+			parent.complexity += child.complexity;
+			parent.branches += child.branches;
 			parent.ncss += child.ncss;
 			parent.javadocBlocks += child.javadocBlocks;
 			parent.commentLines += child.commentLines;

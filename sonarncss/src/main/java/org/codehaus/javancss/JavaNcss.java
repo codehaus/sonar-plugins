@@ -28,7 +28,8 @@ import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
 import org.codehaus.javancss.metrics.ASTVisitor;
 import org.codehaus.javancss.metrics.BlankLinesCounter;
-import org.codehaus.javancss.metrics.CcCounter;
+import org.codehaus.javancss.metrics.BranchesCounter;
+import org.codehaus.javancss.metrics.ComplexityCounter;
 import org.codehaus.javancss.metrics.ClassCounter;
 import org.codehaus.javancss.metrics.CommentCounter;
 import org.codehaus.javancss.metrics.FileCounter;
@@ -46,13 +47,23 @@ public class JavaNcss {
 
 	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new FileCounter(),
 			new ClassCounter(), new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new CommentCounter(),
-			new NcLocCounter(), new NcssCounter(), new CcCounter(), new JavaDocCounter());
+			new NcLocCounter(), new NcssCounter(), new BranchesCounter(), new ComplexityCounter(), new JavaDocCounter());
 
-	public JavaNcss(File dirToAnalyse) {
+	private JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));
 	}
 
-	public JavaNcss(List<File> filesToAnalyse) {
+	public static Resource analyze(String dirOrFilePathToAnalyze) {
+		JavaNcss javaNcss = new JavaNcss(new File(dirOrFilePathToAnalyze));
+		return javaNcss.analyzeSources();
+	}
+
+	public static Resource analyze(File dirOrFileToAnalyze) {
+		JavaNcss javaNcss = new JavaNcss(dirOrFileToAnalyze);
+		return javaNcss.analyzeSources();
+	}
+
+	private JavaNcss(List<File> filesToAnalyse) {
 		this.filesToAnalyse = filesToAnalyse;
 		Resource project = new Resource("Project", Resource.Type.PROJECT);
 		resourceTree = new ResourceTreeBuilder(project);
@@ -62,7 +73,12 @@ public class JavaNcss {
 		CheckstyleJavaNcssBridge.setJavaNcssASTVisitors(javaNcssVisitors);
 	}
 
-	public Resource analyseSources() {
+	public static Resource analyze(List<File> filesToAnalyse) {
+		JavaNcss javaNcss = new JavaNcss(filesToAnalyse);
+		return javaNcss.analyzeSources();
+	}
+
+	private Resource analyzeSources() {
 		CheckstyleLauncher.launchCheckstyleEngine(filesToAnalyse);
 		resourceTree.processTree();
 		return resourceTree.getRoot();

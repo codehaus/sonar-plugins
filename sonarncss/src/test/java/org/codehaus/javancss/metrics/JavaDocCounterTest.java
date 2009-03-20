@@ -12,8 +12,7 @@ public class JavaDocCounterTest {
 
 	@Test
 	public void analyseJavaDocCounter() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/JavaDocCounter.java"));
-		Resource res = javaNcss.analyseSources();
+		Resource res = JavaNcss.analyze(new File("target/test-classes/JavaDocCounter.java"));
 		assertEquals(4, res.getJavadocLines());
 		assertEquals(2, res.getJavadocBlocks());
 		assertFalse(res.hasJavadoc());
