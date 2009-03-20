@@ -31,7 +31,7 @@ public class PackageCounter extends ASTVisitor {
 		Resource packageRes = extractPackage(ast);
 
 		if (resourceTree.peek().contains(packageRes)) {
-			packageRes = resourceTree.peek().getResource(packageRes);
+			packageRes = resourceTree.peek().findResource(packageRes);
 		}
 		resourceTree.addChild(packageRes);
 	}
