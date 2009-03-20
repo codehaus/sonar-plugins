@@ -51,8 +51,7 @@ public class JavaNcssCli {
 				return;
 			}
 
-			JavaNcss javaNcss = new JavaNcss(getDirectoryToAnalyse());
-			Resource project = javaNcss.analyseSources();
+			Resource project = JavaNcss.analyze(getDirectoryToAnalyse());
 			if (cmd.hasOption("xml")) {
 				JavaNcssXmlGenerator xmlGenerator = new JavaNcssXmlGenerator(new File(cmd.getOptionValue("out")),
 						project);

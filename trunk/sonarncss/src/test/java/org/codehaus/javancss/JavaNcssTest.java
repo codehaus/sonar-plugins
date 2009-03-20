@@ -2,19 +2,16 @@ package org.codehaus.javancss;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-
 import org.junit.Test;
 
 public class JavaNcssTest {
 
 	@Test
 	public void analyseTest102() {
-		JavaNcss javaNcss = new JavaNcss(new File("src/test/resources"));
-		Resource project = javaNcss.analyseSources();
-		
-		assertEquals(5, project.getFiles());
-		assertEquals(7, project.getClasses());
+		Resource project = JavaNcss.analyze("src/test/resources");
+
+		assertEquals(8, project.getFiles());
+		assertEquals(10, project.getClasses());
 	}
 
 }

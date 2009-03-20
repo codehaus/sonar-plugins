@@ -25,18 +25,17 @@ import java.util.List;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class CcCounter extends ASTVisitor {
+public class BranchesCounter extends ASTVisitor {
 
 	@Override
 	public List<Integer> getWantedTokens() {
-		return Arrays.asList(TokenTypes.CTOR_DEF, TokenTypes.METHOD_DEF, TokenTypes.INSTANCE_INIT,
-				TokenTypes.STATIC_INIT, TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR,
+		return Arrays.asList(TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR,
 				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_CATCH, TokenTypes.QUESTION,
 				TokenTypes.LAND, TokenTypes.LOR);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		resourceTree.peek().incrementCc();
+		resourceTree.peek().incrementBranches();
 	}
 }

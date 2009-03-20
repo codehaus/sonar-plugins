@@ -12,15 +12,13 @@ public class BlankLinesCounterTest {
 
 	@Test
 	public void analyseTest002() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test002.java"));
-		Resource res = javaNcss.analyseSources();
+		Resource res = JavaNcss.analyze(new File("target/test-classes/Test002.java"));
 		assertEquals(5, res.getBlankLines());
 	}
 
 	@Test
 	public void analyseTest001() {
-		JavaNcss javaNcss = new JavaNcss(new File("target/test-classes/Test001.java"));
-		Resource res = javaNcss.analyseSources();
+		Resource res = JavaNcss.analyze(new File("target/test-classes/Test001.java"));
 		assertEquals(3, res.getBlankLines());
 	}
 }

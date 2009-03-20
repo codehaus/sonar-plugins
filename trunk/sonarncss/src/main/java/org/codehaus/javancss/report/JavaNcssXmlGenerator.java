@@ -100,7 +100,7 @@ public class JavaNcssXmlGenerator {
 		appendValueToElement(resElt, "loc", resource.getLoc());
 		appendValueToElement(resElt, "ncloc", resource.getNcloc());
 		appendValueToElement(resElt, "ncss", resource.getNcss());
-		appendValueToElement(resElt, "ccn", resource.getCc());
+		appendValueToElement(resElt, "ccn", resource.getComplexity());
 		appendValueToElement(resElt, "classes", resource.getClasses());
 		appendValueToElement(resElt, "functions", resource.getMethods());
 		appendValueToElement(resElt, "jdocBlocks", resource.getJavadocBlocks());

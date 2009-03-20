@@ -45,7 +45,9 @@ public class Resource implements Comparable<Resource> {
 
 	protected long commentLines = 0;
 
-	protected long cc = 0;
+	protected long complexity = 0;
+	
+	protected long branches = 0;
 
 	protected long methods = 0;
 
@@ -58,7 +60,7 @@ public class Resource implements Comparable<Resource> {
 	protected long javadocLines = 0;
 
 	protected long javadocBlocks = 0;
-	
+
 	protected boolean javadoc = false;
 
 	private SortedSet<Resource> children = new TreeSet<Resource>();
@@ -171,8 +173,8 @@ public class Resource implements Comparable<Resource> {
 		return ncss;
 	}
 
-	public void incrementCc() {
-		cc++;
+	public void setComplexity(long cc) {
+		this.complexity = cc;
 	}
 
 	public long getBlankLines() {
@@ -183,8 +185,8 @@ public class Resource implements Comparable<Resource> {
 		this.blankLines = blankLines;
 	}
 
-	public long getCc() {
-		return cc;
+	public long getComplexity() {
+		return complexity;
 	}
 
 	public long getJavadocBlocks() {
@@ -194,7 +196,7 @@ public class Resource implements Comparable<Resource> {
 	public void setJavadocLines(long javadocLines) {
 		this.javadocLines = javadocLines;
 	}
-	
+
 	public void setJavadocBlocks(long javadocBlocks) {
 		this.javadocBlocks = javadocBlocks;
 	}
@@ -221,13 +223,13 @@ public class Resource implements Comparable<Resource> {
 		return tree.toString();
 	}
 
-	public boolean contains(Resource resource){
+	public boolean contains(Resource resource) {
 		return children.contains(resource);
 	}
 
 	public Resource getResource(Resource packageRes) {
-		for(Resource child : children){
-			if(child.equals(packageRes)){
+		for (Resource child : children) {
+			if (child.equals(packageRes)) {
 				return child;
 			}
 		}
@@ -240,5 +242,13 @@ public class Resource implements Comparable<Resource> {
 
 	public void setJavadoc(boolean javadoc) {
 		this.javadoc = javadoc;
+	}
+
+	public long getBranches() {
+		return branches;
+	}
+
+	public void incrementBranches() {
+		branches++;
 	}
 }
