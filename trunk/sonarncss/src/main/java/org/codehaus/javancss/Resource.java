@@ -41,7 +41,7 @@ public class Resource implements Comparable<Resource> {
 
 	protected long blankLines = 0;
 
-	protected long ncss = 0;
+	protected long statements = 0;
 
 	protected long commentLines = 0;
 
@@ -165,12 +165,12 @@ public class Resource implements Comparable<Resource> {
 		return loc;
 	}
 
-	public void incrementNcss() {
-		ncss++;
+	public void incrementStatements() {
+		statements++;
 	}
 
-	public long getNcss() {
-		return ncss;
+	public long getStatements() {
+		return statements;
 	}
 
 	public void setComplexity(long cc) {

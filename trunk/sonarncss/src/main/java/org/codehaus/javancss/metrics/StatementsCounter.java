@@ -22,37 +22,28 @@ package org.codehaus.javancss.metrics;
 import java.util.Arrays;
 import java.util.List;
 
-
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class NcssCounter extends ASTVisitor {
+public class StatementsCounter extends ASTVisitor {
 
 	@Override
 	public List<Integer> getWantedTokens() {
-		return Arrays.asList(TokenTypes.CLASS_DEF,
-				TokenTypes.INTERFACE_DEF, TokenTypes.METHOD_DEF,
-				TokenTypes.CTOR_DEF, TokenTypes.INSTANCE_INIT,
-				TokenTypes.STATIC_INIT, TokenTypes.PACKAGE_DEF, TokenTypes.IMPORT,
-				TokenTypes.VARIABLE_DEF, TokenTypes.CTOR_CALL,
-				TokenTypes.SUPER_CTOR_CALL, TokenTypes.LITERAL_IF,
-				TokenTypes.LITERAL_ELSE, TokenTypes.LITERAL_WHILE,
-				TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR,
-				TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_BREAK,
-				TokenTypes.LITERAL_CONTINUE, TokenTypes.LITERAL_RETURN,
-				TokenTypes.LITERAL_THROW, TokenTypes.LITERAL_SYNCHRONIZED,
-				TokenTypes.LITERAL_CATCH, TokenTypes.LITERAL_FINALLY,
-				TokenTypes.EXPR, TokenTypes.LABELED_STAT, TokenTypes.LITERAL_CASE,
-				TokenTypes.LITERAL_DEFAULT);
+		return Arrays.asList(TokenTypes.VARIABLE_DEF, TokenTypes.CTOR_CALL, TokenTypes.SUPER_CTOR_CALL,
+				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO,
+				TokenTypes.LITERAL_FOR, TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_BREAK,
+				TokenTypes.LITERAL_CONTINUE, TokenTypes.LITERAL_RETURN, TokenTypes.LITERAL_THROW,
+				TokenTypes.LITERAL_SYNCHRONIZED, TokenTypes.LITERAL_CATCH, TokenTypes.LITERAL_FINALLY, TokenTypes.EXPR,
+				TokenTypes.LABELED_STAT, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_DEFAULT);
 	}
 
 	@Override
-	public void visitToken(DetailAST ast) {		
-		if(isCountable(ast)){
-			resourceTree.peek().incrementNcss();
+	public void visitToken(DetailAST ast) {
+		if (isCountable(ast)) {
+			resourceTree.peek().incrementStatements();
 		}
 	}
-	
+
 	/**
 	 * Checks if a token is countable for the ncss metric
 	 * 
@@ -75,7 +66,7 @@ public class NcssCounter extends ASTVisitor {
 		}
 		return countable;
 	}
-	
+
 	/**
 	 * Checks if a variable definition is countable.
 	 * 
@@ -101,8 +92,8 @@ public class NcssCounter extends ASTVisitor {
 		}
 
 		return countable;
-	}	
-	
+	}
+
 	/**
 	 * Checks if an expression is countable for the ncss metric.
 	 * 
@@ -127,8 +118,7 @@ public class NcssCounter extends ASTVisitor {
 		case TokenTypes.LITERAL_ELSE:
 			// don't count if or loop conditions
 			final DetailAST prevSibling = aAST.getPreviousSibling();
-			countable = (prevSibling == null)
-					|| (TokenTypes.LPAREN != prevSibling.getType());
+			countable = (prevSibling == null) || (TokenTypes.LPAREN != prevSibling.getType());
 			break;
 		default:
 			countable = false;
@@ -136,5 +126,4 @@ public class NcssCounter extends ASTVisitor {
 		}
 		return countable;
 	}
-
 }
