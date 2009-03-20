@@ -72,9 +72,10 @@ public class ResourceTest {
 	}
 
 	@Test
-	public void testGetResource() {
-		assertEquals(pac, prj.getResource(pac));
-		assertNull(prj.getResource(new Resource("toto", Type.FILE)));
+	public void testFindResource() {
+		assertEquals(pac, prj.findResource(pac));
+		assertEquals(pac, prj.findResource("org.sonar", Resource.Type.PACKAGE));
+		assertNull(prj.findResource(new Resource("toto", Type.FILE)));
 	}
 
 	@Test
@@ -82,4 +83,5 @@ public class ResourceTest {
 		String treeDump = "PACKAGE : org.sonar\n" + "-CLASS : Tata\n" + "-CLASS : Toto\n";
 		assertEquals(treeDump, pac.toString());
 	}
+	
 }

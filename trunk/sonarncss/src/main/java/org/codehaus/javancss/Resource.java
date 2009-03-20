@@ -223,17 +223,32 @@ public class Resource implements Comparable<Resource> {
 		return tree.toString();
 	}
 
-	public boolean contains(Resource resource) {
-		return children.contains(resource);
+	public boolean contains(Resource wantedRes) {
+		if(children.contains(wantedRes)){
+			return true;
+		} else {
+			for (Resource child : children) {
+				return child.contains(wantedRes);
+			}
+		}
+		return false;
 	}
 
-	public Resource getResource(Resource packageRes) {
+	public Resource findResource(Resource wantedRes) {
 		for (Resource child : children) {
-			if (child.equals(packageRes)) {
+			if (child.equals(wantedRes)) {
 				return child;
 			}
 		}
+		for (Resource child : children) {
+			return child.findResource(wantedRes);
+		}
 		return null;
+	}
+	
+	public Resource findResource(String resourceName, Type resourceType) {
+		Resource wanted = new Resource(resourceName, resourceType);
+		return findResource(wanted);
 	}
 
 	public boolean hasJavadoc() {

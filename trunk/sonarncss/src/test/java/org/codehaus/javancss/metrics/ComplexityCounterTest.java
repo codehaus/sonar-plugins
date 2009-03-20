@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.Resource;
+import org.codehaus.javancss.Resource.Type;
 import org.junit.Test;
 
 public class ComplexityCounterTest {
@@ -18,6 +19,9 @@ public class ComplexityCounterTest {
 	public void testSimpleBranches() {
 		Resource res = JavaNcss.analyze("target/test-classes/branches/SimpleBranches.java");
 		assertEquals(15, res.getComplexity());
+		
+		Resource simpleSwitch = res.findResource("simpleSwitch()", Type.METHOD);
+		assertEquals(3, simpleSwitch.getComplexity());		
 	}
 
 	@Test
