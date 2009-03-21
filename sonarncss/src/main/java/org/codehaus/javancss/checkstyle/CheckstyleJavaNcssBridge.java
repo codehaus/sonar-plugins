@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.codehaus.javancss.sensors.AbstractSensor;
+import org.codehaus.javancss.sensors.ASTSensor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,14 +34,14 @@ public class CheckstyleJavaNcssBridge extends Check {
 
 	private static Logger logger = LoggerFactory.getLogger(CheckstyleJavaNcssBridge.class);
 
-	private static List<AbstractSensor> javaNcssVisitors;
+	private static List<ASTSensor> javaNcssVisitors;
 
 	private static int[] allTokens;
 
-	public static void setJavaNcssASTVisitors(List<AbstractSensor> javaNcssVistors) {
+	public static void setJavaNcssASTVisitors(List<ASTSensor> javaNcssVistors) {
 		CheckstyleJavaNcssBridge.javaNcssVisitors = javaNcssVistors;
 		SortedSet<Integer> sorter = new TreeSet<Integer>();
-		for (AbstractSensor visitor : javaNcssVistors) {
+		for (ASTSensor visitor : javaNcssVistors) {
 			sorter.addAll(visitor.getWantedTokens());
 			allTokens = new int[sorter.size()];
 			int i = 0;
@@ -59,7 +59,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 
 	public void beginTree(DetailAST ast) {
 		try {
-			for (AbstractSensor visitor : javaNcssVisitors) {
+			for (ASTSensor visitor : javaNcssVisitors) {
 				visitor.setFileContents(getFileContents());
 				visitor.visitFile(ast);
 			}
@@ -71,7 +71,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 
 	public void visitToken(DetailAST ast) {
 		try {
-			for (AbstractSensor visitor : javaNcssVisitors) {
+			for (ASTSensor visitor : javaNcssVisitors) {
 				if (visitor.getWantedTokens().contains(ast.getType())) {
 					visitor.visitToken(ast);
 				}
@@ -85,7 +85,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 	public void leaveToken(DetailAST ast) {
 		try {
 			for (int i = javaNcssVisitors.size() - 1; i >= 0; i--) {
-				AbstractSensor visitor = javaNcssVisitors.get(i);
+				ASTSensor visitor = javaNcssVisitors.get(i);
 				if (visitor.getWantedTokens().contains(ast.getType())) {
 					visitor.leaveToken(ast);
 				}
@@ -99,7 +99,7 @@ public class CheckstyleJavaNcssBridge extends Check {
 	public void finishTree(DetailAST ast) {
 		try {
 			for (int i = javaNcssVisitors.size() - 1; i >= 0; i--) {
-				AbstractSensor visitor = javaNcssVisitors.get(i);
+				ASTSensor visitor = javaNcssVisitors.get(i);
 				visitor.leaveFile(ast);
 			}
 		} catch (RuntimeException e) {

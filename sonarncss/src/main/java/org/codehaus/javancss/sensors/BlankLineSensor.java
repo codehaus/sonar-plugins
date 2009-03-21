@@ -21,7 +21,7 @@ package org.codehaus.javancss.sensors;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
-public class BlankLineSensor extends AbstractSensor {
+public class BlankLineSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		long blankLines = 0;

@@ -28,7 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class JavadocSensor extends AbstractSensor {
+public class JavadocSensor extends ASTSensor {
 
 	@Override
 	public List<Integer> getWantedTokens() {

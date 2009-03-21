@@ -28,7 +28,7 @@ import java.util.Stack;
 import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.sensors.AbstractSensor;
+import org.codehaus.javancss.sensors.ASTSensor;
 import org.codehaus.javancss.sensors.BlankLineSensor;
 import org.codehaus.javancss.sensors.BrancheSensor;
 import org.codehaus.javancss.sensors.ClassSensor;
@@ -47,7 +47,7 @@ public class JavaNcss {
 	private final Resource project;
 	private final List<File> filesToAnalyse;
 
-	private final List<AbstractSensor> javaNcssVisitors = Arrays.asList(new PackageSensor(), new FileSensor(),
+	private final List<ASTSensor> javaNcssVisitors = Arrays.asList(new PackageSensor(), new FileSensor(),
 			new ClassSensor(), new MethodSensor(), new LocSensor(), new BlankLineSensor(), new CommentSensors(),
 			new NclocSensor(), new StatementSensor(), new BrancheSensor(), new ComplexitySensor(),
 			new JavadocSensor());
@@ -71,7 +71,7 @@ public class JavaNcss {
 		project = new Resource("Project", Resource.Type.PROJECT);
 		Stack<Resource> resourcesStack = new Stack<Resource>();
 		resourcesStack.add(project);
-		for (AbstractSensor visitor : javaNcssVisitors) {
+		for (ASTSensor visitor : javaNcssVisitors) {
 			visitor.setResourcesStack(resourcesStack);
 		}
 		CheckstyleJavaNcssBridge.setJavaNcssASTVisitors(javaNcssVisitors);
