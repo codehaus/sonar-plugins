@@ -24,8 +24,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.codehaus.javancss.Resource;
-import org.codehaus.javancss.Resource.Type;
+import org.codehaus.javancss.entities.Resource;
+import org.codehaus.javancss.entities.Resource.Type;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;

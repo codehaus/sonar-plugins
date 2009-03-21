@@ -27,6 +27,7 @@ import java.util.Stack;
 
 import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
+import org.codehaus.javancss.entities.Resource;
 import org.codehaus.javancss.metrics.ASTVisitor;
 import org.codehaus.javancss.metrics.BlankLinesCounter;
 import org.codehaus.javancss.metrics.BranchesCounter;

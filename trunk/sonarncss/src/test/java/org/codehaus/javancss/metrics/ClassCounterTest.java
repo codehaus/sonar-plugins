@@ -25,8 +25,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Iterator;
 
 import org.codehaus.javancss.JavaNcss;
-import org.codehaus.javancss.Resource;
-import org.codehaus.javancss.Resource.Type;
+import org.codehaus.javancss.entities.Resource;
+import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Test;
 
 public class ClassCounterTest {

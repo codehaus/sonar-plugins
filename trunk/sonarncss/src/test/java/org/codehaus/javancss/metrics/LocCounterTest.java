@@ -4,7 +4,7 @@ import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.javancss.JavaNcss;
-import org.codehaus.javancss.Resource;
+import org.codehaus.javancss.entities.Resource;
 import org.junit.Test;
 
 public class LocCounterTest {

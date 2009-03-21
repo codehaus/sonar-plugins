@@ -21,7 +21,7 @@ package org.codehaus.javancss.metrics;
 
 import java.util.StringTokenizer;
 
-import org.codehaus.javancss.Resource;
+import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 

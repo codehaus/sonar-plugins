@@ -6,7 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.codehaus.javancss.JavaNcss;
-import org.codehaus.javancss.Resource;
+import org.codehaus.javancss.entities.Resource;
 import org.junit.Test;
 
 public class JavaDocCounterTest {
