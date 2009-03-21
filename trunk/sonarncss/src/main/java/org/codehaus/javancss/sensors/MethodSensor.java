@@ -17,7 +17,7 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +30,7 @@ import org.codehaus.javancss.entities.Resource.Type;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class MethodCounter extends ASTVisitor {
+public class MethodSensor extends AbstractSensor {
 
 	@Override
 	public List<Integer> getWantedTokens() {

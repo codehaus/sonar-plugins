@@ -16,7 +16,7 @@ for more details.
 You should have received a copy of the GNU General Public License
 along with JavaNCSS; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.metrics;
+Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.sensors;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
@@ -28,14 +28,15 @@ import java.util.List;
 import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.entities.Resource;
 import org.codehaus.javancss.entities.Resource.Type;
+import org.codehaus.javancss.sensors.FileSensor;
 import org.junit.Test;
 
-public class FileCounterTest {
+public class FileSensorTest {
 
 	@Test
 	public void testExtractFileNameFromFilePath() {
 		String filename = "/toto/tata/org/codehaus/sonar/MyClass.java";
-		assertEquals("MyClass.java", FileCounter.extractFileNameFromFilePath(filename));
+		assertEquals("MyClass.java", FileSensor.extractFileNameFromFilePath(filename));
 	}
 
 	@Test

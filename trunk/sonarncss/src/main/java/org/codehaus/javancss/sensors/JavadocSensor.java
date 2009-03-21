@@ -17,25 +17,49 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
 import java.util.Arrays;
 import java.util.List;
 
+import org.codehaus.javancss.entities.Resource;
+
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class BranchesCounter extends ASTVisitor {
+public class JavadocSensor extends AbstractSensor {
 
 	@Override
 	public List<Integer> getWantedTokens() {
-		return Arrays.asList(TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR,
-				TokenTypes.LITERAL_IF, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_CATCH, TokenTypes.QUESTION,
-				TokenTypes.LAND, TokenTypes.LOR);
+		return Arrays
+				.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.METHOD_DEF, TokenTypes.CTOR_DEF);
 	}
 
 	@Override
 	public void visitToken(DetailAST ast) {
-		peekResource().incrementBranches();
+		Resource currentResource = peekResource();
+		TextBlock javadoc = getFileContents().getJavadocBefore(ast.getLineNo());
+		if (javadoc != null) {
+			currentResource.setJavadocLines(countRealCommentLines(javadoc));
+			currentResource.setJavadocBlocks(1);
+			currentResource.setJavadoc(true);
+		} else {
+			peekResource();
+		}
+	}
+
+	private long countRealCommentLines(TextBlock javadoc) {
+		int cCommentsLines = 0;
+		for (int i = 0; i < javadoc.getText().length; i++) {
+			String commentLine = javadoc.getText()[i];
+			commentLine = commentLine.replace('*', ' ').replace('/', ' ').trim();
+			if (commentLine.length() != 0) {
+				cCommentsLines++;
+			}
+
+		}
+
+		return cCommentsLines;
 	}
 }

@@ -28,29 +28,29 @@ import java.util.Stack;
 import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.metrics.ASTVisitor;
-import org.codehaus.javancss.metrics.BlankLinesCounter;
-import org.codehaus.javancss.metrics.BranchesCounter;
-import org.codehaus.javancss.metrics.ClassCounter;
-import org.codehaus.javancss.metrics.CommentCounter;
-import org.codehaus.javancss.metrics.ComplexityCounter;
-import org.codehaus.javancss.metrics.FileCounter;
-import org.codehaus.javancss.metrics.JavaDocCounter;
-import org.codehaus.javancss.metrics.LocCounter;
-import org.codehaus.javancss.metrics.MethodCounter;
-import org.codehaus.javancss.metrics.NcLocCounter;
-import org.codehaus.javancss.metrics.PackageCounter;
-import org.codehaus.javancss.metrics.StatementsCounter;
+import org.codehaus.javancss.sensors.AbstractSensor;
+import org.codehaus.javancss.sensors.BlankLineSensor;
+import org.codehaus.javancss.sensors.BrancheSensor;
+import org.codehaus.javancss.sensors.ClassSensor;
+import org.codehaus.javancss.sensors.CommentSensors;
+import org.codehaus.javancss.sensors.ComplexitySensor;
+import org.codehaus.javancss.sensors.FileSensor;
+import org.codehaus.javancss.sensors.JavadocSensor;
+import org.codehaus.javancss.sensors.LocSensor;
+import org.codehaus.javancss.sensors.MethodSensor;
+import org.codehaus.javancss.sensors.NclocSensor;
+import org.codehaus.javancss.sensors.PackageSensor;
+import org.codehaus.javancss.sensors.StatementSensor;
 
 public class JavaNcss {
 
 	private final Resource project;
 	private final List<File> filesToAnalyse;
 
-	private final List<ASTVisitor> javaNcssVisitors = Arrays.asList(new PackageCounter(), new FileCounter(),
-			new ClassCounter(), new MethodCounter(), new LocCounter(), new BlankLinesCounter(), new CommentCounter(),
-			new NcLocCounter(), new StatementsCounter(), new BranchesCounter(), new ComplexityCounter(),
-			new JavaDocCounter());
+	private final List<AbstractSensor> javaNcssVisitors = Arrays.asList(new PackageSensor(), new FileSensor(),
+			new ClassSensor(), new MethodSensor(), new LocSensor(), new BlankLineSensor(), new CommentSensors(),
+			new NclocSensor(), new StatementSensor(), new BrancheSensor(), new ComplexitySensor(),
+			new JavadocSensor());
 
 	private JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));
@@ -71,7 +71,7 @@ public class JavaNcss {
 		project = new Resource("Project", Resource.Type.PROJECT);
 		Stack<Resource> resourcesStack = new Stack<Resource>();
 		resourcesStack.add(project);
-		for (ASTVisitor visitor : javaNcssVisitors) {
+		for (AbstractSensor visitor : javaNcssVisitors) {
 			visitor.setResourcesStack(resourcesStack);
 		}
 		CheckstyleJavaNcssBridge.setJavaNcssASTVisitors(javaNcssVisitors);

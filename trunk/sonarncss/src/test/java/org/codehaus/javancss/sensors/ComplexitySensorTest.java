@@ -1,4 +1,4 @@
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
@@ -8,7 +8,7 @@ import org.codehaus.javancss.entities.Resource;
 import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Test;
 
-public class ComplexityCounterTest {
+public class ComplexitySensorTest {
 
 	@Test
 	public void testNoBranches() {

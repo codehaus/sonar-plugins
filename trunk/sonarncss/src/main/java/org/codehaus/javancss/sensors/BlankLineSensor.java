@@ -17,37 +17,20 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
-
-import org.codehaus.javancss.entities.Resource;
+package org.codehaus.javancss.sensors;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FullIdent;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class PackageCounter extends ASTVisitor {
+public class BlankLineSensor extends AbstractSensor {
 
 	public void visitFile(DetailAST ast) {
-		Resource packageRes = extractPackage(ast);
-
-		if (peekResource().contains(packageRes)) {
-			packageRes = peekResource().find(packageRes);
+		long blankLines = 0;
+		for (int i = 0; i < getFileContents().getLines().length; i++) {
+			if (getFileContents().lineIsBlank(i)) {
+				blankLines++;
+			}
 		}
-		addResource(packageRes);
+		peekResource().setBlankLines(blankLines);
 	}
 
-	public void leaveFile(DetailAST ast) {
-		popResource();
-	}
-
-	private Resource extractPackage(DetailAST ast) {
-		Resource packageRes;
-		if (ast.getType() != TokenTypes.PACKAGE_DEF) {
-			packageRes = new Resource("[default]", Resource.Type.PACKAGE);
-		} else {
-			String packageName = FullIdent.createFullIdent(ast.getLastChild().getPreviousSibling()).getText();
-			packageRes = new Resource(packageName, Resource.Type.PACKAGE);
-		}
-		return packageRes;
-	}
 }
