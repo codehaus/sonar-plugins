@@ -3,6 +3,7 @@ package org.codehaus.javancss;
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
+import org.codehaus.javancss.entities.Resource;
 import org.junit.Test;
 
 public class JavaNcssTest {
