@@ -24,7 +24,7 @@ import java.util.List;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 
-public class CommentSensors extends AbstractSensor {
+public class CommentSensors extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		long commentLines = getFileContents().getCppComments().size() + calculateCCommentsLines();

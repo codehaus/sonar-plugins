@@ -25,7 +25,7 @@ import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
-public class FileSensor extends AbstractSensor {
+public class FileSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		String fileName = extractFileNameFromFilePath(getFileContents().getFilename());

@@ -23,7 +23,7 @@ import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
-public class NclocSensor extends AbstractSensor {
+public class NclocSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		Resource res = peekResource();

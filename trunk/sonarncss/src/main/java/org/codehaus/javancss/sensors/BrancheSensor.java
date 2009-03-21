@@ -25,7 +25,7 @@ import java.util.List;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class BrancheSensor extends AbstractSensor {
+public class BrancheSensor extends ASTSensor {
 
 	@Override
 	public List<Integer> getWantedTokens() {

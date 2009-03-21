@@ -28,7 +28,7 @@ import org.codehaus.javancss.entities.Resource;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FileContents;
 
-public abstract class AbstractSensor {
+public abstract class ASTSensor {
 
 	private Stack<Resource> resourcesStack;
 	private FileContents fileContents;

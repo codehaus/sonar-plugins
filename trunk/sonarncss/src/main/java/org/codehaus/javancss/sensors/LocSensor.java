@@ -21,7 +21,7 @@ package org.codehaus.javancss.sensors;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
-public class LocSensor extends AbstractSensor {
+public class LocSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		peekResource().setLoc(getFileContents().getLines().length);

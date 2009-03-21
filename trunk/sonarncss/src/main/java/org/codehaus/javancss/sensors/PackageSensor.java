@@ -25,7 +25,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class PackageSensor extends AbstractSensor {
+public class PackageSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		Resource packageRes = extractPackage(ast);

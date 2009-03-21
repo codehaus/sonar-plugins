@@ -28,7 +28,7 @@ import org.codehaus.javancss.entities.Resource.Type;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class ClassSensor extends AbstractSensor {
+public class ClassSensor extends ASTSensor {
 
 	@Override
 	public List<Integer> getWantedTokens() {
