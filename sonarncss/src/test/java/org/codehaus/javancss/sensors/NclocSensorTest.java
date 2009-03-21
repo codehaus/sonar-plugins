@@ -1,4 +1,4 @@
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
@@ -7,18 +7,11 @@ import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.entities.Resource;
 import org.junit.Test;
 
-public class LocCounterTest {
-
-	@Test
-	public void analyseTest001() {
-
-		Resource res = JavaNcss.analyze(getFile("/Test001.java"));
-		assertEquals(25, res.getLoc());
-	}
+public class NclocSensorTest {
 
 	@Test
 	public void analyseTest002() {
 		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
-		assertEquals(19, res.getLoc());
+		assertEquals(13, res.getNcloc());
 	}
 }

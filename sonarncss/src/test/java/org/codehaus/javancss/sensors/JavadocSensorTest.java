@@ -1,4 +1,4 @@
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
@@ -9,7 +9,7 @@ import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.entities.Resource;
 import org.junit.Test;
 
-public class JavaDocCounterTest {
+public class JavadocSensorTest {
 
 	@Test
 	public void analyseJavaDocCounter() {

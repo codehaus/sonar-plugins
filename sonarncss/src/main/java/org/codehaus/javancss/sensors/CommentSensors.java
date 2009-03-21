@@ -17,14 +17,14 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
 import java.util.List;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 
-public class CommentCounter extends ASTVisitor {
+public class CommentSensors extends AbstractSensor {
 
 	public void visitFile(DetailAST ast) {
 		long commentLines = getFileContents().getCppComments().size() + calculateCCommentsLines();

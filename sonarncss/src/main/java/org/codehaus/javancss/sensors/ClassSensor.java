@@ -17,16 +17,34 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.codehaus.javancss.entities.Resource;
+import org.codehaus.javancss.entities.Resource.Type;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class NcLocCounter extends ASTVisitor {
+public class ClassSensor extends AbstractSensor {
 
-	public void visitFile(DetailAST ast) {
-		Resource res = peekResource();
-		res.setNcloc(res.getLoc() - res.getCommentLines() - res.getBlankLines());
+	@Override
+	public List<Integer> getWantedTokens() {
+		return Arrays.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF);
+	}
+
+	public void visitToken(DetailAST ast) {
+		String className = ast.findFirstToken(TokenTypes.IDENT).getText();
+		if(peekResource().getType().equals(Type.CLASS)){
+			className = peekResource().getName() + "#" + className;
+		}
+		Resource classRes = new Resource(className, Resource.Type.CLASS);
+		addResource(classRes);
+	}
+
+	public void leaveToken(DetailAST ast) {
+		popResource();
 	}
 }

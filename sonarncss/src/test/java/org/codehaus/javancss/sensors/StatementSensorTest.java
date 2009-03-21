@@ -16,7 +16,7 @@ for more details.
 You should have received a copy of the GNU General Public License
 along with JavaNCSS; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.metrics;
+Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.sensors;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
@@ -26,7 +26,7 @@ import org.codehaus.javancss.entities.Resource;
 import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Test;
 
-public class StatementsCounterTest {
+public class StatementSensorTest {
 
 	@Test
 	public void testNoStatements() {

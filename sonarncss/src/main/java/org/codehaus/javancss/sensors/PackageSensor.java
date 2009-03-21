@@ -17,27 +17,37 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
-
-import java.util.Arrays;
-import java.util.List;
+package org.codehaus.javancss.sensors;
 
 import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-public class ComplexityCounter extends ASTVisitor {
+public class PackageSensor extends AbstractSensor {
 
-	@Override
-	public List<Integer> getWantedTokens() {
-		return Arrays.asList(TokenTypes.CTOR_DEF, TokenTypes.METHOD_DEF, TokenTypes.INSTANCE_INIT,
-				TokenTypes.STATIC_INIT);
+	public void visitFile(DetailAST ast) {
+		Resource packageRes = extractPackage(ast);
+
+		if (peekResource().contains(packageRes)) {
+			packageRes = peekResource().find(packageRes);
+		}
+		addResource(packageRes);
 	}
 
-	@Override
-	public void leaveToken(DetailAST ast) {
-		Resource res = peekResource();
-		res.setComplexity(res.getComplexity() + res.getBranches() + 1);
+	public void leaveFile(DetailAST ast) {
+		popResource();
+	}
+
+	private Resource extractPackage(DetailAST ast) {
+		Resource packageRes;
+		if (ast.getType() != TokenTypes.PACKAGE_DEF) {
+			packageRes = new Resource("[default]", Resource.Type.PACKAGE);
+		} else {
+			String packageName = FullIdent.createFullIdent(ast.getLastChild().getPreviousSibling()).getText();
+			packageRes = new Resource(packageName, Resource.Type.PACKAGE);
+		}
+		return packageRes;
 	}
 }

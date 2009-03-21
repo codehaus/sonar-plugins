@@ -17,13 +17,16 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
+
+import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 
-public class LocCounter extends ASTVisitor {
+public class NclocSensor extends AbstractSensor {
 
 	public void visitFile(DetailAST ast) {
-		peekResource().setLoc(getFileContents().getLines().length);
+		Resource res = peekResource();
+		res.setNcloc(res.getLoc() - res.getCommentLines() - res.getBlankLines());
 	}
 }

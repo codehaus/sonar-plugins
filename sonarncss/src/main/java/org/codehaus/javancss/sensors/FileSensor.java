@@ -17,60 +17,32 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.javancss.metrics;
+package org.codehaus.javancss.sensors;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.StringTokenizer;
 
 import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.FileContents;
 
-public abstract class ASTVisitor {
-
-	private Stack<Resource> resourcesStack;
-	private FileContents fileContents;
-
-	public final void setFileContents(FileContents fileContents) {
-		this.fileContents = fileContents;
-	}
-	
-	public final FileContents getFileContents(){
-		return fileContents;
-	}
-
-	public List<Integer> getWantedTokens() {
-		return new ArrayList<Integer>();
-	}
-
-	public final void setResourcesStack(Stack<Resource> resourcesStack) {
-		this.resourcesStack = resourcesStack;
-	}
-
-	public final void addResource(Resource child) {
-		peekResource().addChild(child);
-		resourcesStack.add(child);
-	}
-
-	public final void popResource() {
-		resourcesStack.pop();
-	}
-
-	public final Resource peekResource() {
-		return resourcesStack.peek();
-	}
+public class FileSensor extends AbstractSensor {
 
 	public void visitFile(DetailAST ast) {
-	}
-
-	public void visitToken(DetailAST ast) {
-	}
-
-	public void leaveToken(DetailAST ast) {
+		String fileName = extractFileNameFromFilePath(getFileContents().getFilename());
+		Resource fileRes = new Resource(fileName, Resource.Type.FILE);
+		addResource(fileRes);
 	}
 
 	public void leaveFile(DetailAST ast) {
+		popResource();
+	}
+
+	public static String extractFileNameFromFilePath(String filename) {
+		String className = "";
+		StringTokenizer tokens = new StringTokenizer(filename, "/\\");
+		while (tokens.hasMoreTokens()) {
+			className = tokens.nextToken();
+		}
+		return className;
 	}
 }
