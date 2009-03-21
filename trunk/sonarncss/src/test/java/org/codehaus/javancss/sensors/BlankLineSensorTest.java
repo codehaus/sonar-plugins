@@ -12,12 +12,12 @@ public class BlankLineSensorTest {
 	@Test
 	public void analyseTest002() {
 		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
-		assertEquals(5, res.getBlankLines());
+		assertEquals(5, res.measures.getBlankLines());
 	}
 
 	@Test
 	public void analyseTest001() {
 		Resource res = JavaNcss.analyze(getFile("/Test001.java"));
-		assertEquals(3, res.getBlankLines());
+		assertEquals(3, res.measures.getBlankLines());
 	}
 }

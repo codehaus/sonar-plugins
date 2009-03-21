@@ -41,9 +41,9 @@ public class JavadocSensor extends ASTSensor {
 		Resource currentResource = peekResource();
 		TextBlock javadoc = getFileContents().getJavadocBefore(ast.getLineNo());
 		if (javadoc != null) {
-			currentResource.setJavadocLines(countRealCommentLines(javadoc));
-			currentResource.setJavadocBlocks(1);
-			currentResource.setJavadoc(true);
+			currentResource.measures.setJavadocLines(countRealCommentLines(javadoc));
+			currentResource.measures.setJavadocBlocks(1);
+			currentResource.measures.setJavadoc(true);
 		} else {
 			peekResource();
 		}

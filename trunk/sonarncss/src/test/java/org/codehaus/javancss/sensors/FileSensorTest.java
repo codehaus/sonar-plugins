@@ -46,7 +46,7 @@ public class FileSensorTest {
 		files.add(getFile("/Test003.java"));
 		Resource project = JavaNcss.analyze(files);
 		
-		assertEquals(2, project.getFiles());
+		assertEquals(2, project.measures.getFiles());
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
 		assertEquals("Test002.java", file.getName());

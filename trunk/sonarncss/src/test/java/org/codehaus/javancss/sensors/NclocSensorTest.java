@@ -12,6 +12,6 @@ public class NclocSensorTest {
 	@Test
 	public void analyseTest002() {
 		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
-		assertEquals(13, res.getNcloc());
+		assertEquals(13, res.measures.getNcloc());
 	}
 }

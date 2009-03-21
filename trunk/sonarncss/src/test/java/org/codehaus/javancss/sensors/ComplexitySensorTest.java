@@ -13,21 +13,21 @@ public class ComplexitySensorTest {
 	@Test
 	public void testNoBranches() {
 		Resource res = JavaNcss.analyze(getFile("/branches/NoBranches.java"));
-		assertEquals(3, res.getComplexity());
+		assertEquals(3, res.measures.getComplexity());
 	}
 
 	@Test
 	public void testSimpleBranches() {
 		Resource res = JavaNcss.analyze(getFile("/branches/SimpleBranches.java"));
-		assertEquals(15, res.getComplexity());
+		assertEquals(15, res.measures.getComplexity());
 		
 		Resource simpleSwitch = res.find("simpleSwitch()", Type.METHOD);
-		assertEquals(3, simpleSwitch.getComplexity());		
+		assertEquals(3, simpleSwitch.measures.getComplexity());		
 	}
 
 	@Test
 	public void testInstanceAndStaticInitBlocks() {
 		Resource res = JavaNcss.analyze(getFile("/complexity/InstanceAndStaticInitBlocks.java"));
-		assertEquals(2, res.getComplexity());
+		assertEquals(2, res.measures.getComplexity());
 	}
 }

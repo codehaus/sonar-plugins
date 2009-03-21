@@ -14,11 +14,11 @@ public class JavadocSensorTest {
 	@Test
 	public void analyseJavaDocCounter() {
 		Resource res = JavaNcss.analyze(getFile("/JavaDocCounter.java"));
-		assertEquals(4, res.getJavadocLines());
-		assertEquals(2, res.getJavadocBlocks());
-		assertFalse(res.hasJavadoc());
+		assertEquals(4, res.measures.getJavadocLines());
+		assertEquals(2, res.measures.getJavadocBlocks());
+		assertFalse(res.measures.hasJavadoc());
 
 		Resource classResource = res.getFirstChild().getFirstChild().getFirstChild();
-		assertTrue(classResource.hasJavadoc());
+		assertTrue(classResource.measures.hasJavadoc());
 	}
 }

@@ -40,7 +40,7 @@ public class StatementSensor extends ASTSensor {
 	@Override
 	public void visitToken(DetailAST ast) {
 		if (isCountable(ast)) {
-			peekResource().incrementStatements();
+			peekResource().measures.addstatement();
 		}
 	}
 
