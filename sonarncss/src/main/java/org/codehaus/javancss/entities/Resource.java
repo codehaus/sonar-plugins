@@ -29,39 +29,13 @@ public class Resource implements Comparable<Resource> {
 		PROJECT, PACKAGE, FILE, CLASS, METHOD
 	}
 
-	private Type type;
+	private final Type type;
 
-	private String name;
+	private final String name;
 
 	private Resource parent;
 
-	protected long loc = 0;
-
-	protected long ncloc = 0;
-
-	protected long blankLines = 0;
-
-	protected long statements = 0;
-
-	protected long commentLines = 0;
-
-	protected long complexity = 0;
-
-	protected long branches = 0;
-
-	protected long methods = 0;
-
-	protected long classes = 0;
-
-	protected long files = 0;
-
-	protected long packages = 0;
-
-	protected long javadocLines = 0;
-
-	protected long javadocBlocks = 0;
-
-	protected boolean javadoc = false;
+	public final Measures measures = new Measures();
 
 	private SortedSet<Resource> children = new TreeSet<Resource>();
 
@@ -69,13 +43,13 @@ public class Resource implements Comparable<Resource> {
 		this.name = name;
 		this.type = type;
 		if (type.equals(Type.PACKAGE)) {
-			packages++;
+			measures.setPackages(measures.getPackages() + 1);
 		} else if (type.equals(Type.FILE)) {
-			files++;
+			measures.setFiles(measures.getFiles() + 1);
 		} else if (type.equals(Type.CLASS)) {
-			classes++;
+			measures.setClasses(measures.getClasses() + 1);
 		} else if (type.equals(Type.METHOD)) {
-			methods++;
+			measures.setMethods(measures.getMethods() + 1);
 		}
 	}
 
@@ -133,82 +107,6 @@ public class Resource implements Comparable<Resource> {
 		return name.hashCode() + type.hashCode();
 	}
 
-	public long getClasses() {
-		return classes;
-	}
-
-	public long getMethods() {
-		return methods;
-	}
-
-	public long getNcloc() {
-		return ncloc;
-	}
-
-	public void setNcloc(long ncLoc) {
-		this.ncloc = ncLoc;
-	}
-
-	public void setCommentLines(long commentLines) {
-		this.commentLines = commentLines;
-	}
-
-	public long getCommentLines() {
-		return commentLines;
-	}
-
-	public void setLoc(long loc) {
-		this.loc = loc;
-	}
-
-	public long getLoc() {
-		return loc;
-	}
-
-	public void incrementStatements() {
-		statements++;
-	}
-
-	public long getStatements() {
-		return statements;
-	}
-
-	public void setComplexity(long cc) {
-		this.complexity = cc;
-	}
-
-	public long getBlankLines() {
-		return blankLines;
-	}
-
-	public void setBlankLines(long blankLines) {
-		this.blankLines = blankLines;
-	}
-
-	public long getComplexity() {
-		return complexity;
-	}
-
-	public long getJavadocBlocks() {
-		return javadocBlocks;
-	}
-
-	public void setJavadocLines(long javadocLines) {
-		this.javadocLines = javadocLines;
-	}
-
-	public void setJavadocBlocks(long javadocBlocks) {
-		this.javadocBlocks = javadocBlocks;
-	}
-
-	public long getJavadocLines() {
-		return javadocLines;
-	}
-
-	public long getFiles() {
-		return files;
-	}
-
 	public String toString() {
 		StringBuffer tree = new StringBuffer();
 		tree.append(getType() + " : " + getName() + "\n");
@@ -235,7 +133,7 @@ public class Resource implements Comparable<Resource> {
 	}
 
 	public Resource find(Resource wantedRes) {
-		if(wantedRes.equals(this)){
+		if (wantedRes.equals(this)) {
 			return this;
 		}
 		for (Resource child : children) {
@@ -252,42 +150,12 @@ public class Resource implements Comparable<Resource> {
 		return find(wanted);
 	}
 
-	public boolean hasJavadoc() {
-		return javadoc;
-	}
-
-	public void setJavadoc(boolean javadoc) {
-		this.javadoc = javadoc;
-	}
-
-	public long getBranches() {
-		return branches;
-	}
-
-	public void incrementBranches() {
-		branches++;
-	}
-
 	public final void compute() {
 		for (Resource child : getChildren()) {
 			if (child.getChildren() != null) {
 				child.compute();
-				loc += child.loc;
-				ncloc += child.ncloc;
-				complexity += child.complexity;
-				branches += child.branches;
-				statements += child.statements;
-				javadocBlocks += child.javadocBlocks;
-				commentLines += child.commentLines;
-				javadocLines += child.javadocLines;
-				methods += child.methods;
-				classes += child.classes;
-				files += child.files;
-				packages += child.packages;
-				blankLines += child.blankLines;
+				measures.addMeasures(child.measures);
 			}
-
 		}
-
 	}
 }

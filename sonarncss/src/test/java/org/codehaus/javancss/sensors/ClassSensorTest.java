@@ -36,7 +36,7 @@ public class ClassSensorTest {
 		Resource project = JavaNcss.analyze(getFile("/Test003.java"));
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
-		assertEquals(3, file.getClasses());
+		assertEquals(3, file.measures.getClasses());
 
 		Iterator<Resource> classes = file.getChildren().iterator();
 		Resource anotherClass = classes.next();
@@ -55,7 +55,7 @@ public class ClassSensorTest {
 	public void analyseClassCounterEnum() {
 		Resource project = JavaNcss.analyze(getFile("/ClassCounterEnum.java"));
 		Resource defaultPackage = project.getFirstChild();
-		assertEquals(1, defaultPackage.getClasses());
+		assertEquals(1, defaultPackage.measures.getClasses());
 	}
 
 }

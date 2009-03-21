@@ -13,12 +13,12 @@ public class LocSensorTest {
 	public void analyseTest001() {
 
 		Resource res = JavaNcss.analyze(getFile("/Test001.java"));
-		assertEquals(25, res.getLoc());
+		assertEquals(25, res.measures.getLoc());
 	}
 
 	@Test
 	public void analyseTest002() {
 		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
-		assertEquals(19, res.getLoc());
+		assertEquals(19, res.measures.getLoc());
 	}
 }

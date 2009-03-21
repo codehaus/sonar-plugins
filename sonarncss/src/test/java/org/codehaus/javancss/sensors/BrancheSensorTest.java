@@ -12,12 +12,12 @@ public class BrancheSensorTest {
 	@Test
 	public void testNoBranches() {
 		Resource res = JavaNcss.analyze(getFile("/branches/NoBranches.java"));
-		assertEquals(0, res.getBranches());
+		assertEquals(0, res.measures.getBranches());
 	}
 
 	@Test
 	public void testSimpleBranches() {
 		Resource res = JavaNcss.analyze(getFile("/branches/SimpleBranches.java"));
-		assertEquals(8, res.getBranches());
+		assertEquals(8, res.measures.getBranches());
 	}
 }

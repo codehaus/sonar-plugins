@@ -31,9 +31,9 @@ public class StatementSensorTest {
 	@Test
 	public void testNoStatements() {
 		Resource res = JavaNcss.analyze(getFile("/statements/NoStatements.java"));
-		assertEquals(10, res.getStatements());
+		assertEquals(10, res.measures.getStatements());
 
 		Resource simpleIf = res.find("simpleIf()", Type.METHOD);
-		assertEquals(3, simpleIf.getStatements());
+		assertEquals(3, simpleIf.measures.getStatements());
 	}
 }

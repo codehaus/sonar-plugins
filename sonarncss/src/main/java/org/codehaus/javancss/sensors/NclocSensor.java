@@ -27,6 +27,6 @@ public class NclocSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		Resource res = peekResource();
-		res.setNcloc(res.getLoc() - res.getCommentLines() - res.getBlankLines());
+		res.measures.setNcloc(res.measures.getLoc() - res.measures.getCommentLines() - res.measures.getBlankLines());
 	}
 }

@@ -12,8 +12,8 @@ public class JavaNcssTest {
 	public void analyseTest102() {
 		Resource project = JavaNcss.analyze(getFile("/"));
 
-		assertEquals(9, project.getFiles());
-		assertEquals(11, project.getClasses());
+		assertEquals(9, project.measures.getFiles());
+		assertEquals(11, project.measures.getClasses());
 	}
 
 }
