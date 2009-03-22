@@ -244,14 +244,6 @@ public class Measures {
 			methodsWithJavadoc += measures.getMethodsWithJavadoc();
 			classesWithJavadoc += measures.getClassesWithJavadoc();
 		}
-		/*
-		 * long[] tmpMethodCmps = new long[(int) methods]; int index = 0;
-		 * System.arraycopy(methodCmps, 0, tmpMethodCmps, index,
-		 * methodCmps.length); index = index + methodCmps.length; for (Measures
-		 * measures : measuresList) { System.arraycopy(measures.methodCmps, 0,
-		 * tmpMethodCmps, index, measures.methodCmps.length); index = index +
-		 * measures.methodCmps.length; }
-		 */
 	}
 
 	public void addMeasures(Measures... measuresArray) {
