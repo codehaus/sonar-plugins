@@ -76,6 +76,33 @@ public class Measures {
 		}
 	}
 
+	public double getAvgMethodStmts() {
+		if (methods != 0) {
+			return (double) statements / (double) methods;
+		} else {
+			throw new IllegalStateException(
+					"Unable to compute the average statements by method as the number of methods == 0");
+		}
+	}
+
+	public double getAvgClassStmts() {
+		if (classes != 0) {
+			return (double) statements / (double) classes;
+		} else {
+			throw new IllegalStateException(
+					"Unable to compute the average statements by class as the number of classes == 0");
+		}
+	}
+
+	public double getAvgFileStmts() {
+		if (files != 0) {
+			return (double) statements / (double) files;
+		} else {
+			throw new IllegalStateException(
+					"Unable to compute the average statements by file as the number of files == 0");
+		}
+	}
+
 	public JavaType getJavaType() {
 		return javaType;
 	}

@@ -16,21 +16,26 @@ public class JavaNcssTest {
 	@Test
 	public void testAnalyseCommonsCollections321() {
 		Resource prj = JavaNcss.analyze(getFile("/commons-collections-3.2.1-src"));
-		
+
 		assertEquals(12, prj.measures.getPackages());
+		assertEquals(273, prj.measures.getFiles());
 		assertEquals(412, prj.measures.getClasses());
 		assertEquals(3863, prj.measures.getMethods());
-		
+
 		assertEquals(63852, prj.measures.getLoc());
 		assertEquals(40201, prj.measures.getNcloc());
 		assertEquals(6426, prj.measures.getBlankLines());
 		assertEquals(17303, prj.measures.getStatements());
 		assertEquals(6842, prj.measures.getComplexity());
 		assertEquals(2977, prj.measures.getBranches());
-		
+
 		assertEquals(25.06, prj.measures.getAvgFileCmp(), 0.01);
 		assertEquals(16.60, prj.measures.getAvgClassCmp(), 0.01);
 		assertEquals(1.77, prj.measures.getAvgMethodCmp(), 0.01);
+
+		assertEquals(63.38, prj.measures.getAvgFileStmts(), 0.01);
+		assertEquals(41.99, prj.measures.getAvgClassStmts(), 0.01);
+		assertEquals(4.47, prj.measures.getAvgMethodStmts(), 0.01);
 
 		assertEquals(17225, prj.measures.getCommentLines());
 		assertEquals(15808, prj.measures.getJavadocLines());
