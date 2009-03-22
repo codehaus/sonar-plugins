@@ -2,18 +2,61 @@ package org.codehaus.javancss;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
 import org.junit.Test;
 
 public class JavaNcssTest {
 
 	@Test
-	public void analyseTest102() {
-		Resource project = JavaNcss.analyze(getFile("/"));
+	public void testAnalyseCommonsCollections321() {
+		Resource prj = JavaNcss.analyze(getFile("/commons-collections-3.2.1-src"));
+		
+		assertEquals(12, prj.measures.getPackages());
+		assertEquals(412, prj.measures.getClasses());
+		assertEquals(3863, prj.measures.getMethods());
+		
+		assertEquals(63852, prj.measures.getLoc());
+		assertEquals(40201, prj.measures.getNcloc());
+		assertEquals(6426, prj.measures.getBlankLines());
+		assertEquals(17303, prj.measures.getStatements());
+		assertEquals(6842, prj.measures.getComplexity());
+		assertEquals(2977, prj.measures.getBranches());
+		
+		assertEquals(25.06, prj.measures.getAvgFileCmp(), 0.01);
+		assertEquals(16.60, prj.measures.getAvgClassCmp(), 0.01);
+		assertEquals(1.77, prj.measures.getAvgMethodCmp(), 0.01);
 
-		assertEquals(9, project.measures.getFiles());
-		assertEquals(11, project.measures.getClasses());
+		assertEquals(17225, prj.measures.getCommentLines());
+		assertEquals(15808, prj.measures.getJavadocLines());
+		assertEquals(0.26, prj.measures.getPercentOfCommentLines(), 0.01);
+		assertEquals(0.91, prj.measures.getPercentOfClassesWithJavadoc(), 0.01);
+		assertEquals(0.64, prj.measures.getPercentOfMethodsWithJavadoc(), 0.01);
+
+		Resource listPackage = prj.find("org.apache.commons.collections.list", JavaType.PACKAGE);
+		assertEquals(1403, listPackage.measures.getStatements());
 	}
 
+	@Test
+	public void testAnalyseWrongFile() {
+		Resource prj = JavaNcss.analyze("/fanthomDirectory");
+		assertNotNull(prj);
+	}
+
+	@Test
+	public void testAnalyseNullFil() {
+		File dir = null;
+		try {
+			JavaNcss.analyze(dir);
+		} catch (IllegalStateException exception) {
+			assertTrue(true);
+		} catch (Error e) {
+			assertTrue(false);
+		}
+	}
 }

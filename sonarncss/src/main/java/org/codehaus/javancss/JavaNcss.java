@@ -27,6 +27,7 @@ import java.util.Stack;
 
 import org.codehaus.javancss.checkstyle.CheckstyleJavaNcssBridge;
 import org.codehaus.javancss.checkstyle.CheckstyleLauncher;
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
 import org.codehaus.javancss.sensors.ASTSensor;
 import org.codehaus.javancss.sensors.BlankLineSensor;
@@ -38,7 +39,6 @@ import org.codehaus.javancss.sensors.FileSensor;
 import org.codehaus.javancss.sensors.JavadocSensor;
 import org.codehaus.javancss.sensors.LocSensor;
 import org.codehaus.javancss.sensors.MethodSensor;
-import org.codehaus.javancss.sensors.NclocSensor;
 import org.codehaus.javancss.sensors.PackageSensor;
 import org.codehaus.javancss.sensors.StatementSensor;
 
@@ -49,8 +49,7 @@ public class JavaNcss {
 
 	private final List<ASTSensor> javaNcssVisitors = Arrays.asList(new PackageSensor(), new FileSensor(),
 			new ClassSensor(), new MethodSensor(), new LocSensor(), new BlankLineSensor(), new CommentSensors(),
-			new NclocSensor(), new StatementSensor(), new BrancheSensor(), new ComplexitySensor(),
-			new JavadocSensor());
+			new JavadocSensor(), new StatementSensor(), new BrancheSensor(), new ComplexitySensor());
 
 	private JavaNcss(File dirToAnalyse) {
 		this(traverse(dirToAnalyse));
@@ -62,13 +61,16 @@ public class JavaNcss {
 	}
 
 	public static Resource analyze(File dirOrFileToAnalyze) {
+		if (dirOrFileToAnalyze == null) {
+			throw new IllegalStateException("There is no directory or file to analyse as the File object is null.");
+		}
 		JavaNcss javaNcss = new JavaNcss(dirOrFileToAnalyze);
 		return javaNcss.analyzeSources();
 	}
 
 	private JavaNcss(List<File> filesToAnalyse) {
 		this.filesToAnalyse = filesToAnalyse;
-		project = new Resource("Project", Resource.Type.PROJECT);
+		project = new Resource("Project", JavaType.PROJECT);
 		Stack<Resource> resourcesStack = new Stack<Resource>();
 		resourcesStack.add(project);
 		for (ASTSensor visitor : javaNcssVisitors) {

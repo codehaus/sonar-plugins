@@ -23,18 +23,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ResourceTest {
 
-	private Resource prj = new Resource("dummy project", Resource.Type.PROJECT);
-	private Resource pac = new Resource("org.sonar", Resource.Type.PACKAGE);
-	private Resource pac2 = new Resource("org.sonar", Resource.Type.PACKAGE);
-	private Resource cla = new Resource("Toto", Resource.Type.CLASS);
-	private Resource cla2 = new Resource("Tata", Resource.Type.CLASS);
+	private Resource prj = new Resource("dummy project", JavaType.PROJECT);
+	private Resource pac = new Resource("org.sonar", JavaType.PACKAGE);
+	private Resource pac2 = new Resource("org.sonar", JavaType.PACKAGE);
+	private Resource cla = new Resource("Toto", JavaType.CLASS);
+	private Resource cla2 = new Resource("Tata", JavaType.CLASS);
 
 	@Before
 	public void setUp() {
@@ -74,14 +72,7 @@ public class ResourceTest {
 	@Test
 	public void testFindResource() {
 		assertEquals(pac, prj.find(pac));
-		assertEquals(pac, prj.find("org.sonar", Resource.Type.PACKAGE));
-		assertNull(prj.find(new Resource("toto", Type.FILE)));
+		assertEquals(pac, prj.find("org.sonar", JavaType.PACKAGE));
+		assertNull(prj.find(new Resource("toto", JavaType.FILE)));
 	}
-
-	@Test
-	public void testToString() {
-		String treeDump = "PACKAGE : org.sonar\n" + "-CLASS : Tata\n" + "-CLASS : Toto\n";
-		assertEquals(treeDump, pac.toString());
-	}
-
 }

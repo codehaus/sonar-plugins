@@ -28,7 +28,7 @@ public class CommentSensors extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		long commentLines = getFileContents().getCppComments().size() + calculateCCommentsLines();
-		peekResource().measures.setCommentLines(commentLines);
+		peekResource().measures.setNonJavadocLines(commentLines);
 	}
 
 	private long calculateCCommentsLines() {
@@ -43,6 +43,10 @@ public class CommentSensors extends ASTSensor {
 				}
 				for (int i = 0; i < commentBlock.getText().length; i++) {
 					String commentLine = commentBlock.getText()[i];
+					if (i == 0 && commentLine.trim().startsWith("/**")) {
+						// Javadoc shouldn't be taken into account
+						break;
+					}
 					commentLine = commentLine.replace('*', ' ').replace('/', ' ').trim();
 					if (commentLine.length() != 0) {
 						cCommentsLines++;

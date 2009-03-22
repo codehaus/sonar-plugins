@@ -18,6 +18,8 @@ along with JavaNCSS; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */package org.codehaus.javancss.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -25,32 +27,20 @@ import java.util.TreeSet;
 
 public class Resource implements Comparable<Resource> {
 
-	public enum Type {
-		PROJECT, PACKAGE, FILE, CLASS, METHOD
-	}
-
-	private final Type type;
+	private final JavaType type;
 
 	private final String name;
 
 	private Resource parent;
 
-	public final Measures measures = new Measures();
+	public final Measures measures;
 
 	private SortedSet<Resource> children = new TreeSet<Resource>();
 
-	public Resource(String name, Type type) {
+	public Resource(String name, JavaType type) {
 		this.name = name;
 		this.type = type;
-		if (type.equals(Type.PACKAGE)) {
-			measures.setPackages(measures.getPackages() + 1);
-		} else if (type.equals(Type.FILE)) {
-			measures.setFiles(measures.getFiles() + 1);
-		} else if (type.equals(Type.CLASS)) {
-			measures.setClasses(measures.getClasses() + 1);
-		} else if (type.equals(Type.METHOD)) {
-			measures.setMethods(measures.getMethods() + 1);
-		}
+		this.measures = new Measures(type);
 	}
 
 	public void addChild(Resource resource) {
@@ -77,13 +67,13 @@ public class Resource implements Comparable<Resource> {
 	}
 
 	public String getFullName() {
-		if (parent != null && !parent.getType().equals(Type.PROJECT)) {
+		if (parent != null && !parent.getType().equals(JavaType.PROJECT)) {
 			return new StringBuilder().append(parent.getFullName()).append(".").append(getName()).toString();
 		}
 		return getName();
 	}
 
-	public Type getType() {
+	public JavaType getType() {
 		return type;
 	}
 
@@ -109,7 +99,7 @@ public class Resource implements Comparable<Resource> {
 
 	public String toString() {
 		StringBuffer tree = new StringBuffer();
-		tree.append(getType() + " : " + getName() + "\n");
+		tree.append(getType() + " : " + getName() + ":(" + measures + ")\n");
 		for (Resource child : children) {
 			String childTree = child.toString();
 			StringTokenizer tokenizer = new StringTokenizer(childTree, "\n");
@@ -145,17 +135,19 @@ public class Resource implements Comparable<Resource> {
 		return null;
 	}
 
-	public Resource find(String resourceName, Type resourceType) {
+	public Resource find(String resourceName, JavaType resourceType) {
 		Resource wanted = new Resource(resourceName, resourceType);
 		return find(wanted);
 	}
 
 	public final void compute() {
+		List<Measures> childMeasures = new ArrayList<Measures>();
 		for (Resource child : getChildren()) {
 			if (child.getChildren() != null) {
 				child.compute();
-				measures.addMeasures(child.measures);
 			}
+			childMeasures.add(child.measures);
 		}
+		measures.addMeasures(childMeasures);
 	}
 }

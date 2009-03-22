@@ -19,6 +19,7 @@
  */
 package org.codehaus.javancss.sensors;
 
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -43,10 +44,10 @@ public class PackageSensor extends ASTSensor {
 	private Resource extractPackage(DetailAST ast) {
 		Resource packageRes;
 		if (ast.getType() != TokenTypes.PACKAGE_DEF) {
-			packageRes = new Resource("[default]", Resource.Type.PACKAGE);
+			packageRes = new Resource("[default]", JavaType.PACKAGE);
 		} else {
 			String packageName = FullIdent.createFullIdent(ast.getLastChild().getPreviousSibling()).getText();
-			packageRes = new Resource(packageName, Resource.Type.PACKAGE);
+			packageRes = new Resource(packageName, JavaType.PACKAGE);
 		}
 		return packageRes;
 	}

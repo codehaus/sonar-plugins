@@ -25,15 +25,15 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Iterator;
 
 import org.codehaus.javancss.JavaNcss;
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Test;
 
 public class ClassSensorTest {
 
 	@Test
 	public void analyseTest003() {
-		Resource project = JavaNcss.analyze(getFile("/Test003.java"));
+		Resource project = JavaNcss.analyze(getFile("/metrics/classes/Test003.java"));
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
 		assertEquals(3, file.measures.getClasses());
@@ -41,19 +41,19 @@ public class ClassSensorTest {
 		Iterator<Resource> classes = file.getChildren().iterator();
 		Resource anotherClass = classes.next();
 		assertEquals("AnotherCar", anotherClass.getName());
-		assertEquals(Type.CLASS, anotherClass.getType());
+		assertEquals(JavaType.CLASS, anotherClass.getType());
 		Resource carClass = classes.next();
 		assertEquals("Car", carClass.getName());
-		assertEquals(Type.CLASS, carClass.getType());
+		assertEquals(JavaType.CLASS, carClass.getType());
 
-		Resource wheelClass = project.find("Car#Wheel", Type.CLASS);
+		Resource wheelClass = project.find("Car#Wheel", JavaType.CLASS);
 		assertNotNull(wheelClass);
 		assertEquals(wheelClass.getParent(), carClass);
 	}
 
 	@Test
 	public void analyseClassCounterEnum() {
-		Resource project = JavaNcss.analyze(getFile("/ClassCounterEnum.java"));
+		Resource project = JavaNcss.analyze(getFile("/metrics/classes/ClassCounterEnum.java"));
 		Resource defaultPackage = project.getFirstChild();
 		assertEquals(1, defaultPackage.measures.getClasses());
 	}

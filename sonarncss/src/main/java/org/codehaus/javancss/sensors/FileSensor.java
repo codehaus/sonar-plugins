@@ -21,6 +21,7 @@ package org.codehaus.javancss.sensors;
 
 import java.util.StringTokenizer;
 
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -29,7 +30,7 @@ public class FileSensor extends ASTSensor {
 
 	public void visitFile(DetailAST ast) {
 		String fileName = extractFileNameFromFilePath(getFileContents().getFilename());
-		Resource fileRes = new Resource(fileName, Resource.Type.FILE);
+		Resource fileRes = new Resource(fileName, JavaType.FILE);
 		addResource(fileRes);
 	}
 

@@ -9,7 +9,7 @@ public interface Neuron {
     public float        distanceTo(Neuron nOtherNeuron);
  
     public void         moveTo(InputNeuron inGoalNeuron, int netDistance);
-    /**schaufelt alle neuen Gewichte zu den alten um*/
+    /*schaufelt alle neuen Gewichte zu den alten um*/
     public void         move();
    
     public void         addNeighbor(Neuron neuron);

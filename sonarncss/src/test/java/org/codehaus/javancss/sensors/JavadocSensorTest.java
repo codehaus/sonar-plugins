@@ -2,8 +2,6 @@ package org.codehaus.javancss.sensors;
 
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.codehaus.javancss.JavaNcss;
 import org.codehaus.javancss.entities.Resource;
@@ -13,12 +11,13 @@ public class JavadocSensorTest {
 
 	@Test
 	public void analyseJavaDocCounter() {
-		Resource res = JavaNcss.analyze(getFile("/JavaDocCounter.java"));
+		Resource res = JavaNcss.analyze(getFile("/metrics/javadoc/ClassWithComments.java"));
 		assertEquals(4, res.measures.getJavadocLines());
-		assertEquals(2, res.measures.getJavadocBlocks());
-		assertFalse(res.measures.hasJavadoc());
-
-		Resource classResource = res.getFirstChild().getFirstChild().getFirstChild();
-		assertTrue(classResource.measures.hasJavadoc());
+		assertEquals(3, res.measures.getNonJavadocLines());
+		assertEquals(7, res.measures.getCommentLines());
+		assertEquals(30, res.measures.getLoc());
+		assertEquals(0.23, res.measures.getPercentOfCommentLines(), 0.01);
+		assertEquals(1, res.measures.getPercentOfClassesWithJavadoc(), 0);
+		assertEquals(0.33, res.measures.getPercentOfMethodsWithJavadoc(), 0.01);
 	}
 }
