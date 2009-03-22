@@ -22,8 +22,8 @@ package org.codehaus.javancss.sensors;
 import java.util.Arrays;
 import java.util.List;
 
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.entities.Resource.Type;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
@@ -37,10 +37,10 @@ public class ClassSensor extends ASTSensor {
 
 	public void visitToken(DetailAST ast) {
 		String className = ast.findFirstToken(TokenTypes.IDENT).getText();
-		if(peekResource().getType().equals(Type.CLASS)){
+		if (peekResource().getType().equals(JavaType.CLASS)) {
 			className = peekResource().getName() + "#" + className;
 		}
-		Resource classRes = new Resource(className, Resource.Type.CLASS);
+		Resource classRes = new Resource(className, JavaType.CLASS);
 		addResource(classRes);
 	}
 

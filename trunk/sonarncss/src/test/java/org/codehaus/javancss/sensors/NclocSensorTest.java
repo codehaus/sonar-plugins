@@ -10,8 +10,11 @@ import org.junit.Test;
 public class NclocSensorTest {
 
 	@Test
-	public void analyseTest002() {
-		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
-		assertEquals(13, res.measures.getNcloc());
+	public void analyseTestNcloc() {
+		Resource res = JavaNcss.analyze(getFile("/metrics/ncloc/TestNcloc.java"));
+		assertEquals(39, res.measures.getLoc());
+		assertEquals(9, res.measures.getBlankLines());
+		assertEquals(2, res.measures.getCommentLines());
+		assertEquals(28, res.measures.getNcloc());
 	}
 }

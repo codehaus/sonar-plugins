@@ -11,13 +11,13 @@ public class CommentSensorTest {
 
 	@Test
 	public void analyseTest002() {
-		Resource res = JavaNcss.analyze(getFile("/Test002.java"));
-		assertEquals(1, res.measures.getCommentLines());
+		Resource res = JavaNcss.analyze(getFile("/metrics/loc/Test002.java"));
+		assertEquals(1, res.measures.getNonJavadocLines());
 	}
 
 	@Test
 	public void analyseTest001() {
-		Resource res = JavaNcss.analyze(getFile("/Test001.java"));
-		assertEquals(4, res.measures.getCommentLines());
+		Resource res = JavaNcss.analyze(getFile("/metrics/loc/Test001.java"));
+		assertEquals(2, res.measures.getNonJavadocLines());
 	}
 }

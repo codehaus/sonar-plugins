@@ -22,18 +22,19 @@ import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.javancss.JavaNcss;
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Test;
 
 public class StatementSensorTest {
 
 	@Test
 	public void testNoStatements() {
-		Resource res = JavaNcss.analyze(getFile("/statements/NoStatements.java"));
-		assertEquals(10, res.measures.getStatements());
+		Resource res = JavaNcss.analyze(getFile("/metrics/statements/NoStatements.java"));
+		System.out.println(res);
+		assertEquals(15, res.measures.getStatements());
 
-		Resource simpleIf = res.find("simpleIf()", Type.METHOD);
-		assertEquals(3, simpleIf.measures.getStatements());
+		Resource simpleIf = res.find("simpleIf()", JavaType.METHOD);
+		assertEquals(5, simpleIf.measures.getStatements());
 	}
 }

@@ -4,30 +4,31 @@ import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 
 import org.codehaus.javancss.JavaNcss;
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.entities.Resource.Type;
 import org.junit.Test;
 
 public class ComplexitySensorTest {
 
 	@Test
 	public void testNoBranches() {
-		Resource res = JavaNcss.analyze(getFile("/branches/NoBranches.java"));
+		Resource res = JavaNcss.analyze(getFile("/metrics/branches/NoBranches.java"));
 		assertEquals(3, res.measures.getComplexity());
 	}
 
 	@Test
 	public void testSimpleBranches() {
-		Resource res = JavaNcss.analyze(getFile("/branches/SimpleBranches.java"));
+		Resource res = JavaNcss.analyze(getFile("/metrics/branches/SimpleBranches.java"));
 		assertEquals(15, res.measures.getComplexity());
-		
-		Resource simpleSwitch = res.find("simpleSwitch()", Type.METHOD);
-		assertEquals(3, simpleSwitch.measures.getComplexity());		
+		assertEquals(2.14, res.measures.getAvgMethodCmp(), 0.01);
+
+		Resource simpleSwitch = res.find("simpleSwitch()", JavaType.METHOD);
+		assertEquals(3, simpleSwitch.measures.getComplexity());
 	}
 
 	@Test
 	public void testInstanceAndStaticInitBlocks() {
-		Resource res = JavaNcss.analyze(getFile("/complexity/InstanceAndStaticInitBlocks.java"));
+		Resource res = JavaNcss.analyze(getFile("/metrics/complexity/InstanceAndStaticInitBlocks.java"));
 		assertEquals(2, res.measures.getComplexity());
 	}
 }

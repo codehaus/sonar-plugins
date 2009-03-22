@@ -26,9 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.javancss.JavaNcss;
+import org.codehaus.javancss.entities.JavaType;
 import org.codehaus.javancss.entities.Resource;
-import org.codehaus.javancss.entities.Resource.Type;
-import org.codehaus.javancss.sensors.FileSensor;
 import org.junit.Test;
 
 public class FileSensorTest {
@@ -42,15 +41,15 @@ public class FileSensorTest {
 	@Test
 	public void analyseTest003() {
 		List<File> files = new ArrayList<File>();
-		files.add(getFile("/Test002.java"));
-		files.add(getFile("/Test003.java"));
+		files.add(getFile("/metrics/loc/Test002.java"));
+		files.add(getFile("/metrics/classes/Test003.java"));
 		Resource project = JavaNcss.analyze(files);
-		
+
 		assertEquals(2, project.measures.getFiles());
 		Resource defaultPackage = project.getFirstChild();
 		Resource file = defaultPackage.getFirstChild();
 		assertEquals("Test002.java", file.getName());
-		assertEquals(Type.FILE, file.getType());
+		assertEquals(JavaType.FILE, file.getType());
 	}
 
 }
