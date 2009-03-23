@@ -52,6 +52,7 @@
               <sonar.pluginsDir>${project.build.directory}/plugins</sonar.pluginsDir>
               <wait>false</wait>
               <database.drop>true</database.drop>
+              <database.profile>mysql_it</database.profile>
         </configuration>
         <executions>
           <execution>
