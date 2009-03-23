@@ -53,6 +53,7 @@
               <wait>false</wait>
               <database.drop>true</database.drop>
               <database.profile>mysql_it</database.profile>
+              <projects.dir>${basedir}/src/it/projects</projects.dir>
         </configuration>
         <executions>
           <execution>
@@ -60,17 +61,8 @@
             <phase>pre-integration-test</phase>
             <goals>
               <goal>start</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>analyse-projects</id>
-            <phase>pre-integration-test</phase>
-            <goals>
               <goal>analyse</goal>
             </goals>
-            <configuration>
-	           <dir>${basedir}/src/it/projects</dir>
-	        </configuration>
           </execution>
           <execution>
             <id>stop-sonar</id>
