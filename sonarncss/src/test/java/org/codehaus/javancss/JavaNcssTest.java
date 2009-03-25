@@ -3,7 +3,6 @@ package org.codehaus.javancss;
 import static org.codehaus.javancss.JavaNcssUtils.getFile;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
@@ -53,15 +52,14 @@ public class JavaNcssTest {
 		assertNotNull(prj);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testAnalyseNullFil() {
-		File dir = null;
-		try {
-			JavaNcss.analyze(dir);
-		} catch (IllegalStateException exception) {
-			assertTrue(true);
-		} catch (Error e) {
-			assertTrue(false);
-		}
+		JavaNcss.analyze((File) null);
+	}
+
+	@Test
+	public void testNoneUTF8Character() {
+		Resource prj = JavaNcss.analyze(getFile("/NoneUTF8Characters.java"));
+		assertEquals(3, prj.measures.getMethods());
 	}
 }
