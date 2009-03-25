@@ -34,7 +34,7 @@ public class StatementSensor extends ASTSensor {
 				TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR, TokenTypes.LITERAL_SWITCH, TokenTypes.LITERAL_BREAK,
 				TokenTypes.LITERAL_CONTINUE, TokenTypes.LITERAL_RETURN, TokenTypes.LITERAL_THROW,
 				TokenTypes.LITERAL_SYNCHRONIZED, TokenTypes.LITERAL_CATCH, TokenTypes.LITERAL_FINALLY, TokenTypes.EXPR,
-				TokenTypes.LABELED_STAT, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_DEFAULT);
+				TokenTypes.LABELED_STAT, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_DEFAULT, TokenTypes.ANNOTATION);
 	}
 
 	@Override

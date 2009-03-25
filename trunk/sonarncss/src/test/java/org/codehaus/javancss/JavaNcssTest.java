@@ -58,8 +58,18 @@ public class JavaNcssTest {
 	}
 
 	@Test
-	public void testNoneUTF8Character() {
-		Resource prj = JavaNcss.analyze(getFile("/NoneUTF8Characters.java"));
+	public void testNotUTF8Character() {
+		Resource prj = JavaNcss.analyze(getFile("/encoding/NotUTF8Characters.java"));
 		assertEquals(3, prj.measures.getMethods());
+	}
+	
+	@Test
+	public void testInterfaceWithAnnotations() {
+		Resource prj = JavaNcss.analyze(getFile("/annotations/InterfaceWithAnnotation.java"));
+		assertEquals(12, prj.measures.getLoc());
+		assertEquals(7, prj.measures.getNcloc());
+		assertEquals(4, prj.measures.getStatements());
+		assertEquals(2, prj.measures.getMethods());
+		assertEquals(2, prj.measures.getComplexity());
 	}
 }
