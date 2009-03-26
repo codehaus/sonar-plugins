@@ -8,19 +8,24 @@
   <packaging>pom</packaging>
   <version>1.7-SNAPSHOT</version>
 
-<properties>
-  <sonar.version>1.7</sonar.version>
-</properties>
+  <properties>
+    <sonar.version>1.8-SNAPSHOT</sonar.version>
+  </properties>
 
-<dependencies>
-	<dependency>
-		<groupId>org.codehaus.sonar-plugins</groupId>
-        <artifactId>emma</artifactId>
-        <version>1.0-SNAPSHOT</version>
-	</dependency>
-</dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar-plugins</groupId>
+      <artifactId>emma</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar-plugins</groupId>
+      <artifactId>php</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
-<build>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -43,17 +48,17 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-dev-mojo</artifactId>
         <version>1.8-SNAPSHOT</version>
         <configuration>
-              <sonar.pluginsDir>${project.build.directory}/plugins</sonar.pluginsDir>
-              <wait>false</wait>
-              <database.drop>true</database.drop>
-              <database.profile>mysql_it</database.profile>
-              <projects.dir>${basedir}/src/it/projects</projects.dir>
+          <sonar.pluginsDir>${project.build.directory}/plugins</sonar.pluginsDir>
+          <wait>false</wait>
+          <database.drop>true</database.drop>
+          <database.profile>mysql_it</database.profile>
+          <projects.dir>${basedir}/src/it/projects</projects.dir>
         </configuration>
         <executions>
           <execution>
@@ -95,10 +100,10 @@
           </execution>
         </executions>
       </plugin>
-      
+
     </plugins>
   </build>
-  
+
   <profiles>
     <profile>
       <id>firefox</id>
@@ -121,5 +126,5 @@
         <selenium.browser>*custom /Applications/Safari.app/Contents/MacOS/Safari</selenium.browser>
       </properties>
     </profile>
-    </profiles>
+  </profiles>
 </project>
