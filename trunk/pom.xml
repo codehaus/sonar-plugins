@@ -35,7 +35,6 @@
     <module>pdf-report</module>
     <module>greenpepper</module>
     <module>php</module>
-    <module>phpunit</module>
   </modules>
 
 </project>
