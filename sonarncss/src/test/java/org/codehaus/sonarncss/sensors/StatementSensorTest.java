@@ -19,8 +19,8 @@
  */
 package org.codehaus.sonarncss.sensors;
 
-import org.codehaus.sonarncss.JavaNcss;
-import static org.codehaus.sonarncss.JavaNcssUtils.getFile;
+import org.codehaus.sonarncss.SonarNcss;
+import static org.codehaus.sonarncss.SonarNcssTestUtils.getFile;
 import org.codehaus.sonarncss.entities.JavaType;
 import org.codehaus.sonarncss.entities.Resource;
 import static org.junit.Assert.assertEquals;
@@ -30,7 +30,7 @@ public class StatementSensorTest {
 
   @Test
   public void testNoStatements() {
-    Resource res = JavaNcss.analyze(getFile("/metrics/statements/NoStatements.java"));
+    Resource res = SonarNcss.analyze(getFile("/metrics/statements/NoStatements.java"));
     System.out.println(res);
     assertEquals(15, res.measures.getStatements());
 

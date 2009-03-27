@@ -17,25 +17,17 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.sonarncss.sensors;
+package org.codehaus.sonarncss;
 
-import com.puppycrawl.tools.checkstyle.api.DetailAST;
-import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import org.apache.commons.io.FileUtils;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
 
-public class BrancheSensor extends ASTSensor {
+public final class SonarNcssTestUtils {
 
-  @Override
-  public List<Integer> getWantedTokens() {
-    return Arrays.asList(TokenTypes.LITERAL_WHILE, TokenTypes.LITERAL_DO, TokenTypes.LITERAL_FOR,
-        TokenTypes.LITERAL_IF, TokenTypes.LITERAL_CASE, TokenTypes.LITERAL_CATCH, TokenTypes.QUESTION,
-        TokenTypes.LAND, TokenTypes.LOR);
+  public static File getFile(String relativePath) {
+    System.out.println(SonarNcssTestUtils.class.getResource(relativePath));
+    return FileUtils.toFile(SonarNcssTestUtils.class.getResource(relativePath));
   }
 
-  @Override
-  public void visitToken(DetailAST ast) {
-    peekResource().measures.addBranch();
-  }
 }

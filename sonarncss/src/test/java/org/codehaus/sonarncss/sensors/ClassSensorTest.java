@@ -19,8 +19,8 @@
  */
 package org.codehaus.sonarncss.sensors;
 
-import org.codehaus.sonarncss.JavaNcss;
-import static org.codehaus.sonarncss.JavaNcssUtils.getFile;
+import org.codehaus.sonarncss.SonarNcss;
+import static org.codehaus.sonarncss.SonarNcssTestUtils.getFile;
 import org.codehaus.sonarncss.entities.JavaType;
 import org.codehaus.sonarncss.entities.Resource;
 import static org.junit.Assert.assertEquals;
@@ -33,7 +33,7 @@ public class ClassSensorTest {
 
   @Test
   public void analyseTest003() {
-    Resource project = JavaNcss.analyze(getFile("/metrics/classes/Test003.java"));
+    Resource project = SonarNcss.analyze(getFile("/metrics/classes/Test003.java"));
     Resource defaultPackage = project.getFirstChild();
     Resource file = defaultPackage.getFirstChild();
     assertEquals(3, file.measures.getClasses());
@@ -53,7 +53,7 @@ public class ClassSensorTest {
 
   @Test
   public void analyseClassCounterEnum() {
-    Resource project = JavaNcss.analyze(getFile("/metrics/classes/ClassCounterEnum.java"));
+    Resource project = SonarNcss.analyze(getFile("/metrics/classes/ClassCounterEnum.java"));
     Resource defaultPackage = project.getFirstChild();
     assertEquals(1, defaultPackage.measures.getClasses());
   }

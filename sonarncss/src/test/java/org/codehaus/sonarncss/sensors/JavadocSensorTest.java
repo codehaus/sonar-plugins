@@ -19,8 +19,8 @@
  */
 package org.codehaus.sonarncss.sensors;
 
-import org.codehaus.sonarncss.JavaNcss;
-import static org.codehaus.sonarncss.JavaNcssUtils.getFile;
+import org.codehaus.sonarncss.SonarNcss;
+import static org.codehaus.sonarncss.SonarNcssTestUtils.getFile;
 import org.codehaus.sonarncss.entities.Resource;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class JavadocSensorTest {
 
   @Test
   public void analyseJavaDocCounter() {
-    Resource res = JavaNcss.analyze(getFile("/metrics/javadoc/ClassWithComments.java"));
+    Resource res = SonarNcss.analyze(getFile("/metrics/javadoc/ClassWithComments.java"));
     assertEquals(4, res.measures.getJavadocLines());
     assertEquals(3, res.measures.getNonJavadocLines());
     assertEquals(7, res.measures.getCommentLines());
