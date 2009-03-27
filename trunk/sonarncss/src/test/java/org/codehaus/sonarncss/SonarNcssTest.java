@@ -19,7 +19,7 @@
  */
 package org.codehaus.sonarncss;
 
-import static org.codehaus.sonarncss.JavaNcssUtils.getFile;
+import static org.codehaus.sonarncss.SonarNcssTestUtils.getFile;
 import org.codehaus.sonarncss.entities.JavaType;
 import org.codehaus.sonarncss.entities.Resource;
 import static org.junit.Assert.assertEquals;
@@ -29,11 +29,11 @@ import org.junit.Test;
 
 import java.io.File;
 
-public class JavaNcssTest {
+public class SonarNcssTest {
 
   @Test
   public void testAnalyseCommonsCollections321() {
-    Resource prj = JavaNcss.analyze(getFile("/commons-collections-3.2.1-src"));
+    Resource prj = SonarNcss.analyze(getFile("/commons-collections-3.2.1-src"));
 
     assertEquals(12, prj.measures.getPackages());
     assertEquals(273, prj.measures.getFiles());
@@ -67,25 +67,25 @@ public class JavaNcssTest {
 
   @Test
   public void testAnalyseWrongFile() {
-    Resource prj = JavaNcss.analyze("/fanthomDirectory");
+    Resource prj = SonarNcss.analyze("/fanthomDirectory");
     assertNotNull(prj);
   }
 
   @Test(expected = IllegalStateException.class)
   public void testAnalyseNullFil() {
-    JavaNcss.analyze((File) null);
+    SonarNcss.analyze((File) null);
   }
 
   @Test
   @Ignore
   public void testNotUTF8Character() {
-    Resource prj = JavaNcss.analyze(getFile("/encoding/NotUTF8Characters.java"));
+    Resource prj = SonarNcss.analyze(getFile("/encoding/NotUTF8Characters.java"));
     assertEquals(3, prj.measures.getMethods());
   }
 
   @Test
   public void testInterfaceWithAnnotations() {
-    Resource prj = JavaNcss.analyze(getFile("/annotations/InterfaceWithAnnotation.java"));
+    Resource prj = SonarNcss.analyze(getFile("/annotations/InterfaceWithAnnotation.java"));
     assertEquals(12, prj.measures.getLoc());
     assertEquals(7, prj.measures.getNcloc());
     assertEquals(4, prj.measures.getStatements());

@@ -31,33 +31,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-public class JavaNcss {
+public class SonarNcss {
 
   private final Resource project;
   private final List<File> filesToAnalyse;
 
   private final List<ASTSensor> javaNcssVisitors = Arrays.asList(new PackageSensor(), new FileSensor(),
       new ClassSensor(), new MethodSensor(), new LocSensor(), new BlankLineSensor(), new CommentSensors(),
-      new JavadocSensor(), new StatementSensor(), new BrancheSensor(), new ComplexitySensor());
+      new JavadocSensor(), new StatementSensor(), new BranchSensor(), new ComplexitySensor());
 
-  private JavaNcss(File dirToAnalyse) {
+  private SonarNcss(File dirToAnalyse) {
     this(traverse(dirToAnalyse));
   }
 
   public static Resource analyze(String dirOrFilePathToAnalyze) {
-    JavaNcss javaNcss = new JavaNcss(new File(dirOrFilePathToAnalyze));
-    return javaNcss.analyzeSources();
+    SonarNcss sonarNcss = new SonarNcss(new File(dirOrFilePathToAnalyze));
+    return sonarNcss.analyzeSources();
   }
 
   public static Resource analyze(File dirOrFileToAnalyze) {
     if (dirOrFileToAnalyze == null) {
       throw new IllegalStateException("There is no directory or file to analyse as the File object is null.");
     }
-    JavaNcss javaNcss = new JavaNcss(dirOrFileToAnalyze);
-    return javaNcss.analyzeSources();
+    SonarNcss sonarNcss = new SonarNcss(dirOrFileToAnalyze);
+    return sonarNcss.analyzeSources();
   }
 
-  private JavaNcss(List<File> filesToAnalyse) {
+  private SonarNcss(List<File> filesToAnalyse) {
     this.filesToAnalyse = filesToAnalyse;
     project = new Resource("Project", JavaType.PROJECT);
     Stack<Resource> resourcesStack = new Stack<Resource>();
@@ -69,8 +69,8 @@ public class JavaNcss {
   }
 
   public static Resource analyze(List<File> filesToAnalyse) {
-    JavaNcss javaNcss = new JavaNcss(filesToAnalyse);
-    return javaNcss.analyzeSources();
+    SonarNcss sonarNcss = new SonarNcss(filesToAnalyse);
+    return sonarNcss.analyzeSources();
   }
 
   private Resource analyzeSources() {

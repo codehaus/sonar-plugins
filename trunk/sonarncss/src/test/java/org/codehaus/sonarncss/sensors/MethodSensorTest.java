@@ -19,8 +19,8 @@
  */
 package org.codehaus.sonarncss.sensors;
 
-import org.codehaus.sonarncss.JavaNcss;
-import static org.codehaus.sonarncss.JavaNcssUtils.getFile;
+import org.codehaus.sonarncss.SonarNcss;
+import static org.codehaus.sonarncss.SonarNcssTestUtils.getFile;
 import org.codehaus.sonarncss.entities.Resource;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class MethodSensorTest {
 
   @Test
   public void analyseClassWithStaticMethods() {
-    Resource prj = JavaNcss.analyze(getFile("/metrics/methods/ClassWithStaticMethods.java"));
+    Resource prj = SonarNcss.analyze(getFile("/metrics/methods/ClassWithStaticMethods.java"));
     assertEquals(3, prj.measures.getMethods());
     assertEquals(8, prj.measures.getComplexity());
   }

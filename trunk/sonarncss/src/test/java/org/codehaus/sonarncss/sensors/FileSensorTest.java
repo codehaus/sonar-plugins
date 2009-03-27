@@ -19,8 +19,8 @@
  */
 package org.codehaus.sonarncss.sensors;
 
-import org.codehaus.sonarncss.JavaNcss;
-import static org.codehaus.sonarncss.JavaNcssUtils.getFile;
+import org.codehaus.sonarncss.SonarNcss;
+import static org.codehaus.sonarncss.SonarNcssTestUtils.getFile;
 import org.codehaus.sonarncss.entities.JavaType;
 import org.codehaus.sonarncss.entities.Resource;
 import static org.junit.Assert.assertEquals;
@@ -43,7 +43,7 @@ public class FileSensorTest {
     List<File> files = new ArrayList<File>();
     files.add(getFile("/metrics/loc/Test002.java"));
     files.add(getFile("/metrics/classes/Test003.java"));
-    Resource project = JavaNcss.analyze(files);
+    Resource project = SonarNcss.analyze(files);
 
     assertEquals(2, project.measures.getFiles());
     Resource defaultPackage = project.getFirstChild();
