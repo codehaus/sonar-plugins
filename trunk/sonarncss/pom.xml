@@ -8,7 +8,7 @@
   </parent>
   <artifactId>sonarncss</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <name>SonarNCSS</name>
   <description>Proposal for JavaNCSS 2</description>
 
@@ -94,10 +94,4 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonarncss-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonarncss-0.1</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonarncss-0.1</url>
-  </scm>
 </project>
