@@ -7,7 +7,7 @@
     <relativePath>../parent</relativePath>
   </parent>
   <artifactId>emma</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Sonar Emma plugin</name>
 
@@ -86,10 +86,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/emma-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/emma-0.1</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/emma-0.1</url>
-  </scm>
 </project>
