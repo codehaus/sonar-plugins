@@ -2,6 +2,9 @@
 /**
  * @package Sonar
  */
+ function doNothing(){
+
+ }
 
 sort($as_timestamps);
 print("<br>Now sorted by timestamp, oldest to newest<br>");
