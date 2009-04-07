@@ -13,7 +13,7 @@
 
   <properties>
     <!-- for cpd -->
-    <sonar.cpd.minimumToken>5</sonar.cpd.minimumToken>
+    <sonar.cpd.minimumTokens>100</sonar.cpd.minimumTokens>
     
 	  <sonar.language>php</sonar.language>
   </properties>
