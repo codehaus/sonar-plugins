@@ -27,7 +27,7 @@ public class TaglistPluginTest {
 	public void testGetExtensions() {
 		List<Class<? extends Extension>> extensions = plugin.getExtensions();
 		assertThat(extensions, is(notNullValue()));
-		assertThat(extensions.size(), is(3));
+		assertThat(extensions.size(), is(2));
 	}
 
 	@Test
