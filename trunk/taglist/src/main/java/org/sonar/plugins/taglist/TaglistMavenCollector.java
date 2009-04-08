@@ -3,20 +3,22 @@ package org.sonar.plugins.taglist;
 import java.io.File;
 
 import org.apache.commons.logging.LogFactory;
+import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.MavenPluginHandler;
 import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.model.MavenPom;
 import org.sonar.plugins.api.rules.RulesManager;
-import org.sonar.plugins.taglist.inernal.DelegatingProjectContext;
 
 public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 
 	private final RulesManager rulesManager;
+	private final RulesProfile rulesProfile;
 
-	public TaglistMavenCollector(RulesManager rulesManager) {
+	public TaglistMavenCollector(RulesManager rulesManager, RulesProfile rulesProfile) {
 		this.rulesManager = rulesManager;
+		this.rulesProfile = rulesProfile;
 	}
 
 	@Override
@@ -28,9 +30,8 @@ public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 		File xmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "taglist/taglist.xml");
 		LogFactory.getLog(getClass().getName()).info("parsing " + xmlFile.getAbsolutePath());
 
-		new TaglistViolationsXmlParser(new DelegatingProjectContext(context), rulesManager).collect(xmlFile);
-
-		// TODO Add violations
+		TaglistViolationsXmlParser taglistParser = new TaglistViolationsXmlParser(context, rulesManager, rulesProfile);
+		taglistParser.populateTaglistViolation(xmlFile);
 	}
 
 	public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
