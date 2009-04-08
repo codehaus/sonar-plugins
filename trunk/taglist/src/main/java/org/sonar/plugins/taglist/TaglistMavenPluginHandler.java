@@ -1,33 +1,43 @@
 package org.sonar.plugins.taglist;
 
+import java.util.List;
+
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.sonar.commons.rules.ActiveRule;
+import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
 import org.sonar.plugins.api.maven.model.MavenPlugin;
 import org.sonar.plugins.api.maven.model.MavenPom;
 
 public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
-
-	private final String[] DEFAULT_TAGS = new String[] {"TODO", "FIXME", "@todo", "@fixme"};
+	
+	private final RulesProfile rulesProfile;
+	
+	public TaglistMavenPluginHandler(RulesProfile rulesProfile){
+		this.rulesProfile = rulesProfile;
+	}
 	
 	@Override
 	public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-		plugin.setConfigParameter("aggregate", "false");
-		plugin.setConfigParameter("emptyComments", "true");
-		plugin.setConfigParameter("multipleLineComments", "true");
-		plugin.setConfigParameter("encoding", "MacRoman");
-		plugin.setConfigParameter("xmlOutputDirectory", "${project.build.directory}/taglist");
 		
-		// tags root element
-		Xpp3Dom tags = new Xpp3Dom("tags");
+		plugin.setConfigParameter("encoding", System.getProperty( "file.encoding" ));
+		plugin.unsetConfigParameter("xmlOutputDirectory");
 		
-		for (String t : DEFAULT_TAGS) {
-			Xpp3Dom tag = new Xpp3Dom("tag");
-			tag.setValue(t);
-			tags.addChild(tag);
-		}
+		List<ActiveRule> activeRules = rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY);
 		
-		plugin.getConfiguration().getXpp3Dom().addChild(tags);
-		
+		if(!activeRules.isEmpty()){
+			// tags root element
+			Xpp3Dom tags = new Xpp3Dom("tags");
+			
+			for(ActiveRule activeRule : activeRules){
+				Xpp3Dom tag = new Xpp3Dom("tag");
+				tag.setValue(activeRule.getRule().getConfigKey());
+				tags.addChild(tag);
+			}			
+			
+			plugin.getConfiguration().getXpp3Dom().addChild(tags);
+		}	
+
 	}
 
 	public String getArtifactId() {
@@ -42,12 +52,12 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
 		return MavenPom.GROUP_ID_CODEHAUS_MOJO;
 	}
 
-	public String getVersion() {
-		return "2.3";
-	}
-
 	public boolean isFixedVersion() {
 		return false;
+	}
+
+	public String getVersion() {
+		return "2.3";
 	}
 
 }
