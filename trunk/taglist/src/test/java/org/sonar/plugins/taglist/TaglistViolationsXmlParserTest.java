@@ -41,7 +41,7 @@ public class TaglistViolationsXmlParserTest {
 
 	@Test
 	public void testPopulateTaglistViolations() throws Exception {
-		File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/taglist.xml").toURI());
+		File xmlFile = new File(getClass().getResource("/taglist.xml").toURI());
 		parser.populateTaglistViolation(xmlFile);
 		verify(context, times(6)).addViolation(argThat(new IsJavaClass()), (Rule) anyObject(), anyString(),
 				(RuleFailureLevel) anyObject(), (RuleFailureParam) anyObject());

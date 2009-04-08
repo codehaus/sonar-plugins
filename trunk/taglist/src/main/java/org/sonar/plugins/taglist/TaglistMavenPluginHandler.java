@@ -10,34 +10,30 @@ import org.sonar.plugins.api.maven.model.MavenPlugin;
 import org.sonar.plugins.api.maven.model.MavenPom;
 
 public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
-	
+
 	private final RulesProfile rulesProfile;
-	
-	public TaglistMavenPluginHandler(RulesProfile rulesProfile){
+
+	public TaglistMavenPluginHandler(RulesProfile rulesProfile) {
 		this.rulesProfile = rulesProfile;
 	}
-	
+
 	@Override
 	public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-		
-		plugin.setConfigParameter("encoding", System.getProperty( "file.encoding" ));
+
+		plugin.setConfigParameter("encoding", System.getProperty("file.encoding"));
 		plugin.unsetConfigParameter("xmlOutputDirectory");
-		
+
 		List<ActiveRule> activeRules = rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY);
-		
-		if(!activeRules.isEmpty()){
-			// tags root element
-			Xpp3Dom tags = new Xpp3Dom("tags");
-			
-			for(ActiveRule activeRule : activeRules){
+		// tags root element
+		Xpp3Dom tags = new Xpp3Dom("tags");
+		if (!activeRules.isEmpty()) {
+			for (ActiveRule activeRule : activeRules) {
 				Xpp3Dom tag = new Xpp3Dom("tag");
 				tag.setValue(activeRule.getRule().getConfigKey());
 				tags.addChild(tag);
-			}			
-			
-			plugin.getConfiguration().getXpp3Dom().addChild(tags);
-		}	
-
+			}
+		}
+		plugin.getConfiguration().getXpp3Dom().addChild(tags);
 	}
 
 	public String getArtifactId() {
