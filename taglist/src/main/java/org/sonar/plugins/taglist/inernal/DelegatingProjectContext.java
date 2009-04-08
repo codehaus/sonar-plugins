@@ -23,7 +23,7 @@ public class DelegatingProjectContext implements ProjectContext {
 	public void addLink(ProjectLink link) {
 		delegate.addLink(link);
 	}
-
+ 
 	public void addMeasure(Measure measure) {
 		delegate.addMeasure(measure);
 	}

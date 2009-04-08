@@ -16,10 +16,9 @@ public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 	private final RulesManager rulesManager;
 
 	public TaglistMavenCollector(RulesManager rulesManager) {
-		super();
 		this.rulesManager = rulesManager;
 	}
-	
+
 	@Override
 	protected boolean shouldCollectIfNoSources() {
 		return false;
@@ -28,11 +27,10 @@ public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 	public void collect(MavenPom pom, ProjectContext context) {
 		File xmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "taglist/taglist.xml");
 		LogFactory.getLog(getClass().getName()).info("parsing " + xmlFile.getAbsolutePath());
-		
+
 		new TaglistViolationsXmlParser(new DelegatingProjectContext(context), rulesManager).collect(xmlFile);
 
-		// TODO Add metrics
-		//context.addMeasure(TaglistMetrics.TAGS, 666d);
+		// TODO Add violations
 	}
 
 	public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
