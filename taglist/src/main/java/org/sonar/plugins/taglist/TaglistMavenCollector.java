@@ -32,7 +32,7 @@ public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 		new TaglistViolationsXmlParser(new DelegatingProjectContext(context), rulesManager).collect(xmlFile);
 
 		// TODO Add metrics
-		context.addMeasure(TaglistMetrics.TAGS, 666d);
+		//context.addMeasure(TaglistMetrics.TAGS, 666d);
 	}
 
 	public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {

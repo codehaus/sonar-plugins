@@ -1,11 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.codehaus.sonar-plugins
+		</groupId>
+		<artifactId>parent</artifactId>
+		<version>1</version>
+		<relativePath>../parent</relativePath>
+	</parent>
 	<groupId>org.codehaus.sonar.plugins</groupId>
 	<artifactId>sonar-plugin-taglist</artifactId>
 	<name>sonar-plugin-taglist</name>
-	<version>0.0.1-SNAPSHOT</version>
-	<description>Collects taglist information from the source code and saves it to sonar</description>
+	<version>0.9-SNAPSHOT</version>
+	<description>Collects taglist information from the source code
+		and saves it to sonar</description>
 	<build>
 		<plugins>
 			<plugin>
@@ -15,7 +23,6 @@
 					<source>1.5</source>
 					<target>1.5</target>
 				</configuration>
-
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -23,11 +30,11 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Plugin-Class>org.sonar.plugins.taglist.TaglistPlugin</Plugin-Class>
+							<Plugin-Class>org.sonar.plugins.taglist.TaglistPlugin
+							</Plugin-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>
@@ -38,13 +45,6 @@
 			<version>1.8-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.sonar</groupId>
-			<artifactId>sonar-plugin-api</artifactId>
-			<version>1.8-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>
