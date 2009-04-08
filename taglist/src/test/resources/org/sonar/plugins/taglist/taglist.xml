@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><report>
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
   <tags>
+    <tag name="NO_PMD" count="0" />
     <tag name="TODO" count="2">
       <files>
         <file name="org.sonar.plugins.taglist.test.ClassWithTags" count="2">

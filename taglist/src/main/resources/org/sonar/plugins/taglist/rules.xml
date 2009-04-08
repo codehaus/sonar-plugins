@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rules>
-  <rule key="taglib.TODO">
+  <rule key="taglist.TODO">
     <name>Taglist - Tag TODO</name>
     <configKey>TODO</configKey>
     <category name="Reliability"/>
     <description>This is marked as a TODO.</description>
   </rule>
-  <rule key="taglib.FIXME">
+  <rule key="taglist.FIXME">
     <name>Taglist - Tag FIXME</name>
     <configKey>FIXME</configKey>
     <category name="Reliability"/>
     <description>This is marked as a FIXME.</description>
   </rule>
-    <rule key="taglib.NO_PMD">
+    <rule key="taglist.NO_PMD">
     <name>Taglist - Tag NO_PMD</name>
     <configKey>NO_PMD</configKey>
     <category name="Reliability"/>

@@ -1,96 +1,89 @@
 package org.sonar.plugins.taglist;
 
-import org.apache.commons.lang.StringUtils;
+import static org.sonar.plugins.api.maven.MavenCollectorUtils.parseNumber;
+
+import java.io.File;
+import java.text.ParseException;
+
 import org.sonar.commons.resources.Resource;
+import org.sonar.commons.rules.Rule;
 import org.sonar.commons.rules.RuleFailureLevel;
+import org.sonar.commons.rules.RuleFailureParam;
+import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.maven.AbstractViolationsXmlParser;
 import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.maven.xml.XpathParser;
 import org.sonar.plugins.api.rules.RulesManager;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class TaglistViolationsXmlParser extends AbstractViolationsXmlParser {
+public class TaglistViolationsXmlParser {
 
-	protected TaglistViolationsXmlParser(ProjectContext context, RulesManager rulesManager) {
-		super(context, rulesManager);
+	private XpathParser parser = new XpathParser();
+	private RulesManager rulesManager;
+	private RulesProfile rulesProfile;
+	private ProjectContext context;
+
+	protected TaglistViolationsXmlParser(ProjectContext context, RulesManager rulesManager, RulesProfile rulesProfile) {
+		this.context = context;
+		this.rulesManager = rulesManager;
+		this.rulesProfile = rulesProfile;
 	}
 
-	@Override
-	protected String elementNameForViolation() {
-		return "comment";
+	protected final void populateTaglistViolation(File taglistXmlFile) {
+		parser.parse(taglistXmlFile);
+		parseViolationsOnTags();
 	}
 
-	@Override
-	protected String keyForPlugin() {
-		return TaglistPlugin.KEY;
-	}
-
-	@Override
-	protected RuleFailureLevel levelForViolation(Element violation) {
-		String tagName = getTagName(violation);
-
-		if (StringUtils.containsIgnoreCase(tagName, "fixme")) {
-			return RuleFailureLevel.ERROR;
-		} else {
-			return RuleFailureLevel.WARNING;
-		}
-
-	}
-
-	protected static String getTagName(Element violation) {
-		Node currentNode = violation.getParentNode();
-		
-		while(currentNode != null && !StringUtils.equalsIgnoreCase(currentNode.getNodeName(), "tag")) {
-			currentNode = currentNode.getParentNode();
-		}
-		
-		
-		return currentNode.getAttributes().getNamedItem("name").getTextContent();
-	}
-
-	protected static String getNodeContent(Element violation, String nodename) {
-		String content = null;
-		NodeList nodes = violation.getChildNodes();
-		for (int i = 0; content == null && i < nodes.getLength(); i++) {
-			Node node = nodes.item(i);
-			if (StringUtils.equalsIgnoreCase(node.getNodeName(), nodename)) {
-				content = StringUtils.trim(node.getTextContent());
+	private void parseViolationsOnTags() {
+		NodeList tags = parser.getDocument().getElementsByTagName("tag");
+		if (tags != null) {
+			for (int i = 0; i < tags.getLength(); i++) {
+				Element tag = (Element) tags.item(i);
+				parseViolationsOnFiles(tag, tag.getAttribute("name"));
 			}
 		}
-
-		return content;
 	}
 
-	@Override
-	protected String lineNumberForViolation(Element violation) {
-		return getNodeContent(violation, "lineNumber");
+	private void parseViolationsOnFiles(Element tag, String tagName) {
+		NodeList files = tag.getElementsByTagName("file");
+		if (files != null) {
+			for (int i = 0; i < files.getLength(); i++) {
+				Element file = (Element) files.item(i);
+				parseViolationLineNumberAndComment(file, file.getAttribute("name"), tagName);
+			}
+		}
 	}
 
-	@Override
-	protected String messageFor(Element failure) {
-		return getNodeContent(failure, "comment");
+	private void parseViolationLineNumberAndComment(Element file, String fileName, String tagName) {
+		NodeList comments = file.getElementsByTagName("comment");
+		if (comments != null) {
+			for (int i = 0; i < comments.getLength(); i++) {
+				Element comment = (Element) comments.item(i);
+				if (comment.getElementsByTagName("lineNumber").getLength() == 0) {
+					continue; // comment node can be found at two different
+					// levels
+				}
+				String violationLineNumber = comment.getElementsByTagName("lineNumber").item(0).getTextContent();
+				String violationComment = comment.getElementsByTagName("comment").item(0).getTextContent();
+				registerViolation(tagName, fileName, violationLineNumber, violationComment);
+			}
+		}
 	}
 
-	@Override
-	protected String ruleKey(Element failure) {
-		String tagName = getTagName(failure);
-		
-		return StringUtils.remove(StringUtils.upperCase(tagName), "@");
+	private void registerViolation(String tagName, String fileName, String violationLineNumber, String violationComment) {
+		Rule rule = rulesManager.getPluginRule(TaglistPlugin.KEY, "taglist." + tagName);
+		RuleFailureLevel level = rulesProfile.getActiveRule(TaglistPlugin.KEY, "taglist." + tagName).getLevel();
+		RuleFailureParam lineParam;
+		try {
+			lineParam = new RuleFailureParam("line", parseNumber(violationLineNumber), null);
+		} catch (ParseException ignore) {
+			lineParam = null;
+		}
+		Resource javaFile = Java.newClass(fileName);
+		if (rule != null && javaFile != null) {
+			context.addViolation(javaFile, rule, rule.getDescription(), level, lineParam);
+		}
+		//TODO for test purpose
 	}
-
-	@Override
-	protected Resource toResource(Element elt) {
-		String className = elt.getAttribute("name");
-		Resource resource = Java.newClass(className);
-		resource.setId(className.hashCode());
-		return resource;
-	}
-
-	@Override
-	protected String xpathForResources() {
-		return "/report/tags//file";
-	}
-
 }
