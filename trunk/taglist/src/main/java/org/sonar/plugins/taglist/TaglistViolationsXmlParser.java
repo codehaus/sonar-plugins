@@ -5,6 +5,7 @@ import static org.sonar.plugins.api.maven.MavenCollectorUtils.parseNumber;
 import java.io.File;
 import java.text.ParseException;
 
+import org.sonar.commons.Metric;
 import org.sonar.commons.resources.Resource;
 import org.sonar.commons.rules.Rule;
 import org.sonar.commons.rules.RuleFailureLevel;
@@ -50,7 +51,16 @@ public class TaglistViolationsXmlParser {
 		if (files != null) {
 			for (int i = 0; i < files.getLength(); i++) {
 				Element file = (Element) files.item(i);
-				parseViolationLineNumberAndComment(file, file.getAttribute("name"), tagName);
+				String fileName = file.getAttribute("name");
+				double tagViolations;
+				try {
+					tagViolations = parseNumber(file.getAttribute("count"));
+				} catch (ParseException e) {
+					throw new IllegalStateException("Unable to parse count attribute '" + file.getAttribute("count")
+							+ "' on tag " + tagName + " nin taglist.xml file", e);
+				}
+				context.addMeasure(Java.newClass(fileName), new Metric(tagName), tagViolations);
+				parseViolationLineNumberAndComment(file, fileName, tagName);
 			}
 		}
 	}
@@ -77,8 +87,9 @@ public class TaglistViolationsXmlParser {
 		RuleFailureParam lineParam;
 		try {
 			lineParam = new RuleFailureParam("line", parseNumber(violationLineNumber), null);
-		} catch (ParseException ignore) {
-			lineParam = null;
+		} catch (ParseException e) {
+			throw new IllegalStateException("Unable to parse number '" + violationLineNumber + "' in taglist.xml file",
+					e);
 		}
 		Resource javaFile = Java.newClass(fileName);
 		if (rule != null && javaFile != null) {
