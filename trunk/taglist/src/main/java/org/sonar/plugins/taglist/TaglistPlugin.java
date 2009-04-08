@@ -33,7 +33,7 @@ public class TaglistPlugin implements Plugin {
 	public String getName() {
 		return "Taglist-Plugin";
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName();
