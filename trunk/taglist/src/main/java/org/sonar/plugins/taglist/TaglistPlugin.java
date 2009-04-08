@@ -23,6 +23,7 @@ public class TaglistPlugin implements Plugin {
 		List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 		list.add(TaglistMavenCollector.class);
 		list.add(TaglistRulesRepository.class);
+		list.add(TaglistMetrics.class);
 		return list;
 	}
 

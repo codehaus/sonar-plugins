@@ -1,0 +1,6 @@
+# Here is the list of tags with their associated category
+TODO=Reliability
+@todo=Reliability
+FIXME=Maintainability
+NO_PMD=Reliability
+@depecrated=Portability
