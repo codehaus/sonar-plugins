@@ -15,6 +15,7 @@ public class TaglistPlugin implements Plugin {
 
 	public static final String KEY = "taglist";
 
+	//NO_PMD
 	public String getDescription() {
 		return "Collects Tag-Information from the source-files.";
 	}
@@ -24,6 +25,7 @@ public class TaglistPlugin implements Plugin {
 		list.add(TaglistMavenCollector.class);
 		list.add(TaglistRulesRepository.class);
 		list.add(TaglistMetrics.class);
+		list.add(TaglistJob.class);
 		return list;
 	}
 

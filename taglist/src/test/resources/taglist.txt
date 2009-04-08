@@ -1,0 +1,3 @@
+# Here is the list of tags with their associated category
+MYTAG=Reliability
+NO_PMD=Portability
