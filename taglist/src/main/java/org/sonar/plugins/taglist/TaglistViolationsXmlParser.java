@@ -72,8 +72,8 @@ public class TaglistViolationsXmlParser {
 	}
 
 	private void registerViolation(String tagName, String fileName, String violationLineNumber, String violationComment) {
-		Rule rule = rulesManager.getPluginRule(TaglistPlugin.KEY, "taglist." + tagName);
-		RuleFailureLevel level = rulesProfile.getActiveRule(TaglistPlugin.KEY, "taglist." + tagName).getLevel();
+		Rule rule = rulesManager.getPluginRule(TaglistPlugin.KEY, tagName);
+		RuleFailureLevel level = rulesProfile.getActiveRule(TaglistPlugin.KEY, tagName).getLevel();
 		RuleFailureParam lineParam;
 		try {
 			lineParam = new RuleFailureParam("line", parseNumber(violationLineNumber), null);
@@ -84,6 +84,6 @@ public class TaglistViolationsXmlParser {
 		if (rule != null && javaFile != null) {
 			context.addViolation(javaFile, rule, rule.getDescription(), level, lineParam);
 		}
-		//TODO for test purpose
+		// TODO for test purpose
 	}
 }

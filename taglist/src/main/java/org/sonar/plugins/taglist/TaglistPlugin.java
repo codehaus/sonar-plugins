@@ -13,7 +13,7 @@ import org.sonar.plugins.api.Plugin;
  */
 public class TaglistPlugin implements Plugin {
 
-	public static final String KEY = "taglistPlugin";
+	public static final String KEY = "taglist";
 
 	public String getDescription() {
 		return "Collects Tag-Information from the source-files.";
@@ -31,7 +31,7 @@ public class TaglistPlugin implements Plugin {
 	}
 
 	public String getName() {
-		return "Taglist-Plugin";
+		return "Tag List";
 	}
 
 	@Override
