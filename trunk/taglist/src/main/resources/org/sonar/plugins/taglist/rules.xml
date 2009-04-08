@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rules>
+  <rule key="TODO">
+    <name><![CDATA[Taglist - Tag TODO]]></name>
+    <configKey><![CDATA[TODO]]></configKey>
+    <category name="Reliability"/>
+    <description>
+      <![CDATA[This is marked as a TODO.]]></description>
+  </rule>
+  
+  <rule key="FIXME">
+    <name><![CDATA[Taglist - Tag FIXME]]></name>
+    <configKey><![CDATA[FIXME]]></configKey>
+    <category name="Reliability"/>
+    <description>
+      <![CDATA[This should be fixed.]]></description>
+  </rule>
+
+</rules>
