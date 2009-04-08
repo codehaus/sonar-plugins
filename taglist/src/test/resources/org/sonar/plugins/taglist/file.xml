@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<file count="2" name="org.sonar.plugins.taglist.test.ClassWithTags">
+	<comments>
+		<comment>
+			<lineNumber>12</lineNumber>
+			<comment>Auto-generated method stub</comment>
+		</comment>
+		<comment>
+			<lineNumber>16</lineNumber>
+			<comment>throw some exception</comment>
+		</comment>
+	</comments>
+</file>
