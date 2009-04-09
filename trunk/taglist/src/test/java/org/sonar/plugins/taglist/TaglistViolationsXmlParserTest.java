@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class TaglistViolationsXmlParserTest {
 		when(rulesManager.getPluginRule(eq(TaglistPlugin.KEY), (String) anyObject())).thenReturn(new Rule());
 		when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), (String) anyObject())).thenReturn(new ActiveRule());
 
-		parser = new TaglistViolationsXmlParser(context, rulesManager, rulesProfile);
+		parser = new TaglistViolationsXmlParser(context, rulesManager, rulesProfile, new HashSet<String>());
 	}
 
 	@Test

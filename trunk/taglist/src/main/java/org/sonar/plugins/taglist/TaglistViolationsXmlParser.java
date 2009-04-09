@@ -4,6 +4,7 @@ import static org.sonar.plugins.api.maven.MavenCollectorUtils.parseNumber;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.Set;
 
 import org.sonar.commons.Metric;
 import org.sonar.commons.resources.Resource;
@@ -24,11 +25,14 @@ public class TaglistViolationsXmlParser {
 	private RulesManager rulesManager;
 	private RulesProfile rulesProfile;
 	private ProjectContext context;
+	private Set<String> tagsToDisplayInDashboard;
 
-	protected TaglistViolationsXmlParser(ProjectContext context, RulesManager rulesManager, RulesProfile rulesProfile) {
+	protected TaglistViolationsXmlParser(ProjectContext context, RulesManager rulesManager, RulesProfile rulesProfile,
+			Set<String> tagsToDisplayInDashboard) {
 		this.context = context;
 		this.rulesManager = rulesManager;
 		this.rulesProfile = rulesProfile;
+		this.tagsToDisplayInDashboard = tagsToDisplayInDashboard;
 	}
 
 	protected final void populateTaglistViolation(File taglistXmlFile) {
@@ -52,14 +56,16 @@ public class TaglistViolationsXmlParser {
 			for (int i = 0; i < files.getLength(); i++) {
 				Element file = (Element) files.item(i);
 				String fileName = file.getAttribute("name");
-				double tagViolations;
-				try {
-					tagViolations = parseNumber(file.getAttribute("count"));
-				} catch (ParseException e) {
-					throw new IllegalStateException("Unable to parse count attribute '" + file.getAttribute("count")
-							+ "' on tag " + tagName + " nin taglist.xml file", e);
+				if (tagsToDisplayInDashboard.contains(tagName)) {
+					double tagViolations;
+					try {
+						tagViolations = parseNumber(file.getAttribute("count"));
+					} catch (ParseException e) {
+						throw new IllegalStateException("Unable to parse count attribute '"
+								+ file.getAttribute("count") + "' on tag " + tagName + " nin taglist.xml file", e);
+					}
+					context.addMeasure(Java.newClass(fileName), new Metric(tagName), tagViolations);
 				}
-				context.addMeasure(Java.newClass(fileName), new Metric(tagName), tagViolations);
 				parseViolationLineNumberAndComment(file, fileName, tagName);
 			}
 		}
@@ -95,6 +101,5 @@ public class TaglistViolationsXmlParser {
 		if (rule != null && javaFile != null) {
 			context.addViolation(javaFile, rule, rule.getDescription(), level, lineParam);
 		}
-		// TODO for test purpose
 	}
 }

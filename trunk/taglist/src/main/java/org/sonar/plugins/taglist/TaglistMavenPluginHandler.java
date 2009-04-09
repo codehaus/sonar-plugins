@@ -21,6 +21,7 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
 	public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
 
 		plugin.setConfigParameter("encoding", System.getProperty("file.encoding"));
+		plugin.setConfigParameter("linkXRef", "false");
 		plugin.unsetConfigParameter("xmlOutputDirectory");
 
 		List<ActiveRule> activeRules = rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY);
