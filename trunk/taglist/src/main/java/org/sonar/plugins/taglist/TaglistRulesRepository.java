@@ -29,7 +29,7 @@ public class TaglistRulesRepository implements RulesRepository {
 		for (Object tag : tags.keySet()) {
 			String tagName = "Tag " + (String) tag;
 			String tagKey = (String) tag;
-			String tagDescription = "";
+			String tagDescription = "Detection of keyword '" + tagKey + "' in the source code";
 			RulesCategory category = new RulesCategory(tags.getProperty(tagKey));
 			Rule rule = new Rule(tagName, tagKey, tagKey,category, TaglistPlugin.KEY, tagDescription);
 			rules.add(rule);
