@@ -31,8 +31,8 @@ public class JavadocSensor extends ASTSensor {
 
   @Override
   public List<Integer> getWantedTokens() {
-    return Arrays
-        .asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.METHOD_DEF, TokenTypes.CTOR_DEF);
+    return Arrays.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.METHOD_DEF, TokenTypes.CTOR_DEF, 
+        TokenTypes.ANNOTATION_DEF);
   }
 
   @Override

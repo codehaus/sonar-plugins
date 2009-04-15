@@ -38,4 +38,16 @@ public class JavadocSensorTest {
     assertEquals(1, res.getMeasures().getPercentOfClassesWithJavadoc(), 0);
     assertEquals(0.33, res.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
   }
+  
+  @Test
+  public void analyseJavaDocCounterOnAnnotation() {
+    Resource res = SonarNcss.analyze(getFile("/annotations/AnnotationDefinition.java"));
+    assertEquals(2, res.getMeasures().getJavadocLines());
+    assertEquals(0, res.getMeasures().getNonJavadocLines());
+    assertEquals(2, res.getMeasures().getCommentLines());
+    assertEquals(19, res.getMeasures().getLoc());
+    assertEquals(0.10, res.getMeasures().getPercentOfCommentLines(), 0.01);
+    assertEquals(1, res.getMeasures().getPercentOfClassesWithJavadoc(), 0);
+    //assertEquals(0.33, res.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
+  }
 }
