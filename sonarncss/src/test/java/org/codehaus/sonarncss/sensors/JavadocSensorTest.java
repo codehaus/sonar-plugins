@@ -34,7 +34,7 @@ public class JavadocSensorTest {
     assertEquals(3, res.getMeasures().getNonJavadocLines());
     assertEquals(7, res.getMeasures().getCommentLines());
     assertEquals(30, res.getMeasures().getLoc());
-    assertEquals(0.23, res.getMeasures().getPercentOfCommentLines(), 0.01);
+    assertEquals(0.35, res.getMeasures().getPercentOfCommentLines(), 0.01);
     assertEquals(1, res.getMeasures().getPercentOfClassesWithJavadoc(), 0);
     assertEquals(0.33, res.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
   }
@@ -46,7 +46,7 @@ public class JavadocSensorTest {
     assertEquals(0, res.getMeasures().getNonJavadocLines());
     assertEquals(2, res.getMeasures().getCommentLines());
     assertEquals(19, res.getMeasures().getLoc());
-    assertEquals(0.10, res.getMeasures().getPercentOfCommentLines(), 0.01);
+    assertEquals(0.14, res.getMeasures().getPercentOfCommentLines(), 0.01);
     assertEquals(1, res.getMeasures().getPercentOfClassesWithJavadoc(), 0);
     //assertEquals(0.33, res.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
   }

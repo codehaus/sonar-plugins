@@ -57,7 +57,7 @@ public class SonarNcssTest {
 
     assertEquals(17225, prj.getMeasures().getCommentLines());
     assertEquals(15808, prj.getMeasures().getJavadocLines());
-    assertEquals(0.26, prj.getMeasures().getPercentOfCommentLines(), 0.01);
+    assertEquals(0.42, prj.getMeasures().getPercentOfCommentLines(), 0.01);
     assertEquals(0.91, prj.getMeasures().getPercentOfClassesWithJavadoc(), 0.01);
     assertEquals(0.64, prj.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
 
