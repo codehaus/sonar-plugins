@@ -24,6 +24,6 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 public class LocSensor extends ASTSensor {
 
   public void visitFile(DetailAST ast) {
-    peekResource().measures.setLoc(getFileContents().getLines().length);
+    peekResource().getMeasures().setLoc(getFileContents().getLines().length);
   }
 }

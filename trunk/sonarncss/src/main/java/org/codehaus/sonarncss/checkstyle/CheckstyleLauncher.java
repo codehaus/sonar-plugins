@@ -19,14 +19,21 @@
  */
 package org.codehaus.sonarncss.checkstyle;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
+import org.codehaus.sonarncss.SonarNcss;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
 import com.puppycrawl.tools.checkstyle.DefaultLogger;
 import com.puppycrawl.tools.checkstyle.PropertiesExpander;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * JavaNCSS uses Checkstyle to get an out-of-the-box java parser with AST
@@ -64,17 +71,62 @@ public class CheckstyleLauncher {
    */
   private static Checker createChecker(String confFileName) {
     try {
-      String checkstyleConfFilePath = ClassLoader.getSystemResource(confFileName).getPath();
-      Configuration config = ConfigurationLoader.loadConfiguration(checkstyleConfFilePath,
-          new PropertiesExpander(System.getProperties()));
+      
+      InputStream checkstyleConfig = CheckstyleLauncher.class.getClassLoader().getResourceAsStream(confFileName);
+      Configuration config = ConfigurationLoader.loadConfiguration(checkstyleConfig, new PropertiesExpander(System.getProperties()), false);
       Checker c = new Checker();
       c.configure(config);
-      c.addListener(new DefaultLogger(System.out, false));
+      
+      final Logger logger = LoggerFactory.getLogger(SonarNcss.class);
+      
+      StreamLogger infoLogger = new StreamLogger() {
+        @Override
+        public void log(String log) {
+          logger.info(log);
+        }};
+      StreamLogger errorLogger = new StreamLogger() {
+        @Override
+        public void log(String log) {
+          logger.error(log);
+        }};
+
+      c.addListener(new DefaultLogger(infoLogger, true, errorLogger, true));
       return c;
     } catch (final Exception e) {
       throw new RuntimeException("Unable to create Checkstyle Checker object with '" + confFileName
           + "' as Checkstyle configuration file name", e);
     }
   }
+  
+  private abstract static class StreamLogger extends OutputStream {
+    
+    private StringBuilder buffer = new StringBuilder(256);
+
+    @Override
+    public void write(int byteToWrite) throws IOException {
+      char character = (char)byteToWrite;
+      if (character == '\n') {
+        logAndResetBuffer();
+      } else {
+        buffer.append(character);
+      }
+    }
+
+    private void logAndResetBuffer() {
+      log(buffer.toString().trim());
+      buffer.setLength(0);
+    }
+    
+    public abstract void log(String log);
+
+    @Override
+    public void close() throws IOException {
+      if (buffer.length() > 0) {
+        logAndResetBuffer(); 
+      }
+      super.close();
+    }
+  }
+  
 
 }

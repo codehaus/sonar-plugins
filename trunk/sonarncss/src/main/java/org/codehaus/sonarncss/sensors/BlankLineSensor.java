@@ -30,7 +30,7 @@ public class BlankLineSensor extends ASTSensor {
         blankLines++;
       }
     }
-    peekResource().measures.setBlankLines(blankLines);
+    peekResource().getMeasures().setBlankLines(blankLines);
   }
 
 }

@@ -32,9 +32,9 @@ public class StatementSensorTest {
   public void testNoStatements() {
     Resource res = SonarNcss.analyze(getFile("/metrics/statements/NoStatements.java"));
     System.out.println(res);
-    assertEquals(15, res.measures.getStatements());
+    assertEquals(15, res.getMeasures().getStatements());
 
     Resource simpleIf = res.find("simpleIf()", JavaType.METHOD);
-    assertEquals(5, simpleIf.measures.getStatements());
+    assertEquals(5, simpleIf.getMeasures().getStatements());
   }
 }

@@ -26,7 +26,6 @@ import java.io.File;
 public final class SonarNcssTestUtils {
 
   public static File getFile(String relativePath) {
-    System.out.println(SonarNcssTestUtils.class.getResource(relativePath));
     return FileUtils.toFile(SonarNcssTestUtils.class.getResource(relativePath));
   }
 

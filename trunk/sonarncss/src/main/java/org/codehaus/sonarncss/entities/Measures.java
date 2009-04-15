@@ -65,7 +65,7 @@ public class Measures {
   }
 
   public long getNcloc() {
-    return getLoc() - getCommentLines() - getBlankLines();
+    return getLoc() == 0 ? 0 : getLoc() - getCommentLines() - getBlankLines();
   }
 
   public double getAvgMethodCmp() {

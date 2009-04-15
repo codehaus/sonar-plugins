@@ -28,7 +28,7 @@ public class CommentSensors extends ASTSensor {
 
   public void visitFile(DetailAST ast) {
     long commentLines = getFileContents().getCppComments().size() + calculateCCommentsLines();
-    peekResource().measures.setNonJavadocLines(commentLines);
+    peekResource().getMeasures().setNonJavadocLines(commentLines);
   }
 
   private long calculateCCommentsLines() {

@@ -29,7 +29,7 @@ public class Resource implements Comparable<Resource> {
 
   private Resource parent;
 
-  public final Measures measures;
+  private final Measures measures;
 
   private SortedSet<Resource> children = new TreeSet<Resource>();
 
@@ -44,6 +44,10 @@ public class Resource implements Comparable<Resource> {
     if (!children.contains(resource)) {
       children.add(resource);
     }
+  }
+
+  public Measures getMeasures() {
+    return measures;
   }
 
   public Resource getFirstChild() {
@@ -134,6 +138,22 @@ public class Resource implements Comparable<Resource> {
   public Resource find(String resourceName, JavaType resourceType) {
     Resource wanted = new Resource(resourceName, resourceType);
     return find(wanted);
+  }
+  
+  public Collection<Resource> find(JavaType resourceType) {
+    Collection<Resource> resources = new ArrayList<Resource>();
+    find(resources, resourceType);
+    return resources;
+  }
+  
+  private void find(Collection<Resource> resources, JavaType resourceType) {
+    
+    if (this.getType().equals(resourceType)) {
+      resources.add(this);
+    }
+    for (Resource child : children) {
+      child.find(resources, resourceType);
+    }
   }
 
   public final void compute() {

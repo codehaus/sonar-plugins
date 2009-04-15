@@ -45,7 +45,7 @@ public class FileSensorTest {
     files.add(getFile("/metrics/classes/Test003.java"));
     Resource project = SonarNcss.analyze(files);
 
-    assertEquals(2, project.measures.getFiles());
+    assertEquals(2, project.getMeasures().getFiles());
     Resource defaultPackage = project.getFirstChild();
     Resource file = defaultPackage.getFirstChild();
     assertEquals("Test002.java", file.getName());

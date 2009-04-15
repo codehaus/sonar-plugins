@@ -31,7 +31,7 @@ public class ClassSensor extends ASTSensor {
 
   @Override
   public List<Integer> getWantedTokens() {
-    return Arrays.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF);
+    return Arrays.asList(TokenTypes.CLASS_DEF, TokenTypes.INTERFACE_DEF, TokenTypes.ENUM_DEF, TokenTypes.ANNOTATION_DEF);
   }
 
   public void visitToken(DetailAST ast) {

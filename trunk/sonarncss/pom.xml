@@ -9,8 +9,8 @@
   <artifactId>sonarncss</artifactId>
   <packaging>jar</packaging>
   <version>0.2-SNAPSHOT</version>
-  <name>SonarNCSS</name>
-  <description>Proposal for JavaNCSS 2</description>
+  <name>Squid</name>
+  <description>LOC, NCLOC, Statements metrics parser</description>
 
   <dependencies>
     <dependency>

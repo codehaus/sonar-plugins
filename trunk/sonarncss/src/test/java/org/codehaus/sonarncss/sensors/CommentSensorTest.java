@@ -30,12 +30,12 @@ public class CommentSensorTest {
   @Test
   public void analyseTest002() {
     Resource res = SonarNcss.analyze(getFile("/metrics/loc/Test002.java"));
-    assertEquals(1, res.measures.getNonJavadocLines());
+    assertEquals(1, res.getMeasures().getNonJavadocLines());
   }
 
   @Test
   public void analyseTest001() {
     Resource res = SonarNcss.analyze(getFile("/metrics/loc/Test001.java"));
-    assertEquals(2, res.measures.getNonJavadocLines());
+    assertEquals(2, res.getMeasures().getNonJavadocLines());
   }
 }

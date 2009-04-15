@@ -30,9 +30,9 @@ public class NclocSensorTest {
   @Test
   public void analyseTestNcloc() {
     Resource res = SonarNcss.analyze(getFile("/metrics/ncloc/TestNcloc.java"));
-    assertEquals(39, res.measures.getLoc());
-    assertEquals(9, res.measures.getBlankLines());
-    assertEquals(2, res.measures.getCommentLines());
-    assertEquals(28, res.measures.getNcloc());
+    assertEquals(39, res.getMeasures().getLoc());
+    assertEquals(9, res.getMeasures().getBlankLines());
+    assertEquals(2, res.getMeasures().getCommentLines());
+    assertEquals(28, res.getMeasures().getNcloc());
   }
 }
