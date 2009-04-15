@@ -36,6 +36,6 @@ public class BranchSensor extends ASTSensor {
 
   @Override
   public void visitToken(DetailAST ast) {
-    peekResource().measures.addBranch();
+    peekResource().getMeasures().addBranch();
   }
 }

@@ -30,12 +30,12 @@ public class BrancheSensorTest {
   @Test
   public void testNoBranches() {
     Resource res = SonarNcss.analyze(getFile("/metrics/branches/NoBranches.java"));
-    assertEquals(0, res.measures.getBranches());
+    assertEquals(0, res.getMeasures().getBranches());
   }
 
   @Test
   public void testSimpleBranches() {
     Resource res = SonarNcss.analyze(getFile("/metrics/branches/SimpleBranches.java"));
-    assertEquals(8, res.measures.getBranches());
+    assertEquals(8, res.getMeasures().getBranches());
   }
 }

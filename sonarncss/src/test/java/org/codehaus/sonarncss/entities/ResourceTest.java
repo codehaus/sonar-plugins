@@ -19,7 +19,14 @@
  */
 package org.codehaus.sonarncss.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +34,7 @@ public class ResourceTest {
 
   private Resource prj = new Resource("dummy project", JavaType.PROJECT);
   private Resource pac = new Resource("org.sonar", JavaType.PACKAGE);
-  private Resource pac2 = new Resource("org.sonar", JavaType.PACKAGE);
+  private Resource pac2 = new Resource("org.sonar2", JavaType.PACKAGE);
   private Resource cla = new Resource("Toto", JavaType.CLASS);
   private Resource cla2 = new Resource("Tata", JavaType.CLASS);
 
@@ -52,8 +59,10 @@ public class ResourceTest {
     assertFalse((prj.equals(pac)));
     assertFalse(prj.hashCode() == pac.hashCode());
     assertFalse(prj.equals(new Object()));
-    assertEquals(pac, pac2);
-    assertEquals(pac.hashCode(), pac2.hashCode());
+    
+    Resource samePac = new Resource("org.sonar", JavaType.PACKAGE);
+    assertEquals(pac, samePac);
+    assertEquals(pac.hashCode(), samePac.hashCode());
   }
 
   @Test
@@ -64,6 +73,19 @@ public class ResourceTest {
   @Test
   public void testContains() {
     assertTrue(prj.contains(pac));
+  }
+  
+  @Test
+  public void testFindByType() {
+    List<Resource> packages = new ArrayList<Resource>(prj.find(JavaType.PACKAGE));
+    assertEquals(2, packages.size());
+    assertEquals(pac, packages.get(0));
+    assertEquals(pac2, packages.get(1));
+    
+    List<Resource> files = new ArrayList<Resource>(prj.find(JavaType.CLASS));
+    assertEquals(2, files.size());
+    assertEquals(cla, files.get(1));
+    assertEquals(cla2, files.get(0));
   }
 
   @Test

@@ -36,7 +36,7 @@ public class ClassSensorTest {
     Resource project = SonarNcss.analyze(getFile("/metrics/classes/Test003.java"));
     Resource defaultPackage = project.getFirstChild();
     Resource file = defaultPackage.getFirstChild();
-    assertEquals(3, file.measures.getClasses());
+    assertEquals(3, file.getMeasures().getClasses());
 
     Iterator<Resource> classes = file.getChildren().iterator();
     Resource anotherClass = classes.next();
@@ -55,7 +55,15 @@ public class ClassSensorTest {
   public void analyseClassCounterEnum() {
     Resource project = SonarNcss.analyze(getFile("/metrics/classes/ClassCounterEnum.java"));
     Resource defaultPackage = project.getFirstChild();
-    assertEquals(1, defaultPackage.measures.getClasses());
+    assertEquals(1, defaultPackage.getMeasures().getClasses());
+  }
+  
+  @Test
+  public void analyseAnnotationDefinition() {
+    Resource project = SonarNcss.analyze(getFile("/annotations/AnnotationDefinition.java"));
+    Resource annotation = project.getFirstChild();
+    assertEquals(1, annotation.getMeasures().getClasses());
+    assertEquals("AnnotationDefinition", annotation.find(JavaType.CLASS).iterator().next().getName());
   }
 
 }

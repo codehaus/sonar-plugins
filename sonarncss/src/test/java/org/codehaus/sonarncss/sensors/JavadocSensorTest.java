@@ -30,12 +30,12 @@ public class JavadocSensorTest {
   @Test
   public void analyseJavaDocCounter() {
     Resource res = SonarNcss.analyze(getFile("/metrics/javadoc/ClassWithComments.java"));
-    assertEquals(4, res.measures.getJavadocLines());
-    assertEquals(3, res.measures.getNonJavadocLines());
-    assertEquals(7, res.measures.getCommentLines());
-    assertEquals(30, res.measures.getLoc());
-    assertEquals(0.23, res.measures.getPercentOfCommentLines(), 0.01);
-    assertEquals(1, res.measures.getPercentOfClassesWithJavadoc(), 0);
-    assertEquals(0.33, res.measures.getPercentOfMethodsWithJavadoc(), 0.01);
+    assertEquals(4, res.getMeasures().getJavadocLines());
+    assertEquals(3, res.getMeasures().getNonJavadocLines());
+    assertEquals(7, res.getMeasures().getCommentLines());
+    assertEquals(30, res.getMeasures().getLoc());
+    assertEquals(0.23, res.getMeasures().getPercentOfCommentLines(), 0.01);
+    assertEquals(1, res.getMeasures().getPercentOfClassesWithJavadoc(), 0);
+    assertEquals(0.33, res.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
   }
 }

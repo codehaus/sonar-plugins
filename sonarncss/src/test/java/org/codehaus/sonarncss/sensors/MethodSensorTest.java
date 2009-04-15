@@ -30,7 +30,7 @@ public class MethodSensorTest {
   @Test
   public void analyseClassWithStaticMethods() {
     Resource prj = SonarNcss.analyze(getFile("/metrics/methods/ClassWithStaticMethods.java"));
-    assertEquals(3, prj.measures.getMethods());
-    assertEquals(8, prj.measures.getComplexity());
+    assertEquals(3, prj.getMeasures().getMethods());
+    assertEquals(8, prj.getMeasures().getComplexity());
   }
 }

@@ -35,34 +35,34 @@ public class SonarNcssTest {
   public void testAnalyseCommonsCollections321() {
     Resource prj = SonarNcss.analyze(getFile("/commons-collections-3.2.1-src"));
 
-    assertEquals(12, prj.measures.getPackages());
-    assertEquals(273, prj.measures.getFiles());
-    assertEquals(412, prj.measures.getClasses());
-    assertEquals(3863, prj.measures.getMethods());
+    assertEquals(12, prj.getMeasures().getPackages());
+    assertEquals(273, prj.getMeasures().getFiles());
+    assertEquals(412, prj.getMeasures().getClasses());
+    assertEquals(3863, prj.getMeasures().getMethods());
 
-    assertEquals(63852, prj.measures.getLoc());
-    assertEquals(40201, prj.measures.getNcloc());
-    assertEquals(6426, prj.measures.getBlankLines());
-    assertEquals(17303, prj.measures.getStatements());
-    assertEquals(6842, prj.measures.getComplexity());
-    assertEquals(2977, prj.measures.getBranches());
+    assertEquals(63852, prj.getMeasures().getLoc());
+    assertEquals(40201, prj.getMeasures().getNcloc());
+    assertEquals(6426, prj.getMeasures().getBlankLines());
+    assertEquals(17303, prj.getMeasures().getStatements());
+    assertEquals(6842, prj.getMeasures().getComplexity());
+    assertEquals(2977, prj.getMeasures().getBranches());
 
-    assertEquals(25.06, prj.measures.getAvgFileCmp(), 0.01);
-    assertEquals(16.60, prj.measures.getAvgClassCmp(), 0.01);
-    assertEquals(1.77, prj.measures.getAvgMethodCmp(), 0.01);
+    assertEquals(25.06, prj.getMeasures().getAvgFileCmp(), 0.01);
+    assertEquals(16.60, prj.getMeasures().getAvgClassCmp(), 0.01);
+    assertEquals(1.77, prj.getMeasures().getAvgMethodCmp(), 0.01);
 
-    assertEquals(63.38, prj.measures.getAvgFileStmts(), 0.01);
-    assertEquals(41.99, prj.measures.getAvgClassStmts(), 0.01);
-    assertEquals(4.47, prj.measures.getAvgMethodStmts(), 0.01);
+    assertEquals(63.38, prj.getMeasures().getAvgFileStmts(), 0.01);
+    assertEquals(41.99, prj.getMeasures().getAvgClassStmts(), 0.01);
+    assertEquals(4.47, prj.getMeasures().getAvgMethodStmts(), 0.01);
 
-    assertEquals(17225, prj.measures.getCommentLines());
-    assertEquals(15808, prj.measures.getJavadocLines());
-    assertEquals(0.26, prj.measures.getPercentOfCommentLines(), 0.01);
-    assertEquals(0.91, prj.measures.getPercentOfClassesWithJavadoc(), 0.01);
-    assertEquals(0.64, prj.measures.getPercentOfMethodsWithJavadoc(), 0.01);
+    assertEquals(17225, prj.getMeasures().getCommentLines());
+    assertEquals(15808, prj.getMeasures().getJavadocLines());
+    assertEquals(0.26, prj.getMeasures().getPercentOfCommentLines(), 0.01);
+    assertEquals(0.91, prj.getMeasures().getPercentOfClassesWithJavadoc(), 0.01);
+    assertEquals(0.64, prj.getMeasures().getPercentOfMethodsWithJavadoc(), 0.01);
 
     Resource listPackage = prj.find("org.apache.commons.collections.list", JavaType.PACKAGE);
-    assertEquals(1403, listPackage.measures.getStatements());
+    assertEquals(1403, listPackage.getMeasures().getStatements());
   }
 
   @Test
@@ -80,16 +80,16 @@ public class SonarNcssTest {
   @Ignore
   public void testNotUTF8Character() {
     Resource prj = SonarNcss.analyze(getFile("/encoding/NotUTF8Characters.java"));
-    assertEquals(3, prj.measures.getMethods());
+    assertEquals(3, prj.getMeasures().getMethods());
   }
 
   @Test
   public void testInterfaceWithAnnotations() {
     Resource prj = SonarNcss.analyze(getFile("/annotations/InterfaceWithAnnotation.java"));
-    assertEquals(12, prj.measures.getLoc());
-    assertEquals(7, prj.measures.getNcloc());
-    assertEquals(4, prj.measures.getStatements());
-    assertEquals(2, prj.measures.getMethods());
-    assertEquals(2, prj.measures.getComplexity());
+    assertEquals(12, prj.getMeasures().getLoc());
+    assertEquals(7, prj.getMeasures().getNcloc());
+    assertEquals(4, prj.getMeasures().getStatements());
+    assertEquals(2, prj.getMeasures().getMethods());
+    assertEquals(2, prj.getMeasures().getComplexity());
   }
 }

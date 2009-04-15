@@ -30,12 +30,12 @@ public class BlankLineSensorTest {
   @Test
   public void analyseTest002() {
     Resource res = SonarNcss.analyze(getFile("/metrics/loc/Test002.java"));
-    assertEquals(5, res.measures.getBlankLines());
+    assertEquals(5, res.getMeasures().getBlankLines());
   }
 
   @Test
   public void analyseTest001() {
     Resource res = SonarNcss.analyze(getFile("/metrics/loc/Test001.java"));
-    assertEquals(3, res.measures.getBlankLines());
+    assertEquals(3, res.getMeasures().getBlankLines());
   }
 }

@@ -37,6 +37,6 @@ public class ComplexitySensor extends ASTSensor {
   @Override
   public void leaveToken(DetailAST ast) {
     Resource res = peekResource();
-    res.measures.setComplexity(res.measures.getComplexity() + res.measures.getBranches() + 1);
+    res.getMeasures().setComplexity(res.getMeasures().getComplexity() + res.getMeasures().getBranches() + 1);
   }
 }
