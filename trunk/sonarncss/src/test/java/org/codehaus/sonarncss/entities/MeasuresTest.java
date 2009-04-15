@@ -71,6 +71,6 @@ public class MeasuresTest {
     prj1.setNonJavadocLines(292).setLoc(5984);
 
     assertEquals(292, prj1.getCommentLines());
-    assertEquals(0.04, prj1.getPercentOfCommentLines(), 0.01);
+    assertEquals(0.05, prj1.getPercentOfCommentLines(), 0.01);
   }
 }

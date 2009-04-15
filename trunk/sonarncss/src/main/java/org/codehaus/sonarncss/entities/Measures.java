@@ -280,7 +280,7 @@ public class Measures {
 
   public double getPercentOfCommentLines() {
     if (loc != 0) {
-      return (double) (nonJavadocLines + javadocLines) / (double) loc;
+      return (double)getCommentLines() / (double)getNcloc();
     } else {
       throw new IllegalStateException("Unable to compute the percentage of comment lines as 'loc' == 0");
     }
