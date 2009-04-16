@@ -161,6 +161,11 @@ public class Measures {
     this.javadocLines += javadocLines;
     return this;
   }
+  
+  public Measures setJavaDocLines(long javadocLines) {
+    this.javadocLines = javadocLines;
+    return this;
+  }
 
   public Measures addClassWithJavadoc(long javadocLines) {
     classesWithJavadoc++;
@@ -280,7 +285,7 @@ public class Measures {
 
   public double getPercentOfCommentLines() {
     if (loc != 0) {
-      return (double)getCommentLines() / (double)getNcloc();
+      return (double)getCommentLines() / ((double)getNcloc() + getCommentLines()) ;
     } else {
       throw new IllegalStateException("Unable to compute the percentage of comment lines as 'loc' == 0");
     }
@@ -311,6 +316,6 @@ public class Measures {
   }
 
   public String toString() {
-    return "cmp=" + complexity + ",stmts=" + statements + ",meth=" + methods + ",cla=" + classes;
+    return "loc=" + loc + ",ncloc=" + getNcloc() + ",cmp=" + complexity + ",stmts=" + statements + ",meth=" + methods + ",cla=" + classes;
   }
 }
