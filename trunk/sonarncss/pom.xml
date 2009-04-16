@@ -11,6 +11,12 @@
   <version>0.2-SNAPSHOT</version>
   <name>Squid</name>
   <description>LOC, NCLOC, Statements metrics parser</description>
+  
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonarncss/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonarncss/</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
 
   <dependencies>
     <dependency>
