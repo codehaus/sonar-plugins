@@ -39,8 +39,7 @@ public class ClassSensor extends ASTSensor {
     if (peekResource().getType().equals(JavaType.CLASS)) {
       className = peekResource().getName() + "#" + className;
     }
-    Resource classRes = new Resource(className, JavaType.CLASS);
-    addResource(classRes);
+    addResource(new Resource(className, JavaType.CLASS));
   }
 
   public void leaveToken(DetailAST ast) {

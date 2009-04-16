@@ -19,7 +19,13 @@
  */
 package org.codehaus.sonarncss.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 public class Resource implements Comparable<Resource> {
 
@@ -98,13 +104,13 @@ public class Resource implements Comparable<Resource> {
   }
 
   public String toString() {
-    StringBuffer tree = new StringBuffer();
-    tree.append(getType() + " : " + getName() + ":(" + measures + ")\n");
+    StringBuffer tree = new StringBuffer(512);
+    tree.append(getType()).append(" : ").append(getName()).append(":(" + measures + ")\n");
     for (Resource child : children) {
       String childTree = child.toString();
       StringTokenizer tokenizer = new StringTokenizer(childTree, "\n");
       while (tokenizer.hasMoreTokens()) {
-        tree.append("-" + tokenizer.nextToken() + "\n");
+        tree.append("-").append(tokenizer.nextToken()).append("\n");
       }
 
     }
