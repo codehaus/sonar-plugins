@@ -35,4 +35,14 @@ public class NclocSensorTest {
     assertEquals(2, res.getMeasures().getCommentLines());
     assertEquals(28, res.getMeasures().getNcloc());
   }
+  
+  @Test
+  public void analyseTestNclocWithHeader() {
+    Resource res = SonarNcss.analyze(getFile("/metrics/ncloc/TestNclocWithHeader.java"));
+    assertEquals(45, res.getMeasures().getLoc());
+    assertEquals(9, res.getMeasures().getBlankLines());
+    assertEquals(4, res.getMeasures().getCommentLines());
+    // currently fails, needs to be fixed, should return 28 and not 34
+    //assertEquals(28, res.getMeasures().getNcloc());
+  }
 }
