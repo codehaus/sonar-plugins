@@ -298,12 +298,7 @@ public class Measures {
   }
 
   public double getPercentOfMethodsWithJavadoc() {
-    if (methods != 0) {
-      return (double) methodsWithJavadoc / (double) methods;
-    } else {
-      throw new IllegalStateException(
-          "Unable to compute the percentage of methods with javadoc there is no method.");
-    }
+    return methods != 0 ? ((double) methodsWithJavadoc / (double) methods) : 0;
   }
 
   public double getPercentOfClassesWithJavadoc() {
