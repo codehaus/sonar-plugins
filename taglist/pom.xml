@@ -12,6 +12,23 @@
 	<name>sonar-plugin-taglist</name>
 	<version>0.1-SNAPSHOT</version>
 	<description>Analyse various tags found in the code, like @todo or //TODO.</description>
+	
+	<developers>
+	    <developer>
+	      <id>freddy.mallet</id>
+	      <name>Freddy Mallet</name>
+	      <email>freddy.mallet@sonarsource.com</email>
+	      <organization>SonarSource</organization>
+	      <timezone>+1</timezone>
+	    </developer>
+	</developers>
+	
+	<contributors>
+	  <contributor>
+	    <name>Torsten Koster</name>
+	  </contributor>
+	</contributors>
+	
 	<build>
 		<plugins>
 			<plugin>
