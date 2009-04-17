@@ -4,7 +4,7 @@
 	<groupId>org.codehaus.sonar</groupId>
 	<artifactId>HelloWorld</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>Sonar HelloWorld plugin</name>
 	<url>http://sonar.codehaus.org</url>
 	<scm>
@@ -45,9 +45,7 @@
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-plugin-api</artifactId>
-			<version>1.8M1</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>1.8</version>
 		</dependency>
 	</dependencies>
 	<developers>
