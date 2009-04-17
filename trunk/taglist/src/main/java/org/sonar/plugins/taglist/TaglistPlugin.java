@@ -30,14 +30,14 @@ import org.sonar.plugins.api.Plugin;
 /**
  * @author crunchware.org torsten
  */
-@EditableProperties( { @EditableProperty(key = TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY, defaultValue = "", name = "Tags to display in the project dashboards", description = "Coma separated list of tags to display in the project dashboards") })
+@EditableProperties( { @EditableProperty(key = TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY, defaultValue = "", name = "Tags to display in project dashboards", description = "Comma separated list of tags to display in project dashboards.") })
 public class TaglistPlugin implements Plugin {
 
 	public static final String KEY = "taglist";
 	public static final String LIST_OF_TAGS_TO_DISPLAY = "sonar.taglist.listOfTagsToDisplay";
 
 	public String getDescription() {
-		return "Collects Tag-Information from the source-files.";
+		return "Collects Tag-Information from sources.";
 	}
 
 	public List<Class<? extends Extension>> getExtensions() {

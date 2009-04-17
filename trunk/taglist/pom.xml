@@ -2,8 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.codehaus.sonar-plugins
-		</groupId>
+		<groupId>org.codehaus.sonar-plugins</groupId>
 		<artifactId>parent</artifactId>
 		<version>1</version>
 		<relativePath>../parent</relativePath>
@@ -12,8 +11,7 @@
 	<artifactId>sonar-plugin-taglist</artifactId>
 	<name>sonar-plugin-taglist</name>
 	<version>0.1-SNAPSHOT</version>
-	<description>Collects taglist information from the source code
-		and saves it to sonar</description>
+	<description>Analyse various tags found in the code, like @todo or //TODO.</description>
 	<build>
 		<plugins>
 			<plugin>
@@ -30,8 +28,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Plugin-Class>org.sonar.plugins.taglist.TaglistPlugin
-							</Plugin-Class>
+							<Plugin-Class>org.sonar.plugins.taglist.TaglistPlugin</Plugin-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>
