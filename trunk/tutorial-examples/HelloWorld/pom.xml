@@ -1,12 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.codehaus.sonar</groupId>
-	<artifactId>HelloWorld</artifactId>
+	<parent>
+      <groupId>org.codehaus.sonar-plugins</groupId>
+      <artifactId>parent</artifactId>
+      <version>2</version>
+      <relativePath>../parent</relativePath>
+    </parent>
+	<artifactId>tutorial-helloworld</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Sonar HelloWorld plugin</name>
-	<url>http://sonar.codehaus.org</url>
+	<url>http://sonar-plugins.codehaus.org</url>
 	<scm>
 		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/tutorial-examples/HelloWorld</connection>
 		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/tutorial-examples/HelloWorld</developerConnection>
