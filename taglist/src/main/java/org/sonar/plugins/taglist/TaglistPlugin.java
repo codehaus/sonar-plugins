@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author crunchware.org torsten
  */
-@EditableProperties({@EditableProperty(key = TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY, defaultValue = "", name = "Tags to display in project dashboards", description = "Comma separated list of tags to display in project dashboards.")})
+@EditableProperties({@EditableProperty(key = TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY, defaultValue = "", name = "Tags to display in project dashboards", description = "Comma separated list of tags, for example 'TODO,@todo,@deprecated'.")})
 public class TaglistPlugin implements Plugin {
 
     public static final String KEY = "taglist";
