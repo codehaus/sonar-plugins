@@ -19,15 +19,15 @@
  */
 package org.sonar.plugins.emma;
 
-import java.io.File;
-
+import org.slf4j.LoggerFactory;
 import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
 import org.sonar.plugins.api.maven.CollectsCodeCoverage;
-import org.sonar.plugins.api.maven.CollectsUnitTests;
-import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.MavenPluginHandler;
 import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.maven.model.MavenPluginConfiguration;
 import org.sonar.plugins.api.maven.model.MavenPom;
+
+import java.io.File;
 
 public class EmmaMavenCollector extends AbstractJavaMavenCollector implements CollectsCodeCoverage {
 
@@ -43,7 +43,7 @@ public class EmmaMavenCollector extends AbstractJavaMavenCollector implements Co
   protected boolean shouldCollectIfNoSources() {
     return false;
   }
-  
+
   @Override
   public boolean shouldCollectOn(MavenPom pom) {
     return super.shouldCollectOn(pom) &&
@@ -51,12 +51,55 @@ public class EmmaMavenCollector extends AbstractJavaMavenCollector implements Co
   }
 
   public void collect(MavenPom pom, ProjectContext context) {
-    File reportXmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "site/emma/coverage.xml");
-    EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(reportXmlFile, context);
+    File report = getReport(pom);
+    checkReportAvailability(report, pom);
+
+    EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(report, context);
     emmaXmlProcessor.process();
   }
 
-  public void configure(CollectsUnitTests arg0) {
+  private void checkReportAvailability(File report, MavenPom pom) {
+    if (pom.getAnalysisType().equals(MavenPom.AnalysisType.REUSE_REPORTS) && !reportExists(report)) {
+      LoggerFactory.getLogger(getClass()).warn("Emma report not found in {}", report);
+    }
+  }
+
+  private boolean reportExists(File report) {
+    return report != null && report.exists() && report.isFile();
+  }
+
+  private File getReport(MavenPom pom) {
+    File report = getReportFromProperty(pom);
+    if (report == null) {
+      report = getReportFromPluginConfiguration(pom);
+    }
+    if (report == null) {
+      report = getReportFromDefaultPath(pom);
+    }
+    return report;
+  }
+
+  private File getReportFromProperty(MavenPom pom) {
+    String path = (String) pom.getProperty("sonar.emma.reportPath");
+    if (path != null) {
+      return pom.resolvePath(path);
+    }
+    return null;
+  }
+
+  private File getReportFromPluginConfiguration(MavenPom pom) {
+    MavenPluginConfiguration pomConf = pom.findPluginConfiguration(EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    if (pomConf != null) {
+      String path = pomConf.getParameter("outputDirectory");
+      if (path != null) {
+        return new File(pom.resolvePath(path), "coverage.xml");
+      }
+    }
+    return null;
+  }
+
+  private File getReportFromDefaultPath(MavenPom pom) {
+    return new File(pom.getReportOutputDir(), "emma/coverage.xml");
   }
 
 }
