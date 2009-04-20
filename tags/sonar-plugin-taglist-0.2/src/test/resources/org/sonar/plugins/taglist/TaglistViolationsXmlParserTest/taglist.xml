@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
+    <tags>
+        <tag name="NO_PMD" count="0"/>
+        <tag name="TODO" count="2">
+            <files>
+                <file name="org.sonar.plugins.taglist.test.ClassWithTags" count="2">
+                    <comments>
+                        <comment>
+                            <lineNumber>12</lineNumber>
+                            <comment>Auto-generated method stub</comment>
+                        </comment>
+                        <comment>
+                            <lineNumber>16</lineNumber>
+                            <comment>throw some exception</comment>
+                        </comment>
+                    </comments>
+                </file>
+            </files>
+        </tag>
+        <tag name="FIXME" count="1">
+            <files>
+                <file name="org.sonar.plugins.taglist.test.ClassWithTags" count="1">
+                    <comments>
+                        <comment>
+                            <lineNumber>18</lineNumber>
+                            <comment>Do not ever override toString() if you're not changing the implementation. Do not
+                                ever override toString() if you're not changing the implementation.Do not ever override
+                                toString() if you're not changing the implementation.Do not ever override toString() if
+                                you're not changing the implementation.Do not ever override toString() if you're not
+                                changing the implementation.Do not ever override toString() if you're not changing the
+                                implementation.Do not ever override toString() if you're not changing the
+                                implementation.Do not ever override toString() if you're not changing the
+                                implementation.
+                            </comment>
+                        </comment>
+                    </comments>
+                </file>
+            </files>
+        </tag>
+        <tag name="@todo" count="2">
+            <files>
+                <file name="org.sonar.plugins.taglist.test.IInterfaceWithTags" count="1">
+                    <comments>
+                        <comment>
+                            <lineNumber>4</lineNumber>
+                            <comment>Implement this freaky Interface</comment>
+                        </comment>
+                    </comments>
+                </file>
+                <file name="org.sonar.plugins.taglist.test.ClassWithTags" count="1">
+                    <comments>
+                        <comment>
+                            <lineNumber>4</lineNumber>
+                            <comment>could someone please implement this?</comment>
+                        </comment>
+                    </comments>
+                </file>
+            </files>
+        </tag>
+        <tag name="@fixme" count="1">
+            <files>
+                <file name="org.sonar.plugins.taglist.test.IInterfaceWithTags" count="1">
+                    <comments>
+                        <comment>
+                            <lineNumber>12</lineNumber>
+                            <comment>Fix this nonsense method</comment>
+                        </comment>
+                    </comments>
+                </file>
+            </files>
+        </tag>
+    </tags>
+</report>
