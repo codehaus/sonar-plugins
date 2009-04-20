@@ -20,24 +20,29 @@
 package org.sonar.plugins.emma;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.api.maven.*;
-import org.sonar.plugins.api.maven.model.*;
+import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
+import org.sonar.plugins.api.maven.Exclusions;
+import org.sonar.plugins.api.maven.model.MavenPlugin;
+import org.sonar.plugins.api.maven.model.MavenPom;
 
 public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
 
-  private Exclusions exclusions;
+  public static final String GROUP_ID = MavenPom.GROUP_ID_CODEHAUS_MOJO;
+  public static final String ARTIFACT_ID = "emma-maven-plugin";
   
+  private Exclusions exclusions;
+
   public EmmaMavenPluginHandler(Exclusions exclusions) {
     super();
     this.exclusions = exclusions;
   }
 
   public String getGroupId() {
-    return MavenPom.GROUP_ID_CODEHAUS_MOJO;
+    return GROUP_ID;
   }
 
   public String getArtifactId() {
-    return "emma-maven-plugin";
+    return ARTIFACT_ID;
   }
 
   public String getVersion() {
@@ -58,9 +63,9 @@ public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
 
   @Override
   public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-    plugin.unsetConfigParameter( "outputDirectory" );
-    plugin.setConfigParameter( "format", "xml" );
-    plugin.setConfigParameter("quiet", "true" );
+    plugin.unsetConfigParameter("outputDirectory");
+    plugin.setConfigParameter("format", "xml");
+    plugin.setConfigParameter("quiet", "true");
 
     if (exclusions != null) {
       for (String pattern : exclusions.getWildcardPatterns()) {

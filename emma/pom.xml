@@ -86,4 +86,13 @@
       </plugin>
     </plugins>
   </build>
+
+  <reporting>
+	<plugins>
+		<plugin>
+	        <groupId>org.codehaus.sonar-plugins</groupId>
+	        <artifactId>maven-report</artifactId>
+	</plugin>
+	</plugins>
+	</reporting>
 </project>
