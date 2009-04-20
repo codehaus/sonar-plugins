@@ -52,16 +52,18 @@ public class EmmaMavenCollector extends AbstractJavaMavenCollector implements Co
 
   public void collect(MavenPom pom, ProjectContext context) {
     File report = getReport(pom);
-    checkReportAvailability(report, pom);
-
-    EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(report, context);
-    emmaXmlProcessor.process();
+    if (checkReportAvailability(report, pom)) {
+      EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(report, context);
+      emmaXmlProcessor.process();
+    }
   }
 
-  private void checkReportAvailability(File report, MavenPom pom) {
-    if (pom.getAnalysisType().equals(MavenPom.AnalysisType.REUSE_REPORTS) && !reportExists(report)) {
+  private boolean checkReportAvailability(File report, MavenPom pom) {
+    if (!pom.getAnalysisType().equals(MavenPom.AnalysisType.STATIC) && !reportExists(report)) {
       LoggerFactory.getLogger(getClass()).warn("Emma report not found in {}", report);
+      return false;
     }
+    return true;
   }
 
   private boolean reportExists(File report) {
