@@ -56,19 +56,12 @@ public class TaglistMavenCollector extends AbstractJavaMavenCollector {
         LoggerFactory.getLogger(getClass()).info("Parsing {}", xmlFile.getAbsolutePath());
 
         TaglistViolationsXmlParser taglistParser = new TaglistViolationsXmlParser(context, rulesManager,
-                rulesProfile, getListOfTagsToDisplayInDashboard());
+                rulesProfile, TaglistMetrics.getDashboardTags(configuration));
         taglistParser.populateTaglistViolation(xmlFile);
 
     }
 
     public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
         return TaglistMavenPluginHandler.class;
-    }
-
-    private Set<String> getListOfTagsToDisplayInDashboard() {
-        Set<String> result = new HashSet<String>();
-        String[] listOfTags = configuration.getStringArray(TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY);
-        result.addAll(Arrays.asList(listOfTags));
-        return result;
     }
 }

@@ -74,14 +74,13 @@ public class TaglistViolationsXmlParser {
                 Element file = (Element) files.item(i);
                 String fileName = file.getAttribute("name");
                 if (tagsToDisplayInDashboard.contains(tagName)) {
-                    double tagViolations;
                     try {
-                        tagViolations = parseNumber(file.getAttribute("count"));
+                        double count = parseNumber(file.getAttribute("count"));
+                        context.addMeasure(Java.newClass(fileName), new Metric(tagName), count);
                     } catch (ParseException e) {
                         throw new IllegalStateException("Unable to parse count attribute '"
                                 + file.getAttribute("count") + "' on tag " + tagName + " nin taglist.xml file", e);
                     }
-                    context.addMeasure(Java.newClass(fileName), new Metric(tagName), tagViolations);
                 }
                 parseViolationLineNumberAndComment(file, fileName, tagName);
             }
