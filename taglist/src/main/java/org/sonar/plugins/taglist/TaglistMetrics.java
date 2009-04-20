@@ -24,9 +24,9 @@ import org.sonar.commons.Metric.ValueType;
 import org.sonar.commons.rules.Rule;
 import org.sonar.plugins.api.metrics.CoreMetrics;
 import org.sonar.plugins.api.metrics.Metrics;
+import org.apache.commons.configuration.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TaglistMetrics implements Metrics {
 
@@ -39,5 +39,12 @@ public class TaglistMetrics implements Metrics {
             metrics.add(tagMetric);
         }
         return metrics;
+    }
+
+    public static Set<String> getDashboardTags(Configuration configuration) {
+        Set<String> result = new HashSet<String>();
+        String[] listOfTags = configuration.getStringArray(TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY);
+        result.addAll(Arrays.asList(listOfTags));
+        return result;
     }
 }

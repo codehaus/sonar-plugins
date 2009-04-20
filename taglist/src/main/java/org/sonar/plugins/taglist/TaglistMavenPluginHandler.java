@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.taglist;
 
+import org.apache.commons.configuration.Configuration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonar.commons.rules.ActiveRule;
 import org.sonar.commons.rules.RulesProfile;
@@ -26,14 +27,16 @@ import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
 import org.sonar.plugins.api.maven.model.MavenPlugin;
 import org.sonar.plugins.api.maven.model.MavenPom;
 
-import java.util.List;
+import java.util.Set;
 
 public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
 
     private final RulesProfile rulesProfile;
+    private Configuration configuration;
 
-    public TaglistMavenPluginHandler(RulesProfile rulesProfile) {
+    public TaglistMavenPluginHandler(RulesProfile rulesProfile, Configuration configuration) {
         this.rulesProfile = rulesProfile;
+        this.configuration = configuration;
     }
 
     @Override
@@ -43,15 +46,24 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
         plugin.setConfigParameter("linkXRef", "false");
         plugin.unsetConfigParameter("xmlOutputDirectory");
 
-        List<ActiveRule> activeRules = rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY);
-        // tags root element
-        Xpp3Dom tags = new Xpp3Dom("tags");
-        for (ActiveRule activeRule : activeRules) {
-            Xpp3Dom tag = new Xpp3Dom("tag");
-            tag.setValue(activeRule.getRule().getConfigKey());
-            tags.addChild(tag);
+        Set<String> tags = getActiveTags();
+
+        Xpp3Dom tagsDom = new Xpp3Dom("tags");
+        for (String tag : tags) {
+            Xpp3Dom tagDom = new Xpp3Dom("tag");
+            tagDom.setValue(tag);
+            tagsDom.addChild(tagDom);
         }
-        plugin.getConfiguration().getXpp3Dom().addChild(tags);
+
+        plugin.getConfiguration().getXpp3Dom().addChild(tagsDom);
+    }
+
+    private Set<String> getActiveTags() {
+        Set<String> tags = TaglistMetrics.getDashboardTags(configuration);
+        for (ActiveRule activeRule : rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY)) {
+            tags.add(activeRule.getRule().getConfigKey());
+        }
+        return tags;
     }
 
     public String getArtifactId() {
