@@ -7,15 +7,15 @@
       <version>2</version>
       <relativePath>../parent</relativePath>
     </parent>
-	<artifactId>tutorial-helloworld</artifactId>
+	<artifactId>hello-world</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.8-SNAPSHOT</version>
 	<name>Sonar HelloWorld plugin</name>
 	<url>http://sonar-plugins.codehaus.org</url>
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/tutorial-examples/HelloWorld</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/tutorial-examples/HelloWorld</developerConnection>
-		<url>http://svn.codehaus.org/sonar-plugins</url>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/hello-world</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hello-world</developerConnection>
+		<url>http://svn.sonar-plugins.codehaus.org</url>
 	</scm>
 	<build>
 		<plugins>
@@ -33,7 +33,7 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Plugin-Class>org.codehaus.sonar.HelloWorldPlugin</Plugin-Class>
+							<Plugin-Class>org.sonar.HelloWorldPlugin</Plugin-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -53,13 +53,4 @@
 			<version>1.8</version>
 		</dependency>
 	</dependencies>
-	<developers>
-		<developer>
-			<id>freddy.mallet</id>
-			<name>Freddy Mallet</name>
-			<email>freddy.mallet@sonarsource.com</email>
-			<organization>SonarSource</organization>
-			<timezone>+1</timezone>
-		</developer>
-	</developers>
 </project>
