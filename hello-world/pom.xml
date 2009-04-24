@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
       <groupId>org.codehaus.sonar-plugins</groupId>
@@ -9,13 +8,13 @@
     </parent>
 	<artifactId>hello-world</artifactId>
 	<packaging>jar</packaging>
-	<version>1.8-SNAPSHOT</version>
+	<version>1.8</version>
 	<name>Sonar HelloWorld plugin</name>
 	<url>http://sonar-plugins.codehaus.org</url>
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/hello-world</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hello-world</developerConnection>
-		<url>http://svn.sonar-plugins.codehaus.org</url>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/hello-world-1.8</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/hello-world-1.8</developerConnection>
+		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/hello-world-1.8</url>
 	</scm>
 	<build>
 		<plugins>
