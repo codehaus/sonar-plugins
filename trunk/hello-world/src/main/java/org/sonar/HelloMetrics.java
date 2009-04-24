@@ -12,7 +12,7 @@ import org.sonar.plugins.api.metrics.Metrics;
  * As the Metrics class implements org.sonar.plugins.api.Extension interface, 
  * MyOwnMetrics is a Sonar extension which allows to declare as many new Metrics as you want.
  */
-public class HelloWorldMetrics implements Metrics {
+public class HelloMetrics implements Metrics {
 
   public static final Metric MESSAGE = new Metric("message_key", "Message",
       "This is a metric to store a well known message", Metric.ValueType.STRING, -1, false,

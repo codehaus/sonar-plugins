@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * The class HelloWordPlugin is the container for all others extensions (HelloWorldMetrics & HelloWordMavenCollector)
  */
-public class HelloWorldPlugin implements Plugin {
+public class HelloPlugin implements Plugin {
 
   // The key which uniquely identifies your plugin among all others Sonar
   // plugins
@@ -30,8 +30,9 @@ public class HelloWorldPlugin implements Plugin {
   // This is where you're going to declare all your Sonar extensions
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(HelloWorldMetrics.class);
-    list.add(HelloWorldMavenCollector.class);
+    list.add(HelloMetrics.class);
+    list.add(HelloMavenCollector.class);
+    list.add(HelloDashboardWidget.class);
     return list;
   }
 
