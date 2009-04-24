@@ -1,4 +1,4 @@
-package org.codehaus.sonar;
+package org.sonar;
 
 import org.sonar.plugins.api.maven.MavenCollector;
 import org.sonar.plugins.api.maven.MavenPluginHandler;
