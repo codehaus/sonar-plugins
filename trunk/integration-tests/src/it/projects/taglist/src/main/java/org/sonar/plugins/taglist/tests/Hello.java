@@ -24,7 +24,8 @@ public class Hello {
      * @todo
      */
     public void todoMethod() {
-
+   // SIMON
+   //SIMON
     }
 
     protected int notCalled() {
