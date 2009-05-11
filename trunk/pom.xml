@@ -17,7 +17,6 @@
     <module>taglist</module>
     <module>clirr</module>
     <module>maven-report</module>
-    <module>pdf-report</module>
   </modules>
 
 </project>
