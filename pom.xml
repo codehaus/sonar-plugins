@@ -11,10 +11,13 @@
   <modules>
     <module>parent</module>
     <module>emma</module>
-    <module>sonarncss</module>
     <module>pdf-report</module>
     <module>greenpepper</module>
     <module>php</module>
+    <module>taglist</module>
+    <module>clirr</module>
+    <module>maven-report</module>
+    <module>pdf-report</module>
   </modules>
 
 </project>
