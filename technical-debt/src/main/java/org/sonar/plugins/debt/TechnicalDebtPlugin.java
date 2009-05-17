@@ -27,16 +27,15 @@ import org.sonar.plugins.api.Plugin;
 import org.sonar.plugins.api.EditableProperty;
 import org.sonar.plugins.api.EditableProperties;
 
+
 @EditableProperties({
-  @EditableProperty(key=TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK_DEFAULT_VALUE,
+  @EditableProperty(key=TechnicalDebtPlugin.WEIGHT_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.WEIGHT_DUPLI_BLOCK_DEFAULT,
     name = "Time to fix duplicated block", description = "Time to fix duplicated block")
 })
 
-
-
 public class TechnicalDebtPlugin implements Plugin {
-    public final static String TD_FIX_DUPLI_BLOCK = "tech.debt.dupli.blocks";
-    public final static String TD_FIX_DUPLI_BLOCK_DEFAULT_VALUE = "2";
+    public final static String WEIGHT_DUPLI_BLOCK = "tech.debt.dupli.blocks";
+    public final static String WEIGHT_DUPLI_BLOCK_DEFAULT = "0.5";
 
     public String getDescription() {
         return "Calculate a technical debt and display it on the project dashboard.";
@@ -46,9 +45,6 @@ public class TechnicalDebtPlugin implements Plugin {
         List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
         list.add(TechnicalDebtMetrics.class);
         list.add(TechnicalDebtJob.class);
-
-        // web
-
         list.add(TechnicalDebtWidget.class);
         return list;
     }
