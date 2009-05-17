@@ -40,12 +40,12 @@ public class TechnicalDebtJob extends AbstractJob {
 	public java.util.List<Metric> dependsOnMetrics() {
 		List<Metric> metrics = new ArrayList<Metric>();
 		metrics.add(CoreMetrics.DUPLICATED_LINES);
-		metrics.add(CoreMetrics.RULES_VIOLATIONS_COUNT);
-		metrics.add(CoreMetrics.TESTS_ERRORS);
-		metrics.add(CoreMetrics.TESTS_FAILURES);
-		metrics.add(CoreMetrics.COMPLEXITY_AVG_BY_FUNCTION);
-		metrics.add(CoreMetrics.TESTS_TIME);
-		metrics.add(CoreMetrics.CODE_COVERAGE);
+		//metrics.add(CoreMetrics.RULES_VIOLATIONS_COUNT);
+		//metrics.add(CoreMetrics.TESTS_ERRORS);
+		//metrics.add(CoreMetrics.TESTS_FAILURES);
+		//metrics.add(CoreMetrics.COMPLEXITY_AVG_BY_FUNCTION);
+		//metrics.add(CoreMetrics.TESTS_TIME);
+		//metrics.add(CoreMetrics.CODE_COVERAGE);
 		return metrics;
 	}
 
@@ -55,22 +55,37 @@ public class TechnicalDebtJob extends AbstractJob {
 	}
 
 	public boolean shouldExecuteOnResource(Resource resource) {
-		return resource.isProject();
+		return resource.isProject() || resource.isPackage();
 	}
 
 	public void execute(JobContext jobContext) {
 		double duplicatedLines = jobContext.getMeasure(CoreMetrics.DUPLICATED_LINES).getValue();
-		double violations = jobContext.getMeasure(CoreMetrics.RULES_VIOLATIONS_COUNT).getValue();
-		double unitTestFailures = jobContext.getMeasure(CoreMetrics.TESTS_ERRORS).getValue()
-				+ jobContext.getMeasure(CoreMetrics.TESTS_FAILURES).getValue();
-		double cmpxByMethod = jobContext.getMeasure(CoreMetrics.COMPLEXITY_AVG_BY_FUNCTION).getValue();
-		double unitTestDuration = jobContext.getMeasure(CoreMetrics.TESTS_TIME).getValue();
-		double codeCoverage = jobContext.getMeasure(CoreMetrics.CODE_COVERAGE).getValue();
+		//double violations = jobContext.getMeasure(CoreMetrics.RULES_VIOLATIONS_COUNT).getValue();
+		//double unitTestFailures = jobContext.getMeasure(CoreMetrics.TESTS_ERRORS).getValue()
+		//		+ jobContext.getMeasure(CoreMetrics.TESTS_FAILURES).getValue();
+		//double cmpxByMethod = jobContext.getMeasure(CoreMetrics.COMPLEXITY_AVG_BY_FUNCTION).getValue();
+		//double unitTestDuration = jobContext.getMeasure(CoreMetrics.TESTS_TIME).getValue();
+		//double codeCoverage = jobContext.getMeasure(CoreMetrics.CODE_COVERAGE).getValue();
 
-		double technicalDebt = (duplicatedLines + violations + unitTestFailures * 100 + Math.max(0,
-				unitTestDuration - 5000) / 100)
-				* Math.max(1, cmpxByMethod - 2) / (Math.max(1, codeCoverage / 100) + 0.2) * 50;
-
-		jobContext.addMeasure(TechnicalDebtMetrics.techDebtMetric, technicalDebt);
+		//double technicalDebt = (7 * 1);
+        jobContext.addMeasure(TechnicalDebtMetrics.TOTAL_TECHNICAL_DEBT, duplicatedLines * getPluginConfiguration(TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK, TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK_DEFAULT_VALUE));
+        jobContext.addMeasure(TechnicalDebtMetrics.EXTRA_TECHNICAL_DEBT, 30.0);
+        jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, 20.0);
 	}
+
+    private double getPluginConfiguration(String configKey, String defaultValue) {
+      /*Object property = getProperty(CpdPlugin.CPD_MINIMUM_TOKENS_PROPERTY);
+      if (property != null) {
+        if (property instanceof String) {
+          return Integer.parseInt((String) property);
+        } else {
+          //TO DO
+          // throw exception
+        }
+      } else {
+        return Integer.parseInt(TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK_DEFAULT_VALUE);
+      }*/
+        return (new Integer("4")).doubleValue();
+    }
+
 }

@@ -24,25 +24,40 @@ import java.util.List;
 
 import org.sonar.plugins.api.Extension;
 import org.sonar.plugins.api.Plugin;
+import org.sonar.plugins.api.EditableProperty;
+import org.sonar.plugins.api.EditableProperties;
+
+@EditableProperties({
+  @EditableProperty(key=TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_FIX_DUPLI_BLOCK_DEFAULT_VALUE,
+    name = "Time to fix duplicated block", description = "Time to fix duplicated block")
+})
+
+
 
 public class TechnicalDebtPlugin implements Plugin {
+    public final static String TD_FIX_DUPLI_BLOCK = "tech.debt.dupli.blocks";
+    public final static String TD_FIX_DUPLI_BLOCK_DEFAULT_VALUE = "2";
 
-	public String getDescription() {
-		return "Calculate a technical debt and display it on the project dashboard.";
-	}
+    public String getDescription() {
+        return "Calculate a technical debt and display it on the project dashboard.";
+    }
 
-	public List<Class<? extends Extension>> getExtensions() {
-		List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-		list.add(TechnicalDebtMetrics.class);
-		list.add(TechnicalDebtJob.class);
-		return list;
-	}
+    public List<Class<? extends Extension>> getExtensions() {
+        List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+        list.add(TechnicalDebtMetrics.class);
+        list.add(TechnicalDebtJob.class);
 
-	public String getKey() {
-		return "technical-debt";
-	}
+        // web
 
-	public String getName() {
-		return "Technical Debt";
-	}
+        list.add(TechnicalDebtWidget.class);
+        return list;
+    }
+
+    public String getKey() {
+        return "technical-debt";
+    }
+
+    public String getName() {
+        return "Technical Debt";
+    }
 }
