@@ -26,6 +26,7 @@ import org.sonar.commons.Language;
 import org.sonar.commons.Languages;
 import org.sonar.commons.Metric;
 import org.sonar.commons.resources.Resource;
+import org.sonar.commons.resources.Measure;
 import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.jobs.AbstractJob;
 import org.sonar.plugins.api.jobs.JobContext;
@@ -43,13 +44,7 @@ public class TechnicalDebtJob extends AbstractJob {
 
     public java.util.List<Metric> dependsOnMetrics() {
         List<Metric> metrics = new ArrayList<Metric>();
-        metrics.add(CoreMetrics.DUPLICATED_LINES);
-        //metrics.add(CoreMetrics.RULES_VIOLATIONS_COUNT);
-        //metrics.add(CoreMetrics.TESTS_ERRORS);
-        //metrics.add(CoreMetrics.TESTS_FAILURES);
-        //metrics.add(CoreMetrics.COMPLEXITY_AVG_BY_FUNCTION);
-        //metrics.add(CoreMetrics.TESTS_TIME);
-        //metrics.add(CoreMetrics.CODE_COVERAGE);
+        metrics.add(CoreMetrics.DUPLICATED_BLOCKS);
         return metrics;
     }
 
@@ -64,26 +59,21 @@ public class TechnicalDebtJob extends AbstractJob {
 
     public void execute(JobContext jobContext) {
         double duplicationDebt = this.calculateMetricDebt(jobContext, CoreMetrics.DUPLICATED_BLOCKS, TechnicalDebtPlugin.WEIGHT_DUPLI_BLOCK, TechnicalDebtPlugin.WEIGHT_DUPLI_BLOCK_DEFAULT);
-        //double violations = jobContext.getMeasure(CoreMetrics.RULES_VIOLATIONS_COUNT).getValue();
-        //double unitTestFailures = jobContext.getMeasure(CoreMetrics.TESTS_ERRORS).getValue()
-        //		+ jobContext.getMeasure(CoreMetrics.TESTS_FAILURES).getValue();
-        //double cmpxByMethod = jobContext.getMeasure(CoreMetrics.COMPLEXITY_AVG_BY_FUNCTION).getValue();
-        //double unitTestDuration = jobContext.getMeasure(CoreMetrics.TESTS_TIME).getValue();
-        //double codeCoverage = jobContext.getMeasure(CoreMetrics.CODE_COVERAGE).getValue();
 
-        //double technicalDebt = (7 * 1);
+        
         jobContext.addMeasure(TechnicalDebtMetrics.TOTAL_TECHNICAL_DEBT, duplicationDebt);
         jobContext.addMeasure(TechnicalDebtMetrics.EXTRA_TECHNICAL_DEBT, 30.0);
         jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, 20.0);
     }
 
     private double calculateMetricDebt(JobContext jobContext, Metric metric, String keyWeight, String defaultWeight) {
-        if (!(jobContext.getMeasure(metric).hasValue())) {
+        Measure measure  = jobContext.getMeasure(metric);
+
+        if (measure == null ||  !measure.hasValue()) {
             return 0.0;
         }
-        double measure = jobContext.getMeasure(metric).getValue();
         double weight = getWeight(keyWeight, defaultWeight);
-        return measure * weight;
+        return measure.getValue() * weight;
     }
 
 
@@ -91,12 +81,12 @@ public class TechnicalDebtJob extends AbstractJob {
         Object property = configuration.getProperty(keyWeight);
         if (property != null) {
             if (property instanceof String) {
-                return Integer.parseInt((String) property);
+                return Double.parseDouble((String) property);
             } else {
                 //TO DO
                 // throw exception
             }
         }
-        return Integer.parseInt(defaultWeight);
+        return Double.parseDouble(defaultWeight);
     }
 }
