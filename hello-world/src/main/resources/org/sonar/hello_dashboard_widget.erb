@@ -1,15 +1,16 @@
-<div class="dashbox">
-  <h3><span title="<%= metric('message_key').description -%>"><%= metric('message_key').short_name -%></span></h3>
-  <p>
-    <span class="big">
-      <%= format_measure('message_key') -%>
-    </span>
-  </p>
-  <p>
-    <%= format_measure('ncloc', 'lines', url_for_drilldown('ncloc')) -%>
-  </p>
-</div>
-<div class="dashbox">
+<div class="widget">
+  <div class="dashbox">
+    <h3><span title="<%= metric('message_key').description -%>"><%= metric('message_key').short_name -%></span></h3>
+    <p>
+      <span class="big">
+        <%= format_measure('message_key') -%>
+      </span>
+    </p>
+    <p>
+      <%= format_measure('ncloc', :suffix => ' lines', :url => url_for_drilldown('ncloc')) -%>
+    </p>
+  </div>
+  <div class="dashbox">
 	<h3>Help</h3>
 	<p>
       <a href="<%= url_for_resource_gwt('org.sonar.tests:reference/org.sonar.plugins.core.hotspots.GwtHotspots') -%>" class="action">Link to hotspots</a><br/>
@@ -24,4 +25,5 @@
 	    Sample of Jfree Eastwood chart : <br/>
 		<%= gchart('cht=bhs&chco=FF0000,00FF00,0000FF&chs=200x125&chd=s:FOE,THE,Bar&chxt=x,y&chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|') -%>
 	  </p>
+  </div>
 </div>
