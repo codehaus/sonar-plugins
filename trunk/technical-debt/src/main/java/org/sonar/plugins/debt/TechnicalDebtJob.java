@@ -45,6 +45,17 @@ public class TechnicalDebtJob extends AbstractJob {
     public java.util.List<Metric> dependsOnMetrics() {
         List<Metric> metrics = new ArrayList<Metric>();
         metrics.add(CoreMetrics.DUPLICATED_BLOCKS);
+        metrics.add(CoreMetrics.MANDATORY_VIOLATIONS);
+        metrics.add(CoreMetrics.PUBLIC_UNDOCUMENTED_API);
+        metrics.add(CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS);
+        return metrics;
+    }
+
+    public java.util.List<Metric> generatesMetrics() {
+        List<Metric> metrics = new ArrayList<Metric>();
+        metrics.add(TechnicalDebtMetrics.TOTAL_TECHNICAL_DEBT);
+        metrics.add(TechnicalDebtMetrics.EXTRA_TECHNICAL_DEBT);
+        metrics.add(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT);
         return metrics;
     }
 
@@ -58,18 +69,34 @@ public class TechnicalDebtJob extends AbstractJob {
     }
 
     public void execute(JobContext jobContext) {
-        double duplicationDebt = this.calculateMetricDebt(jobContext, CoreMetrics.DUPLICATED_BLOCKS, TechnicalDebtPlugin.WEIGHT_DUPLI_BLOCK, TechnicalDebtPlugin.WEIGHT_DUPLI_BLOCK_DEFAULT);
+        double totalDebt;
+        double sonarDebt;
+        double extraDebt;
+        double dailyRate;
 
-        
-        jobContext.addMeasure(TechnicalDebtMetrics.TOTAL_TECHNICAL_DEBT, duplicationDebt);
-        jobContext.addMeasure(TechnicalDebtMetrics.EXTRA_TECHNICAL_DEBT, 30.0);
-        jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, 20.0);
+        double duplicationDebt = this.calculateMetricDebt(jobContext, CoreMetrics.DUPLICATED_BLOCKS, TechnicalDebtPlugin.COST_DUPLI_BLOCK, TechnicalDebtPlugin.COST_DUPLI_BLOCK_DEFAULT);
+        double violationsDebt = this.calculateMetricDebt(jobContext, CoreMetrics.MANDATORY_VIOLATIONS, TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFAULT);
+        double undocumApiDebt = this.calculateMetricDebt(jobContext, CoreMetrics.PUBLIC_UNDOCUMENTED_API, TechnicalDebtPlugin.COST_UNDOCUMENTED_API, TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFAULT);
+        double uncovComplexDebt = this.calculateMetricDebt(jobContext, CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFAULT);
+
+        dailyRate = getWeight(TechnicalDebtPlugin.DAILY_RATE, TechnicalDebtPlugin.DAILY_RATE_DEFAULT);
+
+        // compute the debt by day and calculate the cost
+        sonarDebt = (duplicationDebt + violationsDebt + undocumApiDebt + uncovComplexDebt) / 8.0 * dailyRate;
+
+        //compute extra debt (input manually) by day
+        extraDebt = 0.0 / 8;
+        totalDebt = sonarDebt + extraDebt;
+
+        jobContext.addMeasure(TechnicalDebtMetrics.TOTAL_TECHNICAL_DEBT, totalDebt);
+        jobContext.addMeasure(TechnicalDebtMetrics.EXTRA_TECHNICAL_DEBT, extraDebt);
+        jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, sonarDebt);
     }
 
     private double calculateMetricDebt(JobContext jobContext, Metric metric, String keyWeight, String defaultWeight) {
-        Measure measure  = jobContext.getMeasure(metric);
+        Measure measure = jobContext.getMeasure(metric);
 
-        if (measure == null ||  !measure.hasValue()) {
+        if (measure == null || !measure.hasValue()) {
             return 0.0;
         }
         double weight = getWeight(keyWeight, defaultWeight);
@@ -83,8 +110,8 @@ public class TechnicalDebtJob extends AbstractJob {
             if (property instanceof String) {
                 return Double.parseDouble((String) property);
             } else {
-                //TO DO
-                // throw exception
+                //Is that correct ? Should I throw an exception instead ?
+                return 0.0;
             }
         }
         return Double.parseDouble(defaultWeight);
