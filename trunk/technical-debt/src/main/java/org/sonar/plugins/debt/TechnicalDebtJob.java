@@ -85,13 +85,29 @@ public class TechnicalDebtJob extends AbstractJob {
         sonarDebt = (duplicationDebt + violationsDebt + undocumApiDebt + uncovComplexDebt) / 8.0 * dailyRate;
 
         //compute extra debt (input manually) by day
-        extraDebt = 0.0 / 8;
+        extraDebt = calculateExtraDebt(jobContext);
         totalDebt = sonarDebt + extraDebt;
 
         jobContext.addMeasure(TechnicalDebtMetrics.TOTAL_TECHNICAL_DEBT, totalDebt);
         jobContext.addMeasure(TechnicalDebtMetrics.EXTRA_TECHNICAL_DEBT, extraDebt);
         jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, sonarDebt);
     }
+
+    // Browse manual metric to add up manual measure linked
+    private double calculateExtraDebt(JobContext jobContext){
+        double extraDebt = 0.0;
+
+        // Right now, the API does not enable to to retrieve manual measures...
+        /*List<Measure> list = jobContext.getMeasures();
+        for (Measure measure : list) {
+            String metricName = measure.getMetric().getName();
+            if (TechnicalDebtMetrics.MANUAL_MEASURE_DEBT_NAME.equals(metricName)) {
+                extraDebt += measure.getValue();
+            }
+        }*/
+        return extraDebt;
+    }
+
 
     private double calculateMetricDebt(JobContext jobContext, Metric metric, String keyWeight, String defaultWeight) {
         Measure measure = jobContext.getMeasure(metric);

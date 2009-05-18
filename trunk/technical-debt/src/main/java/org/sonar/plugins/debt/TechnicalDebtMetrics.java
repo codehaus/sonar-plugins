@@ -32,6 +32,7 @@ public class TechnicalDebtMetrics implements Metrics {
     public final static Metric TOTAL_TECHNICAL_DEBT = new Metric("total_tech_debt", "Total Technical Debt", "This is the technical debt of the component", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
     public final static Metric SONAR_TECHNICAL_DEBT = new Metric("sonar_tech_debt", "Sonar Technical Debt", "This represents the debt calculated by Sonar", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
     public final static Metric EXTRA_TECHNICAL_DEBT = new Metric("extra_tech_debt", "Extra Technical Debt", "This represents the debt entered manually in the system", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+    public final static String MANUAL_MEASURE_DEBT_NAME = "TD_";
 
     public List<Metric> getMetrics() {
         List<Metric> metrics = new ArrayList<Metric>();
