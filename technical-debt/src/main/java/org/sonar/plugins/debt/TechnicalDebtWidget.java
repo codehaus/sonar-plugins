@@ -23,7 +23,17 @@ import org.sonar.plugins.api.web.AbstractDashboardWidget;
 
 public class TechnicalDebtWidget extends AbstractDashboardWidget {
 
-  protected String getTemplatePath() {
-    return "/dashboardwidget/technical_debt_dashboard_widget.erb";
-  }
+    public String getTemplate() {
+        try {
+            return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/Windows/Temp/toto.erb"), "UTF-8");
+
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Can not load the file");
+        }
+    }
+
+
+    protected String getTemplatePath() {
+        return "/dashboardwidget/technical_debt_dashboard_widget.erb";
+    }
 }
