@@ -1,13 +1,16 @@
 
 <div class="yui-g">
     <div class="yui-u first">
-        <div class="dashbox">
-            <h3>Technical Debt</h3>
-                <p><span class="big">$ <%= format_measure('total_tech_debt', '', url_for_drilldown('total_tech_debt')) -%> </span></p>
-                <p><span">$ <%= format_measure('sonar_tech_debt', 'in Sonar', url_for_drilldown('sonar_tech_debt')) -%> </span></p>
-                <p><span">$ <%= format_measure('extra_tech_debt', 'other', url_for_drilldown('extra_tech_debt')) -%> </span></p>
-        </div>
-    </div>
+    	<div class="dashbox">
+			<h3>Technical Debt</h3>
+			<p><span class="big">$ <%= format_measure('total_tech_debt', '', url_for_drilldown('total_tech_debt')) -%> </span></p>
+			<p><span">$ <%= format_measure('sonar_tech_debt', 'in Sonar', url_for_drilldown('sonar_tech_debt')) -%> </span></p>
+			<p><span">$ <%= format_measure('extra_tech_debt', 'other', url_for_drilldown('extra_tech_debt')) -%> </span></p>
+		</div>
+	</div>
+	<div class="yui-u">
+		<%= gchart('chs=150x80&chd=t:60,40,150,20&cht=p&chl=Duplications|uncov. compl.|Violations|Undocum API') -%>
+	</div>
 </div>
 
       
