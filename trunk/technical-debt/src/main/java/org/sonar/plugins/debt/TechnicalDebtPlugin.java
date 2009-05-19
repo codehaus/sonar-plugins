@@ -29,46 +29,46 @@ import org.sonar.plugins.api.EditableProperties;
 
 
 @EditableProperties({
-        @EditableProperty(key = TechnicalDebtPlugin.DAILY_RATE, defaultValue = TechnicalDebtPlugin.DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
-        @EditableProperty(key = TechnicalDebtPlugin.COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix duplicated block (in hours)", description = ""),
-        @EditableProperty(key = TechnicalDebtPlugin.COST_VIOLATION, defaultValue = TechnicalDebtPlugin.COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
-        @EditableProperty(key = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
-        @EditableProperty(key = TechnicalDebtPlugin.COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
+  @EditableProperty(key = TechnicalDebtPlugin.DAILY_RATE, defaultValue = TechnicalDebtPlugin.DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
+  @EditableProperty(key = TechnicalDebtPlugin.COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix duplicated block (in hours)", description = ""),
+  @EditableProperty(key = TechnicalDebtPlugin.COST_VIOLATION, defaultValue = TechnicalDebtPlugin.COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
+  @EditableProperty(key = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
+  @EditableProperty(key = TechnicalDebtPlugin.COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
 })
 
 public class TechnicalDebtPlugin implements Plugin {
-    public final static String DAILY_RATE = "techdebt.daily.rate";
-    public final static String DAILY_RATE_DEFAULT = "500";
+  public final static String DAILY_RATE = "techdebt.daily.rate";
+  public final static String DAILY_RATE_DEFAULT = "500";
 
-    public final static String COST_DUPLI_BLOCK = "techdebt.dupli.blocks";
-    public final static String COST_DUPLI_BLOCK_DEFAULT = "2";
+  public final static String COST_DUPLI_BLOCK = "techdebt.dupli.blocks";
+  public final static String COST_DUPLI_BLOCK_DEFAULT = "2";
 
-    public final static String COST_VIOLATION = "techdebt.violation";
-    public final static String COST_VIOLATION_DEFAULT = "1";
+  public final static String COST_VIOLATION = "techdebt.violation";
+  public final static String COST_VIOLATION_DEFAULT = "0.08";
 
-    public final static String COST_UNCOVERED_COMPLEXITY = "techdebt.uncovered.complexity";
-    public final static String COST_UNCOVERED_COMPLEXITY_DEFAULT = "0.5";
+  public final static String COST_UNCOVERED_COMPLEXITY = "techdebt.uncovered.complexity";
+  public final static String COST_UNCOVERED_COMPLEXITY_DEFAULT = "0.3";
 
-    public final static String COST_UNDOCUMENTED_API = "techdebt.undocumented.api";
-    public final static String COST_UNDOCUMENTED_API_DEFAULT = "0.1";
+  public final static String COST_UNDOCUMENTED_API = "techdebt.undocumented.api";
+  public final static String COST_UNDOCUMENTED_API_DEFAULT = "0.08";
 
-    public String getDescription() {
-        return "Calculate a technical debt and display it on the project dashboard.";
-    }
+  public String getDescription() {
+    return "Calculate a technical debt and display it on the project dashboard.";
+  }
 
-    public List<Class<? extends Extension>> getExtensions() {
-        List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-        list.add(TechnicalDebtMetrics.class);
-        list.add(TechnicalDebtJob.class);
-        list.add(TechnicalDebtWidget.class);
-        return list;
-    }
+  public List<Class<? extends Extension>> getExtensions() {
+    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+    list.add(TechnicalDebtMetrics.class);
+    list.add(TechnicalDebtJob.class);
+    list.add(TechnicalDebtWidget.class);
+    return list;
+  }
 
-    public String getKey() {
-        return "technical-debt";
-    }
+  public String getKey() {
+    return "technical-debt";
+  }
 
-    public String getName() {
-        return "Technical Debt";
-    }
+  public String getName() {
+    return "Technical Debt";
+  }
 }

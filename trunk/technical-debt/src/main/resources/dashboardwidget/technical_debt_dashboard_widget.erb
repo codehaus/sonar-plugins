@@ -1,16 +1,26 @@
-
-<div class="yui-g">
+<div class="yui-gd">
     <div class="yui-u first">
-    	<div class="dashbox">
-			<h3>Technical Debt</h3>
-			<p><span class="big">$ <%= format_measure('total_tech_debt', '', url_for_drilldown('total_tech_debt')) -%> </span></p>
-			<p><span">$ <%= format_measure('sonar_tech_debt', 'in Sonar', url_for_drilldown('sonar_tech_debt')) -%> </span></p>
-			<p><span">$ <%= format_measure('extra_tech_debt', 'other', url_for_drilldown('extra_tech_debt')) -%> </span></p>
-		</div>
-	</div>
-	<div class="yui-u">
-		<%= gchart('chs=150x80&chd=t:60,40,150,20&cht=p&chl=Duplications|uncov. compl.|Violations|Undocum API') -%>
-	</div>
-</div>
+        <div class="dashbox">
+            <h3>Technical Debt</h3>
+            <p><span class="big"><%= format_measure('total_tech_debt')%><!--, :prefix => 'i', :url => url_for_drilldown('total_tech_debt'), :default => '-')--></span></p>
+            <p><span"><%= format_measure('sonar_tech_debt_days')%><!--, :suffix => 'man days',  :url => url_for_drilldown('sonar_tech_debt_days'), :default => '-') --></span></p>
+            <p><span"><%= format_measure('sonar_tech_debt')%><!--, :prefix => '$', :suffix => 'from Sonar',  :url => url_for_drilldown('sonar_tech_debt'), :default => '-') --></span></p>
+            <p><span"><%= format_measure('extra_tech_debt')%><!--, :prefix => '$', :suffix => 'other',  :url => url_for_drilldown('extra_tech_debt'), :default => '-') --></span></p>
+        </div>
+    </div>
+    <div class="yui-u">
+        <h3>&nbsp;</h3>
 
-      
+        <%
+            labels = ""
+            data = ""
+            measure('sonar_tech_debt_repart').data.split(';').each do |pair|
+                labels = labels + "|" + pair.split('=')[0]
+                data = data + "," + pair.split('=')[1]
+            end
+            labels = labels[1, labels.length]
+            data = data[1, data.length]
+        %>
+        <%= gchart("chs=250x90&chd=t:#{data}&cht=p&chl=#{labels}") -%>
+    </div>
+</div>
