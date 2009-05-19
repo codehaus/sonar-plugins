@@ -14,13 +14,18 @@
         <%
             labels = ""
             data = ""
-            measure('sonar_tech_debt_repart').data.split(';').each do |pair|
-                labels = labels + "|" + pair.split('=')[0]
-                data = data + "," + pair.split('=')[1]
+            debt_measure = measure('sonar_tech_debt_repart')
+            if (debt_measure != nil)
+                debt_measure.data.split(';').each do |pair|
+                    labels = labels + "|" + pair.split('=')[0]
+                    data = data + "," + pair.split('=')[1]
+                end
+                labels = labels[1, labels.length]
+                data = data[1, data.length]
+            %>
+            <%= gchart("chs=250x90&chd=t:#{data}&cht=p&chl=#{labels}") -%>
+            <%
             end
-            labels = labels[1, labels.length]
-            data = data[1, data.length]
         %>
-        <%= gchart("chs=250x90&chd=t:#{data}&cht=p&chl=#{labels}") -%>
     </div>
 </div>
