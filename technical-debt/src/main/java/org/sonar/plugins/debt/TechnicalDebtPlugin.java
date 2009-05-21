@@ -30,8 +30,8 @@ import org.sonar.plugins.api.EditableProperties;
 
 @EditableProperties({
     @EditableProperty(key = TechnicalDebtPlugin.DAILY_RATE, defaultValue = TechnicalDebtPlugin.DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.COST_COMP_CLASS_DEFAULT, name = "Average time to a class, due to high complexity (in hours)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.COST_COMP_METHOD_DEFAULT, name = "Average time to a method, due to high complexity (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.COST_COMP_CLASS_DEFAULT, name = "Average time to split a class, due to high complexity (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.COST_COMP_METHOD_DEFAULT, name = "Average time to plit a method, due to high complexity (in hours)", description = ""),
     @EditableProperty(key = TechnicalDebtPlugin.COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix duplicated block (in hours)", description = ""),
     @EditableProperty(key = TechnicalDebtPlugin.COST_VIOLATION, defaultValue = TechnicalDebtPlugin.COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
     @EditableProperty(key = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
