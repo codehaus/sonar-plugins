@@ -29,12 +29,9 @@ import org.sonar.plugins.api.metrics.Metrics;
 
 public class TechnicalDebtMetrics implements Metrics {
 
-    public final static Metric SONAR_TECHNICAL_DEBT = new Metric("sonar_tech_debt", "Sonar Technical Debt", "This represents the debt calculated by Sonar", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-    public final static Metric SONAR_TECHNICAL_DEBT_DAYS = new Metric("sonar_tech_debt_days", "Total Technical Debt in man days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-    public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("sonar_tech_debt_repart", "Repartition of the technical date", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
-
-
-    public final static String MANUAL_MEASURE_DEBT_NAME = "TD_";
+    public final static Metric SONAR_TECHNICAL_DEBT = new Metric("sonar_tech_debt", "Technical Debt", "This represents the debt calculated by Sonar", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+    public final static Metric SONAR_TECHNICAL_DEBT_DAYS = new Metric("sonar_tech_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+    public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("sonar_tech_debt_repart", "Technical debt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
 
     public List<Metric> getMetrics() {
         List<Metric> metrics = new ArrayList<Metric>();

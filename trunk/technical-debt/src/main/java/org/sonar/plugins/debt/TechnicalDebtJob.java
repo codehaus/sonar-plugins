@@ -89,7 +89,7 @@ public class TechnicalDebtJob extends AbstractJob {
         Measure debtRepartition = calculateDebtRepartition(duplicationsDebt, violationsDebt, commentsDebt, coverageDebt, complexityDebt).build();
         double sonarDebt = duplicationsDebt + violationsDebt + commentsDebt + coverageDebt + complexityDebt;
 
-        double dailyRate = getWeight(TechnicalDebtPlugin.DAILY_RATE, TechnicalDebtPlugin.DAILY_RATE_DEFAULT);
+        double dailyRate = getWeight(TechnicalDebtPlugin.TD_DAILY_RATE, TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT);
 
         jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, sonarDebt * dailyRate);
         jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT_DAYS, sonarDebt);
@@ -104,7 +104,7 @@ public class TechnicalDebtJob extends AbstractJob {
             return 0.0;
         }
         // debt is calculate in man days
-        return measure.getValue() * getWeight(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
+        return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
     }
 
     // Calculates the technical debt due on comments (in man days)
@@ -115,7 +115,7 @@ public class TechnicalDebtJob extends AbstractJob {
             return 0.0;
         }
         // debt is calculate in man days
-        return measure.getValue() * getWeight(TechnicalDebtPlugin.COST_UNDOCUMENTED_API, TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFAULT) / HOURS_PER_DAY;
+        return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT) / HOURS_PER_DAY;
     }
 
     // Calculates the technical debt due on coding rules violations (in man days)
@@ -126,7 +126,7 @@ public class TechnicalDebtJob extends AbstractJob {
             return 0.0;
         }
         // debt is calculate in man days
-        return measure.getValue() * getWeight(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
+        return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
     }
 
     // Calculates the technical debt due on duplication (in man days)
@@ -137,7 +137,7 @@ public class TechnicalDebtJob extends AbstractJob {
             return 0.0;
         }
         // debt is calculate in man days
-        return measure.getValue() * getWeight(TechnicalDebtPlugin.COST_DUPLI_BLOCK, TechnicalDebtPlugin.COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
+        return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
     }
 
     // Calculates the technical debt due on complexity (in man days)
@@ -158,8 +158,8 @@ public class TechnicalDebtJob extends AbstractJob {
         int nbMethodsToSplit = getMethodsAboveMaxComplexity(jobContext);
 
         // Finally, we sum the 2
-        double debt = nbClassToSplit * getWeight(TechnicalDebtPlugin.COST_COMP_CLASS, TechnicalDebtPlugin.COST_COMP_CLASS_DEFAULT);
-        debt += nbMethodsToSplit * getWeight(TechnicalDebtPlugin.COST_COMP_METHOD, TechnicalDebtPlugin.COST_COMP_METHOD_DEFAULT);
+        double debt = nbClassToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
+        debt += nbMethodsToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
 
         // debt is calculate in man days
         return debt / HOURS_PER_DAY;
