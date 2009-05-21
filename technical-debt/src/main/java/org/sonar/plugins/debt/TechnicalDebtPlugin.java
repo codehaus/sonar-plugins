@@ -29,36 +29,36 @@ import org.sonar.plugins.api.EditableProperties;
 
 
 @EditableProperties({
-    @EditableProperty(key = TechnicalDebtPlugin.DAILY_RATE, defaultValue = TechnicalDebtPlugin.DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.COST_COMP_CLASS_DEFAULT, name = "Average time to split a class, due to high complexity (in hours)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.COST_COMP_METHOD_DEFAULT, name = "Average time to plit a method, due to high complexity (in hours)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix duplicated block (in hours)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_VIOLATION, defaultValue = TechnicalDebtPlugin.COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
-    @EditableProperty(key = TechnicalDebtPlugin.COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
+    @EditableProperty(key = TechnicalDebtPlugin.TD_DAILY_RATE, defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.TD_COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT, name = "Average time to split a class that has a too high complexity (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.TD_COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT, name = "Average time to split a method that has a too high complexity (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix one block duplication block (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.TD_COST_VIOLATION, defaultValue = TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
+    @EditableProperty(key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
 })
 
 public class TechnicalDebtPlugin implements Plugin {
-    public final static String DAILY_RATE = "techdebt.daily.rate";
-    public final static String DAILY_RATE_DEFAULT = "500";
+    public final static String TD_DAILY_RATE = "techdebt.daily.rate";
+    public final static String TD_DAILY_RATE_DEFAULT = "500";
 
-    public final static String COST_COMP_CLASS = "techdebt.split.class";
-    public final static String COST_COMP_CLASS_DEFAULT = "4";
+    public final static String TD_COST_COMP_CLASS = "techdebt.split.class";
+    public final static String TD_COST_COMP_CLASS_DEFAULT = "4";
 
-    public final static String COST_COMP_METHOD = "techdebt.split.meth";
-    public final static String COST_COMP_METHOD_DEFAULT = "0.5";
+    public final static String TD_COST_COMP_METHOD = "techdebt.split.meth";
+    public final static String TD_COST_COMP_METHOD_DEFAULT = "0.5";
 
-    public final static String COST_DUPLI_BLOCK = "techdebt.dupli.blocks";
-    public final static String COST_DUPLI_BLOCK_DEFAULT = "2";
+    public final static String TD_COST_DUPLI_BLOCK = "techdebt.dupli.blocks";
+    public final static String TD_COST_DUPLI_BLOCK_DEFAULT = "2";
 
-    public final static String COST_VIOLATION = "techdebt.violation";
-    public final static String COST_VIOLATION_DEFAULT = "0.08";
+    public final static String TD_COST_VIOLATION = "techdebt.violation";
+    public final static String TD_COST_VIOLATION_DEFAULT = "0.08";
 
-    public final static String COST_UNCOVERED_COMPLEXITY = "techdebt.uncovered.complexity";
-    public final static String COST_UNCOVERED_COMPLEXITY_DEFAULT = "0.3";
+    public final static String TD_COST_UNCOVERED_COMPLEXITY = "techdebt.uncovered.complexity";
+    public final static String TD_COST_UNCOVERED_COMPLEXITY_DEFAULT = "0.3";
 
-    public final static String COST_UNDOCUMENTED_API = "techdebt.undocumented.api";
-    public final static String COST_UNDOCUMENTED_API_DEFAULT = "0.08";
+    public final static String TD_COST_UNDOCUMENTED_API = "techdebt.undocumented.api";
+    public final static String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.08";
 
     public String getDescription() {
         return "Calculate a technical debt and display it on the project dashboard.";
