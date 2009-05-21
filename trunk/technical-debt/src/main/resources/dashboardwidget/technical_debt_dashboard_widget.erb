@@ -2,10 +2,8 @@
     <div class="yui-u first">
         <div class="dashbox">
             <h3>Technical Debt</h3>
-            <p><span class="big"><%= format_measure('total_tech_debt')%><!--, :prefix => 'i', :url => url_for_drilldown('total_tech_debt'), :default => '-')--></span></p>
-            <p><span"><%= format_measure('sonar_tech_debt_days')%><!--, :suffix => 'man days',  :url => url_for_drilldown('sonar_tech_debt_days'), :default => '-') --></span></p>
-            <p><span"><%= format_measure('sonar_tech_debt')%><!--, :prefix => '$', :suffix => 'from Sonar',  :url => url_for_drilldown('sonar_tech_debt'), :default => '-') --></span></p>
-            <p><span"><%= format_measure('extra_tech_debt')%><!--, :prefix => '$', :suffix => 'other',  :url => url_for_drilldown('extra_tech_debt'), :default => '-') --></span></p>
+            <p><span class="big"><%= format_measure('sonar_tech_debt', :prefix => '$', :url => url_for_drilldown('sonar_tech_debt'), :default => '-')%></span></p>
+            <p><span"><%= format_measure('sonar_tech_debt_days', :suffix => ' man days',  :url => url_for_drilldown('sonar_tech_debt_days'), :default => '-') %></span></p>
         </div>
     </div>
     <div class="yui-u">
