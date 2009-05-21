@@ -147,7 +147,7 @@ public class TechnicalDebtJob extends AbstractJob {
         if (jobContext.getResource().isFile()) {
             Measure complexity = jobContext.getMeasure(CoreMetrics.COMPLEXITY);
 
-            if (complexity != null && complexity.hasValue() && complexity.getValue() > MAX_COMPLEXITY_CLASS) {
+            if (complexity != null && complexity.hasValue() && complexity.getValue() >= MAX_COMPLEXITY_CLASS) {
                 nbClassToSplit = 1;
             }
         } else {

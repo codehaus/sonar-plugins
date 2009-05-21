@@ -2,13 +2,11 @@
     <div class="yui-u first">
         <div class="dashbox">
             <h3>Technical Debt</h3>
-            <p><span class="big"><%= format_measure('sonar_tech_debt', :prefix => '$', :url => url_for_drilldown('sonar_tech_debt'), :default => '-')%></span></p>
-            <p><span"><%= format_measure('sonar_tech_debt_days', :suffix => ' man days',  :url => url_for_drilldown('sonar_tech_debt_days'), :default => '-') %></span></p>
+            <p><span class="big"><%= format_measure('sonar_tech_debt', :prefix => '$', :suffix => '', :url => url_for_drilldown('sonar_tech_debt'), :default => '-')%></span></p>
+            <p><span"><%= format_measure('sonar_tech_debt_days', :suffix => ' man days', :url => url_for_drilldown('sonar_tech_debt_days'), :default => '-') %></span></p>
         </div>
     </div>
     <div class="yui-u">
-        <h3>&nbsp;</h3>
-
         <%
             labels = ""
             data = ""
