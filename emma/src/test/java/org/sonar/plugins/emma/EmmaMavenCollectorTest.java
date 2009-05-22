@@ -36,7 +36,7 @@ public class EmmaMavenCollectorTest {
     ProjectContext context = mock(ProjectContext.class);
     MavenPom pom = MavenTestCase.loadPom("/org/sonar/plugins/emma/EmmaMavenCollectorTest/shouldGetReportPathFromProperty/pom.xml");
     new EmmaMavenCollector().collect(pom, context);
-    verify(context, atLeastOnce()).addMeasure(eq(CoreMetrics.CODE_COVERAGE), anyDouble());
+    verify(context, atLeastOnce()).addMeasure(eq(CoreMetrics.COVERAGE), anyDouble());
   }
 
   @Test
@@ -68,7 +68,7 @@ public class EmmaMavenCollectorTest {
     ProjectContext context = mock(ProjectContext.class);
     MavenPom pom = MavenTestCase.loadPom("/org/sonar/plugins/emma/EmmaMavenCollectorTest/shouldGetReportPathFromPom/pom.xml");
     new EmmaMavenCollector().collect(pom, context);
-    verify(context, atLeastOnce()).addMeasure(eq(CoreMetrics.CODE_COVERAGE), anyDouble());
+    verify(context, atLeastOnce()).addMeasure(eq(CoreMetrics.COVERAGE), anyDouble());
   }
 
 }

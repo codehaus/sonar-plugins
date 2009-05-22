@@ -97,7 +97,7 @@ public class EmmaXmlProcessor {
   private void collectProjectMeasures(XMLStreamReader2 reader) throws XMLStreamException, ParseException {
     findLineRateMeasure(reader, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
-        context.addMeasure(CoreMetrics.CODE_COVERAGE, coverage);
+        context.addMeasure(CoreMetrics.COVERAGE, coverage);
       }
     }, null);
   }
@@ -105,7 +105,7 @@ public class EmmaXmlProcessor {
   private void collectPackageMeasures(XMLStreamReader2 reader, String resourceName) throws XMLStreamException, ParseException {
     findLineRateMeasure(reader, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
-        context.addMeasure(Java.newPackage(resourceName), CoreMetrics.CODE_COVERAGE, coverage);
+        context.addMeasure(Java.newPackage(resourceName), CoreMetrics.COVERAGE, coverage);
       }
     }, resourceName);
   }
@@ -114,7 +114,7 @@ public class EmmaXmlProcessor {
     String classFullName = packageName.equals(Java.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
     findLineRateMeasure(reader, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
-        context.addMeasure(Java.newClass(resourceName), CoreMetrics.CODE_COVERAGE,coverage);
+        context.addMeasure(Java.newClass(resourceName), CoreMetrics.COVERAGE,coverage);
       }
     }, classFullName);
   }
