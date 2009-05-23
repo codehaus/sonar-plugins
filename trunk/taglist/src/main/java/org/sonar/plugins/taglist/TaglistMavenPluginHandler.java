@@ -20,70 +20,64 @@
 package org.sonar.plugins.taglist;
 
 import org.apache.commons.configuration.Configuration;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonar.commons.rules.ActiveRule;
 import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
 import org.sonar.plugins.api.maven.model.MavenPlugin;
 import org.sonar.plugins.api.maven.model.MavenPom;
 
+import java.util.Collection;
 import java.util.Set;
 
 public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
 
-    private final RulesProfile rulesProfile;
-    private Configuration configuration;
+  private final RulesProfile rulesProfile;
+  private Configuration configuration;
 
-    public TaglistMavenPluginHandler(RulesProfile rulesProfile, Configuration configuration) {
-        this.rulesProfile = rulesProfile;
-        this.configuration = configuration;
+  public TaglistMavenPluginHandler(RulesProfile rulesProfile, Configuration configuration) {
+    this.rulesProfile = rulesProfile;
+    this.configuration = configuration;
+  }
+
+  @Override
+  public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
+    plugin.setConfigParameter("encoding", System.getProperty("file.encoding"));
+    plugin.setConfigParameter("linkXRef", "false");
+    plugin.unsetConfigParameter("xmlOutputDirectory");
+
+    Collection<String> tags = getActiveTags();
+
+    for (String tag : tags) {
+      plugin.getConfiguration().addParameter("tags/tag", tag);
     }
+  }
 
-    @Override
-    public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-
-        plugin.setConfigParameter("encoding", System.getProperty("file.encoding"));
-        plugin.setConfigParameter("linkXRef", "false");
-        plugin.unsetConfigParameter("xmlOutputDirectory");
-
-        Set<String> tags = getActiveTags();
-
-        Xpp3Dom tagsDom = new Xpp3Dom("tags");
-        for (String tag : tags) {
-            Xpp3Dom tagDom = new Xpp3Dom("tag");
-            tagDom.setValue(tag);
-            tagsDom.addChild(tagDom);
-        }
-
-        plugin.getConfiguration().getXpp3Dom().addChild(tagsDom);
+  private Collection<String> getActiveTags() {
+    Set<String> tags = TaglistMetrics.getDashboardTags(configuration);
+    for (ActiveRule activeRule : rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY)) {
+      tags.add(activeRule.getRule().getConfigKey());
     }
+    return tags;
+  }
 
-    private Set<String> getActiveTags() {
-        Set<String> tags = TaglistMetrics.getDashboardTags(configuration);
-        for (ActiveRule activeRule : rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY)) {
-            tags.add(activeRule.getRule().getConfigKey());
-        }
-        return tags;
-    }
+  public String getArtifactId() {
+    return "taglist-maven-plugin";
+  }
 
-    public String getArtifactId() {
-        return "taglist-maven-plugin";
-    }
+  public String[] getGoals() {
+    return new String[]{"taglist"};
+  }
 
-    public String[] getGoals() {
-        return new String[]{"taglist"};
-    }
+  public String getGroupId() {
+    return MavenPom.GROUP_ID_CODEHAUS_MOJO;
+  }
 
-    public String getGroupId() {
-        return MavenPom.GROUP_ID_CODEHAUS_MOJO;
-    }
+  public boolean isFixedVersion() {
+    return false;
+  }
 
-    public boolean isFixedVersion() {
-        return false;
-    }
-
-    public String getVersion() {
-        return "2.3";
-    }
+  public String getVersion() {
+    return "2.3";
+  }
 
 }
