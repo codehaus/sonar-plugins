@@ -29,15 +29,15 @@ import org.sonar.plugins.api.metrics.Metrics;
 
 public class TechnicalDebtMetrics implements Metrics {
 
-    public final static Metric TECHNICAL_DEBT = new Metric("tech_debt", "Technical Debt", "This represents the debt calculated by Sonar", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-    public final static Metric TECHNICAL_DEBT_DAYS = new Metric("tech_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-    public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("tech_debt_repart", "Technical debt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT = new Metric("tech_debt", "Technical Debt", "This represents the debt calculated by Sonar", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT_DAYS = new Metric("tech_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("tech_debt_repart", "Technical debt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
 
-    public List<Metric> getMetrics() {
-        List<Metric> metrics = new ArrayList<Metric>();
-        metrics.add(TECHNICAL_DEBT);
-        metrics.add(TECHNICAL_DEBT_DAYS);
-        metrics.add(TECHNICAL_DEBT_REPARTITION);
-        return metrics;
-    }
+  public List<Metric> getMetrics() {
+    List<Metric> metrics = new ArrayList<Metric>();
+    metrics.add(TECHNICAL_DEBT);
+    metrics.add(TECHNICAL_DEBT_DAYS);
+    metrics.add(TECHNICAL_DEBT_REPARTITION);
+    return metrics;
+  }
 }
