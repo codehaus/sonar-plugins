@@ -64,8 +64,8 @@ public class TechnicalDebtJob extends AbstractJob {
 
     public java.util.List<Metric> generatesMetrics() {
         List<Metric> metrics = new ArrayList<Metric>();
-        metrics.add(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT);
-        metrics.add(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT_DAYS);
+        metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT);
+        metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS);
         metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
         return metrics;
     }
@@ -91,8 +91,8 @@ public class TechnicalDebtJob extends AbstractJob {
 
         double dailyRate = getWeight(TechnicalDebtPlugin.TD_DAILY_RATE, TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT);
 
-        jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT, sonarDebt * dailyRate);
-        jobContext.addMeasure(TechnicalDebtMetrics.SONAR_TECHNICAL_DEBT_DAYS, sonarDebt);
+        jobContext.addMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);
+        jobContext.addMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS, sonarDebt);
         jobContext.addMeasure(debtRepartition);
     }
 
