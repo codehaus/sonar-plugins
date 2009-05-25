@@ -11,7 +11,7 @@
   <artifactId>technical-debt</artifactId>
   <name>Technical Debt Sonar plugin</name>
   <version>0.1-SNAPSHOT</version>
-  <description>Calculate a technical debt on each project and display it on the project Dashboard</description>
+  <description>Calculate the technical debt</description>
   <build>
     <plugins>
       <plugin>
@@ -28,8 +28,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.debt.TechnicalDebtPlugin
-              </Plugin-Class>
+              <Plugin-Class>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
         </configuration>

@@ -17,21 +17,21 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.debt;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.sonar.plugins.technicaldebt;
 
 import org.sonar.commons.Metric;
 import org.sonar.commons.Metric.ValueType;
 import org.sonar.plugins.api.metrics.CoreMetrics;
 import org.sonar.plugins.api.metrics.Metrics;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TechnicalDebtMetrics implements Metrics {
 
-  public final static Metric TECHNICAL_DEBT = new Metric("tech_debt", "Technical Debt", "This represents the debt calculated by Sonar", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-  public final static Metric TECHNICAL_DEBT_DAYS = new Metric("tech_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-  public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("tech_debt_repart", "Technical debt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT = new Metric("technical_debt", "Technical Debt ($)", "Technical debt ($)", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical technicaldebt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
 
   public List<Metric> getMetrics() {
     List<Metric> metrics = new ArrayList<Metric>();
