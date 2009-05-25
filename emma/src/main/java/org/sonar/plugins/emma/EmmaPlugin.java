@@ -36,7 +36,7 @@ public class EmmaPlugin implements Plugin {
 	}
 
 	public String getDescription() {
-		return "Emma is a tool that calculates the percentage of code accessed by tests. It can be used to identify which parts of Java program are lacking test coverage. You can find more by going to the <a href='http://emma.sourceforge.net'>Emma web site</a>.";
+		return "<a href='http://emma.sourceforge.net'>Emma</a> calculates coverage of unit tests. Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
 	}
 
 	public List<Class<? extends Extension>> getExtensions() {
