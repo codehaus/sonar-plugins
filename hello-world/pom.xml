@@ -11,11 +11,16 @@
 	<version>1.9-SNAPSHOT</version>
 	<name>Sonar HelloWorld plugin</name>
 	<url>http://sonar-plugins.codehaus.org</url>
+	
 	<scm>
 		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/hello-world</connection>
 		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hello-world</developerConnection>
 		<url>http://svn.sonar-plugins.codehaus.org</url>
 	</scm>
+	
+	<properties>
+		<sonar.version>1.9</sonar.version>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -43,13 +48,13 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.4</version>
+			<version>4.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-plugin-api</artifactId>
-			<version>${pom.version}</version>
+			<version>${sonar.version}</version>
 		</dependency>
 	</dependencies>
 </project>
