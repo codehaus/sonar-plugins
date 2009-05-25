@@ -25,7 +25,6 @@ import org.sonar.commons.Languages;
 import org.sonar.commons.Metric;
 import org.sonar.commons.resources.Measure;
 import org.sonar.commons.resources.Resource;
-import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.jobs.AbstractJob;
 import org.sonar.plugins.api.jobs.JobContext;
 import org.sonar.plugins.api.measures.KeyValueFormat;
@@ -38,18 +37,20 @@ import java.util.Map;
 
 public class TechnicalDebtJob extends AbstractJob {
 
-  private final Configuration configuration;
   private static final int HOURS_PER_DAY = 8;
 
   // Those 2 values cannot be changed too quickly... has to be one of the value we keep in DB
   private static final int MAX_COMPLEXITY_CLASS = 60;
   private static final int MAX_COMPLEXITY_METHOD = 8;
 
+  private final Configuration configuration;
+
   public TechnicalDebtJob(Languages languages, Configuration configuration) {
     super(languages);
     this.configuration = configuration;
   }
 
+  @Override
   public List<Metric> dependsOnMetrics() {
     List<Metric> metrics = new ArrayList<Metric>();
     metrics.add(CoreMetrics.DUPLICATED_BLOCKS);
@@ -62,17 +63,8 @@ public class TechnicalDebtJob extends AbstractJob {
     return metrics;
   }
 
-  public List<Metric> generatesMetrics() {
-    List<Metric> metrics = new ArrayList<Metric>();
-    metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT);
-    metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS);
-    metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
-    return metrics;
-  }
-
-  @Override
   protected boolean shouldExecuteOnLanguage(Language language) {
-    return language.equals(new Java());
+    return true; // all languages
   }
 
   public boolean shouldExecuteOnResource(Resource resource) {
@@ -96,7 +88,7 @@ public class TechnicalDebtJob extends AbstractJob {
     jobContext.addMeasure(debtRepartition);
   }
 
-  // Calculates the technical technicaldebt due on coverage (in man days)
+  // Calculates the technical debt due on coverage (in man days)
   private double calculateCoverageDebt(JobContext jobContext) {
     Measure measure = jobContext.getMeasure(CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS);
 
@@ -161,7 +153,7 @@ public class TechnicalDebtJob extends AbstractJob {
     double debt = nbClassToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
     debt += nbMethodsToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
 
-    // technicaldebt is calculate in man days
+    // technicaldebt is calculated in man days
     return debt / HOURS_PER_DAY;
   }
 
@@ -205,7 +197,7 @@ public class TechnicalDebtJob extends AbstractJob {
   private PropertiesBuilder calculateDebtRepartition(double duplicationDebt, double violationsDebt, double commentsDebt, double coverageDebt, double complexityDebt) {
     PropertiesBuilder techDebtRepartition = new PropertiesBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
     techDebtRepartition.add("Violations", violationsDebt);
-    techDebtRepartition.add("Duplication", duplicationDebt);
+    techDebtRepartition.add("Duplications", duplicationDebt);
     techDebtRepartition.add("Comments", commentsDebt);
     techDebtRepartition.add("Coverage", coverageDebt);
     techDebtRepartition.add("Complexity", complexityDebt);
