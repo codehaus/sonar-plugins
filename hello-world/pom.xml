@@ -8,14 +8,14 @@
     </parent>
 	<artifactId>hello-world</artifactId>
 	<packaging>jar</packaging>
-	<version>1.9</version>
+	<version>1.10-SNAPSHOT</version>
 	<name>Sonar HelloWorld plugin</name>
 	<url>http://sonar-plugins.codehaus.org</url>
 	
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/hello-world-1.9</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/hello-world-1.9</developerConnection>
-		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/hello-world-1.9</url>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/hello-world</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hello-world</developerConnection>
+		<url>http://svn.sonar-plugins.codehaus.org</url>
 	</scm>
 	
 	<properties>
