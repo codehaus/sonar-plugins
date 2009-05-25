@@ -17,7 +17,7 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.debt;
+package org.sonar.plugins.technicaldebt;
 
 import org.sonar.plugins.api.web.AbstractDashboardWidget;
 
@@ -34,6 +34,6 @@ public class TechnicalDebtWidget extends AbstractDashboardWidget {
 
 
   protected String getTemplatePath() {
-    return "/dashboardwidget/technical_debt_dashboard_widget.erb";
+    return "/org/sonar/plugins/technicaldebt/dashboard_widget.erb";
   }
 }

@@ -17,24 +17,24 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.debt;
+package org.sonar.plugins.technicaldebt;
+
+import org.apache.commons.configuration.Configuration;
+import org.sonar.commons.Language;
+import org.sonar.commons.Languages;
+import org.sonar.commons.Metric;
+import org.sonar.commons.resources.Measure;
+import org.sonar.commons.resources.Resource;
+import org.sonar.plugins.api.Java;
+import org.sonar.plugins.api.jobs.AbstractJob;
+import org.sonar.plugins.api.jobs.JobContext;
+import org.sonar.plugins.api.measures.KeyValueFormat;
+import org.sonar.plugins.api.measures.PropertiesBuilder;
+import org.sonar.plugins.api.metrics.CoreMetrics;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.sonar.commons.Language;
-import org.sonar.commons.Languages;
-import org.sonar.commons.Metric;
-import org.sonar.commons.resources.Resource;
-import org.sonar.commons.resources.Measure;
-import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.measures.PropertiesBuilder;
-import org.sonar.plugins.api.measures.KeyValueFormat;
-import org.sonar.plugins.api.jobs.AbstractJob;
-import org.sonar.plugins.api.jobs.JobContext;
-import org.sonar.plugins.api.metrics.CoreMetrics;
-import org.apache.commons.configuration.Configuration;
 
 public class TechnicalDebtJob extends AbstractJob {
 
@@ -50,7 +50,7 @@ public class TechnicalDebtJob extends AbstractJob {
     this.configuration = configuration;
   }
 
-  public java.util.List<Metric> dependsOnMetrics() {
+  public List<Metric> dependsOnMetrics() {
     List<Metric> metrics = new ArrayList<Metric>();
     metrics.add(CoreMetrics.DUPLICATED_BLOCKS);
     metrics.add(CoreMetrics.MANDATORY_VIOLATIONS);
@@ -62,7 +62,7 @@ public class TechnicalDebtJob extends AbstractJob {
     return metrics;
   }
 
-  public java.util.List<Metric> generatesMetrics() {
+  public List<Metric> generatesMetrics() {
     List<Metric> metrics = new ArrayList<Metric>();
     metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT);
     metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS);
@@ -96,51 +96,51 @@ public class TechnicalDebtJob extends AbstractJob {
     jobContext.addMeasure(debtRepartition);
   }
 
-  // Calculates the technical debt due on coverage (in man days)
+  // Calculates the technical technicaldebt due on coverage (in man days)
   private double calculateCoverageDebt(JobContext jobContext) {
     Measure measure = jobContext.getMeasure(CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS);
 
     if (measure == null || !measure.hasValue()) {
       return 0.0;
     }
-    // debt is calculate in man days
+    // technicaldebt is calculate in man days
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
   }
 
-  // Calculates the technical debt due on comments (in man days)
+  // Calculates the technical technicaldebt due on comments (in man days)
   private double calculateCommentsDebt(JobContext jobContext) {
     Measure measure = jobContext.getMeasure(CoreMetrics.PUBLIC_UNDOCUMENTED_API);
 
     if (measure == null || !measure.hasValue()) {
       return 0.0;
     }
-    // debt is calculate in man days
+    // technicaldebt is calculate in man days
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT) / HOURS_PER_DAY;
   }
 
-  // Calculates the technical debt due on coding rules violations (in man days)
+  // Calculates the technical technicaldebt due on coding rules violations (in man days)
   private double calculateViolationsDebt(JobContext jobContext) {
     Measure measure = jobContext.getMeasure(CoreMetrics.MANDATORY_VIOLATIONS);
 
     if (measure == null || !measure.hasValue()) {
       return 0.0;
     }
-    // debt is calculate in man days
+    // technicaldebt is calculate in man days
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
   }
 
-  // Calculates the technical debt due on duplication (in man days)
+  // Calculates the technical technicaldebt due on duplication (in man days)
   private double calculateDuplicationDebt(JobContext jobContext) {
     Measure measure = jobContext.getMeasure(CoreMetrics.DUPLICATED_BLOCKS);
 
     if (measure == null || !measure.hasValue()) {
       return 0.0;
     }
-    // debt is calculate in man days
+    // technicaldebt is calculate in man days
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
   }
 
-  // Calculates the technical debt due on complexity (in man days)
+  // Calculates the technical technicaldebt due on complexity (in man days)
   private double calculateComplexityDebt(JobContext jobContext) {
     // First, the classes that have high complexity
     int nbClassToSplit = 0;
@@ -161,7 +161,7 @@ public class TechnicalDebtJob extends AbstractJob {
     double debt = nbClassToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
     debt += nbMethodsToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
 
-    // debt is calculate in man days
+    // technicaldebt is calculate in man days
     return debt / HOURS_PER_DAY;
   }
 
@@ -201,7 +201,7 @@ public class TechnicalDebtJob extends AbstractJob {
     return nb;
   }
 
-  // COmputes the repartition of the debt
+  // COmputes the repartition of the technicaldebt
   private PropertiesBuilder calculateDebtRepartition(double duplicationDebt, double violationsDebt, double commentsDebt, double coverageDebt, double complexityDebt) {
     PropertiesBuilder techDebtRepartition = new PropertiesBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
     techDebtRepartition.add("Violations", violationsDebt);

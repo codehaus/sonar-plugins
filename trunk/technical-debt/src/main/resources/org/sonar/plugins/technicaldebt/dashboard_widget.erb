@@ -1,0 +1,27 @@
+<div class="yui-gd">
+  <div class="yui-u first">
+    <div class="dashbox">
+      <h3>Technical Debt</h3>
+      <p><span class="big"><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '-')%></span></p>
+      <p><span"><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '-') %></span></p>
+    </div>
+  </div>
+  <div class="yui-u">
+    <%
+      labels = ""
+      data = ""
+      debt_measure = measure('technical_debt_repart')
+      if debt_measure
+        debt_measure.data.split(';').each do |pair|
+        labels = labels + "|" + pair.split('=')[0]
+        data = data + "," + pair.split('=')[1]
+      end
+      labels = labels[1, labels.length]
+      data = data[1, data.length]
+    %>
+    <%= gchart("chs=250x80&chd=t:#{data}&cht=p&chl=#{labels}") -%>
+    <%
+      end
+    %>
+  </div>
+</div>
