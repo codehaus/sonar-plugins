@@ -196,11 +196,12 @@ public class TechnicalDebtJob extends AbstractJob {
   // COmputes the repartition of the technicaldebt
   private PropertiesBuilder calculateDebtRepartition(double duplicationDebt, double violationsDebt, double commentsDebt, double coverageDebt, double complexityDebt) {
     PropertiesBuilder techDebtRepartition = new PropertiesBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
-    techDebtRepartition.add("Violations", violationsDebt);
-    techDebtRepartition.add("Duplications", duplicationDebt);
-    techDebtRepartition.add("Comments", commentsDebt);
-    techDebtRepartition.add("Coverage", coverageDebt);
-    techDebtRepartition.add("Complexity", complexityDebt);
+    // Math.floor is important to avoid getting very long doubles... see SONAR-859
+    techDebtRepartition.add("Violations", Math.floor(violationsDebt));
+    techDebtRepartition.add("Duplications", Math.floor(duplicationDebt));
+    techDebtRepartition.add("Comments", Math.floor(commentsDebt));
+    techDebtRepartition.add("Coverage", Math.floor(coverageDebt));
+    techDebtRepartition.add("Complexity", Math.floor(complexityDebt));
     return techDebtRepartition;
   }
 
