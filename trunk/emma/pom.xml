@@ -12,7 +12,7 @@
   <name>Sonar Emma plugin</name>
 
   <properties>
-    <sonar.version>1.9</sonar.version>
+    <sonar.version>1.10-SNAPSHOT</sonar.version>
   </properties>
 
   <dependencies>
@@ -63,11 +63,6 @@
       <artifactId>mockito-all</artifactId>
       <version>1.7</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.woodstox</groupId>
-      <artifactId>stax2-api</artifactId>
-      <version>3.0.1</version>
     </dependency>
   </dependencies>
 
