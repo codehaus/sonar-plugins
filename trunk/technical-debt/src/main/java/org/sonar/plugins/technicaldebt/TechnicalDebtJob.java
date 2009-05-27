@@ -198,7 +198,7 @@ public class TechnicalDebtJob extends AbstractJob {
     PropertiesBuilder techDebtRepartition = new PropertiesBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
     // Math.floor is important to avoid getting very long doubles... see SONAR-859
     techDebtRepartition.add("Violations", Math.floor(violationsDebt));
-    techDebtRepartition.add("Duplications", Math.floor(duplicationDebt));
+    techDebtRepartition.add("Duplication", Math.floor(duplicationDebt));
     techDebtRepartition.add("Comments", Math.floor(commentsDebt));
     techDebtRepartition.add("Coverage", Math.floor(coverageDebt));
     techDebtRepartition.add("Complexity", Math.floor(complexityDebt));
