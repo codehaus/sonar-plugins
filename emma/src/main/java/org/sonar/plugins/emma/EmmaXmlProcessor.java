@@ -66,17 +66,15 @@ public class EmmaXmlProcessor {
   }
   
   private void parse(File xml) throws Exception {
-    StaxParser parser = new StaxParser();
-    SMHierarchicCursor rootCursor = parser.getRootCursor(xml);
-    SMInputCursor all = rootCursor.advance().descendantElementCursor("all");
-    try {
-      collectProjectMeasures(all.advance());
-    } finally {
-      rootCursor.getStreamReader().closeCompletely();
-    }
+    StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
+      public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
+        SMInputCursor all = rootCursor.advance().descendantElementCursor("all");
+        collectProjectMeasures(all.advance());
+      }});
+    parser.parse(xml);
   }
   
-  private void collectProjectMeasures(SMInputCursor allCursor) throws XMLStreamException, ParseException {
+  private void collectProjectMeasures(SMInputCursor allCursor) throws XMLStreamException {
     SMInputCursor packagesCursor = findLineRateMeasure(allCursor, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
         context.addMeasure(CoreMetrics.COVERAGE, coverage);
@@ -86,7 +84,7 @@ public class EmmaXmlProcessor {
     collectPackageMeasures(packagesCursor);
   }
   
-  private void collectPackageMeasures(SMInputCursor packageCursor) throws XMLStreamException, ParseException {
+  private void collectPackageMeasures(SMInputCursor packageCursor) throws XMLStreamException {
     while (packageCursor.getNext() != null) {
       String currentPackageName = packageCursor.getAttrValue("name");
       currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
@@ -101,7 +99,7 @@ public class EmmaXmlProcessor {
     }
   }
   
-  private void collectClassMeasures(SMInputCursor srcFileCursor, String packageName) throws XMLStreamException, ParseException {
+  private void collectClassMeasures(SMInputCursor srcFileCursor, String packageName) throws XMLStreamException {
     while (srcFileCursor.getNext() != null) {
       SMInputCursor classCursor = srcFileCursor.childElementCursor("class");
       while (classCursor.getNext() != null) {
@@ -116,13 +114,17 @@ public class EmmaXmlProcessor {
     }
   }
 
-  private SMInputCursor findLineRateMeasure(SMInputCursor cursor, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException, ParseException {
+  private SMInputCursor findLineRateMeasure(SMInputCursor cursor, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException {
     SMInputCursor coverage = cursor.childElementCursor("coverage");
     boolean coverageValFound = false;
     while (coverage.getNext() != null) {
       String typeAttr = coverage.getAttrValue("type");
       if (typeAttr.equals("line, %")) {
-        handler.handleMeasure(resourceName, extractEmmaPercentageNumber(coverage.getAttrValue("value")));
+        try {
+          handler.handleMeasure(resourceName, extractEmmaPercentageNumber(coverage.getAttrValue("value")));
+        } catch (ParseException e) {
+          throw new XMLStreamException(e);
+        }
         coverageValFound = true;
         break;
       }
