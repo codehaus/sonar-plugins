@@ -20,20 +20,19 @@
 package org.sonar.plugins.emma;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Locale;
 
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.stax2.XMLInputFactory2;
-import org.codehaus.stax2.XMLStreamReader2;
+import org.codehaus.staxmate.in.SMFilterFactory;
+import org.codehaus.staxmate.in.SMHierarchicCursor;
+import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.maven.xml.StaxParser;
 import org.sonar.plugins.api.maven.xml.XmlParserException;
 import org.sonar.plugins.api.metrics.CoreMetrics;
 
@@ -67,75 +66,71 @@ public class EmmaXmlProcessor {
   }
   
   private void parse(File xml) throws Exception {
-    XMLInputFactory2 xmlFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
-    InputStream input = new FileInputStream(xml);
-    XMLStreamReader2 reader = (XMLStreamReader2)xmlFactory.createXMLStreamReader(input);
-
-    boolean allElementProcessedPassed = false;
-    String currentPackageName = null;
-    while (reader.next() != XMLStreamConstants.END_DOCUMENT) {
-      if (reader.isStartElement()) {
-        String elementName = reader.getLocalName();
-        if (!allElementProcessedPassed && elementName.equals("all")) {
-          collectProjectMeasures(reader);
-          allElementProcessedPassed = true;
-        } else if (elementName.equals("package")) {
-          currentPackageName = reader.getAttributeValue(null, "name");
-          currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
-          collectPackageMeasures(reader, currentPackageName);
-        } else if (elementName.equals("class")) {
-          String className = reader.getAttributeValue(null, "name");
-          collectClassMeasures(reader, currentPackageName, className);
-        } else if (elementName.equals("method")) {
-          reader.skipElement();
-        }
-      }
+    StaxParser parser = new StaxParser();
+    SMHierarchicCursor rootCursor = parser.getRootCursor(xml);
+    SMInputCursor all = rootCursor.advance().descendantElementCursor("all");
+    try {
+      collectProjectMeasures(all.advance());
+    } finally {
+      rootCursor.getStreamReader().closeCompletely();
     }
-    reader.closeCompletely();
   }
   
-  private void collectProjectMeasures(XMLStreamReader2 reader) throws XMLStreamException, ParseException {
-    findLineRateMeasure(reader, new LineRateMeasureHandler() {
+  private void collectProjectMeasures(SMInputCursor allCursor) throws XMLStreamException, ParseException {
+    SMInputCursor packagesCursor = findLineRateMeasure(allCursor, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
         context.addMeasure(CoreMetrics.COVERAGE, coverage);
       }
     }, null);
+    packagesCursor.setFilter(SMFilterFactory.getElementOnlyFilter("package"));
+    collectPackageMeasures(packagesCursor);
   }
   
-  private void collectPackageMeasures(XMLStreamReader2 reader, String resourceName) throws XMLStreamException, ParseException {
-    findLineRateMeasure(reader, new LineRateMeasureHandler() {
-      public void handleMeasure(String resourceName, double coverage) {
-        context.addMeasure(Java.newPackage(resourceName), CoreMetrics.COVERAGE, coverage);
-      }
-    }, resourceName);
-  }
-  
-  private void collectClassMeasures(XMLStreamReader2 reader, String packageName, String className) throws XMLStreamException, ParseException {
-    String classFullName = packageName.equals(Java.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
-    findLineRateMeasure(reader, new LineRateMeasureHandler() {
-      public void handleMeasure(String resourceName, double coverage) {
-        context.addMeasure(Java.newClass(resourceName), CoreMetrics.COVERAGE,coverage);
-      }
-    }, classFullName);
-  }
-
-  private void findLineRateMeasure(XMLStreamReader2 reader, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException, ParseException {
-    boolean coverageValFound = false;
-    int coverageTagsCounter = 0;
-    while (!coverageValFound) {
-      reader.nextTag();
-      if (reader.isStartElement() && reader.getLocalName().equals("coverage")) {
-        String typeAttr = reader.getAttributeValue(null, "type");
-        if (typeAttr.equals("line, %")) {
-          double coverage = extractEmmaPercentageNumber(reader.getAttributeValue(null, "value"));
-          handler.handleMeasure(resourceName, coverage);
-          coverageValFound = true;
+  private void collectPackageMeasures(SMInputCursor packageCursor) throws XMLStreamException, ParseException {
+    while (packageCursor.getNext() != null) {
+      String currentPackageName = packageCursor.getAttrValue("name");
+      currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
+      SMInputCursor srcFileCursor = findLineRateMeasure(packageCursor, new LineRateMeasureHandler() {
+        public void handleMeasure(String resourceName, double coverage) {
+          context.addMeasure(Java.newPackage(resourceName), CoreMetrics.COVERAGE, coverage);
         }
-      }
-      if (coverageTagsCounter++ == 8) {
-        throw new XMLStreamException("Unable to find coverage element in XML file");
+      }, currentPackageName);
+      
+      srcFileCursor.setFilter(SMFilterFactory.getElementOnlyFilter("srcfile"));
+      collectClassMeasures(srcFileCursor, currentPackageName);
+    }
+  }
+  
+  private void collectClassMeasures(SMInputCursor srcFileCursor, String packageName) throws XMLStreamException, ParseException {
+    while (srcFileCursor.getNext() != null) {
+      SMInputCursor classCursor = srcFileCursor.childElementCursor("class");
+      while (classCursor.getNext() != null) {
+        String className = classCursor.getAttrValue("name");
+        String classFullName = packageName.equals(Java.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
+        findLineRateMeasure(classCursor, new LineRateMeasureHandler() {
+          public void handleMeasure(String resourceName, double coverage) {
+            context.addMeasure(Java.newClass(resourceName), CoreMetrics.COVERAGE,coverage);
+          }
+        }, classFullName);
       }
     }
+  }
+
+  private SMInputCursor findLineRateMeasure(SMInputCursor cursor, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException, ParseException {
+    SMInputCursor coverage = cursor.childElementCursor("coverage");
+    boolean coverageValFound = false;
+    while (coverage.getNext() != null) {
+      String typeAttr = coverage.getAttrValue("type");
+      if (typeAttr.equals("line, %")) {
+        handler.handleMeasure(resourceName, extractEmmaPercentageNumber(coverage.getAttrValue("value")));
+        coverageValFound = true;
+        break;
+      }
+    }
+    if (!coverageValFound) {
+      throw new XMLStreamException("Unable to find coverage element in XML file");
+    }
+    return coverage;
   }
   
   private interface LineRateMeasureHandler {
