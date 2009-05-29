@@ -15,7 +15,6 @@
     <module>greenpepper</module>
     <module>php</module>
     <module>taglist</module>
-    <module>clirr</module>
     <module>maven-report</module>
     <module>technical-debt</module>
     <module>clirr</module>
