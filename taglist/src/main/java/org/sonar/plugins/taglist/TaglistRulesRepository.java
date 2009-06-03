@@ -36,45 +36,45 @@ import java.util.Properties;
 
 public class TaglistRulesRepository implements RulesRepository {
 
-    public Language getLanguage() {
-        return new Java();
-    }
+  public Language getLanguage() {
+    return new Java();
+  }
 
-    public List<Rule> getInitialReferential() {
-        List<Rule> rules = new ArrayList<Rule>();
-        Properties tags = new Properties();
-        readTaglistFile("/org/sonar/plugins/taglist/default-tags.properties", tags);
-        readTaglistFile("/extensions/plugins/taglist.properties", tags);
-        for (Object tag : tags.keySet()) {
-            String tagName = "Tag " + tag;
-            String tagKey = (String) tag;
-            String tagDescription = "Detection of keyword '" + tagKey + "' in the source code";
-            RulesCategory category = new RulesCategory(tags.getProperty(tagKey));
-            Rule rule = new Rule(tagName, tagKey, tagKey, category, TaglistPlugin.KEY, tagDescription);
-            rules.add(rule);
-        }
-        return rules;
+  public List<Rule> getInitialReferential() {
+    List<Rule> rules = new ArrayList<Rule>();
+    Properties tags = new Properties();
+    readTaglistFile("/org/sonar/plugins/taglist/default-tags.properties", tags);
+    readTaglistFile("/extensions/plugins/taglist.properties", tags);
+    for (Object tag : tags.keySet()) {
+      String tagName = "Tag " + tag;
+      String tagKey = (String) tag;
+      String tagDescription = "Detection of keyword '" + tagKey + "' in the source code";
+      RulesCategory category = new RulesCategory(tags.getProperty(tagKey));
+      Rule rule = new Rule(tagName, tagKey, tagKey, category, TaglistPlugin.KEY, tagDescription);
+      rules.add(rule);
     }
+    return rules;
+  }
 
-    private void readTaglistFile(String resourcePath, Properties tags) {
-        InputStream input = getClass().getResourceAsStream(resourcePath);
-        if (input == null) {
-            return;
-        }
-        try {
-            tags.load(input);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load " + resourcePath, e);
-        } finally {
-            IOUtils.closeQuietly(input);
-        }
+  private void readTaglistFile(String resourcePath, Properties tags) {
+    InputStream input = getClass().getResourceAsStream(resourcePath);
+    if (input == null) {
+      return;
     }
+    try {
+      tags.load(input);
+    } catch (IOException e) {
+      throw new RuntimeException("Unable to load " + resourcePath, e);
+    } finally {
+      IOUtils.closeQuietly(input);
+    }
+  }
 
-    public List<RulesProfile> getProvidedProfiles() {
-        return new ArrayList<RulesProfile>();
-    }
+  public List<RulesProfile> getProvidedProfiles() {
+    return new ArrayList<RulesProfile>();
+  }
 
-    public List<Rule> parseReferential(String fileContent) {
-        return new StandardRulesXmlParser().parse(fileContent);
-    }
+  public List<Rule> parseReferential(String fileContent) {
+    return new StandardRulesXmlParser().parse(fileContent);
+  }
 }

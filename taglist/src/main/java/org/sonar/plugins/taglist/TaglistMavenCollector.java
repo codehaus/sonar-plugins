@@ -19,7 +19,8 @@
  */
 package org.sonar.plugins.taglist;
 
-import org.apache.commons.configuration.Configuration;
+import java.io.File;
+
 import org.slf4j.LoggerFactory;
 import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
@@ -29,39 +30,31 @@ import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.model.MavenPom;
 import org.sonar.plugins.api.rules.RulesManager;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 
-    private final RulesManager rulesManager;
-    private final RulesProfile rulesProfile;
-    private final Configuration configuration;
+  private final RulesManager rulesManager;
+  private final RulesProfile rulesProfile;
 
-    public TaglistMavenCollector(RulesManager rulesManager, RulesProfile rulesProfile, Configuration configuration) {
-        this.rulesManager = rulesManager;
-        this.rulesProfile = rulesProfile;
-        this.configuration = configuration;
-    }
+  public TaglistMavenCollector(RulesManager rulesManager, RulesProfile rulesProfile) {
+    this.rulesManager = rulesManager;
+    this.rulesProfile = rulesProfile;
+  }
 
-    @Override
-    protected boolean shouldCollectIfNoSources() {
-        return false;
-    }
+  @Override
+  protected boolean shouldCollectIfNoSources() {
+    return false;
+  }
 
-    public void collect(MavenPom pom, ProjectContext context) {
-        File xmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "taglist/taglist.xml");
-        LoggerFactory.getLogger(getClass()).info("Parsing {}", xmlFile.getAbsolutePath());
+  public void collect(MavenPom pom, ProjectContext context) {
+    File xmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "taglist/taglist.xml");
+    LoggerFactory.getLogger(getClass()).info("Parsing {}", xmlFile.getAbsolutePath());
 
-        TaglistViolationsXmlParser taglistParser = new TaglistViolationsXmlParser(context, rulesManager,
-                rulesProfile, TaglistMetrics.getDashboardTags(configuration));
-        taglistParser.populateTaglistViolation(xmlFile);
+    TaglistViolationsXmlParser taglistParser = new TaglistViolationsXmlParser(context, rulesManager, rulesProfile);
+    taglistParser.populateTaglistViolation(xmlFile);
 
-    }
+  }
 
-    public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
-        return TaglistMavenPluginHandler.class;
-    }
+  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
+    return TaglistMavenPluginHandler.class;
+  }
 }

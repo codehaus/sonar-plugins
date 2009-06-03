@@ -19,24 +19,22 @@
  */
 package org.sonar.plugins.taglist;
 
-import org.apache.commons.configuration.Configuration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.sonar.commons.rules.ActiveRule;
 import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
 import org.sonar.plugins.api.maven.model.MavenPlugin;
 import org.sonar.plugins.api.maven.model.MavenPom;
 
-import java.util.Collection;
-import java.util.Set;
-
 public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
 
   private final RulesProfile rulesProfile;
-  private Configuration configuration;
 
-  public TaglistMavenPluginHandler(RulesProfile rulesProfile, Configuration configuration) {
+  public TaglistMavenPluginHandler(RulesProfile rulesProfile) {
     this.rulesProfile = rulesProfile;
-    this.configuration = configuration;
   }
 
   @Override
@@ -45,15 +43,13 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
     plugin.setConfigParameter("linkXRef", "false");
     plugin.unsetConfigParameter("xmlOutputDirectory");
 
-    Collection<String> tags = getActiveTags();
-
-    for (String tag : tags) {
+    for (String tag : getActiveTags()) {
       plugin.getConfiguration().addParameter("tags/tag", tag);
     }
   }
 
   private Collection<String> getActiveTags() {
-    Set<String> tags = TaglistMetrics.getDashboardTags(configuration);
+    List<String> tags = new ArrayList<String>();
     for (ActiveRule activeRule : rulesProfile.getActiveRulesByPlugin(TaglistPlugin.KEY)) {
       tags.add(activeRule.getRule().getConfigKey());
     }

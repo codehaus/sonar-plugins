@@ -19,21 +19,21 @@
  */
 package org.sonar.plugins.taglist;
 
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.commons.Languages;
-import org.sonar.commons.Metric;
 import org.sonar.commons.resources.Measure;
+import org.sonar.commons.resources.MeasureKey;
 import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.jobs.JobContext;
 
@@ -46,18 +46,25 @@ public class TaglistJobTest {
 	public void setUp() throws Exception {
 		job = new TaglistJob(new Languages(new Java()));
 		jobContext = mock(JobContext.class);
-
-		List<Measure> measures = new ArrayList<Measure>();
-		measures.add(new Measure(new Metric("TODO"), 1.0));
-		measures.add(new Measure(new Metric("TODO"), 2.0));
-
-		when(jobContext.getChildrenMeasures((Metric) anyObject())).thenReturn(measures);
 	}
 
 	@Test
 	public void testExecute() {
+	  
+	  when(jobContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.TAGS))).
+      thenReturn(Arrays.asList(new Measure(TaglistMetrics.TAGS, 1.0), new Measure(TaglistMetrics.TAGS, 3.0)));
+	  when(jobContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.MANDATORY_TAGS))).
+      thenReturn(Arrays.asList(new Measure(TaglistMetrics.MANDATORY_TAGS, 8.0), new Measure(TaglistMetrics.MANDATORY_TAGS, 3.0)));
+	  when(jobContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.OPTIONAL_TAGS))).
+      thenReturn(Arrays.asList(new Measure(TaglistMetrics.OPTIONAL_TAGS, 1.0), new Measure(TaglistMetrics.OPTIONAL_TAGS, 5.0)));
+	 when(jobContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.TAGS_DISTRIBUTION))).
+     thenReturn(Arrays.asList(new Measure(TaglistMetrics.TAGS_DISTRIBUTION, "test=foo"), new Measure(TaglistMetrics.TAGS_DISTRIBUTION, "foo=bar")));
+	  
 		job.execute(jobContext);
-		verify(jobContext, times(6)).addMeasure((Metric) anyObject(), eq(new Double(3)));
+		verify(jobContext, times(1)).addMeasure(eq(TaglistMetrics.TAGS), eq(new Double(4)));
+		verify(jobContext, times(1)).addMeasure(eq(TaglistMetrics.MANDATORY_TAGS), eq(new Double(11)));
+		verify(jobContext, times(1)).addMeasure(eq(TaglistMetrics.OPTIONAL_TAGS), eq(new Double(6)));
+		verify(jobContext, never()).addMeasure(eq(TaglistMetrics.TAGS_DISTRIBUTION), anyDouble());
 	}
 
 }
