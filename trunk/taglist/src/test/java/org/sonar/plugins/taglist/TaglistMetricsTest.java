@@ -39,6 +39,6 @@ public class TaglistMetricsTest {
 	@Test
 	public void testGetMetrics() {
 		List<Metric> tagMetrics = metrics.getMetrics();
-		assertEquals(tagMetrics.size(), 6);
+		assertEquals(tagMetrics.size(), 4);
 	}
 }

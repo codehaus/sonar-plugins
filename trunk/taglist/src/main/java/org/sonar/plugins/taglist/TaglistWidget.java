@@ -19,31 +19,13 @@
  */
 package org.sonar.plugins.taglist;
 
-import java.util.Arrays;
-import java.util.List;
+import org.sonar.plugins.api.web.AbstractDashboardWidget;
 
-import org.sonar.plugins.api.Extension;
-import org.sonar.plugins.api.Plugin;
+public class TaglistWidget extends AbstractDashboardWidget {
 
-public class TaglistPlugin implements Plugin {
-
-  public static final String KEY = "taglist";
-
-  public String getDescription() {
-    return "Collects Tag-Information from sources.";
-  }
-
-  public List<Class<? extends Extension>> getExtensions() {
-    return Arrays.asList(TaglistMavenCollector.class, TaglistRulesRepository.class, 
-        TaglistMetrics.class, TaglistJob.class, TaglistWidget.class, TaglistDistributionSumJob.class);
-  }
-
-  public String getKey() {
-    return KEY;
-  }
-
-  public String getName() {
-    return "Tag List";
+  @Override
+  protected String getTemplatePath() {
+    return "/org/sonar/plugins/taglist/taglistWidget.erb";
   }
 
 }

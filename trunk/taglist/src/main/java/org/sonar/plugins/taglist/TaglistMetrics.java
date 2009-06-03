@@ -19,32 +19,23 @@
  */
 package org.sonar.plugins.taglist;
 
-import org.apache.commons.configuration.Configuration;
+import java.util.Arrays;
+import java.util.List;
+
 import org.sonar.commons.Metric;
 import org.sonar.commons.Metric.ValueType;
-import org.sonar.commons.rules.Rule;
 import org.sonar.plugins.api.metrics.CoreMetrics;
 import org.sonar.plugins.api.metrics.Metrics;
 
-import java.util.*;
-
 public class TaglistMetrics implements Metrics {
 
-  public List<Metric> getMetrics() {
-    List<Metric> metrics = new ArrayList<Metric>();
-    List<Rule> tags = new TaglistRulesRepository().getInitialReferential();
-    for (Rule tag : tags) {
-      Metric tagMetric = new Metric(tag.getKey(), tag.getName(), "Number of keyword '" + tag.getKey()
-          + "' in the source code", ValueType.INT, -1, true, CoreMetrics.DOMAIN_RULES, false);
-      metrics.add(tagMetric);
-    }
-    return metrics;
-  }
+  public final static Metric TAGS = new Metric("tags", "Tags", "Number of tags in the source code", ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES, false);
+  public final static Metric MANDATORY_TAGS = new Metric("mandatory_tags", "Mandatory tags", "Number of mandatory tags in the source code", ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES, false);
+  public final static Metric OPTIONAL_TAGS = new Metric("optional_tags", "Optional tags", "Number of optional tags in the source code", ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES, false);
+  public final static Metric TAGS_DISTRIBUTION = new Metric("tags_distribution", "Tags distribution", "Distribution of tags in the source code", ValueType.DISTRIB, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_RULES, false);
 
-  public static Set<String> getDashboardTags(Configuration configuration) {
-    Set<String> result = new HashSet<String>();
-    String[] listOfTags = configuration.getStringArray(TaglistPlugin.LIST_OF_TAGS_TO_DISPLAY);
-    result.addAll(Arrays.asList(listOfTags));
-    return result;
+  
+  public List<Metric> getMetrics() {
+    return Arrays.asList(TAGS, MANDATORY_TAGS, OPTIONAL_TAGS, TAGS_DISTRIBUTION);
   }
 }
