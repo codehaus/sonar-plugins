@@ -8,6 +8,25 @@
     </div>
   </div>
   <div class="yui-u">
-    <%= piechart(measure('tags_distribution'), :size => "250x100") -%>
+    <%
+      labels = ""
+      data = ""
+      tags_distrib = measure('tags_distribution')
+      if tags_distrib
+        tags_distrib.data.split(';').each do |pair|
+          label = pair.split('=')[0]
+          value = pair.split('=')[1]
+          if value != '0'
+            labels = labels + "|" + label
+            data = data + "," + value
+          end
+        end
+        labels = labels[1, labels.length]
+        data = data[1, data.length]
+    %>
+    <%= gchart("chs=250x100&chd=t:#{data}&cht=p&chl=#{labels}") -%>
+    <%
+      end
+    %>
   </div>
 </div>
