@@ -37,11 +37,12 @@ import java.util.Map;
 
 public class TechnicalDebtJob extends AbstractJob {
 
-  private static final int HOURS_PER_DAY = 8;
+  private static final double HOURS_PER_DAY = 8.0;
 
   // Those 2 values cannot be changed too quickly... has to be one of the value we keep in DB
   private static final int MAX_COMPLEXITY_CLASS = 60;
   private static final int MAX_COMPLEXITY_METHOD = 8;
+  private static final double COVERAGE_TARGET = 0.8;
 
   private final Configuration configuration;
 
@@ -95,8 +96,13 @@ public class TechnicalDebtJob extends AbstractJob {
     if (measure == null || !measure.hasValue()) {
       return 0.0;
     }
+
+    // It is not reasonable to have an objective at 100%, so target is 80% for coverage
+    double reasonableObjective = (1 - COVERAGE_TARGET) * jobContext.getMeasure(CoreMetrics.COMPLEXITY).getValue();
+    double uncovComplexityGap = measure.getValue() - reasonableObjective;   
+
     // technicaldebt is calculate in man days
-    return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
+    return (uncovComplexityGap > 0.0 ? uncovComplexityGap : 0.0) * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
   }
 
   // Calculates the technical technicaldebt due on comments (in man days)
