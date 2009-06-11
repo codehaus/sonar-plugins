@@ -12,7 +12,7 @@
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
   <properties>
-    <sonar.version>1.9</sonar.version>
+    <sonar.version>1.10-SNAPSHOT</sonar.version>
   </properties>
 
   <developers>
@@ -27,6 +27,13 @@
       <id>simon.brandhof</id>
       <name>Simon Brandhof</name>
       <email>simon.brandhof@sonarsource.com</email>
+      <organization>SonarSource</organization>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>cedric.munger</id>
+      <name>Cedric Munger</name>
+      <email>cedric.munger@sonarsource.com</email>
       <organization>SonarSource</organization>
       <timezone>+1</timezone>
     </developer>

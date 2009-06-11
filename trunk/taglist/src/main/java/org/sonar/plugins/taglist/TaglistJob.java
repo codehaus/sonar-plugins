@@ -46,7 +46,7 @@ public class TaglistJob extends AbstractSumMetricsChildrenJob {
 
   @Override
   protected boolean shouldInsertZeroIfNoChildrenMeasures() {
-    return true;
+    return false;
   }
 
 }
