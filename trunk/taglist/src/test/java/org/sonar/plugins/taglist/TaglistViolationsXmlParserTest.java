@@ -68,6 +68,9 @@ public class TaglistViolationsXmlParserTest {
     File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/TaglistViolationsXmlParserTest/taglist.xml").toURI());
     parser.populateTaglistViolation(xmlFile);
 
+    
+    verify(context, times(1)).addMeasure(argThat(new IsJavaClass("ClassOnDefaultPackage")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
+    
     verify(context, times(1)).addMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(2d));
     verify(context, times(1)).addMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
     verify(context, times(1)).addMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.TAGS), eq(4d));
@@ -80,7 +83,7 @@ public class TaglistViolationsXmlParserTest {
 
       public boolean matches(Object arg0) {
         Measure m = (Measure)arg0;
-        return m.getMetric().equals(TaglistMetrics.TAGS_DISTRIBUTION) && m.getData().equals("@fixme=1;@todo=2;FIXME=1;TODO=2");
+        return m.getMetric().equals(TaglistMetrics.TAGS_DISTRIBUTION) && m.getData().equals("@fixme=1;@todo=2;FIXME=1;TODO=4");
       }
 
       public void describeTo(Description arg0) {

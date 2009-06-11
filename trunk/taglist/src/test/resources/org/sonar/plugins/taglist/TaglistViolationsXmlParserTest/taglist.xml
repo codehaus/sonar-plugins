@@ -2,8 +2,20 @@
 <report>
     <tags>
         <tag name="NO_PMD" count="0"/>
-        <tag name="TODO" count="2">
+        <tag name="TODO" count="4">
             <files>
+				       <file name="null.ClassOnDefaultPackage" count="2">
+				          <comments>
+				            <comment>
+				              <lineNumber>7</lineNumber>
+				              <comment>--No comment--</comment>
+				            </comment>
+				            <comment>
+				              <lineNumber>9</lineNumber>
+				              <comment>--No comment--</comment>
+				            </comment>
+				          </comments>
+				        </file>
                 <file name="org.sonar.plugins.taglist.test.ClassWithTags" count="2">
                     <comments>
                         <comment>

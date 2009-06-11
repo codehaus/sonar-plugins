@@ -80,7 +80,10 @@ public class TaglistViolationsXmlParser {
     int totalViolationsForTag = 0;
     for (int i = 0; i < files.getLength(); i++) {
       Element file = (Element) files.item(i);
-      Resource javaClass = Java.newClass(file.getAttribute("name"));
+      String className = file.getAttribute("name");
+      // see SONARPLUGINS-57
+      className = className.startsWith("null.") ? className.substring(5) : className;
+      Resource javaClass = Java.newClass(className);
       int violationsForClass = parseViolationLineNumberAndComment(file, javaClass, tagName, rule, activeRule);
       totalViolationsForTag += violationsForClass;
       ViolationsCount violationsCount = violationsCountPerClass.get(javaClass);
