@@ -23,19 +23,21 @@ import java.io.File;
 
 import org.slf4j.LoggerFactory;
 import org.sonar.commons.rules.RulesProfile;
-import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
+import org.sonar.plugins.api.Java;
+import org.sonar.plugins.api.maven.AbstractMavenCollector;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.MavenPluginHandler;
 import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.model.MavenPom;
 import org.sonar.plugins.api.rules.RulesManager;
 
-public class TaglistMavenCollector extends AbstractJavaMavenCollector {
+public class TaglistMavenCollector extends AbstractMavenCollector<Java> {
 
   private final RulesManager rulesManager;
   private final RulesProfile rulesProfile;
 
-  public TaglistMavenCollector(RulesManager rulesManager, RulesProfile rulesProfile) {
+  public TaglistMavenCollector(Java java, RulesManager rulesManager, RulesProfile rulesProfile) {
+    super(java);
     this.rulesManager = rulesManager;
     this.rulesProfile = rulesProfile;
   }
