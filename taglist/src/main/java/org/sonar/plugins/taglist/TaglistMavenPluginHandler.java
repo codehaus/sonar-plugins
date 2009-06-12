@@ -44,7 +44,6 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
     plugin.setConfigParameter("encoding", getSourceCharSet(pom));
     plugin.setConfigParameter("linkXRef", "false");
     plugin.unsetConfigParameter("xmlOutputDirectory");
-
     for (String tag : getActiveTags()) {
       plugin.getConfiguration().addParameter("tags/tag", tag);
     }
@@ -83,7 +82,7 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
   }
 
   public boolean isFixedVersion() {
-    return false;
+    return true;
   }
 
   public String getVersion() {
