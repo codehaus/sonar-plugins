@@ -22,10 +22,12 @@ package org.sonar.plugins.taglist;
 import static org.sonar.plugins.api.maven.MavenCollectorUtils.parseNumber;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.sonar.commons.resources.Resource;
 import org.sonar.commons.rules.ActiveRule;
 import org.sonar.commons.rules.Rule;
@@ -33,6 +35,7 @@ import org.sonar.commons.rules.RuleFailureLevel;
 import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.Java;
 import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.maven.model.MavenPom;
 import org.sonar.plugins.api.maven.xml.XpathParser;
 import org.sonar.plugins.api.measures.PropertiesBuilder;
 import org.sonar.plugins.api.rules.RulesManager;
@@ -41,18 +44,20 @@ import org.w3c.dom.NodeList;
 
 public class TaglistViolationsXmlParser {
 
-  private XpathParser parser = new XpathParser();
   private RulesManager rulesManager;
   private RulesProfile rulesProfile;
-  private ProjectContext context;
-  protected TaglistViolationsXmlParser(ProjectContext context, RulesManager rulesManager, RulesProfile rulesProfile) {
-    this.context = context;
+  
+  protected TaglistViolationsXmlParser(RulesManager rulesManager, RulesProfile rulesProfile) {
     this.rulesManager = rulesManager;
     this.rulesProfile = rulesProfile;
   }
 
-  protected final void populateTaglistViolation(File taglistXmlFile) {
-    parser.parse(taglistXmlFile);
+  protected final void populateTaglistViolation(ProjectContext context, MavenPom pom, File taglistXmlFile) throws IOException {
+    XpathParser parser = new XpathParser();
+    // TODO remove when MTAGLIST-40 released
+    String charSet = TaglistMavenPluginHandler.getSourceCharSet(pom);
+    String report = FileUtils.readFileToString(taglistXmlFile, charSet);
+    parser.parse(report.replace("encoding=\"UTF-8\"", "encoding=\""+charSet+"\""));
     PropertiesBuilder tagsDistrib = new PropertiesBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
     NodeList tags = parser.getDocument().getElementsByTagName("tag");
     Map<Resource, ViolationsCount> violationsCountPerClass = new HashMap<Resource, ViolationsCount>();
@@ -62,7 +67,7 @@ public class TaglistViolationsXmlParser {
       Rule rule = rulesManager.getPluginRule(TaglistPlugin.KEY, tagName);
       ActiveRule activeRule = rulesProfile.getActiveRule(TaglistPlugin.KEY, tagName);
       if (activeRule != null && rule != null) {
-        int violationsForTag = parseViolationsOnFiles(tag, tagName, rule, activeRule, violationsCountPerClass);
+        int violationsForTag = parseViolationsOnFiles(context, tag, tagName, rule, activeRule, violationsCountPerClass);
         tagsDistrib.add(tagName, violationsForTag);
       }
     }
@@ -75,7 +80,7 @@ public class TaglistViolationsXmlParser {
     }
   }
 
-  private int parseViolationsOnFiles(Element tag, String tagName, Rule rule, ActiveRule activeRule, Map<Resource, ViolationsCount> violationsCountPerClass) {
+  private int parseViolationsOnFiles(ProjectContext context, Element tag, String tagName, Rule rule, ActiveRule activeRule, Map<Resource, ViolationsCount> violationsCountPerClass) {
     NodeList files = tag.getElementsByTagName("file");
     int totalViolationsForTag = 0;
     for (int i = 0; i < files.getLength(); i++) {
@@ -83,8 +88,12 @@ public class TaglistViolationsXmlParser {
       String className = file.getAttribute("name");
       // see SONARPLUGINS-57
       className = className.startsWith("null.") ? className.substring(5) : className;
+      // exclude unit tests not a really great way to do it.. unfortunatly the only one as long as MTAGLIST-41 is not done
+      // TODO integrate MTAGLIST-41 if done one day
+      if (className.toLowerCase().startsWith("test") || className.toLowerCase().endsWith("test")) continue;
+      
       Resource javaClass = Java.newClass(className);
-      int violationsForClass = parseViolationLineNumberAndComment(file, javaClass, tagName, rule, activeRule);
+      int violationsForClass = parseViolationLineNumberAndComment(context, file, javaClass, tagName, rule, activeRule);
       totalViolationsForTag += violationsForClass;
       ViolationsCount violationsCount = violationsCountPerClass.get(javaClass);
       if (violationsCount == null) {
@@ -101,21 +110,21 @@ public class TaglistViolationsXmlParser {
     return totalViolationsForTag;
   }
 
-  private int parseViolationLineNumberAndComment(Element file, Resource javaClass, String tagName, Rule rule, ActiveRule activeRule) {
+  private int parseViolationLineNumberAndComment(ProjectContext context, Element file, Resource javaClass, String tagName, Rule rule, ActiveRule activeRule) {
     int createdViolations = 0;
     NodeList comments = file.getElementsByTagName("comment");
     for (int i = 0; i < comments.getLength(); i++) {
       Element comment = (Element) comments.item(i);
       if (comment.getElementsByTagName("lineNumber").getLength() > 0) {
         String violationLineNumber = comment.getElementsByTagName("lineNumber").item(0).getTextContent();
-        registerViolation(tagName, violationLineNumber, file, rule, activeRule, javaClass);
+        registerViolation(context, tagName, violationLineNumber, file, rule, activeRule, javaClass);
         createdViolations++;
       }
     }
     return createdViolations;
   }
 
-  private void registerViolation(String tagName, String violationLineNumber, Element file, Rule rule, ActiveRule activeRule, Resource javaClass) {
+  private void registerViolation(ProjectContext context, String tagName, String violationLineNumber, Element file, Rule rule, ActiveRule activeRule, Resource javaClass) {
     try {
       RuleFailureLevel level = activeRule.getLevel();
       context.addViolation(javaClass, rule, rule.getDescription(), level, (int) parseNumber(violationLineNumber));

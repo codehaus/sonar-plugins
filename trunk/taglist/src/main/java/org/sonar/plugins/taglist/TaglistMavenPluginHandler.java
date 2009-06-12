@@ -19,10 +19,12 @@
  */
 package org.sonar.plugins.taglist;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.sonar.commons.rules.ActiveRule;
 import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
@@ -39,13 +41,25 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
 
   @Override
   public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-    plugin.setConfigParameter("encoding", System.getProperty("file.encoding"));
+    plugin.setConfigParameter("encoding", getSourceCharSet(pom));
     plugin.setConfigParameter("linkXRef", "false");
     plugin.unsetConfigParameter("xmlOutputDirectory");
 
     for (String tag : getActiveTags()) {
       plugin.getConfiguration().addParameter("tags/tag", tag);
     }
+  }
+  
+  public static String getSourceCharSet(MavenPom pom) {
+    // TODO refactor me with pom.getSourceCharSetName() in 1.10
+    String encoding = pom.getMavenProject().getProperties().getProperty("project.build.sourceEncoding");
+    if (StringUtils.isNotEmpty(encoding)) {
+      try {
+        return Charset.forName(encoding).name();
+      } catch (Throwable t) {
+      }
+    }
+    return Charset.defaultCharset().name();
   }
 
   private Collection<String> getActiveTags() {

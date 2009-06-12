@@ -20,26 +20,22 @@
 package org.sonar.plugins.taglist;
 
 import java.io.File;
+import java.io.IOException;
 
-import org.slf4j.LoggerFactory;
 import org.sonar.commons.rules.RulesProfile;
-import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.maven.AbstractMavenCollector;
+import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
 import org.sonar.plugins.api.maven.MavenCollectorUtils;
 import org.sonar.plugins.api.maven.MavenPluginHandler;
 import org.sonar.plugins.api.maven.ProjectContext;
 import org.sonar.plugins.api.maven.model.MavenPom;
 import org.sonar.plugins.api.rules.RulesManager;
 
-public class TaglistMavenCollector extends AbstractMavenCollector<Java> {
+public class TaglistMavenCollector extends AbstractJavaMavenCollector {
 
-  private final RulesManager rulesManager;
-  private final RulesProfile rulesProfile;
+  private final TaglistViolationsXmlParser taglistParser;
 
-  public TaglistMavenCollector(Java java, RulesManager rulesManager, RulesProfile rulesProfile) {
-    super(java);
-    this.rulesManager = rulesManager;
-    this.rulesProfile = rulesProfile;
+  public TaglistMavenCollector(RulesManager rulesManager, RulesProfile rulesProfile) {
+    taglistParser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);
   }
 
   @Override
@@ -49,11 +45,11 @@ public class TaglistMavenCollector extends AbstractMavenCollector<Java> {
 
   public void collect(MavenPom pom, ProjectContext context) {
     File xmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "taglist/taglist.xml");
-    LoggerFactory.getLogger(getClass()).info("Parsing {}", xmlFile.getAbsolutePath());
-
-    TaglistViolationsXmlParser taglistParser = new TaglistViolationsXmlParser(context, rulesManager, rulesProfile);
-    taglistParser.populateTaglistViolation(xmlFile);
-
+    try {
+      taglistParser.populateTaglistViolation(context, pom, xmlFile);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {

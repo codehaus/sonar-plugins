@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 
+import org.apache.maven.project.MavenProject;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
@@ -40,16 +41,20 @@ import org.sonar.commons.rules.RuleFailureLevel;
 import org.sonar.commons.rules.RulesProfile;
 import org.sonar.plugins.api.matchers.IsJavaClass;
 import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.plugins.api.maven.model.MavenPom;
 import org.sonar.plugins.api.rules.RulesManager;
 
 public class TaglistViolationsXmlParserTest {
 
   private TaglistViolationsXmlParser parser = null;
   private ProjectContext context;
+  private MavenPom pom;
 
   @Before
   public void setUp() throws Exception {
     context = mock(ProjectContext.class);
+    pom = mock(MavenPom.class);
+    
     RulesManager rulesManager = mock(RulesManager.class);
     RulesProfile rulesProfile = mock(RulesProfile.class);
 
@@ -60,15 +65,15 @@ public class TaglistViolationsXmlParserTest {
     when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@todo"))).thenReturn(new ActiveRule(null, null, RuleFailureLevel.ERROR));
     when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@fixme"))).thenReturn(new ActiveRule(null, null, RuleFailureLevel.ERROR));
 
-    parser = new TaglistViolationsXmlParser(context, rulesManager, rulesProfile);
+    when(pom.getMavenProject()).thenReturn(new MavenProject());
+    parser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);
   }
 
   @Test
   public void testPopulateTaglistViolations() throws Exception {
     File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/TaglistViolationsXmlParserTest/taglist.xml").toURI());
-    parser.populateTaglistViolation(xmlFile);
+    parser.populateTaglistViolation(context, pom, xmlFile);
 
-    
     verify(context, times(1)).addMeasure(argThat(new IsJavaClass("ClassOnDefaultPackage")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
     
     verify(context, times(1)).addMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(2d));
