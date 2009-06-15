@@ -53,48 +53,56 @@ public class JtestXmlProcessor {
   protected void process() {
     try {
       if (xmlReport != null) {
-        //parse(xmlReport);
+        parse(xmlReport);
       }
     } catch (Exception e) {
       throw new XmlParserException(e);
     }
   }
-  /*
+ 
 
-  private double extractEmmaPercentageNumber(String emmaCoverageLineValue) throws ParseException {
-    String extractedStringValue = StringUtils.substringBefore(emmaCoverageLineValue, " ");
+  private double extractJtestPercentageNumber(String jtestCoverageLineValue) throws ParseException {
+    String extractedStringValue = StringUtils.substringBefore(jtestCoverageLineValue, " ");
     double doubleCoverage = MavenCollectorUtils.parseNumber(extractedStringValue, Locale.ENGLISH);
     return MavenCollectorUtils.scaleValue(doubleCoverage);
   }
-  
+ 
   private void parse(File xml) throws Exception {
     XMLInputFactory2 xmlFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
     InputStream input = new FileInputStream(xml);
     XMLStreamReader2 reader = (XMLStreamReader2)xmlFactory.createXMLStreamReader(input);
-
+    XMLStreamReader2 readerPrevious = (XMLStreamReader2)xmlFactory.createXMLStreamReader(input);
+    
     boolean allElementProcessedPassed = false;
     String currentPackageName = null;
     while (reader.next() != XMLStreamConstants.END_DOCUMENT) {
-      if (reader.isStartElement()) {
-        String elementName = reader.getLocalName();
-        if (!allElementProcessedPassed && elementName.equals("all")) {
-          collectProjectMeasures(reader);
-          allElementProcessedPassed = true;
-        } else if (elementName.equals("package")) {
-          currentPackageName = reader.getAttributeValue(null, "name");
-          currentPackageName = currentPackageName.equals(JTEST_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
-          collectPackageMeasures(reader, currentPackageName);
-        } else if (elementName.equals("class")) {
-          String className = reader.getAttributeValue(null, "name");
-          collectClassMeasures(reader, currentPackageName, className);
-        } else if (elementName.equals("method")) {
-          reader.skipElement();
-        }
-      }
+	      if (reader.isStartElement()) {
+		        String elementElem = reader.getAttributeValue(null, "elem");
+		        int elementNumber = reader.getAttributeCount();
+		        if (!allElementProcessedPassed && elementElem.equals("Total")) {
+		        	collectProjectMeasures(reader);
+		        	allElementProcessedPassed = true;
+		        } 
+		        else if (!elementElem.equals("Total") && elementNumber == 4) {
+		        	currentPackageName = readerPrevious.getAttributeValue(null, "elem");
+		        	currentPackageName = currentPackageName.equals(JTEST_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
+		        	collectPackageMeasures(readerPrevious, currentPackageName);
+		        	if (reader.next() != XMLStreamConstants.END_DOCUMENT) {
+		        		String className = reader.getAttributeValue(null, "elem");
+		        		collectClassMeasures(reader, currentPackageName, className);
+		        		readerPrevious.next();
+		        	}
+		        } 
+		        else {
+		          reader.skipElement();
+		        }
+		        readerPrevious.next();
+	      }
     }
     reader.closeCompletely();
+    readerPrevious.closeCompletely();
   }
-  
+
   private void collectProjectMeasures(XMLStreamReader2 reader) throws XMLStreamException, ParseException {
     findLineRateMeasure(reader, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
@@ -121,26 +129,18 @@ public class JtestXmlProcessor {
   }
 
   private void findLineRateMeasure(XMLStreamReader2 reader, LineRateMeasureHandler handler, String resourceName) throws XMLStreamException, ParseException {
-    boolean coverageValFound = false;
-    int coverageTagsCounter = 0;
-    while (!coverageValFound) {
-      reader.nextTag();
-      if (reader.isStartElement() && reader.getLocalName().equals("coverage")) {
-        String typeAttr = reader.getAttributeValue(null, "type");
-        if (typeAttr.equals("line, %")) {
-          double coverage = extractEmmaPercentageNumber(reader.getAttributeValue(null, "value"));
+      if (reader.isStartElement() && !(reader.getAttributeValue(null, "val").equals("N/A"))) {
+    	  String value = reader.getAttributeValue(null, "val") + " % (" + reader.getAttributeValue(null, "num") + "/" + reader.getAttributeValue(null, "total") + ")";
+          double coverage = extractJtestPercentageNumber(value);
           handler.handleMeasure(resourceName, coverage);
-          coverageValFound = true;
-        }
       }
-      if (coverageTagsCounter++ == 8) {
-        throw new XMLStreamException("Unable to find coverage element in XML file");
+      else{
+    	  throw new XMLStreamException("Unable to find coverage element in XML file");
       }
-    }
   }
   
   private interface LineRateMeasureHandler {
     public void handleMeasure(String resourceName, double coverage);
   }
-*/
+
 }
