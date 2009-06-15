@@ -12,7 +12,7 @@
   <name>Sonar JTest plugin</name>
 
   <properties>
-    <sonar.version>1.9</sonar.version>
+    <sonar.version>1.9.2</sonar.version>
   </properties>
 
   <dependencies>

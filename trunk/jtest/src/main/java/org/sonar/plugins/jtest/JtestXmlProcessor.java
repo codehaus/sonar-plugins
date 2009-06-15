@@ -68,6 +68,8 @@ public class JtestXmlProcessor {
   }
  
   private void parse(File xml) throws Exception {
+    // TODO use org.sonar.plugins.api.maven.xml.StaxParser and StaxMate API instead of 
+    // raw Stax API, which is easiers to read and program.
     XMLInputFactory2 xmlFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
     InputStream input = new FileInputStream(xml);
     XMLStreamReader2 reader = (XMLStreamReader2)xmlFactory.createXMLStreamReader(input);
