@@ -1,3 +1,6 @@
+<%
+      if measure('testability_overall_cost')
+%>
 <div class="dashbox">
     	<h3>Testability Explorer</h3>
     	<p><%= format_measure('testability_overall_cost') -%> <span title="<%= metric('testability_overall_cost').description -%>"><%= metric('testability_overall_cost').short_name -%></span></p>
@@ -17,3 +20,6 @@
     %>
 	<%= gchart("chs=290x140&chd=t:#{data}&cht=p&chl=#{labels}&chco=00FF00,FFFF00,FF0000") -%>
 </div>
+<%
+	end
+%>
