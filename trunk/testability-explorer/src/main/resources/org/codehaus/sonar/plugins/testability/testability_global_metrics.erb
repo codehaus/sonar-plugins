@@ -1,0 +1,19 @@
+<div class="dashbox">
+    	<h3>Testability Explorer</h3>
+    	<p><%= format_measure('testability_overall_cost') -%> <span title="<%= metric('testability_overall_cost').description -%>"><%= metric('testability_overall_cost').short_name -%></span></p>
+</div>
+<div class="yui-u">
+    <%
+      def get_string_value(metric_name)
+         return measure(metric_name).metric_value.to_i.to_s
+      end
+      def generate_label_name(metric_name)
+        label_name = metric(metric_name).short_name
+        label_name = label_name + " (" + get_string_value(metric_name) + ")"
+        return label_name
+      end
+      labels = generate_label_name('testability_excellent') + "|" + generate_label_name('testability_acceptable') + "|" + generate_label_name('testability_needswork')
+      data = get_string_value('testability_excellent') + "," + get_string_value('testability_acceptable') + "," + get_string_value('testability_needswork')
+    %>
+	<%= gchart("chs=290x140&chd=t:#{data}&cht=p&chl=#{labels}&chco=00FF00,FFFF00,FF0000") -%>
+</div>
