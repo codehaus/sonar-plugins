@@ -1,9 +1,9 @@
 <%
-      if measure('testability_overall_cost')
+      if measure('testability_cost')
 %>
 <div class="dashbox">
     	<h3>Testability Explorer</h3>
-    	<p><%= format_measure('testability_overall_cost') -%> <span title="<%= metric('testability_overall_cost').description -%>"><%= metric('testability_overall_cost').short_name -%></span></p>
+    	<p><span title="<%= metric('testability_cost').description -%>"><%= metric('testability_cost').short_name -%>: <%= format_measure('testability_cost') -%></span><%= tendency_icon(measure('testability_cost')) -%></p>
 </div>
 <div class="yui-u">
     <%
