@@ -7,10 +7,18 @@ public class TestCostMarshaller {
   @Test
   public void unMarshalledMethodDetailShouldBeEqualToOriginal() {
     MethodTestabilityCostMarshaller marshaller = new MethodTestabilityCostMarshaller();
-    MethodCostDetail methodCostDetail = new MethodCostDetail();
-    String marshalledMethodCostDetail = marshaller.marshall(methodCostDetail);
-    MethodCostDetail unMarshalledMethodCostDetail = marshaller.unMarshall(marshalledMethodCostDetail);
+    MethodTestabilityCostDetail methodCostDetail = new MethodTestabilityCostDetail(1, 2, 3, 4);
+    MethodTestabilityCostDetail unMarshalledMethodCostDetail = marshaller.unMarshall(marshaller.marshall(methodCostDetail));
     Assert.assertEquals("Unmarshalled detail should be equal to original detail", methodCostDetail, unMarshalledMethodCostDetail);
   }
-  
+
+  @Test
+  public void unMarshalledViolationDetailShouldBeEqualToOriginal() {
+    ViolationCostDetailMarshaller marshaller = new ViolationCostDetailMarshaller();
+    ViolationCostDetail violationCostDetail = new ViolationCostDetail(1, 2, 3, 4, "reason");
+    ViolationCostDetail unMarshalledViolationCostDetail = marshaller.unMarshall(marshaller.marshall(violationCostDetail));
+    Assert.assertEquals("Unmarshalled violation should be equal to original violation", violationCostDetail,
+        unMarshalledViolationCostDetail);
+  }
+
 }
