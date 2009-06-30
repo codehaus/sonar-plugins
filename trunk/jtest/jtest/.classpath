@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="src/main/java/test/java/|src/main/java/test/java/|src/main/java/test/java/|src/main/java/test/|src/main/java/test/|src/main/java/test/" kind="src" output="target/classes" path="src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources"/>
+	<classpathentry kind="src" output="jtest/src/main/java" path="jtest/src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="var" path="JTEST_HOME/jtest.jar"/>
+	<classpathentry kind="var" path="JTEST_HOME/junit.jar" sourcepath="JTEST_HOME/junitsrc.zip"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
