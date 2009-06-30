@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ResultsSession time="06/30/09 23:17:14" toolName="Jtest" toolVer="8.2.62">
+    <Authors>
+        <Author id="dev1" name="makram.manai" />
+    </Authors>
+    <VersionInfos>
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.generation" resultId="IGenerationProjectInfo" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.generation" resultId="IGenerationInfo" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.codereview" resultId="ICodeReviewScannerInfo" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.codereview" resultId="ICodeReviewUndefinedAuthorsInfo" ver="1" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.execution" resultId="IExecutionViolation" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.standards" resultId="IFlowAnalysisViolation" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.standards" resultId="IMetricEstimationInfo" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.standards" resultId="IMetricsViolation" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.standards" resultId="IDupCodeViolation" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.standards" resultId="ICodingStandardsViolation" ver="2" />
+        <StorageInfo ownerId="com.parasoft.xtest.checkers.api.scope" resultId="IScopeProjectInfo" ver="3" />
+    </VersionInfos>
+    <Scope>
+        <ProjectInformations>
+            <ScopeProjectInfo fltFiles="3" fltLns="68" project="/jtest" totFiles="3" totLns="68" />
+        </ProjectInformations>
+    </Scope>
+    <Exec ownerId="com.parasoft.xtest.checkers.api.execution" time="0:56:10">
+        <Goals>
+            <Goal mode="1" type="2" />
+            <Goal mode="1" type="1" />
+            <Goal mode="1" type="3" />
+            <Goal mode="1" type="0" />
+        </Goals>
+
+        <Coverage>
+            <Types>
+                <CvgType cvgDecor="ruler" dispCvg="executable lines" dispId="LC" dispName="Line Coverage" dispNoCvg="no executable lines" id="LC" />
+            </Types>
+            <CvgStats>
+                <CvgInfo elem="Total" num="45" total="68" val="66">
+                    <CvgInfo elem="jtest" num="45" total="68" val="66">
+                        <CvgInfo elem="default package" num="0" total="4" val="40">
+                            <CvgInfo elem="ClassOnDefaultPackage.java" loc="/jtest/src/test/it/projects/jtest-reference/src/main/java/ClassOnDefaultPackage.java" num="0" total="4" val="0">
+                                <CvgInfo elem="ClassOnDefaultPackage" num="0" total="4" val="35">
+                                    <CvgInfo elem="ClassOnDefaultPackage" num="0" total="3" val="0" />
+                                    <CvgInfo elem="myMethod" num="0" total="1" val="0" />
+                                </CvgInfo>
+                            </CvgInfo>
+                        </CvgInfo>
+                        <CvgInfo elem="org.sonar.plugins.jtest" num="45" total="68" val="67">
+                            <CvgInfo elem="JtestPlugin.java" loc="/jtest/src/main/java/org/sonar/plugins/jtest/JtestPlugin.java" num="0" total="8" val="0">
+                                <CvgInfo elem="JtestPlugin.java" num="0" total="8" val="0">
+                                    <CvgInfo elem="JtestPlugin" num="0" total="1" val="0" />
+                                    <CvgInfo elem="getDescription" num="0" total="1" val="0" />
+                                    <CvgInfo elem="getExtensions" num="0" total="3" val="0" />
+                                    <CvgInfo elem="getKey" num="0" total="1" val="0" />
+                                    <CvgInfo elem="getName" num="0" total="1" val="0" />
+                                    <CvgInfo elem="toString" num="0" total="1" val="0" />
+								</CvgInfo>
+                            </CvgInfo>
+                            <CvgInfo elem="JtestMavenPluginHandler.java" loc="/jtest/src/main/java/org/sonar/plugins/jtest/JtestMavenPluginHandler.java" num="9" total="11" val="82">
+                                <CvgInfo elem="JtestMavenPluginHandler" num="9" total="11" val="82">
+                                    <CvgInfo elem="getGoals" num="0" total="1" val="0" />
+                                    <CvgInfo elem="shouldStopOnFailure" num="0" total="1" val="0" />
+                                    <CvgInfo elem="JtestMavenPluginHandler" num="1" total="1" val="100" />
+                                    <CvgInfo elem="configurePlugin" num="4" total="4" val="100" />
+                                    <CvgInfo elem="getArtifactId" num="1" total="1" val="100" />
+                                    <CvgInfo elem="getGroupId" num="1" total="1" val="100" />
+                                    <CvgInfo elem="getVersion" num="1" total="1" val="100" />
+                                    <CvgInfo elem="isFixedVersion" num="1" total="1" val="100" />
+                                </CvgInfo>
+                            </CvgInfo>
+                            <CvgInfo elem="JtestMavenCollector.java" loc="/jtest/src/main/java/org/sonar/plugins/jtest/JtestMavenCollector.java" num="36" total="49" val="73">
+                                <CvgInfo elem="JtestMavenCollector" num="36" total="49" val="73">
+                                    <CvgInfo elem="collect" num="0" total="5" val="0" />
+                                    <CvgInfo elem="configure" num="0" total="1" val="0" />
+                                    <CvgInfo elem="dependsOnMavenPlugin" num="0" total="3" val="0" />
+                                    <CvgInfo elem="shouldCollectIfNoSources" num="0" total="1" val="0" />
+                                    <CvgInfo elem="shouldStopOnFailure" num="0" total="1" val="0" />
+                                    <CvgInfo elem="collect" num="8" total="10" val="80" />
+									<CvgInfo elem="JtestMavenCollector" num="2" total="2" val="100" />
+									<CvgInfo elem="collectClassMeasures" num="5" total="5" val="100" />
+									<CvgInfo elem="collectPackageMeasures" num="5" total="5" val="100" />
+									<CvgInfo elem="collectProjectMeasures" num="3" total="3" val="100" />
+									<CvgInfo elem="convertPercentage" num="1" total="1" val="100" />
+									<CvgInfo elem="getParameters" num="9" total="9" val="100" />
+									<CvgInfo elem="recordClassMeasure" num="3" total="" val="100" />
+                                </CvgInfo>
+                            </CvgInfo>
+                        </CvgInfo>
+                        <CvgInfo elem="org.sonar.plugins.gaudin" num="45" total="68" val="67">
+                            <CvgInfo elem="JtestPlugin.java" loc="/jtest/src/main/java/org/sonar/plugins/gaudin/JtestPlugin.java" num="0" total="8" val="0">
+                                <CvgInfo elem="JtestPlugin.java" num="0" total="8" val="0">
+                                    <CvgInfo elem="JtestPlugin" num="0" total="1" val="0" />
+                                    <CvgInfo elem="getDescription" num="0" total="1" val="0" />
+                                    <CvgInfo elem="getExtensions" num="0" total="3" val="0" />
+                                    <CvgInfo elem="getKey" num="0" total="1" val="0" />
+                                    <CvgInfo elem="getName" num="0" total="1" val="0" />
+                                    <CvgInfo elem="toString" num="0" total="1" val="0" />
+								</CvgInfo>
+                            </CvgInfo>
+                            <CvgInfo elem="JtestMavenPluginHandler.java" loc="/jtest/src/main/java/org/sonar/plugins/gaudin/JtestMavenPluginHandler.java" num="9" total="11" val="82">
+                                <CvgInfo elem="JtestMavenPluginHandler" num="9" total="11" val="82">
+                                    <CvgInfo elem="getGoals" num="0" total="1" val="0" />
+                                    <CvgInfo elem="shouldStopOnFailure" num="0" total="1" val="0" />
+                                    <CvgInfo elem="JtestMavenPluginHandler" num="1" total="1" val="100" />
+                                    <CvgInfo elem="configurePlugin" num="4" total="4" val="100" />
+                                    <CvgInfo elem="getArtifactId" num="1" total="1" val="100" />
+                                    <CvgInfo elem="getGroupId" num="1" total="1" val="100" />
+                                    <CvgInfo elem="getVersion" num="1" total="1" val="100" />
+                                    <CvgInfo elem="isFixedVersion" num="1" total="1" val="100" />
+                                </CvgInfo>
+                            </CvgInfo>
+                            <CvgInfo elem="JtestMavenCollector.java" loc="/jtest/src/main/java/org/sonar/plugins/gaudin/JtestMavenCollector.java" num="36" total="49" val="73">
+                                <CvgInfo elem="JtestMavenCollector" num="36" total="49" val="73">
+                                    <CvgInfo elem="collect" num="0" total="5" val="0" />
+                                    <CvgInfo elem="configure" num="0" total="1" val="0" />
+                                    <CvgInfo elem="dependsOnMavenPlugin" num="0" total="3" val="0" />
+                                    <CvgInfo elem="shouldCollectIfNoSources" num="0" total="1" val="0" />
+                                    <CvgInfo elem="shouldStopOnFailure" num="0" total="1" val="0" />
+                                    <CvgInfo elem="collect" num="8" total="10" val="80" />
+									<CvgInfo elem="JtestMavenCollector" num="2" total="2" val="100" />
+									<CvgInfo elem="collectClassMeasures" num="5" total="5" val="100" />
+									<CvgInfo elem="collectPackageMeasures" num="5" total="5" val="100" />
+									<CvgInfo elem="collectProjectMeasures" num="3" total="3" val="100" />
+									<CvgInfo elem="convertPercentage" num="1" total="1" val="100" />
+									<CvgInfo elem="getParameters" num="9" total="9" val="100" />
+									<CvgInfo elem="recordClassMeasure" num="3" total="" val="100" />
+                                </CvgInfo>
+                            </CvgInfo>
+                        </CvgInfo>
+                    </CvgInfo>
+                </CvgInfo>
+            </CvgStats>
+                        
+        </Coverage>
+    </Exec>
+</ResultsSession>
