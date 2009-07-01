@@ -14,9 +14,17 @@ public class StaxMateHelper {
     }
   }
 
-  public static String getStringValue(SMInputCursor cursor, String string) {
+  public static String getStringValue(SMInputCursor cursor, String attributeName) {
     try {
-      return cursor.getAttrValue(cursor.findAttrIndex(null, string));
+      return cursor.getAttrValue(cursor.findAttrIndex(null, attributeName));
+    } catch (XMLStreamException e) {
+      throw new XmlParserException(e);
+    }
+  }
+
+  public static int getIntValue(SMInputCursor cursor, String attributeName) {
+    try {
+      return cursor.getAttrIntValue(cursor.findAttrIndex(null, attributeName));
     } catch (XMLStreamException e) {
       throw new XmlParserException(e);
     }
