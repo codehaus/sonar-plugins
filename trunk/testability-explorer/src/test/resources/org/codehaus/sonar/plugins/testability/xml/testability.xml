@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testability excellent="2" good="0" needsWork="2" overall="529">
+    <class class="br.com.csil.componente2.App" cost="550">
+        <method cyclomatic="0" global="0" line="7" lod="0"
+            name="br.com.csil.componente2.App()" overall="0"/>
+        <method cyclomatic="290" global="26" line="11" lod="0"
+            name="void main(java.lang.String[])" overall="550">
+            <cost cyclomatic="290" global="26" line="11" lod="0"
+                method="void println(java.lang.String)" overall="550" reason="cost from calling non-overridable method"/>
+        </method>
+    </class>
+    <class class="br.com.csil.componente2.ClassNeedsWork" cost="508">
+        <method cyclomatic="5" global="0" line="18" lod="0"
+            name="br.com.csil.componente2.ClassNeedsWork(com.google.test.metric.ClassInfo, com.google.test.metric.Variable, int)" overall="5">
+            <cost cyclomatic="1" global="0" line="23" lod="0"
+                method="java.util.ArrayList()" overall="1" reason="cost from calling non-overridable method"/>
+            <cost cyclomatic="4" global="0" line="24" lod="0"
+                method="com.google.test.metric.method.BlockDecomposer()"
+                overall="4" reason="cost from calling non-overridable method"/>
+        </method>
+        <method cyclomatic="291" global="26" line="35" lod="0"
+            name="void needsWork()" overall="551">
+            <cost cyclomatic="5" global="0" line="18" lod="0"
+                method="br.com.csil.componente2.ClassNeedsWork(com.google.test.metric.ClassInfo, com.google.test.metric.Variable, int)"
+                overall="5" reason="implicit cost from construction"/>
+            <cost cyclomatic="286" global="26" line="35" lod="0"
+                method="void println(java.lang.String)" overall="546" reason="cost from calling non-overridable method"/>
+        </method>
+        <method cyclomatic="126" global="0" line="38" lod="0"
+            name="void needsWork2()" overall="126">
+            <cost cyclomatic="5" global="0" line="18" lod="0"
+                method="br.com.csil.componente2.ClassNeedsWork(com.google.test.metric.ClassInfo, com.google.test.metric.Variable, int)"
+                overall="5" reason="implicit cost from construction"/>
+            <cost cyclomatic="1" global="0" line="50" lod="0"
+                overall="1" reason="cyclomatic complexity"/>
+            <cost cyclomatic="1" global="0" line="38" lod="0"
+                overall="1" reason="cyclomatic complexity"/>
+            <cost cyclomatic="50" global="0" line="41" lod="0"
+                method="void decomposeIntoBlocks()" overall="50" reason="cost from calling non-overridable method"/>
+            <cost cyclomatic="69" global="0" line="48" lod="0"
+                method="java.util.List getOperations()" overall="69" reason="cost from calling non-overridable method"/>
+        </method>
+    </class>
+    <class class="br.com.csil.componente2.ClassExcellent" cost="0">
+        <method cyclomatic="0" global="0" line="8" lod="0"
+            name="br.com.csil.componente2.ClassExcellent(br.com.csil.componente2.App)" overall="0"/>
+        <method cyclomatic="0" global="0" line="13" lod="0"
+            name="br.com.csil.componente2.App getApp()" overall="0"/>
+        <method cyclomatic="0" global="0" line="21" lod="0"
+            name="int getInt()" overall="0"/>
+        <method cyclomatic="0" global="0" line="17" lod="0"
+            name="void setApp(br.com.csil.componente2.App)" overall="0"/>
+    </class>
+    <class class="br.com.csil.componente2.ClassExcellent2" cost="0">
+        <method cyclomatic="0" global="0" line="3" lod="0"
+            name="br.com.csil.componente2.ClassExcellent2()" overall="0"/>
+        <method cyclomatic="0" global="0" line="7" lod="0"
+            name="br.com.csil.componente2.ClassExcellent getClassExcellent()" overall="0"/>
+        <method cyclomatic="0" global="0" line="11" lod="0"
+            name="void setClassExcellent(br.com.csil.componente2.ClassExcellent)" overall="0"/>
+    </class>
+</testability>
