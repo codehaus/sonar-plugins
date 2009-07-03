@@ -19,7 +19,7 @@
     <module>technical-debt</module>
     <module>clirr</module>
     <module>hello-world</module>
-    <module>jira</module>
+    <!--module>jira</module-->
     <module>testability-explorer</module>
     <module>jtest</module>
   </modules>
