@@ -27,7 +27,6 @@ import org.sonar.plugins.api.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @EditableProperties({
     @EditableProperty(key = TechnicalDebtPlugin.TD_DAILY_RATE, defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
     @EditableProperty(key = TechnicalDebtPlugin.TD_COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT, name = "Average time to split a class that has a too high complexity (in hours)", description = ""),
@@ -38,6 +37,7 @@ import java.util.List;
     @EditableProperty(key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
 })
 
+/** {@inheritDoc} */
 public class TechnicalDebtPlugin implements Plugin {
   public final static String TD_DAILY_RATE = "technicaldebt.daily.rate";
   public final static String TD_DAILY_RATE_DEFAULT = "500";
@@ -60,10 +60,12 @@ public class TechnicalDebtPlugin implements Plugin {
   public final static String TD_COST_UNDOCUMENTED_API = "technicaldebt.undocumented.api";
   public final static String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.2";
 
+  /** {@inheritDoc} */
   public String getDescription() {
     return "Calculate the technical debt.";
   }
 
+  /** {@inheritDoc} */
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(TechnicalDebtMetrics.class);
@@ -72,10 +74,12 @@ public class TechnicalDebtPlugin implements Plugin {
     return list;
   }
 
+  /** {@inheritDoc} */
   public String getKey() {
     return "technical-debt";
   }
 
+  /** {@inheritDoc} */
   public String getName() {
     return "Technical Debt";
   }

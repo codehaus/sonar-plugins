@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/** {@inheritDoc} */
 public class TechnicalDebtJob extends AbstractJob {
 
   private static final double HOURS_PER_DAY = 8.0;
@@ -46,12 +47,13 @@ public class TechnicalDebtJob extends AbstractJob {
 
   private final Configuration configuration;
 
+  /** {@inheritDoc} */
   public TechnicalDebtJob(Languages languages, Configuration configuration) {
     super(languages);
     this.configuration = configuration;
   }
 
-  @Override
+  /** {@inheritDoc} */
   public List<Metric> dependsOnMetrics() {
     List<Metric> metrics = new ArrayList<Metric>();
     metrics.add(CoreMetrics.DUPLICATED_BLOCKS);
@@ -68,10 +70,12 @@ public class TechnicalDebtJob extends AbstractJob {
     return true; // all languages
   }
 
+  /** {@inheritDoc} */
   public boolean shouldExecuteOnResource(Resource resource) {
     return true;
   }
 
+  /** {@inheritDoc} */
   public void execute(JobContext jobContext) {
     double duplicationsDebt = calculateDuplicationDebt(jobContext);
     double violationsDebt = calculateViolationsDebt(jobContext);
@@ -199,7 +203,7 @@ public class TechnicalDebtJob extends AbstractJob {
     return nb;
   }
 
-  // COmputes the repartition of the technicaldebt
+  // Computes the repartition of the technicaldebt
   private PropertiesBuilder calculateDebtRepartition(double duplicationDebt, double violationsDebt, double commentsDebt, double coverageDebt, double complexityDebt) {
     PropertiesBuilder techDebtRepartition = new PropertiesBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
     // Math.floor is important to avoid getting very long doubles... see SONAR-859

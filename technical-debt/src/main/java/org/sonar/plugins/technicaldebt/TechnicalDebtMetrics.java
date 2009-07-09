@@ -27,12 +27,14 @@ import org.sonar.plugins.api.metrics.Metrics;
 import java.util.ArrayList;
 import java.util.List;
 
+/** {@inheritDoc} */
 public class TechnicalDebtMetrics implements Metrics {
 
   public final static Metric TECHNICAL_DEBT = new Metric("technical_debt", "Technical Debt ($)", "Technical debt ($)", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
   public final static Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
   public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical technicaldebt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
 
+  /** {@inheritDoc} */
   public List<Metric> getMetrics() {
     List<Metric> metrics = new ArrayList<Metric>();
     metrics.add(TECHNICAL_DEBT);
