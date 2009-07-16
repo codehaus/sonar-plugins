@@ -7,9 +7,9 @@ import java.io.File;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
-import org.codehaus.sonar.plugins.testability.measurers.MethodTestabilityCostDetail;
+import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
+import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.codehaus.sonar.plugins.testability.measurers.MethodTestabilityCostMeasurer;
-import org.codehaus.sonar.plugins.testability.measurers.ViolationCostDetail;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMEvent;
 import org.codehaus.staxmate.in.SMInputCursor;

@@ -1,5 +1,7 @@
 package org.codehaus.sonar.plugins.testability.measurers;
 
+import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
+import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.junit.Assert;
 import org.junit.Test;
 

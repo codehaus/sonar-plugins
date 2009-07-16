@@ -3,6 +3,7 @@ package org.codehaus.sonar.plugins.testability.measurers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.sonar.plugins.api.measures.KeyValueFormat;
 
 public class ViolationCostDetailMarshaller implements CostMarshaller<ViolationCostDetail> {
