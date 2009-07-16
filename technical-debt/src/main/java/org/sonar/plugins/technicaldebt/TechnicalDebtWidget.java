@@ -19,7 +19,7 @@
  */
 package org.sonar.plugins.technicaldebt;
 
-import org.sonar.plugins.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.AbstractDashboardWidget;
 
 /** {@inheritDoc} */
 public class TechnicalDebtWidget extends AbstractDashboardWidget {
