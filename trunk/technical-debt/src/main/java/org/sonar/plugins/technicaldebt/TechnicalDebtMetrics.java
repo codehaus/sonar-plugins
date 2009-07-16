@@ -21,8 +21,8 @@ package org.sonar.plugins.technicaldebt;
 
 import org.sonar.commons.Metric;
 import org.sonar.commons.Metric.ValueType;
-import org.sonar.plugins.api.metrics.CoreMetrics;
-import org.sonar.plugins.api.metrics.Metrics;
+import org.sonar.api.core.CoreMetrics;
+import org.sonar.api.core.Metrics;
 
 import java.util.ArrayList;
 import java.util.List;
