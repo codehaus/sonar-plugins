@@ -20,27 +20,15 @@
 package org.sonar.plugins.technicaldebt;
 
 import org.apache.commons.configuration.Configuration;
-
-import org.sonar.api.core.CoreMetrics;
-
+import org.sonar.api.batch.*;
 import org.sonar.api.batch.measures.Measure;
-import org.sonar.api.batch.measures.PropertiesBuilder;
 import org.sonar.api.batch.measures.MeasureUtils;
-
-import org.sonar.api.batch.ResourceUtils;
-
-import org.sonar.api.batch.Decorator;
-import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependsOn;
-import org.sonar.api.batch.Generates;
-import org.sonar.api.batch.Project;
-import org.sonar.api.batch.Resource;
-
+import org.sonar.api.batch.measures.PropertiesBuilder;
+import org.sonar.api.core.CoreMetrics;
 import org.sonar.api.utils.KeyValueFormat;
-
 import org.sonar.commons.Metric;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -67,25 +55,23 @@ public class TechnicalDebtDecorator implements Decorator {
 
   @DependsOn
   public List<Metric> dependsOnMetrics() {
-    List<Metric> metrics = new ArrayList<Metric>();
-    metrics.add(CoreMetrics.DUPLICATED_BLOCKS);
-    metrics.add(CoreMetrics.VIOLATIONS);
-    metrics.add(CoreMetrics.INFO_VIOLATIONS);
-    metrics.add(CoreMetrics.PUBLIC_UNDOCUMENTED_API);
-    metrics.add(CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS);
-    metrics.add(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION);
-    metrics.add(CoreMetrics.COMPLEXITY);
-    metrics.add(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
-    return metrics;
+    return Arrays.asList(
+        CoreMetrics.DUPLICATED_BLOCKS,
+        CoreMetrics.VIOLATIONS,
+        CoreMetrics.INFO_VIOLATIONS,
+        CoreMetrics.PUBLIC_UNDOCUMENTED_API,
+        CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS,
+        CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION,
+        CoreMetrics.COMPLEXITY,
+        CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
   }
 
   @Generates
   public List<Metric> generatesMetrics() {
-    List<Metric> metrics = new ArrayList<Metric>();
-    metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT);
-    metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS);
-    metrics.add(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
-    return metrics;
+    return Arrays.asList(
+        TechnicalDebtMetrics.TECHNICAL_DEBT,
+        TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS,
+        TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
   }
 
   /**
@@ -147,8 +133,8 @@ public class TechnicalDebtDecorator implements Decorator {
     Measure mViolations = decoratorContext.getMeasure(CoreMetrics.VIOLATIONS);
     Measure mInfoViolations = decoratorContext.getMeasure(CoreMetrics.INFO_VIOLATIONS);
 
-    double violations =   (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
-                        - (MeasureUtils.hasValue(mInfoViolations)  ? mInfoViolations.getValue() : 0.0);
+    double violations = (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
+        - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
 
     // technicaldebt is calculate in man days
     return violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
