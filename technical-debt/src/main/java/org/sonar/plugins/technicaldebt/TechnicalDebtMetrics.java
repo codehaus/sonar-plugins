@@ -19,27 +19,27 @@
  */
 package org.sonar.plugins.technicaldebt;
 
-import org.sonar.commons.Metric;
-import org.sonar.commons.Metric.ValueType;
 import org.sonar.api.core.CoreMetrics;
 import org.sonar.api.core.Metrics;
+import org.sonar.commons.Metric;
+import org.sonar.commons.Metric.ValueType;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-/** {@inheritDoc} */
+/**
+ * {@inheritDoc}
+ */
 public class TechnicalDebtMetrics implements Metrics {
 
   public final static Metric TECHNICAL_DEBT = new Metric("technical_debt", "Technical Debt ($)", "Technical debt ($)", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
   public final static Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
   public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical technicaldebt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   public List<Metric> getMetrics() {
-    List<Metric> metrics = new ArrayList<Metric>();
-    metrics.add(TECHNICAL_DEBT);
-    metrics.add(TECHNICAL_DEBT_DAYS);
-    metrics.add(TECHNICAL_DEBT_REPARTITION);
-    return metrics;
+    return Arrays.asList(TECHNICAL_DEBT, TECHNICAL_DEBT_DAYS, TECHNICAL_DEBT_REPARTITION);
   }
 }
