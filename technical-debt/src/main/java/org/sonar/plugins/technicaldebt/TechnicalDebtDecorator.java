@@ -20,12 +20,24 @@
 package org.sonar.plugins.technicaldebt;
 
 import org.apache.commons.configuration.Configuration;
-import org.sonar.api.batch.*;
-import org.sonar.api.batch.measures.Measure;
-import org.sonar.api.batch.measures.MeasureUtils;
-import org.sonar.api.batch.measures.PropertiesBuilder;
+
 import org.sonar.api.core.CoreMetrics;
+
+import org.sonar.api.batch.measures.Measure;
+import org.sonar.api.batch.measures.PropertiesBuilder;
+import org.sonar.api.batch.measures.MeasureUtils;
+
+import org.sonar.api.batch.ResourceUtils;
+
+import org.sonar.api.batch.Decorator;
+import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.batch.DependsOn;
+import org.sonar.api.batch.Generates;
+import org.sonar.api.batch.Project;
+import org.sonar.api.batch.Resource;
+
 import org.sonar.api.utils.KeyValueFormat;
+
 import org.sonar.commons.Metric;
 
 import java.util.Arrays;
@@ -56,22 +68,22 @@ public class TechnicalDebtDecorator implements Decorator {
   @DependsOn
   public List<Metric> dependsOnMetrics() {
     return Arrays.asList(
-        CoreMetrics.DUPLICATED_BLOCKS,
-        CoreMetrics.VIOLATIONS,
-        CoreMetrics.INFO_VIOLATIONS,
-        CoreMetrics.PUBLIC_UNDOCUMENTED_API,
-        CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS,
-        CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION,
-        CoreMetrics.COMPLEXITY,
-        CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
+      CoreMetrics.DUPLICATED_BLOCKS,
+      CoreMetrics.VIOLATIONS,
+      CoreMetrics.INFO_VIOLATIONS,
+      CoreMetrics.PUBLIC_UNDOCUMENTED_API,
+      CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS,
+      CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION,
+      CoreMetrics.COMPLEXITY,
+      CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
   }
 
   @Generates
   public List<Metric> generatesMetrics() {
     return Arrays.asList(
-        TechnicalDebtMetrics.TECHNICAL_DEBT,
-        TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS,
-        TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
+      TechnicalDebtMetrics.TECHNICAL_DEBT,
+      TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS,
+      TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
   }
 
   /**
@@ -134,7 +146,7 @@ public class TechnicalDebtDecorator implements Decorator {
     Measure mInfoViolations = decoratorContext.getMeasure(CoreMetrics.INFO_VIOLATIONS);
 
     double violations = (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
-        - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
+      - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
 
     // technicaldebt is calculate in man days
     return violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
@@ -179,7 +191,7 @@ public class TechnicalDebtDecorator implements Decorator {
   private int getMethodsAboveMaxComplexity(DecoratorContext decoratorContext) {
     Measure methodComplexity = decoratorContext.getMeasure(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
 
-    if (!MeasureUtils.hasValue(methodComplexity)) {
+    if (!MeasureUtils.hasData(methodComplexity)) {
       return 0;
     }
 
@@ -197,7 +209,7 @@ public class TechnicalDebtDecorator implements Decorator {
   private int getClassAboveMaxComplexity(DecoratorContext decoratorContext) {
     Measure classComplexity = decoratorContext.getMeasure(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION);
 
-    if (!MeasureUtils.hasValue(classComplexity)) {
+    if (!MeasureUtils.hasData(classComplexity)) {
       return 0;
     }
 
@@ -215,13 +227,20 @@ public class TechnicalDebtDecorator implements Decorator {
   // Computes the repartition of the technicaldebt
   private PropertiesBuilder calculateDebtRepartition(double duplicationDebt, double violationsDebt, double commentsDebt, double coverageDebt, double complexityDebt) {
     PropertiesBuilder<String, Double> techDebtRepartition = new PropertiesBuilder<String, Double>(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
-    // Math.floor is important to avoid getting very long doubles... see SONAR-859
-    techDebtRepartition.add("Violations", Math.floor(violationsDebt));
-    techDebtRepartition.add("Duplication", Math.floor(duplicationDebt));
-    techDebtRepartition.add("Comments", Math.floor(commentsDebt));
-    techDebtRepartition.add("Coverage", Math.floor(coverageDebt));
-    techDebtRepartition.add("Complexity", Math.floor(complexityDebt));
+
+    addToRepartition(techDebtRepartition, "Violations", violationsDebt);
+    addToRepartition(techDebtRepartition, "Duplication", duplicationDebt);
+    addToRepartition(techDebtRepartition, "Comments", commentsDebt);
+    addToRepartition(techDebtRepartition, "Coverage", coverageDebt);
+    addToRepartition(techDebtRepartition, "Complexity", complexityDebt);
     return techDebtRepartition;
+  }
+
+  private void addToRepartition(PropertiesBuilder<String, Double> techDebtRepartition, String key, double value) {
+    if (value > 0d) {
+      // Math.floor is important to avoid getting very long doubles... see SONAR-859
+      techDebtRepartition.add(key, Math.floor(value*100.0)/100);
+    }
   }
 
   private double getWeight(String keyWeight, String defaultWeight) {
