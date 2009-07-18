@@ -9,7 +9,7 @@
   </parent>
   <artifactId>technical-debt</artifactId>
   <name>Technical Debt Sonar plugin</name>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version> 
   <description>Calculate the technical debt</description>
   <build>
     <plugins>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>1.10M2</version>
+      <version>1.10-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
