@@ -9,8 +9,18 @@
   </parent>
   <artifactId>technical-debt</artifactId>
   <name>Technical Debt Sonar plugin</name>
-  <version>0.3-SNAPSHOT</version> 
+  <version>0.3-SNAPSHOT</version>
   <description>Calculate the technical debt</description>
+
+  <developers>
+    <developer>
+      <id>ogaudin</id>
+      <name>Olivier Gaudin</name>
+      <email>olivier.gaudin@sonarsource.com</email>
+      <organization>SonarSource</organization>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
   <build>
     <plugins>
       <plugin>
