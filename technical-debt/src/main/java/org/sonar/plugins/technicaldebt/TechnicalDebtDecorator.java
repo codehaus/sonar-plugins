@@ -108,9 +108,15 @@ public class TechnicalDebtDecorator implements Decorator {
 
     double dailyRate = getWeight(TechnicalDebtPlugin.TD_DAILY_RATE, TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT);
 
-    decoratorContext.saveMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);
-    decoratorContext.saveMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS, sonarDebt);
+    saveMeasure(decoratorContext, TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);
+    saveMeasure(decoratorContext, TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS, sonarDebt);
     decoratorContext.saveMeasure(debtRepartition);
+  }
+
+  private void saveMeasure(DecoratorContext decoratorContext, Metric metric, double measure) {
+    if (measure * 10 > 5) {
+      decoratorContext.saveMeasure(metric, measure);
+    }
   }
 
   // Calculates the technical debt due on coverage (in man days)
