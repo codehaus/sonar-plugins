@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.codehaus.sonar-plugins</groupId>
+      <artifactId>parent</artifactId>
+      <version>2</version>
+      <relativePath>../parent</relativePath>
+   </parent>
+
+   <artifactId>cpp</artifactId>
+   <packaging>jar</packaging>
+   <version>0.1-SNAPSHOT</version>
+   <name>Sonar Cpp plugin</name>
+   <url>http://sonar-plugins.codehaus.org</url>
+
+   <scm>
+      <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/cpp</connection>
+      <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/cpp</developerConnection>
+      <url>http://svn.sonar-plugins.codehaus.org</url>
+   </scm>
+
+   <properties>
+      <sonar.version>1.9</sonar.version>
+   </properties>
+ 
+   <developers>
+    <developer>
+      <name>Gregory Boissinot</name>
+      <id>gboissinot</id>
+      <organization>Thales Corporate Services</organization>
+    </developer>
+   </developers>
+
+    <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0-beta-1</version>
+         </plugin>
+
+         <plugin>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-dev-mojo</artifactId>
+            <version>1.10M1</version>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+               <source>1.5</source>
+               <target>1.5</target>
+            </configuration>
+         </plugin>
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <configuration>
+               <archive>
+                  <manifestEntries>
+                     <Plugin-Class>org.sonar.cpp.CppPlugin</Plugin-Class>
+                  </manifestEntries>
+               </archive>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.5</version>
+         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+         <groupId>org.codehaus.sonar</groupId>
+         <artifactId>sonar-plugin-api</artifactId>
+         <version>${sonar.version}</version>
+      </dependency>
+   </dependencies>
+</project>
