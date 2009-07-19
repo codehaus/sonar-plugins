@@ -5,12 +5,73 @@
 <div class="yui-gd">
   <div class="yui-u first">
     <div class="dashbox">
-      <h3>Technical Debt</h3>
+      <h3 class='mandatory tip'>
+      	<table>
+      		<tr>
+      			<td>Technical Debt</td>
+      			<td style="padding-left:2px;">
+      				<img class="png" src='/images/help.png'>
+		          <span>
+		          	<table>
+		          		<tr>
+		          			<td>Technical Debt&nbsp;=&nbsp;</td>
+		          			<td>cost_to_fix_duplications + cost_to_cover_complexity +&nbsp;</td>
+		          		</tr>
+		          		<tr>
+		          			<td>&nbsp;</td>
+		          			<td>cost_to_comment_API + cost_to_fix_violations +&nbsp;</td>
+		          		</tr>
+		          		<tr>
+		          			<td>&nbsp;</td>
+		          			<td>cost_to_reduce_complexity</td>
+		          		</tr>
+		          		<tr>
+		          			<td>&nbsp;</td>
+		          			<td>&nbsp;</td>
+		          		</tr>
+		          		<tr>
+		          			<td>where</td>
+		          			<td>&nbsp;</td>
+		          		</tr>
+		          		<tr>
+		          			<td>&nbsp;</td>
+		          			<td>&nbsp;</td>
+		          		</tr>
+		          		<tr>
+		          			<td>cost_to_fix_duplications&nbsp;=&nbsp;</td>
+		          			<td>cost_to_fix_one_block * duplicated_blocks</td>
+		          		</tr>
+		          		<tr>
+		          			<td>cost_to_fix_violations&nbsp;=&nbsp;</td>
+		          			<td>cost_to fix_one_violation * mandatory_violations</td>
+		          		</tr>
+		          		<tr>
+		          			<td>cost_to_comment_API&nbsp;=&nbsp;</td>
+		          			<td>cost_to_comment_one_API * public_undocumented_api</td>
+		          		</tr>
+		          		<tr>
+		          			<td>cost_to_cover_complexity&nbsp;=&nbsp;</td>
+		          			<td>cost_to_cover_one_of_complexity * uncovered_complexity_by_tests</td>
+		          		</tr>
+		          		<tr>
+		          			<td>cost_to_reduce_complexity&nbsp;=&nbsp;</td>
+		          			<td>cost_to_split_a_method * (function_complexity_distribution >= 8) +&nbsp;</td>
+		          		</tr>
+		          		<tr>
+		          			<td>&nbsp;</td>
+		          			<td>cost_to_split_a_class * (class_complexity_distribution >= 60)</td>
+		          		</tr>
+		          	</table>
+							</span>
+						</td>
+					</tr>
+				</table>
+      </h3>
       <p><span class="big"><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '-')%></span></p>
       <p><span"><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '-') %></span></p>
     </div>
   </div>
-  <div class="yui-u mandatory tip">
+  <div class="yui-u">
     <%
       labels = ""
       data = ""
@@ -27,60 +88,6 @@
     <%
       end
     %>
-    <span>
-    	<table>
-    		<tr>
-    			<td>Technical Debt&nbsp;=&nbsp;</td>
-    			<td>cost_to_fix_duplications + cost_to_cover_complexity +&nbsp;</td>
-    		</tr>
-    		<tr>
-    			<td>&nbsp;</td>
-    			<td>cost_to_comment_API + cost_to_fix_violations +&nbsp;</td>
-    		</tr>
-    		<tr>
-    			<td>&nbsp;</td>
-    			<td>cost_to_reduce_complexity</td>
-    		</tr>
-    		<tr>
-    			<td>&nbsp;</td>
-    			<td>&nbsp;</td>
-    		</tr>
-    		<tr>
-    			<td>where</td>
-    			<td>&nbsp;</td>
-    		</tr>
-    		<tr>
-    			<td>&nbsp;</td>
-    			<td>&nbsp;</td>
-    		</tr>
-    		<tr>
-    			<td>cost_to_fix_duplications&nbsp;=&nbsp;</td>
-    			<td>cost_to_fix_one_block * duplicated_blocks</td>
-    		</tr>
-    		<tr>
-    			<td>cost_to_fix_violations&nbsp;=&nbsp;</td>
-    			<td>cost_to fix_one_violation * mandatory_violations</td>
-    		</tr>
-    		<tr>
-    			<td>cost_to_comment_API&nbsp;=&nbsp;</td>
-    			<td>cost_to_comment_one_API * public_undocumented_api</td>
-    		</tr>
-    		<tr>
-    			<td>cost_to_cover_complexity&nbsp;=&nbsp;</td>
-    			<td>cost_to_cover_one_of_complexity * uncovered_complexity_by_tests</td>
-    		</tr>
-    		<tr>
-    			<td>cost_to_reduce_complexity&nbsp;=&nbsp;</td>
-    			<td>cost_to_split_a_method * (function_complexity_distribution >= 8) +&nbsp;</td>
-    		</tr>
-    		<tr>
-    			<td>&nbsp;</td>
-    			<td>cost_to_split_a_class * (class_complexity_distribution >= 60)</td>
-    		</tr>
-    	</table>
-    </span>
-
-
     <%
       if !measure('coverage')%>
         <center><div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div></center>
