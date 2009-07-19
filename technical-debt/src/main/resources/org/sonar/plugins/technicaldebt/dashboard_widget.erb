@@ -1,40 +1,95 @@
-          <%
-                if measure('technical_debt')
-          %>
+<%
+      if measure('technical_debt')
+%>
 
-          <div class="yui-gd">
-            <div class="yui-u first">
-              <div class="dashbox">
-                <h3>Technical Debt</h3>
-                <p><span class="big"><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '-')%></span></p>
-                <p><span"><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '-') %></span></p>
-              </div>
-            </div>
-            <div class="yui-u">
-              <%
-                labels = ""
-                data = ""
-                debt_measure = measure('technical_debt_repart')
-                if debt_measure
-                  debt_measure.data.split(';').each do |pair|
-                  labels = labels + "|" + pair.split('=')[0]
-                  data = data + "," + pair.split('=')[1]
-                end
-                labels = labels[1, labels.length]
-                data = data[1, data.length]
-              %>
-              <%= gchart("chs=247x80&chd=t:#{data}&cht=p&chl=#{labels}") -%>
-              <%
-                end
-              %>
-              <%
-                if !measure('coverage')%>
-                  <center><div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div></center>
-              <%
-              	end
-              %>
-            </div>
-          </div>
-          <%
-                end
-          %>
+<div class="yui-gd">
+  <div class="yui-u first">
+    <div class="dashbox">
+      <h3>Technical Debt</h3>
+      <p><span class="big"><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '-')%></span></p>
+      <p><span"><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '-') %></span></p>
+    </div>
+  </div>
+  <div class="yui-u mandatory tip">
+    <%
+      labels = ""
+      data = ""
+      debt_measure = measure('technical_debt_repart')
+      if debt_measure
+        debt_measure.data.split(';').each do |pair|
+        labels = labels + "|" + pair.split('=')[0]
+        data = data + "," + pair.split('=')[1]
+      end
+      labels = labels[1, labels.length]
+      data = data[1, data.length]
+    %>
+    <%= gchart("chs=247x80&chd=t:#{data}&cht=p&chl=#{labels}") -%>
+    <%
+      end
+    %>
+    <span>
+    	<table>
+    		<tr>
+    			<td>Technical Debt&nbsp;=&nbsp;</td>
+    			<td>cost_to_fix_duplications + cost_to_cover_complexity +&nbsp;</td>
+    		</tr>
+    		<tr>
+    			<td>&nbsp;</td>
+    			<td>cost_to_comment_API + cost_to_fix_violations +&nbsp;</td>
+    		</tr>
+    		<tr>
+    			<td>&nbsp;</td>
+    			<td>cost_to_reduce_complexity</td>
+    		</tr>
+    		<tr>
+    			<td>&nbsp;</td>
+    			<td>&nbsp;</td>
+    		</tr>
+    		<tr>
+    			<td>where</td>
+    			<td>&nbsp;</td>
+    		</tr>
+    		<tr>
+    			<td>&nbsp;</td>
+    			<td>&nbsp;</td>
+    		</tr>
+    		<tr>
+    			<td>cost_to_fix_duplications&nbsp;=&nbsp;</td>
+    			<td>cost_to_fix_one_block * duplicated_blocks</td>
+    		</tr>
+    		<tr>
+    			<td>cost_to_fix_violations&nbsp;=&nbsp;</td>
+    			<td>cost_to fix_one_violation * mandatory_violations</td>
+    		</tr>
+    		<tr>
+    			<td>cost_to_comment_API&nbsp;=&nbsp;</td>
+    			<td>cost_to_comment_one_API * public_undocumented_api</td>
+    		</tr>
+    		<tr>
+    			<td>cost_to_cover_complexity&nbsp;=&nbsp;</td>
+    			<td>cost_to_cover_one_of_complexity * uncovered_complexity_by_tests</td>
+    		</tr>
+    		<tr>
+    			<td>cost_to_reduce_complexity&nbsp;=&nbsp;</td>
+    			<td>cost_to_split_a_method * (function_complexity_distribution >= 8) +&nbsp;</td>
+    		</tr>
+    		<tr>
+    			<td>&nbsp;</td>
+    			<td>cost_to_split_a_class * (class_complexity_distribution >= 60)</td>
+    		</tr>
+    	</table>
+    </span>
+
+
+    <%
+      if !measure('coverage')%>
+        <center><div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div></center>
+    <%
+    	end
+    %>
+  </div>
+</div>
+<%
+      end
+%>
+
