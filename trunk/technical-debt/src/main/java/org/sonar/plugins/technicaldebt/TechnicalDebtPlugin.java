@@ -39,26 +39,26 @@ import java.util.List;
 
 /** {@inheritDoc} */
 public class TechnicalDebtPlugin implements Plugin {
-  public final static String TD_DAILY_RATE = "technicaldebt.daily.rate";
-  public final static String TD_DAILY_RATE_DEFAULT = "500";
+  public static final String TD_DAILY_RATE = "technicaldebt.daily.rate";
+  public static final String TD_DAILY_RATE_DEFAULT = "500";
 
-  public final static String TD_COST_COMP_CLASS = "technicaldebt.split.class";
-  public final static String TD_COST_COMP_CLASS_DEFAULT = "8";
+  public static final String TD_COST_COMP_CLASS = "technicaldebt.split.class";
+  public static final String TD_COST_COMP_CLASS_DEFAULT = "8";
 
-  public final static String TD_COST_COMP_METHOD = "technicaldebt.split.meth";
-  public final static String TD_COST_COMP_METHOD_DEFAULT = "0.5";
+  public static final String TD_COST_COMP_METHOD = "technicaldebt.split.meth";
+  public static final String TD_COST_COMP_METHOD_DEFAULT = "0.5";
 
-  public final static String TD_COST_DUPLI_BLOCK = "technicaldebt.dupli.blocks";
-  public final static String TD_COST_DUPLI_BLOCK_DEFAULT = "2";
+  public static final String TD_COST_DUPLI_BLOCK = "technicaldebt.dupli.blocks";
+  public static final String TD_COST_DUPLI_BLOCK_DEFAULT = "2";
 
-  public final static String TD_COST_VIOLATION = "technicaldebt.violation";
-  public final static String TD_COST_VIOLATION_DEFAULT = "0.1";
+  public static final String TD_COST_VIOLATION = "technicaldebt.violation";
+  public static final String TD_COST_VIOLATION_DEFAULT = "0.1";
 
-  public final static String TD_COST_UNCOVERED_COMPLEXITY = "technicaldebt.uncovered.complexity";
-  public final static String TD_COST_UNCOVERED_COMPLEXITY_DEFAULT = "0.2";
+  public static final String TD_COST_UNCOVERED_COMPLEXITY = "technicaldebt.uncovered.complexity";
+  public static final String TD_COST_UNCOVERED_COMPLEXITY_DEFAULT = "0.2";
 
-  public final static String TD_COST_UNDOCUMENTED_API = "technicaldebt.undocumented.api";
-  public final static String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.2";
+  public static final String TD_COST_UNDOCUMENTED_API = "technicaldebt.undocumented.api";
+  public static final String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.2";
 
   /** {@inheritDoc} */
   public String getDescription() {
