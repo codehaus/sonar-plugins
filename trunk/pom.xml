@@ -8,20 +8,35 @@
   <version>0.1-SNAPSHOT</version>
   <name>All Sonar plugins</name>
   
-  <modules>
-    <module>parent</module>
-    <!--module>emma</module-->
-    <module>pdf-report</module>
-    <module>greenpepper</module>
-    <module>php</module>
-    <module>taglist</module>
-    <module>maven-report</module>
-    <module>technical-debt</module>
-    <module>clirr</module>
-    <module>hello-world</module>
-    <!--module>jira</module-->
-    <module>testability-explorer</module>
-    <module>jtest</module>
-  </modules>
+	<profiles>
+		<profile>
+			<id>stableProjects</id>
+			<activation>
+      	<activeByDefault>true</activeByDefault>
+    	</activation>
+			<modules>
+		    <module>clirr</module>
+		    <module>cpp</module>
+		    <module>greenpepper</module>
+		    <module>hello-world</module>
+		    <module>jlint</module>
+		    <module>jtest</module>
+		    <module>maven-report</module>
+		    <module>parent</module>
+		    <module>pdf-report</module>
+		    <module>php</module>
+		    <module>taglist</module>
+		    <module>technical-debt</module>
+		    <module>testability-explorer</module>
+		  </modules>
+		</profile>
+		<profile>
+			<id>allProjects</id>
+			<modules>
+		    <module>emma</module>
+		    <module>jira</module>
+		  </modules>
+		</profile>
+	</profiles>
 
 </project>
