@@ -24,8 +24,9 @@ import java.util.List;
 
 import org.sonar.commons.Metric;
 import org.sonar.commons.Metric.ValueType;
-import org.sonar.plugins.api.metrics.CoreMetrics;
-import org.sonar.plugins.api.metrics.Metrics;
+
+import org.sonar.api.core.Metrics;
+import org.sonar.api.core.CoreMetrics;
 
 public class TaglistMetrics implements Metrics {
 

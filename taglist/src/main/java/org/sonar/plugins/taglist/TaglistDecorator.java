@@ -22,31 +22,18 @@ package org.sonar.plugins.taglist;
 import java.util.Arrays;
 import java.util.List;
 
-import org.sonar.commons.Language;
-import org.sonar.commons.Languages;
 import org.sonar.commons.Metric;
-import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.jobs.AbstractSumMetricsChildrenJob;
+import org.sonar.api.batch.AbstractSumChildrenDecorator;
+import org.sonar.api.batch.Generates;
 
-public class TaglistJob extends AbstractSumMetricsChildrenJob {
+public class TaglistDecorator extends AbstractSumChildrenDecorator {
 
-  public TaglistJob(Languages languages) {
-    super(languages);
+  @Generates
+  public List<Metric> generatesMetrics() {
+    return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS);
   }
 
-  @Override
-  protected boolean shouldExecuteOnLanguage(Language language) {
-    return language.equals(new Java());
-  }
-
-  @Override
-  protected List<Metric> getMetrics() {
-    return Arrays.asList(TaglistMetrics.MANDATORY_TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.TAGS);
-  }
-
-  @Override
-  protected boolean shouldInsertZeroIfNoChildrenMeasures() {
+  protected boolean shouldSaveZeroIfNoChildMeasures() {
     return false;
   }
-
 }

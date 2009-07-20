@@ -27,11 +27,12 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.commons.rules.ActiveRule;
 import org.sonar.commons.rules.RulesProfile;
-import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
-import org.sonar.plugins.api.maven.model.MavenPlugin;
-import org.sonar.plugins.api.maven.model.MavenPom;
+import org.sonar.api.batch.maven.MavenPlugin;
+import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.batch.maven.MavenUtils;
+import org.sonar.api.batch.Project;
 
-public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
+public class TaglistMavenPluginHandler implements MavenPluginHandler {
 
   private final RulesProfile rulesProfile;
 
@@ -39,26 +40,17 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
     this.rulesProfile = rulesProfile;
   }
 
-  @Override
-  public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-    plugin.setConfigParameter("encoding", getSourceCharSet(pom));
+  public boolean dependsOnCustomRules() {
+    return false;
+  }
+
+  public void configure(Project pom, MavenPlugin plugin) {
+    plugin.setConfigParameter("encoding", pom.getSourceCharset().name());
     plugin.setConfigParameter("linkXRef", "false");
     plugin.unsetConfigParameter("xmlOutputDirectory");
     for (String tag : getActiveTags()) {
       plugin.getConfiguration().addParameter("tags/tag", tag);
     }
-  }
-  
-  public static String getSourceCharSet(MavenPom pom) {
-    // TODO refactor me with pom.getSourceCharSetName() in 1.10
-    String encoding = pom.getMavenProject().getProperties().getProperty("project.build.sourceEncoding");
-    if (StringUtils.isNotEmpty(encoding)) {
-      try {
-        return Charset.forName(encoding).name();
-      } catch (Throwable t) {
-      }
-    }
-    return Charset.defaultCharset().name();
   }
 
   private Collection<String> getActiveTags() {
@@ -78,7 +70,7 @@ public class TaglistMavenPluginHandler extends AbstractMavenPluginHandler {
   }
 
   public String getGroupId() {
-    return MavenPom.GROUP_ID_CODEHAUS_MOJO;
+    return MavenUtils.GROUP_ID_CODEHAUS_MOJO;
   }
 
   public boolean isFixedVersion() {

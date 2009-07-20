@@ -20,13 +20,14 @@
 package org.sonar.plugins.taglist;
 
 import org.apache.commons.io.IOUtils;
-import org.sonar.commons.Language;
+
 import org.sonar.commons.rules.Rule;
 import org.sonar.commons.rules.RulesCategory;
 import org.sonar.commons.rules.RulesProfile;
-import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.rules.RulesRepository;
-import org.sonar.plugins.api.rules.StandardRulesXmlParser;
+import org.sonar.api.rules.RulesRepository;
+import org.sonar.api.rules.StandardRulesXmlParser;
+import org.sonar.api.core.Language;
+import org.sonar.api.core.Java;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,9 +64,11 @@ public class TaglistRulesRepository implements RulesRepository {
     }
     try {
       tags.load(input);
-    } catch (IOException e) {
+    }
+    catch (IOException e) {
       throw new RuntimeException("Unable to load " + resourcePath, e);
-    } finally {
+    }
+    finally {
       IOUtils.closeQuietly(input);
     }
   }
