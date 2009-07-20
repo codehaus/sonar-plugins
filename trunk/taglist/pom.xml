@@ -12,7 +12,7 @@
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
   <properties>
-    <sonar.version>1.9.2</sonar.version>
+    <sonar.version>1.10-SNAPSHOT</sonar.version>
   </properties>
 
   <developers>

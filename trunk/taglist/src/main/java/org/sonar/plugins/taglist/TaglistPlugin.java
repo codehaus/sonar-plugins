@@ -19,11 +19,11 @@
  */
 package org.sonar.plugins.taglist;
 
+import org.sonar.api.plugins.Plugin;
+import org.sonar.api.plugins.Extension;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.sonar.plugins.api.Extension;
-import org.sonar.plugins.api.Plugin;
 
 public class TaglistPlugin implements Plugin {
 
@@ -34,8 +34,9 @@ public class TaglistPlugin implements Plugin {
   }
 
   public List<Class<? extends Extension>> getExtensions() {
-    return Arrays.asList(TaglistMavenCollector.class, TaglistRulesRepository.class, 
-        TaglistMetrics.class, TaglistJob.class, TaglistWidget.class, TaglistDistributionSumJob.class);
+    return Arrays.asList(TaglistSensor.class, TaglistRulesRepository.class,
+        TaglistMetrics.class, TaglistDecorator.class, TaglistWidget.class,
+      TaglistDistributionDecorator.class, TaglistMavenPluginHandler.class);
   }
 
   public String getKey() {

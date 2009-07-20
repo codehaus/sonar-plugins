@@ -19,40 +19,31 @@
  */
 package org.sonar.plugins.taglist;
 
+
+import org.sonar.api.batch.AbstractSumChildrenDecorator;
+import org.sonar.api.batch.Decorator;
+import org.sonar.api.batch.Generates;
+import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.batch.measures.Measure;
+import org.sonar.api.batch.measures.CountDistributionBuilder;
+import org.sonar.commons.Metric;
+
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import org.sonar.commons.Metric;
-import org.sonar.commons.resources.Measure;
-import org.sonar.commons.resources.Resource;
-import org.sonar.plugins.api.jobs.Job;
-import org.sonar.plugins.api.jobs.JobContext;
-import org.sonar.plugins.api.measures.CountDistributionBuilder;
+public class TaglistDistributionDecorator extends AbstractSumChildrenDecorator {
 
-public class TaglistDistributionSumJob implements Job {
 
-  public List<Metric> dependsOnMetrics() {
-    return Collections.emptyList();
-  }
-
-  public List<Class<? extends Job>> dependsOnJobs() {
-    return Collections.emptyList();
-  }
-
+  @Generates
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS_DISTRIBUTION);
   }
 
-  public boolean shouldExecuteOnProject(Resource project) {
-    return true;
+  protected boolean shouldSaveZeroIfNoChildMeasures() {
+    return false;
   }
 
-  public boolean shouldExecuteOnResource(Resource resource) {
-    return !resource.isFile();
-  }
-
-  public void execute(JobContext context) {
+  public void decorate(DecoratorContext context) {
 
     Measure measure = context.getMeasure(TaglistMetrics.TAGS_DISTRIBUTION);
     if (measure != null) {
@@ -60,14 +51,14 @@ public class TaglistDistributionSumJob implements Job {
       return;
     }
     CountDistributionBuilder builder = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
-    
+
     builder.clear();
     for (Measure childMeasure : context.getChildrenMeasures(TaglistMetrics.TAGS_DISTRIBUTION)) {
-      builder.addDistributionMeasure(childMeasure);
+      builder.add(childMeasure);
     }
 
     if (!builder.isEmpty()) {
-      context.addMeasure(builder.build());
+      context.saveMeasure(builder.build());
     }
   }
 }

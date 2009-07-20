@@ -23,36 +23,37 @@ import java.io.File;
 import java.io.IOException;
 
 import org.sonar.commons.rules.RulesProfile;
-import org.sonar.plugins.api.maven.AbstractJavaMavenCollector;
-import org.sonar.plugins.api.maven.MavenCollectorUtils;
-import org.sonar.plugins.api.maven.MavenPluginHandler;
-import org.sonar.plugins.api.maven.ProjectContext;
-import org.sonar.plugins.api.maven.model.MavenPom;
-import org.sonar.plugins.api.rules.RulesManager;
+import org.sonar.api.rules.RulesManager;
+import org.sonar.api.batch.Sensor;
+import org.sonar.api.batch.Project;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.ProjectUtils;
+import org.sonar.api.batch.maven.MavenPluginExecutor;
+import org.sonar.api.core.Java;
 
-public class TaglistMavenCollector extends AbstractJavaMavenCollector {
+public class TaglistSensor implements Sensor {
 
-  private final TaglistViolationsXmlParser taglistParser;
+  private TaglistViolationsXmlParser taglistParser;
+  private MavenPluginExecutor mavenExecutor;
+  private TaglistMavenPluginHandler pluginHandler;
 
-  public TaglistMavenCollector(RulesManager rulesManager, RulesProfile rulesProfile) {
+  public TaglistSensor(RulesManager rulesManager, RulesProfile rulesProfile, MavenPluginExecutor mavenExecutor, TaglistMavenPluginHandler pluginHandler) {
     taglistParser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);
+    this.mavenExecutor = mavenExecutor;
+    this.pluginHandler = pluginHandler;
   }
 
-  @Override
-  protected boolean shouldCollectIfNoSources() {
-    return false;
-  }
-
-  public void collect(MavenPom pom, ProjectContext context) {
-    File xmlFile = MavenCollectorUtils.findFileFromBuildDirectory(pom, "taglist/taglist.xml");
+  public void analyze(Project pom, SensorContext context) {
+    if (!pom.getLanguage().equals(Java.KEY)) {
+      return;
+    }
+    mavenExecutor.execute(pluginHandler);
+    File xmlFile = ProjectUtils.getFileFromBuildDirectory(pom, "taglist/taglist.xml");
     try {
       taglistParser.populateTaglistViolation(context, pom, xmlFile);
-    } catch (IOException e) {
+    }
+    catch (IOException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(MavenPom pom) {
-    return TaglistMavenPluginHandler.class;
   }
 }

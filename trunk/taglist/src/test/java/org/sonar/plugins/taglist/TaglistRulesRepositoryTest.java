@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.commons.rules.Rule;
 import org.sonar.commons.rules.RulesCategory;
-import org.sonar.plugins.api.Java;
+import org.sonar.api.core.Java;
 
 import java.util.List;
 
