@@ -30,25 +30,26 @@ import org.sonar.cpp.cppunit.CppunitMavenCollector;
 
 public class CppPlugin implements Plugin {
 
-  public String getKey() {
-    return "cppPlugin";
-  }
+	public String getKey() {
+		return "cppPlugin";
+	}
 
-  public String getName() {
-    return "Cpp Plugin";
-  }
+	public String getName() {
+		return "Cpp Plugin";
+	}
 
-  public String getDescription() {
-    return "Support for C/C++ tools.";
-  }
+	public String getDescription() {
+		return "Support for C/C++ tools.";
+	}
 
-  public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(CppunitMavenCollector.class);
-    return list;
-  }
+	public List<Class<? extends Extension>> getExtensions() {
+		List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+		list.add(Cpp.class);
+		list.add(CppunitMavenCollector.class);
+		return list;
+	}
 
-  public String toString() {
-    return getKey();
-  }
+	public String toString() {
+		return getKey();
+	}
 }
