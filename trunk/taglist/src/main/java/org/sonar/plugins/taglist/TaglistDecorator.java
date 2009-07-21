@@ -28,7 +28,8 @@ import org.sonar.api.batch.Generates;
 
 public class TaglistDecorator extends AbstractSumChildrenDecorator {
 
-  @Generates
+
+  //@DependsUpon
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS);
   }
