@@ -24,41 +24,76 @@ import org.sonar.api.batch.AbstractSumChildrenDecorator;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.Generates;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.batch.ResourceUtils;
+import org.sonar.api.batch.Resource;
+import org.sonar.api.batch.Project;
+import org.sonar.api.batch.PersistenceMode;
+import org.sonar.api.batch.maven.MavenPluginExecutor;
 import org.sonar.api.batch.measures.Measure;
 import org.sonar.api.batch.measures.CountDistributionBuilder;
+import org.sonar.api.batch.measures.PropertiesBuilder;
+import org.sonar.api.core.Java;
+import org.sonar.api.rules.RulesManager;
 import org.sonar.commons.Metric;
+import org.sonar.commons.rules.RulesProfile;
+import org.sonar.commons.rules.Rule;
+import org.sonar.commons.rules.ActiveRule;
+import org.sonar.commons.rules.Violation;
+import org.w3c.dom.Element;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class TaglistDistributionDecorator extends AbstractSumChildrenDecorator {
+public class TaglistDistributionDecorator implements Decorator {
 
+  private RulesManager rulesManager;
+  private RulesProfile rulesProfile;
+
+  public TaglistDistributionDecorator(RulesManager rulesManager, RulesProfile rulesProfile) {
+    this.rulesManager = rulesManager;
+    this.rulesProfile = rulesProfile;
+  }
 
   @Generates
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS_DISTRIBUTION);
   }
 
-  protected boolean shouldSaveZeroIfNoChildMeasures() {
-    return false;
+  public boolean shouldDecorateProject(Project project) {
+    return project.getLanguage().equals(Java.KEY);
   }
 
-  public void decorate(DecoratorContext context) {
+  public void decorate(Resource resource, DecoratorContext context) {
 
-    Measure measure = context.getMeasure(TaglistMetrics.TAGS_DISTRIBUTION);
-    if (measure != null) {
-      // already calculated
-      return;
-    }
-    CountDistributionBuilder builder = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
+    // Do not calculate distribution on classes
+    if (ResourceUtils.isFile(resource)) {
+      PropertiesBuilder<String, Integer> tagsDistrib = new PropertiesBuilder<String, Integer>(TaglistMetrics.TAGS_DISTRIBUTION);
 
-    builder.clear();
-    for (Measure childMeasure : context.getChildrenMeasures(TaglistMetrics.TAGS_DISTRIBUTION)) {
-      builder.add(childMeasure);
-    }
+      for (Rule rule : rulesManager.getPluginRules(TaglistPlugin.KEY)) {
+        ActiveRule activeRule = rulesProfile.getActiveRule(TaglistPlugin.KEY, rule.getKey());
+        int violationsForTag = 0;
+        if (activeRule != null) {
+          for (Violation violation : context.getViolations()) {
+            if (violation.getRule().equals(activeRule.getRule())) {
+              violationsForTag++;
+            }
+          }
+        }
+        tagsDistrib.add(rule.getKey(), violationsForTag);
+      }
+      context.saveMeasure(tagsDistrib.build().setPersistenceMode(PersistenceMode.MEMORY));
+    } else {
+      // Otherwise, aggregate the distribution
+      CountDistributionBuilder builder = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
 
-    if (!builder.isEmpty()) {
-      context.saveMeasure(builder.build());
+      // At modules and project levels, simply aggregate distribution of children
+      for (Measure childMeasure : context.getChildrenMeasures(TaglistMetrics.TAGS_DISTRIBUTION)) {
+        builder.add(childMeasure);
+      }
+
+      if (!builder.isEmpty()) {
+        context.saveMeasure(builder.build());
+      }
     }
   }
 }
