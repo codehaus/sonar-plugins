@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.taglist;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

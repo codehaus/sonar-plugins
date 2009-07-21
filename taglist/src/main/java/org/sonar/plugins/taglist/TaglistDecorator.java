@@ -34,10 +34,14 @@ public class TaglistDecorator extends AbstractSumChildrenDecorator {
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS);
   }
-  
+
+  /**
+   * {@inheritDoc}
+   */
   public boolean shouldExecuteOnProject(Project project) {
     return project.getLanguage().equals(Java.KEY);
   }
+
   protected boolean shouldSaveZeroIfNoChildMeasures() {
     return false;
   }

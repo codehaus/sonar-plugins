@@ -22,20 +22,20 @@ package org.sonar.plugins.taglist;
 
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.PersistenceMode;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.batch.PersistenceMode;
 import org.sonar.api.measures.CountDistributionBuilder;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
-import org.sonar.api.rules.RulesManager;
-import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulesManager;
 import org.sonar.api.rules.Violation;
 
 import java.util.Arrays;
@@ -56,10 +56,16 @@ public class TaglistDistributionDecorator implements Decorator {
     return Arrays.asList(TaglistMetrics.TAGS_DISTRIBUTION);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean shouldExecuteOnProject(Project project) {
     return project.getLanguage().equals(Java.KEY);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void decorate(Resource resource, DecoratorContext context) {
 
     // Calculate distribution on classes, but keep it in memory, not in DB
