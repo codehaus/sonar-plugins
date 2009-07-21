@@ -20,20 +20,19 @@
 package org.sonar.plugins.taglist;
 
 import org.apache.commons.io.IOUtils;
-
-import org.sonar.commons.rules.Rule;
-import org.sonar.commons.rules.RulesCategory;
-import org.sonar.commons.rules.RulesProfile;
 import org.sonar.api.rules.RulesRepository;
 import org.sonar.api.rules.StandardRulesXmlParser;
-import org.sonar.api.core.Language;
-import org.sonar.api.core.Java;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulesCategory;
+import org.sonar.api.resources.Language;
+import org.sonar.api.resources.Java;
+import org.sonar.api.profiles.RulesProfile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
+import java.util.List;
+import java.util.ArrayList;
 
 public class TaglistRulesRepository implements RulesRepository {
 

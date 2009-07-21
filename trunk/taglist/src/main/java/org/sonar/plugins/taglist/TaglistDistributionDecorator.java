@@ -20,26 +20,23 @@
 package org.sonar.plugins.taglist;
 
 
-import org.sonar.api.batch.AbstractSumChildrenDecorator;
 import org.sonar.api.batch.Decorator;
-import org.sonar.api.batch.Generates;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.ResourceUtils;
-import org.sonar.api.batch.Resource;
-import org.sonar.api.batch.Project;
 import org.sonar.api.batch.PersistenceMode;
-import org.sonar.api.batch.maven.MavenPluginExecutor;
-import org.sonar.api.batch.measures.Measure;
-import org.sonar.api.batch.measures.CountDistributionBuilder;
-import org.sonar.api.batch.measures.PropertiesBuilder;
-import org.sonar.api.core.Java;
+import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.measures.CountDistributionBuilder;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.rules.RulesManager;
-import org.sonar.commons.Metric;
-import org.sonar.commons.rules.RulesProfile;
-import org.sonar.commons.rules.Rule;
-import org.sonar.commons.rules.ActiveRule;
-import org.sonar.commons.rules.Violation;
-import org.w3c.dom.Element;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.Violation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,12 +51,12 @@ public class TaglistDistributionDecorator implements Decorator {
     this.rulesProfile = rulesProfile;
   }
 
-  @Generates
+  @DependsUpon
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS_DISTRIBUTION);
   }
 
-  public boolean shouldDecorateProject(Project project) {
+  public boolean shouldExecuteOnProject(Project project) {
     return project.getLanguage().equals(Java.KEY);
   }
 
@@ -96,4 +93,6 @@ public class TaglistDistributionDecorator implements Decorator {
       }
     }
   }
+
+
 }

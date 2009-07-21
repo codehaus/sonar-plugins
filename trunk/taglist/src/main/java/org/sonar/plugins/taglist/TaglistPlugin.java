@@ -19,8 +19,10 @@
  */
 package org.sonar.plugins.taglist;
 
-import org.sonar.api.plugins.Plugin;
-import org.sonar.api.plugins.Extension;
+
+
+import org.sonar.api.Plugin;
+import org.sonar.api.Extension;
 
 import java.util.Arrays;
 import java.util.List;

@@ -22,14 +22,14 @@ package org.sonar.plugins.taglist;
 import java.io.File;
 import java.io.IOException;
 
-import org.sonar.commons.rules.RulesProfile;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.batch.Sensor;
-import org.sonar.api.batch.Project;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.ProjectUtils;
 import org.sonar.api.batch.maven.MavenPluginExecutor;
-import org.sonar.api.core.Java;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.ProjectUtils;
 
 public class TaglistSensor implements Sensor {
 
@@ -43,10 +43,10 @@ public class TaglistSensor implements Sensor {
     this.pluginHandler = pluginHandler;
   }
 
-  public void analyze(Project pom, SensorContext context) {
-    if (!pom.getLanguage().equals(Java.KEY)) {
-      return;
-    }
+  public boolean shouldExecuteOnProject(Project project) {
+    return project.getLanguage().equals(Java.KEY);
+  }
+  public void analyse(Project pom, SensorContext context) {
     mavenExecutor.execute(pluginHandler);
     File xmlFile = ProjectUtils.getFileFromBuildDirectory(pom, "taglist/taglist.xml");
     try {

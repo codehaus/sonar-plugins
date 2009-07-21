@@ -22,18 +22,22 @@ package org.sonar.plugins.taglist;
 import java.util.Arrays;
 import java.util.List;
 
-import org.sonar.commons.Metric;
 import org.sonar.api.batch.AbstractSumChildrenDecorator;
-import org.sonar.api.batch.Generates;
+import org.sonar.api.batch.DependedUpon;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Java;
 
 public class TaglistDecorator extends AbstractSumChildrenDecorator {
 
-
-  //@DependsUpon
+  @DependedUpon
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS);
   }
-
+  
+  public boolean shouldExecuteOnProject(Project project) {
+    return project.getLanguage().equals(Java.KEY);
+  }
   protected boolean shouldSaveZeroIfNoChildMeasures() {
     return false;
   }

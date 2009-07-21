@@ -23,46 +23,46 @@ import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.commons.resources.Measure;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.Project;
+import org.sonar.api.measures.Measure;
+import org.apache.maven.project.MavenProject;
 
 public class TaglistDecoratorTest {
 
-	private DecoratorContext decoratorContext;
-	private TaglistDecorator decorator;
+  private DecoratorContext decoratorContext;
+  private Resource resource;
+  private TaglistDecorator decorator;
 
   @Before
-	public void setUp() throws Exception {
-		decorator = new TaglistDecorator();
-		decoratorContext = mock(DecoratorContext.class);
-	}
+  public void setUp() throws Exception {
+    decorator = new TaglistDecorator();
+    decoratorContext = mock(DecoratorContext.class);
+    resource = new Project(new MavenProject());
+  }
 
-	@Test
-	public void testExecute() {
-	/*
-	  when(decoratorContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.TAGS))).
-      thenReturn(Arrays.asList(new Measure(TaglistMetrics.TAGS, 1.0), new Measure(TaglistMetrics.TAGS, 3.0)));
-	  when(decoratorContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.MANDATORY_TAGS))).
-      thenReturn(Arrays.asList(new Measure(TaglistMetrics.MANDATORY_TAGS, 8.0), new Measure(TaglistMetrics.MANDATORY_TAGS, 3.0)));
-	  when(decoratorContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.OPTIONAL_TAGS))).
-      thenReturn(Arrays.asList(new Measure(TaglistMetrics.OPTIONAL_TAGS, 1.0), new Measure(TaglistMetrics.OPTIONAL_TAGS, 5.0)));
-	 when(decoratorContext.getChildrenMeasures(new MeasureKey(TaglistMetrics.TAGS_DISTRIBUTION))).
-     thenReturn(Arrays.asList(new Measure(TaglistMetrics.TAGS_DISTRIBUTION, "test=foo"), new Measure(TaglistMetrics.TAGS_DISTRIBUTION, "foo=bar")));
-	  
-		decorator.decorate(decoratorContext);
-		verify(jobContext, times(1)).addMeasure(eq(TaglistMetrics.TAGS), eq(new Double(4)));
-		verify(jobContext, times(1)).addMeasure(eq(TaglistMetrics.MANDATORY_TAGS), eq(new Double(11)));
-		verify(jobContext, times(1)).addMeasure(eq(TaglistMetrics.OPTIONAL_TAGS), eq(new Double(6)));
-		verify(jobContext, never()).addMeasure(eq(TaglistMetrics.TAGS_DISTRIBUTION), anyDouble());
-		*/
-	}
+  @Test
+  public void testExecute() {
 
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.TAGS)).
+      thenReturn((Collection) Arrays.asList(new Measure(TaglistMetrics.TAGS, 1.0), new Measure(TaglistMetrics.TAGS, 3.0)));
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.MANDATORY_TAGS)).
+      thenReturn((Collection) Arrays.asList(new Measure(TaglistMetrics.MANDATORY_TAGS, 8.0), new Measure(TaglistMetrics.MANDATORY_TAGS, 3.0)));
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.OPTIONAL_TAGS)).
+      thenReturn((Collection) Arrays.asList(new Measure(TaglistMetrics.OPTIONAL_TAGS, 1.0), new Measure(TaglistMetrics.OPTIONAL_TAGS, 5.0)));
+
+    decorator.decorate(resource, decoratorContext);
+    verify(decoratorContext).saveMeasure(eq(new Measure(TaglistMetrics.TAGS ,4.0)));
+    verify(decoratorContext).saveMeasure(eq(new Measure(TaglistMetrics.MANDATORY_TAGS ,11.0)));
+    verify(decoratorContext).saveMeasure(eq(new Measure(TaglistMetrics.OPTIONAL_TAGS ,6.0)));
+  }
 }
