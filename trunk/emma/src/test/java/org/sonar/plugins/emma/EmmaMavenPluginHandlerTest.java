@@ -19,64 +19,56 @@
  */
 package org.sonar.plugins.emma;
 
+import org.apache.maven.project.MavenProject;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.plugins.api.maven.Exclusions;
-import org.sonar.plugins.api.maven.MavenTestCase;
-import org.sonar.plugins.api.maven.model.MavenPlugin;
-import org.sonar.plugins.api.maven.model.MavenPom;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.sonar.api.batch.maven.MavenPlugin;
+import org.sonar.api.batch.maven.MavenUtils;
+import org.sonar.api.resources.Project;
+import org.sonar.api.test.MavenTestUtils;
 
-public class EmmaMavenPluginHandlerTest extends MavenTestCase {
-  
+public class EmmaMavenPluginHandlerTest {
+
   private EmmaMavenPluginHandler handler;
 
   @Before
   public void before() {
-    handler = new EmmaMavenPluginHandler(null);
+    handler = new EmmaMavenPluginHandler();
   }
 
   @Test
-  public void shouldConfigurePom() {
-    MavenPom pom = readMavenProject("/org/sonar/plugins/emma/EmmaMavenPluginHandlerTest/pom.xml");
-    handler.configure(pom);
+  public void enableXmlFormat() {
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
+    MavenPlugin plugin = new MavenPlugin(EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    handler.configure(project, plugin);
 
-    MavenPlugin plugin = pom.findPlugin(handler.getGroupId(), handler.getArtifactId());
-    assertEquals(handler.getVersion(), plugin.getVersion());
-
-    assertEquals("xml", plugin.getConfigParameter("format"));
-    assertEquals("true", plugin.getConfigParameter("quiet"));
+    assertThat(plugin.getConfigParameter("format"), is("xml"));
   }
 
   @Test
   public void shouldOverrideExistingConfiguration() {
-    MavenPom pom = readMavenProject("/org/sonar/plugins/emma/EmmaMavenPluginHandlerTest/Emma-pom.xml");
-    handler.configure(pom);
-
-    MavenPlugin plugin = pom.findPlugin(handler.getGroupId(), handler.getArtifactId());
-    assertEquals("0.0.1", plugin.getVersion()); // keep the version from pom
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "Emma-pom.xml");
+    MavenPlugin plugin = MavenUtils.getPlugin(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    handler.configure(project, plugin);
 
     assertEquals("xml", plugin.getConfigParameter("format"));
-    assertEquals("true", plugin.getConfigParameter("quiet"));
     assertEquals("bar", plugin.getConfigParameter("foo"));
   }
-  
+
   @Test
   public void testConfigurePluginWithFilterExclusions() {
-    MavenPom pom = readMavenProject("/org/sonar/plugins/emma/EmmaMavenPluginHandlerTest/Emma-pom.xml");
-    handler.configure(pom);
-    Exclusions exclusions = mock(Exclusions.class);
-    
-    handler = new EmmaMavenPluginHandler(exclusions);
-    when(exclusions.getWildcardPatterns()).thenReturn(new String[]{"/com/foo**/bar/Ba*.java"});
-    
-    MavenPlugin plugin = pom.findPlugin(handler.getGroupId(), handler.getArtifactId());
-    handler.configurePlugin(pom, plugin);
+    MavenProject pom = MavenTestUtils.loadPom(getClass(), "Emma-pom.xml");
+    MavenPlugin plugin = MavenUtils.getPlugin(pom, EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+
+    Project project = mock(Project.class);
+    when(project.getExclusionPatterns()).thenReturn(new String[]{"/com/foo**/bar/Ba*.java"});
+
+    handler.configure(project, plugin);
 
     assertEquals(1, plugin.getConfiguration().getParameters("filters/filter").length);
     assertThat(plugin.getConfiguration().getParameters("filters/filter"), is(new String[]{"com.foo*.bar.Ba*"}));

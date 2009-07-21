@@ -19,32 +19,32 @@
  */
 package org.sonar.plugins.emma;
 
-import java.io.File;
-import java.text.ParseException;
-import java.util.Locale;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.staxmate.in.SMFilterFactory;
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
-import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.maven.MavenCollectorUtils;
-import org.sonar.plugins.api.maven.ProjectContext;
-import org.sonar.plugins.api.maven.xml.StaxParser;
-import org.sonar.plugins.api.maven.xml.XmlParserException;
-import org.sonar.plugins.api.metrics.CoreMetrics;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.JavaClass;
+import org.sonar.api.resources.JavaPackage;
+import org.sonar.api.utils.ParsingUtils;
+import org.sonar.api.utils.StaxParser;
+import org.sonar.api.utils.XmlParserException;
+
+import java.io.File;
+import java.text.ParseException;
+import java.util.Locale;
+import javax.xml.stream.XMLStreamException;
 
 public class EmmaXmlProcessor {
-  
+
   private final static String EMMA_DEFAULT_PACKAGE = "default package";
 
   private final File xmlReport;
 
-  private final ProjectContext context;
+  private final SensorContext context;
 
-  public EmmaXmlProcessor(File xmlReport, ProjectContext context) {
+  public EmmaXmlProcessor(File xmlReport, SensorContext context) {
     this.xmlReport = xmlReport;
     this.context = context;
   }
@@ -61,53 +61,54 @@ public class EmmaXmlProcessor {
 
   private double extractEmmaPercentageNumber(String emmaCoverageLineValue) throws ParseException {
     String extractedStringValue = StringUtils.substringBefore(emmaCoverageLineValue, " ");
-    double doubleCoverage = MavenCollectorUtils.parseNumber(extractedStringValue, Locale.ENGLISH);
-    return MavenCollectorUtils.scaleValue(doubleCoverage);
+    double doubleCoverage = ParsingUtils.parseNumber(extractedStringValue, Locale.ENGLISH);
+    return ParsingUtils.scaleValue(doubleCoverage);
   }
-  
+
   private void parse(File xml) throws Exception {
     StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
       public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
         SMInputCursor all = rootCursor.advance().descendantElementCursor("all");
         collectProjectMeasures(all.advance());
-      }});
+      }
+    });
     parser.parse(xml);
   }
-  
+
   private void collectProjectMeasures(SMInputCursor allCursor) throws XMLStreamException {
     SMInputCursor packagesCursor = findLineRateMeasure(allCursor, new LineRateMeasureHandler() {
       public void handleMeasure(String resourceName, double coverage) {
-        context.addMeasure(CoreMetrics.COVERAGE, coverage);
+        context.saveMeasure(CoreMetrics.COVERAGE, coverage);
       }
     }, null);
     packagesCursor.setFilter(SMFilterFactory.getElementOnlyFilter("package"));
     collectPackageMeasures(packagesCursor);
   }
-  
+
   private void collectPackageMeasures(SMInputCursor packageCursor) throws XMLStreamException {
     while (packageCursor.getNext() != null) {
       String currentPackageName = packageCursor.getAttrValue("name");
-      currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? Java.DEFAULT_PACKAGE_NAME : currentPackageName;
+      currentPackageName = currentPackageName.equals(EMMA_DEFAULT_PACKAGE) ? JavaPackage.DEFAULT_PACKAGE_NAME : currentPackageName;
       SMInputCursor srcFileCursor = findLineRateMeasure(packageCursor, new LineRateMeasureHandler() {
         public void handleMeasure(String resourceName, double coverage) {
-          context.addMeasure(Java.newPackage(resourceName), CoreMetrics.COVERAGE, coverage);
+          context.saveMeasure(new JavaPackage(resourceName), CoreMetrics.COVERAGE, coverage);
         }
       }, currentPackageName);
-      
+
       srcFileCursor.setFilter(SMFilterFactory.getElementOnlyFilter("srcfile"));
       collectClassMeasures(srcFileCursor, currentPackageName);
     }
   }
-  
+
   private void collectClassMeasures(SMInputCursor srcFileCursor, String packageName) throws XMLStreamException {
     while (srcFileCursor.getNext() != null) {
       SMInputCursor classCursor = srcFileCursor.childElementCursor("class");
       while (classCursor.getNext() != null) {
         String className = classCursor.getAttrValue("name");
-        String classFullName = packageName.equals(Java.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
+        String classFullName = packageName.equals(JavaPackage.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
         findLineRateMeasure(classCursor, new LineRateMeasureHandler() {
           public void handleMeasure(String resourceName, double coverage) {
-            context.addMeasure(Java.newClass(resourceName), CoreMetrics.COVERAGE,coverage);
+            context.saveMeasure(new JavaClass(resourceName), CoreMetrics.COVERAGE, coverage);
           }
         }, classFullName);
       }
@@ -134,7 +135,7 @@ public class EmmaXmlProcessor {
     }
     return coverage;
   }
-  
+
   private interface LineRateMeasureHandler {
     public void handleMeasure(String resourceName, double coverage);
   }

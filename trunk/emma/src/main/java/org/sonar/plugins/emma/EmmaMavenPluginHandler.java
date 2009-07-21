@@ -20,22 +20,15 @@
 package org.sonar.plugins.emma;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
-import org.sonar.plugins.api.maven.Exclusions;
-import org.sonar.plugins.api.maven.model.MavenPlugin;
-import org.sonar.plugins.api.maven.model.MavenPom;
+import org.sonar.api.batch.maven.MavenPlugin;
+import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.batch.maven.MavenUtils;
+import org.sonar.api.resources.Project;
 
-public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
+public class EmmaMavenPluginHandler implements MavenPluginHandler {
 
-  public static final String GROUP_ID = MavenPom.GROUP_ID_CODEHAUS_MOJO;
+  public static final String GROUP_ID = MavenUtils.GROUP_ID_CODEHAUS_MOJO;
   public static final String ARTIFACT_ID = "emma-maven-plugin";
-  
-  private Exclusions exclusions;
-
-  public EmmaMavenPluginHandler(Exclusions exclusions) {
-    super();
-    this.exclusions = exclusions;
-  }
 
   public String getGroupId() {
     return GROUP_ID;
@@ -57,18 +50,11 @@ public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
     return new String[]{"emma"};
   }
 
-  public boolean shouldStopOnFailure() {
-    return true;
-  }
-
-  @Override
-  public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-    plugin.unsetConfigParameter("outputDirectory");
+  public void configure(Project project, MavenPlugin plugin) {
     plugin.setConfigParameter("format", "xml");
-    plugin.setConfigParameter("quiet", "true");
 
-    if (exclusions != null) {
-      for (String pattern : exclusions.getWildcardPatterns()) {
+    if (project.getExclusionPatterns() != null) {
+      for (String pattern : project.getExclusionPatterns()) {
         if (StringUtils.endsWithIgnoreCase(pattern, ".java")) {
           pattern = StringUtils.substringBeforeLast(pattern, ".");
         }
@@ -78,4 +64,9 @@ public class EmmaMavenPluginHandler extends AbstractMavenPluginHandler {
       }
     }
   }
+
+  public boolean dependsUponCustomRules() {
+    return false;
+  }
+
 }
