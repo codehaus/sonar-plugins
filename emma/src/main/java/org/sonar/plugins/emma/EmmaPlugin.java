@@ -19,33 +19,35 @@
  */
 package org.sonar.plugins.emma;
 
+import org.sonar.api.Extension;
+import org.sonar.api.Plugin;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.plugins.api.Extension;
-import org.sonar.plugins.api.Plugin;
 
 public class EmmaPlugin implements Plugin {
 
-	public String getKey() {
-		return "emma";
-	}
+  public String getKey() {
+    return "emma";
+  }
 
-	public String getName() {
-		return "Emma";
-	}
+  public String getName() {
+    return "Emma";
+  }
 
-	public String getDescription() {
-		return "<a href='http://emma.sourceforge.net'>Emma</a> calculates coverage of unit tests. Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
-	}
+  public String getDescription() {
+    return "<a href='http://emma.sourceforge.net'>Emma</a> calculates coverage of unit tests. Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
+  }
 
-	public List<Class<? extends Extension>> getExtensions() {
-		List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-		list.add(EmmaMavenCollector.class);
-		return list;
-	}
+  public List<Class<? extends Extension>> getExtensions() {
+    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+    list.add(EmmaSensor.class);
+    list.add(ProjectCoverageDecorator.class);
+    return list;
+  }
 
-	public String toString() {
-		return getKey();
-	}
+  public String toString() {
+    return getKey();
+  }
 }
