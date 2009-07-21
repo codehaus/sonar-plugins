@@ -62,7 +62,7 @@ public class TaglistDistributionDecorator implements Decorator {
 
   public void decorate(Resource resource, DecoratorContext context) {
 
-    // Do not calculate distribution on classes
+    // Calculate distribution on classes, but keep it in memory, not in DB
     if (ResourceUtils.isFile(resource)) {
       PropertiesBuilder<String, Integer> tagsDistrib = new PropertiesBuilder<String, Integer>(TaglistMetrics.TAGS_DISTRIBUTION);
 

@@ -82,20 +82,17 @@ public class TaglistViolationsXmlParser {
 
   private void parseViolationsOnFiles(SensorContext context, Element tag, String tagName, Rule rule, ActiveRule activeRule, Map<Resource, ViolationsCount> violationsCountPerClass) {
     NodeList files = tag.getElementsByTagName("file");
-    int totalViolationsForTag = 0;
     for (int i = 0; i < files.getLength(); i++) {
       Element file = (Element) files.item(i);
       String className = file.getAttribute("name");
       // see SONARPLUGINS-57
       className = className.startsWith("null.") ? className.substring(5) : className;
-      // exclude unit tests not a really great way to do it.. unfortunatly the only one as long as MTAGLIST-41 is not done
-      // TODO integrate MTAGLIST-41 if done one day
 
-      if (className.toLowerCase().startsWith("test") || className.toLowerCase().endsWith("test")) continue;
+      // TODO integrate MTAGLIST-41 if done one day
+      if (context.getResource(className).getQualifier().equals(Resource.QUALIFIER_UNIT_TEST_CLASS)) continue;
       
       Resource javaClass = new JavaClass(className);
       int violationsForClass = parseViolationLineNumberAndComment(context, file, javaClass, tagName, rule, activeRule);
-      totalViolationsForTag += violationsForClass;
       ViolationsCount violationsCount = violationsCountPerClass.get(javaClass);
       if (violationsCount == null) {
         violationsCount = new ViolationsCount();
