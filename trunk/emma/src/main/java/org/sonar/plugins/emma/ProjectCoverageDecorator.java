@@ -55,7 +55,6 @@ public class ProjectCoverageDecorator extends AbstractCoverageExtension implemen
 
     double elements = 0.0;
     double total = 0.0;
-    boolean hasCoverage = false;
 
     for (DecoratorContext child : context.getChildren()) {
       Measure statements = child.getMeasure(CoreMetrics.STATEMENTS);
@@ -68,15 +67,12 @@ public class ProjectCoverageDecorator extends AbstractCoverageExtension implemen
         double childCoverage = coverage.getValue();
         elements += childElements;
         total += (childElements * childCoverage);
-        hasCoverage = true;
       }
     }
-    if (hasCoverage) {
-      if (elements == 0d) {
-        context.saveMeasure(CoreMetrics.COVERAGE, 0d);
-      } else {
-        context.saveMeasure(CoreMetrics.COVERAGE, total / elements);
-      }
+    if (elements == 0d) {
+      context.saveMeasure(CoreMetrics.COVERAGE, 0d);
+    } else {
+      context.saveMeasure(CoreMetrics.COVERAGE, total / elements);
     }
   }
 }
