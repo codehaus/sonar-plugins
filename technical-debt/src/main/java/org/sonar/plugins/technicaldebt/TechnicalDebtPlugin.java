@@ -19,22 +19,22 @@
  */
 package org.sonar.plugins.technicaldebt;
 
-import org.sonar.api.plugins.Plugin;
-import org.sonar.api.plugins.Extension;
-import org.sonar.api.plugins.Properties;
-import org.sonar.api.plugins.Property;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
+import org.sonar.api.Plugin;
+import org.sonar.api.Extension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Properties({
-    @Property(key = TechnicalDebtPlugin.TD_DAILY_RATE, defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
-    @Property(key = TechnicalDebtPlugin.TD_COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT, name = "Average time to split a class that has a too high complexity (in hours)", description = ""),
-    @Property(key = TechnicalDebtPlugin.TD_COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT, name = "Average time to split a method that has a too high complexity (in hours)", description = ""),
-    @Property(key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix one block duplication block (in hours)", description = ""),
-    @Property(key = TechnicalDebtPlugin.TD_COST_VIOLATION, defaultValue = TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
-    @Property(key = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
-    @Property(key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
+  @Property(key = TechnicalDebtPlugin.TD_DAILY_RATE, defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT, name = "Average time to split a class that has a too high complexity (in hours)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT, name = "Average time to split a method that has a too high complexity (in hours)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix one block duplication block (in hours)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_VIOLATION, defaultValue = TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
 })
 
 /** {@inheritDoc} */
@@ -60,12 +60,16 @@ public class TechnicalDebtPlugin implements Plugin {
   public static final String TD_COST_UNDOCUMENTED_API = "technicaldebt.undocumented.api";
   public static final String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.2";
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   public String getDescription() {
     return "Calculate the technical debt.";
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(TechnicalDebtMetrics.class);
@@ -74,12 +78,16 @@ public class TechnicalDebtPlugin implements Plugin {
     return list;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   public String getKey() {
     return "technical-debt";
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   public String getName() {
     return "Technical Debt";
   }

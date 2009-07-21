@@ -19,10 +19,11 @@
  */
 package org.sonar.plugins.technicaldebt;
 
-import org.sonar.api.core.CoreMetrics;
-import org.sonar.api.core.Metrics;
-import org.sonar.commons.Metric;
-import org.sonar.commons.Metric.ValueType;
+
+
+import org.sonar.api.measures.Metrics;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.CoreMetrics;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +33,10 @@ import java.util.List;
  */
 public class TechnicalDebtMetrics implements Metrics {
 
-  public final static Metric TECHNICAL_DEBT = new Metric("technical_debt", "Technical Debt ($)", "Technical debt ($)", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-  public final static Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL, false);
-  public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical technicaldebt repartition", "This is the detail of the technical debt", ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL, false);
+  public final static Metric TECHNICAL_DEBT = new Metric("technical_debt", "Technical Debt ($)", "Technical debt ($)", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public final static Metric TECHNICAL_DEBT_RATIO = new Metric("technical_debt_ratio", "Technical Debt ratio", "This is the debt ratio", Metric.ValueType.PERCENT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public final static Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public final static Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical technicaldebt repartition", "This is the detail of the technical debt", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL);
 
   /**
    * {@inheritDoc}
