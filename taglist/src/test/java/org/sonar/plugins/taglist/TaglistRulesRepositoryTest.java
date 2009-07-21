@@ -24,9 +24,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.commons.rules.Rule;
-import org.sonar.commons.rules.RulesCategory;
-import org.sonar.api.core.Java;
+import org.sonar.api.resources.Java;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulesCategory;
 
 import java.util.List;
 

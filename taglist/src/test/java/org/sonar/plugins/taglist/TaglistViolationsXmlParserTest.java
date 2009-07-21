@@ -28,19 +28,20 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.nio.charset.Charset;
 
 import org.apache.maven.project.MavenProject;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.commons.resources.Measure;
-import org.sonar.commons.rules.ActiveRule;
-import org.sonar.commons.rules.Rule;
-import org.sonar.commons.rules.RulesProfile;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.Project;
 import org.sonar.api.rules.RulesManager;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.test.IsResource;
 
 public class TaglistViolationsXmlParserTest {
 
@@ -56,46 +57,34 @@ public class TaglistViolationsXmlParserTest {
     RulesManager rulesManager = mock(RulesManager.class);
     RulesProfile rulesProfile = mock(RulesProfile.class);
 
-    // This is going to depend on functionality choice made for the taglist plugin
-/*
+
     when(rulesManager.getPluginRule(eq(TaglistPlugin.KEY), (String) anyObject())).thenReturn(new Rule());
-    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("TODO"))).thenReturn(new ActiveRule(null, null, RuleFailureLevel.WARNING));
-    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("FIXME"))).thenReturn(new ActiveRule(null, null, RuleFailureLevel.ERROR));
-    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@todo"))).thenReturn(new ActiveRule(null, null, RuleFailureLevel.ERROR));
-    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@fixme"))).thenReturn(new ActiveRule(null, null, RuleFailureLevel.ERROR));
+    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("TODO"))).thenReturn(new ActiveRule(null, null, RulePriority.BLOCKER));
+    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("FIXME"))).thenReturn(new ActiveRule(null, null, RulePriority.CRITICAL));
+    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@todo"))).thenReturn(new ActiveRule(null, null, RulePriority.MAJOR));
+    when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@fixme"))).thenReturn(new ActiveRule(null, null, RulePriority.MINOR));
 
     when(pom.getMavenProject()).thenReturn(new MavenProject());
-    parser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);*/
+    when(pom.getSourceCharset()).thenReturn(Charset.forName("UTF-8"));
+    parser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);
   }
 
   @Test
   public void testPopulateTaglistViolations() throws Exception {
-    /*
-
         File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/TaglistViolationsXmlParserTest/taglist.xml").toURI());
     parser.populateTaglistViolation(context, pom, xmlFile);
 
 
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("ClassOnDefaultPackage")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "ClassOnDefaultPackage")), eq(TaglistMetrics.MANDATORY_TAGS), eq(2d));
     
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(2d));
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.TAGS), eq(4d));
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(3d));
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(1d));
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.ClassWithTags")), eq(TaglistMetrics.TAGS), eq(4d));
 
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(0d));
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(2d));
-    verify(context, times(1)).saveMeasure(argThat(new IsJavaClass("org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.TAGS), eq(2d));
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(0d));
+    verify(context, times(1)).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.TAGS), eq(2d));
 
-    verify(context, times(1)).saveMeasure(argThat(new BaseMatcher<Measure>() {
-
-      public boolean matches(Object arg0) {
-        Measure m = (Measure)arg0;
-        return m.getMetric().equals(TaglistMetrics.TAGS_DISTRIBUTION) && m.getData().equals("@fixme=1;@todo=2;FIXME=1;TODO=4");
-      }
-
-      public void describeTo(Description arg0) {
-      }}));
-*/
   }
 
 }

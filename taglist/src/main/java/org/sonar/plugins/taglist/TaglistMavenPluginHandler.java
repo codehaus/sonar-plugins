@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.sonar.commons.rules.ActiveRule;
-import org.sonar.commons.rules.RulesProfile;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenUtils;
-import org.sonar.api.batch.Project;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.Project;
+import org.sonar.api.rules.ActiveRule;
 
 public class TaglistMavenPluginHandler implements MavenPluginHandler {
 
@@ -40,7 +39,7 @@ public class TaglistMavenPluginHandler implements MavenPluginHandler {
     this.rulesProfile = rulesProfile;
   }
 
-  public boolean dependsOnCustomRules() {
+  public boolean dependsUponCustomRules() {
     return false;
   }
 

@@ -22,28 +22,24 @@ package org.sonar.plugins.taglist;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
-import org.sonar.api.rules.RulesManager;
-import org.sonar.commons.rules.RulesProfile;
-import org.sonar.commons.rules.ActiveRule;
-import org.sonar.commons.rules.Rule;
-import org.sonar.commons.rules.RulePriority;
-
-
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.Project;
-import org.sonar.api.batch.Resource;
-import org.sonar.api.batch.JavaClass;
-import org.sonar.api.batch.measures.PropertiesBuilder;
 import org.sonar.api.utils.XpathParser;
 import org.sonar.api.utils.ParsingUtils;
+import org.sonar.api.rules.RulesManager;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.JavaClass;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.apache.commons.io.FileUtils;
-import sun.net.www.ParseUtil;
 
 public class TaglistViolationsXmlParser {
 
@@ -106,7 +102,7 @@ public class TaglistViolationsXmlParser {
         violationsCountPerClass.put(javaClass, violationsCount);
       }
       
-      if (activeRule.getLevel().equals(RulePriority.BLOCKER) || activeRule.getLevel().equals(RulePriority.CRITICAL)) {
+      if (activeRule.getPriority().equals(RulePriority.BLOCKER) || activeRule.getPriority().equals(RulePriority.CRITICAL)) {
         violationsCount.mandatory += violationsForClass;
       } else {
         violationsCount.optional += violationsForClass;
@@ -130,7 +126,7 @@ public class TaglistViolationsXmlParser {
 
   private void registerViolation(SensorContext context, String tagName, String violationLineNumber, Element file, Rule rule, ActiveRule activeRule, Resource javaClass) {
     try {
-      RulePriority level = activeRule.getLevel();
+      RulePriority level = activeRule.getPriority();
       context.saveViolation(javaClass, rule, rule.getDescription(), level, (int)ParsingUtils.parseNumber(violationLineNumber));
     } catch (ParseException e) {
       throw new RuntimeException("Unable to parse number '" + violationLineNumber + "' in taglist.xml file", e);

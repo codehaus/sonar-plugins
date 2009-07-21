@@ -25,7 +25,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.commons.Metric;
+import org.sonar.api.measures.Metric;
+
 
 public class TaglistMetricsTest {
 
