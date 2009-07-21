@@ -3,13 +3,13 @@
     <div class="yui-u first">
       <div class="dashbox">
         <h3>Tags</h3>
-        <p><span class="big"><%= format_measure('tags', :url => url_for_drilldown('tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationssourceviewer.GwtViolationsSourceViewer'}), :default => '-')%></span></p>
-        <p><span"><%= format_measure('mandatory_tags', :suffix => ' mandatory', :url => url_for_drilldown('mandatory_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationssourceviewer.GwtViolationsSourceViewer'}), :default => '-') %></span></p>
-        <p><span"><%= format_measure('optional_tags', :suffix => ' optional', :url => url_for_drilldown('optional_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationssourceviewer.GwtViolationsSourceViewer'}), :default => '-') %></span></p>
+        <p><span class="big"><%= format_measure('tags', :url => url_for_drilldown('tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '-')%></span></p>
+        <p><span"><%= format_measure('mandatory_tags', :suffix => ' mandatory', :url => url_for_drilldown('mandatory_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '-') %></span></p>
+        <p><span"><%= format_measure('optional_tags', :suffix => ' optional', :url => url_for_drilldown('optional_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '-') %></span></p>
       </div>
     </div>
     <div class="yui-u">
-      <%= piechart(measure('tags_distribution'), { :size => "247x80"}) -%>
+      <%= piechart(measure('tags_distribution'), { :size => "248x65"}) -%>
     </div>
   </div>
 <% end %>

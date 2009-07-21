@@ -56,25 +56,26 @@ public class TaglistViolationsXmlParser {
   }
 
   protected final void populateTaglistViolation(SensorContext context, Project pom, File taglistXmlFile) throws IOException {
+
     XpathParser parser = new XpathParser();
     // TODO remove when MTAGLIST-40 released
     String charSet = pom.getSourceCharset().name();
     String report = FileUtils.readFileToString(taglistXmlFile, charSet);
     parser.parse(report.replace("encoding=\"UTF-8\"", "encoding=\""+charSet+"\""));
-    PropertiesBuilder tagsDistrib = new PropertiesBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
+
     NodeList tags = parser.getDocument().getElementsByTagName("tag");
     Map<Resource, ViolationsCount> violationsCountPerClass = new HashMap<Resource, ViolationsCount>();
+
     for (int i = 0; i < tags.getLength(); i++) {
       Element tag = (Element) tags.item(i);
       String tagName = tag.getAttribute("name");
       Rule rule = rulesManager.getPluginRule(TaglistPlugin.KEY, tagName);
       ActiveRule activeRule = rulesProfile.getActiveRule(TaglistPlugin.KEY, tagName);
       if (activeRule != null && rule != null) {
-        int violationsForTag = parseViolationsOnFiles(context, tag, tagName, rule, activeRule, violationsCountPerClass);
-        tagsDistrib.add(tagName, violationsForTag);
+        parseViolationsOnFiles(context, tag, tagName, rule, activeRule, violationsCountPerClass);
       }
     }
-    context.saveMeasure(tagsDistrib.build());
+
     for (Resource javaClass : violationsCountPerClass.keySet()) {
       ViolationsCount violations = violationsCountPerClass.get(javaClass);
       context.saveMeasure(javaClass, TaglistMetrics.TAGS, (double) violations.mandatory + violations.optional);
@@ -83,7 +84,7 @@ public class TaglistViolationsXmlParser {
     }
   }
 
-  private int parseViolationsOnFiles(SensorContext context, Element tag, String tagName, Rule rule, ActiveRule activeRule, Map<Resource, ViolationsCount> violationsCountPerClass) {
+  private void parseViolationsOnFiles(SensorContext context, Element tag, String tagName, Rule rule, ActiveRule activeRule, Map<Resource, ViolationsCount> violationsCountPerClass) {
     NodeList files = tag.getElementsByTagName("file");
     int totalViolationsForTag = 0;
     for (int i = 0; i < files.getLength(); i++) {
@@ -93,6 +94,7 @@ public class TaglistViolationsXmlParser {
       className = className.startsWith("null.") ? className.substring(5) : className;
       // exclude unit tests not a really great way to do it.. unfortunatly the only one as long as MTAGLIST-41 is not done
       // TODO integrate MTAGLIST-41 if done one day
+
       if (className.toLowerCase().startsWith("test") || className.toLowerCase().endsWith("test")) continue;
       
       Resource javaClass = new JavaClass(className);
@@ -110,7 +112,6 @@ public class TaglistViolationsXmlParser {
         violationsCount.optional += violationsForClass;
       }
     }
-    return totalViolationsForTag;
   }
 
   private int parseViolationLineNumberAndComment(SensorContext context, Element file, Resource javaClass, String tagName, Rule rule, ActiveRule activeRule) {
