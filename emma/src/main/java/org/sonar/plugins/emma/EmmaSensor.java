@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.emma;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageSensor;
@@ -47,10 +48,13 @@ public class EmmaSensor extends AbstractCoverageSensor {
   }
 
   private boolean checkReportAvailability(File report) {
+    Logger logger = LoggerFactory.getLogger(getClass());
     if (report == null || !report.exists() || !report.isFile()) {
-      LoggerFactory.getLogger(getClass()).warn("Emma report not found in {}", report);
+      logger.error("Emma report not found : {}. Project coverage is set to 0%.", report);
       return false;
     }
+
+    logger.info("Analysing {}", report.getAbsolutePath());
     return true;
   }
 

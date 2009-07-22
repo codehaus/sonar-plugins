@@ -31,7 +31,7 @@ import java.util.List;
     @Property(
         key = EmmaSensor.PROP_REPORT_PATH,
         name = "Report file",
-        description = "Path (absolute or relative) to Emma XML report.",
+        description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
         module = true,
         project = true,
         global = false)
