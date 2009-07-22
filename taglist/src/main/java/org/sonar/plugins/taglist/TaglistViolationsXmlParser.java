@@ -89,7 +89,8 @@ public class TaglistViolationsXmlParser {
       className = className.startsWith("null.") ? className.substring(5) : className;
 
       // TODO integrate MTAGLIST-41 if done one day
-      if (context.getResource(className).getQualifier().equals(Resource.QUALIFIER_UNIT_TEST_CLASS)) continue;
+      Resource resource = context.getResource(className);
+      if (resource == null || resource.getQualifier().equals(Resource.QUALIFIER_UNIT_TEST_CLASS)) continue;
       
       Resource javaClass = new JavaClass(className);
       int violationsForClass = parseViolationLineNumberAndComment(context, file, javaClass, tagName, rule, activeRule);
