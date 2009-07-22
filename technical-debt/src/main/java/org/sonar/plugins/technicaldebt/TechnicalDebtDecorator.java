@@ -32,6 +32,10 @@ import org.sonar.api.resources.Project;
 
 import org.sonar.plugins.technicaldebt.axis.AxisDebtCalculator;
 import org.sonar.plugins.technicaldebt.axis.DuplicationDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.CommentDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.ComplexityDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.CoverageDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.ViolationsDebtCalculator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +56,13 @@ public class TechnicalDebtDecorator implements Decorator {
   public TechnicalDebtDecorator(Configuration configuration) {
 
     this.configuration = configuration;
-    axisList = Arrays.asList((AxisDebtCalculator) new DuplicationDebtCalculator(configuration));
+    axisList = Arrays.asList(
+      (AxisDebtCalculator) new CommentDebtCalculator(configuration),
+      (AxisDebtCalculator) new ComplexityDebtCalculator(configuration),
+      (AxisDebtCalculator) new CoverageDebtCalculator(configuration),
+      (AxisDebtCalculator) new DuplicationDebtCalculator(configuration),
+      (AxisDebtCalculator) new ViolationsDebtCalculator(configuration)
+      );
   }
 
   public boolean shouldExecuteOnProject(Project project) {
@@ -63,7 +73,7 @@ public class TechnicalDebtDecorator implements Decorator {
   public List<Metric> dependsOnMetrics() {
     List<Metric> list = new ArrayList<Metric>();
     for (AxisDebtCalculator axis : axisList) {
-      list.addAll((Collection) axis.dependsOn());
+      list.addAll(axis.dependsOn());
     }
     return list;
   }
