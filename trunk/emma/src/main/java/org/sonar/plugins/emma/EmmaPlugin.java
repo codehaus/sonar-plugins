@@ -21,11 +21,21 @@ package org.sonar.plugins.emma;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Properties({
+    @Property(
+        key = EmmaSensor.PROP_REPORT_PATH,
+        name = "Report file",
+        description = "Path (absolute or relative) to Emma XML report.",
+        module = true,
+        project = true,
+        global = false)
+})
 public class EmmaPlugin implements Plugin {
 
   public String getKey() {
