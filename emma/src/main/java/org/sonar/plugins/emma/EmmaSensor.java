@@ -32,6 +32,7 @@ import org.sonar.api.resources.Project;
 import java.io.File;
 
 public class EmmaSensor extends AbstractCoverageSensor {
+  public static final String PROP_REPORT_PATH = "sonar.emma.reportPath";
 
   public EmmaSensor(Plugins plugins, MavenPluginExecutor executor) {
     super(plugins, executor);
@@ -65,7 +66,7 @@ public class EmmaSensor extends AbstractCoverageSensor {
   }
 
   private File getReportFromProperty(Project project) {
-    String path = (String) project.getProperty("sonar.emma.reportPath");
+    String path = (String) project.getProperty(PROP_REPORT_PATH);
     if (path != null) {
       return project.resolvePath(path);
     }
