@@ -17,6 +17,7 @@
 			<modules>
 		    <module>clirr</module>
 		    <module>cpp</module>
+		    <module>emma</module>
 		    <module>greenpepper</module>
 		    <module>hello-world</module>
 		    <module>jlint</module>
@@ -33,7 +34,6 @@
 		<profile>
 			<id>unstableProjects</id>
 			<modules>
-		    <module>emma</module>
 		    <module>jira</module>
 		  </modules>
 		</profile>
