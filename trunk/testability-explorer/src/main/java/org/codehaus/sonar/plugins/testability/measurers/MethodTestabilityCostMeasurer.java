@@ -21,9 +21,9 @@ public class MethodTestabilityCostMeasurer implements MeasureBuilder {
   }
   
   public Measure build() {
-    return new Measure(METHOD_DETAILS_COST, Double.valueOf(0));
+    return new Measure(METHOD_DETAILS_COST, new CostDataMarshaller().marshall(getData()));
   }
-  
+
   public void addViolationCost(int line, ViolationCostDetail violationCost) {
     getData().addViolationCost(line, violationCost);
   } 

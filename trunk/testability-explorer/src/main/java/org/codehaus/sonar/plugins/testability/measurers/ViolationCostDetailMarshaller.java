@@ -12,7 +12,7 @@ public class ViolationCostDetailMarshaller implements CostMarshaller<ViolationCo
   private static final String CYCLOMATIC = "cyclomatic";
   private static final String GLOBAL = "global";
   private static final String REASON = "reason";
-  private static final Object OVERALL = "overall";
+  private static final String OVERALL = "overall";
   
   public String marshall(ViolationCostDetail detail) {
     HashMap<Object, Object> map = new HashMap<Object, Object>();
