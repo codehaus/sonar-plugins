@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MethodTestabilityCostData {
+public class MethodTestabilityCostData implements CostDetail {
   private Map<Integer, List<ViolationCostDetail>> violationsCostsByLine;
   private Map<Integer, MethodTestabilityCostDetail> methodCostsByLine;
 

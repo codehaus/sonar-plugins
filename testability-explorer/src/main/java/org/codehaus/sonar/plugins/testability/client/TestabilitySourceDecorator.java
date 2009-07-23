@@ -2,6 +2,7 @@ package org.codehaus.sonar.plugins.testability.client;
 
 import java.util.Arrays;
 
+import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostData;
 import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
 import org.sonar.plugins.api.web.gwt.client.SourceDecorator;
 import org.sonar.plugins.api.web.gwt.client.SourcePanel;
@@ -13,6 +14,8 @@ import org.sonar.plugins.api.web.gwt.client.webservices.Resources;
 import org.sonar.plugins.api.web.gwt.client.webservices.ResourcesQuery;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 
 public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
 
@@ -25,7 +28,8 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
     public void initializeDecorator(Resources response, JavaScriptObject jsonRawResponse) {
       if (responseHasRightMeasure(response)) {
         Measure measure = getMethodCostMeasure(response);
-        measure.getValue();
+        JSONValue value = JSONParser.parse(measure.getValue());
+        value.isObject();
       }
     }
 
@@ -38,8 +42,17 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
     }
   }
 
+  private MethodTestabilityCostData costData;
+
   public TestabilitySourceDecorator(Resource resource) {
     super(resource);
+  }
+
+  protected MethodTestabilityCostData getCostData() {
+    if (this.costData == null) {
+      this.costData = new MethodTestabilityCostData();
+    }
+    return this.costData;
   }
 
   @Override
@@ -51,4 +64,17 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
   protected DecoratorCallBack<Resources> getQueryCallBack(SourcePanel sourcePanel) {
     return new TestabilityDecoratorCallBack(sourcePanel);
   }
+
+  @Override
+  public String decorateValue(int lineIndex) {
+    // TODO Auto-generated method stub
+    return super.decorateValue(lineIndex);
+  }
+
+  @Override
+  public String decorateSource(int lineIndex, String source) {
+    // TODO Auto-generated method stub
+    return super.decorateSource(lineIndex, source);
+  }
+
 }
