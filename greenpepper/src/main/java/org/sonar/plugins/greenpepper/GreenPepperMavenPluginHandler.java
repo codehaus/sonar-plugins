@@ -19,43 +19,41 @@
  */
 package org.sonar.plugins.greenpepper;
 
-import org.sonar.plugins.api.maven.AbstractMavenPluginHandler;
-import org.sonar.plugins.api.maven.model.MavenPlugin;
-import org.sonar.plugins.api.maven.model.MavenPom;
+import org.sonar.api.batch.maven.MavenPlugin;
+import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.resources.Project;
 
-public class GreenPepperMavenPluginHandler extends AbstractMavenPluginHandler {
+public class GreenPepperMavenPluginHandler implements MavenPluginHandler {
 
-	public static final String GROUP_ID = "greenpepper";
-	public static final String ARTIFACT_ID = "greenpepper-maven-plugin";
+  public static final String GROUP_ID = "greenpepper";
+  public static final String ARTIFACT_ID = "greenpepper-maven-plugin";
 
-	public String getGroupId() {
-		return GROUP_ID;
-	}
+  public String getGroupId() {
+    return GROUP_ID;
+  }
 
-	public String getArtifactId() {
-		return ARTIFACT_ID;
-	}
+  public String getArtifactId() {
+    return ARTIFACT_ID;
+  }
 
-	public String getVersion() {
-		return "2.0";
-	}
+  public String getVersion() {
+    return "2.0";
+  }
 
-	public boolean isFixedVersion() {
-		return false;
-	}
+  public boolean isFixedVersion() {
+    return false;
+  }
 
-	public String[] getGoals() {
-		return new String[] { "run" };
-	}
+  public String[] getGoals() {
+    return new String[]{"run"};
+  }
 
-	public boolean shouldStopOnFailure() {
-		return true;
-	}
+  public boolean dependsUponCustomRules() {
+    return false;
+  }
 
-	@Override
-	public void configurePlugin(MavenPom pom, MavenPlugin plugin) {
-		// TODO Auto-generated method stub
 
-	}
-
+  public void configure(Project project, MavenPlugin mavenPlugin) {
+    // TODO Auto-generated method stub
+  }
 }

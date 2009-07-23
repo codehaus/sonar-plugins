@@ -19,41 +19,47 @@
  */
 package org.sonar.plugins.greenpepper;
 
+import org.sonar.api.Property;
+import org.sonar.api.Properties;
+import org.sonar.api.Plugin;
+import org.sonar.api.Extension;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.plugins.api.EditableProperties;
-import org.sonar.plugins.api.EditableProperty;
-import org.sonar.plugins.api.Extension;
-import org.sonar.plugins.api.Plugin;
-
-@EditableProperties( { @EditableProperty(key = GreenPepperPlugin.PROP_LAUNCH_GP_MVN_KEY, defaultValue = GreenPepperPlugin.PROP_LAUNCH_GP_MVN_VALUE, name = "Launch GreenPepper Maven plugin", description = "Does Sonar Maven plugin have to launch the GreenPepper Maven Plugin before collecting GreenPepper tests results (Yes / No)?") })
+@Properties({@Property(
+  key = GreenPepperPlugin.PROP_LAUNCH_GP_MVN_KEY,
+  defaultValue = GreenPepperPlugin.PROP_LAUNCH_GP_MVN_VALUE,
+  name = "Launch GreenPepper Maven plugin",
+  description = "Does Sonar Maven plugin have to launch the GreenPepper Maven Plugin before collecting GreenPepper tests results (Yes / No)?",
+  global=true,
+  project=true,
+  module=false)})
 public class GreenPepperPlugin implements Plugin {
 
-	public static final String PROP_LAUNCH_GP_MVN_KEY = "PROP_DEPENDS_ON_GP_MAVEN_KEY";
+  public static final String PROP_LAUNCH_GP_MVN_KEY = "PROP_DEPENDS_ON_GP_MAVEN_KEY";
+  public static final String PROP_LAUNCH_GP_MVN_VALUE = "No";
 
-	public static final String PROP_LAUNCH_GP_MVN_VALUE = "No";
+  public String getKey() {
+    return "greenpepper";
+  }
 
-	public String getKey() {
-		return "greenpepper";
-	}
+  public String getName() {
+    return "GreenPepper";
+  }
 
-	public String getName() {
-		return "GreenPepper";
-	}
+  public String getDescription() {
+    return "<a href='http://www.greenpeppersoftware.com/en/'>GreenPepper</a> is a collaboration platform to help business experts and developers create executable specificatons in order to build the right software.";
+  }
 
-	public String getDescription() {
-		return "<a href='http://www.greenpeppersoftware.com/en/'>GreenPepper</a> is a collaboration platform to help business experts and developers create executable specificatons in order to build the right software.";
-	}
+  public List<Class<? extends Extension>> getExtensions() {
+    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
+    list.add(GreenPepperSensor.class);
+    list.add(GreenPepperMetrics.class);
+    return list;
+  }
 
-	public List<Class<? extends Extension>> getExtensions() {
-		List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-		list.add(GreenPepperMavenCollector.class);
-		list.add(GreenPepperMetrics.class);
-		return list;
-	}
-
-	public String toString() {
-		return getKey();
-	}
+  public String toString() {
+    return getKey();
+  }
 }
