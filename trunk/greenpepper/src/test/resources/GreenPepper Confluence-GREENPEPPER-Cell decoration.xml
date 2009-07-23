@@ -1,4 +1,32 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><documents><document><statistics><success>13</success><failure>0</failure><error>0</error><ignored>1</ignored></statistics><results><![CDATA[<html><h2 id="Celldecoration-Celldecoration">Cell decoration</h2>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Sonar, open source software quality management tool.
+  ~ Copyright (C) 2009 SonarSource SA
+  ~ mailto:contact AT sonarsource DOT com
+  ~
+  ~ Sonar is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU Lesser General Public
+  ~ License as published by the Free Software Foundation; either
+  ~ version 3 of the License, or (at your option) any later version.
+  ~
+  ~ Sonar is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ~ Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public
+  ~ License along with Sonar; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+  -->
+<documents>
+  <document>
+    <statistics>
+      <success>13</success>
+      <failure>0</failure>
+      <error>0</error>
+      <ignored>1</ignored>
+    </statistics>
+    <results><![CDATA[<html><h2 id="Celldecoration-Celldecoration">Cell decoration</h2>
 
 <table style="display:none">
 	<tr>
@@ -66,4 +94,6 @@ Exceptions are also considered. If an exception is awaiten, the keyword error ca
 <td class='confluenceTd' style='background-color: #AAFFAA;'> GREY </td>
 <td class='confluenceTd' style='background-color: #CCCCCC;'></td>
 </tr>
-</tbody></table></html>]]></results></document></documents>
+</tbody></table></html>]]></results>
+  </document>
+</documents>
