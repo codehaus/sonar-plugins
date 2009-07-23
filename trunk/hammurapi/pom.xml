@@ -4,14 +4,17 @@
 
 	<!-- Project Details -->
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.codehaus.sonar</groupId>
 		<artifactId>sonar</artifactId>
 		<version>1.8</version>
 		<relativePath>../..</relativePath>
 	</parent>
-	<groupId>org.codehaus.sonar.plugins</groupId>
+	
+	<groupId>org.codehaus.sonar-plugins</groupId>
 	<artifactId>sonar-plugin-hammurapi</artifactId>
+	<version>1.8-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Sonar Hammurapi plugin</name>
 	<!-- Project Details -->
@@ -21,7 +24,7 @@
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-plugin-api</artifactId>
-			<version>${project.version}</version>
+			<version>1.8</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
@@ -46,14 +49,14 @@
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-plugin-api</artifactId>
-			<version>${project.version}</version>
+			<version>1.8</version>
 			<scope>test</scope>
 			<type>test-jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-commons</artifactId>
-			<version>${project.version}</version>
+			<version>1.8</version>
 			<scope>test</scope>
 			<type>test-jar</type>
 		</dependency>
@@ -99,6 +102,12 @@
 		</plugins>
 	</build>
 	<!-- Project Build Details -->
+
+<scm>
+  <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/hammurapi</connection>
+  <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hammurapi</developerConnection>
+  <url>http://svn.sonar-plugins.codehaus.org</url>
+</scm>
 
 
 
