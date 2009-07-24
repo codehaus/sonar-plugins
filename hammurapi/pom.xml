@@ -1,6 +1,5 @@
 <!-- Project pom configurations -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
@@ -12,7 +11,7 @@
   <!-- Project Details -->
   <modelVersion>4.0.0</modelVersion>
   <artifactId>sonar-plugin-hammurapi</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>jar</packaging>
   <name>Sonar Hammurapi plugin</name>
   <description>
@@ -110,9 +109,9 @@
   <!-- Project Build Details -->
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar/trunk/hammurapi</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar/trunk/hammurapi</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar/trunk/hammurapi</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-0.1</url>
   </scm>
 
 
