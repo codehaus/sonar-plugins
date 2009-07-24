@@ -12,7 +12,7 @@
     </parent>
 	<artifactId>sonar-plugin-hammurapi</artifactId>
 	<packaging>jar</packaging>
-	<version>1.8</version>
+	<version>1.8-SNAPSHOT</version>
 	<name>Sonar Hammurapi plugin</name>
 	
 	<url>http://sonar-plugins.codehaus.org</url>
