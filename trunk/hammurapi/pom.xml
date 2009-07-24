@@ -112,7 +112,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar/trunk/hammurapi</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar/trunk/hammurapi</developerConnection>
-    <url>https://svn.codehaus.org/sonar/trunk/hammurapi</url>
+    <url>scm:svn:https://svn.codehaus.org/sonar/trunk/hammurapi</url>
   </scm>
 
 
