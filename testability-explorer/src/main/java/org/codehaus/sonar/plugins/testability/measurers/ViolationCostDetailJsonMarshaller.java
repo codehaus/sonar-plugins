@@ -1,14 +1,9 @@
 package org.codehaus.sonar.plugins.testability.measurers;
 
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.*;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 
 public class ViolationCostDetailJsonMarshaller extends AbstractJsonMarshaller<ViolationCostDetail> {
-  
-  private static final String LOD = "lod";
-  private static final String CYCLOMATIC = "cyclomatic";
-  private static final String GLOBAL = "global";
-  private static final String REASON = "reason";
-  private static final String OVERALL = "overall";
   
   public String marshall(ViolationCostDetail detail) {
     StringBuilder stringBuilder = new StringBuilder();

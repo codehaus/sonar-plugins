@@ -1,5 +1,10 @@
 package org.codehaus.sonar.plugins.testability.measurers;
 
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.CYCLOMATIC;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.GLOBAL;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.LOD;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.OVERALL;
+
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
 /**
  * Marshalls a org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail
@@ -10,10 +15,6 @@ import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCost
  */
 public class MethodTestabilityCostJsonMarshaller extends AbstractJsonMarshaller<MethodTestabilityCostDetail> {
   
-  private static final String OVERALL = "overall";
-  private static final String LOD = "lod";
-  private static final String CYCLOMATIC = "cyclomatic";
-  private static final String GLOBAL = "global";
   private static final int JSON_OBJECT_SIZE = 50;
   
   public String marshall(MethodTestabilityCostDetail detail) {

@@ -42,5 +42,9 @@ public class MethodTestabilityCostData implements CostDetail {
   public void addViolationCost(int line, ViolationCostDetail violationCost) {
     List<ViolationCostDetail> lineViolations = getViolationsOfLine(line);
     lineViolations.add(violationCost);
+  }
+
+  public MethodTestabilityCostDetail getMethodCostOfLine(int lineIndex) {
+    return getMethodCostsByLine().get(lineIndex);
   } 
 }
