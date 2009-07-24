@@ -18,9 +18,10 @@
 	<url>http://sonar-plugins.codehaus.org</url>
 
 	<scm>
-	  <connection>https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-1.8</connection>	  <developerConnection>https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-1.8</developerConnection>
-	  <url>https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-1.8</url>
-	</scm>
+  <connection>scm:svn:http://svn.codehaus.org/sonar/tags/sonar-plugin-hammurapi-1.8</connection>
+  <developerConnection>scm:svn:https://svn.codehaus.org/sonar/tags/sonar-plugin-hammurapi-1.8</developerConnection>
+  <url>scm:svn:https://svn.codehaus.org/sonar/tags/sonar-plugin-hammurapi-1.8</url>
+</scm>
 	
 	<!-- Project Details -->
 
