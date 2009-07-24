@@ -12,15 +12,15 @@
     </parent>
 	<artifactId>sonar-plugin-hammurapi</artifactId>
 	<packaging>jar</packaging>
-	<version>1.8-SNAPSHOT</version>
+	<version>1.8</version>
 	<name>Sonar Hammurapi plugin</name>
 	
 	<url>http://sonar-plugins.codehaus.org</url>
 
 	<scm>
-	  <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonar-plugin-hammurapi-1.8</connection>
-	  <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonar-plugin-hammurapi-1.8</developerConnection>
-	  <url>http://svn.sonar-plugins.codehaus.org</url>
+	  <connection>https://svn.codehaus.org/sonar-plugins/trunk/sonar-plugin-hammurapi-1.8</connection>
+	  <developerConnection>https://svn.codehaus.org/sonar-plugins/trunk/sonar-plugin-hammurapi-1.8</developerConnection>
+	  <url>https://svn.codehaus.org/sonar-plugins/trunk/sonar-plugin-hammurapi-1.8</url>
 </scm>
 
 	
