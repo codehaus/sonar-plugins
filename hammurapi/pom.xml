@@ -11,7 +11,7 @@
   <!-- Project Details -->
   <modelVersion>4.0.0</modelVersion>
   <artifactId>sonar-plugin-hammurapi</artifactId>
-  <version>0.1</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Sonar Hammurapi plugin</name>
   <description>
@@ -109,9 +109,9 @@
   <!-- Project Build Details -->
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-0.1</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-0.1</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-1.0</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-1.0</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-plugin-hammurapi-1.0</url>
   </scm>
 
 
