@@ -33,16 +33,25 @@ import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 
-public class ComplexityDebtCalculator extends AxisDebtCalculator {
+/**
+ * {@inheritDoc}
+ */
+public final class ComplexityDebtCalculator extends AxisDebtCalculator {
 
   // Those 2 values cannot be changed too quickly... has to be one of the value we keep in DB
   private static final int MAX_COMPLEXITY_CLASS = 60;
   private static final int MAX_COMPLEXITY_METHOD = 8;
 
+  /**
+   * {@inheritDoc}
+   */
   public ComplexityDebtCalculator(Configuration configuration) {
     super(configuration);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     // First, the classes that have high complexity
     int nbClassToSplit = 0;
@@ -103,6 +112,9 @@ public class ComplexityDebtCalculator extends AxisDebtCalculator {
     return nb;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
     Measure files = context.getMeasure(CoreMetrics.CLASSES);
     Measure functions = context.getMeasure(CoreMetrics.FUNCTIONS);
@@ -114,11 +126,17 @@ public class ComplexityDebtCalculator extends AxisDebtCalculator {
     return debt / HOURS_PER_DAY;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Metric> dependsOn() {
     return Arrays.asList(CoreMetrics.COMPLEXITY, CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
       CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION, CoreMetrics.CLASSES, CoreMetrics.FUNCTIONS);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getName() {
     return "Complexity";
   }

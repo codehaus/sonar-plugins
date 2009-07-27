@@ -31,16 +31,28 @@ import java.util.List;
 import java.util.Arrays;
 
 
+/**
+ * {@inheritDoc}
+ */
 public final class CommentDebtCalculator extends AxisDebtCalculator {
 
+  /**
+   * {@inheritDoc}
+   */
   public CommentDebtCalculator(Configuration configuration) {
     super(configuration);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     return calculateDebtOnMetric(context, CoreMetrics.PUBLIC_UNDOCUMENTED_API);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
     return calculateDebtOnMetric(context, CoreMetrics.PUBLIC_API);
   }
@@ -54,10 +66,16 @@ public final class CommentDebtCalculator extends AxisDebtCalculator {
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT) / HOURS_PER_DAY;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Metric> dependsOn() {
     return Arrays.asList(CoreMetrics.PUBLIC_UNDOCUMENTED_API, CoreMetrics.PUBLIC_API);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getName() {
     return "Comments";
 

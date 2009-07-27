@@ -30,11 +30,17 @@ import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 import java.util.List;
 import java.util.Arrays;
 
-public class ViolationsDebtCalculator extends AxisDebtCalculator {
+/**
+ * {@inheritDoc}
+ */
+public final class ViolationsDebtCalculator extends AxisDebtCalculator {
   public ViolationsDebtCalculator(Configuration configuration) {
     super(configuration);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     // SONAR-996 would enable to be much sharper in the evaluation of resolution time
     Measure mViolations = context.getMeasure(CoreMetrics.VIOLATIONS);
@@ -47,6 +53,9 @@ public class ViolationsDebtCalculator extends AxisDebtCalculator {
     return violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
     // First we calculate the number of violations in the system necessary to have a RCI of zero
     Measure loc = context.getMeasure(CoreMetrics.NCLOC);
@@ -71,10 +80,16 @@ public class ViolationsDebtCalculator extends AxisDebtCalculator {
 
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Metric> dependsOn() {
     return Arrays.asList(CoreMetrics.VIOLATIONS, CoreMetrics.INFO_VIOLATIONS, CoreMetrics.NCLOC, CoreMetrics.WEIGHTED_VIOLATIONS);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getName() {
     return "Violations";
   }
