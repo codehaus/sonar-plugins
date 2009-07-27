@@ -31,14 +31,22 @@ import java.util.List;
 import java.util.Arrays;
 
 
-public class CommentDebtCalculator extends AxisDebtCalculator{
+public final class CommentDebtCalculator extends AxisDebtCalculator {
 
   public CommentDebtCalculator(Configuration configuration) {
     super(configuration);
   }
 
   public double calculateAbsoluteDebt(DecoratorContext context) {
-    Measure measure = context.getMeasure(CoreMetrics.PUBLIC_UNDOCUMENTED_API);
+    return calculateDebtOnMetric(context, CoreMetrics.PUBLIC_UNDOCUMENTED_API);
+  }
+
+  public double calculateTotalPossibleDebt(DecoratorContext context) {
+    return calculateDebtOnMetric(context, CoreMetrics.PUBLIC_API);
+  }
+
+  private double calculateDebtOnMetric(DecoratorContext context, Metric metric) {
+    Measure measure = context.getMeasure(metric);
 
     if (!MeasureUtils.hasValue(measure)) {
       return 0.0;
@@ -46,16 +54,8 @@ public class CommentDebtCalculator extends AxisDebtCalculator{
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT) / HOURS_PER_DAY;
   }
 
-  public double calculateDebtForRatio(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
-  }
-
-  public double calculateTotalPossibleDebt(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
-  }
-
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.PUBLIC_UNDOCUMENTED_API);
+    return Arrays.asList(CoreMetrics.PUBLIC_UNDOCUMENTED_API, CoreMetrics.PUBLIC_API);
   }
 
   public String getName() {

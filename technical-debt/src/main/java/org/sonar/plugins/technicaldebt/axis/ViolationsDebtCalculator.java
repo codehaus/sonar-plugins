@@ -24,7 +24,6 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
-import org.sonar.api.measures.Metrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
@@ -37,6 +36,7 @@ public class ViolationsDebtCalculator extends AxisDebtCalculator {
   }
 
   public double calculateAbsoluteDebt(DecoratorContext context) {
+    // SONAR-996 would enable to be much sharper in the evaluation of resolution time
     Measure mViolations = context.getMeasure(CoreMetrics.VIOLATIONS);
     Measure mInfoViolations = context.getMeasure(CoreMetrics.INFO_VIOLATIONS);
 
@@ -47,16 +47,32 @@ public class ViolationsDebtCalculator extends AxisDebtCalculator {
     return violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
   }
 
-  public double calculateDebtForRatio(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
-  }
-
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    // First we calculate the number of violations in the system necessary to have a RCI of zero
+    Measure loc = context.getMeasure(CoreMetrics.NCLOC);
+    Measure weightedViolations = context.getMeasure(CoreMetrics.WEIGHTED_VIOLATIONS);
+    Measure mViolations = context.getMeasure(CoreMetrics.VIOLATIONS);
+    Measure mInfoViolations = context.getMeasure(CoreMetrics.INFO_VIOLATIONS);
+
+    double violations = (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
+      - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
+
+    if (!MeasureUtils.hasValue(loc) || !MeasureUtils.hasValue(weightedViolations)) {
+      return 0;
+    }
+
+    if (weightedViolations.getValue() == 0) {
+      return 0;
+    }
+
+    double maxViolations = loc.getValue() / weightedViolations.getValue() * violations;
+
+    return maxViolations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
+
   }
 
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.VIOLATIONS, CoreMetrics.INFO_VIOLATIONS);
+    return Arrays.asList(CoreMetrics.VIOLATIONS, CoreMetrics.INFO_VIOLATIONS, CoreMetrics.NCLOC, CoreMetrics.WEIGHTED_VIOLATIONS);
   }
 
   public String getName() {

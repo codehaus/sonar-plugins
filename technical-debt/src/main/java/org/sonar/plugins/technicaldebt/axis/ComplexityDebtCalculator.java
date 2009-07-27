@@ -103,16 +103,20 @@ public class ComplexityDebtCalculator extends AxisDebtCalculator {
     return nb;
   }
 
-  public double calculateDebtForRatio(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
-  }
-
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    Measure files = context.getMeasure(CoreMetrics.CLASSES);
+    Measure functions = context.getMeasure(CoreMetrics.FUNCTIONS);
+
+    double debt = MeasureUtils.hasValue(files) ? files.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT) : 0;
+    debt += MeasureUtils.hasValue(functions) ? functions.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT) : 0;
+
+    // technicaldebt is calculated in man days
+    return debt / HOURS_PER_DAY;
   }
 
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.COMPLEXITY, CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION);
+    return Arrays.asList(CoreMetrics.COMPLEXITY, CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
+      CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION, CoreMetrics.CLASSES, CoreMetrics.FUNCTIONS);
   }
 
   public String getName() {
