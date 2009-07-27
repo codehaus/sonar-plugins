@@ -39,7 +39,6 @@ import org.sonar.plugins.technicaldebt.axis.ViolationsDebtCalculator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -57,12 +56,12 @@ public class TechnicalDebtDecorator implements Decorator {
 
     this.configuration = configuration;
     axisList = Arrays.asList(
-      (AxisDebtCalculator) new CommentDebtCalculator(configuration),
-      (AxisDebtCalculator) new ComplexityDebtCalculator(configuration),
-      (AxisDebtCalculator) new CoverageDebtCalculator(configuration),
-      (AxisDebtCalculator) new DuplicationDebtCalculator(configuration),
-      (AxisDebtCalculator) new ViolationsDebtCalculator(configuration)
-      );
+      new CommentDebtCalculator(configuration),
+      new ComplexityDebtCalculator(configuration),
+      new CoverageDebtCalculator(configuration),
+      new DuplicationDebtCalculator(configuration),
+      new ViolationsDebtCalculator(configuration)
+    );
   }
 
   public boolean shouldExecuteOnProject(Project project) {
@@ -99,25 +98,24 @@ public class TechnicalDebtDecorator implements Decorator {
    */
   public void decorate(Resource resource, DecoratorContext context) {
     double sonarDebt = 0;
-    double numeratorDensity = 0;
     double denominatorDensity = 0;
     PropertiesBuilder<String, Double> techDebtRepartition = new PropertiesBuilder<String, Double>(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
 
     for (AxisDebtCalculator axis : axisList) {
-      double debt = axis.calculateAbsoluteDebt(context);
-      sonarDebt += debt;
-      numeratorDensity += axis.calculateDebtForRatio(context);
-      denominatorDensity += axis.calculateTotalPossibleDebt(context);
-      addToRepartition(techDebtRepartition, axis.getName(), debt);
-    }
+        double debt = axis.calculateAbsoluteDebt(context);
+        sonarDebt += debt;
+        denominatorDensity += axis.calculateTotalPossibleDebt(context);
+        addToRepartition(techDebtRepartition, axis.getName(), debt);
+      }
 
     double dailyRate = Double.valueOf(configuration.getString(TechnicalDebtPlugin.TD_DAILY_RATE, TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT));
 
-//     = calculateDebtRepartition(duplicationsDebt, violationsDebt, commentsDebt, coverageDebt, complexityDebt).build();
 
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS, sonarDebt);
-    saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT_RATIO, numeratorDensity/denominatorDensity*100);
+    if (denominatorDensity != 0) {
+      saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT_RATIO, sonarDebt / denominatorDensity * 100);
+    }
     context.saveMeasure(techDebtRepartition.build());
   }
 

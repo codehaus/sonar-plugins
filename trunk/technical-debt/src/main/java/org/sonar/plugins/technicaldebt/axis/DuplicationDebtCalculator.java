@@ -47,20 +47,21 @@ public class DuplicationDebtCalculator extends AxisDebtCalculator {
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
   }
 
-  public double calculateDebtForRatio(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
-  }
-
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    Measure measure = context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY);
+    if (!MeasureUtils.hasValue(measure) || measure.getValue() == 0) {
+      return 0.0;
+    }
+
+    return calculateAbsoluteDebt(context) * 100 / measure.getValue();
   }
 
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.DUPLICATED_BLOCKS);
+    return Arrays.asList(CoreMetrics.DUPLICATED_BLOCKS, CoreMetrics.DUPLICATED_LINES_DENSITY);
   }
 
   public String getName() {
     return "Duplication";
-    
+
   }
 }

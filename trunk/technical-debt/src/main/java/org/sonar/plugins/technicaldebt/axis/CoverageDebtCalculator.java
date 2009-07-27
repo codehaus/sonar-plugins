@@ -40,31 +40,33 @@ public class CoverageDebtCalculator extends AxisDebtCalculator {
   }
 
   public double calculateAbsoluteDebt(DecoratorContext context) {
-    Measure measure = context.getMeasure(CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS);
+    Measure complexity = context.getMeasure(CoreMetrics.COMPLEXITY);
+    Measure coverage = context.getMeasure(CoreMetrics.COVERAGE);
 
-    if (!MeasureUtils.hasValue(measure)) {
+    if (!MeasureUtils.hasValue(complexity) || !MeasureUtils.hasValue(coverage)) {
       return 0.0;
     }
 
     // It is not reasonable to have an objective at 100%, so target is 80% for coverage
-    double reasonableObjective = (1 - COVERAGE_TARGET) * context.getMeasure(CoreMetrics.COMPLEXITY).getValue();
-    double uncovComplexityGap = measure.getValue() - reasonableObjective;
+    double gap = (COVERAGE_TARGET - coverage.getValue()/100) * complexity.getValue();
 
     // technicaldebt is calculate in man days
-    return (uncovComplexityGap > 0.0 ? uncovComplexityGap : 0.0) * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
-  }
-
-
-  public double calculateDebtForRatio(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    return (gap > 0.0 ? gap : 0.0) * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
   }
 
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    Measure complexity = context.getMeasure(CoreMetrics.COMPLEXITY);
+
+    if (!MeasureUtils.hasValue(complexity)) {
+      return 0.0;
+    }
+
+    // technicaldebt is calculate in man days
+    return COVERAGE_TARGET * complexity.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
   }
 
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.UNCOVERED_COMPLEXITY_BY_TESTS);
+    return Arrays.asList(CoreMetrics.COMPLEXITY, CoreMetrics.COVERAGE);
   }
 
   public String getName() {

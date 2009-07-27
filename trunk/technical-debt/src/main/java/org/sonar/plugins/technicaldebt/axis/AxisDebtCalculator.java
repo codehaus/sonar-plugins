@@ -35,8 +35,6 @@ public abstract class AxisDebtCalculator {
 
   public abstract double calculateAbsoluteDebt(DecoratorContext context);
 
-  public abstract double calculateDebtForRatio(DecoratorContext context);
-
   public abstract double calculateTotalPossibleDebt(DecoratorContext context);
 
   public abstract List<Metric> dependsOn();

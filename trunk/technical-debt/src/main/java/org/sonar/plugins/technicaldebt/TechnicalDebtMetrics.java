@@ -42,6 +42,6 @@ public class TechnicalDebtMetrics implements Metrics {
    * {@inheritDoc}
    */
   public List<Metric> getMetrics() {
-    return Arrays.asList(TECHNICAL_DEBT, TECHNICAL_DEBT_DAYS, TECHNICAL_DEBT_REPARTITION);
+    return Arrays.asList(TECHNICAL_DEBT, TECHNICAL_DEBT_DAYS, TECHNICAL_DEBT_REPARTITION, TECHNICAL_DEBT_RATIO);
   }
 }
