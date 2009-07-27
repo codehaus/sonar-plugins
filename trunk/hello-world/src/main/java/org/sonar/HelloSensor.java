@@ -20,12 +20,27 @@
 
 package org.sonar;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.batch.Sensor;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.Project;
+import org.sonar.api.measures.Measure;
 
-public class HelloDashboardWidget extends AbstractDashboardWidget {
+//If you begin to understand the Sonar API, the AbstractJavaMavenCollector implements org.sonar.plugins.api.Extension
+public class HelloSensor implements Sensor {
 
-  protected String getTemplatePath() {
-    return "/org/sonar/hello_dashboard_widget.erb";
+  // You can define dependency on another plugin to launch it before
+  // collecting the results
+  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(Project pom) {
+    return null;
   }
 
+  public void analyse(Project project, SensorContext sensorContext) {
+    Measure measure = new Measure(HelloMetrics.MESSAGE, "Hello World!");
+    sensorContext.saveMeasure(measure);
+  }
+
+  public boolean shouldExecuteOnProject(Project project) {
+    return true;
+  }
 }
