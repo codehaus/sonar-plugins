@@ -38,7 +38,7 @@ import java.util.List;
 })
 
 /** {@inheritDoc} */
-public class TechnicalDebtPlugin implements Plugin {
+public final class TechnicalDebtPlugin implements Plugin {
   public static final String TD_DAILY_RATE = "technicaldebt.daily.rate";
   public static final String TD_DAILY_RATE_DEFAULT = "500";
 

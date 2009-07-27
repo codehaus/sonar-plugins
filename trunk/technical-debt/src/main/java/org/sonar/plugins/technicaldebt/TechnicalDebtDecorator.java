@@ -44,10 +44,10 @@ import java.util.List;
 /**
  * {@inheritDoc}
  */
-public class TechnicalDebtDecorator implements Decorator {
+public final class TechnicalDebtDecorator implements Decorator {
 
-  private final List<AxisDebtCalculator> axisList;
-  Configuration configuration;
+  private List<AxisDebtCalculator> axisList;
+  private Configuration configuration;
 
   /**
    * {@inheritDoc}
@@ -64,6 +64,9 @@ public class TechnicalDebtDecorator implements Decorator {
     );
   }
 
+  /**
+ * {@inheritDoc}
+ */
   public boolean shouldExecuteOnProject(Project project) {
     return true;
   }
@@ -84,13 +87,6 @@ public class TechnicalDebtDecorator implements Decorator {
       TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS,
       TechnicalDebtMetrics.TECHNICAL_DEBT_RATIO,
       TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean shouldDecorateProject(Project project) {
-    return true;
   }
 
   /**

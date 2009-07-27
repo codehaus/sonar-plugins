@@ -41,7 +41,7 @@ public abstract class AxisDebtCalculator {
 
   public abstract String getName();
 
-  protected double getWeight(String weight, String defaultWeight) {
+  protected final double getWeight(String weight, String defaultWeight) {
     return Double.parseDouble(configuration.getString(weight, defaultWeight));
   }
 

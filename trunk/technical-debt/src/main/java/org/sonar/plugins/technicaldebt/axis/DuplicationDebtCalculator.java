@@ -31,13 +31,22 @@ import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 import java.util.List;
 import java.util.Arrays;
 
-public class DuplicationDebtCalculator extends AxisDebtCalculator {
+/**
+ * {@inheritDoc}
+ */
+public final class DuplicationDebtCalculator extends AxisDebtCalculator {
 
 
+  /**
+   * {@inheritDoc}
+   */
   public DuplicationDebtCalculator(Configuration configuration) {
     super(configuration);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     Measure measure = context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS);
     if (!MeasureUtils.hasValue(measure)) {
@@ -47,6 +56,9 @@ public class DuplicationDebtCalculator extends AxisDebtCalculator {
     return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
     Measure measure = context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY);
     if (!MeasureUtils.hasValue(measure) || measure.getValue() == 0) {
@@ -56,10 +68,16 @@ public class DuplicationDebtCalculator extends AxisDebtCalculator {
     return calculateAbsoluteDebt(context) * 100 / measure.getValue();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Metric> dependsOn() {
     return Arrays.asList(CoreMetrics.DUPLICATED_BLOCKS, CoreMetrics.DUPLICATED_LINES_DENSITY);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getName() {
     return "Duplication";
 

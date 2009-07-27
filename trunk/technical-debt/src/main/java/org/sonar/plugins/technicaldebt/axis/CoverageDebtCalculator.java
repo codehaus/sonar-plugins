@@ -31,14 +31,23 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class CoverageDebtCalculator extends AxisDebtCalculator {
+/**
+ * {@inheritDoc}
+ */
+public final class CoverageDebtCalculator extends AxisDebtCalculator {
 
   private static final double COVERAGE_TARGET = 0.8;
 
+  /**
+   * {@inheritDoc}
+   */
   public CoverageDebtCalculator(Configuration configuration) {
     super(configuration);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     Measure complexity = context.getMeasure(CoreMetrics.COMPLEXITY);
     Measure coverage = context.getMeasure(CoreMetrics.COVERAGE);
@@ -54,6 +63,9 @@ public class CoverageDebtCalculator extends AxisDebtCalculator {
     return (gap > 0.0 ? gap : 0.0) * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
     Measure complexity = context.getMeasure(CoreMetrics.COMPLEXITY);
 
@@ -65,10 +77,16 @@ public class CoverageDebtCalculator extends AxisDebtCalculator {
     return COVERAGE_TARGET * complexity.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Metric> dependsOn() {
     return Arrays.asList(CoreMetrics.COMPLEXITY, CoreMetrics.COVERAGE);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getName() {
     return "Coverage";
 

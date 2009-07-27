@@ -24,7 +24,7 @@ import org.sonar.api.web.AbstractDashboardWidget;
 /**
  * {@inheritDoc}
  */
-public class TechnicalDebtWidget extends AbstractDashboardWidget {
+public final class TechnicalDebtWidget extends AbstractDashboardWidget {
 
   /* public String getTemplate() {
       try {
