@@ -35,7 +35,7 @@ import java.util.Arrays;
  * {@inheritDoc}
  */
 public final class DuplicationDebtCalculator extends AxisDebtCalculator {
-
+  private static final int NUMBER_OF_LINES_PER_BLOCK = 50;
 
   /**
    * {@inheritDoc}
@@ -60,19 +60,32 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
    * {@inheritDoc}
    */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    Measure measure = context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY);
+    double duplicationDensity = getValue(context, CoreMetrics.DUPLICATED_LINES_DENSITY);
+    double absoluteDebt = calculateAbsoluteDebt(context);
+
+    if (duplicationDensity == 0 && absoluteDebt == 0){
+      return 0;
+    }
+    else if (duplicationDensity == 0 || absoluteDebt == 0)    {
+      return getValue(context, CoreMetrics.LINES) / NUMBER_OF_LINES_PER_BLOCK * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
+    }
+
+    return absoluteDebt * 100 / duplicationDensity;
+  }
+
+  private double getValue(DecoratorContext context, Metric metric) {
+    Measure measure = context.getMeasure(metric);
     if (!MeasureUtils.hasValue(measure) || measure.getValue() == 0) {
       return 0.0;
     }
-
-    return calculateAbsoluteDebt(context) * 100 / measure.getValue();
+    return measure.getValue();
   }
 
   /**
    * {@inheritDoc}
    */
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.DUPLICATED_BLOCKS, CoreMetrics.DUPLICATED_LINES_DENSITY);
+    return Arrays.asList(CoreMetrics.DUPLICATED_BLOCKS, CoreMetrics.DUPLICATED_LINES_DENSITY, CoreMetrics.LINES);
   }
 
   /**

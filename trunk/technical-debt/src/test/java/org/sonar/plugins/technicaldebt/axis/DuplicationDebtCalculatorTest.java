@@ -30,6 +30,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.anyDouble;
 import static org.mockito.Mockito.when;
 import org.apache.commons.configuration.Configuration;
 import static org.hamcrest.Matchers.is;
@@ -64,15 +65,32 @@ public class DuplicationDebtCalculatorTest {
   }
 
   @Test
-  public void testCalculateTotalDebt() {
+  public void testCalculateTotalDebtWhenNoDebt() {
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
-      thenReturn(null);
+          thenReturn(null);
+    when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
+          thenReturn(null);
     assertEquals(0d, calculator.calculateTotalPossibleDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
       thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 0.0));
-    assertEquals(0d, calculator.calculateTotalPossibleDebt(context), 0);
+    when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
+      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 4.0));
+    when(context.getMeasure(CoreMetrics.LINES)).
+          thenReturn(new Measure(CoreMetrics.LINES, 500.0));
+    assertEquals(2.5d, calculator.calculateTotalPossibleDebt(context), 0);
 
+    when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
+      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 50.0));
+    when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
+      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 0.0));
+    when(context.getMeasure(CoreMetrics.LINES)).
+          thenReturn(new Measure(CoreMetrics.LINES, 500.0));
+    assertEquals(2.5d, calculator.calculateTotalPossibleDebt(context), 0);
+  }
+
+  @Test
+  public void testCalculateTotalDebt() {
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
       thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 40.0));
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
@@ -82,6 +100,6 @@ public class DuplicationDebtCalculatorTest {
 
   @Test
   public void testDependsOn() {
-    assertThat(calculator.dependsOn().size(), is(2));
+    assertThat(calculator.dependsOn().size(), is(3));
   }
 }
