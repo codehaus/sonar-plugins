@@ -43,6 +43,8 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
    */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     // SONAR-996 would enable to be much sharper in the evaluation of resolution time
+
+    // The plugin does not take violations in info priority into account
     Measure mViolations = context.getMeasure(CoreMetrics.VIOLATIONS);
     Measure mInfoViolations = context.getMeasure(CoreMetrics.INFO_VIOLATIONS);
 
@@ -58,26 +60,33 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
    */
   public double calculateTotalPossibleDebt(DecoratorContext context) {
     // First we calculate the number of violations in the system necessary to have a RCI of zero
-    Measure loc = context.getMeasure(CoreMetrics.NCLOC);
-    Measure weightedViolations = context.getMeasure(CoreMetrics.WEIGHTED_VIOLATIONS);
-    Measure mViolations = context.getMeasure(CoreMetrics.VIOLATIONS);
-    Measure mInfoViolations = context.getMeasure(CoreMetrics.INFO_VIOLATIONS);
+    double loc = getValue(context, CoreMetrics.NCLOC);
+    double weightedViolations = getValue(context, CoreMetrics.WEIGHTED_VIOLATIONS);
+    double mViolations = getValue(context, CoreMetrics.VIOLATIONS);
+    double mInfoViolations = getValue(context, CoreMetrics.INFO_VIOLATIONS);
 
-    double violations = (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
-      - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
+    double violations = mViolations - mInfoViolations;
 
-    if (!MeasureUtils.hasValue(loc) || !MeasureUtils.hasValue(weightedViolations)) {
+    // we have a serious problem somewhere !
+    if (loc == 0) {
       return 0;
     }
 
-    if (weightedViolations.getValue() == 0) {
-      return 0;
+    if (violations == 0 || weightedViolations == 0) {
+      // In that case, we say that a major violation every 3 lines of code in average means a RCI of 0%
+      return loc / 3 * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
     }
 
-    double maxViolations = loc.getValue() / weightedViolations.getValue() * violations;
+    // Otherwise we calculate based on existing violations
+    return loc / weightedViolations * violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
+  }
 
-    return maxViolations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
-
+  private double getValue(DecoratorContext context, Metric metric) {
+    Measure measure = context.getMeasure(metric);
+    if (!MeasureUtils.hasValue(measure) || measure.getValue() == 0) {
+      return 0.0;
+    }
+    return measure.getValue();
   }
 
   /**

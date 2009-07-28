@@ -68,8 +68,44 @@ public class ViolationsDebtCalculatorTest {
   }
 
   @Test
+  public void testCalculateTotalDebtNoLines() {
+
+    when(context.getMeasure(CoreMetrics.LINES)).
+      thenReturn(null);
+    assertEquals(0d, calculator.calculateTotalPossibleDebt(context), 0);
+  }
+
+  @Test
+  public void testCalculateTotalDebtNoWeightedViolations() {
+    when(context.getMeasure(CoreMetrics.WEIGHTED_VIOLATIONS)).
+      thenReturn(null);
+    when(context.getMeasure(CoreMetrics.VIOLATIONS)).
+      thenReturn(new Measure (CoreMetrics.VIOLATIONS, 300.0));
+    when(context.getMeasure(CoreMetrics.NCLOC)).
+      thenReturn(new Measure (CoreMetrics.NCLOC, 300.0));
+    assertEquals(1.25d, calculator.calculateTotalPossibleDebt(context), 0);
+  }
+
+  @Test
+  public void testCalculateTotalDebtNoViolations() {
+    when(context.getMeasure(CoreMetrics.VIOLATIONS)).
+      thenReturn(null);
+    when(context.getMeasure(CoreMetrics.WEIGHTED_VIOLATIONS)).
+      thenReturn(new Measure (CoreMetrics.WEIGHTED_VIOLATIONS, 300.0));
+    when(context.getMeasure(CoreMetrics.NCLOC)).
+      thenReturn(new Measure (CoreMetrics.NCLOC, 300.0));
+    assertEquals(1.25d, calculator.calculateTotalPossibleDebt(context), 0);
+  }
+
+  @Test
   public void testCalculateTotalDebt() {
-  //TODO
+    when(context.getMeasure(CoreMetrics.VIOLATIONS)).
+      thenReturn(new Measure (CoreMetrics.VIOLATIONS, 40.0));
+    when(context.getMeasure(CoreMetrics.WEIGHTED_VIOLATIONS)).
+      thenReturn(new Measure (CoreMetrics.WEIGHTED_VIOLATIONS, 130.0));
+    when(context.getMeasure(CoreMetrics.NCLOC)).
+      thenReturn(new Measure (CoreMetrics.NCLOC, 600.0));
+    assertEquals(2.3d, calculator.calculateTotalPossibleDebt(context), 0.01);
   }
 
   @Test
