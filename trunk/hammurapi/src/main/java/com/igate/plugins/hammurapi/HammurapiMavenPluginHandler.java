@@ -155,7 +155,7 @@ public class HammurapiMavenPluginHandler extends AbstractMavenPluginHandler {
 
 		// Setting the sourceDirectory name parameter
 		config.setParameter(PluginConstants.PLUGIN_PARAM_SRC_DIR, pom
-				.getSourceDir().getName());
+				.getSourceDir().getPath());
 
 		// The dependencies for the plugin from the pom file
 		plugin.copyDependenciesFrom(pom);
