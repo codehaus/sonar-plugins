@@ -18,11 +18,9 @@
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/hammurapi</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hammurapi
-    </developerConnection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hammurapi</developerConnection>
     <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/hammurapi</url>
   </scm>
-
 
   <properties>
     <sonar.version>1.8</sonar.version>
@@ -56,7 +54,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</Plugin-Class>
+              <Plugin-Class>com.igate.plugins.hammurapi.HammurapiPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
         </configuration>
