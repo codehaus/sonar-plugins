@@ -9,11 +9,10 @@
   </parent>
   <artifactId>emma</artifactId>
   <version>0.3-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <name>Sonar Emma plugin</name>
 
   <properties>
-    <sonar.version>1.10RC1</sonar.version>
+    <sonar.version>1.10RC2</sonar.version>
   </properties>
 
   <dependencies>

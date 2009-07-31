@@ -22,30 +22,34 @@ package org.sonar.plugins.emma;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.Plugins;
-import org.sonar.api.batch.AbstractCoverageSensor;
+import org.sonar.api.batch.AbstractCoverageExtension;
+import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.maven.MavenPluginConfiguration;
-import org.sonar.api.batch.maven.MavenPluginExecutor;
+import org.sonar.api.batch.maven.DependsUponMavenPlugin;
+import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
-import org.sonar.api.batch.maven.MavenUtils;
 import org.sonar.api.resources.Project;
 
 import java.io.File;
 
-public class EmmaSensor extends AbstractCoverageSensor {
+public class EmmaSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
   public static final String PROP_REPORT_PATH = "sonar.emma.reportPath";
 
-  public EmmaSensor(Plugins plugins, MavenPluginExecutor executor) {
-    super(plugins, executor);
+  private EmmaMavenPluginHandler pluginHandler;
+
+  public EmmaSensor(Plugins plugins, EmmaMavenPluginHandler pluginHandler) {
+    super(plugins);
+    this.pluginHandler = pluginHandler;
   }
 
-  protected void analyseReport(Project project, SensorContext context) {
+  public void analyse(Project project, SensorContext context) {
     File report = getReport(project);
     if (checkReportAvailability(report)) {
       EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(report, context);
       emmaXmlProcessor.process();
     }
   }
+
 
   private boolean checkReportAvailability(File report) {
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -78,9 +82,9 @@ public class EmmaSensor extends AbstractCoverageSensor {
   }
 
   private File getReportFromPluginConfiguration(Project project) {
-    MavenPluginConfiguration pomConf = MavenUtils.getPluginConfiguration(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
-    if (pomConf != null) {
-      String path = pomConf.getParameter("outputDirectory");
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    if (plugin != null) {
+      String path = plugin.getParameter("outputDirectory");
       if (path != null) {
         return new File(project.resolvePath(path), "coverage.xml");
       }
@@ -94,5 +98,12 @@ public class EmmaSensor extends AbstractCoverageSensor {
 
   protected MavenPluginHandler getMavenPluginHandler() {
     return new EmmaMavenPluginHandler();
+  }
+
+  public MavenPluginHandler getMavenPluginHandler(Project project) {
+    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
+      return pluginHandler;
+    }
+    return null;
   }
 }

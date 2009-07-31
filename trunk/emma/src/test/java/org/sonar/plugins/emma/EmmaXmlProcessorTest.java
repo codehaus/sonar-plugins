@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.resources.JavaClass;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.JavaPackage;
 
 import java.io.File;
@@ -56,11 +56,11 @@ public class EmmaXmlProcessorTest {
 
   @Test
   public void shouldGenerateClassMeasures() {
-    verify(context).saveMeasure(new JavaClass("ClassOnDefaultPackage"),
+    verify(context).saveMeasure(new JavaFile("ClassOnDefaultPackage"),
         CoreMetrics.COVERAGE, 35.0);
-    verify(context).saveMeasure(new JavaClass("org.sonar.plugins.gaudin.EmmaMavenPluginHandler"),
+    verify(context).saveMeasure(new JavaFile("org.sonar.plugins.gaudin.EmmaMavenPluginHandler"),
         CoreMetrics.COVERAGE, 82.0);
-    verify(context).saveMeasure(new JavaClass("org.sonar.plugins.emma.EmmaMavenPluginHandler"),
+    verify(context).saveMeasure(new JavaFile("org.sonar.plugins.emma.EmmaMavenPluginHandler"),
         CoreMetrics.COVERAGE, 82.0);
   }
 }

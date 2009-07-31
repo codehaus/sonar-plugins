@@ -28,7 +28,6 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 
@@ -41,11 +40,6 @@ public class ProjectCoverageDecorator extends AbstractCoverageExtension implemen
   @DependedUpon
   public Metric generatesMetric() {
     return CoreMetrics.COVERAGE;
-  }
-
-
-  public boolean shouldExecuteOnProject(Project project) {
-    return shouldExecuteCoveragePluginOnProject(project);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {

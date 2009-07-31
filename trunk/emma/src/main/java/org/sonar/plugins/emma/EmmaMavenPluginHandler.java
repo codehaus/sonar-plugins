@@ -51,7 +51,7 @@ public class EmmaMavenPluginHandler implements MavenPluginHandler {
   }
 
   public void configure(Project project, MavenPlugin plugin) {
-    plugin.setConfigParameter("format", "xml");
+    plugin.setParameter("format", "xml");
 
     if (project.getExclusionPatterns() != null) {
       for (String pattern : project.getExclusionPatterns()) {
@@ -60,13 +60,9 @@ public class EmmaMavenPluginHandler implements MavenPluginHandler {
         }
         pattern = pattern.startsWith("/") ? pattern.substring(1) : pattern;
         pattern = pattern.replace("**", "*").replace('/', '.');
-        plugin.getConfiguration().addParameter("filters/filter", pattern);
+        plugin.addParameter("filters/filter", pattern);
       }
     }
-  }
-
-  public boolean dependsUponCustomRules() {
-    return false;
   }
 
 }
