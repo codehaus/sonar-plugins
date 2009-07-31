@@ -25,7 +25,7 @@ import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.resources.JavaClass;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.JavaPackage;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.StaxParser;
@@ -108,7 +108,7 @@ public class EmmaXmlProcessor {
         String classFullName = packageName.equals(JavaPackage.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
         findLineRateMeasure(classCursor, new LineRateMeasureHandler() {
           public void handleMeasure(String resourceName, double coverage) {
-            context.saveMeasure(new JavaClass(resourceName), CoreMetrics.COVERAGE, coverage);
+            context.saveMeasure(new JavaFile(resourceName), CoreMetrics.COVERAGE, coverage);
           }
         }, classFullName);
       }

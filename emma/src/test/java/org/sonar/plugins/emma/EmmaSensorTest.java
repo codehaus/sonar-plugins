@@ -19,6 +19,10 @@
  */
 package org.sonar.plugins.emma;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
@@ -34,22 +38,44 @@ public class EmmaSensorTest {
   public void shouldGetReportPathFromProperty() {
     SensorContext context = mock(SensorContext.class);
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromProperty/pom.xml");
-    new EmmaSensor(null, null).analyseReport(project, context);
+    new EmmaSensor(null, null).analyse(project, context);
     verify(context, atLeastOnce()).saveMeasure(eq(CoreMetrics.COVERAGE), anyDouble());
   }
 
   @Test
   public void shouldNotFailWhenReportNotFound() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldNotFailWhenReportNotFound/pom.xml");
-    new EmmaSensor(null, null).analyseReport(project, mock(SensorContext.class));
+    new EmmaSensor(null, null).analyse(project, mock(SensorContext.class));
   }
 
   @Test
   public void shouldGetReportPathFromPom() {
     SensorContext context = mock(SensorContext.class);
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromPom/pom.xml");
-    new EmmaSensor(null, null).analyseReport(project, context);
+    new EmmaSensor(null, null).analyse(project, context);
     verify(context, atLeastOnce()).saveMeasure(eq(CoreMetrics.COVERAGE), anyDouble());
+  }
+
+  @Test
+  public void doNotExecuteMavenPluginIfReuseReports() {
+    Project project = mock(Project.class);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS);
+    assertThat(new EmmaSensor(null, new EmmaMavenPluginHandler()).getMavenPluginHandler(project), nullValue());
+  }
+
+  @Test
+  public void doNotExecuteMavenPluginIfStaticAnalysis() {
+    Project project = mock(Project.class);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.STATIC);
+    assertThat(new EmmaSensor(null, new EmmaMavenPluginHandler()).getMavenPluginHandler(project), nullValue());
+  }
+
+  @Test
+  public void executeMavenPluginIfDynamicAnalysis() {
+    Project project = mock(Project.class);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.DYNAMIC);
+    assertThat(new EmmaSensor(null, new EmmaMavenPluginHandler()).getMavenPluginHandler(project), not(nullValue()));
+    assertThat(new EmmaSensor(null, new EmmaMavenPluginHandler()).getMavenPluginHandler(project).getArtifactId(), is("emma-maven-plugin"));
   }
 
 }

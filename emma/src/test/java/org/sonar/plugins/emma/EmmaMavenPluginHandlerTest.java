@@ -28,7 +28,6 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.sonar.api.batch.maven.MavenPlugin;
-import org.sonar.api.batch.maven.MavenUtils;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
 
@@ -44,33 +43,33 @@ public class EmmaMavenPluginHandlerTest {
   @Test
   public void enableXmlFormat() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
-    MavenPlugin plugin = new MavenPlugin(EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    MavenPlugin plugin = new MavenPlugin(EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID, "1.0-alpha-1");
     handler.configure(project, plugin);
 
-    assertThat(plugin.getConfigParameter("format"), is("xml"));
+    assertThat(plugin.getParameter("format"), is("xml"));
   }
 
   @Test
   public void shouldOverrideExistingConfiguration() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "Emma-pom.xml");
-    MavenPlugin plugin = MavenUtils.getPlugin(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
     handler.configure(project, plugin);
 
-    assertEquals("xml", plugin.getConfigParameter("format"));
-    assertEquals("bar", plugin.getConfigParameter("foo"));
+    assertEquals("xml", plugin.getParameter("format"));
+    assertEquals("bar", plugin.getParameter("foo"));
   }
 
   @Test
   public void testConfigurePluginWithFilterExclusions() {
     MavenProject pom = MavenTestUtils.loadPom(getClass(), "Emma-pom.xml");
-    MavenPlugin plugin = MavenUtils.getPlugin(pom, EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    MavenPlugin plugin = MavenPlugin.getPlugin(pom, EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
 
     Project project = mock(Project.class);
     when(project.getExclusionPatterns()).thenReturn(new String[]{"/com/foo**/bar/Ba*.java"});
 
     handler.configure(project, plugin);
 
-    assertEquals(1, plugin.getConfiguration().getParameters("filters/filter").length);
-    assertThat(plugin.getConfiguration().getParameters("filters/filter"), is(new String[]{"com.foo*.bar.Ba*"}));
+    assertEquals(1, plugin.getParameters("filters/filter").length);
+    assertThat(plugin.getParameters("filters/filter"), is(new String[]{"com.foo*.bar.Ba*"}));
   }
 }
