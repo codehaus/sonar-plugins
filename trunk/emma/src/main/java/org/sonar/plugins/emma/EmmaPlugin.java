@@ -53,6 +53,7 @@ public class EmmaPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(EmmaSensor.class);
+    list.add(EmmaMavenPluginHandler.class);
     list.add(ProjectCoverageDecorator.class);
     return list;
   }
