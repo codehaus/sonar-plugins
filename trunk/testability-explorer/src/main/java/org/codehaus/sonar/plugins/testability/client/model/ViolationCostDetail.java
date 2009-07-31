@@ -1,8 +1,5 @@
 package org.codehaus.sonar.plugins.testability.client.model;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class ViolationCostDetail implements CostDetail {
   private int cyclomaticComplexity;
@@ -53,6 +50,7 @@ public class ViolationCostDetail implements CostDetail {
   public void setReason(String reason) {
     this.reason = reason;
   }
+  /*
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof ViolationCostDetail)) {
@@ -76,5 +74,5 @@ public class ViolationCostDetail implements CostDetail {
   public String toString() {
     return new ToStringBuilder(this).append("global", getGlobal()).append("cyclomatic", getCyclomaticComplexity()).append("lawOfDemeter",
         getLawOfDemeter()).append("overall", getOverall()).append("reason", getReason()).toString();
-  }
+  }*/
 }

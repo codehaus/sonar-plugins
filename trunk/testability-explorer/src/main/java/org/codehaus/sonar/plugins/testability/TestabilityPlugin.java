@@ -33,6 +33,7 @@ public class TestabilityPlugin implements Plugin {
 		list.add(TestabilityMavenCollector.class);
 		list.add(TestabilityMetrics.class);
 		list.add(TestabilityGlobalDashboardWidget.class);
+		list.add(TestabilityDetailsViewer.class);
 		return list;
 	}
 

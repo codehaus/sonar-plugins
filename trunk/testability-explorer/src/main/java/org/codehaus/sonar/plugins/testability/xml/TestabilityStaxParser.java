@@ -83,7 +83,7 @@ public class TestabilityStaxParser {
     methodCostDetail.setCyclomaticComplexity(StaxMateHelper.getIntValue(cursor, CYCLOMATIC_ATTR));
     methodCostDetail.setGlobal(StaxMateHelper.getIntValue(cursor, GLOBAL_ATTR));
     methodCostDetail.setLawOfDemeter(StaxMateHelper.getIntValue(cursor, LOD_ATTR));
-    methodCostDetail.setCyclomaticComplexity(StaxMateHelper.getIntValue(cursor, OVERALL_ATTR));
+    methodCostDetail.setOverall(StaxMateHelper.getIntValue(cursor, OVERALL_ATTR));
     measurer.addMethodCost(StaxMateHelper.getIntValue(cursor, LINE_ATTR), methodCostDetail);
   }
 
