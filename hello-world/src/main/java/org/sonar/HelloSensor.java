@@ -20,20 +20,14 @@
 
 package org.sonar;
 
-import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.Project;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.resources.Project;
 
 //If you begin to understand the Sonar API, the AbstractJavaMavenCollector implements org.sonar.plugins.api.Extension
 public class HelloSensor implements Sensor {
 
-  // You can define dependency on another plugin to launch it before
-  // collecting the results
-  public Class<? extends MavenPluginHandler> dependsOnMavenPlugin(Project pom) {
-    return null;
-  }
 
   public void analyse(Project project, SensorContext sensorContext) {
     Measure measure = new Measure(HelloMetrics.MESSAGE, "Hello World!");

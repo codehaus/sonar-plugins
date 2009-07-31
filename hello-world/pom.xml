@@ -28,7 +28,6 @@
     <relativePath>../parent</relativePath>
   </parent>
   <artifactId>hello-world</artifactId>
-  <packaging>jar</packaging>
   <version>1.10-SNAPSHOT</version>
   <name>Sonar HelloWorld plugin</name>
   <url>http://sonar-plugins.codehaus.org</url>
@@ -40,7 +39,7 @@
   </scm>
 
   <properties>
-    <sonar.version>1.10RC1</sonar.version>
+    <sonar.version>1.10RC2</sonar.version>
   </properties>
   <build>
     <plugins>
@@ -69,13 +68,20 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.6</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
     </dependency>
   </dependencies>
 </project>
