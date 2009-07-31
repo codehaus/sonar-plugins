@@ -19,35 +19,38 @@
  */
 package org.sonar.plugins.taglist;
 
+import org.sonar.api.batch.Sensor;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.maven.DependsUponMavenPlugin;
+import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectUtils;
+import org.sonar.api.rules.RulesManager;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.sonar.api.rules.RulesManager;
-import org.sonar.api.batch.Sensor;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.maven.MavenPluginExecutor;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Java;
-import org.sonar.api.resources.ProjectUtils;
-
-public class TaglistSensor implements Sensor {
+public class TaglistSensor implements Sensor, DependsUponMavenPlugin {
 
   private TaglistViolationsXmlParser taglistParser;
-  private MavenPluginExecutor mavenExecutor;
   private TaglistMavenPluginHandler pluginHandler;
 
-  public TaglistSensor(RulesManager rulesManager, RulesProfile rulesProfile, MavenPluginExecutor mavenExecutor, TaglistMavenPluginHandler pluginHandler) {
+  public TaglistSensor(RulesManager rulesManager, RulesProfile rulesProfile, TaglistMavenPluginHandler pluginHandler) {
     taglistParser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);
-    this.mavenExecutor = mavenExecutor;
     this.pluginHandler = pluginHandler;
   }
 
   public boolean shouldExecuteOnProject(Project project) {
     return project.getLanguage().equals(Java.KEY);
   }
+
+  public MavenPluginHandler getMavenPluginHandler(Project project) {
+    return pluginHandler;
+  }
+
   public void analyse(Project pom, SensorContext context) {
-    mavenExecutor.execute(pluginHandler);
     File xmlFile = ProjectUtils.getFileFromBuildDirectory(pom, "taglist/taglist.xml");
     try {
       taglistParser.populateTaglistViolation(context, pom, xmlFile);
