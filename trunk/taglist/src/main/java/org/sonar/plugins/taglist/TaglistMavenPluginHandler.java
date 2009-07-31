@@ -19,16 +19,16 @@
  */
 package org.sonar.plugins.taglist;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenUtils;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.ActiveRule;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class TaglistMavenPluginHandler implements MavenPluginHandler {
 
@@ -43,11 +43,11 @@ public class TaglistMavenPluginHandler implements MavenPluginHandler {
   }
 
   public void configure(Project pom, MavenPlugin plugin) {
-    plugin.setConfigParameter("encoding", pom.getSourceCharset().name());
-    plugin.setConfigParameter("linkXRef", "false");
-    plugin.unsetConfigParameter("xmlOutputDirectory");
+    plugin.setParameter("encoding", pom.getSourceCharset().name());
+    plugin.setParameter("linkXRef", "false");
+    plugin.removeParameter("xmlOutputDirectory");
     for (String tag : getActiveTags()) {
-      plugin.getConfiguration().addParameter("tags/tag", tag);
+      plugin.addParameter("tags/tag", tag);
     }
   }
 
