@@ -26,4 +26,5 @@ public class TestStaxParser {
     new TestabilityStaxParser().parse(file, projectContext);
     verify(projectContext, times(4)).addMeasure(any(Metric.class), anyDouble());
   }
+  
 }

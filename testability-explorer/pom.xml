@@ -2,12 +2,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.codehaus.sonar-plugins</groupId>
+		<groupId>org.codehaus.sonar-plugins
+		</groupId>
 		<artifactId>parent</artifactId>
 		<version>2</version>
 		<relativePath>../parent</relativePath>
 	</parent>
-	<artifactId>sonar-plugin-testability</artifactId>
+	<artifactId>sonar-plugin-testability
+	</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1-SNAPSHOT</version>
 	<name>Testability Explorer Sonar Plugin</name>
@@ -34,6 +36,19 @@
 			<version>${gwt.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+			<classifier>${platform}</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-incubator</artifactId>
+			<version>1.5-Dec_28</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -51,11 +66,89 @@
 				<configuration>
 					<archive>
 						<manifestEntries>
-							<Plugin-Class>org.codehaus.sonar.plugins.testability.TestabilityPlugin</Plugin-Class>
+							<Plugin-Class>
+								org.codehaus.sonar.plugins.testability.TestabilityPlugin
+							</Plugin-Class>
 						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*GwtTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<configuration>
+							<modules>
+								<module>
+									org.codehaus.sonar.plugins.testability.GwtTestabilityDetailsViewer
+								</module>
+							</modules>
+							<outputDirectory>${project.build.directory}/classes
+							</outputDirectory>
+							<logLevel>ERROR</logLevel>
+							<!-- (Default: WARN) ERROR, WARN, INFO, TRACE, DEBUG, SPAM, or ALL -->
+							<style>OBF</style>
+							<!-- (Default: OBF) OBF[USCATED], PRETTY, or DETAILED -->
+						</configuration>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<!--
+			We have to define the following profiles because gwt-dev is platform
+			dependent. These profiles set the value of the ${platform} property
+			which is used as a classifier for loading the proper gwt-dev jar.
+			This jar is needed by the GWT modules that have unit tests extending
+			GWTTestCase.
+		-->
+		<profile>
+			<id>gwt-dev-windows</id>
+			<properties>
+				<platform>windows</platform>
+			</properties>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+		</profile>
+		<profile>
+			<id>gwt-dev-mac</id>
+			<properties>
+				<platform>mac</platform>
+			</properties>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+		</profile>
+		<profile>
+			<id>gwt-dev-linux</id>
+			<properties>
+				<platform>linux</platform>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<os>
+					<name>linux</name>
+				</os>
+			</activation>
+		</profile>
+	</profiles>
 </project>

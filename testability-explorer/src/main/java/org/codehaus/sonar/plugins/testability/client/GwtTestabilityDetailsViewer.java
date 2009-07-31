@@ -1,5 +1,6 @@
 package org.codehaus.sonar.plugins.testability.client;
 
+import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
 import org.sonar.plugins.api.web.gwt.client.AbstractSourcesResourceTab;
 import org.sonar.plugins.api.web.gwt.client.ResourcePanel;
 import org.sonar.plugins.api.web.gwt.client.SourceDecorator;
@@ -8,7 +9,7 @@ import org.sonar.plugins.api.web.gwt.client.webservices.WSMetrics.Metric;
 
 public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
   
-  public static final String GWT_ID = "org.codehaus.sonar.plugins.testability.client.GwtTestabilityDetailsViewer";
+  public static final String GWT_ID = "org.codehaus.sonar.plugins.testability.GwtTestabilityDetailsViewer";
   
   @Override
   protected ResourcePanel getHeaderPanel(Resource resource) {
@@ -20,12 +21,12 @@ public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
     exportNativeJavascript(this);
   }
 
-  public static native void exportNativeJavascript(GwtTestabilityDetailsViewer gwtTestabilityDetailsViewer) /*-{
-   $wnd.load_org_codehaus_sonar_plugins_testability_client_GwtTestabilityDetailsViewer = function() {
-      obj.@org.sonar.plugins.core.testdetailsviewer.client.GwtTestDetailsViewer::loadContainer()();
+  public static native void exportNativeJavascript(GwtTestabilityDetailsViewer obj) /*-{
+   $wnd.load_org_codehaus_sonar_plugins_testability_GwtTestabilityDetailsViewer = function() {
+      obj.@org.codehaus.sonar.plugins.testability.client.GwtTestabilityDetailsViewer::loadContainer()();
     }
-    $wnd.on_resource_loaded_org_codehaus_sonar_plugins_testability_client_GwtTestabilityDetailsViewer = function() {
-      obj.@org.sonar.plugins.core.testdetailsviewer.client.GwtTestDetailsViewer::onResourceLoaded()();
+    $wnd.on_resource_loaded_org_codehaus_sonar_plugins_testability_GwtTestabilityDetailsViewer = function() {
+      obj.@org.codehaus.sonar.plugins.testability.client.GwtTestabilityDetailsViewer::onResourceLoaded()();
     }
   }-*/;
 
@@ -36,8 +37,7 @@ public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
 
   @Override
   protected boolean isDefault(Metric metric, Resource resource) {
-    // TODO Auto-generated method stub
-    return false;
+    return WSTestabilityMetrics.METHOD_DETAILS_COST.equals(metric) || WSTestabilityMetrics.TESTABILITY_COST.equals(metric);
   }
 
   @Override
@@ -47,8 +47,7 @@ public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
 
   @Override
   protected SourceDecorator<?> getDecorator(Resource resource) {
-    // TODO Auto-generated method stub
-    return null;
+    return new TestabilitySourceDecorator(resource);
   }
 
 }

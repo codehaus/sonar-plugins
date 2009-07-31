@@ -4,69 +4,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostData;
-import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDataDecoder;
-import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDataDecoderImpl;
+import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
 import org.sonar.plugins.api.web.gwt.client.SourceDecorator;
 import org.sonar.plugins.api.web.gwt.client.SourcePanel;
 import org.sonar.plugins.api.web.gwt.client.SourcePanel.DecoratorCallBack;
-import org.sonar.plugins.api.web.gwt.client.webservices.Measure;
 import org.sonar.plugins.api.web.gwt.client.webservices.Query;
 import org.sonar.plugins.api.web.gwt.client.webservices.Resource;
 import org.sonar.plugins.api.web.gwt.client.webservices.Resources;
 import org.sonar.plugins.api.web.gwt.client.webservices.ResourcesQuery;
 
-import com.google.gwt.core.client.JavaScriptObject;
 
 public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
-
-  private final class TestabilityDecoratorCallBack extends DecoratorCallBack<Resources> {
-    private MethodTestabilityCostDataDecoder decoder;
-
-    public MethodTestabilityCostDataDecoder getDecoder() {
-      if (this.decoder == null) {
-        this.decoder = new MethodTestabilityCostDataDecoderImpl();
-
-      }
-
-      return this.decoder;
-    }
-
-    public void setDecoder(MethodTestabilityCostDataDecoder decoder) {
-      this.decoder = decoder;
-    }
-
-    private TestabilityDecoratorCallBack(SourcePanel sourcePanel) {
-      super(sourcePanel);
-    }
-
-    @Override
-    public void initializeDecorator(Resources response, JavaScriptObject jsonRawResponse) {
-      if (responseHasRightMeasure(response)) {
-        Measure measure = getMethodCostMeasure(response);
-        setMethodTestabilityCostData(getDecoder().decode(measure.getValue()));
-      }
-    }
-
-    private MethodTestabilityCostData methodTestabilityCostData;
-
-    public MethodTestabilityCostData getMethodTestabilityCostData() {
-      return this.methodTestabilityCostData;
-    }
-
-    public void setMethodTestabilityCostData(MethodTestabilityCostData methodTestabilityCostData) {
-      this.methodTestabilityCostData = methodTestabilityCostData;
-    }
-
-    private Measure getMethodCostMeasure(Resources response) {
-      return response.getResources().get(0).getMeasures().get(WSTestabilityMetrics.METHOD_DETAILS_COST);
-    }
-
-    private boolean responseHasRightMeasure(Resources response) {
-      return response.getResources().size() == 1 && response.getResources().get(0).hasMeasure(WSTestabilityMetrics.METHOD_DETAILS_COST);
-    }
-  }
 
   private MethodTestabilityCostData costData;
 
@@ -88,7 +38,7 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
 
   @Override
   protected DecoratorCallBack<Resources> getQueryCallBack(SourcePanel sourcePanel) {
-    return new TestabilityDecoratorCallBack(sourcePanel);
+    return new TestabilityDecoratorCallBack(sourcePanel, this);
   }
 
   @Override
@@ -101,7 +51,8 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
   }
 
   private boolean hasCost(int lineIndex) {
-    return getCostData().getViolationsOfLine(lineIndex) != null || getCostData().getMethodCostOfLine(lineIndex) != null;
+    List<ViolationCostDetail> violationsOfLine = getCostData().getViolationsOfLine(lineIndex);
+    return (violationsOfLine != null && violationsOfLine.size() > 0) || getCostData().getMethodCostOfLine(lineIndex) != null;
   }
 
   @Override
@@ -119,7 +70,11 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
     if (violationsOfLine.size() > 0) {
       html = "<div class='msg'><ul>";
       for (ViolationCostDetail violationCostDetail : violationsOfLine) {
-        //
+        html += "<li class='error'><h3>" + violationCostDetail.getReason() + "</h3>";
+        html += " Cyclomatic:" + violationCostDetail.getCyclomaticComplexity();
+        html += " Global:" + violationCostDetail.getGlobal();
+        html += " Law of Demeter:" + violationCostDetail.getLawOfDemeter();
+        html += " Overall:" + violationCostDetail.getOverall() + "</li>";
       }
       html += "</ul></div>";
     }
@@ -127,8 +82,21 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
   }
 
   private String getMethodCostMessage(int lineIndex) {
-    // TODO Auto-generated method stub
-    return "";
+    MethodTestabilityCostDetail methodCost = getCostData().getMethodCostOfLine(lineIndex);
+    String html = "";
+    if (methodCost != null) {
+      html = "<div class='msg'><ul>";
+      html += "<li class='error'> Cyclomatic:" + methodCost.getCyclomaticComplexity();
+      html += " Global:" + methodCost.getGlobal();
+      html += " Law of Demeter:" + methodCost.getLawOfDemeter();
+      html += " Overall:" + methodCost.getOverall() + "</li>";
+      html += "</ul></div>";
+    }
+    return html;
+  }
+
+  public void setMethodTestabilityCostData(MethodTestabilityCostData costData) {
+    this.costData = costData;
   }
 
 }

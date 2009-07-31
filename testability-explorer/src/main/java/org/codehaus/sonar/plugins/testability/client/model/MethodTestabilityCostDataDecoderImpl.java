@@ -8,6 +8,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.user.client.Window;
 
 public class MethodTestabilityCostDataDecoderImpl implements MethodTestabilityCostDataDecoder {
 
@@ -20,7 +21,7 @@ public class MethodTestabilityCostDataDecoderImpl implements MethodTestabilityCo
     return methodTestabilityCostData;
   }
 
-  private void parseViolationCosts(JSONObject object, MethodTestabilityCostData methodTestabilityCostData) {
+  public void parseViolationCosts(JSONObject object, MethodTestabilityCostData methodTestabilityCostData) {
     Set<String> keySet = object.keySet();
     for (String key : keySet) {
       JSONArray violations = object.get(key).isArray();
@@ -30,7 +31,7 @@ public class MethodTestabilityCostDataDecoderImpl implements MethodTestabilityCo
     }
   }
 
-  private ViolationCostDetail createViolationCost(JSONObject object) {
+  public ViolationCostDetail createViolationCost(JSONObject object) {
     return new ViolationCostDetail(getCyclomatic(object), getGlobal(object), getLod(object), getOverall(object), getReason(object));
   }
 
@@ -39,14 +40,14 @@ public class MethodTestabilityCostDataDecoderImpl implements MethodTestabilityCo
     return string.stringValue();
   }
 
-  private void parseMethodCosts(JSONObject object, MethodTestabilityCostData methodTestabilityCostData) {
+  public void parseMethodCosts(JSONObject object, MethodTestabilityCostData methodTestabilityCostData) {
     Set<String> keySet = object.keySet();
     for (String key : keySet) {
       methodTestabilityCostData.addMethodCost(Integer.valueOf(key), createMethodCost(object.get(key).isObject()));
     }
   }
 
-  private MethodTestabilityCostDetail createMethodCost(JSONObject object) {
+  public MethodTestabilityCostDetail createMethodCost(JSONObject object) {
     return new MethodTestabilityCostDetail(getCyclomatic(object), getGlobal(object), getLod(object), getOverall(object));
   }
 
