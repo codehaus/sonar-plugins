@@ -3,7 +3,6 @@
  */
 package org.codehaus.sonar.plugins.testability.client;
 
-import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostData;
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDataDecoder;
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDataDecoderImpl;
 import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;

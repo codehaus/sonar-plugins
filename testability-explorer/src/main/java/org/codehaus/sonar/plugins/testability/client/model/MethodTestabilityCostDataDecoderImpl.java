@@ -1,6 +1,11 @@
 package org.codehaus.sonar.plugins.testability.client.model;
 
-import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.*;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.CYCLOMATIC;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.GLOBAL;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.LOD;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.OVERALL;
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.REASON;
+
 import java.util.Set;
 
 import com.google.gwt.json.client.JSONArray;
@@ -8,7 +13,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.user.client.Window;
 
 public class MethodTestabilityCostDataDecoderImpl implements MethodTestabilityCostDataDecoder {
 
