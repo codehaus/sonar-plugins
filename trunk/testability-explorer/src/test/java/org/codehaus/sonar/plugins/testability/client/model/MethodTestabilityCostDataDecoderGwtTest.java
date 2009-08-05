@@ -1,6 +1,5 @@
 package org.codehaus.sonar.plugins.testability.client.model;
 
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.junit.client.GWTTestCase;

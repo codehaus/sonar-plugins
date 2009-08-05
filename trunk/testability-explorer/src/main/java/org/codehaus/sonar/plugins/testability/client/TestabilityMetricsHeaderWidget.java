@@ -5,16 +5,53 @@ import java.util.List;
 
 import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
 import org.sonar.plugins.api.web.gwt.client.HeaderWidget;
+import org.sonar.plugins.api.web.gwt.client.webservices.Measure;
+import org.sonar.plugins.api.web.gwt.client.webservices.QueryCallBack;
 import org.sonar.plugins.api.web.gwt.client.webservices.Resource;
+import org.sonar.plugins.api.web.gwt.client.webservices.Resources;
+import org.sonar.plugins.api.web.gwt.client.webservices.ResourcesQuery;
 import org.sonar.plugins.api.web.gwt.client.webservices.WSMetrics;
 import org.sonar.plugins.api.web.gwt.client.webservices.WSMetrics.MetricLabel;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 
 public class TestabilityMetricsHeaderWidget extends HeaderWidget {
   
+  private final class HeaderQueryCallBack implements QueryCallBack<Resources> {
+    private Grid grid;
+
+    public HeaderQueryCallBack(Grid main) {
+      this.grid = main;
+    }
+
+    public void onError(int errorCode, String errorMessage) {
+      // TODO Auto-generated method stub
+    }
+
+    public void onResponse(Resources response, JavaScriptObject jsonRawResponse) {
+      Resource resource = response.getResources().get(0);
+      Measure measure = resource.getMeasures().get(WSTestabilityMetrics.TESTABILITY_COST);
+      getGrid().setWidget(0, 0, new Label("Testability Cost: "));
+      getGrid().setWidget(0, 1, new Label(measure.getFormattedValue()));
+    }
+
+    public void onTimeout() {
+      // TODO Auto-generated method stub
+    }
+
+    public Grid getGrid() {
+      return this.grid;
+    }
+
+    public void setGrid(Grid grid) {
+      this.grid = grid;
+    }
+  }
+
   private static MetricLabel[] METRIC_LABELS = new MetricLabel[] {
-    new WSMetrics.MetricLabel(WSTestabilityMetrics.TESTABILITY_COST, "Testability Cost")
+    new MetricLabel(WSTestabilityMetrics.TESTABILITY_COST, "Testability Cost")
   };
   
   public TestabilityMetricsHeaderWidget(Resource resource) {
@@ -36,10 +73,13 @@ public class TestabilityMetricsHeaderWidget extends HeaderWidget {
     return Arrays.asList(METRIC_LABELS);
   }
 
-  @Override
+  
   public void init(Grid main) {
-    main.setWidth("100%");
-    addMetricToPanel(0, 0, WSTestabilityMetrics.TESTABILITY_COST);
+    main.setWidth("50%");
+    // I have to make a query to get the testability cost measure
+    ResourcesQuery.get(getResource().getKey())
+    .setMetrics(WSMetrics.getDefaultMetrics())
+    .execute(new HeaderQueryCallBack(main));
   }
 
 }

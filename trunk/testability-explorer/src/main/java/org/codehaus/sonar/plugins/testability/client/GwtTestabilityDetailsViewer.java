@@ -37,7 +37,7 @@ public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
 
   @Override
   protected boolean isDefault(Metric metric, Resource resource) {
-    return WSTestabilityMetrics.METHOD_DETAILS_COST.equals(metric) || WSTestabilityMetrics.TESTABILITY_COST.equals(metric);
+    return isMetricInList(metric, WSTestabilityMetrics.METHOD_DETAILS_COST, WSTestabilityMetrics.TESTABILITY_COST);
   }
 
   @Override
