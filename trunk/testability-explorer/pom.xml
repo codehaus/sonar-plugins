@@ -71,6 +71,9 @@
 							</Plugin-Class>
 						</manifestEntries>
 					</archive>
+					<excludes>
+						<exclude>.gwt-tmp/**</exclude>
+					</excludes>	
 				</configuration>
 			</plugin>
 			<plugin>

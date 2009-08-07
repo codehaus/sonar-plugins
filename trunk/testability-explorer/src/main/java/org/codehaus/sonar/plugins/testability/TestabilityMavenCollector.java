@@ -25,7 +25,7 @@ public class TestabilityMavenCollector extends AbstractMavenCollector<Java> {
 	public void collect(MavenPom pom, ProjectContext context) {
 		File file = new File( pom.getBuildDir(), XML_VIOLATIONS_FILE );
 	    if (!file.exists()) {
-	      throw new RuntimeException(XML_VIOLATIONS_FILE + " not found!");
+	      throw new TestabilityPluginException(XML_VIOLATIONS_FILE + " not found!");
 	    }
 	    new TestabilityStaxParser().parse(file, context);
 	}

@@ -1,6 +1,6 @@
 package org.codehaus.sonar.plugins.testability.client.model;
 
-public abstract class SerializationConstants {
+public final class SerializationConstants {
   public static final String OVERALL = "overall";
   public static final String LOD = "lod";
   public static final String CYCLOMATIC = "cyclomatic";
