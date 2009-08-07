@@ -89,7 +89,8 @@ public class CppunitMavenCollector implements MavenCollector {
 					try {
 						transformer.transform(fileCppunitReportName, fileStream,junitOutputPath);
 					} catch (Exception te) {
-						throw new IOException("Could not transform the Cppunit report.", te);
+            throw new IOException("Could not transform the Cppunit report." + te);
+						// Java6 only : throw new IOException("Could not transform the Cppunit report.", te);
 					} finally {
 						fileStream.close();
 					}
