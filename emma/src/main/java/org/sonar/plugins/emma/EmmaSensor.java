@@ -76,24 +76,24 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
   private File getReportFromProperty(Project project) {
     String path = (String) project.getProperty(PROP_REPORT_PATH);
     if (path != null) {
-      return project.resolvePath(path);
+      return project.getFileSystem().resolvePath(path);
     }
     return null;
   }
 
   private File getReportFromPluginConfiguration(Project project) {
-    MavenPlugin plugin = MavenPlugin.getPlugin(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
     if (plugin != null) {
       String path = plugin.getParameter("outputDirectory");
       if (path != null) {
-        return new File(project.resolvePath(path), "coverage.xml");
+        return new File(project.getFileSystem().resolvePath(path), "coverage.xml");
       }
     }
     return null;
   }
 
   private File getReportFromDefaultPath(Project project) {
-    return new File(project.getReportOutputDir(), "emma/coverage.xml");
+    return new File(project.getFileSystem().getReportOutputDir(), "emma/coverage.xml");
   }
 
   protected MavenPluginHandler getMavenPluginHandler() {

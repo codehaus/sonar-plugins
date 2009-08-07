@@ -52,7 +52,7 @@ public class EmmaMavenPluginHandlerTest {
   @Test
   public void shouldOverrideExistingConfiguration() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "Emma-pom.xml");
-    MavenPlugin plugin = MavenPlugin.getPlugin(project.getMavenProject(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
     handler.configure(project, plugin);
 
     assertEquals("xml", plugin.getParameter("format"));

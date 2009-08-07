@@ -39,7 +39,7 @@
   </scm>
 
   <properties>
-    <sonar.version>1.10RC2</sonar.version>
+    <sonar.version>1.10RC3</sonar.version>
   </properties>
   <build>
     <plugins>

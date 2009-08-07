@@ -19,29 +19,22 @@
  */
 package org.sonar.plugins.taglist;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-import java.nio.charset.Charset;
-
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.rules.RulesManager;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.ActiveRule;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.test.IsResource;
+import org.sonar.api.resources.Project;
+import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.rules.RulesManager;
+
+import java.io.File;
 
 public class TaglistViolationsXmlParserTest {
 
@@ -64,8 +57,8 @@ public class TaglistViolationsXmlParserTest {
     when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@todo"))).thenReturn(new ActiveRule(null, null, RulePriority.MAJOR));
     when(rulesProfile.getActiveRule(eq(TaglistPlugin.KEY), eq("@fixme"))).thenReturn(new ActiveRule(null, null, RulePriority.MINOR));
 
-    when(pom.getMavenProject()).thenReturn(new MavenProject());
-    when(pom.getSourceCharset()).thenReturn(Charset.forName("UTF-8"));
+    when(pom.getPom()).thenReturn(new MavenProject());
+    //when(pom.getSourceCharset()).thenReturn(Charset.forName("UTF-8"));
     parser = new TaglistViolationsXmlParser(rulesManager, rulesProfile);
   }
 
