@@ -26,7 +26,6 @@ import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.ProjectUtils;
 import org.sonar.api.rules.RulesManager;
 
 import java.io.File;
@@ -50,10 +49,10 @@ public class TaglistSensor implements Sensor, DependsUponMavenPlugin {
     return pluginHandler;
   }
 
-  public void analyse(Project pom, SensorContext context) {
-    File xmlFile = ProjectUtils.getFileFromBuildDirectory(pom, "taglist/taglist.xml");
+  public void analyse(Project project, SensorContext context) {
+    File xmlFile = project.getFileSystem().getFileFromBuildDirectory("taglist/taglist.xml");
     try {
-      taglistParser.populateTaglistViolation(context, pom, xmlFile);
+      taglistParser.populateTaglistViolation(context, project, xmlFile);
     }
     catch (IOException e) {
       throw new RuntimeException(e);

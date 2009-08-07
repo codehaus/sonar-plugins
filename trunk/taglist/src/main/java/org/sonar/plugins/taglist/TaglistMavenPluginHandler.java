@@ -38,12 +38,8 @@ public class TaglistMavenPluginHandler implements MavenPluginHandler {
     this.rulesProfile = rulesProfile;
   }
 
-  public boolean dependsUponCustomRules() {
-    return false;
-  }
-
   public void configure(Project pom, MavenPlugin plugin) {
-    plugin.setParameter("encoding", pom.getSourceCharset().name());
+    plugin.setParameter("encoding", pom.getFileSystem().getSourceCharset().name());
     plugin.setParameter("linkXRef", "false");
     plugin.removeParameter("xmlOutputDirectory");
     for (String tag : getActiveTags()) {

@@ -47,11 +47,11 @@ public class TaglistViolationsXmlParser {
     this.rulesProfile = rulesProfile;
   }
 
-  protected final void populateTaglistViolation(SensorContext context, Project pom, File taglistXmlFile) throws IOException {
+  protected final void populateTaglistViolation(SensorContext context, Project project, File taglistXmlFile) throws IOException {
 
     XpathParser parser = new XpathParser();
     // TODO remove when MTAGLIST-40 released
-    String charSet = pom.getSourceCharset().name();
+    String charSet = project.getFileSystem().getSourceCharset().name();
     String report = FileUtils.readFileToString(taglistXmlFile, charSet);
     parser.parse(report.replace("encoding=\"UTF-8\"", "encoding=\"" + charSet + "\""));
 

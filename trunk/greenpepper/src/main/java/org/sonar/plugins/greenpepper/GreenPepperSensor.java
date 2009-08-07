@@ -22,10 +22,8 @@ package org.sonar.plugins.greenpepper;
 
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.maven.MavenPluginConfiguration;
-import org.sonar.api.batch.maven.MavenUtils;
+import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.ProjectUtils;
 
 import java.io.File;
 
@@ -33,10 +31,10 @@ public class GreenPepperSensor implements Sensor {
 
 
   public void analyse(Project project, SensorContext context) {
-      GreenPepperReport testsReport = GreenPepperReportsParser.parseReports(getReportsDirectory(project));
+    GreenPepperReport testsReport = GreenPepperReportsParser.parseReports(getReportsDirectory(project));
 
-      context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TESTS_SUCCESS_PERCENTAGE, testsReport.getTestSuccessPercentage() * 100);
-      context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TESTS_COUNT, (double) testsReport.getTestsCount());
+    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TESTS_SUCCESS_PERCENTAGE, testsReport.getTestSuccessPercentage() * 100);
+    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TESTS_COUNT, (double) testsReport.getTestsCount());
   }
 
   public boolean shouldExecuteOnProject(Project project) {
@@ -49,7 +47,7 @@ public class GreenPepperSensor implements Sensor {
 
   private boolean shouldLaunchGreenPepperMavenPlugin(Project pom) {
     String shouldLaunchGpMavenPlugin = pom.getConfiguration().getString(GreenPepperPlugin.PROP_LAUNCH_GP_MVN_KEY,
-      GreenPepperPlugin.PROP_LAUNCH_GP_MVN_VALUE);
+        GreenPepperPlugin.PROP_LAUNCH_GP_MVN_VALUE);
     if (shouldLaunchGpMavenPlugin.equals("Yes")) {
       return true;
     }
@@ -67,12 +65,12 @@ public class GreenPepperSensor implements Sensor {
     return null;
   }
 
-  private File getReportsDirectoryFromPluginConfiguration(Project pom) {
-    MavenPluginConfiguration pomConf = MavenUtils.getPluginConfiguration(pom.getMavenProject(), GreenPepperMavenPluginHandler.GROUP_ID, GreenPepperMavenPluginHandler.ARTIFACT_ID);
+  private File getReportsDirectoryFromPluginConfiguration(Project project) {
+    MavenPlugin pomConf = MavenPlugin.getPlugin(project.getPom(), GreenPepperMavenPluginHandler.GROUP_ID, GreenPepperMavenPluginHandler.ARTIFACT_ID);
     if (pomConf != null) {
       String path = pomConf.getParameter("reportsDirectory");
       if (path != null) {
-        return ProjectUtils.getFileFromBuildDirectory(pom, path);
+        return project.getFileSystem().getFileFromBuildDirectory(path);
       }
     }
     return null;
@@ -80,7 +78,7 @@ public class GreenPepperSensor implements Sensor {
 
 
   private File getReportsDirectoryFromDefaultConfiguration(Project pom) {
-    return new File(pom.getBuildDir(), "greenpepper-reports");
+    return new File(pom.getFileSystem().getBuildDir(), "greenpepper-reports");
   }
 
 

@@ -29,7 +29,6 @@
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>greenpepper</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <name>Sonar GreenPepper plugin</name>
 
   <scm>
@@ -44,7 +43,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>1.10RC1</sonar.version>
+    <sonar.version>1.10RC3</sonar.version>
   </properties>
 
   <dependencies>
