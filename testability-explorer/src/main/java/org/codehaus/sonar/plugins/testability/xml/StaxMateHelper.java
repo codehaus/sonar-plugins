@@ -5,7 +5,12 @@ import javax.xml.stream.XMLStreamException;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.plugins.api.maven.xml.XmlParserException;
 
-public class StaxMateHelper {
+public final class StaxMateHelper {
+  
+  private StaxMateHelper() {
+    // Utility Class
+  }
+  
   public static Double getDoubleValue(SMInputCursor cursor, String attributeName) {
     try {
       return Double.valueOf(cursor.getAttrIntValue(cursor.findAttrIndex(null, attributeName)));

@@ -18,8 +18,9 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 
 public class TestabilityMetricsHeaderWidget extends HeaderWidget {
-  
+
   private final class HeaderQueryCallBack implements QueryCallBack<Resources> {
+    private static final String ERROR_RETRIEVING_TESTABILITY_COST = "Error retrieving testability cost";
     private Grid grid;
 
     public HeaderQueryCallBack(Grid main) {
@@ -27,7 +28,7 @@ public class TestabilityMetricsHeaderWidget extends HeaderWidget {
     }
 
     public void onError(int errorCode, String errorMessage) {
-      // TODO Auto-generated method stub
+      getGrid().setWidget(0, 0, new Label(ERROR_RETRIEVING_TESTABILITY_COST));
     }
 
     public void onResponse(Resources response, JavaScriptObject jsonRawResponse) {
@@ -38,7 +39,7 @@ public class TestabilityMetricsHeaderWidget extends HeaderWidget {
     }
 
     public void onTimeout() {
-      // TODO Auto-generated method stub
+      getGrid().setWidget(0, 0, new Label(ERROR_RETRIEVING_TESTABILITY_COST));
     }
 
     public Grid getGrid() {
@@ -50,10 +51,9 @@ public class TestabilityMetricsHeaderWidget extends HeaderWidget {
     }
   }
 
-  private static MetricLabel[] METRIC_LABELS = new MetricLabel[] {
-    new MetricLabel(WSTestabilityMetrics.TESTABILITY_COST, "Testability Cost")
-  };
-  
+  private static final MetricLabel[] METRIC_LABELS = new MetricLabel[] { new MetricLabel(WSTestabilityMetrics.TESTABILITY_COST,
+      "Testability Cost") };
+
   public TestabilityMetricsHeaderWidget(Resource resource) {
     super(resource);
   }
@@ -73,13 +73,10 @@ public class TestabilityMetricsHeaderWidget extends HeaderWidget {
     return Arrays.asList(METRIC_LABELS);
   }
 
-  
   public void init(Grid main) {
-    main.setWidth("50%");
+    main.setWidth("100%");
     // I have to make a query to get the testability cost measure
-    ResourcesQuery.get(getResource().getKey())
-    .setMetrics(WSMetrics.getDefaultMetrics())
-    .execute(new HeaderQueryCallBack(main));
+    ResourcesQuery.get(getResource().getKey()).setMetrics(WSMetrics.getDefaultMetrics()).execute(new HeaderQueryCallBack(main));
   }
 
 }
