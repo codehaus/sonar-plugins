@@ -2,7 +2,7 @@
  * SonarSquidApplication.java
  */
 
-package org.sonar.sonar.squid.gui;
+package org.sonar.squid.gui;
 
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
