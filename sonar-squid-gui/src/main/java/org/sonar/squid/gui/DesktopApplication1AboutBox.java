@@ -2,7 +2,7 @@
  * DesktopApplication1AboutBox.java
  */
 
-package org.sonar.sonar.squid.gui;
+package org.sonar.squid.gui;
 
 import org.jdesktop.application.Action;
 
@@ -38,13 +38,13 @@ public class DesktopApplication1AboutBox extends javax.swing.JDialog {
         javax.swing.JLabel imageLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(org.sonar.sonar.squid.gui.SonarSquidApplication.class).getContext().getResourceMap(DesktopApplication1AboutBox.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(org.sonar.squid.gui.SonarSquidApplication.class).getContext().getResourceMap(DesktopApplication1AboutBox.class);
         setTitle(resourceMap.getString("title")); // NOI18N
         setModal(true);
         setName("aboutBox"); // NOI18N
         setResizable(false);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(org.sonar.sonar.squid.gui.SonarSquidApplication.class).getContext().getActionMap(DesktopApplication1AboutBox.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(org.sonar.squid.gui.SonarSquidApplication.class).getContext().getActionMap(DesktopApplication1AboutBox.class, this);
         closeButton.setAction(actionMap.get("closeAboutBox")); // NOI18N
         closeButton.setName("closeButton"); // NOI18N
 
