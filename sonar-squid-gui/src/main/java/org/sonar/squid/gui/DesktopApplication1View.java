@@ -3,8 +3,6 @@
  */
 package org.sonar.squid.gui;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -14,8 +12,6 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -26,6 +22,7 @@ import javax.swing.tree.DefaultTreeModel;
 import org.sonar.squid.Squid;
 import org.sonar.squid.SquidConfiguration;
 import org.sonar.squid.ast.JavaAstScanner;
+import org.sonar.squid.resources.SquidProject;
 import org.sonar.squid.resources.SquidUnit;
 
 /**
@@ -268,7 +265,28 @@ public class DesktopApplication1View extends FrameView {
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
         SquidUnit squidUnit = (SquidUnit) node.getUserObject();
-        jDashboardTextArea.setText(squidUnit.toString());
+        StringBuilder sb = new StringBuilder();
+
+        if (squidUnit instanceof org.sonar.squid.resources.SquidProject) {
+            sb.append("Project");
+            SquidProject squidProject = (SquidProject) squidUnit;
+            sb.append(squidProject.getName());
+        } else if (squidUnit instanceof org.sonar.squid.resources.SquidPackage) {
+            sb.append("Package ").append(squidUnit.getKey()).append("\n");
+            sb.append("Files :").append(squidUnit.getMeasures().getFiles()).append("\n");
+            sb.append("Classes :").append(squidUnit.getMeasures().getClasses()).append("\n");
+            sb.append("Methods :").append(squidUnit.getMeasures().getMethods()).append("\n");
+            sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
+            sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
+        } else if (squidUnit instanceof org.sonar.squid.resources.SquidFile) {
+            sb.append("File");
+        } else if (squidUnit instanceof org.sonar.squid.resources.SquidClass) {
+            sb.append("Class");
+        }
+        //sb.append("\n=== SquidUnit.toString() ===\n");
+        //sb.append(squidUnit.toString());
+
+        jDashboardTextArea.setText(sb.toString());
     }//GEN-LAST:event_jTree1ValueChanged
 
     @Action(block = Task.BlockingScope.COMPONENT)
