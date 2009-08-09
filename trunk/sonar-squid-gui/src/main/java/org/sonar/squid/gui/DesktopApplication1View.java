@@ -30,85 +30,87 @@ import org.sonar.squid.resources.SquidUnit;
  */
 public class DesktopApplication1View extends FrameView {
 
-    public DesktopApplication1View(SingleFrameApplication app) {
-        super(app);
+  public DesktopApplication1View(SingleFrameApplication app) {
+    super(app);
 
-        initComponents();
+    initComponents();
 
-        // status bar initialization - message timeout, idle icon and busy animation, etc
-        ResourceMap resourceMap = getResourceMap();
-        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
-        messageTimer = new Timer(messageTimeout, new ActionListener() {
+    initDefaultjTree();
 
-            public void actionPerformed(ActionEvent e) {
-                statusMessageLabel.setText("");
-            }
-        });
-        messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
-            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
-        }
-        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+    // status bar initialization - message timeout, idle icon and busy animation, etc
+    ResourceMap resourceMap = getResourceMap();
+    int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
+    messageTimer = new Timer(messageTimeout, new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-                statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
-            }
-        });
-        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
-        statusAnimationLabel.setIcon(idleIcon);
-        progressBar.setVisible(false);
-
-        // connecting action tasks to status bar via TaskMonitor
-        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
-        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                String propertyName = evt.getPropertyName();
-                if ("started".equals(propertyName)) {
-                    if (!busyIconTimer.isRunning()) {
-                        statusAnimationLabel.setIcon(busyIcons[0]);
-                        busyIconIndex = 0;
-                        busyIconTimer.start();
-                    }
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(true);
-                } else if ("done".equals(propertyName)) {
-                    busyIconTimer.stop();
-                    statusAnimationLabel.setIcon(idleIcon);
-                    progressBar.setVisible(false);
-                    progressBar.setValue(0);
-                } else if ("message".equals(propertyName)) {
-                    String text = (String) (evt.getNewValue());
-                    statusMessageLabel.setText((text == null) ? "" : text);
-                    messageTimer.restart();
-                } else if ("progress".equals(propertyName)) {
-                    int value = (Integer) (evt.getNewValue());
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setValue(value);
-                }
-            }
-        });
+      public void actionPerformed(ActionEvent e) {
+        statusMessageLabel.setText("");
+      }
+    });
+    messageTimer.setRepeats(false);
+    int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
+    for (int i = 0; i < busyIcons.length; i++) {
+      busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
     }
+    busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
 
-    @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = SonarSquidApplication.getApplication().getMainFrame();
-            aboutBox = new DesktopApplication1AboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
+      public void actionPerformed(ActionEvent e) {
+        busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
+        statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
+      }
+    });
+    idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
+    statusAnimationLabel.setIcon(idleIcon);
+    progressBar.setVisible(false);
+
+    // connecting action tasks to status bar via TaskMonitor
+    TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
+    taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
+      public void propertyChange(java.beans.PropertyChangeEvent evt) {
+        String propertyName = evt.getPropertyName();
+        if ("started".equals(propertyName)) {
+          if (!busyIconTimer.isRunning()) {
+            statusAnimationLabel.setIcon(busyIcons[0]);
+            busyIconIndex = 0;
+            busyIconTimer.start();
+          }
+          progressBar.setVisible(true);
+          progressBar.setIndeterminate(true);
+        } else if ("done".equals(propertyName)) {
+          busyIconTimer.stop();
+          statusAnimationLabel.setIcon(idleIcon);
+          progressBar.setVisible(false);
+          progressBar.setValue(0);
+        } else if ("message".equals(propertyName)) {
+          String text = (String) (evt.getNewValue());
+          statusMessageLabel.setText((text == null) ? "" : text);
+          messageTimer.restart();
+        } else if ("progress".equals(propertyName)) {
+          int value = (Integer) (evt.getNewValue());
+          progressBar.setVisible(true);
+          progressBar.setIndeterminate(false);
+          progressBar.setValue(value);
         }
-        SonarSquidApplication.getApplication().show(aboutBox);
-    }
+      }
+    });
+  }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+  @Action
+  public void showAboutBox() {
+    if (aboutBox == null) {
+      JFrame mainFrame = SonarSquidApplication.getApplication().getMainFrame();
+      aboutBox = new DesktopApplication1AboutBox(mainFrame);
+      aboutBox.setLocationRelativeTo(mainFrame);
+    }
+    SonarSquidApplication.getApplication().show(aboutBox);
+  }
+
+  /** This method is called from within the constructor to
+   * initialize the form.
+   * WARNING: Do NOT modify this code. The content of this method is
+   * always regenerated by the Form Editor.
+   */
+  @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -262,99 +264,130 @@ public class DesktopApplication1View extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
+  private void initDefaultjTree() {
+    DefaultMutableTreeNode project = new DefaultMutableTreeNode("Projetc");
+    DefaultMutableTreeNode packages = new DefaultMutableTreeNode("Packages");
+    DefaultMutableTreeNode files = new DefaultMutableTreeNode("Files");
+    DefaultMutableTreeNode classes = new DefaultMutableTreeNode("Classes");
+    DefaultMutableTreeNode methods = new DefaultMutableTreeNode("Methods");
+    classes.add(methods);
+    files.add(classes);
+    packages.add(files);
+    project.add(packages);
+    jTree1.setModel(new DefaultTreeModel(project));
+  }
+
     private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
+      DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
+      if (node.getUserObject() instanceof SquidUnit) {
         SquidUnit squidUnit = (SquidUnit) node.getUserObject();
         StringBuilder sb = new StringBuilder();
 
         if (squidUnit instanceof org.sonar.squid.resources.SquidProject) {
-            sb.append("Project");
-            SquidProject squidProject = (SquidProject) squidUnit;
-            sb.append(squidProject.getName());
+          SquidProject squidProject = (SquidProject) squidUnit;
+          sb.append("Project ").append(squidProject.getKey()).append("\n");
+          sb.append("Packages ").append(squidUnit.getMeasures().getPackages()).append("\n");
+          sb.append("Files :").append(squidUnit.getMeasures().getFiles()).append("\n");
+          sb.append("Classes :").append(squidUnit.getMeasures().getClasses()).append("\n");
+          sb.append("Methods :").append(squidUnit.getMeasures().getMethods()).append("\n");
+          sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
+          sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
         } else if (squidUnit instanceof org.sonar.squid.resources.SquidPackage) {
-            sb.append("Package ").append(squidUnit.getKey()).append("\n");
-            sb.append("Files :").append(squidUnit.getMeasures().getFiles()).append("\n");
-            sb.append("Classes :").append(squidUnit.getMeasures().getClasses()).append("\n");
-            sb.append("Methods :").append(squidUnit.getMeasures().getMethods()).append("\n");
-            sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
-            sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
+          sb.append("Package ").append(squidUnit.getKey()).append("\n");
+          sb.append("Files :").append(squidUnit.getMeasures().getFiles()).append("\n");
+          sb.append("Classes :").append(squidUnit.getMeasures().getClasses()).append("\n");
+          sb.append("Methods :").append(squidUnit.getMeasures().getMethods()).append("\n");
+          sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
+          sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
         } else if (squidUnit instanceof org.sonar.squid.resources.SquidFile) {
-            sb.append("File");
+          sb.append("File ").append(squidUnit.getKey()).append("\n");
+          sb.append("Classes :").append(squidUnit.getMeasures().getClasses()).append("\n");
+          sb.append("Methods :").append(squidUnit.getMeasures().getMethods()).append("\n");
+          sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
+          sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
         } else if (squidUnit instanceof org.sonar.squid.resources.SquidClass) {
-            sb.append("Class");
+          sb.append("Classe :").append(squidUnit.getKey()).append("\n");
+          sb.append("Methods :").append(squidUnit.getMeasures().getMethods()).append("\n");
+          sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
+          sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
+        } else if (squidUnit instanceof org.sonar.squid.resources.SquidMethod) {
+          sb.append("Method :").append(squidUnit.getKey()).append("\n");
+          sb.append("Loc :").append(squidUnit.getMeasures().getLoc()).append("\n");
+          sb.append("Ncloc :").append(squidUnit.getMeasures().getNcloc()).append("\n");
         }
         //sb.append("\n=== SquidUnit.toString() ===\n");
         //sb.append(squidUnit.toString());
 
         jDashboardTextArea.setText(sb.toString());
+      }
     }//GEN-LAST:event_jTree1ValueChanged
 
-    @Action(block = Task.BlockingScope.COMPONENT)
-    public Task load() {
-        return new LoadTask(getApplication());
+  @Action(block = Task.BlockingScope.COMPONENT)
+  public Task load() {
+    return new LoadTask(getApplication());
+  }
+
+  private class LoadTask extends org.jdesktop.application.Task<Object, Void> {
+
+    File selectedFile = null;
+
+    LoadTask(org.jdesktop.application.Application app) {
+      // Runs on the EDT.  Copy GUI state that
+      // doInBackground() depends on from parameters
+      // to LoadTask fields, here.
+      super(app);
+      JFileChooser fc = new JFileChooser();
+      fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+      int result = fc.showDialog(getComponent(), "Select a source directory");
+
+      // Determine which button was clicked to close the dialog
+      switch (result) {
+        case JFileChooser.APPROVE_OPTION:
+          // Approve (Open or Save) was clicked
+          selectedFile = fc.getSelectedFile();
+          break;
+        case JFileChooser.CANCEL_OPTION:
+          // Cancel or the close-dialog icon was clicked
+          break;
+        case JFileChooser.ERROR_OPTION:
+          // The selection process did not complete successfully
+          break;
+      }
     }
 
-    private class LoadTask extends org.jdesktop.application.Task<Object, Void> {
-
-        File selectedFile = null;
-
-        LoadTask(org.jdesktop.application.Application app) {
-            // Runs on the EDT.  Copy GUI state that
-            // doInBackground() depends on from parameters
-            // to LoadTask fields, here.
-            super(app);
-            JFileChooser fc = new JFileChooser();
-            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int result = fc.showDialog(getComponent(), "Select a source directory");
-
-            // Determine which button was clicked to close the dialog
-            switch (result) {
-                case JFileChooser.APPROVE_OPTION:
-                    // Approve (Open or Save) was clicked
-                    selectedFile = fc.getSelectedFile();
-                    break;
-                case JFileChooser.CANCEL_OPTION:
-                    // Cancel or the close-dialog icon was clicked
-                    break;
-                case JFileChooser.ERROR_OPTION:
-                    // The selection process did not complete successfully
-                    break;
-            }
-        }
-
-        @Override
-        protected Object doInBackground() {
-            // Your Task's code here.  This method runs
-            // on a background thread, so don't reference
-            // the Swing GUI from here.
-            Squid squid = new org.sonar.squid.Squid(new SquidConfiguration());
-            SquidUnit squidUnit = null;
-            if (selectedFile != null) {
-                squidUnit = squid.scanDir(JavaAstScanner.class, selectedFile);
-            }
-            return squidUnit;  // return your result
-        }
-
-        @Override
-        protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-            if (result != null) {
-                SquidUnit squidUnit = (SquidUnit) result;
-                DefaultMutableTreeNode rootNode = getNode(squidUnit);
-                jTree1.setModel(new DefaultTreeModel(rootNode));
-            }
-        }
-
-        private DefaultMutableTreeNode getNode(SquidUnit squidUnit) {
-            //DefaultMutableTreeNode node = new DefaultMutableTreeNode(toStringFirstLevel(squidUnit));
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode(squidUnit);
-            for (SquidUnit child : squidUnit.getChildren()) {
-                node.add(getNode(child));
-            }
-            return node;
-        }
+    @Override
+    protected Object doInBackground() {
+      // Your Task's code here.  This method runs
+      // on a background thread, so don't reference
+      // the Swing GUI from here.
+      Squid squid = new org.sonar.squid.Squid(new SquidConfiguration());
+      SquidUnit squidUnit = null;
+      if (selectedFile != null) {
+        squidUnit = squid.scanDir(JavaAstScanner.class, selectedFile);
+      }
+      return squidUnit;  // return your result
     }
+
+    @Override
+    protected void succeeded(Object result) {
+      // Runs on the EDT.  Update the GUI based on
+      // the result computed by doInBackground().
+      if (result != null) {
+        SquidUnit squidUnit = (SquidUnit) result;
+        DefaultMutableTreeNode rootNode = getNode(squidUnit);
+        jTree1.setModel(new DefaultTreeModel(rootNode));
+      }
+    }
+
+    private DefaultMutableTreeNode getNode(SquidUnit squidUnit) {
+      //DefaultMutableTreeNode node = new DefaultMutableTreeNode(toStringFirstLevel(squidUnit));
+      DefaultMutableTreeNode node = new DefaultMutableTreeNode(squidUnit);
+      for (SquidUnit child : squidUnit.getChildren()) {
+        node.add(getNode(child));
+      }
+      return node;
+    }
+  }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JTextArea jDashboardTextArea;
@@ -371,10 +404,10 @@ public class DesktopApplication1View extends FrameView {
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
-    private final Timer messageTimer;
-    private final Timer busyIconTimer;
-    private final Icon idleIcon;
-    private final Icon[] busyIcons = new Icon[15];
-    private int busyIconIndex = 0;
-    private JDialog aboutBox;
+  private final Timer messageTimer;
+  private final Timer busyIconTimer;
+  private final Icon idleIcon;
+  private final Icon[] busyIcons = new Icon[15];
+  private int busyIconIndex = 0;
+  private JDialog aboutBox;
 }
