@@ -56,7 +56,7 @@ public class TaglistDistributionDecorator implements Decorator {
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(Java.KEY);
+    return project.getLanguage().equals(Java.INSTANCE);
   }
 
   /**
