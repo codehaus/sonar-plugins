@@ -42,7 +42,7 @@ public class TaglistSensor implements Sensor, DependsUponMavenPlugin {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(Java.KEY);
+    return project.getLanguage().equals(Java.INSTANCE);
   }
 
   public MavenPluginHandler getMavenPluginHandler(Project project) {
