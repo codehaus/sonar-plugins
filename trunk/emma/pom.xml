@@ -12,7 +12,7 @@
   <name>Sonar Emma plugin</name>
 
   <properties>
-    <sonar.version>1.10RC3</sonar.version>
+    <sonar.version>1.10RC4</sonar.version>
   </properties>
 
   <dependencies>

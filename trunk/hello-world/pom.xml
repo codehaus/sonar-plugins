@@ -39,7 +39,7 @@
   </scm>
 
   <properties>
-    <sonar.version>1.10RC3</sonar.version>
+    <sonar.version>1.10RC4</sonar.version>
   </properties>
   <build>
     <plugins>
@@ -57,7 +57,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Plugin-Class>org.sonar.HelloPlugin</Plugin-Class>
+              <Plugin-Class>org.sonar.plugins.sample.HelloPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
         </configuration>
