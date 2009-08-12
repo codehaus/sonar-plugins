@@ -19,7 +19,7 @@
   </developers>
 
   <properties>
-    <sonar.version>1.10-SNAPSHOT</sonar.version>
+    <sonar.version>1.10</sonar.version>
   </properties>
 
   <dependencies>
