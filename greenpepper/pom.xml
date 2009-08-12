@@ -43,7 +43,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>1.10RC4</sonar.version>
+    <sonar.version>1.10</sonar.version>
   </properties>
 
   <dependencies>
