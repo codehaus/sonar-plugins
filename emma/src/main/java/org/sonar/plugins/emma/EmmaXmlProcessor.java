@@ -96,22 +96,19 @@ public class EmmaXmlProcessor {
       }, currentPackageName);
 
       srcFileCursor.setFilter(SMFilterFactory.getElementOnlyFilter("srcfile"));
-      collectClassMeasures(srcFileCursor, currentPackageName);
+      collectFileMeasures(srcFileCursor, currentPackageName);
     }
   }
 
-  private void collectClassMeasures(SMInputCursor srcFileCursor, String packageName) throws XMLStreamException {
+  private void collectFileMeasures(SMInputCursor srcFileCursor, String packageName) throws XMLStreamException {
     while (srcFileCursor.getNext() != null) {
-      SMInputCursor classCursor = srcFileCursor.childElementCursor("class");
-      while (classCursor.getNext() != null) {
-        String className = classCursor.getAttrValue("name");
-        String classFullName = packageName.equals(JavaPackage.DEFAULT_PACKAGE_NAME) ? className : packageName + "." + className;
-        findLineRateMeasure(classCursor, new LineRateMeasureHandler() {
-          public void handleMeasure(String resourceName, double coverage) {
-            context.saveMeasure(new JavaFile(resourceName), CoreMetrics.COVERAGE, coverage);
-          }
-        }, classFullName);
-      }
+      String filename = StringUtils.substringBeforeLast(srcFileCursor.getAttrValue("name"), ".java");
+      String classname = packageName.equals(JavaPackage.DEFAULT_PACKAGE_NAME) ? filename : packageName + "." + filename;
+      findLineRateMeasure(srcFileCursor, new LineRateMeasureHandler() {
+        public void handleMeasure(String resourceName, double coverage) {
+          context.saveMeasure(new JavaFile(resourceName), CoreMetrics.COVERAGE, coverage);
+        }
+      }, classname);
     }
   }
 
