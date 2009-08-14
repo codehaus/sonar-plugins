@@ -39,7 +39,7 @@ public class EmmaMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String getVersion() {
-    return "1.0-alpha-1";
+    return "1.0-alpha-2";
   }
 
   public boolean isFixedVersion() {

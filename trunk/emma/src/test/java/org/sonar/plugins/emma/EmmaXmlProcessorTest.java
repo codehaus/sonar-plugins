@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.emma;
 
-import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -29,38 +28,53 @@ import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.JavaPackage;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 public class EmmaXmlProcessorTest {
 
-  private SensorContext context;
-
-  @Before
-  public void before() throws Exception {
+  private SensorContext executeOnDefaultReport() throws Exception {
     File xmlReport = new File(getClass().getResource("/org/sonar/plugins/emma/EmmaXmlProcessorTest/coverage.xml").toURI());
-    context = mock(SensorContext.class);
+    SensorContext context = mock(SensorContext.class);
     EmmaXmlProcessor processor = new EmmaXmlProcessor(xmlReport, context);
     processor.process();
+    return context;
   }
 
   @Test
-  public void shouldGenerateProjectMeasures() {
+  public void shouldGenerateProjectMeasures() throws Exception {
+    SensorContext context = executeOnDefaultReport();
     verify(context).saveMeasure(CoreMetrics.COVERAGE, 66.0);
   }
 
   @Test
-  public void shouldGeneratePackageMeasures() {
+  public void shouldGeneratePackageMeasures() throws Exception {
+    SensorContext context = executeOnDefaultReport();
     verify(context).saveMeasure(new JavaPackage(""), CoreMetrics.COVERAGE, 40.0);
     verify(context).saveMeasure(new JavaPackage("org.sonar.plugins.emma"), CoreMetrics.COVERAGE, 67.0);
     verify(context).saveMeasure(new JavaPackage("org.sonar.plugins.gaudin"), CoreMetrics.COVERAGE, 45.0);
   }
 
   @Test
-  public void shouldGenerateClassMeasures() {
+  public void shouldGenerateFileMeasures() throws Exception {
+    SensorContext context = executeOnDefaultReport();
     verify(context).saveMeasure(new JavaFile("ClassOnDefaultPackage"),
-        CoreMetrics.COVERAGE, 35.0);
+        CoreMetrics.COVERAGE, 0.0);
     verify(context).saveMeasure(new JavaFile("org.sonar.plugins.gaudin.EmmaMavenPluginHandler"),
         CoreMetrics.COVERAGE, 82.0);
     verify(context).saveMeasure(new JavaFile("org.sonar.plugins.emma.EmmaMavenPluginHandler"),
         CoreMetrics.COVERAGE, 82.0);
+  }
+
+  @Test
+  public void doNotSaveInnerClasses() throws URISyntaxException {
+    File xmlReport = new File(getClass().getResource("/org/sonar/plugins/emma/EmmaXmlProcessorTest/doNotSaveInnerClasses.xml").toURI());
+    SensorContext context = mock(SensorContext.class);
+    EmmaXmlProcessor processor = new EmmaXmlProcessor(xmlReport, context);
+    processor.process();
+
+    verify(context).saveMeasure(new JavaFile("org.apache.commons.collections.bag.SynchronizedBag"),
+        CoreMetrics.COVERAGE, 14.0);
+
+    // new JavaFile("org.apache.commons.collections.bag.SynchronizedBag$SynchronizedBagSet fails if it calls
   }
 }

@@ -42,6 +42,19 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
     this.pluginHandler = pluginHandler;
   }
 
+  @Override
+  public boolean shouldExecuteOnProject(Project project) {
+    return super.shouldExecuteOnProject(project) && project.getFileSystem().hasJavaSourceFiles();
+  }
+
+  public MavenPluginHandler getMavenPluginHandler(Project project) {
+    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
+      return pluginHandler;
+    }
+    // do not execute maven plugin if reuseReport mode
+    return null;
+  }
+
   public void analyse(Project project, SensorContext context) {
     File report = getReport(project);
     if (checkReportAvailability(report)) {
@@ -96,14 +109,4 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
     return new File(project.getFileSystem().getReportOutputDir(), "emma/coverage.xml");
   }
 
-  protected MavenPluginHandler getMavenPluginHandler() {
-    return new EmmaMavenPluginHandler();
-  }
-
-  public MavenPluginHandler getMavenPluginHandler(Project project) {
-    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
-      return pluginHandler;
-    }
-    return null;
-  }
 }
