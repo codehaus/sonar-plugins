@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-    <parent>
+  <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
     <version>2</version>
@@ -12,8 +12,16 @@
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
   <name>Sonar Squid GUI</name>
+  <description>A Java desktop application based on Sonar Squid engine.</description>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -41,24 +49,25 @@
             <id>make-assembly</id>
             <phase>package</phase>
             <goals>
-              <goal>single</goal> <!-- goals == mojos -->
+              <goal>single</goal>
+              <!-- goals == mojos -->
             </goals>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-  
+
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.sonar.plugins</groupId>
-      <artifactId>sonar-plugin-squid</artifactId>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-squid</artifactId>
       <version>1.11-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.6</version>
+      <version>4.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>
