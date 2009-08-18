@@ -50,6 +50,7 @@ public class TaglistRulesRepository implements RulesRepository {
 
       // We set the priority to MINOR by default for all tags.
       Rule rule = new Rule(TaglistPlugin.KEY, tagKey, tagName, category, RulePriority.MINOR);
+      rule.setConfigKey(tagKey);
       rule.setDescription(tagDescription);
       rules.add(rule);
     }
