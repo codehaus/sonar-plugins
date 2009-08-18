@@ -20,10 +20,7 @@
 package org.sonar.plugins.taglist;
 
 import org.apache.commons.io.IOUtils;
-import org.sonar.api.rules.RulesRepository;
-import org.sonar.api.rules.StandardRulesXmlParser;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulesCategory;
+import org.sonar.api.rules.*;
 import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Java;
 import org.sonar.api.profiles.RulesProfile;
@@ -50,7 +47,10 @@ public class TaglistRulesRepository implements RulesRepository {
       String tagKey = (String) tag;
       String tagDescription = "Detection of keyword '" + tagKey + "' in the source code";
       RulesCategory category = new RulesCategory(tags.getProperty(tagKey));
-      Rule rule = new Rule(tagName, tagKey, tagKey, category, TaglistPlugin.KEY, tagDescription);
+
+      // We set the priority to MINOR by default for all tags.
+      Rule rule = new Rule(TaglistPlugin.KEY, tagKey, tagName, category, RulePriority.MINOR);
+      rule.setDescription(tagDescription);
       rules.add(rule);
     }
     return rules;
