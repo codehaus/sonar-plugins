@@ -22,7 +22,7 @@ package org.sonar.plugins.taglist;
 
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.*;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
@@ -47,7 +47,7 @@ public class TaglistDistributionDecorator implements Decorator {
     this.rulesProfile = rulesProfile;
   }
 
-  @DependsUpon
+  @DependedUpon
   public List<Metric> generatesMetrics() {
     return Arrays.asList(TaglistMetrics.TAGS_DISTRIBUTION);
   }
