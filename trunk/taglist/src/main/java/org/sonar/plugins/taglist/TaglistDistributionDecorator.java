@@ -66,21 +66,7 @@ public class TaglistDistributionDecorator implements Decorator {
 
     // Calculate distribution on classes, but keep it in memory, not in DB
     if (ResourceUtils.isFile(resource)) {
-      PropertiesBuilder<String, Integer> tagsDistrib = new PropertiesBuilder<String, Integer>(TaglistMetrics.TAGS_DISTRIBUTION);
-
-      for (Rule rule : rulesManager.getPluginRules(TaglistPlugin.KEY)) {
-        ActiveRule activeRule = rulesProfile.getActiveRule(TaglistPlugin.KEY, rule.getKey());
-        int violationsForTag = 0;
-        if (activeRule != null) {
-          for (Violation violation : context.getViolations()) {
-            if (violation.getRule().equals(activeRule.getRule())) {
-              violationsForTag++;
-            }
-          }
-        }
-        tagsDistrib.add(rule.getKey(), violationsForTag);
-      }
-      context.saveMeasure(tagsDistrib.build().setPersistenceMode(PersistenceMode.MEMORY));
+      context.saveMeasure(computeDistribution(context).build().setPersistenceMode(PersistenceMode.MEMORY));
     } else {
       // Otherwise, aggregate the distribution
       CountDistributionBuilder builder = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
@@ -94,6 +80,24 @@ public class TaglistDistributionDecorator implements Decorator {
         context.saveMeasure(builder.build());
       }
     }
+  }
+
+  // This method should disappear after the rule management API gets refactored
+  private PropertiesBuilder<String, Integer> computeDistribution(DecoratorContext context) {
+    PropertiesBuilder<String, Integer> tagsDistrib = new PropertiesBuilder<String, Integer>(TaglistMetrics.TAGS_DISTRIBUTION);
+    for (Rule rule : rulesManager.getPluginRules(TaglistPlugin.KEY)) {
+      ActiveRule activeRule = rulesProfile.getActiveRule(TaglistPlugin.KEY, rule.getKey());
+      int violationsForTag = 0;
+      if (activeRule != null) {
+        for (Violation violation : context.getViolations()) {
+          if (violation.getRule().equals(activeRule.getRule())) {
+            violationsForTag++;
+          }
+        }
+      }
+      tagsDistrib.add(rule.getKey(), violationsForTag);
+    }
+    return tagsDistrib;
   }
 
 
