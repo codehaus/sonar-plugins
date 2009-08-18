@@ -22,15 +22,15 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.Task;
 import org.jdesktop.application.TaskMonitor;
 import org.sonar.squid.Squid;
+import org.sonar.squid.SquidClass;
 import org.sonar.squid.SquidConfiguration;
+import org.sonar.squid.SquidFile;
+import org.sonar.squid.SquidMethod;
+import org.sonar.squid.SquidPackage;
+import org.sonar.squid.SquidProject;
+import org.sonar.squid.SquidUnit;
 import org.sonar.squid.ast.JavaAstScanner;
-import org.sonar.squid.entities.Metric;
-import org.sonar.squid.entities.SquidClass;
-import org.sonar.squid.entities.SquidFile;
-import org.sonar.squid.entities.SquidMethod;
-import org.sonar.squid.entities.SquidPackage;
-import org.sonar.squid.entities.SquidProject;
-import org.sonar.squid.entities.SquidUnit;
+import org.sonar.squid.measures.Metric;
 
 /**
  * The application's main frame.
