@@ -7,7 +7,7 @@
     <version>2</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>emma</artifactId>
+  <artifactId>sonar-emma-plugin</artifactId>
   <version>0.3-SNAPSHOT</version>
   <name>Sonar Emma plugin</name>
 
