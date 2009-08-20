@@ -11,9 +11,9 @@
     			<td style="padding-left:2px;"><a href="http://docs.codehaus.org/x/sQCDBw" target="Wiki"><img class="png" src='/images/help.png'></a></td>
 				</tr>
 			</table>
-      <p><span class="big"><%= format_measure('technical_debt_ratio', :suffix => '', :url => url_for_drilldown('technical_debt_ratio'), :default => '-')%></span></p>
-      <p><span><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '-')%></span></p>
-      <p><span><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '-') %></span></p>
+      <p><span class="big"><%= format_measure('technical_debt_ratio', :suffix => '', :url => url_for_drilldown('technical_debt_ratio'), :default => '0')%></span></p>
+      <p><span><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '$ 0')%></span></p>
+      <p><span><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '0 man days') %></span></p>
     </div>
   </div>
   <div class="yui-u">
