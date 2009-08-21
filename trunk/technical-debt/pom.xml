@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
@@ -9,7 +8,7 @@
   </parent>
   <artifactId>technical-debt</artifactId>
   <name>Technical Debt Sonar plugin</name>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.3</version>
   <description>Calculate the technical debt</description>
 
   <developers>
@@ -70,8 +69,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/technical-debt</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/technical-debt</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/technical-debt-0.3</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/technical-debt-0.3</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/technical-debt-0.3</url>
   </scm>
 </project>
