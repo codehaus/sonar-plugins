@@ -20,16 +20,24 @@
 package org.sonar.plugins.greenpepper;
 
 public class GreenPepperReport {
+
   private int testsSuccess;
   private int testsError;
   private int testsFailure;
   private int testsIgnored;
 
   double getTestSuccessPercentage() {
-    return (double) testsSuccess / (double) getTestsCount();
+    if (getTests() == 0) {
+      return 1;
+    }
+    return (double) testsSuccess / (double) getTestsWithoutIgnored();
+  }
+  
+  int getTestsWithoutIgnored() {
+    return getTests() - testsIgnored;
   }
 
-  int getTestsCount() {
+  int getTests() {
     return testsSuccess + testsError + testsFailure + testsIgnored;
   }
 
@@ -48,7 +56,7 @@ public class GreenPepperReport {
     this.testsSuccess = testsSuccess;
   }
 
-  public int getTestsError() {
+  public int getTestErrors() {
     return testsError;
   }
 
@@ -56,7 +64,7 @@ public class GreenPepperReport {
     this.testsError = testsError;
   }
 
-  public int getTestsFailure() {
+  public int getTestFailures() {
     return testsFailure;
   }
 
@@ -64,7 +72,7 @@ public class GreenPepperReport {
     this.testsFailure = testsFailure;
   }
 
-  public int getTestsIgnored() {
+  public int getSkippedTests() {
     return testsIgnored;
   }
 

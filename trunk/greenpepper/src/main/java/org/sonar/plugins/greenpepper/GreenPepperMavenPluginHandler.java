@@ -54,6 +54,5 @@ public class GreenPepperMavenPluginHandler implements MavenPluginHandler {
 
 
   public void configure(Project project, MavenPlugin mavenPlugin) {
-    // TODO Auto-generated method stub
   }
 }
