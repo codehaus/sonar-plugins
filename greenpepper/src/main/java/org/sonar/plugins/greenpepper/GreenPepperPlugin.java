@@ -19,26 +19,16 @@
  */
 package org.sonar.plugins.greenpepper;
 
-import org.sonar.api.Property;
-import org.sonar.api.Properties;
-import org.sonar.api.Plugin;
-import org.sonar.api.Extension;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Properties({@Property(
-  key = GreenPepperPlugin.PROP_LAUNCH_GP_MVN_KEY,
-  defaultValue = GreenPepperPlugin.PROP_LAUNCH_GP_MVN_VALUE,
-  name = "Launch GreenPepper Maven plugin",
-  description = "Does Sonar Maven plugin have to launch the GreenPepper Maven Plugin before collecting GreenPepper tests results (Yes / No)?",
-  global=true,
-  project=true,
-  module=false)})
+import org.sonar.api.Extension;
+import org.sonar.api.Plugin;
+
 public class GreenPepperPlugin implements Plugin {
 
-  public static final String PROP_LAUNCH_GP_MVN_KEY = "PROP_DEPENDS_ON_GP_MAVEN_KEY";
-  public static final String PROP_LAUNCH_GP_MVN_VALUE = "No";
+  public static final String EXEC_GREENPEPPER_KEY   = "EXEC_GREENPEPPER_MAVEN_KEY";
+  public static final String EXEC_GREENPEPPER_VALUE = "No";
 
   public String getKey() {
     return "greenpepper";
@@ -55,7 +45,10 @@ public class GreenPepperPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(GreenPepperSensor.class);
+    list.add(GreenPepperMavenPluginHandler.class);
     list.add(GreenPepperMetrics.class);
+    list.add(GreenPepperWidget.class);
+    list.add(GreenPepperDecorator.class);
     return list;
   }
 

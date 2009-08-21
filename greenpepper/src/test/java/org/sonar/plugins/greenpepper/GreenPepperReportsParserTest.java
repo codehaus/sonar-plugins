@@ -33,10 +33,10 @@ public class GreenPepperReportsParserTest {
       .toURI());
     GreenPepperReport report = GreenPepperReportsParser.parseReport(xmlReport);
 
-    assertEquals(14, report.getTestsCount());
-    assertEquals(1, report.getTestsIgnored());
-    assertEquals(0, report.getTestsError());
-    assertEquals(0, report.getTestsFailure());
+    assertEquals(14, report.getTests());
+    assertEquals(1, report.getSkippedTests());
+    assertEquals(0, report.getTestErrors());
+    assertEquals(0, report.getTestFailures());
     assertEquals(13, report.getTestsSuccess());
   }
 
@@ -45,11 +45,11 @@ public class GreenPepperReportsParserTest {
     File reportsDir = new File(getClass().getResource("/").toURI());
     GreenPepperReport report = GreenPepperReportsParser.parseReports(reportsDir);
 
-    assertEquals(31, report.getTestsCount());
-    assertEquals(5, report.getTestsIgnored());
-    assertEquals(0, report.getTestsError());
-    assertEquals(1, report.getTestsFailure());
+    assertEquals(31, report.getTests());
+    assertEquals(5, report.getSkippedTests());
+    assertEquals(0, report.getTestErrors());
+    assertEquals(1, report.getTestFailures());
     assertEquals(25, report.getTestsSuccess());
-    assertEquals(25.0 / 31.0, report.getTestSuccessPercentage(), 0.00001);
+    assertEquals(25.0 / 26.0, report.getTestSuccessPercentage(), 0.00001);
   }
 }

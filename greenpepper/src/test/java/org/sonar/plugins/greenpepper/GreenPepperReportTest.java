@@ -38,12 +38,12 @@ public class GreenPepperReportTest {
 
   @Test
   public void testGetTestSuccessPercentage() {
-    assertEquals(45.0 / 58.0, report.getTestSuccessPercentage(), 0.00001);
+    assertEquals(45.0 / 54.0, report.getTestSuccessPercentage(), 0.00001);
   }
 
   @Test
   public void testGetTestsCount() {
-    assertEquals(58, report.getTestsCount());
+    assertEquals(58, report.getTests());
   }
 
   @Test
@@ -55,7 +55,7 @@ public class GreenPepperReportTest {
     newReport.setTestsSuccess(5);
 
     report.addGreenPepperReport(newReport);
-    assertEquals(66, report.getTestsCount());
+    assertEquals(66, report.getTests());
   }
 
 }
