@@ -1,0 +1,19 @@
+<% if measure('greenpepper_tests') %>
+  <div class="yui-g">
+    <div class="yui-u first">
+      <div class="dashbox">
+        <h3>GreenPepper Tests</h3>
+        <p><span class="big"><%= format_measure('greenpepper_tests', :default => '0')%></span></p>
+      </div>
+    </div>
+    <div class="yui-u">
+      <div class="dashbox">
+        <h3>Test success</h3>
+        <p><span class="big"><%= format_measure('greenpepper_test_success_density', :default => '0')%></span></p>
+        <p><span"><%= format_measure('greenpepper_test_failures', :suffix => ' failures', :default => '0 failures') %></span></p>
+        <p><span"><%= format_measure('greenpepper_test_errors', :suffix => ' errors', :default => '0 errors') %></span></p>
+        <p><span"><%= format_measure('greenpepper_skipped_tests', :suffix => ' skipped', :default => '0 skipped') %></span></p>
+      </div>
+    </div>
+  </div>
+<% end %>
