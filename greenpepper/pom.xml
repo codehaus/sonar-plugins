@@ -28,13 +28,13 @@
   </parent>
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-greenpepper-plugin</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <name>Sonar GreenPepper plugin</name>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/greenpepper</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/greenpepper</developerConnection>
-    <url>http://svn.codehaus.org/sonar-plugins</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-greenpepper-plugin-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-greenpepper-plugin-0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-greenpepper-plugin-0.1</url>
   </scm>
 
   <issueManagement>
