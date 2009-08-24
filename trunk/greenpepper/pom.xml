@@ -32,8 +32,8 @@
   <name>Sonar GreenPepper plugin</name>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/greepepper</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/greepepper</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/greenpepper</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/greenpepper</developerConnection>
     <url>http://svn.codehaus.org/sonar-plugins</url>
   </scm>
 
