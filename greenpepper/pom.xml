@@ -28,7 +28,7 @@
   </parent>
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-greenpepper-plugin</artifactId>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
   <name>Sonar GreenPepper plugin</name>
 
   <scm>
