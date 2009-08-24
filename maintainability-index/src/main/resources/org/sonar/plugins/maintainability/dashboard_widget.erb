@@ -1,0 +1,31 @@
+<%
+      if measure('technical_debt')
+%>
+
+<div class="yui-gd">
+  <div class="yui-u first">
+    <div class="dashbox">
+    	<table>
+    		<tr>
+    			<td><h3>Technical Debt</h3></td>
+    			<td style="padding-left:2px;"><a href="http://docs.codehaus.org/x/sQCDBw" target="Wiki"><%= image_tag 'help.png', :class => 'png' -%></a></td>
+				</tr>
+			</table>
+      <p><span class="big"><%= format_measure('technical_debt_ratio', :suffix => '', :url => url_for_drilldown('technical_debt_ratio'), :default => '0')%></span></p>
+      <p><span><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '$ 0')%></span></p>
+      <p><span><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '0 man days') %></span></p>
+    </div>
+  </div>
+  <div class="yui-u">
+      <%= piechart(measure('technical_debt_repart'), { :size => "248x65"}) -%>
+    <%
+      if !measure('coverage')%>
+        <center><div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div></center>
+    <%
+    	end
+    %>
+   </div>
+</div>
+<%
+      end
+%>
