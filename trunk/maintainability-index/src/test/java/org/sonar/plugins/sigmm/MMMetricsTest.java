@@ -17,17 +17,16 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.maintainability;
+package org.sonar.plugins.sigmm;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 
-public class MaintainabilityIndexPluginTest {
+public class MMMetricsTest {
 
   @Test
   public void defineMetrics() {
-    assertThat(new MIPlugin().getExtensions().size(), equalTo(0));
+    assertThat(new MMMetrics().getMetrics().size(), is(5));
   }
-
 }

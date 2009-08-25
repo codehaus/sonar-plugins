@@ -31,6 +31,10 @@
   <version>0.1-SNAPSHOT</version>
   <description>Implementation of the Maintainability Model of SIG</description>
 
+  <properties>
+    <sonar.version>1.11-SNAPSHOT</sonar.version>
+  </properties>
+
   <developers>
     <developer>
       <id>ogaudin</id>
@@ -56,7 +60,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.maintainability.MIPlugin</Plugin-Class>
+              <Plugin-Class>org.sonar.plugins.sigmm.MMPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
         </configuration>
@@ -67,7 +71,12 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>1.11-SNAPSHOT</version>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-squid</artifactId>
+      <version>${sonar.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
