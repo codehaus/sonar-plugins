@@ -17,26 +17,17 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.maintainability;
+package org.sonar.plugins.sigmm;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import org.junit.Test;
 
+public class MMPluginTest {
 
-import org.sonar.api.measures.Metrics;
-import org.sonar.api.measures.Metric;
-
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * {@inheritDoc}
- */
-public final class MaintainabilityIndexMetrics implements Metrics {
-
-
-  /**
-   * {@inheritDoc}
-   */
-  public List<Metric> getMetrics() {
-    return Arrays.asList();
+  @Test
+  public void defineMetrics() {
+    assertThat(new MMPlugin().getExtensions().size(), equalTo(3));
   }
+
 }
