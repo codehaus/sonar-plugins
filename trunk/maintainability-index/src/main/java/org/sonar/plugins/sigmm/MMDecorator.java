@@ -73,6 +73,12 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
     MMRank unitSizeRanking = computeVolumeRanking(ncloc);
     MMRank unitTestingRanking = computeVolumeRanking(coverage);
 
+    System.out.println("volumeRanking :" + volumeRanking);
+    System.out.println("duplicationRanking :" + duplicationRanking);
+    System.out.println("complexityRanking :" + complexityRanking);
+    System.out.println("unitSizeRanking :" + unitSizeRanking);
+    System.out.println("unitTestingRanking :" + unitTestingRanking);
+
     MMRank testabilityRanking = MMRank.averageRank(complexityRanking, unitSizeRanking, unitTestingRanking);
     MMRank stabilityRanking = MMRank.averageRank(unitTestingRanking);
     MMRank changeabilityRanking = MMRank.averageRank(complexityRanking, duplicationRanking);

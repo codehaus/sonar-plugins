@@ -30,16 +30,11 @@ import java.util.List;
  * {@inheritDoc}
  */
 public final class MMMetrics implements org.sonar.api.measures.Metrics {
-  public static final Metric ANALYSABILITY = new Metric("sigmm-analysability", "Analysability Value", "Analysability in an interval of [--, ++]",
-    Metric.ValueType.FLOAT, 1, Boolean.FALSE, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric CHANGEABILITY = new Metric("sigmm-changeability", "Changeability Value", "Changeability in an interval of [--, ++]",
-    Metric.ValueType.FLOAT, 1, Boolean.FALSE, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TESTABILITY = new Metric("sigmm-testability", "Testability Value", "Testability in an interval of [--, ++]",
-    Metric.ValueType.FLOAT, 1, Boolean.FALSE, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric STABILITY = new Metric("sigmm-stability", "Stability Value", "Stability in an interval of [--, ++]",
-    Metric.ValueType.FLOAT, 1, Boolean.FALSE, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric MAINTAINABILIY = new Metric("sigmm-maintainability", "Maintainability Value", "Maintainability in an interval of [--, ++]",
-    Metric.ValueType.FLOAT, 1, Boolean.FALSE, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric ANALYSABILITY = new Metric("sigmm-analysability", "Analysability Value", "Analysability in an interval of [--, ++]", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric CHANGEABILITY = new Metric("sigmm-changeability", "Changeability Value", "Changeability in an interval of [--, ++]", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric TESTABILITY = new Metric("sigmm-testability", "Testability Value", "Testability in an interval of [--, ++]", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric STABILITY = new Metric("sigmm-stability", "Stability Value", "Stability in an interval of [--, ++]", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric MAINTAINABILIY = new Metric("sigmm-maintainability", "SIG MM", "Maintainability in an interval of [--, ++]", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
 
   /**
    * {@inheritDoc}

@@ -1,25 +1,19 @@
 <%
       if measure('sigmm-maintainability')
 %>
-
-<div class="yui-gd">
-  <div class="yui-u first">
-    <div class="dashbox">
-<h3>SIG Maintainability Model</h3></td>
-      <p><span class="big"><%= format_measure('technical_debt_ratio', :suffix => '', :url => url_for_drilldown('technical_debt_ratio'), :default => '0')%></span></p>
-      <p><span><%= format_measure('technical_debt', :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '$ 0')%></span></p>
-      <p><span><%= format_measure('technical_debt_days', :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '0 man days') %></span></p>
-    </div>
-  </div>
-  <div class="yui-u">
-      <%= piechart(measure('technical_debt_repart'), { :size => "248x65"}) -%>
-    <%
-      if !measure('coverage')%>
-        <center><div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div></center>
-    <%
-    	end
-    %>
-   </div>
+<div class="dashbox">
+  <h3><span title="<%= metric('sigmm-maintainability').description -%>"><%= metric('sigmm-maintainability').short_name -%></span></h3>
+  <p>
+    <span class="big">
+      <%= format_measure('sigmm-maintainability') -%>
+    </span>
+  </p>
+  <p>
+    <p><span>Analysability: <%= format_measure('sigmm-analysability', :suffix => '') -%></span></p>
+    <p><span>Changeability: <%= format_measure('sigmm-changeability', :suffix => '') -%></span></p>
+    <p><span>Stability: <%= format_measure('sigmm-stability', :suffix => '') -%></span></p>
+    <p><span>Testability: <%= format_measure('sigmm-testability', :suffix => '') -%></span></p>
+  </p>
 </div>
 <%
       end
