@@ -6,7 +6,7 @@
     <version>2</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>technical-debt</artifactId>
+  <artifactId>sonar-technicaldebt-plugin</artifactId>
   <name>Technical Debt Sonar plugin</name>
   <version>0.4-SNAPSHOT</version>
   <description>Calculate the technical debt</description>
