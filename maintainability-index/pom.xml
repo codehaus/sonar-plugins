@@ -26,7 +26,7 @@
     <version>2</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>maintainability-index</artifactId>
+  <artifactId>sonar-sigmm-plugin</artifactId>
   <name>Maintainability Index Sonar plugin</name>
   <version>0.1-SNAPSHOT</version>
   <description>Implementation of the Maintainability Model of SIG</description>
