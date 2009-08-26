@@ -26,10 +26,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class SimpleRankingTest {
-  @Before
-  public void setUp() throws Exception {
-  }
-
   @Test
   public void testKeyVolumeMeasures() {
     MMDecorator decorator = new MMDecorator();
