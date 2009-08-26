@@ -6,7 +6,7 @@
     <version>2</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-plugin-taglist</artifactId>
+  <artifactId>sonar-taglist-plugin</artifactId>
   <name>sonar-plugin-taglist</name>
   <version>0.6-SNAPSHOT</version>
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
