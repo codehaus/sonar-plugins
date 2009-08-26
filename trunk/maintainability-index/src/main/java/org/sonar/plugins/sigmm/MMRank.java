@@ -55,7 +55,7 @@ public enum MMRank {
     return value;
   }
 
-  private static MMRank getRank(double value) {
+  protected static MMRank getRank(double value) {
     return lookup.get(value);
   }
 
