@@ -57,7 +57,7 @@ public class AuthorizationPlugin implements Plugin {
   public String getDescription() {
     String desc = "<b>Specify the authorized groups. </b><br/>" +
         " * <i>EVERYONE</i> is every user including the guest.<br/>" +
-        " * <i>LOGIN_USER</i> is the users who logged in the system.<br/>" +
+        " * <i>LOGIN_USER</i> is the user who logged in the system.<br/>" +
         " You can specify more than one group, separate them by \",\".";
     return desc;
   }
