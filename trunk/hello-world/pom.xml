@@ -28,7 +28,7 @@
     <relativePath>../parent</relativePath>
   </parent>
   <artifactId>hello-world</artifactId>
-  <version>1.11-SNAPSHOT</version>
+  <version>1.10s</version>
   <name>Sonar HelloWorld plugin</name>
   <url>http://sonar-plugins.codehaus.org</url>
 
