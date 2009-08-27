@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 
 /**
- * As the Metrics class implements org.sonar.plugins.api.Extension interface,
+ * As the Metrics class implements org.sonar.api.Extension interface,
  * MyOwnMetrics is a Sonar extension which allows to declare as many new Metrics as you want.
  */
 public class HelloMetrics implements Metrics {

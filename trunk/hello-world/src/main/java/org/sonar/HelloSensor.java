@@ -25,7 +25,7 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 
-//If you begin to understand the Sonar API, the AbstractJavaMavenCollector implements org.sonar.plugins.api.Extension
+//If you begin to understand the Sonar API, the Sensor implements org.sonar.api.Extension
 public class HelloSensor implements Sensor {
 
 
