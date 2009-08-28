@@ -14,6 +14,18 @@
     <p><span>Stability: <%= format_measure('sigmm-stability', :suffix => '') -%></span></p>
     <p><span>Testability: <%= format_measure('sigmm-testability', :suffix => '') -%></span></p>
   </p>
+  
+    <div class="yui-u">
+      <%= 
+	  a = measure('sigmm-analysability').value.to_s;
+	  c = measure('sigmm-changeability').value.to_s;
+	  s = measure('sigmm-stability').value.to_s;
+	  t = measure('sigmm-testability').value.to_s;
+
+	 gchart('cht=bvs&chco=00FF00&chs=200x125&chd=t:' + a + ',' + c + ',' + s + ',' + t + '&chds=-2,2&chxt=x,y&chxl=1:|-2|0|2|0:||A||C||S||T|')
+	  -%>
+   </div>
+  
 </div>
 <%
       end
