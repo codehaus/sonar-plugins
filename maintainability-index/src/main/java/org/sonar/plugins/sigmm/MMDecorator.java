@@ -69,27 +69,32 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
 
     MMRank volumeRanking = computeVolumeRanking(ncloc);
     MMRank duplicationRanking = computeDuplicationRanking(duplication);
-    MMRank complexityRanking = computeComplexityRanking(ncloc);
-    MMRank unitSizeRanking = computeVolumeRanking(ncloc);
+    MMRank complexityRanking = computeRankingFromMultipleLimits(MMMetricsDTO.complexityLines[0], MMMetricsDTO.complexityLines[1], MMMetricsDTO.complexityLines[2], ncloc);
+    MMRank unitSizeRanking = computeRankingFromMultipleLimits(MMMetricsDTO.unitSizeLines[0], MMMetricsDTO.unitSizeLines[1], MMMetricsDTO.unitSizeLines[2],ncloc);
     MMRank unitTestingRanking = computeVolumeRanking(coverage);
 
-    System.out.println("volumeRanking :" + volumeRanking);
-    System.out.println("duplicationRanking :" + duplicationRanking);
-    System.out.println("complexityRanking :" + complexityRanking);
-    System.out.println("unitSizeRanking :" + unitSizeRanking);
-    System.out.println("unitTestingRanking :" + unitTestingRanking);
+//    System.out.println("volumeRanking :" + volumeRanking);
+//    System.out.println("duplicationRanking :" + duplicationRanking);
+//    System.out.println("complexityRanking :" + complexityRanking);
+//    System.out.println("unitSizeRanking :" + unitSizeRanking);
+//    System.out.println("unitTestingRanking :" + unitTestingRanking);
 
     MMRank testabilityRanking = MMRank.averageRank(complexityRanking, unitSizeRanking, unitTestingRanking);
     MMRank stabilityRanking = MMRank.averageRank(unitTestingRanking);
     MMRank changeabilityRanking = MMRank.averageRank(complexityRanking, duplicationRanking);
-    MMRank analysibilityRanking = MMRank.averageRank(volumeRanking, duplicationRanking, unitSizeRanking, unitTestingRanking);
+    MMRank analysabilityRanking = MMRank.averageRank(volumeRanking, duplicationRanking, unitSizeRanking, unitTestingRanking);
+    
+//    System.out.println("testability: " + testabilityRanking);
+//    System.out.println("stability: " + stabilityRanking);
+//    System.out.println("chaneability: " + changeabilityRanking);
+//    System.out.println("analysability: " + analysabilityRanking);
 
-    MMRank maintainabilityRanking = MMRank.averageRank(testabilityRanking, stabilityRanking, changeabilityRanking, analysibilityRanking);
+    MMRank maintainabilityRanking = MMRank.averageRank(testabilityRanking, stabilityRanking, changeabilityRanking, analysabilityRanking);
 
     context.saveMeasure(MMMetrics.TESTABILITY, testabilityRanking.getValue());
     context.saveMeasure(MMMetrics.STABILITY, stabilityRanking.getValue());
     context.saveMeasure(MMMetrics.CHANGEABILITY, changeabilityRanking.getValue());
-    context.saveMeasure(MMMetrics.ANALYSABILITY, analysibilityRanking.getValue());
+    context.saveMeasure(MMMetrics.ANALYSABILITY, analysabilityRanking.getValue());
 
     context.saveMeasure(MMMetrics.MAINTAINABILIY, maintainabilityRanking.getValue());
   }
@@ -110,51 +115,51 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
     return findRangeValueBelongsTo(value, bottomLimits, false);
   }
 
-  protected MMRank computeComplexityRanking(double ncloc) {
-    int[] bottomLimits = {50, 20, 10};
+//  protected MMRank computeComplexityRanking(double ncloc) {
+//    int[] bottomLimits = {50, 20, 10};
+//
+//    int veryHigh = findNlocAboveComplexity(bottomLimits[0], 0);
+//    int high = findNlocAboveComplexity(bottomLimits[1], veryHigh);
+//    int moderate = findNlocAboveComplexity(bottomLimits[2], veryHigh + high);
+//
+//    return computeRankingFromMultipleLimits(veryHigh, high, moderate, ncloc);
+//  }
 
-    int veryHigh = findNlocAboveComplexity(bottomLimits[0], 0);
-    int high = findNlocAboveComplexity(bottomLimits[1], veryHigh);
-    int moderate = findNlocAboveComplexity(bottomLimits[2], veryHigh + high);
+//  private int findNlocAboveComplexity(int complexity, int alreadyCounted) {
+//    int nclocAboveComplexity = 0;
+//
+///*    Collection<SquidUnit> methodsVeryHigh = squid.search(new QueryByType(SquidMethod.class), new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN, complexity));
+//    for (SquidUnit method : methodsVeryHigh) {
+//      nclocAboveComplexity += method.getEndAtLine() - method.getStartAtLine();
+//    }
+//                                           */
+//    nclocAboveComplexity -= alreadyCounted;
+//    return nclocAboveComplexity;
+//  }
 
-    return computeRankingFromMultipleLimits(veryHigh, high, moderate, ncloc);
-  }
-
-  private int findNlocAboveComplexity(int complexity, int alreadyCounted) {
-    int nclocAboveComplexity = 0;
-
-/*    Collection<SquidUnit> methodsVeryHigh = squid.search(new QueryByType(SquidMethod.class), new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN, complexity));
-    for (SquidUnit method : methodsVeryHigh) {
-      nclocAboveComplexity += method.getEndAtLine() - method.getStartAtLine();
-    }
-                                           */
-    nclocAboveComplexity -= alreadyCounted;
-    return nclocAboveComplexity;
-  }
-
-  protected MMRank computeUnitSizeRanking(double ncloc) {
-    int[] bottomLimits = {25, 10, 5};
-
-    int veryHigh = findNlocAboveNcloc(bottomLimits[0], 0);
-    int high = findNlocAboveNcloc(bottomLimits[1], veryHigh);
-    int moderate = findNlocAboveNcloc(bottomLimits[2], veryHigh + high);
-
-    return computeRankingFromMultipleLimits(veryHigh, high, moderate, ncloc);
-  }
-
-  private int findNlocAboveNcloc(int nclocThreshold, int alreadyCounted) {
-    int nclocAboveNcloc = 0;
-
-    /*Collection<SquidUnit> methodsVeryHigh = squid.search(new QueryByType(SquidMethod.class), new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN, 0));
-    for (SquidUnit method : methodsVeryHigh) {
-      int ncloc = method.getEndAtLine() - method.getStartAtLine();
-      if (ncloc > nclocThreshold) {
-        nclocAboveNcloc += ncloc;
-      }
-    } */
-    nclocAboveNcloc -= alreadyCounted;
-    return nclocAboveNcloc;
-  }
+//  protected MMRank computeUnitSizeRanking(double ncloc) {
+//    int[] bottomLimits = {25, 10, 5};
+//
+//    int veryHigh = findNlocAboveNcloc(bottomLimits[0], 0);
+//    int high = findNlocAboveNcloc(bottomLimits[1], veryHigh);
+//    int moderate = findNlocAboveNcloc(bottomLimits[2], veryHigh + high);
+//
+//    return computeRankingFromMultipleLimits(veryHigh, high, moderate, ncloc);
+//  }
+//
+//  private int findNlocAboveNcloc(int nclocThreshold, int alreadyCounted) {
+//    int nclocAboveNcloc = 0;
+//
+//    /*Collection<SquidUnit> methodsVeryHigh = squid.search(new QueryByType(SquidMethod.class), new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN, 0));
+//    for (SquidUnit method : methodsVeryHigh) {
+//      int ncloc = method.getEndAtLine() - method.getStartAtLine();
+//      if (ncloc > nclocThreshold) {
+//        nclocAboveNcloc += ncloc;
+//      }
+//    } */
+//    nclocAboveNcloc -= alreadyCounted;
+//    return nclocAboveNcloc;
+//  }
 
   private MMRank computeRankingFromMultipleLimits(int veryHigh, int high, int moderate, double ncloc) {
     if (ncloc == 0) {
