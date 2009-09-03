@@ -2,21 +2,30 @@
       if measure('sigmm-maintainability')
 %>
 <div class="dashbox">
-  <h3><span title="<%= metric('sigmm-maintainability').description -%>"><%= metric('sigmm-maintainability').short_name -%></span></h3>
-  <p>
-    <span class="big">
-      <%= format_measure('sigmm-maintainability') -%>
-    </span>
-  </p>
-  <p>
-    <p><span>Analysability: <%= format_measure('sigmm-analysability', :suffix => '') -%></span></p>
-    <p><span>Changeability: <%= format_measure('sigmm-changeability', :suffix => '') -%></span></p>
-    <p><span>Stability: <%= format_measure('sigmm-stability', :suffix => '') -%></span></p>
-    <p><span>Testability: <%= format_measure('sigmm-testability', :suffix => '') -%></span></p>
-  </p>
+  <h2><span title="<%= metric('sigmm-maintainability').description -%>">SIG Maintainability Model</span></h2>
+	<br />
+  <table border="0">
+	<tr>
+		<td><b>Analysability</b>(A):</td>
+		<td><%= format_measure('sigmm-analysability', :suffix => '') -%></td>
+	</tr>
+	<tr>
+		<td><b>Changeability</b> (C):</td>
+		<td><%= format_measure('sigmm-changeability', :suffix => '') -%></td>
+	</tr>
+	<tr>
+		<td><b>Stability</b> (S):</td>
+		<td><%= format_measure('sigmm-stability', :suffix => '') -%></td>
+	</tr>
+	<tr>
+		<td><b>Testability</b> (T):</td>
+		<td><%= format_measure('sigmm-testability', :suffix => '') -%></td>
+	</tr>	
+  </table>
   
-    <div class="yui-u">
+    <div class="yui-u"><hr/>
       <%= 
+
 	  a = measure('sigmm-analysability').value.to_s;
 	  c = measure('sigmm-changeability').value.to_s;
 	  s = measure('sigmm-stability').value.to_s;
