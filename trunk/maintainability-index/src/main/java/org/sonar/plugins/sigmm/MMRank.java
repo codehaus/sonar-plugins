@@ -41,25 +41,25 @@ public enum MMRank {
     this.value = value;
   }
 
-  protected static MMRank[] ascSortedRanks() {
+  public static MMRank[] ascSortedRanks() {
     MMRank[] mmr = {MINUSMINUS, MINUS, ZERO, PLUS, PLUSPLUS};
     return mmr;
   }
 
-  protected static MMRank[] descSortedRanks() {
+  public static MMRank[] descSortedRanks() {
     MMRank[] mmr = {PLUSPLUS, PLUS, ZERO, MINUS, MINUSMINUS};
     return mmr;
   }
 
-  protected double getValue() {
+  public double getValue() {
     return value;
   }
 
-  protected static MMRank getRank(double value) {
+  public static MMRank getRank(double value) {
     return lookup.get(value);
   }
 
-  protected static MMRank averageRank(MMRank... list) {
+  public static MMRank averageRank(MMRank... list) {
     float average = 0;
     for (int i = 0; i < list.length; i++) {
       average += list[i].getValue();

@@ -21,28 +21,39 @@ package org.sonar.plugins.sigmm;
 
 import org.junit.Test;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class TestBridgeWithOutsideWorld {
 
   @Test
-  public void definedMetrics() {
+  public void testPluginsMetrics() {
     assertThat(new MMMetrics().getMetrics().size(), is(7));
   }
 
   @Test
-  public void definedExtensions() {
-    assertThat(new MMPlugin().getExtensions().size(), equalTo(4));
+  public void testDefinedExtensions() {
+    assertThat(new MMPlugin().getExtensions().size(), equalTo(5));
   }
 
   @Test
-  public void dependsUpon() {
-    assertThat(new MMDecorator().dependsOnMetrics().size(), equalTo(3));
+  public void testDecoratorDependsUpon() {
+    assertThat(new MMDecorator().dependsUpon().size(), equalTo(5));
   }
 
   @Test
-  public void dependedUpon() {
-    assertThat(new MMDecorator().generatesMetrics().size(), equalTo(5));
+  public void testDecoratorDependedUpon() {
+    assertThat(new MMDecorator().dependedUpon().size(), equalTo(5));
+  }
+
+  @Test
+  public void testDistributionDecoratorDependedUpon() {
+    assertThat(new MMDistributionDecorator().dependedUpon().size(), equalTo(2));
+  }
+
+  @Test
+  public void testSensorDependsUpon() {
+    assertThat(new MMSensor(null).dependsUpon().size(), equalTo(1));
   }
 }

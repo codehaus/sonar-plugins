@@ -20,14 +20,12 @@
 
 package org.sonar.plugins.sigmm;
 
-import org.junit.Test;
-import static org.junit.Assert.assertFalse;
+public class AxisRange {
+
+  private int[] limits;
+  private MMRank[] ranks;
 
 
-public class TestContextForDecorator {
+  
 
-  @Test
-  public void TestLanguagesItIsActivatedOn() {
-        assertFalse(false);
-  }
 }
