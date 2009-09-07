@@ -21,23 +21,25 @@
 
 package org.sonar.plugins.sigmm;
 
-import java.util.Collection;
+import java.util.*;
 
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.SquidSearch;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.measures.RangeDistributionBuilder;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.PersistenceMode;
 import org.sonar.squid.api.SquidMethod;
 import org.sonar.squid.api.SquidUnit;
-import org.sonar.squid.indexer.QueryByMeasure;
+import org.sonar.squid.api.SquidFile;
 import org.sonar.squid.indexer.QueryByType;
-import org.sonar.squid.indexer.QueryByMeasure.Operator;
-import org.sonar.squid.measures.Metric;
+import org.sonar.squid.indexer.QueryByParent;
+import org.apache.commons.lang.StringUtils;
 
-public class MMSensor implements Sensor
-{
+public class MMSensor implements Sensor {
   private SquidSearch squid;
 
   public MMSensor(SquidSearch squid) {
@@ -45,77 +47,55 @@ public class MMSensor implements Sensor
   }
 
   @DependsUpon
-  public String dependsUponSquid() {
-    return Sensor.FLAG_SQUID_ANALYSIS;
+  public List<String> dependsUpon() {
+    return Arrays.asList(Sensor.FLAG_SQUID_ANALYSIS);
   }
 
-
-  public void analyse(Project project, SensorContext context)
-  {
-    MMMetricsDTO.complexityLines = computeComplexityLines();
-    MMMetricsDTO.unitSizeLines = computeUnitSizeLines();
+  public boolean shouldExecuteOnProject(Project project) {
+    return MMPlugin.shouldExecuteOnProject(project);
   }
-  
-  protected int[] computeUnitSizeLines() {
-    int[] bottomLimits = {100, 60, 0};
 
-    int[] lines ={0, 0, 0};
-    // very high
-    lines[0] = findNlocAboveNcloc(bottomLimits[0], 0);
-    // high
-    lines[1] = findNlocAboveNcloc(bottomLimits[1], lines[0]);
-    // moderate
-    lines[2] = findNlocAboveNcloc(bottomLimits[2], lines[0] + lines[1]);
-    return lines;
+  public void analyse(Project project, SensorContext context) {
+    computeAndSaveDistributionForProjectFiles(context, MMConfiguration.NCLOC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_NCLOC_DISTRIB);
+    computeAndSaveDistributionForProjectFiles(context, MMConfiguration.CC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_CC_DISTRIB);
   }
-  
-  private int findNlocAboveNcloc(int nclocThreshold, int alreadyCounted) {
-    int nclocAboveNcloc = 0;
 
-    Collection<SquidUnit> methodsVeryHigh = squid.search(new QueryByType(SquidMethod.class), new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN, 0));
-    for (SquidUnit method : methodsVeryHigh) {
-      int ncloc = method.getEndAtLine() - method.getStartAtLine();
-      if (ncloc > nclocThreshold) {
-        nclocAboveNcloc += ncloc;
-      }
+  protected void computeAndSaveDistributionForProjectFiles(SensorContext context, Number[] bottomLimits, Metric metric) {
+    Collection<SquidUnit> files = squid.search(new QueryByType(SquidFile.class));
+    for (SquidUnit file : files) {
+      RangeDistributionBuilder distribution = computeDistributionForAFile(file, bottomLimits, metric);
+      saveMeasure(context, file, distribution);
     }
-    nclocAboveNcloc -= alreadyCounted;
-//    System.out.println("locAboveLoc (" + nclocThreshold + "): " + nclocAboveNcloc);
-    return nclocAboveNcloc;
   }
-  
-  protected int[] computeComplexityLines() {
-    int[] bottomLimits = {50, 20, 10};
-    
-    int[] lines ={0, 0, 0};
-    
-    // very high
-    lines[0] = findNlocAboveComplexity(bottomLimits[0], 0);
-    // high
-    lines[1] = findNlocAboveComplexity(bottomLimits[1], lines[0]);
-    // moderate
-    lines[2] = findNlocAboveComplexity(bottomLimits[2], lines[0] + lines[1]);
 
-    return lines;
-  }
-  
-  private int findNlocAboveComplexity(int complexity, int alreadyCounted) {
-    int nclocAboveComplexity = 0;
+  protected RangeDistributionBuilder computeDistributionForAFile(SquidUnit file, Number[] bottomLimits, Metric metric) {
+    Collection<SquidUnit> methods = squid.search(new QueryByParent(file), new QueryByType(SquidMethod.class));
 
-    Collection<SquidUnit> methods = squid.search(new QueryByType(SquidMethod.class), new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN, complexity));
+    RangeDistributionBuilder distribution = new RangeDistributionBuilder(metric, bottomLimits);
     for (SquidUnit method : methods) {
-      nclocAboveComplexity += method.getEndAtLine() - method.getStartAtLine();
+      int ncloc = method.getEndAtLine() - method.getStartAtLine() + 1;
+      int cc = method.getInt(org.sonar.squid.measures.Metric.COMPLEXITY);
+
+      distribution.add(mapKey(metric, ncloc, cc), ncloc);
     }
-                                          
-    nclocAboveComplexity -= alreadyCounted;
-//    System.out.println("locAboveComplexity (" + complexity + "): " + nclocAboveComplexity);
-    return nclocAboveComplexity;
+    return distribution;
   }
 
-  public boolean shouldExecuteOnProject(Project project)
-  {
-    // See SONARPLUGINS-190 to extend to other languages
-    return project.getLanguage().equals(Java.INSTANCE);
+  protected void saveMeasure(SensorContext context, SquidUnit file, RangeDistributionBuilder nclocDistribution) {
+    String key = StringUtils.removeEnd(file.getKey(), ".java");
+    Resource resource = context.getResource(key);
+    context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
   }
 
+  protected int mapKey(Metric metric, int ncloc, int cc) {
+    if (metric.equals(MMMetrics.NCLOC_BY_CC_DISTRIB)) {
+      return cc;
+    }
+    else if (metric.equals(MMMetrics.NCLOC_BY_NCLOC_DISTRIB)) {
+      return ncloc;
+    }
+    else {
+      return 0;
+    }
+  }
 }

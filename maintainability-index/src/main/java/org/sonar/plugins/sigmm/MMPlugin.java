@@ -20,11 +20,17 @@
 package org.sonar.plugins.sigmm;
 
 import org.sonar.api.Extension;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.ResourceUtils;
+import org.sonar.api.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/** {@inheritDoc} */
+/**
+ * {@inheritDoc}
+ */
 public final class MMPlugin implements org.sonar.api.Plugin {
 
   /**
@@ -41,6 +47,7 @@ public final class MMPlugin implements org.sonar.api.Plugin {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(MMMetrics.class);
     list.add(MMDecorator.class);
+    list.add(MMDistributionDecorator.class);
     list.add(MMWidget.class);
     list.add(MMSensor.class);
 
@@ -59,5 +66,21 @@ public final class MMPlugin implements org.sonar.api.Plugin {
    */
   public String getName() {
     return "SIG Maintainability Model";
+  }
+
+  protected static boolean shouldExecuteOnProject(Project project) {
+    // See SONARPLUGINS-190 to extend to other languages
+    return project.getLanguage().equals(Java.INSTANCE);
+  }
+
+  protected static boolean shouldPersistMeasures(Resource resource) {
+    if (ResourceUtils.isClass(resource) ||
+      ResourceUtils.isEntity(resource) ||
+      ResourceUtils.isModuleProject(resource) ||
+      ResourceUtils.isPackage(resource) ||
+      ResourceUtils.isUnitTestClass(resource)) {
+      return false;
+    }
+    return true;
   }
 }

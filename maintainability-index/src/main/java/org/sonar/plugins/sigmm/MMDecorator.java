@@ -27,8 +27,7 @@ import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Java;
-import org.sonar.api.resources.ResourceUtils;
+import org.sonar.plugins.sigmm.axis.MMAxis;
 
 import java.util.*;
 
@@ -41,110 +40,41 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    // See SONARPLUGINS-190 to extend to other languages
-    return project.getLanguage().equals(Java.INSTANCE);
+    return MMPlugin.shouldExecuteOnProject(project);
   }
 
   @DependsUpon
-  public List<Metric> dependsOnMetrics() {
-    return Arrays.asList(CoreMetrics.NCLOC, CoreMetrics.DUPLICATED_LINES_DENSITY, CoreMetrics.COVERAGE);
+  public List<Metric> dependsUpon() {
+    return Arrays.asList(CoreMetrics.NCLOC, CoreMetrics.DUPLICATED_LINES_DENSITY, CoreMetrics.COVERAGE,
+      MMMetrics.NCLOC_BY_CC_DISTRIB, MMMetrics.NCLOC_BY_NCLOC_DISTRIB);
   }
 
   @DependedUpon
-  public List<Metric> generatesMetrics() {
-    return Arrays.asList(MMMetrics.ANALYSABILITY, MMMetrics.CHANGEABILITY, MMMetrics.TESTABILITY, MMMetrics.STABILITY, MMMetrics.MAINTAINABILIY);
+  public List<Metric> dependedUpon() {
+    return Arrays.asList(MMMetrics.ANALYSABILITY, MMMetrics.CHANGEABILITY, MMMetrics.TESTABILITY, MMMetrics.STABILITY,
+      MMMetrics.MAINTAINABILIY);
   }
 
   /**
    * {@inheritDoc}
    */
   public void decorate(Resource resource, DecoratorContext context) {
-    if (!ResourceUtils.isRootProject(resource)) {
+    if (!MMPlugin.shouldPersistMeasures(resource)) {
       return;
     }
+    MMConfiguration config = new MMConfiguration(context);
 
-    double ncloc = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC), 0.0);
-    double duplication = MeasureUtils.getValue(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY), 0.0);
-    double coverage = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COVERAGE), 0.0);
-
-    MMRank volumeRanking = computeVolumeRanking(ncloc);
-    MMRank duplicationRanking = computeDuplicationRanking(duplication);
-    MMRank complexityRanking = computeRankingFromMultipleLimits(MMMetricsDTO.complexityLines[0], MMMetricsDTO.complexityLines[1], MMMetricsDTO.complexityLines[2], ncloc);
-    MMRank unitSizeRanking = computeRankingFromMultipleLimits(MMMetricsDTO.unitSizeLines[0], MMMetricsDTO.unitSizeLines[1], MMMetricsDTO.unitSizeLines[2],ncloc);
-    MMRank unitTestingRanking = computeUnitTestRanking(coverage);
-
-//    System.out.println("volumeRanking :" + volumeRanking);
-//    System.out.println("duplicationRanking :" + duplicationRanking);
-//    System.out.println("complexityRanking :" + complexityRanking);
-//    System.out.println("unitSizeRanking :" + unitSizeRanking);
-//    System.out.println("unitTestingRanking :" + unitTestingRanking);
-
-    MMRank testabilityRanking = MMRank.averageRank(complexityRanking, unitSizeRanking, unitTestingRanking);
-    MMRank stabilityRanking = MMRank.averageRank(unitTestingRanking);
-    MMRank changeabilityRanking = MMRank.averageRank(complexityRanking, duplicationRanking);
-    MMRank analysabilityRanking = MMRank.averageRank(volumeRanking, duplicationRanking, unitSizeRanking, unitTestingRanking);
-    
-//    System.out.println("testability: " + testabilityRanking);
-//    System.out.println("stability: " + stabilityRanking);
-//    System.out.println("chaneability: " + changeabilityRanking);
-//    System.out.println("analysability: " + analysabilityRanking);
-
-    MMRank maintainabilityRanking = MMRank.averageRank(testabilityRanking, stabilityRanking, changeabilityRanking, analysabilityRanking);
-
-    context.saveMeasure(MMMetrics.TESTABILITY, testabilityRanking.getValue());
-    context.saveMeasure(MMMetrics.STABILITY, stabilityRanking.getValue());
-    context.saveMeasure(MMMetrics.CHANGEABILITY, changeabilityRanking.getValue());
-    context.saveMeasure(MMMetrics.ANALYSABILITY, analysabilityRanking.getValue());
-
-    context.saveMeasure(MMMetrics.MAINTAINABILIY, maintainabilityRanking.getValue());
+    saveMeasure(context, config.getTestabilityAxis(), MMMetrics.TESTABILITY);
+    saveMeasure(context, config.getStabilityAxis(), MMMetrics.STABILITY);
+    saveMeasure(context, config.getChangeabilityAxis(), MMMetrics.CHANGEABILITY);
+    saveMeasure(context, config.getAnalysibilityAxis(), MMMetrics.ANALYSABILITY);
+    saveMeasure(context, config.getMaintainability(), MMMetrics.MAINTAINABILIY);
   }
 
-  protected MMRank computeVolumeRanking(double value) {
-    // Values for Java
-    int[] bottomLimits = {1310000, 655000, 246000, 66000, 0};
-    return findRangeValueBelongsTo(value, bottomLimits, true);
-  }
-
-  protected MMRank computeDuplicationRanking(double value) {
-    int[] bottomLimits = {20, 10, 5, 3, 0};
-    return findRangeValueBelongsTo(value, bottomLimits, true);
-  }
-
-  protected MMRank computeUnitTestRanking(double value) {
-    int[] bottomLimits = {95, 80, 60, 20, 0};
-    return findRangeValueBelongsTo(value, bottomLimits, false);
-  }
-
-  private MMRank computeRankingFromMultipleLimits(int veryHigh, int high, int moderate, double ncloc) {
-    if (ncloc == 0) {
-      return null;
+  private void saveMeasure(DecoratorContext context, MMAxis axis, Metric metric) {
+    MMRank rank = axis.getRank();
+    if (rank != null) {
+      context.saveMeasure(metric, rank.getValue());
     }
-
-    int[] moderateLimits = {25, 30, 40, 50};
-    int[] highLimits = {0, 5, 10, 15};
-    int[] veryHighLimits = {0, 0, 0, 5};
-
-    MMRank[] sortedRanks = MMRank.descSortedRanks();
-
-    for (int i = 0; i < 4; i++) {
-      if (moderate / ncloc * 100 < moderateLimits[i]
-        && high / ncloc * 100 < highLimits[i]
-        && veryHigh / ncloc * 100 < veryHighLimits[i]) {
-        return sortedRanks[i];
-      }
-    }
-    return MMRank.MINUSMINUS;
   }
-
-  private MMRank findRangeValueBelongsTo(double value, int[] bottomLimits, boolean isAsc) {
-    MMRank[] sortedRanks = isAsc ? MMRank.ascSortedRanks() : MMRank.descSortedRanks();
-    for (int i = 0; i <= 4; i++) {
-      if (value >= bottomLimits[i]) {
-        return sortedRanks[i];
-      }
-    }
-    return null;
-  }
-
-
 }
