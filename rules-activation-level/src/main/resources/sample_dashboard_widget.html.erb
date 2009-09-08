@@ -1,0 +1,31 @@
+<div class="dashbox">
+  <h3><span title="<%= metric('random_boolean').description -%>"><%= metric('random_boolean').short_name -%></span></h3>
+  <p>
+    <span class="big">
+      <%= format_measure('random_boolean') -%>
+    </span>
+  </p>
+  <p>
+    <%= format_measure('ncloc', :suffix => ' lines', :url => url_for_drilldown('ncloc')) -%>
+  </p>
+</div>
+<div class="dashbox">
+	<h3>Help</h3>
+	<p>
+      <a href="<%= url_for_resource_gwt('org.sonar.plugins.core.hotspots.GwtHotspots') -%>" class="action">Link to hotspots</a><br/>
+      <a href="<%= url_for_gwt('com.mycompany.sonar.page.GwtSamplePage') -%>" class="action">Link to sample page</a>
+    </p>
+
+    <p>
+      Read configuration : <%= configuration('sonar.jdbc.username') -%>
+    </p>
+
+   	<p>
+	    Sample of Jfree Eastwood chart : <br/>
+		<%= gchart('cht=bhs&chco=FF0000,00FF00,0000FF&chs=200x125&chd=s:FOE,THE,Bar&chxt=x,y&chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|') -%>
+	  </p>
+	  <p>
+      Sample of Jfree Eastwood pie chart : <br/>
+    <%= piechart(measure('sample_distribution'), :size => '250x95') -%>
+    </p>
+</div>
