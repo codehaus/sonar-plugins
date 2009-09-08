@@ -1,41 +1,64 @@
 <%
       if measure('sigmm-maintainability')
+
+	    def self.format(ms)
+	      mapping = {'0.0' => '--', '1.0' => '-', '2.0' => '0', '3.0' => '+', '4.0' => '++'};
+	      mapping[shift_measure(ms)];
+	    end
+
+	    def self.shift_measure(ms)
+	      (measure(ms).value + 2).to_s;
+	    end
+
+      def self.color(ms)
+        color_mapping = {'++' => '00ff00', '+' => '7fff00', '0' => 'ffff00', '-' => 'ff7f00', '--' => 'ff0000'};
+        color_mapping[format(ms)];
+      end
+
+
+	    a = 'sigmm-analysability';
+	    c = 'sigmm-changeability';
+	    s = 'sigmm-stability';
+	    t = 'sigmm-testability';
+	    m = 'sigmm-maintainability';
+
 %>
-<div class="dashbox">
-  <h2><span title="<%= metric('sigmm-maintainability').description -%>">SIG Maintainability Model</span></h2>
-	<br />
-  <table border="0">
-	<tr>
-		<td><b>Analysability</b>(A):</td>
-		<td><%= format_measure('sigmm-analysability', :suffix => '') -%></td>
-	</tr>
-	<tr>
-		<td><b>Changeability</b> (C):</td>
-		<td><%= format_measure('sigmm-changeability', :suffix => '') -%></td>
-	</tr>
-	<tr>
-		<td><b>Stability</b> (S):</td>
-		<td><%= format_measure('sigmm-stability', :suffix => '') -%></td>
-	</tr>
-	<tr>
-		<td><b>Testability</b> (T):</td>
-		<td><%= format_measure('sigmm-testability', :suffix => '') -%></td>
-	</tr>	
-  </table>
-  
-    <div class="yui-u"><hr/>
-      <%= 
+<div class="yui-g">
+  <div class="yui-u first">
+    <div class="dashbox">
+    	<table>
+    		<tr>
+    			<td align="right"><h2><span title="<%= metric(m).description -%>">SIG Maintain. Model</span></h2></td>
+    			<td style="padding-left:2px;"><a href="" target="Wiki"><%= image_tag 'help.png', :class => 'png' -%></a></td>
+				</tr>
+			</table>
+			<table>
+    		<tr>
+    			<td>(A)nalysability</td>
+    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(a) -%>;"><%= format(a) -%></span></b></td>
+				</tr>
+    		<tr>
+    			<td><span>(C)hangeability</span></td>
+    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(c) -%>;"><%= format(c) -%></span></b></td>
+				</tr>
+    		<tr>
+    			<td><span>(S)tability</span></td>
+    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(s) -%>;"><%= format(s) -%></span></b></td>
+				</tr>
+    		<tr>
+    			<td><span>(T)estability</span></td>
+    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(t) -%>;"><%= format(t) -%></span></b></td>
+				</tr>
+			</table>
+    </div>
+  </div>
+  <div class="yui-u">
+  <%=
+    chart('ck=xradar&w=120&h=120&c=' + color(m) + '|' + color(m) + '&m=4&g=0.2&l=A,C,S,T&v=' + shift_measure(a) + ',' + shift_measure(c) + ',' + shift_measure(s) + ',' + shift_measure(t)) -%>
 
-	  a = measure('sigmm-analysability').value.to_s;
-	  c = measure('sigmm-changeability').value.to_s;
-	  s = measure('sigmm-stability').value.to_s;
-	  t = measure('sigmm-testability').value.to_s;
-
-	 gchart('cht=bvs&chco=00FF00&chs=200x125&chd=t:' + a + ',' + c + ',' + s + ',' + t + '&chds=-2,2&chxt=x,y&chxl=1:|-2|0|2|0:||A||C||S||T|')
-	  -%>
-   </div>
-  
+  </div>
 </div>
+
 <%
       end
 %>
