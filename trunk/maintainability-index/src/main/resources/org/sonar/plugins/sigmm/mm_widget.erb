@@ -29,25 +29,25 @@
     	<table>
     		<tr>
     			<td align="right"><h2><span title="<%= metric(m).description -%>">SIG Maintain. Model</span></h2></td>
-    			<td style="padding-left:2px;"><a href="" target="Wiki"><%= image_tag 'help.png', :class => 'png' -%></a></td>
+    			<td style="padding-left:3px;"><a href="" target="Wiki"><%= image_tag 'help.png', :class => 'png' -%></a></td>
 				</tr>
 			</table>
 			<table>
     		<tr>
     			<td>(A)nalysability</td>
-    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(a) -%>;"><%= format(a) -%></span></b></td>
+    			<td align="right" style="padding-left:20px;"><%= format(a) -%></span></td>
 				</tr>
     		<tr>
     			<td><span>(C)hangeability</span></td>
-    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(c) -%>;"><%= format(c) -%></span></b></td>
+    			<td align="right" style="padding-left:20px;"><%= format(c) -%></td>
 				</tr>
     		<tr>
     			<td><span>(S)tability</span></td>
-    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(s) -%>;"><%= format(s) -%></span></b></td>
+    			<td align="right" style="padding-left:20px;"><%= format(s) -%></td>
 				</tr>
     		<tr>
     			<td><span>(T)estability</span></td>
-    			<td align="center" style="padding-left:20px;"><b><span style="font-size:143%; color:#<%= color(t) -%>;"><%= format(t) -%></span></b></td>
+    			<td align="right" style="padding-left:20px;"><%= format(t) -%></td>
 				</tr>
 			</table>
     </div>
