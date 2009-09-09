@@ -1,0 +1,52 @@
+<%
+      if measure('rules-activation-level')
+%>
+<div class="dashbox">
+  <div class="yui-gc">
+    <div class="yui-u first">
+        <h3><span title="<%= metric('rules-activation-level').description -%>"><%= metric('rules-activation-level').short_name -%></span></h3>
+    <%
+      active = measure('rules-activation-distribution')
+      priority = Array.new(5)
+      labels = Array.new(5)
+      i=0
+      active.data.split(';').each do |pair|
+        priority[i] = pair.split('=')[1]
+        labels[i] = pair.split('=')[0]
+        i = i+1
+      end
+    %>
+    <table>
+      <tr>
+        <td>Blocker </td>
+        <td align="right" style="padding-left:40px;"><%= priority[4]-%> </p>
+      </tr>
+      <tr>
+        <td>Critical</td>
+        <td align="right"><%= priority[3]-%> </p>
+      </tr>
+      <tr>
+        <td>Major</td>
+        <td align="right"><%= priority[2]-%> </p>
+      </tr>
+      <tr>
+        <td>Minor</td>
+        <td align="right"><%= priority[1]-%> </p>
+      </tr>
+      <tr>
+        <td>Info</td>
+        <td align="right"><%= priority[0]-%> </p>
+      </tr>
+    </table>
+    </div>
+    <div class="yui-u">
+      <%=chart('ck=thermometer&w=120&h=120&v=' + measure('rules-activation-level').value.to_s ) -%>
+    </div>
+  </div>
+</div>
+
+
+
+<%
+      end
+%>

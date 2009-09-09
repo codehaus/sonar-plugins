@@ -21,44 +21,31 @@ package org.sonar.plugins.ral;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
-import org.sonar.plugins.ral.batch.*;
-import org.sonar.plugins.ral.web.SampleFooter;
-import org.sonar.plugins.ral.web.SampleDashboardWidget;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SamplePlugin implements Plugin {
+public class RulesActivationPlugin implements Plugin {
 
   public String getKey() {
-    return "sample";
+    return "rules-activation-level";
   }
 
   public String getName() {
-    return "Sample";
+    return "Rules Activation Level";
   }
 
   public String getDescription() {
-    return "Sample description";
+    return "Rules Activation Level";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
 
-    // batch extensions
-    extensions.add(SampleMetrics.class);
-    extensions.add(SampleLanguage.class);
-    extensions.add(TodoSensor.class);
-    extensions.add(TodoMavenPluginHandler.class);
-    extensions.add(MetaMeasureDecorator.class);
-    extensions.add(RandomMeasuresDecorator.class);
-    extensions.add(DistributionDecorator.class);
-    extensions.add(SampleBuildBreaker.class);
-    extensions.add(SamplePostJob.class);
-
-    // web extensions
-    extensions.add(SampleFooter.class);
-    extensions.add(SampleDashboardWidget.class);
+    extensions.add(RulesActivationMetrics.class);
+    extensions.add(RulesActivationWidget.class);
+    extensions.add(RulesActivationDecorator.class);
+    extensions.add(GaugeChart.class);
 
     return extensions;
   }
