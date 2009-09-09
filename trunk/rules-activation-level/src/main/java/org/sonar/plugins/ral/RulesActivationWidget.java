@@ -17,24 +17,21 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.ral.web;
+package org.sonar.plugins.ral;
 
 import org.sonar.api.web.AbstractDashboardWidget;
 
-public class SampleDashboardWidget extends AbstractDashboardWidget {
+public class RulesActivationWidget extends AbstractDashboardWidget {
+  public String getTemplate() {
+    try {
+      return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/rules_activation_widget.erb"), "UTF-8");
 
-  // uncomment for development
-
-//  public String getTemplate() {
-//    try {
-//      return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/sample_dashboard_widget.html.erb"), "UTF-8");
-//
-//    } catch (java.io.IOException e) {
-//      throw new RuntimeException("Can not load the file");
-//    }
-//  }
+    } catch (java.io.IOException e) {
+      throw new RuntimeException("Can not load the file");
+    }
+  }
 
   protected String getTemplatePath() {
-    return "/sample_dashboard_widget.html.erb";
+    return "/org/sonar/plugins/ral/rules_activation_widget.erb";
   }
 }

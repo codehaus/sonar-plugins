@@ -16,11 +16,11 @@
   <name>Sonar Rules Activation Level plugin</name>
 
   <properties>
-    <sonar.plugin.class>org.codehaus.sonar-plugins.ral.RALPlugin</sonar.plugin.class>
+    <sonar.plugin.class>org.sonar.plugins.ral.RulesActivationPlugin</sonar.plugin.class>
     <sonar.version>1.10</sonar.version>
   </properties>
 
-  <developers>
+  <developers>                                               
     <developer>
       <id>ogaudin</id>
       <name>Olivier Gaudin</name>
@@ -33,7 +33,14 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>                           
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
+      <scope>test</scope>
+     <type>test-jar</type>
     </dependency>
   </dependencies>
   <build>
