@@ -22,13 +22,13 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.Task;
 import org.jdesktop.application.TaskMonitor;
 import org.sonar.squid.Squid;
-import org.sonar.squid.api.SquidClass;
+import org.sonar.squid.api.SourceClass;
 import org.sonar.squid.api.SquidConfiguration;
-import org.sonar.squid.api.SquidFile;
-import org.sonar.squid.api.SquidMethod;
-import org.sonar.squid.api.SquidPackage;
-import org.sonar.squid.api.SquidProject;
-import org.sonar.squid.api.SquidUnit;
+import org.sonar.squid.api.SourceFile;
+import org.sonar.squid.api.SourceMethod;
+import org.sonar.squid.api.SourcePackage;
+import org.sonar.squid.api.SourceProject;
+import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.ast.JavaAstScanner;
 import org.sonar.squid.measures.Metric;
 
@@ -280,12 +280,12 @@ public class DesktopApplication1View extends FrameView {
 
   private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {// GEN-FIRST:event_jTree1ValueChanged
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
-    if (node.getUserObject() instanceof SquidUnit) {
-      SquidUnit squidUnit = (SquidUnit) node.getUserObject();
+    if (node.getUserObject() instanceof SourceCode) {
+      SourceCode squidUnit = (SourceCode) node.getUserObject();
       StringBuilder sb = new StringBuilder();
 
-      if (squidUnit instanceof SquidProject) {
-        SquidProject squidProject = (SquidProject) squidUnit;
+      if (squidUnit instanceof SourceProject) {
+        SourceProject squidProject = (SourceProject) squidUnit;
         sb.append("Project ").append(squidProject.getKey()).append("\n");
         sb.append("Packages ").append(squidUnit.getInt(Metric.PACKAGES)).append("\n");
         sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
@@ -293,25 +293,25 @@ public class DesktopApplication1View extends FrameView {
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidPackage) {
+      } else if (squidUnit instanceof SourcePackage) {
         sb.append("Package ").append(squidUnit.getKey()).append("\n");
         sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidFile) {
+      } else if (squidUnit instanceof SourceFile) {
         sb.append("File ").append(squidUnit.getKey()).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidClass) {
+      } else if (squidUnit instanceof SourceClass) {
         sb.append("Classe :").append(squidUnit.getKey()).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidMethod) {
+      } else if (squidUnit instanceof SourceMethod) {
         sb.append("Method :").append(squidUnit.getKey()).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
@@ -325,12 +325,12 @@ public class DesktopApplication1View extends FrameView {
 
   private void jTree1ValueChangedMostAndLess(javax.swing.event.TreeSelectionEvent evt) {// GEN-FIRST:event_jTree1ValueChangedMostAndLess
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
-    if (node.getUserObject() instanceof SquidUnit) {
-      SquidUnit squidUnit = (SquidUnit) node.getUserObject();
+    if (node.getUserObject() instanceof SourceCode) {
+      SourceCode squidUnit = (SourceCode) node.getUserObject();
       StringBuilder sb = new StringBuilder();
 
-      if (squidUnit instanceof SquidProject) {
-        SquidProject squidProject = (SquidProject) squidUnit;
+      if (squidUnit instanceof SourceProject) {
+        SourceProject squidProject = (SourceProject) squidUnit;
         sb.append("Project ").append(squidProject.getKey()).append("\n");
         sb.append("Packages ").append(squidUnit.getInt(Metric.PACKAGES)).append("\n");
         sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
@@ -338,28 +338,28 @@ public class DesktopApplication1View extends FrameView {
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidPackage) {
+      } else if (squidUnit instanceof SourcePackage) {
         sb.append("Package ").append(squidUnit.getKey()).append("\n");
         sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidFile) {
+      } else if (squidUnit instanceof SourceFile) {
         sb.append("File ").append(squidUnit.getKey()).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-      } else if (squidUnit instanceof SquidClass) {
+      } else if (squidUnit instanceof SourceClass) {
         sb.append("Classe :").append(squidUnit.getKey()).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
-        for (SquidUnit child : squidUnit.getChildren()) {
+        for (SourceCode child : squidUnit.getChildren()) {
           sb.append(child.getKey()).append("\n");
         }
-      } else if (squidUnit instanceof SquidMethod) {
+      } else if (squidUnit instanceof SourceMethod) {
         sb.append("Method :").append(squidUnit.getKey()).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
         sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
@@ -410,7 +410,7 @@ public class DesktopApplication1View extends FrameView {
       // on a background thread, so don't reference
       // the Swing GUI from here.
       Squid squid = new org.sonar.squid.Squid(new SquidConfiguration());
-      SquidUnit squidUnit = null;
+      SourceCode squidUnit = null;
       if (selectedFile != null) {
         squid.scanDir(JavaAstScanner.class, selectedFile);
         squidUnit = squid.computeMeasures();
@@ -423,16 +423,16 @@ public class DesktopApplication1View extends FrameView {
       // Runs on the EDT. Update the GUI based on
       // the result computed by doInBackground().
       if (result != null) {
-        SquidUnit squidUnit = (SquidUnit) result;
+        SourceCode squidUnit = (SourceCode) result;
         DefaultMutableTreeNode rootNode = getNode(squidUnit);
         jTree1.setModel(new DefaultTreeModel(rootNode));
       }
     }
 
-    private DefaultMutableTreeNode getNode(SquidUnit squidUnit) {
+    private DefaultMutableTreeNode getNode(SourceCode squidUnit) {
       // DefaultMutableTreeNode node = new DefaultMutableTreeNode(toStringFirstLevel(squidUnit));
       DefaultMutableTreeNode node = new DefaultMutableTreeNode(squidUnit);
-      for (SquidUnit child : squidUnit.getChildren()) {
+      for (SourceCode child : squidUnit.getChildren()) {
         node.add(getNode(child));
       }
       return node;
