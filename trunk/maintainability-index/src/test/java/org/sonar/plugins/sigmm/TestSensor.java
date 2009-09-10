@@ -31,9 +31,9 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.File;
 import org.sonar.squid.indexer.Query;
-import org.sonar.squid.api.SquidUnit;
-import org.sonar.squid.api.SquidFile;
-import org.sonar.squid.api.SquidMethod;
+import org.sonar.squid.api.SourceCode;
+import org.sonar.squid.api.SourceFile;
+import org.sonar.squid.api.SourceMethod;
 import static org.mockito.Mockito.*;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -59,7 +59,7 @@ public class TestSensor {
     when(context.getResource("foo")).
       thenReturn(resource);
 
-    SquidUnit file = new SquidFile("foo");
+    SourceCode file = new SourceFile("foo");
     Number[] bLimits = {30, 20, 10, 0};
     RangeDistributionBuilder distrib = new RangeDistributionBuilder(MMMetrics.NCLOC_BY_NCLOC_DISTRIB, bLimits);
     MMSensor sensor = new MMSensor(null);
@@ -82,7 +82,7 @@ public class TestSensor {
   @Test
   public void testNclocDistributionComputingForAFile() {
     Number[] limits = {40, 20, 10, 0};
-    Collection<SquidUnit> units = new ArrayList<SquidUnit>();
+    Collection<SourceCode> units = new ArrayList<SourceCode>();
 
     units.add(createMethod("1", 12, 22));
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_NCLOC_DISTRIB), "0=0;10=12;20=0;40=0");
@@ -98,15 +98,15 @@ public class TestSensor {
 
   }
 
-  private String getDistributionData(Collection<SquidUnit> units, Number[] limits, Metric metric) {
+  private String getDistributionData(Collection<SourceCode> units, Number[] limits, Metric metric) {
     MMSensor sensor = new MMSensor(new SquidSearchImpl(units));
     RangeDistributionBuilder distribution = sensor.computeDistributionForAFile(null, limits, metric);
 
     return distribution.build().getData();
   }
 
-  private SquidMethod createMethod(String key, int ncloc, int cc) {
-    SquidMethod method = new SquidMethod("foo");
+  private SourceMethod createMethod(String key, int ncloc, int cc) {
+    SourceMethod method = new SourceMethod("foo");
     int startLine = 100;
 
     method.setMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, cc);
@@ -117,17 +117,17 @@ public class TestSensor {
   }
 
   class SquidSearchImpl implements SquidSearch {
-    private Collection<SquidUnit> units;
+    private Collection<SourceCode> units;
 
-    SquidSearchImpl(Collection<SquidUnit> units) {
+    SquidSearchImpl(Collection<SourceCode> units) {
       this.units = units;
     }
 
-    public Collection<SquidUnit> search(Query... query) {
+    public Collection<SourceCode> search(Query... query) {
       return units;
     }
 
-    public SquidUnit search(String key) {
+    public SourceCode search(String key) {
       return null;
     }
   }
