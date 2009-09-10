@@ -61,10 +61,18 @@ public enum MMRank {
 
   public static MMRank averageRank(MMRank... list) {
     float average = 0;
+    int nbElements=0;
     for (int i = 0; i < list.length; i++) {
+      if (list[i] == null) {
+        continue;
+      }
       average += list[i].getValue();
+      nbElements++;
     }
-    average /= list.length;
+    if (nbElements == 0) {
+      return null;
+    }
+    average /= nbElements;
     return getRank(Math.round(average));
   }
 }
