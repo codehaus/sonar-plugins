@@ -32,9 +32,9 @@ import org.sonar.api.resources.Resource;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PersistenceMode;
-import org.sonar.squid.api.SquidMethod;
-import org.sonar.squid.api.SquidUnit;
-import org.sonar.squid.api.SquidFile;
+import org.sonar.squid.api.SourceMethod;
+import org.sonar.squid.api.SourceCode;
+import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.indexer.QueryByType;
 import org.sonar.squid.indexer.QueryByParent;
 import org.apache.commons.lang.StringUtils;
@@ -61,18 +61,18 @@ public class MMSensor implements Sensor {
   }
 
   protected void computeAndSaveDistributionForProjectFiles(SensorContext context, Number[] bottomLimits, Metric metric) {
-    Collection<SquidUnit> files = squid.search(new QueryByType(SquidFile.class));
-    for (SquidUnit file : files) {
+    Collection<SourceCode> files = squid.search(new QueryByType(SourceFile.class));
+    for (SourceCode file : files) {
       RangeDistributionBuilder distribution = computeDistributionForAFile(file, bottomLimits, metric);
       saveMeasure(context, file, distribution);
     }
   }
 
-  protected RangeDistributionBuilder computeDistributionForAFile(SquidUnit file, Number[] bottomLimits, Metric metric) {
-    Collection<SquidUnit> methods = squid.search(new QueryByParent(file), new QueryByType(SquidMethod.class));
+  protected RangeDistributionBuilder computeDistributionForAFile(SourceCode file, Number[] bottomLimits, Metric metric) {
+    Collection<SourceCode> methods = squid.search(new QueryByParent(file), new QueryByType(SourceMethod.class));
 
     RangeDistributionBuilder distribution = new RangeDistributionBuilder(metric, bottomLimits);
-    for (SquidUnit method : methods) {
+    for (SourceCode method : methods) {
       int ncloc = method.getEndAtLine() - method.getStartAtLine() + 1;
       int cc = method.getInt(org.sonar.squid.measures.Metric.COMPLEXITY);
 
@@ -81,7 +81,7 @@ public class MMSensor implements Sensor {
     return distribution;
   }
 
-  protected void saveMeasure(SensorContext context, SquidUnit file, RangeDistributionBuilder nclocDistribution) {
+  protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
     String key = StringUtils.removeEnd(file.getKey(), ".java");
     Resource resource = context.getResource(key);
     context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
