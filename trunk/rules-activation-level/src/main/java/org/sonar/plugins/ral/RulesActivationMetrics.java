@@ -29,7 +29,7 @@ import java.util.List;
 public class RulesActivationMetrics implements Metrics {
 
   public static final Metric RULES_ACTIVATION_LEVEL = new Metric("rules-activation-level", "Rules Activation Level", "Level of activation of the profile", Metric.ValueType.PERCENT, 1, Boolean.TRUE, CoreMetrics.DOMAIN_RULES);
-  public static final Metric RULES_ACTIVATION_LEVEL_DISTRIBUTION = new Metric("rules-activation-distribution", "Rules Activation Level Distribution", "Distribution of activation level of the profile", Metric.ValueType.DATA, 1, Boolean.FALSE, CoreMetrics.DOMAIN_RULES);
+  public static final Metric RULES_ACTIVATION_LEVEL_DISTRIBUTION = new Metric("rules-activation-distribution", "Rules Activation Level Distribution", "Distribution of activation level of the profile", Metric.ValueType.DATA, 0, Boolean.FALSE, CoreMetrics.DOMAIN_RULES);
 
   public List<Metric> getMetrics() {
     return Arrays.asList(RULES_ACTIVATION_LEVEL, RULES_ACTIVATION_LEVEL_DISTRIBUTION);

@@ -27,6 +27,7 @@ import org.sonar.api.charts.AbstractChart;
 import org.sonar.api.charts.ChartParameters;
 
 import java.awt.Color;
+import java.text.NumberFormat;
 
 public class GaugeChart extends AbstractChart {
   public static final String PARAM_VALUES = "v";
@@ -37,29 +38,38 @@ public class GaugeChart extends AbstractChart {
 
   @Override
   protected Plot getPlot(ChartParameters params) {
-
     ThermometerPlot plot = new ThermometerPlot(createDataset(params));
+
     plot.setGap(1);
-    plot.setSubrange(0, 0, 100);
+
+    plot.setRange(0, 1);
+    plot.setSubrange(0, 0, 1);
+
     plot.setSubrangePaint(0, Color.decode("#ffffff"));
     plot.setSubrangePaint(1, Color.decode("#ffffff"));
     plot.setSubrangePaint(2, Color.decode("#ffffff"));
+
     plot.setMercuryPaint(Color.decode("#dddddd"));
     plot.setThermometerPaint(Color.decode("#aaaaaa"));
     plot.setValuePaint(Color.decode("#333333"));
+
     plot.setUseSubrangePaint(false);
     plot.setUnits(ThermometerPlot.UNITS_NONE);
     plot.setBulbRadius(15);
     plot.setColumnRadius(6);
-    plot.setRangeAxis(new NumberAxis("%"));
+
+    NumberAxis axis = new NumberAxis();
+    axis.setNumberFormatOverride(NumberFormat.getPercentInstance());
+    plot.setRangeAxis(axis);
     plot.setValueLocation(ThermometerPlot.NONE);
+    
     return plot;
   }
 
 
   private ValueDataset createDataset(ChartParameters params) {
     String value = params.getValue(PARAM_VALUES);
-    DefaultValueDataset set = new DefaultValueDataset(Double.valueOf(value));
+    DefaultValueDataset set = new DefaultValueDataset(Double.valueOf(value) / 100);
     return set;
   }
 
