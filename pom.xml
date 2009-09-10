@@ -30,6 +30,7 @@
 		    <module>parent</module>
 		    <module>pdf-report</module>
 		    <module>php</module>
+		    <module>rules-activation-level</module>
 		    <module>sonar-squid-gui</module>
 		    <module>taglist</module>
 		    <module>technical-debt</module>
