@@ -23,7 +23,7 @@ package org.sonar.plugins.sigmm.axis;
 import org.sonar.plugins.sigmm.MMRank;
 import org.sonar.api.batch.DecoratorContext;
 
-public class CombinedAxis implements MMAxis{
+public class CombinedAxis implements MMAxis {
   private MMAxis[] axisCombination;
 
   public CombinedAxis(MMAxis... axisCombination) {
@@ -32,12 +32,9 @@ public class CombinedAxis implements MMAxis{
 
   public MMRank getRank() {
     MMRank[] rankList = new MMRank[axisCombination.length];
-    for (int i=0; i<axisCombination.length; i++) {
+    for (int i = 0; i < axisCombination.length; i++) {
       MMRank rank = axisCombination[i].getRank();
-      if(rank != null) {
-        rankList[i] = rank;
-      }
-      else return null;
+      rankList[i] = rank;
     }
     return MMRank.averageRank(rankList);
   }

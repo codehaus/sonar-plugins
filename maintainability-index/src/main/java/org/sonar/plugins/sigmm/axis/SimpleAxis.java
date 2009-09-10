@@ -22,7 +22,9 @@ package org.sonar.plugins.sigmm.axis;
 
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.MeasureUtils;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.resources.ResourceUtils;
 import org.sonar.plugins.sigmm.MMRank;
 
 public class SimpleAxis implements MMAxis {

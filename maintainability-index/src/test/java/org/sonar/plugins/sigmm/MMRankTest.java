@@ -22,6 +22,7 @@ package org.sonar.plugins.sigmm;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 public class MMRankTest {
 
@@ -60,7 +61,7 @@ public class MMRankTest {
 
   @Test
   public void testAverageRanking() {
-    assertEquals(MMRank.averageRank(), MMRank.ZERO);
+    assertNull(MMRank.averageRank());
     assertEquals(MMRank.averageRank(MMRank.MINUS, MMRank.MINUS), MMRank.MINUS);
     assertEquals(MMRank.averageRank(MMRank.MINUS, MMRank.PLUS), MMRank.ZERO);
     assertEquals(MMRank.averageRank(MMRank.ZERO, MMRank.PLUS), MMRank.PLUS);
