@@ -90,7 +90,7 @@ public class RulesActivationDecorator implements Decorator {
           activateDistribution.put(activePriority, activateDistribution.get(activePriority) + 1);
           activatedWeight += weights.get(activePriority);
         }
-        totalDistribution.put(totalPriority, activateDistribution.get(totalPriority) + 1);
+        totalDistribution.put(totalPriority, totalDistribution.get(totalPriority) + 1);
         totalWeight += weights.get(totalPriority);
       }
     }

@@ -22,14 +22,14 @@ package org.sonar.plugins.ral;
 import org.sonar.api.web.AbstractDashboardWidget;
 
 public class RulesActivationWidget extends AbstractDashboardWidget {
-  public String getTemplate() {
+  /*public String getTemplate() {
     try {
       return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/rules_activation_widget.erb"), "UTF-8");
 
     } catch (java.io.IOException e) {
       throw new RuntimeException("Can not load the file");
     }
-  }
+  } */
 
   protected String getTemplatePath() {
     return "/org/sonar/plugins/ral/rules_activation_widget.erb";
