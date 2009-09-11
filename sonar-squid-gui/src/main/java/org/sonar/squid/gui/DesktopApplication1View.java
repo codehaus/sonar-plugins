@@ -292,29 +292,29 @@ public class DesktopApplication1View extends FrameView {
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourcePackage) {
         sb.append("Package ").append(squidUnit.getKey()).append("\n");
         sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourceFile) {
         sb.append("File ").append(squidUnit.getKey()).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourceClass) {
         sb.append("Classe :").append(squidUnit.getKey()).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourceMethod) {
         sb.append("Method :").append(squidUnit.getKey()).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       }
       // sb.append("\n=== SquidUnit.toString() ===\n");
       // sb.append(squidUnit.toString());
@@ -337,32 +337,32 @@ public class DesktopApplication1View extends FrameView {
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourcePackage) {
         sb.append("Package ").append(squidUnit.getKey()).append("\n");
         sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourceFile) {
         sb.append("File ").append(squidUnit.getKey()).append("\n");
         sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       } else if (squidUnit instanceof SourceClass) {
         sb.append("Classe :").append(squidUnit.getKey()).append("\n");
         sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
         for (SourceCode child : squidUnit.getChildren()) {
           sb.append(child.getKey()).append("\n");
         }
       } else if (squidUnit instanceof SourceMethod) {
         sb.append("Method :").append(squidUnit.getKey()).append("\n");
         sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.NCLOC)).append("\n");
+        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
       }
       // sb.append("\n=== SquidUnit.toString() ===\n");
       // sb.append(squidUnit.toString());
