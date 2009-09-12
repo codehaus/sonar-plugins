@@ -84,15 +84,15 @@ public class TestSensor {
     Number[] limits = {40, 20, 10, 0};
     Collection<SourceCode> units = new ArrayList<SourceCode>();
 
-    units.add(createMethod("1", 12, 22));
+    units.add(createMethod(12, 22));
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_NCLOC_DISTRIB), "0=0;10=12;20=0;40=0");
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_CC_DISTRIB), "0=0;10=0;20=12;40=0");
 
-    units.add(createMethod("2", 100, 1));
+    units.add(createMethod(100, 1));
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_NCLOC_DISTRIB), "0=0;10=12;20=0;40=100");
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_CC_DISTRIB), "0=100;10=0;20=12;40=0");
 
-    units.add(createMethod("2", 36, 36));
+    units.add(createMethod(36, 36));
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_NCLOC_DISTRIB), "0=0;10=12;20=36;40=100");
     assertEquals(getDistributionData(units, limits, MMMetrics.NCLOC_BY_CC_DISTRIB), "0=100;10=0;20=48;40=0");
 
@@ -105,13 +105,11 @@ public class TestSensor {
     return distribution.build().getData();
   }
 
-  private SourceMethod createMethod(String key, int ncloc, int cc) {
+  private SourceMethod createMethod(int ncloc, int cc) {
     SourceMethod method = new SourceMethod("foo");
-    int startLine = 100;
 
     method.setMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, cc);
-    method.setStartAtLine(startLine);
-    method.setEndAtLine(startLine + ncloc - 1);
+    method.setMeasure(org.sonar.squid.measures.Metric.LINES_OF_CODE, ncloc);
 
     return method;
   }
