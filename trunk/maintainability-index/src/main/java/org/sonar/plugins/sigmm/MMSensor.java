@@ -73,7 +73,7 @@ public class MMSensor implements Sensor {
 
     RangeDistributionBuilder distribution = new RangeDistributionBuilder(metric, bottomLimits);
     for (SourceCode method : methods) {
-      int ncloc = method.getEndAtLine() - method.getStartAtLine() + 1;
+      int ncloc = method.getInt(org.sonar.squid.measures.Metric.LINES_OF_CODE);
       int cc = method.getInt(org.sonar.squid.measures.Metric.COMPLEXITY);
 
       distribution.add(mapKey(metric, ncloc, cc), ncloc);
