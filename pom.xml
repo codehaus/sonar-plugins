@@ -30,7 +30,8 @@
 		    <module>parent</module>
 		    <module>pdf-report</module>
 		    <module>php</module>
-		    <module>rules-activation-level</module>
+		    <module>rules-meter</module>
+		    <module>sigmm</module>
 		    <module>sonar-squid-gui</module>
 		    <module>taglist</module>
 		    <module>technical-debt</module>
