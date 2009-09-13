@@ -10,10 +10,10 @@
   </parent>
 
   <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>sonar-rulesactivation-plugin</artifactId>
+  <artifactId>sonar-rulesmeter-plugin</artifactId>
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar Rules Activation Level plugin</name>
+  <name>Rules Meter Sonar Plugin</name>
 
   <properties>
     <sonar.plugin.class>org.sonar.plugins.ral.RulesActivationPlugin</sonar.plugin.class>
