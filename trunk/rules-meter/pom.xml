@@ -11,7 +11,7 @@
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-rulesmeter-plugin</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
+  <version>0.1-SNAPSHOT</version>
   <name>Rules Meter Sonar Plugin</name>
 
   <properties>
