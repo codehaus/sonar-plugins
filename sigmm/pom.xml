@@ -104,8 +104,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/maintainability-index</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/maintainability-index</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sigmm</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
 </project>
