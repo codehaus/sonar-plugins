@@ -13,21 +13,17 @@
 <%= javascript_include_tag 'jit-yc' %>
 <style type="text/css">
 #bigtreemap {
-    width:800px;
-    height:600px;
     position: relative;
+    height:600px;
 }
 #bigtreemap div {
     position:absolute;
     overflow:hidden;
-    font-size:12px;
-    padding-top: 2px;
-    padding-left: 2px;
-    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;    
+    padding-top: 4px;
+    padding-left: 4px;
 }
 #bigtreemap .content {
     background-color:white;
-    border:0px solid #111;
 }
 #bigtreemap .head {
     color:white;
@@ -37,14 +33,12 @@
     background-color:#655;
 }
 #bigtreemap .body {
-    background-color:black;
+    background-color:white;
 }
 #bigtreemap .leaf {
     color:white;
-    background-color:#111;
     display:table-cell;
     vertical-align:middle;
-    border:1px solid #000;
 }
 #bigtreemap .over-leaf {
     border:1px solid #9FD4FF; 
@@ -57,47 +51,43 @@
     color:red;
 }
 </style>
-
-<table>
-	<tr>
-		<td valign="top">
-			<div id="bigtreemap"></div>
-			<%= image_tag('loading.gif', {:id => "tm_loading"}) %>
-		</td>
-		<td valign="top">
-			<form name="tm_controls" style="padding-top:15px; padding-left:10px;">
-				<table class="spaced">
-					<tr>
-					    <td valign="bottom">
-					      <span class="comments">Size</span>
-					      <br/>
-					      <%= select_tag 'size_metric', options_from_collection_for_select(
-					        Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
-					        :id => 'select_size_metric', :class => 'small',:onchange => "load_bigtreemap();" %>
-					    </td>
-					  </tr>
-					  <tr>
-					    <td>
-					      <span class="comments">Color</span>&nbsp;&nbsp;
-					      <br/>
-					      <%= select_tag 'color_metric', options_from_collection_for_select(
-					          Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
-					          :id => 'select_color_metric', :class => 'small', :onchange => "load_bigtreemap();" %>
-					    </td>
-					  </tr>
-				</table>
-			</form>
-		</td>
-	</tr>
-</table>
+<form name="tm_controls" style="padding-top:10px; padding-left:6px;">
+	<table>
+		<tr>
+		    <td>
+		      <span class="comments">Size:</span>
+		      <%= select_tag 'size_metric', options_from_collection_for_select(
+		        Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
+		        :id => 'select_size_metric', :class => 'small',:onchange => "load_bigtreemap();" %>
+		    </td>
+		    <td>
+		      <span class="comments">Color:</span>
+		      <%= select_tag 'color_metric', options_from_collection_for_select(
+		          Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
+		          :id => 'select_color_metric', :class => 'small', :onchange => "load_bigtreemap();" %>
+		    </td>
+		    <td>
+		    	<span style="padding-left:15px"><%= link_to(image_tag('zoom.png'), {:layout => 'false'}) %>
+		    </td>
+		    <td valign="top">
+				<span style="padding-left:15px"><%= image_tag('loading.gif', {:id => "tm_loading"}) %></span>
+			</td>
+		</tr>
+	</table>
+</form>
+<div id="bigtreemap"></div>
 
 <script language="javascript">
- 
+
 	var treemap = null;
 	var resource_key = null;
 	var parent_resource_key = null;
 	var size_metric = null;
 	var color_metric = null;
+	
+	var dimensions = $('content').getDimensions();
+	$('bigtreemap').style.width=dimensions.width;
+	$('bigtreemap').style.height=dimensions.height;
 	
 	TM.Squarified.implement({  
 	       onLeftClick: function(elem) {
@@ -126,6 +116,24 @@
             },
             headBox: function(json, coord) {
             	return "<div></div>";
+            },
+            setColor: function(json) {
+              if (json.data.$color == null) {
+              	return rgbToHexColor([221, 221, 221]);
+              }
+              var c = this.config.Color,
+			  maxcv = c.maxColorValue,
+			  mincv = c.minColorValue,
+			  maxv = c.maxValue,
+			  minv = c.minValue,
+			  diff = maxv - minv,
+			  x = (json.data.$color - 0);
+			  //linear interpolation    
+			  var comp = function(i, x) { 
+			    return Math.round((((maxcv[i] - mincv[i]) / diff) * (x - minv) + mincv[i])); 
+			  };
+			    
+			  return rgbToHexColor([ comp(0, x), comp(1, x), comp(2, x) ]);
             }
 		});
 		
@@ -136,30 +144,17 @@
 	function get_bigtreemap(color_metric_direction) {
 	
 		return new TM.Squarified({  
-		     //Where to inject the treemap.  
 		     rootId: 'bigtreemap',  
-		     titleHeight: 20,
-		     //Add click handlers for  
-		     //zooming the Treemap in and out  
+		     titleHeight: 1,
+		     offset: 8,
 		     addLeftClickHandler: true,  
-		     addRightClickHandler: true,  
-		       
-		     //When hovering a node highlight the nodes  
-		     //between the root node and the hovered node. This  
-		     //is done by adding the 'in-path' CSS class to each node.  
+		     addRightClickHandler: true,
 		     selectPathOnHover: true,  
 		               
 		     Color: {  
 		         allow: true,  
-		         //Set min value and max value constraints  
-		         //for the *$color* property value.  
-		         //Default's to -100 and 100.  
-		         minValue: 0,  
-		         maxValue: 100,  
-		         //Set color range. Default's to reddish and greenish.  
-		         //It takes an array of three  
-		         //integers as R, G and B values.
-		          
+		         minValue: 0,
+		         maxValue: 100,
 		         maxColorValue: (color_metric_direction == 1 ? [0, 255, 50] : [255, 0, 50]),  
 		         minColorValue: (color_metric_direction == 1 ? [255, 0, 50] : [0, 255, 50])  
 		     },  
@@ -172,9 +167,7 @@
 		       onShow: function(tip, node, isLeaf, domElement) {  
 		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div>" +   
 		             "<div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";   
-		       },    
-		   
-		       //Build the tooltip inner html by taking each node data property  
+		       },
 		       makeHTMLFromData: function(data){  
 		           var html = '<table><tr><td align=left>' + size_metric + '</td><td align=right><b>' + data.size_frmt + 
 		           '</b></td></tr><tr><td align=left>' + color_metric + '</td><td align=right><b>' +data.color_frmt + '</b></td></tr></table>';
@@ -182,7 +175,6 @@
 		       }
 		     },
 		   
-		     //Remove all element events before destroying it.  
 		     onDestroyElement: function(content, tree, isLeaf, leaf){  
 		         if(leaf.clearAttributes) leaf.clearAttributes();  
 		     },
@@ -192,6 +184,15 @@
              }  
 	 	}); 
     }
+    
+    function rgbToHexColor(srcArray, array){
+	    var hex = [];
+	    for (var i = 0; i < 3; i++){
+	        var bit = (srcArray[i] - 0).toString(16);
+	        hex.push((bit.length == 1) ? '0' + bit : bit);
+	    }
+	    return (array) ? hex : '#' + hex.join('');
+	};
 
 	function load_bigtreemap() {
 	    if (treemap != null) {

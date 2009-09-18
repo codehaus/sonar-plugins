@@ -70,10 +70,12 @@ class Api::RubyBigTreemapWebServiceController < Api::RestController
       if measures
         size = get_measure(size_metric, measures)
         color = get_measure(color_metric, measures)
-        children << {:children => [], :data => {'$color' => get_measure_value(color), '$area' => get_measure_value(size),
-                                                  :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color)}, 
-                                      :id => snapshot.project.key , :name => snapshot.project.name}
-        area = area + get_measure_value(size)
+        if size
+          children << {:children => [], :data => {'$color' => get_measure_value(color), '$area' => get_measure_value(size),
+                                                    :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color)}, 
+                                        :id => snapshot.project.key , :name => snapshot.project.name}
+          area = area + get_measure_value(size)
+        end
       end
     end
     
@@ -92,17 +94,17 @@ class Api::RubyBigTreemapWebServiceController < Api::RestController
   end
   
   def get_measure_value(measure)
-    if measure.nil?
-      value = -1
-    elsif measure.metric.value_type==Metric::VALUE_TYPE_LEVEL
-      case(measure.text_value)
-        when Metric::TYPE_LEVEL_OK : value=100
-        when Metric::TYPE_LEVEL_WARN : value=50
-        when Metric::TYPE_LEVEL_ERROR : value=0
-        else value = -1
+    value = nil
+    if measure
+      if measure.metric.value_type==Metric::VALUE_TYPE_LEVEL
+        case(measure.text_value)
+          when Metric::TYPE_LEVEL_OK : value=100
+          when Metric::TYPE_LEVEL_WARN : value=50
+          when Metric::TYPE_LEVEL_ERROR : value=0
+        end
+      else
+        value = measure.value
       end
-    else
-      value = measure.value
     end
     value
   end
