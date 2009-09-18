@@ -1,0 +1,233 @@
+<%
+# The 1.1.3 jit script need to be modified with the following code
+# line 8138 makes tree map anchors work :
+# var from = e.target || e.srcElement;
+# if (from instanceof HTMLAnchorElement) {
+# 	// event originated form an anchor link, returning
+# 	return;
+# }
+#
+# line 7606 (replace jit tip css class name on tip elements by sonar tooltip css class name) :
+# tip.className = 'tooltip';
+%>
+<%= javascript_include_tag 'jit-yc' %>
+<style type="text/css">
+#bigtreemap {
+    width:800px;
+    height:600px;
+    position: relative;
+}
+#bigtreemap div {
+    position:absolute;
+    overflow:hidden;
+    font-size:12px;
+    padding-top: 2px;
+    padding-left: 2px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;    
+}
+#bigtreemap .content {
+    background-color:white;
+    border:0px solid #111;
+}
+#bigtreemap .head {
+    color:white;
+    background-color:#444;
+}
+#bigtreemap .head.in-path {
+    background-color:#655;
+}
+#bigtreemap .body {
+    background-color:black;
+}
+#bigtreemap .leaf {
+    color:white;
+    background-color:#111;
+    display:table-cell;
+    vertical-align:middle;
+    border:1px solid #000;
+}
+#bigtreemap .over-leaf {
+    border:1px solid #9FD4FF; 
+}
+#bigtreemap .over-content {
+    background-color: #9FD4FF;
+}
+#bigtreemap .over-head { /* boy i'm funny! */
+    background-color:#A4D9FF;
+    color:red;
+}
+</style>
+
+<table>
+	<tr>
+		<td valign="top">
+			<div id="bigtreemap"></div>
+			<%= image_tag('loading.gif', {:id => "tm_loading"}) %>
+		</td>
+		<td valign="top">
+			<form name="tm_controls" style="padding-top:15px; padding-left:10px;">
+				<table class="spaced">
+					<tr>
+					    <td valign="bottom">
+					      <span class="comments">Size</span>
+					      <br/>
+					      <%= select_tag 'size_metric', options_from_collection_for_select(
+					        Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
+					        :id => 'select_size_metric', :class => 'small',:onchange => "load_bigtreemap();" %>
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					      <span class="comments">Color</span>&nbsp;&nbsp;
+					      <br/>
+					      <%= select_tag 'color_metric', options_from_collection_for_select(
+					          Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
+					          :id => 'select_color_metric', :class => 'small', :onchange => "load_bigtreemap();" %>
+					    </td>
+					  </tr>
+				</table>
+			</form>
+		</td>
+	</tr>
+</table>
+
+<script language="javascript">
+ 
+	var treemap = null;
+	var resource_key = null;
+	var parent_resource_key = null;
+	var size_metric = null;
+	var color_metric = null;
+	
+	TM.Squarified.implement({  
+	       onLeftClick: function(elem) {
+	          resource_key = elem.parentNode.id;
+	          load_bigtreemap();
+	       },
+	       onRightClick: function() {
+	          resource_key = parent_resource_key;
+	          load_bigtreemap();
+	       },
+	       leafBox: function(json, coord) {
+				var config = this.config;
+				var backgroundColor = config.Color.allow && this.setColor(json), 
+				offst = config.offset,
+				width = coord.width - offst,
+				height = coord.height - offst;
+				var c = {
+				  'top':   (offst / 2)  + "px",
+				  'height':height + "px",
+				  'width': width + "px",
+				  'left': (offst / 2) + "px",
+				  'cursor': 'pointer'
+				};
+				if(backgroundColor) c['background-color'] = backgroundColor;
+				return "<div class=\"leaf\" style=\"" + this.toStyle(c) + "\"><a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a></div>";
+            },
+            headBox: function(json, coord) {
+            	return "<div></div>";
+            }
+		});
+		
+	function dashboard_url(resource_key) {
+		return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
+	}
+ 
+	function get_bigtreemap(color_metric_direction) {
+	
+		return new TM.Squarified({  
+		     //Where to inject the treemap.  
+		     rootId: 'bigtreemap',  
+		     titleHeight: 20,
+		     //Add click handlers for  
+		     //zooming the Treemap in and out  
+		     addLeftClickHandler: true,  
+		     addRightClickHandler: true,  
+		       
+		     //When hovering a node highlight the nodes  
+		     //between the root node and the hovered node. This  
+		     //is done by adding the 'in-path' CSS class to each node.  
+		     selectPathOnHover: true,  
+		               
+		     Color: {  
+		         allow: true,  
+		         //Set min value and max value constraints  
+		         //for the *$color* property value.  
+		         //Default's to -100 and 100.  
+		         minValue: 0,  
+		         maxValue: 100,  
+		         //Set color range. Default's to reddish and greenish.  
+		         //It takes an array of three  
+		         //integers as R, G and B values.
+		          
+		         maxColorValue: (color_metric_direction == 1 ? [0, 255, 50] : [255, 0, 50]),  
+		         minColorValue: (color_metric_direction == 1 ? [255, 0, 50] : [0, 255, 50])  
+		     },  
+		       
+		     //Allow tips  
+		     Tips: {  
+		       allow: true,  
+		       offsetX: 20,  
+		       offsetY: 20,  
+		       onShow: function(tip, node, isLeaf, domElement) {  
+		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div>" +   
+		             "<div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";   
+		       },    
+		   
+		       //Build the tooltip inner html by taking each node data property  
+		       makeHTMLFromData: function(data){  
+		           var html = '<table><tr><td align=left>' + size_metric + '</td><td align=right><b>' + data.size_frmt + 
+		           '</b></td></tr><tr><td align=left>' + color_metric + '</td><td align=right><b>' +data.color_frmt + '</b></td></tr></table>';
+		           return html;  
+		       }
+		     },
+		   
+		     //Remove all element events before destroying it.  
+		     onDestroyElement: function(content, tree, isLeaf, leaf){  
+		         if(leaf.clearAttributes) leaf.clearAttributes();  
+		     },
+		     
+		     onLeftClick: function() {  
+				alert('onleft');
+             }  
+	 	}); 
+    }
+
+	function load_bigtreemap() {
+	    if (treemap != null) {
+	    	treemap.empty();
+	    	treemap = null;
+	    }
+	    $('tm_loading').show();
+	    $('bigtreemap').hide();
+	    
+	    url = '<%=ApplicationController.root_context-%>/api/plugins/RubyBigTreemapWebService';
+	    if (resource_key != null) {
+	    	url += '?resource=' + resource_key + '&';
+	    } else {
+	    	url += '?';
+	    }
+	 
+		new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemapcallback',
+		  {
+		    method: 'get',
+		    requestHeaders: {Accept: 'application/json'},
+		    onSuccess: function(transport) {
+		      eval(transport.responseText);
+		    },
+		    onFailure: function(){ alert('Something went wrong...') }
+		  });
+	}
+	
+	function treemapcallback(json) {
+		$('tm_loading').hide();
+		$('bigtreemap').show();
+		treemap = get_bigtreemap(json['color_metric_direction']);
+		parent_resource_key = json['parent'];
+		size_metric = json['size_metric'];
+		color_metric = json['color_metric'];
+		treemap.loadJSON(json);
+	}
+	
+	load_bigtreemap();
+</script>
