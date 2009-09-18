@@ -27,7 +27,7 @@ import org.sonar.api.web.views.RubyRailsPage;
 public class RubyBigTreemapPage extends AbstractRubyTemplate implements RubyRailsPage {
 
   public String getTitle() {
-    return "Big treemap";
+    return "Radiator";
   }
 
   @Override

@@ -28,11 +28,11 @@ import org.sonar.api.Plugin;
 public class BigTreemapPlugin implements Plugin {
 
   public String getKey() {
-    return "bigtreemap";
+    return "radiator";
   }
 
   public String getName() {
-    return "Big treemap";
+    return "Radiator";
   }
 
   public String getDescription() {
