@@ -21,20 +21,24 @@ package org.sonar.plugins.secrules;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulesManager;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.ArrayList;
 
 public class RulesParser {
 
   private List<Rule> rulesList;
 
-  protected RulesParser(String resourcePath, RulesManager rulesManager) {
+  protected RulesParser(String resourcePath, String defaultResourcePath, RulesManager rulesManager) {
+    rulesList = new ArrayList<Rule>();
     InputStream input = getClass().getResourceAsStream(resourcePath);
+    if (input == null) {
+      input = getClass().getResourceAsStream(defaultResourcePath);
+    }
     if (input == null) {
       throw new IllegalArgumentException();
     }
