@@ -47,7 +47,7 @@ public class SecurityRulesDecorator implements Decorator {
     this.rulesProfile = rulesProfile;
     this.configuration = configuration;
     weights = getPriorityWeights();
-    this.rules = new RulesParser("/org/sonar/plugins/secrules/default-security-rules.properties", rulesManager).getRulesList();
+    this.rules = new RulesParser("/extensions/plugins/security-rules.properties", "/org/sonar/plugins/secrules/default-security-rules.properties", rulesManager).getRulesList();
   }
 
 
@@ -90,7 +90,7 @@ public class SecurityRulesDecorator implements Decorator {
     context.saveMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS, weightedViolations);
     context.saveMeasure(countDistribution.build());
     if (ncloc > 0){
-      context.saveMeasure(SecurityRulesMetrics.SECURITY_RCI, weightedViolations / ncloc * 100);
+      context.saveMeasure(SecurityRulesMetrics.SECURITY_RCI, 100 - weightedViolations / ncloc * 100);
     }
 
   }
@@ -106,7 +106,11 @@ public class SecurityRulesDecorator implements Decorator {
         List<Violation> violations = context.getViolations();
         for (Violation violation : violations) {
           if (violation.getRule().equals(activeRule.getRule())) {
-            distribution.put(activeRule.getPriority(), distribution.get(activeRule.getPriority()) + 1);
+            int current = 0;
+            if (distribution.get(activeRule.getPriority()) != null) {
+              current += distribution.get(activeRule.getPriority());
+            }
+            distribution.put(activeRule.getPriority(), current + 1);
           }
         }
       }
