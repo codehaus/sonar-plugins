@@ -27,10 +27,12 @@
 		    <module>jlint</module>
 		    <module>jtest</module>
 		    <module>maven-report</module>
+		    <module>motion-chart</module>
 		    <module>parent</module>
 		    <module>pdf-report</module>
 		    <module>php</module>
 		    <module>rules-meter</module>
+		    <module>radiator</module>
 		    <module>sigmm</module>
 		    <module>sonar-squid-gui</module>
 		    <module>taglist</module>
