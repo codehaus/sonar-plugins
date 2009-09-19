@@ -1,15 +1,14 @@
-<% if measure('tags') %>
+<% if measure('security-violations') %>
   <div class="yui-gd">
     <div class="yui-u first">
       <div class="dashbox">
-        <h3>Tags</h3>
-        <p><span class="big"><%= format_measure('tags', :url => url_for_drilldown('tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0')%></span></p>
-        <p><span"><%= format_measure('mandatory_tags', :suffix => ' mandatory', :url => url_for_drilldown('mandatory_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 mandatory') %></span></p>
-        <p><span"><%= format_measure('optional_tags', :suffix => ' optional', :url => url_for_drilldown('optional_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 optional') %></span></p>
+        <h3>Security defects</h3>
+        <p><span class="big"><%= format_measure('security-violations', :url => url_for_drilldown('security-violations'), :default => '0')%></span></p>
+        <p><span"><%= format_measure('security-rci', :suffix => ' compliance', :url => url_for_drilldown('security-rci'), :default => '0') %></span></p>
       </div>
     </div>
     <div class="yui-u">
-      <%= piechart(measure('tags_distribution'), { :size => "248x64"}) -%>
+      <%= piechart(measure('security-violations-distribution'), { :size => "242x70"}) -%>
     </div>
   </div>
 <% end %>
