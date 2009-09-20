@@ -24,14 +24,14 @@ import org.sonar.api.web.AbstractDashboardWidget;
 public class ArtifactSizeWidget extends AbstractDashboardWidget {
 
   // For tests purposes
-  public String getTemplate() {
+  /*public String getTemplate() {
       try {
           return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/Windows/Temp/toto.erb"), "UTF-8");
 
       } catch (java.io.IOException e) {
           throw new RuntimeException("Can not load the file");
       }
-  }
+  } */
 
   @Override
   protected String getTemplatePath() {
