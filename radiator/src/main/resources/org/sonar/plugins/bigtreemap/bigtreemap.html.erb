@@ -73,10 +73,10 @@
 		     	layout = (layout == 'true' || layout.nil? ) ? 'false' : 'true'
 		     	alt = (layout == 'true' || layout.nil? ) ? 'Collapse' : 'Expand'
 		     	%>
-		    	<span style="padding-left:15px"><%= link_to(image_tag('expand_collapse.jpg', :alt => alt), {:layout => layout}) %>
+		    	<span style="padding-left:10px"><%= link_to(image_tag('expand_collapse.jpg', :alt => alt), {:layout => layout}) %>
 		    </td>
-		    <td valign="top">
-				<span style="padding-left:15px"><%= image_tag('loading.gif', {:id => "tm_loading"}) %></span>
+		    <td>
+				<span style="padding-left:10px"><%= image_tag('loading.gif', {:id => "tm_loading"}) %></span>
 			</td>
 		</tr>
 	</table>
@@ -89,8 +89,7 @@
 	var all_projects_radiator = <%= @project.nil? ? 'true' : 'false' %>;
 	var current_resource_key = null;
 	var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
-	var size_metric = null;
-	var color_metric = null;
+	var size_metric, color_metric = null;
 	
 	var dimensions = $('content').getDimensions();
 	$('bigtreemap').style.width=dimensions.width;
@@ -127,22 +126,7 @@
             	return "<div></div>";
             },
             setColor: function(json) {
-              if (json.data.$color == null) {
-              	return rgbToHexColor([221, 221, 221]);
-              }
-              var c = this.config.Color,
-			  maxcv = c.maxColorValue,
-			  mincv = c.minColorValue,
-			  maxv = c.maxValue,
-			  minv = c.minValue,
-			  diff = maxv - minv,
-			  x = (json.data.$color - 0);
-			  //linear interpolation    
-			  var comp = function(i, x) { 
-			    return Math.round((((maxcv[i] - mincv[i]) / diff) * (x - minv) + mincv[i])); 
-			  };
-			    
-			  return rgbToHexColor([ comp(0, x), comp(1, x), comp(2, x) ]);
+              return json.data.$color;
             }
 		});
 		
@@ -161,11 +145,7 @@
 		     selectPathOnHover: true,  
 		               
 		     Color: {  
-		         allow: true,  
-		         minValue: 0,
-		         maxValue: 100,
-		         maxColorValue: (color_metric_direction == 1 ? [0, 255, 50] : [255, 0, 50]),  
-		         minColorValue: (color_metric_direction == 1 ? [255, 0, 50] : [0, 255, 50])  
+		         allow: true
 		     },  
 		       
 		     //Allow tips  
@@ -193,15 +173,6 @@
              }  
 	 	}); 
     }
-    
-    function rgbToHexColor(srcArray, array){
-	    var hex = [];
-	    for (var i = 0; i < 3; i++){
-	        var bit = (srcArray[i] - 0).toString(16);
-	        hex.push((bit.length == 1) ? '0' + bit : bit);
-	    }
-	    return (array) ? hex : '#' + hex.join('');
-	};
 
 	function load_bigtreemap(resource_key) {
 	    if (treemap != null) {
