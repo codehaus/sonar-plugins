@@ -51,6 +51,7 @@
     color:red;
 }
 </style>
+<%= render :partial => '/project/snapshot_title' %>
 <form name="tm_controls" style="padding-top:10px; padding-left:6px;">
 	<table>
 		<tr>
@@ -58,16 +59,21 @@
 		      <span class="comments">Size:</span>
 		      <%= select_tag 'size_metric', options_from_collection_for_select(
 		        Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
-		        :id => 'select_size_metric', :class => 'small',:onchange => "load_bigtreemap();" %>
+		        :id => 'select_size_metric', :class => 'small',:onchange => "load_bigtreemap(current_resource_key);" %>
 		    </td>
 		    <td>
 		      <span class="comments">Color:</span>
 		      <%= select_tag 'color_metric', options_from_collection_for_select(
 		          Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
-		          :id => 'select_color_metric', :class => 'small', :onchange => "load_bigtreemap();" %>
+		          :id => 'select_color_metric', :class => 'small', :onchange => "load_bigtreemap(current_resource_key);" %>
 		    </td>
 		    <td>
-		    	<span style="padding-left:15px"><%= link_to(image_tag('zoom.png'), {:layout => 'false'}) %>
+		     	<%
+		     	layout = params[:layout]
+		     	layout = (layout == 'true' || layout.nil? ) ? 'false' : 'true'
+		     	alt = (layout == 'true' || layout.nil? ) ? 'Collapse' : 'Expand'
+		     	%>
+		    	<span style="padding-left:15px"><%= link_to(image_tag('expand_collapse.jpg', :alt => alt), {:layout => layout}) %>
 		    </td>
 		    <td valign="top">
 				<span style="padding-left:15px"><%= image_tag('loading.gif', {:id => "tm_loading"}) %></span>
@@ -80,8 +86,9 @@
 <script language="javascript">
 
 	var treemap = null;
-	var resource_key = null;
-	var parent_resource_key = null;
+	var all_projects_radiator = <%= @project.nil? ? 'true' : 'false' %>;
+	var current_resource_key = null;
+	var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
 	var size_metric = null;
 	var color_metric = null;
 	
@@ -91,12 +98,14 @@
 	
 	TM.Squarified.implement({  
 	       onLeftClick: function(elem) {
-	          resource_key = elem.parentNode.id;
-	          load_bigtreemap();
+	          load_bigtreemap(elem.parentNode.id);
 	       },
 	       onRightClick: function() {
-	          resource_key = parent_resource_key;
-	          load_bigtreemap();
+			 load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
+			 if (load) {
+	         	load_bigtreemap(parent_resource_key);
+	         }
+
 	       },
 	       leafBox: function(json, coord) {
 				var config = this.config;
@@ -194,16 +203,16 @@
 	    return (array) ? hex : '#' + hex.join('');
 	};
 
-	function load_bigtreemap() {
+	function load_bigtreemap(resource_key) {
 	    if (treemap != null) {
 	    	treemap.empty();
 	    	treemap = null;
 	    }
 	    $('tm_loading').show();
-	    $('bigtreemap').hide();
 	    
 	    url = '<%=ApplicationController.root_context-%>/api/plugins/RubyBigTreemapWebService';
 	    if (resource_key != null) {
+	    	current_resource_key = resource_key;
 	    	url += '?resource=' + resource_key + '&';
 	    } else {
 	    	url += '?';
@@ -216,19 +225,17 @@
 		    onSuccess: function(transport) {
 		      eval(transport.responseText);
 		    },
-		    onFailure: function(){ alert('Something went wrong...') }
+		    onFailure: function(response){ error(response.responseText) }
 		  });
 	}
 	
 	function treemapcallback(json) {
 		$('tm_loading').hide();
-		$('bigtreemap').show();
 		treemap = get_bigtreemap(json['color_metric_direction']);
 		parent_resource_key = json['parent'];
 		size_metric = json['size_metric'];
 		color_metric = json['color_metric'];
 		treemap.loadJSON(json);
 	}
-	
-	load_bigtreemap();
+	load_bigtreemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>);
 </script>

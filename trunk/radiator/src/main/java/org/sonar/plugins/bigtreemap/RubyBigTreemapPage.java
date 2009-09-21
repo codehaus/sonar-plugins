@@ -23,7 +23,7 @@ import org.sonar.api.web.views.AbstractRubyTemplate;
 import org.sonar.api.web.views.NavigationSection;
 import org.sonar.api.web.views.RubyRailsPage;
 
-@NavigationSection(NavigationSection.HOME)
+@NavigationSection({NavigationSection.HOME, NavigationSection.PROJECT})
 public class RubyBigTreemapPage extends AbstractRubyTemplate implements RubyRailsPage {
 
   public String getTitle() {
