@@ -6,10 +6,10 @@
     <version>2</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-artifactsize-plugin</artifactId>
-  <name>Artifact Size Plugin</name>
+  <artifactId>sonar-artifact-size-plugin</artifactId>
+  <name>Sonar Artifact Size plugin</name>
   <version>0.1-SNAPSHOT</version>
-  <description>A plugin to measure the size of the project artifact and record it</description>
+  <description>Measure the size of the project artifact</description>
 
   <properties>
     <sonar.version>1.10</sonar.version>
@@ -30,6 +30,7 @@
       </plugin>
     </plugins>
   </build>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -45,7 +46,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.7</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -55,6 +56,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/artifact-size</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/artifact-size</developerConnection>
