@@ -19,8 +19,8 @@
  */
 package org.sonar.plugins.artifactsize;
 
-import org.sonar.api.Plugin;
 import org.sonar.api.Extension;
+import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
@@ -28,13 +28,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-  @Property(
-    key = ArtifactSizePlugin.ARTIFACT_PATH,
-    name = "Path of the project artifact",
-    project = true,
-    module = true,
-    global = false
-  )
+    @Property(
+        key = ArtifactSizePlugin.ARTIFACT_PATH,
+        name = "Path of the project artifact",
+        project = true,
+        module = true,
+        global = false
+    )
 })
 
 public class ArtifactSizePlugin implements Plugin {
@@ -47,7 +47,7 @@ public class ArtifactSizePlugin implements Plugin {
   }
 
   public List<Class<? extends Extension>> getExtensions() {
-    return Arrays.asList(ArtifactSizeMetrics.class, ArtifactSizeDecorator.class, ArtifactSizeWidget.class);
+    return Arrays.asList(ArtifactSizeMetrics.class, ArtifactSizeSensor.class, ArtifactSizeWidget.class);
   }
 
   public String getKey() {
