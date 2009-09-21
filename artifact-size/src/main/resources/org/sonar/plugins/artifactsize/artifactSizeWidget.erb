@@ -1,5 +1,6 @@
-<% if measure('artifact-size') %>
-      <div class="dashbox">
-        <h3>Artifact Size : <%= format_measure('artifact-size', :suffix => ' Kb') %></h3>
-      </div>
+<% measure=measure('artifact-size')
+   if measure %>
+  <div class="dashbox">
+    <h3>Artifact Size : <%= format_measure(measure, :suffix => ' Kb') %> <%= tendency_icon(measure) %></h3>
+  </div>
 <% end %>
