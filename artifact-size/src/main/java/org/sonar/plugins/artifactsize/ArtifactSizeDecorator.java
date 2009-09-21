@@ -26,15 +26,21 @@ import org.sonar.api.measures.*;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.maven.artifact.Artifact;
+import org.apache.commons.configuration.Configuration;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.*;
 import java.io.File;
 
 public class ArtifactSizeDecorator implements Decorator {
 
+  private Configuration configuration;
+  public ArtifactSizeDecorator(Configuration configuration) {
+    this.configuration = configuration;
+  }
+
   @DependedUpon
+
   public List<Metric> generatesMetrics() {
     return Arrays.asList(ArtifactSizeMetrics.ARTIFACT_SIZE);
   }
@@ -47,18 +53,22 @@ public class ArtifactSizeDecorator implements Decorator {
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    if (ResourceUtils.isRootProject(resource)){
-
-      String artifactPath = context.getProject().getFileSystem().getBuildDir().getAbsolutePath();
-
-      Artifact artifact = context.getProject().getPom().getArtifact();
-      artifactPath += "/" + artifact.getArtifactId() + "-" + artifact.getVersion();
-      artifactPath += "." + context.getProject().getPom().getPackaging();
-
-      File file = new File(artifactPath);
+    if (ResourceUtils.isProject(resource)){
+      String artifactPath = configuration.getString(ArtifactSizePlugin.ARTIFACT_PATH);
+      File file;
+      if (StringUtils.isNotEmpty(artifactPath)) {
+        file = new File(context.getProject().getFileSystem().getBasedir().getAbsolutePath() + "/" + artifactPath);
+      }
+      else {
+        String defaultPath = context.getProject().getFileSystem().getBuildDir().getAbsolutePath();
+        defaultPath += "/" + context.getProject().getPom().getBuild().getFinalName();
+        defaultPath += "." + context.getProject().getPom().getPackaging();
+        file = new File(defaultPath);
+      }
 
       if (file.exists()) {
-        context.saveMeasure(new Measure(ArtifactSizeMetrics.ARTIFACT_SIZE, FileUtils.byteCountToDisplaySize(file.length())));
+        double size = file.length() / 1024;
+        context.saveMeasure(new Measure(ArtifactSizeMetrics.ARTIFACT_SIZE, size));
       }
     }
   }
