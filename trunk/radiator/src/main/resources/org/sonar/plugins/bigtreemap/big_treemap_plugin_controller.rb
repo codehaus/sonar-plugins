@@ -19,6 +19,14 @@
 #
 class Api::RubyBigTreemapWebServiceController < Api::ResourceRestController
 
+  def initialize()
+    @min = 0
+    @max = 100
+    @min_color = Color::RGB.from_html("FF0000")   # red
+    @mean_color = Color::RGB.from_html("FFB000")   # orange
+    @max_color = Color::RGB.from_html("00FF00")   # green
+  end
+
   private
   
   def rest_call
@@ -70,7 +78,8 @@ class Api::RubyBigTreemapWebServiceController < Api::ResourceRestController
         size = get_measure(size_metric, measures)
         color = get_measure(color_metric, measures)
         if size
-          children << {:children => [], :data => {'$color' => get_measure_value(color), '$area' => get_measure_value(size),
+          
+          children << {:children => [], :data => {'$color' => get_hex_color(color, color_metric), '$area' => get_measure_value(size),
                                                     :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color)}, 
                                         :id => snapshot.project.key , :name => snapshot.project.name}
           area = area + get_measure_value(size)
@@ -79,7 +88,7 @@ class Api::RubyBigTreemapWebServiceController < Api::ResourceRestController
     end
     
     {:children => children, :data => { '$area' => area }, :id => "radiator", :name => "Radiator", :parent => parent_resource_key, 
-      :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction}.to_json
+      :min => @min, :max => @max, :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction}.to_json
   end
   
   def get_measure(metric, measures)
@@ -106,6 +115,36 @@ class Api::RubyBigTreemapWebServiceController < Api::ResourceRestController
       end
     end
     value
+  end
+  
+  def get_hex_color(measure, color_metric)
+    get_color(measure, color_metric).html
+  end
+  
+  def get_color(measure, color_metric)
+    if measure and not measure.alert_status.blank?
+      case(measure.alert_status)
+        when Metric::TYPE_LEVEL_OK : return Color::RGB.from_html("00FF00")
+        when Metric::TYPE_LEVEL_ERROR : return Color::RGB.from_html("f93f40")
+        when Metric::TYPE_LEVEL_WARN : return Color::RGB.from_html("ff8500")
+      end
+    end
+    value = get_measure_value(measure)
+    if value.nil?
+      return Color::RGB.from_html("DDDDDD")
+    end
+    interval = (@max - @min)/2
+    mean = (@min + @max) / 2.0
+    if (value > mean)
+      value_percent = ((value - mean) / interval) * 100.0
+      color = @max_color.mix_with(@mean_color, value_percent) if color_metric.direction >= 0
+      color = @min_color.mix_with(@mean_color, value_percent) if color_metric.direction < 0
+    else
+      value_percent = ((mean - value) / interval) * 100.0
+      color = @min_color.mix_with(@mean_color, value_percent) if color_metric.direction >= 0
+      color = @max_color.mix_with(@mean_color, value_percent) if color_metric.direction < 0
+    end
+    color
   end
 
 end
