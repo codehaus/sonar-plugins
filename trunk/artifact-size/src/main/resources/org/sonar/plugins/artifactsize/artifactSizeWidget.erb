@@ -1,5 +1,5 @@
 <% if measure('artifact-size') %>
       <div class="dashbox">
-        <h3>Artifact Size : <%= measure('artifact-size').text_value%></h3>
+        <h3>Artifact Size : <%= format_measure('artifact-size', :suffix => ' Kb') %></h3>
       </div>
 <% end %>

@@ -21,13 +21,26 @@ package org.sonar.plugins.artifactsize;
 
 import org.sonar.api.Plugin;
 import org.sonar.api.Extension;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Properties({
+  @Property(
+    key = ArtifactSizePlugin.ARTIFACT_PATH,
+    name = "Path of the project artifact",
+    project = true,
+    module = true,
+    global = false
+  )
+})
+
 public class ArtifactSizePlugin implements Plugin {
 
   public static final String KEY = "artifactsize";
+  public static final String ARTIFACT_PATH = "sonar.artifact.path";
 
   public String getDescription() {
     return "Reports on the project artifact size";
