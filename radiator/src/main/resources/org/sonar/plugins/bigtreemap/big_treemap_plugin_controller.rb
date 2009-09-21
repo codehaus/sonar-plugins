@@ -17,13 +17,14 @@
 # License along with Sonar; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
 #
-class Api::RubyBigTreemapWebServiceController < Api::RestController
+class Api::RubyBigTreemapWebServiceController < Api::ResourceRestController
 
-  def index
+  private
+  
+  def rest_call
     parent_resource_key = nil
-    if params[:resource]
-      project = Project.by_key(params[:resource])
-      snapshot = project.last_snapshot
+    if @resource
+      snapshot = @resource.last_snapshot
       snapshots = snapshot.children.select {|s| s.qualifier!=Snapshot::QUALIFIER_UNIT_TEST_CLASS}
       parent_snapshot = snapshot.parent
       parent_resource_key = parent_snapshot.project.key if parent_snapshot
@@ -52,8 +53,6 @@ class Api::RubyBigTreemapWebServiceController < Api::RestController
   
   end
 
-  private 
-  
   def rest_to_json(objects)
     measures_by_snapshot = objects[:measures_by_snapshot]
     snapshots = objects[:snapshots]
@@ -79,7 +78,7 @@ class Api::RubyBigTreemapWebServiceController < Api::RestController
       end
     end
     
-    {:children => children, :data => { '$area' => area }, :id => "bigtreemap", :name => "Big Treemap", :parent => parent_resource_key, 
+    {:children => children, :data => { '$area' => area }, :id => "radiator", :name => "Radiator", :parent => parent_resource_key, 
       :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction}.to_json
   end
   
