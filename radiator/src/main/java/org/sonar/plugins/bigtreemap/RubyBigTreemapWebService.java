@@ -19,8 +19,8 @@
  */
 package org.sonar.plugins.bigtreemap;
 
-import org.sonar.api.web.views.AbstractRubyTemplate;
-import org.sonar.api.web.views.RubyRailsWebservice;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWebservice;
 
 public class RubyBigTreemapWebService extends AbstractRubyTemplate implements RubyRailsWebservice {
 

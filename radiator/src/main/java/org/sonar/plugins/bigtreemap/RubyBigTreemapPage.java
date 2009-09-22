@@ -19,9 +19,9 @@
  */
 package org.sonar.plugins.bigtreemap;
 
-import org.sonar.api.web.views.AbstractRubyTemplate;
-import org.sonar.api.web.views.NavigationSection;
-import org.sonar.api.web.views.RubyRailsPage;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.NavigationSection;
+import org.sonar.api.web.RubyRailsPage;
 
 @NavigationSection({NavigationSection.HOME, NavigationSection.PROJECT})
 public class RubyBigTreemapPage extends AbstractRubyTemplate implements RubyRailsPage {
