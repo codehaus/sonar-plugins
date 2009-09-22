@@ -5,6 +5,7 @@
         <h3>Security defects</h3>
         <p><span class="big"><%= format_measure('security-violations', :url => url_for_drilldown('security-violations'), :default => '0')%></span></p>
         <p><span"><%= format_measure('security-rci', :suffix => ' compliance', :url => url_for_drilldown('security-rci'), :default => '0') %></span></p>
+        <div class="note" style="font-size: 80%;padding-top: 10px"><%= measure('security-violations').description %>  rules activated</div>
       </div>
     </div>
     <div class="yui-u">

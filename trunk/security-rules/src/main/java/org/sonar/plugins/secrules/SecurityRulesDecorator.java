@@ -23,10 +23,7 @@ import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.CountDistributionBuilder;
-import org.sonar.api.measures.MeasureUtils;
-import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.*;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.profiles.RulesProfile;
@@ -40,16 +37,13 @@ import java.util.*;
 public class SecurityRulesDecorator implements Decorator {
   private List<Rule> rules;
   private RulesProfile rulesProfile;
-  private Configuration configuration;
   private Map<RulePriority, Integer> weights;
 
   public SecurityRulesDecorator(RulesManager rulesManager, RulesProfile rulesProfile, Configuration configuration) {
     this.rulesProfile = rulesProfile;
-    this.configuration = configuration;
-    weights = getPriorityWeights();
-    this.rules = new RulesParser("/extensions/plugins/security-rules.properties", "/org/sonar/plugins/secrules/default-security-rules.properties", rulesManager).getRulesList();
+    weights = getPriorityWeights(configuration);
+    this.rules = new RulesParser(configuration, rulesManager).getRulesList();
   }
-
 
   @DependsUpon
   public List<Metric> dependUpon() {
@@ -70,8 +64,10 @@ public class SecurityRulesDecorator implements Decorator {
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    Map<RulePriority, Integer> distribution = computeViolationsByPriority(context);
+    Map<RulePriority, Integer> distribution = computeViolationsForRules(context);
     double ncloc = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC), 0.0);
+
+    int usedRules = getUsedRules();
 
     // First calculate the violations at the resource level
     double nbViolations = countViolations(distribution);
@@ -79,43 +75,53 @@ public class SecurityRulesDecorator implements Decorator {
     CountDistributionBuilder countDistribution = computeCountDistribution(distribution);
 
     // Consolidate violations from children
-    for (DecoratorContext child: context.getChildren()) {
+    for (DecoratorContext child : context.getChildren()) {
       nbViolations += MeasureUtils.getValue(child.getMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS), 0.0);
       weightedViolations += MeasureUtils.getValue(child.getMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS), 0.0);
       countDistribution.add(child.getMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS_DISTRIBUTION));
     }
 
     // Save calculated measures
-    context.saveMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS, nbViolations);
+    Measure violations = new Measure(SecurityRulesMetrics.SECURITY_VIOLATIONS, nbViolations);
+    violations.setDescription(usedRules + "/" + rules.size());
+    context.saveMeasure(violations);
+
     context.saveMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS, weightedViolations);
     context.saveMeasure(countDistribution.build());
-    if (ncloc > 0){
+    if (ncloc > 0) {
       context.saveMeasure(SecurityRulesMetrics.SECURITY_RCI, 100 - weightedViolations / ncloc * 100);
     }
 
   }
 
-  private Map<RulePriority, Integer> computeViolationsByPriority(DecoratorContext context) {
+
+  private Map<RulePriority, Integer> computeViolationsForRules(DecoratorContext context) {
     Map<RulePriority, Integer> distribution = new HashMap<RulePriority, Integer>();
+    List<Violation> violations = context.getViolations();
+
     for (Rule rule : rules) {
       ActiveRule activeRule = rulesProfile.getActiveRule(rule);
-      if (activeRule == null) {
-        continue;
-      }
-      else {
-        List<Violation> violations = context.getViolations();
-        for (Violation violation : violations) {
-          if (violation.getRule().equals(activeRule.getRule())) {
-            int current = 0;
-            if (distribution.get(activeRule.getPriority()) != null) {
-              current += distribution.get(activeRule.getPriority());
-            }
-            distribution.put(activeRule.getPriority(), current + 1);
-          }
-        }
+      if (activeRule != null) {
+        countViolationsForRule(distribution, activeRule, violations);
       }
     }
     return distribution;
+  }
+
+  private void countViolationsForRule(Map<RulePriority, Integer> distribution, ActiveRule activeRule, List<Violation> violations) {
+    for (Violation violation : violations) {
+      if (violation.getRule().equals(activeRule.getRule())) {
+        countViolationForRule(distribution, activeRule.getPriority());
+      }
+    }
+  }
+
+  private void countViolationForRule(Map<RulePriority, Integer> distribution, RulePriority priority) {
+    int current = 0;
+    if (distribution.get(priority) != null) {
+      current += distribution.get(priority);
+    }
+    distribution.put(priority, current + 1);
   }
 
   private int countViolations(Map<RulePriority, Integer> distribution) {
@@ -142,7 +148,18 @@ public class SecurityRulesDecorator implements Decorator {
     return countDistribution;
   }
 
-  private Map<RulePriority, Integer> getPriorityWeights() {
+  private int getUsedRules() {
+    int usedRules = 0;
+    for (Rule rule : rules) {
+      ActiveRule activeRule = rulesProfile.getActiveRule(rule);
+      if (activeRule != null) {
+        usedRules++;
+      }
+    }
+    return usedRules;
+  }
+
+  private Map<RulePriority, Integer> getPriorityWeights(Configuration configuration) {
     // The key must be hard-coded since the WeightedViolationsDecorator is not accessible through the API
     String levelWeight = configuration.getString("sonar.core.rule.weight", "INFO=0;MINOR=1;MAJOR=3;CRITICAL=5;BLOCKER=10");
 
