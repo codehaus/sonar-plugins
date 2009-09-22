@@ -28,6 +28,9 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
+import org.apache.commons.configuration.Configuration;
+import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 
@@ -46,7 +49,7 @@ public class ArtifactSizeSensor implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    File file = searchArtifactFile(project);
+    File file = searchArtifactFile(project.getPom(), project.getFileSystem(), project.getConfiguration());
 
     final Logger logger = LoggerFactory.getLogger(ArtifactSizeSensor.class);
     if (!file.exists()) {
@@ -61,22 +64,30 @@ public class ArtifactSizeSensor implements Sensor {
     }
   }
 
-  private File searchArtifactFile(Project project) {
+  protected File searchArtifactFile(MavenProject pom, ProjectFileSystem fileSystem, Configuration configuration) {
     File file;
-    String artifactPath = project.getConfiguration().getString(ArtifactSizePlugin.ARTIFACT_PATH);
-    if (StringUtils.isNotEmpty(artifactPath)) {
-      file = new File(project.getFileSystem().getBasedir(), artifactPath);
+    String artifactPath = configuration.getString(ArtifactSizePlugin.ARTIFACT_PATH);
 
-    } else {
-      String filename = project.getPom().getBuild().getFinalName() +
-          "." +
-          project.getPom().getPackaging();
-      file = new File(project.getFileSystem().getBuildDir(), filename);
+    if (StringUtils.isNotEmpty(artifactPath)) {
+      file = buildPathFromConfig(fileSystem, artifactPath);
+
+    }
+    else {
+      String filename = pom.getBuild().getFinalName() + "." + pom.getPackaging();
+      file = buildPathFromPom(fileSystem, filename);
     }
     return file;
   }
 
-  private double getSize(File file) {
+  private File buildPathFromConfig(ProjectFileSystem fileSystem, String artifactPath) {
+    return new File(fileSystem.getBasedir(), artifactPath);
+ }
+
+  private File buildPathFromPom(ProjectFileSystem fileSystem, String artifactPath) {
+    return new File(fileSystem.getBuildDir(), artifactPath);
+ }
+
+  protected double getSize(File file) {
     return ((double) file.length()) / 1024;
   }
 }
