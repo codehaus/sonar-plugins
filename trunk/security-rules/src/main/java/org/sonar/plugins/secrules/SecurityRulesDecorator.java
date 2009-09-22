@@ -66,7 +66,6 @@ public class SecurityRulesDecorator implements Decorator {
   public void decorate(Resource resource, DecoratorContext context) {
     Map<RulePriority, Integer> distribution = computeViolationsForRules(context);
     double ncloc = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC), 0.0);
-
     int usedRules = getUsedRules();
 
     // First calculate the violations at the resource level
@@ -148,7 +147,7 @@ public class SecurityRulesDecorator implements Decorator {
     return countDistribution;
   }
 
-  private int getUsedRules() {
+  protected int getUsedRules() {
     int usedRules = 0;
     for (Rule rule : rules) {
       ActiveRule activeRule = rulesProfile.getActiveRule(rule);

@@ -34,7 +34,12 @@ public class RulesParser {
   protected RulesParser(Configuration configuration, RulesManager rulesManager) {
     rulesList = new ArrayList<Rule>();
 
-    String rawList = configuration.getString(SecurityRulesPlugin.SEC_RULES, SecurityRulesPlugin.SEC_RULES_DEFAULT);
+    String rawList = (String) configuration.getProperty(SecurityRulesPlugin.SEC_RULES);
+
+    if (StringUtils.isEmpty(rawList)) {
+      rawList = SecurityRulesPlugin.SEC_RULES_DEFAULT;
+    }
+
     String[] tokens = StringUtils.split(rawList, ","); 
 
     for (String token : tokens){
