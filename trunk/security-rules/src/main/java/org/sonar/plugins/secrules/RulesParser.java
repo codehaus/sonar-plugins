@@ -21,6 +21,7 @@ package org.sonar.plugins.secrules;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.configuration.Configuration;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulesManager;
 
@@ -33,32 +34,20 @@ public class RulesParser {
 
   private List<Rule> rulesList;
 
-  protected RulesParser(String resourcePath, String defaultResourcePath, RulesManager rulesManager) {
+  protected RulesParser(Configuration configuration, RulesManager rulesManager) {
     rulesList = new ArrayList<Rule>();
-    InputStream input = getClass().getResourceAsStream(resourcePath);
-    if (input == null) {
-      input = getClass().getResourceAsStream(defaultResourcePath);
-    }
-    if (input == null) {
-      throw new IllegalArgumentException();
-    }
-    try {
-      List<String> fullRules = IOUtils.readLines(input);
-      for (String fullRule : fullRules) {
-        String[] s = StringUtils.split(fullRule, ",");
-        Rule rule = rulesManager.getPluginRule(s[0], s[1]);
-        rulesList.add(rule);
-      }
-    }
-    catch (IOException e) {
-      throw new RuntimeException("Unable to load " + resourcePath, e);
-    }
-    finally {
-      IOUtils.closeQuietly(input);
+
+    String rawList = configuration.getString(SecurityRulesPlugin.SEC_RULES, SecurityRulesPlugin.SEC_RULES_DEFAULT);
+    String[] tokens = StringUtils.split(rawList, ","); 
+
+    for (String token : tokens){
+      String[] s = StringUtils.split(token, ":");
+      Rule rule = rulesManager.getPluginRule(s[0], s[1]);
+      rulesList.add(rule);
     }
   }
 
-  public List<Rule> getRulesList() {
+  protected List<Rule> getRulesList() {
     return rulesList;
   }
 
