@@ -21,13 +21,45 @@ package org.sonar.plugins.secrules;
 
 import org.sonar.api.Plugin;
 import org.sonar.api.Extension;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Properties({
+  @Property(
+    key = SecurityRulesPlugin.SEC_RULES,
+    defaultValue = SecurityRulesPlugin.SEC_RULES_DEFAULT,
+    name = "List of rules to consider",
+    project = false,
+    module = false,
+    global = true
+  )
+})
+
 public class SecurityRulesPlugin implements Plugin {
 
   public static final String KEY = "securityrules";
+  public static final String SEC_RULES = "sonar.security.rules";
+  public static final String SEC_RULES_DEFAULT =
+        "findbugs:DMI_CONSTANT_DB_PASSWORD,"+
+        "findbugs:DMI_EMPTY_DB_PASSWORD,"+
+        "findbugs:EI_EXPOSE_REP,"+
+        "findbugs:EI_EXPOSE_REP2,"+
+        "findbugs:EI_EXPOSE_STATIC_REP2,"+
+        "findbugs:MS_EXPOSE_REP,"+
+        "findbugs:SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE,"+
+        "findbugs:SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING,"+
+        "findbugs:XSS_REQUEST_PARAMETER_TO_SEND_ERROR,"+
+        "findbugs:XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER,"+
+        "pmd:AvoidCatchingThrowable,"+
+        "pmd:DoNotCallSystemExit,"+
+        "pmd:ExceptionAsFlowControl,"+
+        "pmd:AvoidThrowingNullPointerException,"+
+        "pmd:AvoidPrintStackTrace,"+
+        "pmd:PreserveStackTrace,"+
+        "pmd:SystemPrintln";
 
   public String getDescription() {
     return "Reports on security rules";
