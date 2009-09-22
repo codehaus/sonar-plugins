@@ -45,7 +45,6 @@ public class ArtifactSizeSensor implements Sensor {
     return true;
   }
 
-  @Override
   public void analyse(Project project, SensorContext context) {
     File file = searchArtifactFile(project);
 
