@@ -19,14 +19,11 @@
  */
 package org.sonar.plugins.secrules;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulesManager;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
 
