@@ -20,6 +20,7 @@
 package org.sonar.plugins.secrules;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulesManager;
@@ -34,13 +35,11 @@ public class RulesParser {
   protected RulesParser(Configuration configuration, RulesManager rulesManager) {
     rulesList = new ArrayList<Rule>();
 
-    String rawList = (String) configuration.getProperty(SecurityRulesPlugin.SEC_RULES);
+    String[] tokens = configuration.getStringArray(SecurityRulesPlugin.SEC_RULES);
 
-    if (StringUtils.isEmpty(rawList)) {
-      rawList = SecurityRulesPlugin.SEC_RULES_DEFAULT;
+    if (ArrayUtils.isEmpty(tokens)) {
+      tokens = StringUtils.split(SecurityRulesPlugin.SEC_RULES_DEFAULT, ",");
     }
-
-    String[] tokens = StringUtils.split(rawList, ","); 
 
     for (String token : tokens){
       String[] s = StringUtils.split(token, ":");
