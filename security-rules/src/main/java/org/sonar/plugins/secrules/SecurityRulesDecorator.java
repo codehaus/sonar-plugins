@@ -107,7 +107,7 @@ public class SecurityRulesDecorator implements Decorator {
     return distribution;
   }
 
-  private void countViolationsForRule(Map<RulePriority, Integer> distribution, ActiveRule activeRule, List<Violation> violations) {
+  protected void countViolationsForRule(Map<RulePriority, Integer> distribution, ActiveRule activeRule, List<Violation> violations) {
     for (Violation violation : violations) {
       if (violation.getRule().equals(activeRule.getRule())) {
         countViolationForRule(distribution, activeRule.getPriority());
@@ -115,7 +115,7 @@ public class SecurityRulesDecorator implements Decorator {
     }
   }
 
-  private void countViolationForRule(Map<RulePriority, Integer> distribution, RulePriority priority) {
+  protected void countViolationForRule(Map<RulePriority, Integer> distribution, RulePriority priority) {
     int current = 0;
     if (distribution.get(priority) != null) {
       current += distribution.get(priority);
@@ -123,7 +123,7 @@ public class SecurityRulesDecorator implements Decorator {
     distribution.put(priority, current + 1);
   }
 
-  private int countViolations(Map<RulePriority, Integer> distribution) {
+  protected int countViolations(Map<RulePriority, Integer> distribution) {
     int count = 0;
     for (Integer value : distribution.values()) {
       count += value;
@@ -131,7 +131,7 @@ public class SecurityRulesDecorator implements Decorator {
     return count;
   }
 
-  private int computeWeightedViolations(Map<RulePriority, Integer> distribution) {
+  protected int computeWeightedViolations(Map<RulePriority, Integer> distribution) {
     int count = 0;
     for (RulePriority priority : distribution.keySet()) {
       count += distribution.get(priority) * weights.get(priority);
@@ -139,7 +139,7 @@ public class SecurityRulesDecorator implements Decorator {
     return count;
   }
 
-  private CountDistributionBuilder computeCountDistribution(Map<RulePriority, Integer> distribution) {
+  protected CountDistributionBuilder computeCountDistribution(Map<RulePriority, Integer> distribution) {
     CountDistributionBuilder countDistribution = new CountDistributionBuilder(SecurityRulesMetrics.SECURITY_VIOLATIONS_DISTRIBUTION);
     for (RulePriority priority : distribution.keySet()) {
       countDistribution.add(priority, distribution.get(priority));
