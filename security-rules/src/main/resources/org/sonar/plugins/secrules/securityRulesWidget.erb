@@ -1,15 +1,17 @@
 <% if measure('security-violations') %>
-  <div class="yui-gd">
-    <div class="yui-u first">
-      <div class="dashbox">
-        <h3>Security defects</h3>
+<table width="100%" class="dashbox">
+<tr>
+  <td width="50%" nowrap>
+    <div class="dashbox">
+         <h3><%= metric('security-violations').short_name -%></h3>
         <p><span class="big"><%= format_measure('security-violations', :url => url_for_drilldown('security-violations'), :default => '0')%></span></p>
         <p><span"><%= format_measure('security-rci', :suffix => ' compliance', :url => url_for_drilldown('security-rci'), :default => '0') %></span></p>
         <div class="note" style="font-size: 80%;padding-top: 10px"><%= measure('security-violations').description %>  rules activated</div>
-      </div>
     </div>
-    <div class="yui-u">
-      <%= piechart(measure('security-violations-distribution'), { :size => "242x70"}) -%>
-    </div>
-  </div>
+  </td>
+  <td width="50%" nowrap>
+    <%= piechart(measure('security-violations-distribution'), { :size => "242x70"}) -%>
+  </td>
+</tr>
+</table>
 <% end %>

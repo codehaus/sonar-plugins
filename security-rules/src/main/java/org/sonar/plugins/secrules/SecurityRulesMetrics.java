@@ -19,18 +19,18 @@
  */
 package org.sonar.plugins.secrules;
 
-import org.sonar.api.measures.Metrics;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Metrics;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class SecurityRulesMetrics implements Metrics {
 
-  public final static Metric SECURITY_VIOLATIONS = new Metric("security-violations", "Security Violations", "Security Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
+  public final static Metric SECURITY_VIOLATIONS = new Metric("security-violations", "Security violations", "Security violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
   public final static Metric WEIGHTED_SECURITY_VIOLATIONS = new Metric("weighted-security-violations", "Weighted Security Violations", "Weighted Security Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
-  public final static Metric SECURITY_RCI = new Metric("security-rci", "RCI for Security Rules", "RCI for Security Rules", Metric.ValueType.PERCENT, Metric.DIRECTION_BETTER, true, CoreMetrics.DOMAIN_RULES);
+  public final static Metric SECURITY_RCI = new Metric("security-rci", "Security rules compliance", "Security rules compliance", Metric.ValueType.PERCENT, Metric.DIRECTION_BETTER, true, CoreMetrics.DOMAIN_RULES);
   public final static Metric SECURITY_VIOLATIONS_DISTRIBUTION = new Metric("security-violations-distribution", "Security Violations Distribution", "Security Violations Distribution", Metric.ValueType.DATA, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_RULES);
 
 
