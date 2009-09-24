@@ -59,21 +59,19 @@
 		      <span class="comments">Size:</span>
 		      <%= select_tag 'size_metric', options_from_collection_for_select(
 		        Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
-		        :id => 'select_size_metric', :class => 'small',:onchange => "load_bigtreemap(current_resource_key);" %>
+		        :id => 'select_size_metric', :class => 'small',:onchange => "load_treemap(current_resource_key);" %>
 		    </td>
 		    <td>
 		      <span class="comments">Color:</span>
 		      <%= select_tag 'color_metric', options_from_collection_for_select(
 		          Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
-		          :id => 'select_color_metric', :class => 'small', :onchange => "load_bigtreemap(current_resource_key);" %>
+		          :id => 'select_color_metric', :class => 'small', :onchange => "load_treemap(current_resource_key);" %>
 		    </td>
 		    <td>
-		     	<%
-		     	layout = params[:layout]
-		     	layout = (layout == 'true' || layout.nil? ) ? 'false' : 'true'
-		     	alt = (layout == 'true' || layout.nil? ) ? 'Collapse' : 'Expand'
-		     	%>
-		    	<span style="padding-left:10px"><%= link_to(image_tag('expand_collapse.jpg', :alt => alt), {:layout => layout}) %>
+		     	<% layout = (params[:layout].nil? || params[:layout] == 'true') ? false : true
+		     	if (!layout) %>
+		    	<span style="padding-left:10px"><%= link_to(image_tag('expand_collapse.jpg', :alt => 'Expand'), {:layout => layout.to_s, :page => params[:page]}, :target => '_new') %></span>
+		    	<% end %>
 		    </td>
 		    <td>
 				<span style="padding-left:10px"><%= image_tag('loading.gif', {:id => "tm_loading"}) %></span>
@@ -81,7 +79,13 @@
 		</tr>
 	</table>
 </form>
+<div style="padding-top:10px; padding-left:8px;"><span id="breadcrumb" class="nav"></div>
 <div id="bigtreemap"></div>
+<div id="nodata" style="display:none; vertical-align:top">
+<h3>No projects have been analysed.</h3>
+<p>If Maven and Sonar are installed with default parameters on the same box, 
+	just launch the command <code>mvn sonar:sonar</code> to analyse your first project. In any other case, please refer to the <a href="http://sonar.codehaus.org/documentation">documentation</a>.</p>
+</div>
 
 <script language="javascript">
 
@@ -90,6 +94,7 @@
 	var current_resource_key = null;
 	var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
 	var size_metric, color_metric = null;
+	var breadcrumbs = [];
 	
 	var dimensions = $('content').getDimensions();
 	$('bigtreemap').style.width=dimensions.width;
@@ -97,14 +102,21 @@
 	
 	TM.Squarified.implement({  
 	       onLeftClick: function(elem) {
-	          load_bigtreemap(elem.parentNode.id);
+	          isFile = Element.readAttribute(elem, 'isFile');
+	          if (isFile == 'false') {
+	       	  	breadcrumbs[breadcrumbs.length] = Element.readAttribute(elem, 'name');
+	          	load_treemap(elem.parentNode.id);
+	          } else {
+	          	open_resource_viewer(elem.parentNode.id);
+	          }
 	       },
 	       onRightClick: function() {
 			 load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
 			 if (load) {
-	         	load_bigtreemap(parent_resource_key);
+			    breadcrumbs[breadcrumbs.length-1] = null;
+			    breadcrumbs = breadcrumbs.compact();
+	         	load_treemap(parent_resource_key);
 	         }
-
 	       },
 	       leafBox: function(json, coord) {
 				var config = this.config;
@@ -120,7 +132,9 @@
 				  'cursor': 'pointer'
 				};
 				if(backgroundColor) c['background-color'] = backgroundColor;
-				return "<div class=\"leaf\" style=\"" + this.toStyle(c) + "\"><a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a></div>";
+				div_content = "<div isFile=\"" + json.is_file + "\" name=\"" + json.name + "\" class=\"leaf\" style=\"" + this.toStyle(c) + "\">";
+				div_content += json.is_file ? json.name : "<a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a>";
+				return div_content + "</div>";
             },
             headBox: function(json, coord) {
             	return "<div></div>";
@@ -133,8 +147,13 @@
 	function dashboard_url(resource_key) {
 		return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
 	}
+	
+	function open_resource_viewer(resource_key) {
+	    href='<%=ApplicationController.root_context-%>/resource/index/' + resource_key;
+	    window.open(href,'resource','height=800,width=900,scrollbars=1,resizable=1');
+	}
  
-	function get_bigtreemap(color_metric_direction) {
+	function instanciate_treemap(color_metric_direction) {
 	
 		return new TM.Squarified({  
 		     rootId: 'bigtreemap',  
@@ -173,23 +192,24 @@
              }  
 	 	}); 
     }
+    
+    function display_breadcrumbs() {
+      var output = "";
+      breadcrumbs.each(function(bc) { output += "&nbsp;&#187;&nbsp;" + bc });
+	  $('breadcrumb').innerHTML=output;
+	}
 
-	function load_bigtreemap(resource_key) {
+	function load_treemap(resource_key) {
 	    if (treemap != null) {
 	    	treemap.empty();
 	    	treemap = null;
 	    }
 	    $('tm_loading').show();
-	    
+
 	    url = '<%=ApplicationController.root_context-%>/api/plugins/RubyBigTreemapWebService';
-	    if (resource_key != null) {
-	    	current_resource_key = resource_key;
-	    	url += '?resource=' + resource_key + '&';
-	    } else {
-	    	url += '?';
-	    }
-	 
-		new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemapcallback',
+	    current_resource_key = resource_key;
+	    url += resource_key != null ? '?resource=' + resource_key + '&' : '?';
+		new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemap_ajax_cb',
 		  {
 		    method: 'get',
 		    requestHeaders: {Accept: 'application/json'},
@@ -200,13 +220,25 @@
 		  });
 	}
 	
-	function treemapcallback(json) {
+	function treemap_ajax_cb(json) {
 		$('tm_loading').hide();
-		treemap = get_bigtreemap(json['color_metric_direction']);
+		if (current_resource_key==null &&json.children.length==0) {
+			$('bigtreemap').hide();
+			$('select_color_metric').disable();
+			$('select_size_metric').disable();
+			$('nodata').show();
+		} else {
+			render_treemap(json);
+		}
+	}
+	
+	function render_treemap(json) {
+		treemap = instanciate_treemap(json['color_metric_direction']);
 		parent_resource_key = json['parent'];
 		size_metric = json['size_metric'];
 		color_metric = json['color_metric'];
+		display_breadcrumbs();
 		treemap.loadJSON(json);
 	}
-	load_bigtreemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>);
+	load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>);
 </script>
