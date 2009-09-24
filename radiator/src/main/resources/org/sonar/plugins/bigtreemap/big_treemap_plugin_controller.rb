@@ -78,10 +78,11 @@ class Api::RubyBigTreemapWebServiceController < Api::ResourceRestController
         size = get_measure(size_metric, measures)
         color = get_measure(color_metric, measures)
         if size
-          
+          resource = snapshot.project
+          is_file = resource.entity? && resource.copy_resource_id.nil?
           children << {:children => [], :data => {'$color' => get_hex_color(color, color_metric), '$area' => get_measure_value(size),
                                                     :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color)}, 
-                                        :id => snapshot.project.key , :name => snapshot.project.name}
+                                        :id => snapshot.project.key , :name => snapshot.project.name, :is_file => is_file}
           area = area + get_measure_value(size)
         end
       end
