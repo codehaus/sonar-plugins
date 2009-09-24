@@ -16,6 +16,7 @@
     	</activation>
 			<modules>
 		    <module>authorization</module>
+		    <module>artifact-size</module>
 		    <module>build-breaker</module>
 		    <module>clirr</module>
 		    <module>cpp</module>
@@ -31,13 +32,15 @@
 		    <module>parent</module>
 		    <module>pdf-report</module>
 		    <module>php</module>
-		    <module>rules-meter</module>
 		    <module>radiator</module>
+		    <module>rules-meter</module>
+		    <module>security-rules</module>
 		    <module>sigmm</module>
 		    <module>sonar-squid-gui</module>
 		    <module>taglist</module>
 		    <module>technical-debt</module>
 		    <module>testability-explorer</module>
+		    <module>timeline</module>
 		  </modules>
 		</profile>
 		<profile>
