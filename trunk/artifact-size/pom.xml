@@ -8,7 +8,7 @@
   </parent>
   <artifactId>sonar-artifact-size-plugin</artifactId>
   <name>Sonar Artifact Size plugin</name>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
   <description>Measure the size of the project artifact</description>
 
   <properties>
@@ -75,8 +75,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-artifact-size-plugin-0.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-artifact-size-plugin-0.1</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-artifact-size-plugin-0.1</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/artifact-size</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/artifact-size</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
 </project>
