@@ -5,7 +5,7 @@
 		<groupId>org.codehaus.sonar-plugins
 		</groupId>
 		<artifactId>parent</artifactId>
-		<version>2</version>
+		<version>3</version>
 		<relativePath>../parent</relativePath>
 	</parent>
 	<artifactId>sonar-plugin-testability
