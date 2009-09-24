@@ -23,7 +23,6 @@
 		    <module>emma</module>
 		    <module>greenpepper</module>
 		    <module>hammurapi</module>
-		    <module>hello-world</module>
 		    <module>jira</module>
 		    <module>jlint</module>
 		    <module>jtest</module>
