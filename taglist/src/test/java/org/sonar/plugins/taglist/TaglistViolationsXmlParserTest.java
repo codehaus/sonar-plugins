@@ -82,4 +82,11 @@ public class TaglistViolationsXmlParserTest {
     verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.TAGS), eq(2d));
   }
 
+  @Test
+  public void testMTAGLIST40WorkAround() throws Exception {
+    File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/TaglistViolationsXmlParserTest/test.xml").toURI());
+    parser.populateTaglistViolation(context, pom, xmlFile);
+
+  }
+
 }
