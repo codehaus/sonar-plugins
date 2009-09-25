@@ -22,35 +22,39 @@ package org.sonar.plugins.taglist;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.Java;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulesCategory;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 
 import java.util.List;
 
 public class TaglistRulesRepositoryTest {
 
-    private TaglistRulesRepository repository = null;
+  private TaglistRulesRepository repository = null;
 
-    @Before
-    public void setUp() throws Exception {
-        repository = new TaglistRulesRepository();
-    }
+  @Before
+  public void setUp() throws Exception {
+    repository = new TaglistRulesRepository();
+  }
 
-    @Test
-    public void testGetLanguage() {
-        assertThat(repository.getLanguage(), is(Java.class));
-    }
+  @Test
+  public void testGetLanguage() {
+    assertThat(repository.getLanguage(), is(Java.class));
+  }
 
-    @Test
-    public void buildInRepositoryShouldBeCompletedWithCustomRepository() {
-        List<Rule> rules = repository.getInitialReferential();
-        assertEquals(6, rules.size());
-        Rule todoTag = rules.get(0);
-        assertEquals("MYTAG", todoTag.getKey());
-        assertEquals(new RulesCategory("Reliability"), todoTag.getRulesCategory());
-    }
+  @Test
+  public void builtInRepositoryShouldBeCompletedWithCustomRepository() {
+    List<Rule> rules = repository.getInitialReferential();
+    assertEquals(6 + 1, rules.size());
+    assertTrue(rules.contains(new Rule(TaglistPlugin.KEY, "MYCUSTOMTAG")));
+
+    Rule rule =  rules.get(rules.indexOf(new Rule(TaglistPlugin.KEY, "NO_PMD")));
+    assertThat(rule.getRulesCategory(), is(new RulesCategory("Portability")));
+  }
 
 }
