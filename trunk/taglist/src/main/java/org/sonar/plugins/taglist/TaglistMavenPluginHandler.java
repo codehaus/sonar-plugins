@@ -41,6 +41,7 @@ public class TaglistMavenPluginHandler implements MavenPluginHandler {
   public void configure(Project pom, MavenPlugin plugin) {
     plugin.setParameter("encoding", pom.getFileSystem().getSourceCharset().name());
     plugin.setParameter("linkXRef", "false");
+    plugin.setParameter("skipTestSources", "true");
     plugin.removeParameter("xmlOutputDirectory");
     for (String tag : getActiveTags()) {
       plugin.addParameter("tags/tag", tag);
@@ -72,7 +73,7 @@ public class TaglistMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String getVersion() {
-    return "2.3";
+    return "2.4";
   }
 
 }
