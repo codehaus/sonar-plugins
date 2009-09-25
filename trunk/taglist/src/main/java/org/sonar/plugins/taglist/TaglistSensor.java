@@ -52,7 +52,7 @@ public class TaglistSensor implements Sensor, DependsUponMavenPlugin {
   public void analyse(Project project, SensorContext context) {
     File xmlFile = project.getFileSystem().getFileFromBuildDirectory("taglist/taglist.xml");
     try {
-      taglistParser.populateTaglistViolation(context, project, xmlFile);
+      taglistParser.populateTaglistViolation(context, xmlFile);
     }
     catch (IOException e) {
       throw new RuntimeException(e);

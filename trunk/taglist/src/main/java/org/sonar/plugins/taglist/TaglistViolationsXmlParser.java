@@ -19,12 +19,10 @@
  */
 package org.sonar.plugins.taglist;
 
-import org.apache.commons.io.FileUtils;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.JavaFile;
-import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.*;
 import org.sonar.api.utils.ParsingUtils;
@@ -49,11 +47,9 @@ public class TaglistViolationsXmlParser {
     this.rulesProfile = rulesProfile;
   }
 
-  protected final void populateTaglistViolation(SensorContext context, Project project, File taglistXmlFile) throws IOException {
+  protected final void populateTaglistViolation(SensorContext context, File taglistXmlFile) throws IOException {
     XpathParser parser = new XpathParser();
-    // TODO remove when MTAGLIST-40 released
-    String charSet = "UTF-8";//project.getFileSystem().getSourceCharset().name();
-    String report = FileUtils.readFileToString(taglistXmlFile);
+
     parser.parse(taglistXmlFile);
 
     NodeList tags = parser.getDocument().getElementsByTagName("tag");
@@ -90,12 +86,6 @@ public class TaglistViolationsXmlParser {
       String className = file.getAttribute("name");
       // see SONARPLUGINS-57
       className = className.startsWith("null.") ? className.substring(5) : className;
-
-      // TODO integrate MTAGLIST-41 if done one day
-      Resource resource = context.getResource(className);
-      if (resource != null && resource.getQualifier().equals(Resource.QUALIFIER_UNIT_TEST_CLASS)) {
-        continue;
-      }
 
       Resource javaFile = new JavaFile(className);
       int violationsForClass = parseViolationLineNumberAndComment(context, file, javaFile, rule);

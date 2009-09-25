@@ -42,12 +42,11 @@ public class TaglistViolationsXmlParserTest {
 
   private TaglistViolationsXmlParser parser = null;
   private SensorContext context;
-  private Project pom;
 
   @Before
   public void setUp() throws Exception {
     context = mock(SensorContext.class);
-    pom = mock(Project.class);
+    Project pom = mock(Project.class);
 
     RulesManager rulesManager = mock(RulesManager.class);
     RulesProfile rulesProfile = mock(RulesProfile.class);
@@ -66,7 +65,7 @@ public class TaglistViolationsXmlParserTest {
   @Test
   public void testPopulateTaglistViolations() throws Exception {
     File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/TaglistViolationsXmlParserTest/taglist.xml").toURI());
-    parser.populateTaglistViolation(context, pom, xmlFile);
+    parser.populateTaglistViolation(context, xmlFile);
 
     verify(context, never()).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "[default].ClassOnDefaultPackage")), eq(TaglistMetrics.MANDATORY_TAGS), anyDouble());
     verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "[default].ClassOnDefaultPackage")), eq(TaglistMetrics.OPTIONAL_TAGS), eq(2d));
@@ -80,13 +79,6 @@ public class TaglistViolationsXmlParserTest {
     verify(context, never()).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.OPTIONAL_TAGS), anyDouble());
     verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.MANDATORY_TAGS), eq(2d));
     verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_FILE, Resource.QUALIFIER_CLASS, "org.sonar.plugins.taglist.test.IInterfaceWithTags")), eq(TaglistMetrics.TAGS), eq(2d));
-  }
-
-  @Test
-  public void testMTAGLIST40WorkAround() throws Exception {
-    File xmlFile = new File(getClass().getResource("/org/sonar/plugins/taglist/TaglistViolationsXmlParserTest/test.xml").toURI());
-    parser.populateTaglistViolation(context, pom, xmlFile);
-
   }
 
 }
