@@ -3,9 +3,9 @@
     <div class="yui-u first">
       <div class="dashbox">
         <h3>Tags</h3>
-        <p><span class="big"><%= format_measure('tags', :url => url_for_drilldown('tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0')%></span></p>
-        <p><span"><%= format_measure('mandatory_tags', :suffix => ' mandatory', :url => url_for_drilldown('mandatory_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 mandatory') %></span></p>
-        <p><span"><%= format_measure('optional_tags', :suffix => ' optional', :url => url_for_drilldown('optional_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 optional') %></span></p>
+        <p><span class="big"><%= format_measure('tags', :url => url_for_drilldown('tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0')%><%= tendency_icon('tags') %></span></p>
+        <p><span"><%= format_measure('mandatory_tags', :suffix => ' mandatory', :url => url_for_drilldown('mandatory_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 mandatory') %><%= tendency_icon('mandatory_tags') %></span></p>
+        <p><span"><%= format_measure('optional_tags', :suffix => ' optional', :url => url_for_drilldown('optional_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 optional') %><%= tendency_icon('optional_tags') %></span></p>
       </div>
     </div>
     <div class="yui-u">
