@@ -53,8 +53,8 @@ public class TaglistViolationsXmlParser {
     XpathParser parser = new XpathParser();
     // TODO remove when MTAGLIST-40 released
     String charSet = "UTF-8";//project.getFileSystem().getSourceCharset().name();
-    String report = FileUtils.readFileToString(taglistXmlFile, charSet);
-    parser.parse(report.replace("encoding=\"UTF-8\"", "encoding=\"" + charSet + "\""));
+    String report = FileUtils.readFileToString(taglistXmlFile);
+    parser.parse(taglistXmlFile);
 
     NodeList tags = parser.getDocument().getElementsByTagName("tag");
     Map<Resource, ViolationsCount> violationsCountPerClass = new HashMap<Resource, ViolationsCount>();
