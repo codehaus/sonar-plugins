@@ -82,16 +82,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>bamboo</id>
-      <distributionManagement>
-        <snapshotRepository>
-          <id>codehaus-ci</id>
-          <name>Official snapshot repository available from the Codehaus' Bamboo server</name>
-          <url>file:///opt/snapshot.ci.codehaus.org/</url>
-        </snapshotRepository>
-      </distributionManagement>
-    </profile>
-  </profiles>
 </project>
