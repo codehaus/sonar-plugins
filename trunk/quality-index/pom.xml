@@ -47,6 +47,12 @@
       <version>4.7</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -76,4 +82,16 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>bamboo</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>{project id}-codehaus-ci</id>
+          <name>Official snapshot repository available from the Codehaus' Bamboo server</name>
+          <url>file:///opt/ci.repository.codehaus.org/</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 </project>
