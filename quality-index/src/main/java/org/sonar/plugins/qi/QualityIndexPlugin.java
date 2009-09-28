@@ -21,26 +21,26 @@ import java.util.List;
     name = "Average time to fix a coding violation (in hours)", description = "")
 })
 public class QualityIndexPlugin implements Plugin {
-  public static final String QI_CODING_PRIORITY_WEIGHTS = "qi.priority.weights";
+  public static final String QI_CODING_PRIORITY_WEIGHTS = "qi.coding.weights";
   public static final String QI_CODING_PRIORITY_WEIGHTS_DEFAULT = "INFO=1;MINOR=1;MAJOR=3;CRITICAL=5;BLOCKER=10";
 
-  public static final String QI_STYLE_PRIORITY_WEIGHTS = "qi.priority.weights";
+  public static final String QI_STYLE_PRIORITY_WEIGHTS = "qi.style.weights";
   public static final String QI_STYLE_PRIORITY_WEIGHTS_DEFAULT = "INFO=1;MINOR=1;MAJOR=1;CRITICAL=10;BLOCKER=10";
 
-  public static final String QI_COMPLEXITY_LIMITS_WEIGHTS = "qi.priority.weights";
+  public static final String QI_COMPLEXITY_LIMITS_WEIGHTS = "qi.complexity.weights";
   public static final String QI_COMPLEXITY_LIMITS_WEIGHTS_DEFAULT = "1=1;10=3;20=5;30=10";
 
   public static final String QI_CODING_AXIS_WEIGHT = "qi.axis.weights";
-  public static final String QI_CODING_AXIS_WEIGHT_DEFAULT = "qi.axis.weights";
+  public static final String QI_CODING_AXIS_WEIGHT_DEFAULT = "4.5";
 
   public static final String QI_STYLE_AXIS_WEIGHT = "qi.axis.weights";
-  public static final String QI_STYLE_AXIS_WEIGHT_DEFAULT = "qi.axis.weights";
+  public static final String QI_STYLE_AXIS_WEIGHT_DEFAULT = "1.5";
 
   public static final String QI_COMPLEXITY_AXIS_WEIGHT = "qi.axis.weights";
-  public static final String QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT = "qi.axis.weights";
+  public static final String QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT = "2.0";
 
   public static final String QI_COVERAGE_AXIS_WEIGHT = "qi.axis.weights";
-  public static final String QI_COVERAGE_AXIS_WEIGHT_DEFAULT = "qi.axis.weights";
+  public static final String QI_COVERAGE_AXIS_WEIGHT_DEFAULT = "2.0";
 
   public String getKey() {
     return "quality-index";
