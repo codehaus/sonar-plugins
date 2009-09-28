@@ -2,7 +2,7 @@
 # The 1.1.3 jit script need to be modified with the following code
 # line 8138 makes tree map anchors work :
 # var from = e.target || e.srcElement;
-# if (from instanceof HTMLAnchorElement) {
+# if (from.nodeName.toLowerCase() == 'a') {
 # 	// event originated form an anchor link, returning
 # 	return;
 # }
@@ -15,6 +15,9 @@
 #bigtreemap {
     position: relative;
     height:600px;
+    width:100%;
+    margin:auto;
+    overflow:hidden;
 }
 #bigtreemap div {
     position:absolute;
@@ -29,26 +32,11 @@
     color:white;
     background-color:#444;
 }
-#bigtreemap .head.in-path {
-    background-color:#655;
-}
 #bigtreemap .body {
     background-color:white;
 }
-#bigtreemap .leaf {
-    color:white;
-    display:table-cell;
-    vertical-align:middle;
-}
-#bigtreemap .over-leaf {
-    border:1px solid #9FD4FF; 
-}
 #bigtreemap .over-content {
     background-color: #9FD4FF;
-}
-#bigtreemap .over-head { /* boy i'm funny! */
-    background-color:#A4D9FF;
-    color:red;
 }
 </style>
 <%= render :partial => '/project/snapshot_title' %>
@@ -79,7 +67,9 @@
 		</tr>
 	</table>
 </form>
-<div style="padding-top:10px; padding-left:8px;"><span id="breadcrumb" class="nav"></div>
+<div style="padding-top:10px; padding-left:8px;">
+	<span id="breadcrumb" class="nav"></span>
+</div>
 <div id="bigtreemap"></div>
 <div id="nodata" style="display:none; vertical-align:top">
 <h3>No projects have been analysed.</h3>
@@ -95,54 +85,50 @@
 	var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
 	var size_metric, color_metric = null;
 	var breadcrumbs = [];
-	
-	var dimensions = $('content').getDimensions();
-	$('bigtreemap').style.width=dimensions.width;
-	$('bigtreemap').style.height=dimensions.height;
-	
+
 	TM.Squarified.implement({  
-	       onLeftClick: function(elem) {
-	          isFile = Element.readAttribute(elem, 'isFile');
-	          if (isFile == 'false') {
-	       	  	breadcrumbs[breadcrumbs.length] = Element.readAttribute(elem, 'name');
-	          	load_treemap(elem.parentNode.id);
-	          } else {
-	          	open_resource_viewer(elem.parentNode.id);
-	          }
-	       },
-	       onRightClick: function() {
-			 load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
-			 if (load) {
-			    breadcrumbs[breadcrumbs.length-1] = null;
-			    breadcrumbs = breadcrumbs.compact();
-	         	load_treemap(parent_resource_key);
-	         }
-	       },
-	       leafBox: function(json, coord) {
-				var config = this.config;
-				var backgroundColor = config.Color.allow && this.setColor(json), 
-				offst = config.offset,
-				width = coord.width - offst,
-				height = coord.height - offst;
-				var c = {
-				  'top':   (offst / 2)  + "px",
-				  'height':height + "px",
-				  'width': width + "px",
-				  'left': (offst / 2) + "px",
-				  'cursor': 'pointer'
-				};
-				if(backgroundColor) c['background-color'] = backgroundColor;
-				div_content = "<div isFile=\"" + json.is_file + "\" name=\"" + json.name + "\" class=\"leaf\" style=\"" + this.toStyle(c) + "\">";
-				div_content += json.is_file ? json.name : "<a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a>";
-				return div_content + "</div>";
-            },
-            headBox: function(json, coord) {
-            	return "<div></div>";
-            },
-            setColor: function(json) {
-              return json.data.$color;
-            }
-		});
+       onLeftClick: function(elem) {
+          isFile = Element.readAttribute(elem, 'isFile');
+          if (isFile == 'false') {
+       	  	breadcrumbs[breadcrumbs.length] = Element.readAttribute(elem, 'name');
+          	load_treemap(elem.parentNode.id);
+          } else {
+          	open_resource_viewer(elem.parentNode.id);
+          }
+       },
+       onRightClick: function() {
+		 load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
+		 if (load) {
+		    breadcrumbs[breadcrumbs.length-1] = null;
+		    breadcrumbs = breadcrumbs.compact();
+         	load_treemap(parent_resource_key);
+         }
+       },
+       leafBox: function(json, coord) {
+			var config = this.config;
+			var backgroundColor = config.Color.allow && this.setColor(json), 
+			offst = config.offset,
+			width = coord.width - offst,
+			height = coord.height - offst;
+			var c = {
+			  'top':   (offst / 2)  + "px",
+			  'height': height + "px",
+			  'width': width + "px",
+			  'left': (offst / 2) + "px",
+			  'cursor': 'pointer'
+			};
+			if(backgroundColor) c['background-color'] = backgroundColor;
+			div_content = "<div isFile=\"" + json.is_file + "\" name=\"" + json.name + "\" class=\"leaf\" style=\"" + this.toStyle(c) + "\">";
+			div_content += json.is_file ? json.name : "<a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a>";
+			return div_content + "</div>";
+        },
+        headBox: function(json, coord) {
+        	return "<div></div>";
+        },
+        setColor: function(json) {
+          return json.data.$color;
+        }
+	});
 		
 	function dashboard_url(resource_key) {
 		return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
@@ -158,38 +144,29 @@
 		return new TM.Squarified({  
 		     rootId: 'bigtreemap',  
 		     titleHeight: 1,
-		     offset: 8,
+		     offset: 6,
 		     addLeftClickHandler: true,  
 		     addRightClickHandler: true,
 		     selectPathOnHover: true,  
-		               
 		     Color: {  
 		         allow: true
 		     },  
-		       
-		     //Allow tips  
 		     Tips: {  
 		       allow: true,  
 		       offsetX: 20,  
 		       offsetY: 20,  
 		       onShow: function(tip, node, isLeaf, domElement) {  
-		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div>" +   
-		             "<div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";   
+		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div><div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";   
 		       },
 		       makeHTMLFromData: function(data){  
-		           var html = '<table><tr><td align=left>' + size_metric + '</td><td align=right><b>' + data.size_frmt + 
-		           '</b></td></tr><tr><td align=left>' + color_metric + '</td><td align=right><b>' +data.color_frmt + '</b></td></tr></table>';
+		           var html = '<table><tr><td align="left">' + size_metric + '</td><td align="right"><b>' + data.size_frmt + 
+		           '</b></td></tr><tr><td align="left">' + color_metric + '</td><td align="right"><b>' +data.color_frmt + '</b></td></tr></table>';
 		           return html;  
 		       }
 		     },
-		   
-		     onDestroyElement: function(content, tree, isLeaf, leaf){  
-		         if(leaf.clearAttributes) leaf.clearAttributes();  
-		     },
-		     
-		     onLeftClick: function() {  
-				alert('onleft');
-             }  
+		     onDestroyElement: function(content, tree, isLeaf, leaf) {
+		         if (leaf.clearAttributes) leaf.clearAttributes();  
+		     } 
 	 	}); 
     }
     
@@ -240,5 +217,6 @@
 		display_breadcrumbs();
 		treemap.loadJSON(json);
 	}
-	load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>);
+	
+	Event.observe(window, "load", new function() { load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>); } );
 </script>
