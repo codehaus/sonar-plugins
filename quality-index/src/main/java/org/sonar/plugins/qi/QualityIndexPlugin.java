@@ -4,6 +4,8 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Java;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +61,7 @@ public class QualityIndexPlugin implements Plugin {
     list.add(QualityIndexMetrics.class);
     list.add(QualityIndexSensor.class);
     list.add(QualityIndexWidget.class);
-    list.add(QualityIndexDecorator.class);
+    list.add(QICodingDecorator.class);
 
     return list;
   }
@@ -68,4 +70,10 @@ public class QualityIndexPlugin implements Plugin {
   public String toString() {
     return getKey();
   }
+
+
+  public static boolean shouldExecuteOnProject(Project project) {
+    return project.getLanguage().equals(Java.INSTANCE);
+  }
+
 }
