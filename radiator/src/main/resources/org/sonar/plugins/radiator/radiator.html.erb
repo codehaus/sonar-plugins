@@ -12,35 +12,34 @@
 %>
 <%= javascript_include_tag 'jit-yc' %>
 <style type="text/css">
-#bigtreemap {
+#radiator {
     position: relative;
     height:600px;
     width:100%;
     margin:auto;
     overflow:hidden;
 }
-#bigtreemap div {
+#radiator div {
     position:absolute;
     overflow:hidden;
-    padding-top: 4px;
-    padding-left: 4px;
+    padding: 0px;
 }
-#bigtreemap .content {
+#radiator .content {
     background-color:white;
 }
-#bigtreemap .head {
+#radiator .head {
     color:white;
     background-color:#444;
 }
-#bigtreemap .body {
+#radiator .body {
     background-color:white;
 }
-#bigtreemap .over-content {
+#radiator .over-content {
     background-color: #9FD4FF;
 }
 </style>
 <%= render :partial => '/project/snapshot_title' %>
-<form name="tm_controls" style="padding-top:10px; padding-left:6px;">
+<form name="tm_controls" >
 	<table>
 		<tr>
 		    <td>
@@ -70,15 +69,12 @@
 <div style="padding-top:10px; padding-left:8px;">
 	<span id="breadcrumb" class="nav"></span>
 </div>
-<div id="bigtreemap"></div>
+<div id="radiator"></div>
 <div id="nodata" style="display:none; vertical-align:top">
-<h3>No projects have been analysed.</h3>
-<p>If Maven and Sonar are installed with default parameters on the same box, 
-	just launch the command <code>mvn sonar:sonar</code> to analyse your first project. In any other case, please refer to the <a href="http://sonar.codehaus.org/documentation">documentation</a>.</p>
+  <h3>No projects.</h3>
 </div>
 
 <script language="javascript">
-
 	var treemap = null;
 	var all_projects_radiator = <%= @project.nil? ? 'true' : 'false' %>;
 	var current_resource_key = null;
@@ -86,7 +82,7 @@
 	var size_metric, color_metric = null;
 	var breadcrumbs = [];
 
-	TM.Squarified.implement({  
+	TM.Squarified.implement({
        onLeftClick: function(elem) {
           isFile = Element.readAttribute(elem, 'isFile');
           if (isFile == 'false') {
@@ -106,7 +102,7 @@
        },
        leafBox: function(json, coord) {
 			var config = this.config;
-			var backgroundColor = config.Color.allow && this.setColor(json), 
+			var backgroundColor = config.Color.allow && this.setColor(json),
 			offst = config.offset,
 			width = coord.width - offst,
 			height = coord.height - offst;
@@ -129,47 +125,47 @@
           return json.data.$color;
         }
 	});
-		
+
 	function dashboard_url(resource_key) {
 		return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
 	}
-	
+
 	function open_resource_viewer(resource_key) {
 	    href='<%=ApplicationController.root_context-%>/resource/index/' + resource_key;
 	    window.open(href,'resource','height=800,width=900,scrollbars=1,resizable=1');
 	}
- 
+
 	function instanciate_treemap(color_metric_direction) {
-	
-		return new TM.Squarified({  
-		     rootId: 'bigtreemap',  
+
+		return new TM.Squarified({
+		     rootId: 'radiator',
 		     titleHeight: 1,
 		     offset: 6,
-		     addLeftClickHandler: true,  
+		     addLeftClickHandler: true,
 		     addRightClickHandler: true,
-		     selectPathOnHover: true,  
-		     Color: {  
+		     selectPathOnHover: true,
+		     Color: {
 		         allow: true
-		     },  
-		     Tips: {  
-		       allow: true,  
-		       offsetX: 20,  
-		       offsetY: 20,  
-		       onShow: function(tip, node, isLeaf, domElement) {  
-		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div><div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";   
+		     },
+		     Tips: {
+		       allow: true,
+		       offsetX: 20,
+		       offsetY: 20,
+		       onShow: function(tip, node, isLeaf, domElement) {
+		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div><div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";
 		       },
-		       makeHTMLFromData: function(data){  
-		           var html = '<table><tr><td align="left">' + size_metric + '</td><td align="right"><b>' + data.size_frmt + 
+		       makeHTMLFromData: function(data){
+		           var html = '<table><tr><td align="left">' + size_metric + '</td><td align="right"><b>' + data.size_frmt +
 		           '</b></td></tr><tr><td align="left">' + color_metric + '</td><td align="right"><b>' +data.color_frmt + '</b></td></tr></table>';
-		           return html;  
+		           return html;
 		       }
 		     },
 		     onDestroyElement: function(content, tree, isLeaf, leaf) {
-		         if (leaf.clearAttributes) leaf.clearAttributes();  
-		     } 
-	 	}); 
+		         if (leaf.clearAttributes) leaf.clearAttributes();
+		     }
+	 	});
     }
-    
+
     function display_breadcrumbs() {
       var output = "";
       breadcrumbs.each(function(bc) { output += "&nbsp;&#187;&nbsp;" + bc });
@@ -183,7 +179,7 @@
 	    }
 	    $('tm_loading').show();
 
-	    url = '<%=ApplicationController.root_context-%>/api/plugins/RubyBigTreemapWebService';
+	    url = '<%=ApplicationController.root_context-%>/api/plugins/RadiatorWebService';
 	    current_resource_key = resource_key;
 	    url += resource_key != null ? '?resource=' + resource_key + '&' : '?';
 		new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemap_ajax_cb',
@@ -196,11 +192,11 @@
 		    onFailure: function(response){ error(response.responseText) }
 		  });
 	}
-	
+
 	function treemap_ajax_cb(json) {
 		$('tm_loading').hide();
 		if (current_resource_key==null &&json.children.length==0) {
-			$('bigtreemap').hide();
+			$('radiator').hide();
 			$('select_color_metric').disable();
 			$('select_size_metric').disable();
 			$('nodata').show();
@@ -208,7 +204,7 @@
 			render_treemap(json);
 		}
 	}
-	
+
 	function render_treemap(json) {
 		treemap = instanciate_treemap(json['color_metric_direction']);
 		parent_resource_key = json['parent'];
@@ -217,6 +213,6 @@
 		display_breadcrumbs();
 		treemap.loadJSON(json);
 	}
-	
+
 	Event.observe(window, "load", new function() { load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>); } );
 </script>

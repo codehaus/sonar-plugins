@@ -12,11 +12,11 @@
   <artifactId>sonar-radiator-plugin</artifactId>
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>Radiator plugin</name>
-  <description>Sonar radiator plugin</description>
+  <name>Sonar Radiator plugin</name>
+  <description>Display measures in a big treemap.</description>
 
   <properties>
-    <sonar.plugin.class>org.sonar.plugins.bigtreemap.BigTreemapPlugin</sonar.plugin.class>
+    <sonar.plugin.class>org.sonar.plugins.radiator.RadiatorPlugin</sonar.plugin.class>
     <sonar.version>1.11-SNAPSHOT</sonar.version>
   </properties>
 
@@ -25,6 +25,14 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/radiator</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License (LGPL), v.3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -43,14 +51,6 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
-    </dependency>
-
-    <!-- unit tests -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.6</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
