@@ -17,7 +17,7 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.bigtreemap;
+package org.sonar.plugins.radiator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 
-public class BigTreemapPlugin implements Plugin {
+public class RadiatorPlugin implements Plugin {
 
   public String getKey() {
     return "radiator";
@@ -41,8 +41,8 @@ public class BigTreemapPlugin implements Plugin {
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
-    extensions.add(RubyBigTreemapPage.class);
-    extensions.add(RubyBigTreemapWebService.class);
+    extensions.add(RadiatorPage.class);
+    extensions.add(RadiatorWebService.class);
     return extensions;
   }
 

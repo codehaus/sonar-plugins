@@ -17,20 +17,20 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.bigtreemap;
+package org.sonar.plugins.radiator;
 
 import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.RubyRailsWebservice;
 
-public class RubyBigTreemapWebService extends AbstractRubyTemplate implements RubyRailsWebservice {
+public class RadiatorWebService extends AbstractRubyTemplate implements RubyRailsWebservice {
 
   public String getId() {
-    return "RubyBigTreemapWebService";
+    return "RadiatorWebService";
   }
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/bigtreemap/big_treemap_plugin_controller.rb";
+    return "/org/sonar/plugins/radiator/radiator_plugin_controller.rb";
   }
 
 }

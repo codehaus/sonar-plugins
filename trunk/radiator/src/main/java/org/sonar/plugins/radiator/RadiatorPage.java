@@ -17,14 +17,14 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.bigtreemap;
+package org.sonar.plugins.radiator;
 
 import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.RubyRailsPage;
 
 @NavigationSection({NavigationSection.HOME, NavigationSection.RESOURCE})
-public class RubyBigTreemapPage extends AbstractRubyTemplate implements RubyRailsPage {
+public class RadiatorPage extends AbstractRubyTemplate implements RubyRailsPage {
 
   public String getTitle() {
     return "Radiator";
@@ -32,7 +32,8 @@ public class RubyBigTreemapPage extends AbstractRubyTemplate implements RubyRail
 
   @Override
   public String getTemplatePath() {
-    return "/org/sonar/plugins/bigtreemap/bigtreemap.html.erb";
+    //return "/org/sonar/plugins/radiator/radiator.html.erb";
+    return "/Users/simon/Desktop/radiator.html.erb";
   }
 
   public String getId() {
