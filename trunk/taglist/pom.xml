@@ -8,7 +8,7 @@
   </parent>
   <artifactId>sonar-taglist-plugin</artifactId>
   <name>sonar-plugin-taglist</name>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.6</version>
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
   <properties>
@@ -104,8 +104,8 @@
   </reporting>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/taglist</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-taglist-plugin-0.6</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-taglist-plugin-0.6</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-taglist-plugin-0.6</url>
   </scm>
 </project>
