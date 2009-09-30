@@ -10,8 +10,8 @@ import org.sonar.plugins.api.Extension;
 import org.sonar.plugins.api.Plugin;
 
 @EditableProperties( {
-		@EditableProperty(key = TestabilityPlugin.KEY_MAX_ACCEPTABLE_COST, defaultValue = TestabilityPlugin.MAX_ACCEPTABLE_COST_DEFAULT, name = "Maximum cost to be acceptable", description = "Maximum Total Class cost to be classify it as 'acceptable'"),
-		@EditableProperty(key = TestabilityPlugin.KEY_MAX_EXCELLENT_COST, defaultValue = TestabilityPlugin.MAX_EXCELLENT_COST_DEFAULT, name = "Maximum cost to be excellent", description = "Maximum Total Class cost to be classify it as 'excellent'"),
+		@EditableProperty(key = TestabilityPlugin.KEY_MAX_ACCEPTABLE_COST, defaultValue = TestabilityPlugin.MAX_ACCEPTABLE_COST_DEFAULT, name = "Maximum cost to be acceptable", description = "Maximum Total Class cost to classify it as 'acceptable'"),
+		@EditableProperty(key = TestabilityPlugin.KEY_MAX_EXCELLENT_COST, defaultValue = TestabilityPlugin.MAX_EXCELLENT_COST_DEFAULT, name = "Maximum cost to be excellent", description = "Maximum Total Class cost to classify it as 'excellent'"),
 		@EditableProperty(key = TestabilityPlugin.KEY_WORST_OFFENDER_COUNT, defaultValue = TestabilityPlugin.WORST_OFFENDER_COUNT_DEFAULT, name = "Number of worst offending classes", description = "Print N number of worst offending classes") })
 public class TestabilityPlugin implements Plugin {
 
