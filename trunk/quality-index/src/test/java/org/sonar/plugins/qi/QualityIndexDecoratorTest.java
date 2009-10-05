@@ -81,7 +81,7 @@ public class QualityIndexDecoratorTest {
   @Test
   public void testCountViolationsByPriority() {
     createMultiSetViolations();
-    Multiset<RulePriority> set = decorator.countViolationsByPriority(context);
+    Multiset<RulePriority> set = decorator.countViolationsByPriority(context,CoreProperties.PMD_PLUGIN);
     assertThat(set.count(RulePriority.BLOCKER), is(2));
     assertThat(set.count(RulePriority.CRITICAL), is(0));
     assertThat(set.count(RulePriority.MAJOR), is(1));
@@ -94,7 +94,7 @@ public class QualityIndexDecoratorTest {
     when(configuration.getString(anyString(), anyString())).
       thenReturn(QualityIndexPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
     createMultiSetViolations();
-    Multiset<RulePriority> set =     decorator.countViolationsByPriority(context);
+    Multiset<RulePriority> set =     decorator.countViolationsByPriority(context, CoreProperties.PMD_PLUGIN);
     Map<RulePriority, Integer> map = decorator.getWeightsByPriority("foo", "bar");
 
     assertThat(decorator.getWeightedViolations(map, set), is(24.0));
@@ -111,7 +111,7 @@ public class QualityIndexDecoratorTest {
     when(context.getMeasure(CoreMetrics.NCLOC)).
       thenReturn(new Measure(CoreMetrics.NCLOC, 97.0));
 
-    assertThat(decorator.getCodingRate(context), is(0.25));
+    assertThat(decorator.getRate(context), is(0.25));
 
   }
 
@@ -126,7 +126,7 @@ public class QualityIndexDecoratorTest {
     when(context.getMeasure(CoreMetrics.NCLOC)).
       thenReturn(new Measure(CoreMetrics.NCLOC, 2.0));
 
-    assertThat(decorator.getCodingRate(context), is(1.0));
+    assertThat(decorator.getRate(context), is(1.0));
   }
 
 
