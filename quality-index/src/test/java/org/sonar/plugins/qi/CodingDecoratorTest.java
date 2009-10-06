@@ -23,8 +23,8 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
-public class QualityIndexDecoratorTest {
-  private QICodingDecorator decorator;
+public class CodingDecoratorTest {
+  private CodingDecorator decorator;
   private DecoratorContext context;
   private Configuration configuration;
 
@@ -32,7 +32,7 @@ public class QualityIndexDecoratorTest {
   public void init() {
     context = mock(DecoratorContext.class);
     configuration = mock(Configuration.class);
-    decorator = new QICodingDecorator(configuration);
+    decorator = new CodingDecorator(configuration);
   }
 
   @Test
@@ -92,7 +92,7 @@ public class QualityIndexDecoratorTest {
   @Test
   public void getWeightedViolations() {
     when(configuration.getString(anyString(), anyString())).
-      thenReturn(QualityIndexPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
+      thenReturn(QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
     createMultiSetViolations();
     Multiset<RulePriority> set =     decorator.countViolationsByPriority(context, CoreProperties.PMD_PLUGIN);
     Map<RulePriority, Integer> map = decorator.getWeightsByPriority("foo", "bar");
@@ -103,7 +103,7 @@ public class QualityIndexDecoratorTest {
   @Test
   public void testGetStandardCodingRate() {
     when(configuration.getString(anyString(), anyString())).
-      thenReturn(QualityIndexPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
+      thenReturn(QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
     createMultiSetViolations();
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
@@ -118,7 +118,7 @@ public class QualityIndexDecoratorTest {
   @Test
   public void testGetExtremeCodingRate() {
     when(configuration.getString(anyString(), anyString())).
-      thenReturn(QualityIndexPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
+      thenReturn(QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT);
     createMultiSetViolations();
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).

@@ -14,23 +14,23 @@ import org.sonar.api.measures.RangeDistributionBuilder;
 import java.util.List;
 import java.util.Arrays;
 
-public class QIComplexityDistributionDecorator implements Decorator{
+public class ComplexityDistributionDecorator implements Decorator{
 
   @DependedUpon
   public List<Metric> dependedUpon() {
-    return Arrays.asList(QualityIndexMetrics.QI_COMPLEX_DISTRIBUTION);
+    return Arrays.asList(QIMetrics.QI_COMPLEX_DISTRIBUTION);
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return QualityIndexPlugin.shouldExecuteOnProject(project);
+    return QIPlugin.shouldExecuteOnProject(project);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    // Distribution has already been calculated by the Sensor at file level
+    // Distribution has already been calculated by the ComplexityDistributionSensor at file level
     if (resource.getQualifier().equals(Resource.QUALIFIER_FILE)) {
       return;
     }
-    computeAndSaveComplexityDistribution(resource, context, QualityIndexPlugin.COMPLEXITY_BOTTOM_LIMITS);
+    computeAndSaveComplexityDistribution(resource, context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
   }
 
   protected void computeAndSaveComplexityDistribution(Resource resource, DecoratorContext context, Number[] bottomLimits) {
@@ -42,8 +42,8 @@ public class QIComplexityDistributionDecorator implements Decorator{
   }
 
   protected Measure computeComplexityDistribution(DecoratorContext context, Number[] bottomLimits) {
-    RangeDistributionBuilder builder = new RangeDistributionBuilder(QualityIndexMetrics.QI_COMPLEX_DISTRIBUTION, bottomLimits);
-    for (Measure childMeasure : context.getChildrenMeasures(QualityIndexMetrics.QI_COMPLEX_DISTRIBUTION)) {
+    RangeDistributionBuilder builder = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, bottomLimits);
+    for (Measure childMeasure : context.getChildrenMeasures(QIMetrics.QI_COMPLEX_DISTRIBUTION)) {
       builder.add(childMeasure);
     }
     return builder.build();
