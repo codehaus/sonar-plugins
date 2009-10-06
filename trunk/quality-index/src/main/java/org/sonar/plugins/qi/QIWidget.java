@@ -7,7 +7,7 @@ import org.sonar.api.web.UserRole;
 
 @NavigationSection(NavigationSection.RESOURCE)
 @UserRole(UserRole.VIEWER)
-public class QualityIndexWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+public class QIWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   public String getId() {
     return "quality-index";
@@ -20,6 +20,6 @@ public class QualityIndexWidget extends AbstractRubyTemplate implements RubyRail
 
   @Override
   protected String getTemplatePath() {
-    return "/quality_index_widget.html.erb";
+    return "/widget.html.erb";
   }
 }

@@ -12,7 +12,6 @@ import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.utils.KeyValueFormat;
-import org.sonar.api.CoreProperties;
 import org.apache.commons.configuration.Configuration;
 
 import java.util.Map;
@@ -21,10 +20,10 @@ import java.util.List;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.HashMultiset;
 
-public abstract class QIAbstractDecorator implements Decorator {
+public abstract class AbstractDecorator implements Decorator {
   private Configuration configuration;
 
-  public QIAbstractDecorator(Configuration configuration) {
+  public AbstractDecorator(Configuration configuration) {
     this.configuration = configuration;
   }
 
@@ -37,7 +36,7 @@ public abstract class QIAbstractDecorator implements Decorator {
   protected abstract double getRate(DecoratorContext context);
 
   public boolean shouldExecuteOnProject(Project project) {
-    return QualityIndexPlugin.shouldExecuteOnProject(project);
+    return QIPlugin.shouldExecuteOnProject(project);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {

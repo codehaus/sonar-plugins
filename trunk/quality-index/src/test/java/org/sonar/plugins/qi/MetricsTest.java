@@ -4,10 +4,10 @@ import org.junit.Test;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class QualityIndexMetricsTest {
+public class MetricsTest {
   @Test
   public void testGetMetrics() {
-    QualityIndexMetrics metrics = new QualityIndexMetrics();
+    QIMetrics metrics = new QIMetrics();
     assertThat(metrics.getMetrics().size(), is(5));
   }
 }

@@ -24,12 +24,12 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Collection;
 import java.util.ArrayList;
 
-public class QualityIndexSensorTest {
+public class ComplexityDistributionSensorTest {
 
   @Test
   public void testDependsUpon() {
-     QualityIndexSensor sensor = new QualityIndexSensor(null);
-     assertThat(sensor.dependsUpon().size(), is(1));
+     ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(null);
+     assertThat(complexityDistributionSensor.dependsUpon().size(), is(1));
   }
 
   @Test
@@ -40,11 +40,11 @@ public class QualityIndexSensorTest {
     when(context.getResource("foo")).
       thenReturn(resource);
 
-    RangeDistributionBuilder distrib = new RangeDistributionBuilder(QualityIndexMetrics.QI_COMPLEX_DISTRIBUTION, QualityIndexPlugin.COMPLEXITY_BOTTOM_LIMITS);
-    QualityIndexSensor sensor = new QualityIndexSensor(null);
+    RangeDistributionBuilder distrib = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
+    ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(null);
 
     assertThat(distrib.build().getPersistenceMode(), is(PersistenceMode.FULL));
-    sensor.saveMeasure(context, new SourceFile("foo.java"), distrib);
+    complexityDistributionSensor.saveMeasure(context, new SourceFile("foo.java"), distrib);
 
 
     verify(context).saveMeasure(eq(resource), argThat(new BaseMatcher<Measure>() {
@@ -61,7 +61,7 @@ public class QualityIndexSensorTest {
 
   @Test
   public void testNclocDistributionComputingForFile() {
-    Number[] limits = QualityIndexPlugin.COMPLEXITY_BOTTOM_LIMITS;
+    Number[] limits = QIPlugin.COMPLEXITY_BOTTOM_LIMITS;
     Collection<SourceCode> units = new ArrayList<SourceCode>();
 
     units.add(createMethod(22));
@@ -72,12 +72,12 @@ public class QualityIndexSensorTest {
     units.add(createMethod(46));
     units.add(createMethod(56));
 
-    QualityIndexSensor sensor = new QualityIndexSensor(new SquidSearchImpl(units));
-    RangeDistributionBuilder distribution = sensor.computeDistributionForFile(null, limits);
+    ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(new SquidSearchImpl(units));
+    RangeDistributionBuilder distribution = complexityDistributionSensor.computeDistributionForFile(null, limits);
 
     Measure m = distribution.build();
     assertThat(m.getData(), is("1=2;10=0;20=1;30=4"));
-    assertThat(m.getMetric(), is(QualityIndexMetrics.QI_COMPLEX_DISTRIBUTION));
+    assertThat(m.getMetric(), is(QIMetrics.QI_COMPLEX_DISTRIBUTION));
   }
 
   private SourceMethod createMethod(int cc) {

@@ -1,13 +1,12 @@
 package org.sonar.plugins.qi;
 
-import org.sonar.api.measures.Metrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.CoreMetrics;
 
 import java.util.List;
 import java.util.Arrays;
 
-public class QualityIndexMetrics implements Metrics {
+public class QIMetrics implements org.sonar.api.measures.Metrics {
 
   public static final Metric QI_QUALITY_INDEX = new Metric("qi-quality-index", "Quality Index",
     "The quality index of a project", Metric.ValueType.INT, 1, true, CoreMetrics.DOMAIN_GENERAL);
@@ -23,6 +22,12 @@ public class QualityIndexMetrics implements Metrics {
 
   public static final Metric QI_TEST_COVERAGE = new Metric("qi-test-coverage", "Test Coverage",
     "Test Coverage", Metric.ValueType.INT, -1, true, CoreMetrics.DOMAIN_TESTS);
+
+  public static final Metric QI_COMPLEXITY_FACTOR = new Metric("qi-complexity-factor", "Complexity Factor",
+    "Complexity Factor", Metric.ValueType.PERCENT, -1, true, CoreMetrics.DOMAIN_COMPLEXITY);
+
+  public static final Metric QI_COMPLEXITY_FACTOR_METHODS = new Metric("qi-complexity-factor-methods", "Complexity Factor Methods",
+    "Complexity Factor Methods", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_COMPLEXITY);
 
   public static final Metric QI_COMPLEX_DISTRIBUTION = new Metric("qi-complex-distrib", "Complexity distribution",
     "Complexity distribution", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_COMPLEXITY);

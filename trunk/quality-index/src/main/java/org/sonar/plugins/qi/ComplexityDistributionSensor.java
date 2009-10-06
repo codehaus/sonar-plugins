@@ -1,6 +1,5 @@
 package org.sonar.plugins.qi;
 
-import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.SquidSearch;
 import org.sonar.api.batch.DependsUpon;
@@ -19,25 +18,25 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class QualityIndexSensor implements Sensor {
+public class ComplexityDistributionSensor implements org.sonar.api.batch.Sensor {
 
   private SquidSearch squid;
 
-  public QualityIndexSensor(SquidSearch squid) {
+  public ComplexityDistributionSensor(SquidSearch squid) {
     this.squid = squid;
   }
 
   @DependsUpon
   public List<String> dependsUpon() {
-    return Arrays.asList(Sensor.FLAG_SQUID_ANALYSIS);
+    return Arrays.asList(org.sonar.api.batch.Sensor.FLAG_SQUID_ANALYSIS);
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return QualityIndexPlugin.shouldExecuteOnProject(project);
+    return QIPlugin.shouldExecuteOnProject(project);
   }
 
   public void analyse(Project project, SensorContext context) {
-    computeAndSaveDistributionForFiles(context, QualityIndexPlugin.COMPLEXITY_BOTTOM_LIMITS);
+    computeAndSaveDistributionForFiles(context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
   }
 
   protected void computeAndSaveDistributionForFiles(SensorContext context, Number[] bottomLimits) {
@@ -51,7 +50,7 @@ public class QualityIndexSensor implements Sensor {
   protected RangeDistributionBuilder computeDistributionForFile(SourceCode file, Number[] bottomLimits) {
     Collection<SourceCode> methods = squid.search(new QueryByParent(file), new QueryByType(SourceMethod.class));
 
-    RangeDistributionBuilder distribution = new RangeDistributionBuilder(QualityIndexMetrics.QI_COMPLEX_DISTRIBUTION, bottomLimits);
+    RangeDistributionBuilder distribution = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, bottomLimits);
     for (SourceCode method : methods) {
       int cc = method.getInt(org.sonar.squid.measures.Metric.COMPLEXITY);
       distribution.add(cc);
