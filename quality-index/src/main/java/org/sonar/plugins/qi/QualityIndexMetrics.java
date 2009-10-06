@@ -24,6 +24,9 @@ public class QualityIndexMetrics implements Metrics {
   public static final Metric QI_TEST_COVERAGE = new Metric("qi-test-coverage", "Test Coverage",
     "Test Coverage", Metric.ValueType.INT, -1, true, CoreMetrics.DOMAIN_TESTS);
 
+  public static final Metric QI_COMPLEX_DISTRIBUTION = new Metric("qi-complex-distrib", "Complexity distribution",
+    "Complexity distribution", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_COMPLEXITY);
+
   public List<Metric> getMetrics() {
     return Arrays.asList(QI_QUALITY_INDEX, QI_CODING_VIOLATIONS, QI_COMPLEXITY, QI_STYLE_VIOLATIONS, QI_TEST_COVERAGE);
   }

@@ -44,6 +44,8 @@ public class QualityIndexPlugin implements Plugin {
   public static final String QI_COVERAGE_AXIS_WEIGHT = "qi.axis.weights";
   public static final String QI_COVERAGE_AXIS_WEIGHT_DEFAULT = "2.0";
 
+  public static Number[] COMPLEXITY_BOTTOM_LIMITS = {30, 20, 10, 1};
+
   public String getKey() {
     return "quality-index";
   }
