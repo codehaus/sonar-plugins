@@ -12,7 +12,7 @@
   <description>Implementation of the SIG Maintainability Model</description>
 
   <properties>
-    <sonar.version>1.11-SNAPSHOT</sonar.version>
+    <sonar.version>1.11</sonar.version>
   </properties>
 
   <developers>
