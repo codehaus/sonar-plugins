@@ -6,8 +6,8 @@ import static org.hamcrest.core.Is.is;
 
 public class PluginTest {
   @Test
-  public void testGetExtensions() {
+  public void testDeclaredExtensions() {
     QIPlugin plugin = new QIPlugin();
-    assertThat(plugin.getExtensions().size(), is(4));
+    assertThat(plugin.getExtensions().size(), is(5));
   }
 }

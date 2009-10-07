@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Map;
 
-public class ComplexityFactorDecorator implements Decorator{
+public class ComplexityFactorDecorator implements Decorator {
   public boolean shouldExecuteOnProject(Project project) {
     return QIPlugin.shouldExecuteOnProject(project);
   }
@@ -30,21 +30,37 @@ public class ComplexityFactorDecorator implements Decorator{
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    double complexityFactor = computeComplexityFactor(context);
-    if (complexityFactor != 0) {
-      context.saveMeasure(QIMetrics.QI_COMPLEXITY_FACTOR, complexityFactor);
+    saveMeasure(context, computeComplexityFactor(context), QIMetrics.QI_COMPLEXITY_FACTOR);
+    saveMeasure(context, computeComplexMethodCount(context), QIMetrics.QI_COMPLEXITY_FACTOR);
+  }
+
+  protected double computeComplexMethodCount(DecoratorContext context) {
+    Measure measure = context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION);
+    if (measure == null) {
+      return 0;
     }
+    Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
+    return distribution.get(30);
   }
 
   protected double computeComplexityFactor(DecoratorContext context) {
     Measure measure = context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION);
-    if(measure == null) {
+    if (measure == null) {
       return 0;
     }
-    Map<Integer,Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
-    double complexityFactor = 5 * distribution.get(30) * 100;
-    complexityFactor /= distribution.get(1) + distribution.get(10) +distribution.get(20) +distribution.get(30); 
+    Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
+    double methodWithComplexityCount = distribution.get(1) + distribution.get(10) + distribution.get(20) + distribution.get(30);
+    if (methodWithComplexityCount == 0) {
+      return 0;
+    }
+    double complexityFactor = 5 * distribution.get(30) / methodWithComplexityCount * 100;
 
     return complexityFactor > 100 ? 100 : complexityFactor;
+  }
+
+  private void saveMeasure(DecoratorContext context, double value, Metric metric) {
+    if (value != 0) {
+      context.saveMeasure(metric, value);
+    }
   }
 }

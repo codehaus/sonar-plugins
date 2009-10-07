@@ -50,17 +50,18 @@ public class QIPlugin implements org.sonar.api.Plugin {
   }
 
   public String getName() {
-    return "The Quality Index Sonar QIPlugin";
+    return "The Quality Index Sonar QPlugin";
   }
 
   public String getDescription() {
-    return "The Quality Index Sonar QIPlugin";
+    return "The Quality Index Sonar Plugin";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(QIMetrics.class);
     list.add(ComplexityDistributionSensor.class);
+    list.add(ComplexityDistributionDecorator.class);
     list.add(QIWidget.class);
     list.add(CodingDecorator.class);
 
@@ -76,5 +77,4 @@ public class QIPlugin implements org.sonar.api.Plugin {
   public static boolean shouldExecuteOnProject(Project project) {
     return project.getLanguage().equals(Java.INSTANCE);
   }
-
 }
