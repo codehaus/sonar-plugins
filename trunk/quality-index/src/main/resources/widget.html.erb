@@ -1,23 +1,26 @@
-<div class="dashbox">
-  <h3><span title="<%= metric('random').description -%>"></span></h3>
-  <p>
-    <span class="big">
-      <%= format_measure('random') -%> <%= tendency_icon(measure('random')) %>
-    </span>
-  </p>
-  <p><%= format_measure('message') -%></p>
-  <p>
-    <%= format_measure('ncloc', :suffix => ' lines', :url => url_for_drilldown('ncloc')) -%>
-  </p>
-</div>
-<div class="dashbox">
-	<h3>Help</h3>
-	  <p>
-      Read configuration : <%= configuration('sonar.jdbc.username') -%>
-    </p>
+<%
+      if measure('qi-quality-index')
+%>
 
-   	<p>
-	    Sample of Jfree Eastwood chart : <br/>
-		<%= gchart('cht=bhs&chco=FF0000,00FF00,0000FF&chs=200x125&chd=s:FOE,THE,Bar&chxt=x,y&chxl=1:|Dec|Nov|Oct|0:||20K||60K||100K|') -%>
-	  </p>
+<div class="yui-gc">
+  <div class="yui-u first">
+    <div class="dashbox">
+      <h3>Quality Index</h3>
+      <p><span class="big"><%= format_measure('qi-quality-index', :suffix => '', :url => url_for_drilldown('qi-quality-index'), :default => '0')%></span></p>
+      <p><span>Coding violations ( <%= format_measure('qi-coding-violations')-%>/ 4.5)</span></p>
+      <p><span>Complexity (<%= format_measure('qi-complexity', :suffix => ' man days', :url => url_for_drilldown('qi-complexity'), :default => '0') %></span></p>
+      <p><span>Code coverage (<%= format_measure('qi-test-coverage', :suffix => ' man days', :url => url_for_drilldown('qi-test-coverage'), :default => '0') %></span></p>
+      <p><span>Style violations (<%= format_measure('qi-style-violations', :suffix => ' man days', :url => url_for_drilldown('qi-style-violations'), :default => '0') %></span></p>
+    </div>
+  </div>
+  <div class="yui-u">
+    <div class="dashbox">
+      <h3>Complexity factor</h3>
+      <p><span class="big"><%= format_measure('qi-complexity-factor', :suffix => '', :url => url_for_drilldown('qi-complexity-factor'), :default => '0')%></span></p>
+      <p><span><%= format_measure('qi-complexity-factor-methods', :suffix => ' methods', :url => url_for_drilldown('qi-complexity-factor-methods'), :default => '0 method')%></span></p>
+    </div>
+  </div>
 </div>
+<%
+      end
+%>
