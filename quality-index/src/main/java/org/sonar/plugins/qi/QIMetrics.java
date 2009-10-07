@@ -33,6 +33,7 @@ public class QIMetrics implements org.sonar.api.measures.Metrics {
     "Complexity distribution", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_COMPLEXITY);
 
   public List<Metric> getMetrics() {
-    return Arrays.asList(QI_QUALITY_INDEX, QI_CODING_VIOLATIONS, QI_COMPLEXITY, QI_STYLE_VIOLATIONS, QI_TEST_COVERAGE);
+    return Arrays.asList(QI_QUALITY_INDEX, QI_CODING_VIOLATIONS, QI_COMPLEXITY,
+      QI_STYLE_VIOLATIONS, QI_TEST_COVERAGE, QI_COMPLEXITY_FACTOR, QI_COMPLEXITY_FACTOR_METHODS, QI_COMPLEX_DISTRIBUTION);
   }
 }

@@ -8,6 +8,6 @@ public class MetricsTest {
   @Test
   public void testGetMetrics() {
     QIMetrics metrics = new QIMetrics();
-    assertThat(metrics.getMetrics().size(), is(5));
+    assertThat(metrics.getMetrics().size(), is(8));
   }
 }
