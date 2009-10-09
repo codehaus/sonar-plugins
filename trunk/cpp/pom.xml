@@ -8,7 +8,7 @@
       <relativePath>../parent</relativePath>
    </parent>
 
-   <artifactId>cpp</artifactId>
+   <artifactId>sonar-cpp-plugin</artifactId>
    <packaging>jar</packaging>
    <version>0.1-SNAPSHOT</version>
    <name>Sonar Cpp plugin</name>
