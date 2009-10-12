@@ -53,7 +53,7 @@ public class ComplexityDecorator extends AbstractDecorator {
     if (methodWithComplexityCount == 0) {
       return 0;
     }
-    double complexityFactor = 5 * getComplexMethods(context) / methodWithComplexityCount * 100;
+    double complexityFactor = 5 * 100 * getComplexMethods(context) / methodWithComplexityCount;
 
     return complexityFactor > 100 ? 100 : complexityFactor;
   }
