@@ -8,12 +8,12 @@ import org.sonar.api.measures.Measure;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ComplexityFactorDecoratorTest {
+public class ComplexityDecoratorTest {
 
   @Test
   public void testIOMetrics() {
-    ComplexityFactorDecorator decorator = new ComplexityFactorDecorator();
-    assertThat(decorator.dependedUpon().size(), is(2));
+    ComplexityDecorator decorator = new ComplexityDecorator();
+    assertThat(decorator.dependedUpon().size(), is(3));
     assertThat(decorator.dependsUpon().size(), is(1));
   }
 
@@ -27,7 +27,7 @@ public class ComplexityFactorDecoratorTest {
         new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=0;10=0;20=0;30=12")
       );
 
-    ComplexityFactorDecorator decorator = new ComplexityFactorDecorator();
+    ComplexityDecorator decorator = new ComplexityDecorator();
     assertThat(decorator.computeComplexityFactor(context), is(0.0));
     assertThat(decorator.computeComplexityFactor(context), is(50.0));
     assertThat(decorator.computeComplexityFactor(context), is(100.0));
@@ -42,7 +42,7 @@ public class ComplexityFactorDecoratorTest {
         null,
         new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=0;10=0;20=0;30=12")
       );
-    ComplexityFactorDecorator decorator = new ComplexityFactorDecorator();
+    ComplexityDecorator decorator = new ComplexityDecorator();
     assertThat(decorator.computeComplexMethodCount(context), is(0.0));
     assertThat(decorator.computeComplexMethodCount(context), is(12.0));
 
