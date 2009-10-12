@@ -22,8 +22,10 @@ package org.sonar.plugins.radiator;
 import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.RubyRailsPage;
+import org.sonar.api.web.UserRole;
 
 @NavigationSection({NavigationSection.HOME, NavigationSection.RESOURCE})
+@UserRole(UserRole.VIEWER)
 public class RadiatorPage extends AbstractRubyTemplate implements RubyRailsPage {
 
   public String getTitle() {
@@ -32,11 +34,10 @@ public class RadiatorPage extends AbstractRubyTemplate implements RubyRailsPage 
 
   @Override
   public String getTemplatePath() {
-    //return "/org/sonar/plugins/radiator/radiator.html.erb";
-    return "/Users/simon/Desktop/radiator.html.erb";
+    return "/org/sonar/plugins/radiator/radiator.html.erb";
   }
 
   public String getId() {
-    return this.getClass().getName();
+    return getClass().getName();
   }
 }

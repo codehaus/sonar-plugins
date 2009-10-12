@@ -36,7 +36,7 @@ public class RadiatorPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return "A plugin that represents projects metrics as a big treemap";
+    return "Display measures in a big treemap";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
