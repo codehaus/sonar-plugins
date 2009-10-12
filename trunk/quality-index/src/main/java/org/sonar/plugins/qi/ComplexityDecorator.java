@@ -76,10 +76,4 @@ public class ComplexityDecorator extends AbstractDecorator {
     Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
     return distribution.get(30);
   }
-
-  private void saveMeasure(DecoratorContext context, double value, Metric metric) {
-    if (value != 0) {
-      context.saveMeasure(metric, value);
-    }
-  }
 }
