@@ -22,37 +22,36 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
   def initialize()
     @min = 0
     @max = 100
-    @min_color = Color::RGB.from_html("FF0000")   # red
+    @min_color = Color::RGB.from_html("DF0000")   # red
     @mean_color = Color::RGB.from_html("FFB000")   # orange
-    @max_color = Color::RGB.from_html("00FF00")   # green
+    @max_color = Color::RGB.from_html("00DF00")   # green
   end
 
   private
   
   def rest_call
-    parent_resource_key = nil
+    parent_resource_key=nil
     if @resource
-      snapshot = @resource.last_snapshot
-      snapshots = snapshot.children.select {|s| s.qualifier!=Snapshot::QUALIFIER_UNIT_TEST_CLASS}
-      parent_snapshot = snapshot.parent
-      parent_resource_key = parent_snapshot.project.key if parent_snapshot
+      last_snapshot=@resource.last_snapshot
+      snapshots = Snapshot.find(:all,
+        :conditions => ['parent_snapshot_id=? AND qualifier<>? AND status=?',last_snapshot.id, Snapshot::QUALIFIER_UNIT_TEST_CLASS, Snapshot::STATUS_PROCESSED],
+        :include => 'project')
+      parent_snapshot=last_snapshot.parent
+      parent_resource_key = parent_snapshot.project_id if parent_snapshot 
     else
       snapshots = Snapshot.last_authorized_enabled_projects(current_user)
     end
-    
-    size_metric_key = params[:size]
-    color_metric_key = params[:color]
 
-    size_metric = Metric.by_key(size_metric_key) || Sonar::TreemapBuilder.default_size_metric
-    color_metric = Metric.by_key(color_metric_key) || Sonar::TreemapBuilder.default_color_metric
+    size_metric = Metric.by_key(params[:size]) || Sonar::TreemapBuilder.default_size_metric
+    color_metric = Metric.by_key(params[:color]) || Sonar::TreemapBuilder.default_color_metric
 
     if snapshots.empty?
       measures = []
     else
-      # temporary fix for SONAR-1098
+      # WTF Oracle is #!*$$. It does not accept IN clause with more than 1000 elements
       snapshots = snapshots[0...999]
       measures = ProjectMeasure.find(:all,
-        :conditions => ['rules_category_id IS NULL and rule_id IS NULL and rule_priority IS NULL and metric_id IN (?) and snapshot_id IN (?)',
+        :conditions => ['rules_category_id IS NULL AND rule_id IS NULL AND rule_priority IS NULL AND metric_id IN (?) AND snapshot_id IN (?)',
           [size_metric.id, color_metric.id], snapshots.map{|s| s.id}])
     end
     measures_by_snapshot = Sonar::TreemapBuilder.measures_by_snapshot(snapshots, measures)
@@ -82,7 +81,7 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
           is_file = resource.entity? && resource.copy_resource_id.nil?
           children << {:children => [], :data => {'$color' => get_hex_color(color, color_metric), '$area' => get_measure_value(size),
                                                     :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color)}, 
-                                        :id => snapshot.project.key , :name => snapshot.project.name, :is_file => is_file}
+                                        :id => snapshot.project_id , :name => snapshot.project.name, :is_file => is_file}
           area = area + get_measure_value(size)
         end
       end
@@ -123,10 +122,10 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
   end
   
   def get_color(measure, color_metric)
-    if measure and not measure.alert_status.blank?
+    if measure && !measure.alert_status.blank?
       case(measure.alert_status)
-        when Metric::TYPE_LEVEL_OK : return Color::RGB.from_html("00FF00")
-        when Metric::TYPE_LEVEL_ERROR : return Color::RGB.from_html("f93f40")
+        when Metric::TYPE_LEVEL_OK : return Color::RGB.from_html("00DF00")
+        when Metric::TYPE_LEVEL_ERROR : return Color::RGB.from_html("DF0000")
         when Metric::TYPE_LEVEL_WARN : return Color::RGB.from_html("ff8500")
       end
     end

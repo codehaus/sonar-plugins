@@ -13,66 +13,76 @@
 %>
 <%= javascript_include_tag 'jit-yc' %>
 <style type="text/css">
-#radiator {
+#radiatorroot {
     position: relative;
     height:600px;
     width:100%;
     margin:auto;
     overflow:hidden;
 }
-#radiator div {
+#radiatorroot div {
     position:absolute;
     overflow:hidden;
     padding: 0px;
 }
-#radiator .content {
+#radiatorroot .content {
     background-color:white;
 }
-#radiator .head {
+#radiatorroot .head {
     color:white;
     background-color:#444;
 }
-#radiator .body {
+#radiatorroot .body {
     background-color:white;
+    padding: 0;
 }
-#radiator .over-content {
+#radiatorroot .over-content {
     background-color: #9FD4FF;
+}
+#radiatorroot .leaf {
+  padding: 3px 0 0 3px;
+  border:1px solid #fff;
 }
 </style>
 <%= render :partial => '/project/snapshot_title' %>
 <form name="tm_controls" >
 	<table>
 		<tr>
-		    <td>
-		      <span class="comments">Size:</span>
-		      <%= select_tag 'size_metric', options_from_collection_for_select(
-		        Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
-		        :id => 'select_size_metric', :class => 'small',:onchange => "load_treemap(current_resource_key);" %>
-		    </td>
-		    <td>
-		      <span class="comments">Color:</span>
-		      <%= select_tag 'color_metric', options_from_collection_for_select(
-		          Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
-		          :id => 'select_color_metric', :class => 'small', :onchange => "load_treemap(current_resource_key);" %>
-		    </td>
-		    <td>
-		     	<% layout = (params[:layout].nil? || params[:layout] == 'true') ? false : true
-		     	if (!layout) %>
-		    	<span style="padding-left:10px"><%= link_to(image_tag('expand_collapse.jpg', :alt => 'Expand'), {:layout => layout.to_s, :page => params[:page]}, :target => '_new') %></span>
-		    	<% end %>
-		    </td>
-		    <td>
-				<span style="padding-left:10px"><%= image_tag('loading.gif', {:id => "tm_loading"}) %></span>
-			</td>
+      <td>
+        <span class="note">Size:</span>
+        <%= select_tag 'size_metric', options_from_collection_for_select(
+          Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
+          :id => 'select_size_metric', :class => 'small',:onchange => "load_treemap(current_resource_key);" %>
+      </td>
+      <td width="15px"> </td>
+      <td>
+        <span class="note">Color:</span>
+        <%= select_tag 'color_metric', options_from_collection_for_select(
+            Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
+            :id => 'select_color_metric', :class => 'small', :onchange => "load_treemap(current_resource_key);" %>
+      </td>
+      <td width="15px"> </td>
+      <td>
+        <% layout = (params[:layout].nil? || params[:layout] == 'true') ? false : true
+        if (!layout) %>
+          <%= image_tag 'links/external.png' %> <%= link_to('New window', {:layout => layout.to_s, :page => params[:page]}, :target => 'radiator', :class => 'note') %> 
+        <% end %>
+      </td>
+      <td width="15px"> </td>
+      <td>
+         <%= image_tag('loading.gif', {:id => "tm_loading"}) %>
+      </td>
 		</tr>
 	</table>
 </form>
-<div style="padding-top:10px; padding-left:8px;">
-	<span id="breadcrumb" class="nav"></span>
+<div class="notes" style="margin: 5px 0 0 0">
+  <div style="float: right"><span>Left click to zoom in. Right click to zoom out.</span></div>
+  <div id="radiator-breadcrumb">&nbsp;&#187;&nbsp;</div>
 </div>
-<div id="radiator"></div>
+
+<div id="radiatorroot"> </div>
 <div id="nodata" style="display:none; vertical-align:top">
-  <h3>No projects.</h3>
+  <p>No data</p>
 </div>
 
 <script language="javascript">
@@ -139,7 +149,7 @@
 	function instanciate_treemap(color_metric_direction) {
 
 		return new TM.Squarified({
-		     rootId: 'radiator',
+		     rootId: 'radiatorroot',
 		     titleHeight: 1,
 		     offset: 6,
 		     addLeftClickHandler: true,
@@ -168,9 +178,9 @@
     }
 
     function display_breadcrumbs() {
-      var output = "";
-      breadcrumbs.each(function(bc) { output += "&nbsp;&#187;&nbsp;" + bc });
-	  $('breadcrumb').innerHTML=output;
+      var output = "&nbsp;&#187;&nbsp;";
+      breadcrumbs.each(function(bc) { output += bc + "&nbsp;&#187;&nbsp;"});
+	  $('radiator-breadcrumb').innerHTML=output;
 	}
 
 	function load_treemap(resource_key) {
@@ -197,7 +207,7 @@
 	function treemap_ajax_cb(json) {
 		$('tm_loading').hide();
 		if (current_resource_key==null &&json.children.length==0) {
-			$('radiator').hide();
+			$('radiatorroot').hide();
 			$('select_color_metric').disable();
 			$('select_size_metric').disable();
 			$('nodata').show();
