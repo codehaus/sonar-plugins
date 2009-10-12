@@ -59,10 +59,10 @@ public class QIPlugin implements org.sonar.api.Plugin {
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(CodingDecorator.class);
+    list.add(CodingViolationsDecorator.class);
     list.add(ComplexityDistributionDecorator.class);
     list.add(ComplexityDistributionSensor.class);
-    list.add(ComplexityFactorDecorator.class);
+    list.add(ComplexityDecorator.class);
     list.add(QIDecorator.class);
     list.add(QIMetrics.class);
     list.add(QIWidget.class);
