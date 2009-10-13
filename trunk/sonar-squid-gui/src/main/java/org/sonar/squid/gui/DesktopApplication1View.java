@@ -129,10 +129,9 @@ public class DesktopApplication1View extends FrameView {
     jDashboardTextArea = new javax.swing.JTextArea();
     jScrollPane3 = new javax.swing.JScrollPane();
     jTextAreaMostAndLess = new javax.swing.JTextArea();
-    jButtonLoad = new javax.swing.JButton();
-    jLabel1 = new javax.swing.JLabel();
     menuBar = new javax.swing.JMenuBar();
     javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+    jMenuItem1 = new javax.swing.JMenuItem();
     javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
     javax.swing.JMenu helpMenu = new javax.swing.JMenu();
     javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
@@ -150,7 +149,6 @@ public class DesktopApplication1View extends FrameView {
 
     jTree1.setName("jTree1"); // NOI18N
     jTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-
       public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
         jTree1ValueChanged(evt);
         jTree1ValueChangedMostAndLess(evt);
@@ -169,8 +167,7 @@ public class DesktopApplication1View extends FrameView {
     jDashboardTextArea.setName("jDashboardTextArea"); // NOI18N
     jScrollPane2.setViewportView(jDashboardTextArea);
 
-    org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(
-        org.sonar.squid.gui.SonarSquidApplication.class).getContext().getResourceMap(DesktopApplication1View.class);
+    org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(org.sonar.squid.gui.SonarSquidApplication.class).getContext().getResourceMap(DesktopApplication1View.class);
     jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
 
     jScrollPane3.setName("jScrollPane3"); // NOI18N
@@ -184,39 +181,33 @@ public class DesktopApplication1View extends FrameView {
 
     jSplitPane1.setRightComponent(jTabbedPane1);
 
-    javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(org.sonar.squid.gui.SonarSquidApplication.class)
-        .getContext().getActionMap(DesktopApplication1View.class, this);
-    jButtonLoad.setAction(actionMap.get("load")); // NOI18N
-    jButtonLoad.setText(resourceMap.getString("jButtonLoad.text")); // NOI18N
-    jButtonLoad.setName("jButtonLoad"); // NOI18N
-
-    jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-    jLabel1.setIcon(resourceMap.getIcon("jLabel1.icon")); // NOI18N
-    jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
-    jLabel1.setName("jLabel1"); // NOI18N
-
     org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
     mainPanel.setLayout(mainPanelLayout);
-    mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-        org.jdesktop.layout.GroupLayout.TRAILING,
-        mainPanelLayout.createSequentialGroup().addContainerGap().add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 461,
-            Short.MAX_VALUE).addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED).add(
-            mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jLabel1,
-                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE).add(
-                org.jdesktop.layout.GroupLayout.TRAILING,
-                mainPanelLayout.createSequentialGroup().add(9, 9, 9).add(jButtonLoad, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 116,
-                    Short.MAX_VALUE))).addContainerGap()));
-    mainPanelLayout.setVerticalGroup(mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-        mainPanelLayout.createSequentialGroup().addContainerGap().add(
-            mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jSplitPane1,
-                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE).add(
-                mainPanelLayout.createSequentialGroup().add(jButtonLoad).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(
-                    jLabel1))).addContainerGap()));
+    mainPanelLayout.setHorizontalGroup(
+      mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+      .add(mainPanelLayout.createSequentialGroup()
+        .addContainerGap()
+        .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+        .addContainerGap())
+    );
+    mainPanelLayout.setVerticalGroup(
+      mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+      .add(mainPanelLayout.createSequentialGroup()
+        .addContainerGap()
+        .add(jSplitPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+        .addContainerGap())
+    );
 
     menuBar.setName("menuBar"); // NOI18N
 
     fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
     fileMenu.setName("fileMenu"); // NOI18N
+
+    javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(org.sonar.squid.gui.SonarSquidApplication.class).getContext().getActionMap(DesktopApplication1View.class, this);
+    jMenuItem1.setAction(actionMap.get("load")); // NOI18N
+    jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+    jMenuItem1.setName("jMenuItem1"); // NOI18N
+    fileMenu.add(jMenuItem1);
 
     exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
     exitMenuItem.setName("exitMenuItem"); // NOI18N
@@ -246,19 +237,29 @@ public class DesktopApplication1View extends FrameView {
 
     org.jdesktop.layout.GroupLayout statusPanelLayout = new org.jdesktop.layout.GroupLayout(statusPanel);
     statusPanel.setLayout(statusPanelLayout);
-    statusPanelLayout.setHorizontalGroup(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-        statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE).add(
-        statusPanelLayout.createSequentialGroup().addContainerGap().add(statusMessageLabel).addPreferredGap(
-            org.jdesktop.layout.LayoutStyle.RELATED, 446, Short.MAX_VALUE).add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-            org.jdesktop.layout.LayoutStyle.RELATED).add(statusAnimationLabel).addContainerGap()));
-    statusPanelLayout.setVerticalGroup(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-        statusPanelLayout.createSequentialGroup().add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 2,
-            org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED,
-            org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(
-            statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE).add(statusMessageLabel).add(
-                statusAnimationLabel).add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)).add(3, 3, 3)));
+    statusPanelLayout.setHorizontalGroup(
+      statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+      .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+      .add(statusPanelLayout.createSequentialGroup()
+        .addContainerGap()
+        .add(statusMessageLabel)
+        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 446, Short.MAX_VALUE)
+        .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+        .add(statusAnimationLabel)
+        .addContainerGap())
+    );
+    statusPanelLayout.setVerticalGroup(
+      statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+      .add(statusPanelLayout.createSequentialGroup()
+        .add(statusPanelSeparator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .add(statusPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+          .add(statusMessageLabel)
+          .add(statusAnimationLabel)
+          .add(progressBar, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        .add(3, 3, 3))
+    );
 
     setComponent(mainPanel);
     setMenuBar(menuBar);
@@ -282,44 +283,7 @@ public class DesktopApplication1View extends FrameView {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
     if (node.getUserObject() instanceof SourceCode) {
       SourceCode squidUnit = (SourceCode) node.getUserObject();
-      StringBuilder sb = new StringBuilder();
-
-      if (squidUnit instanceof SourceProject) {
-        SourceProject squidProject = (SourceProject) squidUnit;
-        sb.append("Project ").append(squidProject.getKey()).append("\n");
-        sb.append("Packages ").append(squidUnit.getInt(Metric.PACKAGES)).append("\n");
-        sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
-        sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourcePackage) {
-        sb.append("Package ").append(squidUnit.getKey()).append("\n");
-        sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
-        sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourceFile) {
-        sb.append("File ").append(squidUnit.getKey()).append("\n");
-        sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourceClass) {
-        sb.append("Classe :").append(squidUnit.getKey()).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourceMethod) {
-        sb.append("Method :").append(squidUnit.getKey()).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      }
-      // sb.append("\n=== SquidUnit.toString() ===\n");
-      // sb.append(squidUnit.toString());
-
-      jDashboardTextArea.setText(sb.toString());
+      jDashboardTextArea.setText(squidUnitToString(squidUnit));
     }
   }// GEN-LAST:event_jTree1ValueChanged
 
@@ -327,49 +291,56 @@ public class DesktopApplication1View extends FrameView {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode) evt.getNewLeadSelectionPath().getLastPathComponent();
     if (node.getUserObject() instanceof SourceCode) {
       SourceCode squidUnit = (SourceCode) node.getUserObject();
-      StringBuilder sb = new StringBuilder();
-
-      if (squidUnit instanceof SourceProject) {
-        SourceProject squidProject = (SourceProject) squidUnit;
-        sb.append("Project ").append(squidProject.getKey()).append("\n");
-        sb.append("Packages ").append(squidUnit.getInt(Metric.PACKAGES)).append("\n");
-        sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
-        sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourcePackage) {
-        sb.append("Package ").append(squidUnit.getKey()).append("\n");
-        sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
-        sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourceFile) {
-        sb.append("File ").append(squidUnit.getKey()).append("\n");
-        sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      } else if (squidUnit instanceof SourceClass) {
-        sb.append("Classe :").append(squidUnit.getKey()).append("\n");
-        sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-        for (SourceCode child : squidUnit.getChildren()) {
-          sb.append(child.getKey()).append("\n");
-        }
-      } else if (squidUnit instanceof SourceMethod) {
-        sb.append("Method :").append(squidUnit.getKey()).append("\n");
-        sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
-        sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
-      }
-      // sb.append("\n=== SquidUnit.toString() ===\n");
-      // sb.append(squidUnit.toString());
-
-      jTextAreaMostAndLess.setText(sb.toString());
+      jTextAreaMostAndLess.setText(squidUnitToString(squidUnit));
     }
   }// GEN-LAST:event_jTree1ValueChangedMostAndLess
+
+  public String squidUnitToString(SourceCode squidUnit) {
+    StringBuilder sb = new StringBuilder();
+
+    if (squidUnit instanceof SourceProject) {
+      SourceProject squidProject = (SourceProject) squidUnit;
+      sb.append("Project ").append(squidProject.getKey()).append("\n");
+      sb.append("Packages ").append(squidUnit.getInt(Metric.PACKAGES)).append("\n");
+      sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
+      sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
+      sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
+      sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
+      sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
+      sb.append("Complexity :").append(squidUnit.getInt(Metric.COMPLEXITY)).append("\n");
+    } else if (squidUnit instanceof SourcePackage) {
+      sb.append("Package ").append(squidUnit.getKey()).append("\n");
+      sb.append("Files :").append(squidUnit.getInt(Metric.FILES)).append("\n");
+      sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
+      sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
+      sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
+      sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
+      sb.append("Complexity :").append(squidUnit.getInt(Metric.COMPLEXITY)).append("\n");
+    } else if (squidUnit instanceof SourceFile) {
+      sb.append("File ").append(squidUnit.getKey()).append("\n");
+      sb.append("Classes :").append(squidUnit.getInt(Metric.CLASSES)).append("\n");
+      sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
+      sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
+      sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
+      sb.append("Complexity :").append(squidUnit.getInt(Metric.COMPLEXITY)).append("\n");
+    } else if (squidUnit instanceof SourceClass) {
+      sb.append("Classe :").append(squidUnit.getKey()).append("\n");
+      sb.append("Methods :").append(squidUnit.getInt(Metric.METHODS)).append("\n");
+      sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
+      sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
+      sb.append("Complexity :").append(squidUnit.getInt(Metric.COMPLEXITY)).append("\n");
+      for (SourceCode child : squidUnit.getChildren()) {
+        sb.append(child.getKey()).append("\n");
+      }
+    } else if (squidUnit instanceof SourceMethod) {
+      sb.append("Method :").append(squidUnit.getKey()).append("\n");
+      sb.append("Loc :").append(squidUnit.getInt(Metric.LINES)).append("\n");
+      sb.append("Ncloc :").append(squidUnit.getInt(Metric.LINES_OF_CODE)).append("\n");
+      sb.append("Complexity :").append(squidUnit.getInt(Metric.COMPLEXITY)).append("\n");
+    }
+
+    return sb.toString();
+  }
 
   @Action(block = Task.BlockingScope.COMPONENT)
   public Task load() {
@@ -440,22 +411,21 @@ public class DesktopApplication1View extends FrameView {
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JButton      jButtonLoad;
-  private javax.swing.JTextArea    jDashboardTextArea;
-  private javax.swing.JLabel       jLabel1;
-  private javax.swing.JScrollPane  jScrollPane1;
-  private javax.swing.JScrollPane  jScrollPane2;
-  private javax.swing.JScrollPane  jScrollPane3;
-  private javax.swing.JSplitPane   jSplitPane1;
-  private javax.swing.JTabbedPane  jTabbedPane1;
-  private javax.swing.JTextArea    jTextAreaMostAndLess;
-  private javax.swing.JTree        jTree1;
-  private javax.swing.JPanel       mainPanel;
-  private javax.swing.JMenuBar     menuBar;
+  private javax.swing.JTextArea jDashboardTextArea;
+  private javax.swing.JMenuItem jMenuItem1;
+  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JScrollPane jScrollPane2;
+  private javax.swing.JScrollPane jScrollPane3;
+  private javax.swing.JSplitPane jSplitPane1;
+  private javax.swing.JTabbedPane jTabbedPane1;
+  private javax.swing.JTextArea jTextAreaMostAndLess;
+  private javax.swing.JTree jTree1;
+  private javax.swing.JPanel mainPanel;
+  private javax.swing.JMenuBar menuBar;
   private javax.swing.JProgressBar progressBar;
-  private javax.swing.JLabel       statusAnimationLabel;
-  private javax.swing.JLabel       statusMessageLabel;
-  private javax.swing.JPanel       statusPanel;
+  private javax.swing.JLabel statusAnimationLabel;
+  private javax.swing.JLabel statusMessageLabel;
+  private javax.swing.JPanel statusPanel;
   // End of variables declaration//GEN-END:variables
   private final Timer              messageTimer;
   private final Timer              busyIconTimer;
