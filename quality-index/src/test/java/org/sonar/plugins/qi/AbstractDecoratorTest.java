@@ -1,6 +1,7 @@
 package org.sonar.plugins.qi;
 
 import org.junit.Test;
+import org.junit.Before;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
@@ -13,12 +14,28 @@ import org.sonar.api.resources.Project;
 import static org.hamcrest.core.Is.is;
 
 import java.util.List;
+import java.util.Arrays;
 
 public class AbstractDecoratorTest {
+  private AbstractDecorator decorator;
+
+  @Before
+  public void init() {
+    decorator = new DecoratorImpl();
+  }
+
+  @Test
+  public void testDependedUpon() {
+    assertThat(decorator.dependedUpon().size(), is(1));
+  }
+
+  @Test
+  public void testDependsUpon(){
+    assertThat(decorator.aggregDependsUpon().size(), is(3));
+  }
 
   @Test
   public void testStandardValidLines() {
-    AbstractDecorator decorator = new DecoratorImpl();
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
       thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 233.0));
@@ -30,7 +47,6 @@ public class AbstractDecoratorTest {
 
   @Test
   public void testNegativeValidLines() {
-    AbstractDecorator decorator = new DecoratorImpl();
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
       thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 1344.0));
@@ -49,7 +65,7 @@ public class AbstractDecoratorTest {
     }
 
     public List<Metric> dependsUpon() {
-      return null; 
+      return Arrays.asList(new Metric("foo"));
     }
 
     public boolean shouldExecuteOnProject(Project project) {
