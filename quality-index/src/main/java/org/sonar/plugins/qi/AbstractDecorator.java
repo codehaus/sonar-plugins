@@ -58,7 +58,7 @@ public abstract class AbstractDecorator implements Decorator {
     if (value <= 0) {
       return;
     }
-    context.saveMeasure(metric, value > 1 ? 1 : value * computeAxisWeight());
+    context.saveMeasure(metric, (value > 1 ? 1 : value) * computeAxisWeight());
   }
 
   private double computeAxisWeight() {
