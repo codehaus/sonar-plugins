@@ -96,12 +96,12 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
 
   protected Map<RulePriority, Integer> getWeightsByPriority() {
     String property = configuration.getString(getConfigurationKey(), getDefaultConfigurationKey());
+
     return KeyValueFormat.parse(property, new RulePriorityNumbersPairTransformer());
   }
 
-  /**
-   * Implementation of Transformer<RulePriority, Integer>
-   */
+
+  // This can be removed as soon as SOnar 1.12 is out
   public static class RulePriorityNumbersPairTransformer implements KeyValueFormat.Transformer<RulePriority, Integer> {
 
     public KeyValue<RulePriority, Integer> transform(String key, String value) {
