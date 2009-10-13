@@ -32,7 +32,17 @@ public class ComplexityDecoratorTest {
     when(context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION)).
       thenReturn(new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "2=0;10=0;20=0;30=12"));
     assertThat(decorator.computeComplexityFactor(context), is(100.0));
+  }
 
+  @Test
+  public void testComputeComplexity() {
+    DecoratorContext context = mock(DecoratorContext.class);
+
+    ComplexityDecorator decorator = new ComplexityDecorator(null);
+    assertThat(decorator.computeComplexityFactor(context), is(0.0));
+    when(context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION)).
+      thenReturn(new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "2=2;10=4;20=12;30=2"));
+    assertThat(decorator.computeComplexity(context), is(94.0));
   }
 
   @Test
