@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.Arrays;
 
 public class QIDecorator implements Decorator{
+
   @DependsUpon
-  public List<Metric> getRequireMetrics() {
+  public List<Metric> getRequiredMetrics() {
     return Arrays.asList(QIMetrics.QI_COMPLEXITY, QIMetrics.QI_TEST_COVERAGE,
       QIMetrics.QI_CODING_VIOLATIONS, QIMetrics.QI_STYLE_VIOLATIONS);
   }
@@ -30,7 +31,7 @@ public class QIDecorator implements Decorator{
 
   public void decorate(Resource resource, DecoratorContext context) {
     double value = 10;
-    for (Metric metric : getRequireMetrics()) {
+    for (Metric metric : getRequiredMetrics()) {
       value -= MeasureUtils.getValue(context.getMeasure(metric), 0.0);
     }
     context.saveMeasure(QIMetrics.QI_QUALITY_INDEX, value);

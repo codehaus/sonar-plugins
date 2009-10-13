@@ -8,6 +8,6 @@ public class PluginTest {
   @Test
   public void testDeclaredExtensions() {
     QIPlugin plugin = new QIPlugin();
-    assertThat(plugin.getExtensions().size(), is(7));
+    assertThat(plugin.getExtensions().size(), is(9));
   }
 }
