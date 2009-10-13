@@ -1,16 +1,45 @@
 <%
       if measure('qi-quality-index')
+
+      codingWeight = measure('qi-coding-violations').text_value;
+      complexityWeight = measure('qi-complexity').text_value;
+      coverageWeight = measure('qi-test-coverage').text_value;
+      styleWeight = measure('qi-style-violations').text_value;
+
+      codingLength = 80 * codingWeight.to_f / 4.5
+      complexityLength = 80 * complexityWeight.to_f / 4.5
+      coverageLength = 80 * coverageWeight.to_f / 4.5
+      styleLength = 80 * styleWeight.to_f / 4.5
+
+      codingRatio = measure('qi-coding-violations').value / codingWeight.to_f * 100
+      complexityRatio = measure('qi-complexity').value / complexityWeight.to_f * 100
+      coverageRatio = measure('qi-test-coverage').value / coverageWeight.to_f * 100
+      styleRatio = measure('qi-style-violations').value / styleWeight.to_f * 100
 %>
 
 <div class="yui-gc">
   <div class="yui-u first">
     <div class="dashbox">
       <h3>Quality Index</h3>
-      <p><span class="big"><%= format_measure('qi-quality-index', :suffix => '', :url => url_for_drilldown('qi-quality-index'), :default => '0')%></span></p>
-      <p><span>Coding violations ( <%= format_measure('qi-coding-violations')-%>/ 4.5)</span></p>
-      <p><span>Complexity (<%= format_measure('qi-complexity', :suffix => ' man days', :url => url_for_drilldown('qi-complexity'), :default => '0') %></span></p>
-      <p><span>Code coverage (<%= format_measure('qi-test-coverage', :suffix => ' man days', :url => url_for_drilldown('qi-test-coverage'), :default => '0') %></span></p>
-      <p><span>Style violations (<%= format_measure('qi-style-violations', :suffix => ' man days', :url => url_for_drilldown('qi-style-violations'), :default => '0') %></span></p>
+      <p><span class="big"><%= format_measure('qi-quality-index', :url => url_for_drilldown('qi-quality-index'), :default => '0.0')%><%= tendency_icon('qi-quality-index') -%></span></p>
+      <table>
+        <tr>
+          <td><span>Coding (<%= format_measure('qi-coding-violations', :url => url_for_drilldown('qi-coding-violations')) %> / <%=codingWeight-%>)<%= tendency_icon('qi-coding-violations') -%></span></td>
+          <td style="padding-left: 10px"><div style="width: <%=codingLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0 0 0 0;background-color: #00DF00"><div style="width: <%=codingRatio-%>%; height: 0.9em; background-color: #DF0000"></div></div></td>
+        </tr>
+        <tr>
+          <td><span>Complexity (<%= format_measure('qi-complexity', :url => url_for_drilldown('qi-complexity')) %> / <%=complexityWeight-%>)<%= tendency_icon('qi-complexity') -%></span></td>
+          <td style="padding-left: 10px"><div style="width: <%=complexityLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00"><div style="width: <%=complexityRatio-%>%; height: 0.9em; background-color: #DF0000"></div></div></td>
+        </tr>
+        <tr>
+          <td><span>Coverage (<%= format_measure('qi-test-coverage', :url => url_for_drilldown('qi-test-coverage')) %> / <%=coverageWeight-%>)<%= tendency_icon('qi-test-coverage') -%></span></td>
+          <td style="padding-left: 10px"><div style="width: <%=coverageLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00"><div style="width: <%=coverageRatio-%>%; height: 0.9em; background-color: #DF0000"></div></div></td>
+        </tr>
+        <tr>
+          <td><span>Style (<%= format_measure('qi-style-violations', :url => url_for_drilldown('qi-style-violations')) %> / <%=styleWeight-%>)<%= tendency_icon('qi-style-violations') -%></span></td>
+          <td style="padding-left: 10px"><div style="width: <%=styleLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00"><div style="width: <%=styleRatio-%>%; height: 0.9em; background-color: #DF0000"></div></div></td>
+        </tr>
+      </table>
     </div>
   </div>
   <div class="yui-u">
@@ -21,6 +50,7 @@
     </div>
   </div>
 </div>
+
 <%
       end
 %>
