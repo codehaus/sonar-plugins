@@ -10,7 +10,10 @@ import org.sonar.api.rules.Violation;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.utils.KeyValueFormat;
+import org.sonar.api.utils.KeyValue;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.List;
@@ -93,6 +96,23 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
 
   protected Map<RulePriority, Integer> getWeightsByPriority() {
     String property = configuration.getString(getConfigurationKey(), getDefaultConfigurationKey());
-    return KeyValueFormat.parse(property, new KeyValueFormat.RulePriorityNumbersPairTransformer());
+    return KeyValueFormat.parse(property, new RulePriorityNumbersPairTransformer());
+  }
+
+  /**
+   * Implementation of Transformer<RulePriority, Integer>
+   */
+  public static class RulePriorityNumbersPairTransformer implements KeyValueFormat.Transformer<RulePriority, Integer> {
+
+    public KeyValue<RulePriority, Integer> transform(String key, String value) {
+      try {
+        if (StringUtils.isBlank(value)) { value = "0"; }
+        return new KeyValue<RulePriority, Integer>(RulePriority.valueOf(key.toUpperCase()), Integer.parseInt(value));
+      }
+      catch (Exception e) {
+        LoggerFactory.getLogger(RulePriorityNumbersPairTransformer.class).warn("Property " + key + " has invalid value: " + value, e);
+        return null;
+      }
+    }
   }
 }

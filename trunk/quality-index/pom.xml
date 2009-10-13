@@ -23,7 +23,7 @@
 
   <properties>
     <sonar.plugin.class>org.sonar.plugins.qi.QIPlugin</sonar.plugin.class>
-    <sonar.version>1.12-SNAPSHOT</sonar.version>
+    <sonar.version>1.11</sonar.version>
   </properties>
 
   <dependencies>
