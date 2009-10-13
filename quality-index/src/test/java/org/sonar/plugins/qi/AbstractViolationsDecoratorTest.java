@@ -23,7 +23,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.Lists;
 
 public class AbstractViolationsDecoratorTest {
-  private AbstractViolationsDecorator violationsDecorator;
+  private AbstractViolationsDecorator decorator;
   private DecoratorContext context;
   private Configuration configuration;
 
@@ -31,7 +31,12 @@ public class AbstractViolationsDecoratorTest {
   public void init() {
     context = mock(DecoratorContext.class);
     configuration = mock(Configuration.class);
-    violationsDecorator = new ViolationsDecoratorImpl(configuration);
+    decorator = new ViolationsDecoratorImpl(configuration);
+  }
+
+  @Test
+  public void testDependsUpon() {
+    assertThat(decorator.dependsUpon().size(), is(1));
   }
 
   @Test
@@ -44,13 +49,13 @@ public class AbstractViolationsDecoratorTest {
     weights.put(RulePriority.INFO, 6);
     weights.put(RulePriority.MAJOR, 3);
 
-    assertThat(weights, is(violationsDecorator.getWeightsByPriority()));
+    assertThat(weights, is(decorator.getWeightsByPriority()));
   }
 
   @Test
   public void testCountViolationsByPriority() {
     createMultiSetViolations();
-    Multiset<RulePriority> set = violationsDecorator.countViolationsByPriority(context);
+    Multiset<RulePriority> set = decorator.countViolationsByPriority(context);
     assertThat(set.count(RulePriority.BLOCKER), is(2));
     assertThat(set.count(RulePriority.CRITICAL), is(0));
     assertThat(set.count(RulePriority.MAJOR), is(1));
@@ -62,10 +67,10 @@ public class AbstractViolationsDecoratorTest {
     when(configuration.getString(anyString(), anyString())).
       thenReturn("INFO=1;MINOR=1;MAJOR=3;CRITICAL=5;BLOCKER=10");
     createMultiSetViolations();
-    Multiset<RulePriority> set =     violationsDecorator.countViolationsByPriority(context);
-    Map<RulePriority, Integer> map = violationsDecorator.getWeightsByPriority();
+    Multiset<RulePriority> set =     decorator.countViolationsByPriority(context);
+    Map<RulePriority, Integer> map = decorator.getWeightsByPriority();
 
-    assertThat(violationsDecorator.getWeightedViolations(map, set, context), is(24.0));
+    assertThat(decorator.getWeightedViolations(map, set, context), is(24.0));
   }
 
 /*  @Test
@@ -79,7 +84,7 @@ public class AbstractViolationsDecoratorTest {
     when(context.getMeasure(CoreMetrics.NCLOC)).
       thenReturn(new Measure(CoreMetrics.NCLOC, 97.0));
 
-    assertThat(violationsDecorator.getRate(context), is(0.25));
+    assertThat(decorator.getRate(context), is(0.25));
   }
 
   @Test
@@ -93,7 +98,7 @@ public class AbstractViolationsDecoratorTest {
     when(context.getMeasure(CoreMetrics.NCLOC)).
       thenReturn(new Measure(CoreMetrics.NCLOC, 2.0));
 
-    assertThat(violationsDecorator.getRate(context), is(1.0));
+    assertThat(decorator.getRate(context), is(1.0));
   }
   */
   private void createMultiSetViolations() {
@@ -112,10 +117,6 @@ public class AbstractViolationsDecoratorTest {
   public class ViolationsDecoratorImpl extends AbstractViolationsDecorator {
     public ViolationsDecoratorImpl(Configuration configuration) {
       super(configuration, null, null, null);
-    }
-
-    protected Metric getGeneratedMetrics() {
-      return null;
     }
 
     public String getConfigurationKey() {
