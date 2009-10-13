@@ -14,6 +14,9 @@ import org.sonar.api.measures.RangeDistributionBuilder;
 import java.util.List;
 import java.util.Arrays;
 
+/**
+ * A decorator to propagate the complexity distribution bottom up
+ */
 public class ComplexityDistributionDecorator implements Decorator{
 
   @DependedUpon
@@ -33,14 +36,29 @@ public class ComplexityDistributionDecorator implements Decorator{
     computeAndSaveComplexityDistribution(resource, context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
   }
 
+  /**
+   * Computes and saves the complexity distribution at the resource level.
+   * The distribution is persisted in DB only at project level to make sure it cand be used at "higher" level
+   *
+   * @param resource the resource
+   * @param context the context
+   * @param bottomLimits the bottom limits of complexity ranges
+   */
   protected void computeAndSaveComplexityDistribution(Resource resource, DecoratorContext context, Number[] bottomLimits) {
     Measure measure = computeComplexityDistribution(context, bottomLimits);
-    if (!ResourceUtils.isRootProject(resource)) {
+    if (!ResourceUtils.isProject(resource)) {
       measure.setPersistenceMode(PersistenceMode.MEMORY);
     }
     context.saveMeasure(measure);
   }
 
+  /**
+   * Computes the complexity distribution by adding up the childre distribution
+   *
+   * @param context the context
+   * @param bottomLimits the bottom limits of complexity ranges
+   * @return the measure
+   */
   protected Measure computeComplexityDistribution(DecoratorContext context, Number[] bottomLimits) {
     RangeDistributionBuilder builder = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, bottomLimits);
     for (Measure childMeasure : context.getChildrenMeasures(QIMetrics.QI_COMPLEX_DISTRIBUTION)) {
