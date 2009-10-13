@@ -15,6 +15,9 @@ import java.util.Arrays;
 
 import com.google.common.collect.Lists;
 
+/**
+ * An abstract class from which all decorators that decorate axes of the QI should extend  
+ */
 public abstract class AbstractDecorator implements Decorator {
   private Metric metric;
   private String axisWeight;
@@ -48,7 +51,7 @@ public abstract class AbstractDecorator implements Decorator {
     double totalLines = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC), 0.0);
     double validLines = totalLines - duplicatedLines;
 
-    return validLines > 0 ? validLines : 0.0;
+    return validLines > 0 ? validLines : 1.0;
   }
 
   protected void saveMeasure(DecoratorContext context, double value) {

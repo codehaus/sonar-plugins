@@ -37,7 +37,7 @@ public class AbstractDecoratorTest {
     when(context.getMeasure(CoreMetrics.NCLOC)).
       thenReturn(new Measure(CoreMetrics.NCLOC, 344.0));
 
-    assertThat(decorator.getValidLines(context), is(0.0));
+    assertThat(decorator.getValidLines(context), is(1.0));
   }
   
   public class DecoratorImpl extends AbstractDecorator {
