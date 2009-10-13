@@ -7,7 +7,9 @@ import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
 import org.apache.commons.configuration.Configuration;
 
 import java.util.List;
@@ -55,10 +57,14 @@ public abstract class AbstractDecorator implements Decorator {
   }
 
   protected void saveMeasure(DecoratorContext context, double value) {
-    if (value <= 0) {
+    if (value <= 0 && context.getResource().getQualifier().equals(Resource.QUALIFIER_FILE)) {
       return;
     }
-    context.saveMeasure(metric, (value > 1 ? 1 : value) * computeAxisWeight());
+    if (value > 1) {
+      value = 1;
+    }
+    Measure measure = new Measure(metric, value * computeAxisWeight(), Double.toString(computeAxisWeight()));
+    context.saveMeasure(measure);
   }
 
   private double computeAxisWeight() {
