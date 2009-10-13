@@ -1,39 +1,36 @@
 package org.sonar.plugins.qi;
 
 import org.sonar.api.resources.Resource;
-import org.sonar.api.resources.Project;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependedUpon;
-import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
+import org.apache.commons.configuration.Configuration;
 
 import java.util.List;
 import java.util.Arrays;
 
 public class CoverageDecorator extends AbstractDecorator{
-  public boolean shouldExecuteOnProject(Project project) {
-    return QIPlugin.shouldExecuteOnProject(project);
+
+  public CoverageDecorator(Configuration configuration) {
+    super(configuration, QIMetrics.QI_TEST_COVERAGE,
+      QIPlugin.QI_COVERAGE_AXIS_WEIGHT, QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT);
   }
 
-  @DependedUpon
-  public List<Metric> dependedUpon() {
-    return Arrays.asList(QIMetrics.QI_TEST_COVERAGE);
-  }
-
-  @DependsUpon
+  @Override
   public List<Metric> dependsUpon() {
-    return Arrays.asList(CoreMetrics.LINE_COVERAGE);
+    return Arrays.asList(CoreMetrics.LINES_TO_COVER, CoreMetrics.UNCOVERED_LINES);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    saveMeasure(context, computeCoverageFactor(context), QIMetrics.QI_TEST_COVERAGE);
+    saveMeasure(context, computeCoverageFactor(context));
   }
 
   private double computeCoverageFactor(DecoratorContext context) {
-    double coveredLines = MeasureUtils.getValue(context.getMeasure(CoreMetrics.LINE_COVERAGE), 0.0);
-    return 1 - coveredLines / getValidLines(context);
+    double linesToCover = MeasureUtils.getValue(context.getMeasure(CoreMetrics.LINES_TO_COVER), 0.0);
+    double uncoveredLines = MeasureUtils.getValue(context.getMeasure(CoreMetrics.UNCOVERED_LINES), 0.0);
 
+    double coveredLines = linesToCover - uncoveredLines;
+    return 1 - (coveredLines / getValidLines(context));
   }
 }

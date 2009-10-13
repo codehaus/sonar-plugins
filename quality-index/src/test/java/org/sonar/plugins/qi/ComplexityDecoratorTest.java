@@ -12,7 +12,7 @@ public class ComplexityDecoratorTest {
 
   @Test
   public void testIOMetrics() {
-    ComplexityDecorator decorator = new ComplexityDecorator();
+    ComplexityDecorator decorator = new ComplexityDecorator(null);
     assertThat(decorator.dependedUpon().size(), is(3));
     assertThat(decorator.dependsUpon().size(), is(1));
   }
@@ -23,7 +23,7 @@ public class ComplexityDecoratorTest {
     when(context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION)).
       thenReturn(null);
 
-    ComplexityDecorator decorator = new ComplexityDecorator();
+    ComplexityDecorator decorator = new ComplexityDecorator(null);
     assertThat(decorator.computeComplexityFactor(context), is(0.0));
     when(context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION)).
       thenReturn(new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=2;10=4;20=12;30=2"));
@@ -43,9 +43,9 @@ public class ComplexityDecoratorTest {
         null,
         new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=0;10=0;20=0;30=12")
       );
-    ComplexityDecorator decorator = new ComplexityDecorator();
-    assertThat(decorator.computeComplexMethodCount(context), is(0.0));
-    assertThat(decorator.computeComplexMethodCount(context), is(12.0));
+    ComplexityDecorator decorator = new ComplexityDecorator(null);
+    assertThat(decorator.computeComplexMethodsCount(context), is(0.0));
+    assertThat(decorator.computeComplexMethodsCount(context), is(12.0));
 
   }
 }

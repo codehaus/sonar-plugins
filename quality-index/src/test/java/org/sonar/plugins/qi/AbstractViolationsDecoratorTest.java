@@ -113,7 +113,7 @@ public class AbstractViolationsDecoratorTest {
 
   public class ViolationsDecoratorImpl extends AbstractViolationsDecorator {
     public ViolationsDecoratorImpl(Configuration configuration) {
-      super(configuration);
+      super(configuration, null, null, null);
     }
 
     protected Metric getGeneratedMetrics() {

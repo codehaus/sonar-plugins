@@ -1,8 +1,6 @@
 package org.sonar.plugins.qi;
 
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.RulePriority;
@@ -17,35 +15,28 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.List;
-import java.util.Arrays;
 
 import com.google.common.collect.Multiset;
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 
 public abstract class AbstractViolationsDecorator extends AbstractDecorator {
-  private Configuration configuration;
 
-  public AbstractViolationsDecorator(Configuration configuration) {
-    this.configuration = configuration;
+  public AbstractViolationsDecorator(Configuration configuration, Metric metric,
+                                     String axisWeight, String defaultAxisWeight) {
+    super(configuration, metric, axisWeight, defaultAxisWeight);
   }
-
-  @DependsUpon
-  public List<Metric> getRequiredMetrics() {
-    return Arrays.asList(CoreMetrics.NCLOC, CoreMetrics.DUPLICATED_LINES);
-  }
-
-  @DependedUpon
-  public List<Metric> dependeUponMetrics() {
-    return Arrays.asList(getGeneratedMetrics());
-  }
-
-  protected abstract Metric getGeneratedMetrics();
 
   public abstract String getConfigurationKey();
 
   public abstract String getDefaultConfigurationKey();
 
   public abstract String getPluginKey();
+
+  @Override
+  public List<Metric> dependsUpon() {
+    return Lists.newArrayList(CoreMetrics.VIOLATIONS);
+  }
 
   protected double getRate(DecoratorContext context) {
     double rate;
@@ -67,10 +58,7 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    double value = getRate(context);
-    if (value != 0) {
-      context.saveMeasure(getGeneratedMetrics(), value);
-    }
+    saveMeasure(context, getRate(context));
   }
 
   protected Multiset<RulePriority> countViolationsByPriority(DecoratorContext context) {

@@ -1,18 +1,13 @@
 package org.sonar.plugins.qi;
 
-import org.sonar.api.measures.Metric;
 import org.sonar.api.CoreProperties;
 import org.apache.commons.configuration.Configuration;
 
 public class CodingViolationsDecorator extends AbstractViolationsDecorator {
 
   public CodingViolationsDecorator(Configuration configuration) {
-    super(configuration);
-  }
-
-  @Override
-  public Metric getGeneratedMetrics() {
-    return QIMetrics.QI_CODING_VIOLATIONS;
+    super(configuration, QIMetrics.QI_CODING_VIOLATIONS,
+      QIPlugin.QI_CODING_AXIS_WEIGHT, QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT);
   }
 
   @Override
