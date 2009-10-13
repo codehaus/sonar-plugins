@@ -7,6 +7,7 @@ import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.utils.KeyValueFormat;
 import org.sonar.api.utils.KeyValue;
 import org.apache.commons.configuration.Configuration;
@@ -31,6 +32,8 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
 
   public abstract String getDefaultConfigurationKey();
 
+  public abstract Metric getWeightedViolationMetricKey();
+
   public abstract String getPluginKey();
 
   @Override
@@ -38,27 +41,18 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
     return Lists.newArrayList(CoreMetrics.VIOLATIONS);
   }
 
-  protected double getRate(DecoratorContext context) {
-    double rate;
-
+  public void decorate(Resource resource, DecoratorContext context) {
     Multiset<RulePriority> violations = countViolationsByPriority(context);
     Map<RulePriority, Integer> weights = getWeightsByPriority();
 
-    double weightedViolations = getWeightedViolations(weights, violations);
-    rate = weightedViolations / getValidLines(context);
-
-    if (rate >= 1.0) {
-      return 1.0;
-    }
-    return rate;
+    double weightedViolations = getWeightedViolations(weights, violations, context);
+    saveMeasure(context, weightedViolations / getValidLines(context));
+    saveWeightedViolations(context, weightedViolations);
   }
+
 
   public boolean shouldExecuteOnProject(Project project) {
     return QIPlugin.shouldExecuteOnProject(project);
-  }
-
-  public void decorate(Resource resource, DecoratorContext context) {
-    saveMeasure(context, getRate(context));
   }
 
   protected Multiset<RulePriority> countViolationsByPriority(DecoratorContext context) {
@@ -73,12 +67,17 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
     return violationsByPriority;
   }
 
-  protected double getWeightedViolations(Map<RulePriority, Integer> weights, Multiset<RulePriority> violations) {
+  protected double getWeightedViolations(Map<RulePriority, Integer> weights, Multiset<RulePriority> violations, DecoratorContext context) {
     double weightedViolations = 0.0;
 
     for (RulePriority priority : weights.keySet()) {
       weightedViolations += weights.get(priority) * violations.count(priority);
     }
+
+    for (DecoratorContext childContext : context.getChildren()){
+      weightedViolations += MeasureUtils.getValue(childContext.getMeasure(getWeightedViolationMetricKey()), 0.0);
+    }
+
     return weightedViolations;
   }
 
@@ -103,4 +102,9 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
       }
     }
   }
+
+  protected void saveWeightedViolations(DecoratorContext context, double value) {
+    context.saveMeasure(getWeightedViolationMetricKey(), value);
+  }
+
 }

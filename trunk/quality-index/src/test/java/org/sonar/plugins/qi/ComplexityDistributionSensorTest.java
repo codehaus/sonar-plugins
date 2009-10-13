@@ -67,6 +67,7 @@ public class ComplexityDistributionSensorTest {
     units.add(createMethod(22));
     units.add(createMethod(2));
     units.add(createMethod(2));
+    units.add(createMethod(1));
     units.add(createMethod(36));
     units.add(createMethod(36));
     units.add(createMethod(46));
@@ -76,7 +77,7 @@ public class ComplexityDistributionSensorTest {
     RangeDistributionBuilder distribution = complexityDistributionSensor.computeDistributionForFile(null, limits);
 
     Measure m = distribution.build();
-    assertThat(m.getData(), is("0=0;1=2;10=0;20=1;30=4"));
+    assertThat(m.getData(), is("1=1;2=2;10=0;20=1;30=4"));
     assertThat(m.getMetric(), is(QIMetrics.QI_COMPLEX_DISTRIBUTION));
   }
 

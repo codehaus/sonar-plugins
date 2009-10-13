@@ -37,12 +37,12 @@ public class ComplexityDecorator extends AbstractDecorator {
   }
 
   protected double computeComplexity(DecoratorContext context) {
-    double complexity = getWeightedComplexity(context);
+    double complexity = getMethodCount(context, true);
     return complexity / getValidLines(context);
   }
 
   protected double computeComplexityFactor(DecoratorContext context) {
-    double methodWithComplexityCount = getWeightedComplexity(context);
+    double methodWithComplexityCount = getMethodCount(context, false);
     if (methodWithComplexityCount == 0) {
       return 0;
     }
@@ -55,13 +55,19 @@ public class ComplexityDecorator extends AbstractDecorator {
     return getComplexMethods(context);
   }
 
-  private double getWeightedComplexity(DecoratorContext context) {
+  private double getMethodCount(DecoratorContext context, boolean weighted) {
     Measure measure = context.getMeasure(QIMetrics.QI_COMPLEX_DISTRIBUTION);
     if (measure == null) {
       return 0;
     }
     Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
-    double methodWithComplexityCount = distribution.get(1) + distribution.get(10) + distribution.get(20) + distribution.get(30);
+    double methodWithComplexityCount;
+    if (weighted) {
+      methodWithComplexityCount = distribution.get(2) + 3 * distribution.get(10) + 5 * distribution.get(20) + 10 * distribution.get(30);
+    }
+    else {
+      methodWithComplexityCount = distribution.get(2) + distribution.get(10) + distribution.get(20) + distribution.get(30);
+    }
     return methodWithComplexityCount;
   }
 

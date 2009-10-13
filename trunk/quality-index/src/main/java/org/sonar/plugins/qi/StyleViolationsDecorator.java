@@ -3,6 +3,7 @@
 package org.sonar.plugins.qi;
 
 import org.sonar.api.CoreProperties;
+import org.sonar.api.measures.Metric;
 import org.sonar.api.batch.DecoratorContext;
 import org.apache.commons.configuration.Configuration;
 
@@ -26,6 +27,10 @@ public class StyleViolationsDecorator extends AbstractViolationsDecorator {
   @Override
   public String getDefaultConfigurationKey() {
     return QIPlugin.QI_STYLE_PRIORITY_WEIGHTS_DEFAULT;
+  }
+
+  public Metric getWeightedViolationMetricKey() {
+    return QIMetrics.QI_STYLE_WEIGHTED_VIOLATIONS;
   }
 
   @Override

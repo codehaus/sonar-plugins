@@ -14,8 +14,14 @@ public class QIMetrics implements org.sonar.api.measures.Metrics {
   public static final Metric QI_CODING_VIOLATIONS = new Metric("qi-coding-violations", "Coding Violations",
     "Coding Violations", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_RULES);
 
+  public static final Metric QI_CODING_WEIGHTED_VIOLATIONS = new Metric("qi-coding-weighted-violations", "Coding Weighted Violations",
+    "Coding Weighted Violations", Metric.ValueType.INT, 0, false, CoreMetrics.DOMAIN_RULES);
+
   public static final Metric QI_STYLE_VIOLATIONS = new Metric("qi-style-violations", "Style Violations",
     "Style Violations", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_RULES);
+
+  public static final Metric QI_STYLE_WEIGHTED_VIOLATIONS = new Metric("qi-style-weighted-violations", "Style Weighted Violations",
+    "Style Weighted Violations", Metric.ValueType.INT, 0, false, CoreMetrics.DOMAIN_RULES);
 
   public static final Metric QI_COMPLEXITY = new Metric("qi-complexity", "Complexity",
     "Complexityt", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_COMPLEXITY);
@@ -33,7 +39,8 @@ public class QIMetrics implements org.sonar.api.measures.Metrics {
     "Complexity distribution", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_COMPLEXITY);
 
   public List<Metric> getMetrics() {
-    return Arrays.asList(QI_QUALITY_INDEX, QI_CODING_VIOLATIONS, QI_COMPLEXITY,
-      QI_STYLE_VIOLATIONS, QI_TEST_COVERAGE, QI_COMPLEXITY_FACTOR, QI_COMPLEXITY_FACTOR_METHODS, QI_COMPLEX_DISTRIBUTION);
+    return Arrays.asList(QI_QUALITY_INDEX, QI_CODING_VIOLATIONS, QI_CODING_WEIGHTED_VIOLATIONS,
+      QI_STYLE_VIOLATIONS, QI_STYLE_WEIGHTED_VIOLATIONS, QI_TEST_COVERAGE,
+      QI_COMPLEXITY, QI_COMPLEXITY_FACTOR, QI_COMPLEXITY_FACTOR_METHODS, QI_COMPLEX_DISTRIBUTION);
   }
 }

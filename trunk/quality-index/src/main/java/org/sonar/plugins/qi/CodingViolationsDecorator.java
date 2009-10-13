@@ -1,6 +1,7 @@
 package org.sonar.plugins.qi;
 
 import org.sonar.api.CoreProperties;
+import org.sonar.api.measures.Metric;
 import org.apache.commons.configuration.Configuration;
 
 public class CodingViolationsDecorator extends AbstractViolationsDecorator {
@@ -18,6 +19,10 @@ public class CodingViolationsDecorator extends AbstractViolationsDecorator {
   @Override
   public String getDefaultConfigurationKey() {
     return QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT;
+  }
+
+  public Metric getWeightedViolationMetricKey() {
+    return QIMetrics.QI_CODING_WEIGHTED_VIOLATIONS;
   }
 
   @Override

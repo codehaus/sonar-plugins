@@ -25,9 +25,9 @@ public class ComplexityDistributionDecoratorTest {
     DecoratorContext context = mock(DecoratorContext.class);
 
     Collection<Measure> measures = Lists.newArrayList(
-      new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "0=0;1=0;10=0;20=1;30=4"),
-      new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "0=3;1=2;10=0;20=9;30=4"),
-      new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "0=0;1=0;10=0;20=1;30=4")
+      new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=0;2=0;10=0;20=1;30=4"),
+      new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=3;2=2;10=0;20=9;30=4"),
+      new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=0;2=0;10=0;20=1;30=4")
     );
     when(context.getChildrenMeasures(QIMetrics.QI_COMPLEX_DISTRIBUTION)).
       thenReturn(measures);
@@ -35,7 +35,7 @@ public class ComplexityDistributionDecoratorTest {
     ComplexityDistributionDecorator decorator = new ComplexityDistributionDecorator();
 
     Measure measure = decorator.computeComplexityDistribution(context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
-    Measure measure2 = new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "0=3;1=2;10=0;20=11;30=12");
+    Measure measure2 = new Measure(QIMetrics.QI_COMPLEX_DISTRIBUTION, "1=3;2=2;10=0;20=11;30=12");
 
     assertThat(measure.getData(), is(measure2.getData()));
 
