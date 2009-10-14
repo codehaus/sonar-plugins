@@ -20,6 +20,6 @@ public class QIWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   @Override
   protected String getTemplatePath() {
-    return "c:\\toto.erb";
+    return "/widget.html.erb";
   }
 }
