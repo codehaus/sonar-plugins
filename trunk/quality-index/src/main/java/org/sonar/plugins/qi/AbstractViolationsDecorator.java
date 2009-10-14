@@ -1,24 +1,42 @@
+/*
+ * Sonar, open source software quality management tool.
+ * Copyright (C) 2009 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
+ *
+ * Sonar is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Sonar is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Sonar; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ */
 package org.sonar.plugins.qi;
 
-import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.resources.Resource;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.Violation;
-import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.MeasureUtils;
-import org.sonar.api.utils.KeyValueFormat;
-import org.sonar.api.utils.KeyValue;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.MeasureUtils;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.rules.Violation;
+import org.sonar.api.utils.KeyValue;
+import org.sonar.api.utils.KeyValueFormat;
 
-import java.util.Map;
 import java.util.List;
-
-import com.google.common.collect.Multiset;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
+import java.util.Map;
 
 /**
  * An abstract class that should be implemented to add a violation QI axis
@@ -28,9 +46,9 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
   /**
    * Creates an AbstractViolationsDecorator
    *
-   * @param configuration the config
-   * @param metric the metric that should be used for decoration
-   * @param axisWeight the axis weight key
+   * @param configuration     the config
+   * @param metric            the metric that should be used for decoration
+   * @param axisWeight        the axis weight key
    * @param defaultAxisWeight the axis weight default value
    */
   public AbstractViolationsDecorator(Configuration configuration, Metric metric,
@@ -67,7 +85,7 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    * Standard implementation of the decorate method for violations axes
    *
    * @param resource the resource
-   * @param context the context
+   * @param context  the context
    */
   public void decorate(Resource resource, DecoratorContext context) {
     Multiset<RulePriority> violations = countViolationsByPriority(context);
@@ -99,9 +117,9 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
   /**
    * Calculates the weighted violations
    *
-   * @param weights the weights to be used
+   * @param weights    the weights to be used
    * @param violations the violations
-   * @param context the context
+   * @param context    the context
    * @return the crossed sum at the level + the sum of children
    */
   protected double getWeightedViolations(Map<RulePriority, Integer> weights, Multiset<RulePriority> violations, DecoratorContext context) {
@@ -109,7 +127,7 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
     for (RulePriority priority : weights.keySet()) {
       weightedViolations += weights.get(priority) * violations.count(priority);
     }
-    for (DecoratorContext childContext : context.getChildren()){
+    for (DecoratorContext childContext : context.getChildren()) {
       weightedViolations += MeasureUtils.getValue(childContext.getMeasure(getWeightedViolationMetricKey()), 0.0);
     }
     return weightedViolations;
@@ -129,7 +147,9 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
 
     public KeyValue<RulePriority, Integer> transform(String key, String value) {
       try {
-        if (StringUtils.isBlank(value)) { value = "0"; }
+        if (StringUtils.isBlank(value)) {
+          value = "0";
+        }
         return new KeyValue<RulePriority, Integer>(RulePriority.valueOf(key.toUpperCase()), Integer.parseInt(value));
       }
       catch (Exception e) {
@@ -143,13 +163,11 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    * Used to save the weighted violations
    *
    * @param context the context
-   * @param value the value
+   * @param value   the value
    */
   protected void saveWeightedViolations(DecoratorContext context, double value) {
-    if (QIPlugin.shouldNotSaveMeasure(context)) {
-      return;
+    if (Utils.shouldSaveMeasure(context.getResource())) {
+      context.saveMeasure(getWeightedViolationMetricKey(), value);
     }
-    context.saveMeasure(getWeightedViolationMetricKey(), value);
   }
-
 }

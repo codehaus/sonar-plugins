@@ -1,21 +1,39 @@
+/*
+ * Sonar, open source software quality management tool.
+ * Copyright (C) 2009 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
+ *
+ * Sonar is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Sonar is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Sonar; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ */
 package org.sonar.plugins.qi;
 
+import com.google.common.collect.Lists;
+import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.MeasureUtils;
+import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
-import org.apache.commons.configuration.Configuration;
 
-import java.util.List;
 import java.util.Arrays;
-
-import com.google.common.collect.Lists;
+import java.util.List;
 
 /**
  * An abstract class that all decorators decorating QI axes should extend
@@ -29,9 +47,9 @@ public abstract class AbstractDecorator implements Decorator {
   /**
    * Creates Abstract Decorator
    *
-   * @param configuration the configuration
-   * @param metric the axis metric
-   * @param axisWeight the key to retrieve the axis weight
+   * @param configuration     the configuration
+   * @param metric            the axis metric
+   * @param axisWeight        the key to retrieve the axis weight
    * @param defaultAxisWeight the key to retrieve the default axis weight
    */
   public AbstractDecorator(Configuration configuration, Metric metric, String axisWeight, String defaultAxisWeight) {
@@ -83,18 +101,17 @@ public abstract class AbstractDecorator implements Decorator {
    * Saves the calculated measure
    *
    * @param context the context
-   * @param value the value
+   * @param value   the value
    */
   protected void saveMeasure(DecoratorContext context, double value) {
-    // In case test was not done before
-    if (QIPlugin.shouldNotSaveMeasure(context)) {
+    if (!Utils.shouldSaveMeasure(context.getResource())) {
       return;
     }
 
     String qualifier = context.getResource().getQualifier();
     // if < 0.05, we do not record at file level to avoid storing and displaying 0.0 values
     if (value < 0.05
-      && (qualifier.equals(Resource.QUALIFIER_FILE) || qualifier.equals(Resource.QUALIFIER_CLASS))) {
+        && (qualifier.equals(Resource.QUALIFIER_FILE) || qualifier.equals(Resource.QUALIFIER_CLASS))) {
       return;
     }
 
@@ -108,6 +125,7 @@ public abstract class AbstractDecorator implements Decorator {
 
   /**
    * Retrieves weight for the axis
+   *
    * @return the weight if exists, the default value otherwise
    */
   private double computeAxisWeight() {
@@ -119,7 +137,7 @@ public abstract class AbstractDecorator implements Decorator {
    * @return whether to execute the decorator on the project
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return QIPlugin.shouldExecuteOnProject(project);
+    return Utils.shouldExecuteOnProject(project);
   }
 
 }

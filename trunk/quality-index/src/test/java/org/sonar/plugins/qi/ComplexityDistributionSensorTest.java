@@ -1,35 +1,54 @@
+/*
+ * Sonar, open source software quality management tool.
+ * Copyright (C) 2009 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
+ *
+ * Sonar is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Sonar is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Sonar; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ */
 package org.sonar.plugins.qi;
 
-import org.junit.Test;
-import static org.junit.Assert.assertThat;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.SquidSearch;
-import org.sonar.api.measures.*;
-import org.sonar.api.resources.Resource;
-import org.sonar.api.resources.File;
-import org.sonar.squid.api.SourceFile;
-import org.sonar.squid.api.SourceCode;
-import org.sonar.squid.api.SourceMethod;
-import org.sonar.squid.indexer.Query;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.argThat;
-import static org.hamcrest.core.Is.is;
+import org.apache.commons.lang.StringUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.apache.commons.lang.StringUtils;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import org.junit.Test;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.SquidSearch;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.PersistenceMode;
+import org.sonar.api.measures.RangeDistributionBuilder;
+import org.sonar.api.resources.File;
+import org.sonar.api.resources.Resource;
+import org.sonar.squid.api.SourceCode;
+import org.sonar.squid.api.SourceFile;
+import org.sonar.squid.api.SourceMethod;
+import org.sonar.squid.indexer.Query;
 
-import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ComplexityDistributionSensorTest {
 
   @Test
   public void testDependsUpon() {
-     ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(null);
-     assertThat(complexityDistributionSensor.dependsUpon().size(), is(1));
+    ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(null);
+    assertThat(complexityDistributionSensor.dependsUpon().size(), is(1));
   }
 
   @Test
@@ -38,7 +57,7 @@ public class ComplexityDistributionSensorTest {
     Resource resource = new File("foo");
 
     when(context.getResource("foo")).
-      thenReturn(resource);
+        thenReturn(resource);
 
     RangeDistributionBuilder distrib = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
     ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(null);
