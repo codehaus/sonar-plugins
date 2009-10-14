@@ -102,8 +102,6 @@ public abstract class AbstractDecorator implements Decorator {
       value = 1;
     }
 
-    System.out.println(context.getResource().getKey() + " " +  metric.getName() + " " + value + " " + context.getResource().getQualifier());
-
     Measure measure = new Measure(metric, value * computeAxisWeight(), Double.toString(computeAxisWeight()));
     context.saveMeasure(measure);
   }
