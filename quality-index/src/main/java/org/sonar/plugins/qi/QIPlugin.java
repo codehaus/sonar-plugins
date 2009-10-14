@@ -3,8 +3,10 @@ package org.sonar.plugins.qi;
 import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,5 +149,16 @@ public class QIPlugin implements org.sonar.api.Plugin {
    */
   public static boolean shouldExecuteOnProject(Project project) {
     return project.getLanguage().equals(Java.INSTANCE);
+  }
+
+  /**
+   * Centralizes exclusion pattern for saving measures
+   *
+   * @param context the context
+   * @return whether the context resource should be decorated
+   */
+  public static boolean shouldNotSaveMeasure(DecoratorContext context) {
+
+    return context.getResource().getQualifier().equals(Resource.QUALIFIER_UNIT_TEST_CLASS);
   }
 }

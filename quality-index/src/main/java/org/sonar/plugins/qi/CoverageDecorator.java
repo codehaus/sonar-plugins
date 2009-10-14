@@ -36,6 +36,10 @@ public class CoverageDecorator extends AbstractDecorator {
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
+    // Do not want to decorate anything on unit tests files
+    if (QIPlugin.shouldNotSaveMeasure(context)) {
+      return;
+    }
     saveMeasure(context, computeCoverage(context));
   }
 
