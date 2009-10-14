@@ -10,23 +10,36 @@ import org.apache.commons.configuration.Configuration;
 import java.util.List;
 import java.util.Arrays;
 
-public class CoverageDecorator extends AbstractDecorator{
+/**
+ * An implementation of AbstractDecorator to measure the QI coverage axis
+ */
+public class CoverageDecorator extends AbstractDecorator {
 
+  /**
+   * Creates a CoverageDecorator
+   *
+   * @param configuration the config
+   */
   public CoverageDecorator(Configuration configuration) {
     super(configuration, QIMetrics.QI_TEST_COVERAGE,
       QIPlugin.QI_COVERAGE_AXIS_WEIGHT, QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT);
   }
 
+  /**
+   * The coverage must be computed before we can start decorating...
+   *
+   * @return the list of dependency
+   */
   @Override
   public List<Metric> dependsUpon() {
     return Arrays.asList(CoreMetrics.LINES_TO_COVER, CoreMetrics.UNCOVERED_LINES);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    saveMeasure(context, computeCoverageFactor(context));
+    saveMeasure(context, computeCoverage(context));
   }
 
-  private double computeCoverageFactor(DecoratorContext context) {
+  protected double computeCoverage(DecoratorContext context) {
     double linesToCover = MeasureUtils.getValue(context.getMeasure(CoreMetrics.LINES_TO_COVER), 0.0);
     double uncoveredLines = MeasureUtils.getValue(context.getMeasure(CoreMetrics.UNCOVERED_LINES), 0.0);
 
