@@ -90,14 +90,19 @@ public abstract class AbstractDecorator implements Decorator {
     if (QIPlugin.shouldNotSaveMeasure(context)) {
       return;
     }
-    
-    if (value <= 0 && context.getResource().getQualifier().equals(Resource.QUALIFIER_FILE)){
+
+    String qualifier = context.getResource().getQualifier();
+    // if < 0.05, we do not record at file level to avoid storing and displaying 0.0 values
+    if (value < 0.05
+      && (qualifier.equals(Resource.QUALIFIER_FILE) || qualifier.equals(Resource.QUALIFIER_CLASS))) {
       return;
     }
 
     if (value > 1) {
       value = 1;
     }
+
+    System.out.println(context.getResource().getKey() + " " +  metric.getName() + " " + value + " " + context.getResource().getQualifier());
 
     Measure measure = new Measure(metric, value * computeAxisWeight(), Double.toString(computeAxisWeight()));
     context.saveMeasure(measure);
