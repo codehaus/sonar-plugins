@@ -20,38 +20,38 @@ public class QIMetrics implements org.sonar.api.measures.Metrics {
   /**
    * The coding axis metric for QI
    */
-  public static final Metric QI_CODING_VIOLATIONS = new Metric("qi-coding-violations", "Coding Violations",
-    "Coding Violations", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_RULES);
+  public static final Metric QI_CODING_VIOLATIONS = new Metric("qi-coding-violations", "QI Coding Violations",
+    "QI Coding Violations", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_RULES);
 
   /**
    * A technical metric to propagate weighted coding violations bottom up
    */
-  public static final Metric QI_CODING_WEIGHTED_VIOLATIONS = new Metric("qi-coding-weighted-violations", "Coding Weighted Violations",
-    "Coding Weighted Violations", Metric.ValueType.INT, 0, false, CoreMetrics.DOMAIN_RULES);
+  public static final Metric QI_CODING_WEIGHTED_VIOLATIONS = new Metric("qi-coding-weighted-violations", "QI Coding Weighted Violations",
+    "QI Coding Weighted Violations", Metric.ValueType.INT, 0, false, CoreMetrics.DOMAIN_RULES);
 
   /**
    * The style axis metric for QI
    */
-  public static final Metric QI_STYLE_VIOLATIONS = new Metric("qi-style-violations", "Style Violations",
-    "Style Violations", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_RULES);
+  public static final Metric QI_STYLE_VIOLATIONS = new Metric("qi-style-violations", "QI Style Violations",
+    "QI Style Violations", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_RULES);
 
   /**
    * A technical metric to propagate weighted style violations bottom up
    */
-  public static final Metric QI_STYLE_WEIGHTED_VIOLATIONS = new Metric("qi-style-weighted-violations", "Style Weighted Violations",
-    "Style Weighted Violations", Metric.ValueType.INT, 0, false, CoreMetrics.DOMAIN_RULES);
+  public static final Metric QI_STYLE_WEIGHTED_VIOLATIONS = new Metric("qi-style-weighted-violations", "QI Style Weighted Violations",
+    "QI Style Weighted Violations", Metric.ValueType.INT, 0, false, CoreMetrics.DOMAIN_RULES);
 
   /**
    * The complexity axis metric for QI
    */
-  public static final Metric QI_COMPLEXITY = new Metric("qi-complexity", "Complexity",
-    "Complexityt", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_COMPLEXITY);
+  public static final Metric QI_COMPLEXITY = new Metric("qi-complexity", "QI Complexity",
+    "QI Complexity", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_COMPLEXITY);
 
   /**
    * The coverage axis metric for QI
    */
-  public static final Metric QI_TEST_COVERAGE = new Metric("qi-test-coverage", "Test Coverage",
-    "Test Coverage", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_TESTS);
+  public static final Metric QI_TEST_COVERAGE = new Metric("qi-test-coverage", "QI Test Coverage",
+    "QI Test Coverage", Metric.ValueType.FLOAT, -1, true, CoreMetrics.DOMAIN_TESTS);
 
   /**
    * The Complexity factor metric
