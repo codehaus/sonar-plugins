@@ -18,27 +18,56 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * A sensor to calculate the repartition of the complexity distribution at file level
+ */
 public class ComplexityDistributionSensor implements org.sonar.api.batch.Sensor {
 
   private SquidSearch squid;
 
+  /**
+   * Creates a ComplexityDistributionSensor
+   *
+   * @param squid IOC injection of squid tree
+   */
   public ComplexityDistributionSensor(SquidSearch squid) {
     this.squid = squid;
   }
 
+  /**
+   * Mark the squid dependency
+   *
+   * @return squid
+   */
   @DependsUpon
   public List<String> dependsUpon() {
     return Arrays.asList(org.sonar.api.batch.Sensor.FLAG_SQUID_ANALYSIS);
   }
 
+  /**
+   * @param project the project
+   * @return whether to execute the sensor on the project
+   */
   public boolean shouldExecuteOnProject(Project project) {
     return QIPlugin.shouldExecuteOnProject(project);
   }
 
+  /**
+   * Method run to decorate the project
+   *
+   * @param project the project
+   * @param context the context
+   */
   public void analyse(Project project, SensorContext context) {
     computeAndSaveDistributionForFiles(context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
   }
 
+  /**
+   * Compute and save the complexity distribution on files
+   *
+   * @param context the context
+   * @param bottomLimits the ranges bottom limits
+   */
   protected void computeAndSaveDistributionForFiles(SensorContext context, Number[] bottomLimits) {
     Collection<SourceCode> files = squid.search(new QueryByType(SourceFile.class));
     for (SourceCode file : files) {
@@ -47,6 +76,12 @@ public class ComplexityDistributionSensor implements org.sonar.api.batch.Sensor 
     }
   }
 
+  /**
+   * Computes the complexity distribution for one file
+   * @param file the file
+   * @param bottomLimits the complexity ranges
+   * @return the distribution
+   */
   protected RangeDistributionBuilder computeDistributionForFile(SourceCode file, Number[] bottomLimits) {
     Collection<SourceCode> methods = squid.search(new QueryByParent(file), new QueryByType(SourceMethod.class));
 
@@ -58,6 +93,13 @@ public class ComplexityDistributionSensor implements org.sonar.api.batch.Sensor 
     return distribution;
   }
 
+  /**
+   * Save the complexity distribution at file level. Will only keep it in memory
+   *
+   * @param context the context
+   * @param file the file
+   * @param nclocDistribution the distribution
+   */
   protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
     String key = StringUtils.removeEnd(file.getKey(), ".java");
     Resource resource = context.getResource(key);
