@@ -70,13 +70,12 @@ public class QIDecorator implements Decorator {
    * @param context  the context
    */
   public void decorate(Resource resource, DecoratorContext context) {
-    // Do not want to decorate anything on unit tests files
     if (Utils.shouldSaveMeasure(resource)) {
-      double value = 10;
+      double value = 10.0;
       for (Metric metric : getRequiredMetrics()) {
         value -= MeasureUtils.getValue(context.getMeasure(metric), 0.0);
       }
-      context.saveMeasure(QIMetrics.QI_QUALITY_INDEX, value);
+      context.saveMeasure(QIMetrics.QI_QUALITY_INDEX, Math.max(value, 0.0));
     }
   }
 }
