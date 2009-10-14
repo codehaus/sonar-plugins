@@ -25,6 +25,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.sonar.api.resources.Java;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Project;
 
@@ -54,5 +55,11 @@ public class UtilsTest {
       }
     });
     assertThat(Utils.shouldExecuteOnProject(plsqlProject), is(false));
+  }
+
+  @Test
+  public void doSaveMeasuresOnTestFiles() {
+    assertThat(Utils.shouldSaveMeasure(new JavaFile("FooTest", true)), is(false));
+    assertThat(Utils.shouldSaveMeasure(new JavaFile("FooTest", false)), is(true));
   }
 }

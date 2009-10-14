@@ -30,17 +30,14 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * A decorator to propagate the complexity distribution bottom up
  */
 public class ComplexityDistributionDecorator implements Decorator {
 
   @DependedUpon
-  public List<Metric> dependedUpon() {
-    return Arrays.asList(QIMetrics.QI_COMPLEX_DISTRIBUTION);
+  public Metric dependedUpon() {
+    return QIMetrics.QI_COMPLEX_DISTRIBUTION;
   }
 
   public boolean shouldExecuteOnProject(Project project) {
@@ -49,11 +46,7 @@ public class ComplexityDistributionDecorator implements Decorator {
 
   public void decorate(Resource resource, DecoratorContext context) {
     // Distribution has already been calculated by the ComplexityDistributionSensor at file level
-    if (resource.getQualifier().equals(Resource.QUALIFIER_FILE)) {
-      return;
-    }
-
-    if (Utils.shouldSaveMeasure(resource)) {
+    if (resource.getQualifier().equals(Resource.QUALIFIER_FILE) && Utils.shouldSaveMeasure(resource)) {
       computeAndSaveComplexityDistribution(resource, context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
     }
   }

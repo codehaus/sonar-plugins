@@ -34,10 +34,9 @@ public class StyleViolationsDecoratorTest {
   public void testValidLines() {
     AbstractDecorator decorator = new StyleViolationsDecorator(null);
     DecoratorContext context = mock(DecoratorContext.class);
-    when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
-        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 233.0));
-    when(context.getMeasure(CoreMetrics.NCLOC)).
-        thenReturn(new Measure(CoreMetrics.NCLOC, 1344.0));
+
+    when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 233.0));
+    when(context.getMeasure(CoreMetrics.NCLOC)).thenReturn(new Measure(CoreMetrics.NCLOC, 1344.0));
 
     assertThat(decorator.getValidLines(context), is(11110.0));
   }

@@ -35,7 +35,7 @@ public class ComplexityDistributionDecoratorTest {
   @Test
   public void testDependedUpon() {
     ComplexityDistributionDecorator decorator = new ComplexityDistributionDecorator();
-    assertThat(decorator.dependedUpon().size(), is(1));
+    assertThat(decorator.dependedUpon(), is(QIMetrics.QI_COMPLEX_DISTRIBUTION));
   }
 
 
