@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<reportContext name="crm-webdemo" productFamily="SonarJ">
+    <general>
+        <attribute name="Path" value="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/crm-webdemo.sonarj"/>
+        <attribute name="Base Path" value="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example"/>
+        <attribute name="Description" value=""/>
+        <attribute name="Sonar Product" value="SonarJ-any 5.0.1 [Build 438]"/>
+        <attribute name="Sonar User" value="Sascha"/>
+        <attribute name="Sonar Expiration" value="never"/>
+        <attribute name="Report Creation" value="2009-10-07"/>
+    </general>
+    <attributes>
+        <attributeCategory name="Architecture Metrics">
+            <attribute name="Number of unassigned types" value="7"/>
+            <attribute name="Number of violating type dependencies" value="11"/>
+            <attribute name="Number of violating types" value="11"/>
+        </attributeCategory>
+        <attributeCategory name="Code Analysis Metrics">
+            <attribute name="Average assertion usage" value="4.23"/>
+            <attribute name="Number of assertions" value="600"/>
+            <attribute name="Number of public types" value="180"/>
+        </attributeCategory>
+        <attributeCategory name="Cycle Metrics">
+            <attribute name="Number of cyclic directories" value="0"/>
+            <attribute name="Number of cyclic elements" value="0"/>
+            <attribute name="Number of cyclic layer groups" value="0"/>
+            <attribute name="Number of cyclic layers" value="0"/>
+            <attribute name="Number of cyclic packages" value="0"/>
+            <attribute name="Number of cyclic path containers" value="0"/>
+            <attribute name="Number of cyclic projects" value="0"/>
+            <attribute name="Number of cyclic source files" value="0"/>
+            <attribute name="Number of cyclic subsystems" value="0"/>
+            <attribute name="Number of cyclic vertical slice groups" value="0"/>
+            <attribute name="Number of cyclic vertical slices" value="0"/>
+        </attributeCategory>
+        <attributeCategory name="Dependency Metrics">
+            <attribute name="Number of type dependencies (all)" value="986"/>
+        </attributeCategory>
+        <attributeCategory name="Info Metrics">
+            <attribute name="Timestamp" value="Oct 7, 2009 12:30:51 PM"/>
+        </attributeCategory>
+        <attributeCategory name="Size Metrics">
+            <attribute name="Lines of code" value="7543"/>
+            <attribute name="Number of Java source files (all)" value="188"/>
+            <attribute name="Number of Java source files (non-excluded)" value="182"/>
+            <attribute name="Number of Java target files (all)" value="192"/>
+            <attribute name="Number of Java target files (non-excluded)" value="186"/>
+            <attribute name="Number of external packages" value="11"/>
+            <attribute name="Number of external types" value="11"/>
+            <attribute name="Number of instructions" value="27472"/>
+            <attribute name="Number of internal packages" value="65"/>
+            <attribute name="Number of internal types (abstract)" value="56"/>
+            <attribute name="Number of internal types (all)" value="186"/>
+            <attribute name="Number of internal types (w/ implementation)" value="142"/>
+            <attribute name="Number of methods (abstract)" value="95"/>
+            <attribute name="Number of methods (all)" value="816"/>
+            <attribute name="Number of methods (w/ implementation)" value="721"/>
+            <attribute name="Number of statements" value="2700"/>
+        </attributeCategory>
+        <attributeCategory name="Task and Filter Metrics">
+            <attribute name="Number of fix warning tasks" value="1"/>
+            <attribute name="Number of ignored violations" value="0"/>
+            <attribute name="Number of ignored warnings" value="0"/>
+            <attribute name="Number of refactoring tasks" value="0"/>
+            <attribute name="Number of tasks" value="1"/>
+            <attribute name="Number of warnings (all)" value="1"/>
+            <attribute name="Number of warnings (thresholds)" value="1"/>
+            <attribute name="Number of warnings (workspace)" value="0"/>
+        </attributeCategory>
+    </attributes>
+    <projects>
+        <project description="" name="crm-domain-example">
+            <attributeCategory name="Architecture Metrics">
+                <attribute name="Number of layer groups" value="3"/>
+                <attribute name="Number of layers" value="4"/>
+                <attribute name="Number of named interfaces" value="0"/>
+                <attribute name="Number of subsystems" value="0"/>
+                <attribute name="Number of unassigned types" value="0"/>
+                <attribute name="Number of vertical slice groups" value="2"/>
+                <attribute name="Number of vertical slices" value="5"/>
+                <attribute name="Number of violating type dependencies" value="11"/>
+                <attribute name="Number of violating types" value="11"/>
+            </attributeCategory>
+            <attributeCategory name="Code Analysis Metrics">
+                <attribute name="Average assertion usage" value="4.23"/>
+                <attribute name="Number of assertions" value="600"/>
+                <attribute name="Number of public types" value="180"/>
+            </attributeCategory>
+            <attributeCategory name="Cycle Metrics">
+                <attribute name="Number of cyclic directories" value="0"/>
+                <attribute name="Number of cyclic elements" value="0"/>
+                <attribute name="Number of cyclic layer groups" value="0"/>
+                <attribute name="Number of cyclic layers" value="0"/>
+                <attribute name="Number of cyclic packages" value="0"/>
+                <attribute name="Number of cyclic path containers" value="0"/>
+                <attribute name="Number of cyclic source files" value="0"/>
+                <attribute name="Number of cyclic subsystems" value="0"/>
+                <attribute name="Number of cyclic vertical slice groups" value="0"/>
+                <attribute name="Number of cyclic vertical slices" value="0"/>
+            </attributeCategory>
+            <attributeCategory name="Dependency Metrics">
+                <attribute name="Number of type dependencies (all)" value="986"/>
+                <attribute name="Number of type dependencies (local)" value="931"/>
+                <attribute name="Number of type dependencies (remote)" value="55"/>
+                <attribute name="Number of used elements" value="1"/>
+                <attribute name="Number of using elements" value="0"/>
+            </attributeCategory>
+            <attributeCategory name="Size Metrics">
+                <attribute name="Lines of code" value="7543"/>
+                <attribute name="Number of Java source files (all)" value="188"/>
+                <attribute name="Number of Java source files (non-excluded)" value="182"/>
+                <attribute name="Number of Java target files (all)" value="192"/>
+                <attribute name="Number of Java target files (non-excluded)" value="186"/>
+                <attribute name="Number of instructions" value="27472"/>
+                <attribute name="Number of internal packages" value="65"/>
+                <attribute name="Number of internal types (abstract)" value="56"/>
+                <attribute name="Number of internal types (all)" value="186"/>
+                <attribute name="Number of internal types (w/ implementation)" value="142"/>
+                <attribute name="Number of methods (abstract)" value="95"/>
+                <attribute name="Number of methods (all)" value="816"/>
+                <attribute name="Number of methods (w/ implementation)" value="721"/>
+                <attribute name="Number of statements" value="2700"/>
+            </attributeCategory>
+            <attributeCategory name="Task and Filter Metrics">
+                <attribute name="Number of fix warning tasks" value="1"/>
+                <attribute name="Number of ignored violations" value="0"/>
+                <attribute name="Number of ignored warnings" value="0"/>
+                <attribute name="Number of refactoring tasks" value="0"/>
+                <attribute name="Number of tasks" value="1"/>
+                <attribute name="Number of warnings (all)" value="1"/>
+                <attribute name="Number of warnings (thresholds)" value="1"/>
+                <attribute name="Number of warnings (workspace)" value="0"/>
+            </attributeCategory>
+            <attributeCategory name="John Lakos Metrics">
+                <attribute name="Average component dependency (ACD)" value="15.43"/>
+                <attribute name="Average type dependency" value="16.04"/>
+                <attribute name="Depends upon" value="1"/>
+                <attribute name="Level" value="1"/>
+                <attribute name="Normalized cumulative component dependency (NCCD)" value="2.35"/>
+                <attribute name="Normalized cumulative type dependency" value="2.43"/>
+                <attribute name="Relative average component dependency" value="8.48"/>
+                <attribute name="Relative average type dependency" value="8.62"/>
+            </attributeCategory>
+            <attributeCategory name="Craig Larman Metrics">
+                <attribute name="Relational cohesion (RC)" value="5.01"/>
+            </attributeCategory>
+            <attributeCategory name="Robert C. Martin Metrics">
+                <attribute name="A (Abstractness)" value="0.30"/>
+                <attribute name="Ca (Afferent coupling)" value="0"/>
+                <attribute name="Ce (Efferent coupling)" value="8"/>
+                <attribute name="D (Distance)" value="0.30"/>
+                <attribute name="I (Instability)" value="1.00"/>
+            </attributeCategory>
+            <attributeCategory name="Thomas J. McCabe Metrics">
+                <attribute name="Cyclomatic complexity (accumulated)" value="947"/>
+                <attribute name="Cyclomatic complexity (average accumulated per type)" value="6.67"/>
+                <attribute name="Cyclomatic complexity (average per method)" value="1.31"/>
+                <attribute name="Cyclomatic complexity (max accumulated per type)" value="20"/>
+                <attribute name="Cyclomatic complexity (max per method)" value="6"/>
+                <attribute name="Extended cyclomatic complexity (accumulated)" value="959"/>
+                <attribute name="Extended cyclomatic complexity (average accumulated per type)" value="6.75"/>
+                <attribute name="Extended cyclomatic complexity (average per method)" value="1.33"/>
+                <attribute name="Extended cyclomatic complexity (max accumulated per type)" value="21"/>
+                <attribute name="Extended cyclomatic complexity (max per method)" value="6"/>
+                <attribute name="Modified cyclomatic complexity (accumulated)" value="947"/>
+                <attribute name="Modified cyclomatic complexity (average accumulated per type)" value="6.67"/>
+                <attribute name="Modified cyclomatic complexity (average per method)" value="1.31"/>
+                <attribute name="Modified cyclomatic complexity (max accumulated per type)" value="20"/>
+                <attribute name="Modified cyclomatic complexity (max per method)" value="6"/>
+            </attributeCategory>
+        </project>
+    </projects>
+    <configurations>
+        <configuration sourcefileWarnings="false" namespaceWarnings="true" asymetricAnalysis="false" parseSourceFiles="true" project="crm-domain-example"/>
+    </configurations>
+    <workspaces>
+        <workspace project="crm-domain-example">
+            <workspacePath description="" path="src/java"/>
+            <workspacePath description="" path="src/config/ear"/>
+            <workspacePath description="" path="src/config/test"/>
+            <workspacePath description="" path="target.eclipse/cls"/>
+            <workspacePath description="" path="src/java-test"/>
+        </workspace>
+    </workspaces>
+    <violations percentageOfViolatingTypeRelations="1.12" numberOfViolatingTypeRelations="11" numberOfTypeRelations="986" numberOf="1">
+        <architectureViolations numberOfViolatingTypeRelations="11" explanation="Not in a named interface that may be accessed">
+            <architectureViolation>
+                <attribute name="From scope" value="crm-domain-example"/>
+                <attribute name="From element type" value="Layer"/>
+                <attribute name="From" value="business::controller"/>
+                <attribute name="To" value="reflection"/>
+                <attribute name="To element type" value="Subsystem"/>
+                <attribute name="To scope" value="External"/>
+                <attribute name="Type dependencies" value="11"/>
+            </architectureViolation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.customer.controller.VipCustomerDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="31" file="com/hello2morrow/ddaexample/business/customer/controller/VipCustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="28" file="com/hello2morrow/ddaexample/business/customer/controller/VipCustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.customer.controller.CustomerDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="32" file="com/hello2morrow/ddaexample/business/customer/controller/CustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="29" file="com/hello2morrow/ddaexample/business/customer/controller/CustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForTestDriveDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForTestDriveDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForTestDriveDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForInformationDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForInformationDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForOfferDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForOfferDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForOfferDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.SalesAssistantDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/SalesAssistantDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/SalesAssistantDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.dda.business.common.controller.DtoManager"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="65" file="com/hello2morrow/dda/business/common/controller/DtoManager.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="118" file="com/hello2morrow/dda/business/common/controller/DtoManager.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="119" file="com/hello2morrow/dda/business/common/controller/DtoManager.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.contact.controller.PersonDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="30" file="com/hello2morrow/ddaexample/business/contact/controller/PersonDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="27" file="com/hello2morrow/ddaexample/business/contact/controller/PersonDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.request.controller.StateNewDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="31" file="com/hello2morrow/ddaexample/business/request/controller/StateNewDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="28" file="com/hello2morrow/ddaexample/business/request/controller/StateNewDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.request.controller.RequestDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="30" file="com/hello2morrow/ddaexample/business/request/controller/RequestDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="27" file="com/hello2morrow/ddaexample/business/request/controller/RequestDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="com.hello2morrow.ddaexample.business.request.controller.StateDtoMapper"/>
+                <attribute name="To" value="java.lang.reflect.Method"/>
+                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
+                <position line="30" file="com/hello2morrow/ddaexample/business/request/controller/StateDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                <position line="27" file="com/hello2morrow/ddaexample/business/request/controller/StateDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+            </typeRelation>
+        </architectureViolations>
+    </violations>
+    <consistencyProblems numberOf="0"/>
+    <cycleGroups numberOf="0"/>
+    <warnings numberOf="1">
+        <warningsByAttributeGroup attributeGroup="Threshold" numberOf="1">
+            <warningsByAttribute warningInfo="Threshold violation -  threshold range = [0, 200]" attributeDescription="Total number of lines of code in the measured element; counts every line that is not a blank or comment line, regardless of the number of statements" attributeName="Lines of code" numberOf="1">
+                <warning>
+                    <attribute name="Project" value="crm-domain-example"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="com/hello2morrow/dda/business/common/dsi/DomainObjectFactory.java"/>
+                    <attribute name="Attribute value" value="235 (Threshold violation -  threshold range = [0, 200])"/>
+                    <position offset="0" line="0" file="com/hello2morrow/dda/business/common/dsi/DomainObjectFactory.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                </warning>
+            </warningsByAttribute>
+        </warningsByAttributeGroup>
+        <warningsByAttributeGroup attributeGroup="Workspace" numberOf="0"/>
+    </warnings>
+    <tasks numberOf="1">
+        <task>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element type" value="Class method"/>
+            <attribute name="Element" value="com.hello2morrow.dda.business.common.startup.SetupFactories::static initialize(){}"/>
+            <attribute name="Description" value="Fix warning: Number of statements"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value="Peter"/>
+            <position offset="1195" line="29" file="com/hello2morrow/dda/business/common/startup/SetupFactories.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+        </task>
+    </tasks>
+    <exclusions numberOf="6" name="Internal">
+        <excludedType>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element" value="com.hello2morrow.ddaexample.business.customer.service.CustomerControllerServiceTest"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element" value="com.hello2morrow.ddaexample.business.distributionpartner.service.DistributionPartnerControllerServiceTest"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element" value="com.hello2morrow.ddaexample.business.request.service.RequestControllerServiceTest"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element" value="com.hello2morrow.ddaexample.business.testsuites.BusinessTestSuiteWithoutAppServer"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element" value="com.hello2morrow.ddaexample.business.testsuites.LogDomainObjectsTest"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="crm-domain-example"/>
+            <attribute name="Element" value="com.hello2morrow.ddaexample.business.user.service.UserControllerServiceTest"/>
+        </excludedType>
+    </exclusions>
+    <exclusions numberOf="39" name="External">
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.IOException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.InputStream"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.PrintStream"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.Serializable"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.UnsupportedEncodingException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.AssertionError"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.Class"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.ClassNotFoundException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.Exception"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.IllegalAccessException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.IllegalArgumentException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.InstantiationException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.Long"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.NoClassDefFoundError"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.NoSuchMethodException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.Object"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.RuntimeException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.SecurityException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.StackTraceElement"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.String"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.StringBuffer"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.System"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.ThreadLocal"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.Throwable"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.text.DateFormat"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.text.ParseException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.ArrayList"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Arrays"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Calendar"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Collection"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Date"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Enumeration"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.HashMap"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.HashSet"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.List"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Map"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.MissingResourceException"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Properties"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.util.Set"/>
+        </excludedType>
+    </exclusions>
+    <metrics>
+        <metric standardName="NumberOfInternalTypes" name="Number of internal types (all)" description="Total number of internal types contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfNotAssignedTypes" name="Number of unassigned types" description="Total number of types that are not assigned any logical element defined in the architecture model" sort="descending"/>
+        <metric standardName="LinesOfCode" name="Lines of code" description="Total number of lines of code in the measured element; counts every line that is not a blank or comment line, regardless of the number of statements" sort="descending"/>
+        <metric standardName="NumberOfExternalTypeDependencies" name="Number of type dependencies (remote)" description="Total number of type dependencies (in and out) between the set of types  contained in the measured element and the set of types not contained in the measured element; including dependencies to external types" sort="descending"/>
+        <metric standardName="NumberOfInternalTypeDependencies" name="Number of type dependencies (local)" description="Total number of type dependencies (in and out) between all types which are contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfIncomingDependencies" name="Number of using elements" description="Total number of elements of the same type which are using the measured element (files using files, packages using packages, ...)" sort="descending"/>
+        <metric standardName="NumberOfOutgoingDependencies" name="Number of used elements" description="Total number of elements of the same type which are used by the measured element (files using files, packages using packages, ...)" sort="descending"/>
+        <metric standardName="RelationalCohesion" name="Relational cohesion (RC)" description="Total number of internal type relations divided by the total number of types within the measured element" sort="ascending"/>
+        <metric standardName="Instability" name="I (Instability)" description="I = Ce/(Ca+Ce) - The metric has a range of [0,1]. If there are no outgoing dependencies, then I will be 0 and the measured element  is stable. If there are no incoming dependencies then I will be 1 and the measured element  is instable. Stable means that the element is not so easy to be changed. Instable means that it is easier to be changed." sort="descending"/>
+        <metric standardName="EfferentCoupling" name="Ce (Efferent coupling)" description="Total number of types inside of the measured element  that depend upon types outside the measured element  via outgoing dependencies" sort="descending"/>
+        <metric standardName="AfferentCoupling" name="Ca (Afferent coupling)" description="Total number of types outside of the measured element that depend upon types inside the measured element via incoming dependencies" sort="descending"/>
+        <metric standardName="NumberOfAbstractTypes" name="Number of internal types (abstract)" description="Total number of internal types contained in the measured element that are abstract or interface types" sort="descending"/>
+        <metric standardName="NumberOfTypesWithImplementation" name="Number of internal types (w/ implementation)" description="Total number of internal types contained in the measured element that contain at least one implemented method" sort="descending"/>
+        <metric standardName="Abstractness" name="A (Abstractness)" description="Total number of abstract types divided by the total number of concrete types in the measured element  - The metric has a range of [0,1]. 0 means that the container contains no abstract types. 1 means that the container contains nothing but abstract types" sort="ascending"/>
+        <metric standardName="Distance" name="D (Distance)" description="D = A + I - 1 - The metric has a range of [-1,1]. A good value should be around 0." sort="ascending"/>
+        <metric standardName="NumberOfMethods" name="Number of methods (all)" description="Total number of all methods contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfMethodsWithImplementation" name="Number of methods (w/ implementation)" description="Total number of methods with implementation contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfAbstractMethods" name="Number of methods (abstract)" description="Total number of abstract methods contained in the measured element" sort="descending"/>
+        <metric standardName="AccumulatedCyclomaticComplexity" name="Cyclomatic complexity (accumulated)" description="cyclomatic complexity - accumulated for all methods in the measured element" sort="descending"/>
+        <metric standardName="MaxCyclomaticComplexityPerMethod" name="Cyclomatic complexity (max per method)" description="Maximal cyclomatic complexity per method in the measured element" sort="descending"/>
+        <metric standardName="MaxAccumulatedCyclomaticComplexityPerType" name="Cyclomatic complexity (max accumulated per type)" description="Maximal accumulated cyclomatic complexity per type in the measured element" sort="descending"/>
+        <metric standardName="AverageCyclomaticComplexityPerMethod" name="Cyclomatic complexity (average per method)" description="Average cyclomatic complexity per method - calculated for all methods in the measured element" sort="descending"/>
+        <metric standardName="AverageAccumulatedCyclomaticComplexityPerType" name="Cyclomatic complexity (average accumulated per type)" description="Average accumulated cyclomatic complexity per type - calculated for all types in the measured element" sort="descending"/>
+        <metric standardName="AccumulatedExtendedCyclomaticComplexity" name="Extended cyclomatic complexity (accumulated)" description="Extended cyclomatic complexity - accumulated for all methods in the measured element" sort="descending"/>
+        <metric standardName="MaxExtendedCyclomaticComplexityPerMethod" name="Extended cyclomatic complexity (max per method)" description="Maximal extended cyclomatic complexity per method in the measured element" sort="descending"/>
+        <metric standardName="MaxAccumulatedExtendedCyclomaticComplexityPerType" name="Extended cyclomatic complexity (max accumulated per type)" description="Maximal accumulated extended cyclomatic complexity per type in the measured element" sort="descending"/>
+        <metric standardName="AverageExtendedCyclomaticComplexityPerMethod" name="Extended cyclomatic complexity (average per method)" description="Average extended cyclomatic complexity per method - calculated for all methods in the measured element" sort="descending"/>
+        <metric standardName="AverageAccumulatedExtendedCyclomaticComplexityPerType" name="Extended cyclomatic complexity (average accumulated per type)" description="Average accumulated extended cyclomatic complexity per type - calculated for all types in the measured element" sort="descending"/>
+        <metric standardName="AccumulatedModifiedCyclomaticComplexity" name="Modified cyclomatic complexity (accumulated)" description="Modified cyclomatic complexity - accumulated for all methods in the measured element" sort="descending"/>
+        <metric standardName="MaxModifiedCyclomaticComplexityPerMethod" name="Modified cyclomatic complexity (max per method)" description="Maximal modified cyclomatic complexity per method in the measured element" sort="descending"/>
+        <metric standardName="MaxAccumulatedModifiedCyclomaticComplexityPerType" name="Modified cyclomatic complexity (max accumulated per type)" description="Maximal accumulated modified cyclomatic complexity per type in the measured element" sort="descending"/>
+        <metric standardName="AverageModifiedCyclomaticComplexityPerMethod" name="Modified cyclomatic complexity (average per method)" description="Average modified cyclomatic complexity per method - calculated for all methods in the measured element" sort="descending"/>
+        <metric standardName="AverageAccumulatedModifiedCyclomaticComplexityPerType" name="Modified cyclomatic complexity (average accumulated per type)" description="Average accumulated modified cyclomatic complexity per type - calculated for all types in the measured element" sort="descending"/>
+        <metric standardName="NumberOfAccessibleTypes" name="Number of public types" description="Number of types accessible from outside of the measured element, i.e. all public types" sort="descending"/>
+        <metric standardName="NumberOfAssertions" name="Number of assertions" description="Total number of assertions of the measured element" sort="ascending"/>
+        <metric standardName="NumberOfStatements" name="Number of statements" description="Total number of statements contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfInstructions" name="Number of instructions" description="Total number of byte code instructions of a class file aggregated for the measured element" sort="descending"/>
+        <metric standardName="DependsUpon" name="Depends upon" description="Total number of project internal elements that the measured  element directly and indirectly depends upon" sort="descending"/>
+        <metric standardName="AverageTypeDependency" name="Average type dependency" description="Average number of types a type depends on directly and indirectly. This metric can be used to characterize the overall average coupling of project internal types" sort="descending"/>
+        <metric standardName="RelativeAverageTypeDependency" name="Relative average type dependency" description="Average type dependency divided by the number of project internal types multiplied by 100 (in percent)" sort="descending"/>
+        <metric standardName="NormalizedCumulativeTypeDependency" name="Normalized cumulative type dependency" description="The ratio between the cumulative type dependency of a project and the cumulative type dependency of a balanced binary tree of the same size. A value greater than 1 indicates a more vertical design. A value less than 1 indicates a more horizontal design." sort="descending"/>
+        <metric standardName="AverageComponentDependency" name="Average component dependency (ACD)" description="Average number of components (source files) a component (source file) depends on directly and indirectly. This metric can be used to characterize the overall average coupling of project internal components (source files)" sort="descending"/>
+        <metric standardName="RelativeAverageComponentDependency" name="Relative average component dependency" description="Average component dependency divided by the number of project internal source files multiplied by 100 (in percent)" sort="descending"/>
+        <metric standardName="NormalizedCumulativeComponentDependency" name="Normalized cumulative component dependency (NCCD)" description="The ratio between the cumulative component dependency of a project and the cumulative component dependency of a balanced binary tree of the same size. A value greater than 1 indicates a more vertical design. A value less than 1 indicates a more horizontal design." sort="descending"/>
+        <metric standardName="NumberOfViolatingTypes" name="Number of violating types" description="Total number of types with a dependency violation according to a projects architecture model" sort="descending"/>
+        <metric standardName="OverallNumberOfTypeDependencies" name="Number of type dependencies (all)" description="Total number of all type dependencies (in and out) of types contained in the measured element; including dependencies to external types" sort="descending"/>
+        <metric standardName="NumberOfViolations" name="Number of violating type dependencies" description="Total number of type dependencies that start from types in the measured element and violate architecture restrictions; ignored violations are not counted" sort="descending"/>
+        <metric standardName="NumberOfTasks" name="Number of tasks" description="Total number of tasks defined in the measured element" sort="descending"/>
+        <metric standardName="NumberOfWarnings" name="Number of warnings (all)" description="Total number of warnings which are related to the measured element; all kinds of warnings are counted" sort="descending"/>
+        <metric standardName="NumberOfCyclicElements" name="Number of cyclic elements" description="Total number of cyclic coupled elements of any kind contained in a system" sort="descending"/>
+        <metric standardName="NumberOfMetricWarnings" name="Number of warnings (thresholds)" description="Total number of warnings which are related to the measured element; only threshold warnings are counted" sort="descending"/>
+        <metric standardName="NumberOfWorkspaceWarnings" name="Number of warnings (workspace)" description="Total number of warnings which are related to the measured element; only workspace warnings are counted" sort="descending"/>
+        <metric standardName="NumberOfIgnoredViolations" name="Number of ignored violations" description="Total number of violations which are related to the measured element and filtered out by a violation filter" sort="descending"/>
+        <metric standardName="NumberOfIgnoredWarnings" name="Number of ignored warnings" description="Total number of warnings which are related to the measured element and filtered out by an ignore warning filter" sort="descending"/>
+        <metric standardName="NumberOfFixWarnings" name="Number of fix warning tasks" description="Total number of warnings which are related to the measured element and have been converted to fix warning tasks" sort="descending"/>
+        <metric standardName="NumberOfRefactorings" name="Number of refactoring tasks" description="Total number of refactoring tasks defined in the measured element" sort="descending"/>
+        <metric standardName="NumberOfLayerGroups" name="Number of layer groups" description="Total number of layer groups defined in a projects architecture model" sort="descending"/>
+        <metric standardName="NumberOfCyclicLayerGroups" name="Number of cyclic layer groups" description="Total number of cyclically coupled layer groups contained in a project" sort="descending"/>
+        <metric standardName="NumberOfVerticalSliceGroups" name="Number of vertical slice groups" description="Total number of vertical slice groups defined in a projects architecture model" sort="descending"/>
+        <metric standardName="NumberOfCyclicVerticalSliceGroups" name="Number of cyclic vertical slice groups" description="Total number of cyclically coupled vertical slice groups contained in a project" sort="descending"/>
+        <metric standardName="NumberOfLayers" name="Number of layers" description="Total number of layers defined in a projects architecture model" sort="descending"/>
+        <metric standardName="NumberOfCyclicLayers" name="Number of cyclic layers" description="Total number of cyclically coupled layers contained within the direct architectural parent in a project" sort="descending"/>
+        <metric standardName="NumberOfVerticalSlices" name="Number of vertical slices" description="Total number of vertical slices defined in a projects architecture model" sort="descending"/>
+        <metric standardName="NumberOfCyclicVerticalSlices" name="Number of cyclic vertical slices" description="Total number of cyclically coupled vertical slices contained within the direct architectural parent in a project" sort="descending"/>
+        <metric standardName="NumberOfSubsystems" name="Number of subsystems" description="Total number of subsystems defined in a projects architecture model" sort="descending"/>
+        <metric standardName="NumberOfCyclicSubsystems" name="Number of cyclic subsystems" description="Total number of cyclically coupled subsystems contained within the direct architectural parent in a project" sort="descending"/>
+        <metric standardName="NumberOfNamedInterfaces" name="Number of named interfaces" description="Total number of named interfaces defined in a projects architecture model" sort="descending"/>
+        <metric standardName="NumberOfInternalNamespaces" name="Number of internal packages" description="Total number of internal packages contained in a project or system" sort="descending"/>
+        <metric standardName="NumberOfCyclicNamespaces" name="Number of cyclic packages" description="Total number of cyclically coupled packages contained in a project" sort="descending"/>
+        <metric standardName="AverageAssertionUsage" name="Average assertion usage" description="Average number of assertions per type in an element. Only such types are considered that define at least one non-abstract and non-native method" sort="ascending"/>
+        <metric standardName="Level" name="Level" description="Level of the measured element in the projects dependency hierarchy; see the User Manual for the definition of level" sort="descending"/>
+        <metric standardName="NumberOfSourceFiles" name="Number of Java source files (all)" description="Total number of Java source files contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfCyclicSourceFiles" name="Number of cyclic source files" description="Total number of cyclically coupled source files contained within package boundaries of a project" sort="descending"/>
+        <metric standardName="NumberOfCyclicDirectories" name="Number of cyclic directories" description="Total number of cyclically coupled directories containedwithin path container boundaries  in a project" sort="descending"/>
+        <metric standardName="NumberOfCyclicPathContainers" name="Number of cyclic path containers" description="Total number of cyclically coupled path containers contained in a project" sort="descending"/>
+        <metric standardName="NumberOfTargetFiles" name="Number of Java target files (all)" description="Total number of Java class files contained in the measured element" sort="descending"/>
+        <metric standardName="NumberOfNonExcludedSourceFiles" name="Number of Java source files (non-excluded)" description="Total number of Java source files contained in the measured element; all files are counted which contain at least one non-excluded type" sort="descending"/>
+        <metric standardName="NumberOfNonExcludedTargetFiles" name="Number of Java target files (non-excluded)" description="Total number of Java class files contained in the measured element; all files are counted which contain at least one non-excluded type" sort="descending"/>
+    </metrics>
+</reportContext>

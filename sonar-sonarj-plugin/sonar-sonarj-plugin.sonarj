@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<context version="5.0.1.439">
+    <scope name="My Project" type="Project">
+        <architecture>
+            <element name="plugin" type="Subsystem">
+                <element name="Assignment" type="TypeFilter">
+                    <element name="com.hello2morrow.sonarplugin.*" type="IncludeTypePattern"/>
+                </element>
+                <dependency type="AllowedDependency" toName="Project|My Project::Subsystem|xsd"/>
+            </element>
+            <element name="xsd" type="Subsystem">
+                <element name="Assignment" type="TypeFilter">
+                    <element name="com.hello2morrow.sonarplugin.xsd.*" type="IncludeTypePattern"/>
+                </element>
+            </element>
+        </architecture>
+        <workspace>
+            <element name="target/classes" type="JavaRootDirectory"/>
+            <element name="src/main/java" type="JavaRootDirectory"/>
+        </workspace>
+        <itemDefinition>
+            <item type="IgnoreWarningFilterItem">
+                <property name="AttributeId" value="NoAttachedSourceFile"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-14 16:08:42"/>
+                <property name="ElementType" value="Class"/>
+                <property name="Pattern" value="com.hello2morrow.sonarplugin.xsd.*"/>
+            </item>
+            <item type="ThresholdItem">
+                <property name="AttributeId" value="NumberOfStatements"/>
+                <property name="LowerValue" value="0"/>
+                <property name="NamedElementGroup" value="Method"/>
+                <property name="UpperValue" value="25"/>
+            </item>
+        </itemDefinition>
+    </scope>
+    <scope name="External" type="External">
+        <element name="Filter" type="TypeFilter">
+            <element name="**" type="IncludeTypePattern"/>
+            <element name="java.io.*" type="ExcludeTypePattern"/>
+            <element name="java.lang.*" type="ExcludeTypePattern"/>
+            <element name="java.lang.annotation.*" type="ExcludeTypePattern"/>
+            <element name="java.lang.ref.*" type="ExcludeTypePattern"/>
+            <element name="java.math.*" type="ExcludeTypePattern"/>
+            <element name="java.nio.*" type="ExcludeTypePattern"/>
+            <element name="java.nio.channels.*" type="ExcludeTypePattern"/>
+            <element name="java.nio.channels.spi.*" type="ExcludeTypePattern"/>
+            <element name="java.nio.charset.*" type="ExcludeTypePattern"/>
+            <element name="java.nio.charset.spi.*" type="ExcludeTypePattern"/>
+            <element name="java.text.*" type="ExcludeTypePattern"/>
+            <element name="java.util.*" type="ExcludeTypePattern"/>
+            <element name="java.util.jar.*" type="ExcludeTypePattern"/>
+            <element name="java.util.prefs.*" type="ExcludeTypePattern"/>
+            <element name="java.util.regex.*" type="ExcludeTypePattern"/>
+            <element name="java.util.zip.*" type="ExcludeTypePattern"/>
+        </element>
+        <architecture>
+            <element name="jaxb" type="Subsystem">
+                <element name="Assignment" type="TypeFilter">
+                    <element name="javax.xml.bind.*" type="IncludeTypePattern"/>
+                    <element name="javax.xml.bind.annotation.*" type="IncludeTypePattern"/>
+                </element>
+                <element name="api" type="NamedInterface">
+                    <element name="Assignment" type="TypeFilter"/>
+                </element>
+            </element>
+        </architecture>
+    </scope>
+    <scope name="Global" type="Global">
+        <element name="Configuration" type="Configuration"/>
+        <element name="Filter" type="TypeFilter">
+            <element name="**" type="IncludeTypePattern"/>
+        </element>
+    </scope>
+</context>
