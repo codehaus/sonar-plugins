@@ -19,26 +19,32 @@
  */
 package org.sonar.plugins.qi;
 
-import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.NavigationSection;
-import org.sonar.api.web.RubyRailsWidget;
-import org.sonar.api.web.UserRole;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
 
-@NavigationSection(NavigationSection.RESOURCE)
-@UserRole(UserRole.VIEWER)
-public class QIWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+public final class Utils {
 
-  public String getId() {
-    return "quality-index";
+  private Utils() {
   }
 
-  public String getTitle() {
-    // not used for the moment by widgets.
-    return "Quality Index";
+  /**
+   * Centralizes the target for running the plugin
+   *
+   * @param project the project
+   * @return whether to run the various decorators / sensors on the project
+   */
+  public static boolean shouldExecuteOnProject(final Project project) {
+    return Java.INSTANCE.equals(project.getLanguage());
   }
 
-  @Override
-  protected String getTemplatePath() {
-    return "/widget.html.erb";
+  /**
+   * Centralizes exclusion pattern for saving measures
+   *
+   * @return whether the context resource should be decorated
+   */
+  public static boolean shouldSaveMeasure(final Resource resource) {
+    return !Resource.QUALIFIER_UNIT_TEST_CLASS.equals(resource.getQualifier());
   }
+
 }

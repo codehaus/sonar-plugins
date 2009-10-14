@@ -1,37 +1,53 @@
+/*
+ * Sonar, open source software quality management tool.
+ * Copyright (C) 2009 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
+ *
+ * Sonar is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Sonar is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Sonar; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ */
 package org.sonar.plugins.qi;
 
 import org.sonar.api.Extension;
+import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Java;
-import org.sonar.api.resources.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Properties({
-  @Property(key = QIPlugin.QI_CODING_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT,
-    name = "A weight is associated to each CODING violation, depending on the priority", description = ""),
+    @Property(key = QIPlugin.QI_CODING_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT,
+        name = "A weight is associated to each CODING violation, depending on the priority", description = ""),
 
-  @Property(key = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS_DEFAULT,
-    name = "A weight is associated to each STYLE violation, depending on the priority", description = ""),
+    @Property(key = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS_DEFAULT,
+        name = "A weight is associated to each STYLE violation, depending on the priority", description = ""),
 
-  @Property(key = QIPlugin.QI_CODING_AXIS_WEIGHT, defaultValue = QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the CODING axis is given", description = ""),
+    @Property(key = QIPlugin.QI_CODING_AXIS_WEIGHT, defaultValue = QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT,
+        name = "The weight the CODING axis is given", description = ""),
 
-  @Property(key = QIPlugin.QI_STYLE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_STYLE_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the STYLE axis is given", description = ""),
+    @Property(key = QIPlugin.QI_STYLE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_STYLE_AXIS_WEIGHT_DEFAULT,
+        name = "The weight the STYLE axis is given", description = ""),
 
-  @Property(key = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the COMPLEXITY axis is given", description = ""),
+    @Property(key = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT,
+        name = "The weight the COMPLEXITY axis is given", description = ""),
 
-  @Property(key = QIPlugin.QI_COVERAGE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the COVERAGE axis is given", description = "")
+    @Property(key = QIPlugin.QI_COVERAGE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT,
+        name = "The weight the COVERAGE axis is given", description = "")
 })
 
-public class QIPlugin implements org.sonar.api.Plugin {
+public class QIPlugin implements Plugin {
   /**
    * The violation weights for each priority on the coding axis
    */
@@ -132,7 +148,6 @@ public class QIPlugin implements org.sonar.api.Plugin {
     list.add(QIMetrics.class);
     list.add(QIWidget.class);
     list.add(StyleViolationsDecorator.class);
-
     return list;
   }
 
@@ -141,24 +156,4 @@ public class QIPlugin implements org.sonar.api.Plugin {
     return getKey();
   }
 
-  /**
-   * Centralizes the target for running the plugin
-   *
-   * @param project the project
-   * @return whether to run the various decorators / sensors on the project
-   */
-  public static boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(Java.INSTANCE);
-  }
-
-  /**
-   * Centralizes exclusion pattern for saving measures
-   *
-   * @param context the context
-   * @return whether the context resource should be decorated
-   */
-  public static boolean shouldNotSaveMeasure(DecoratorContext context) {
-
-    return context.getResource().getQualifier().equals(Resource.QUALIFIER_UNIT_TEST_CLASS);
-  }
 }

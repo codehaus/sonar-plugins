@@ -19,26 +19,15 @@
  */
 package org.sonar.plugins.qi;
 
-import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.NavigationSection;
-import org.sonar.api.web.RubyRailsWidget;
-import org.sonar.api.web.UserRole;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import org.junit.Test;
 
-@NavigationSection(NavigationSection.RESOURCE)
-@UserRole(UserRole.VIEWER)
-public class QIWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+public class QIPluginTest {
 
-  public String getId() {
-    return "quality-index";
+  @Test
+  public void testDeclaredExtensions() {
+    assertThat(new QIPlugin().getExtensions().size(), is(9));
   }
 
-  public String getTitle() {
-    // not used for the moment by widgets.
-    return "Quality Index";
-  }
-
-  @Override
-  protected String getTemplatePath() {
-    return "/widget.html.erb";
-  }
 }
