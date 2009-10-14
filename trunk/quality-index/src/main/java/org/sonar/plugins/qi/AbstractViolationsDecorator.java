@@ -146,6 +146,9 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    * @param value the value
    */
   protected void saveWeightedViolations(DecoratorContext context, double value) {
+    if (QIPlugin.shouldNotSaveMeasure(context)) {
+      return;
+    }
     context.saveMeasure(getWeightedViolationMetricKey(), value);
   }
 

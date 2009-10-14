@@ -51,6 +51,11 @@ public class QIDecorator implements Decorator{
    * @param context the context
    */
   public void decorate(Resource resource, DecoratorContext context) {
+    // Do not want to decorate anything on unit tests files
+    if (QIPlugin.shouldNotSaveMeasure(context)) {
+      return;
+    }
+
     double value = 10;
     for (Metric metric : getRequiredMetrics()) {
       value -= MeasureUtils.getValue(context.getMeasure(metric), 0.0);

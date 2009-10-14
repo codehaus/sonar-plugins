@@ -55,6 +55,11 @@ public class ComplexityDecorator extends AbstractDecorator {
    * @param context the context
    */
   public void decorate(Resource resource, DecoratorContext context) {
+    // Do not want to decorate anything on unit tests files
+    if (QIPlugin.shouldNotSaveMeasure(context)) {
+      return;
+    }
+
     saveSpecificMeasure(context, computeComplexityFactor(context), QIMetrics.QI_COMPLEXITY_FACTOR);
     saveSpecificMeasure(context, computeComplexMethodsCount(context), QIMetrics.QI_COMPLEXITY_FACTOR_METHODS);
     saveMeasure(context, computeComplexity(context));
@@ -138,8 +143,6 @@ public class ComplexityDecorator extends AbstractDecorator {
    * @param metric the metric
    */
   private void saveSpecificMeasure(DecoratorContext context, double value, Metric metric) {
-    if (value > 0) {
       context.saveMeasure(metric, value);
-    }
   }
 }

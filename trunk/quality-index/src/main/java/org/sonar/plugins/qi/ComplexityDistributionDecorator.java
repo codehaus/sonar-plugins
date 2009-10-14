@@ -33,6 +33,12 @@ public class ComplexityDistributionDecorator implements Decorator{
     if (resource.getQualifier().equals(Resource.QUALIFIER_FILE)) {
       return;
     }
+
+    // Do not want to decorate anything on unit tests files
+    if (QIPlugin.shouldNotSaveMeasure(context)) {
+      return;
+    }
+    
     computeAndSaveComplexityDistribution(resource, context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
   }
 

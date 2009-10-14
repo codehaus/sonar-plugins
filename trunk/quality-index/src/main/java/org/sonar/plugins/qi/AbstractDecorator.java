@@ -86,12 +86,19 @@ public abstract class AbstractDecorator implements Decorator {
    * @param value the value
    */
   protected void saveMeasure(DecoratorContext context, double value) {
-    if (value <= 0 && context.getResource().getQualifier().equals(Resource.QUALIFIER_FILE)) {
+    // In case test was not done before
+    if (QIPlugin.shouldNotSaveMeasure(context)) {
       return;
     }
+    
+    if (value <= 0 && context.getResource().getQualifier().equals(Resource.QUALIFIER_FILE)){
+      return;
+    }
+
     if (value > 1) {
       value = 1;
     }
+
     Measure measure = new Measure(metric, value * computeAxisWeight(), Double.toString(computeAxisWeight()));
     context.saveMeasure(measure);
   }
