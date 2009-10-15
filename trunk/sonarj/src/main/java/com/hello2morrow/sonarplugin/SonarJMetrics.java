@@ -69,6 +69,9 @@ public final class SonarJMetrics implements Metrics
     public static final Metric WORKSPACE_WARNINGS = new Metric("sonarj.workspace_warnings", "Parser Warnings (SonarJ)", "Number of SonarJ Parser Warnings", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
+    public static final Metric CONSISTENCY_WARNINGS = new Metric("sonarj.consistency_warnings", "Architecture Consistency Warnings (SonarJ)", "Number of Architecture Cnsistency Warnings", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_RULES);
+
     public static final Metric IGNORED_WARNINGS = new Metric("sonarj.ignored_warnings", "Ignored Warnings (SonarJ)", "Number of Ignord Warnings and Threshold Violations", Metric.ValueType.INT, Metric.DIRECTION_NONE, false,
             CoreMetrics.DOMAIN_RULES);
 
@@ -79,6 +82,6 @@ public final class SonarJMetrics implements Metrics
     {
         return Arrays.asList(ACD, NCCD, CYCLICITY, BIGGEST_CYCLE_GROUP, CYCLIC_PACKAGES, RELATIVE_CYCLICITY, INTERNAL_PACKAGES, INSTRUCTIONS, CYCLE_GROUP_SIZE,
         		CYCLE_GROUP_ID, UNASSIGNED_TYPES, VIOLATING_TYPES, VIOLATING_DEPENDENCIES, CYCLIC_ARTIFACTS, TYPE_DEPENDENCIES, JAVA_FILES, TASKS,
-        		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS);
+        		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, CONSISTENCY_WARNINGS);
     }
 }
