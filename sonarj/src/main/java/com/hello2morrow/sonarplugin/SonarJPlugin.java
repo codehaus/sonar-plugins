@@ -24,16 +24,16 @@ import org.sonar.api.Property;
     )
 })
 
-public class SonarJPlugin implements Plugin
+public final class SonarJPlugin implements Plugin
 {
     public final String getKey()
     {
-        return "SonarJ";
+        return SonarJPluginBase.PLUGIN_KEY;
     }
 
     public final String getName()
     {
-        return "SonarJ";
+        return SonarJPluginBase.PLUGIN_KEY;
     }
 
     public final String getDescription()
@@ -48,7 +48,7 @@ public class SonarJPlugin implements Plugin
         list.add(SonarJMetrics.class);
         list.add(SonarJSensor.class);
         list.add(SonarJStructureDashboard.class);
-
+        list.add(SonarJRulesRepository.class);
         return list;
     }
 

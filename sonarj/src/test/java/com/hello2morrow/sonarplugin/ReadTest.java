@@ -26,8 +26,8 @@ public class ReadTest extends TestCase
         context.checking(new Expectations() {{
             oneOf(config).getString(SonarJSensor.LICENSE_FILE_NAME); will(returnValue(null));
         }});
-        
-        SonarJSensor sensor = new SonarJSensor(config);
+
+        SonarJSensor sensor = new SonarJSensor(config, null, null);
 
         final SensorContext sensorContext = context.mock(SensorContext.class);
         
