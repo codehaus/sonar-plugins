@@ -21,8 +21,13 @@ import org.sonar.api.batch.maven.DependsUponMavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulesManager;
+import org.sonar.api.rules.Violation;
 
 import com.hello2morrow.sonarplugin.xsd.ReportContext;
 import com.hello2morrow.sonarplugin.xsd.XsdArchitectureViolation;
@@ -37,7 +42,7 @@ import com.hello2morrow.sonarplugin.xsd.XsdProjects;
 import com.hello2morrow.sonarplugin.xsd.XsdTypeRelation;
 import com.hello2morrow.sonarplugin.xsd.XsdViolations;
 
-public class SonarJSensor implements Sensor, DependsUponMavenPlugin
+public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 {
     public static final String LICENSE_FILE_NAME = "sonarj.license";
     
@@ -67,6 +72,8 @@ public class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private Map<String, Number> generalMetrics;
     private Map<String, Number> projectMetrics;
     private SensorContext sensorContext;
+    private RulesManager rulesManager;
+    private RulesProfile rulesProfile;
     
     protected static ReportContext readSonarjReport(String fileName)
     {
@@ -106,10 +113,20 @@ public class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return result;
     }
     
-    public SonarJSensor(Configuration config)
+    public SonarJSensor(Configuration config, RulesManager rulesManager, RulesProfile rulesProfile)
     {
         String licenseFileName = config.getString(LICENSE_FILE_NAME);
         pluginHandler = new SonarJPluginHandler(licenseFileName);
+        this.rulesManager = rulesManager;
+        this.rulesProfile = rulesProfile;
+        if (rulesManager == null)
+        {
+            LOG.warn("No RulesManager provided to sensor");
+        }
+        if (rulesProfile == null)
+        {
+            LOG.warn("No RulesProfile given to sensor");
+        }
     }
     
     public final MavenPluginHandler getMavenPluginHandler(Project proj)
@@ -262,6 +279,7 @@ public class SonarJSensor implements Sensor, DependsUponMavenPlugin
         sensorContext.saveMeasure(SonarJMetrics.INTERNAL_PACKAGES, internalPackages.doubleValue());        
     }
     
+    @SuppressWarnings("unchecked")
     private final void addArchitectureMeasures(Project project, ReportContext report)
     {
     	int cyclicArtifacts = 0;
@@ -283,23 +301,53 @@ public class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	XsdViolations violations = report.getViolations();
     	
     	saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, Double.valueOf(violations.getNumberOf()), 5, 10);
-    	for (XsdArchitectureViolation violation : violations.getArchitectureViolations())
-    	{
-    		String toName = getAttribute(violation.getArchitectureViolation().getAttribute(), "To");
-    		String toElemType = getAttribute(violation.getArchitectureViolation().getAttribute(), "To element type").toLowerCase();
-    		String target = toElemType+' '+toName;
-    		
-    		for (XsdTypeRelation rel : violation.getTypeRelation())
-    		{
-    			String fromType = getAttribute(rel.getAttribute(), "From");
-    			String toType = getAttribute(rel.getAttribute(), "To");
-    			String msg = "Type "+toType+" from "+target+" must not be used from here";
-    			
-    			for (XsdPosition pos : rel.getPosition())
-    			{
-    				
-    			}
-    		}
+        
+    	if (rulesManager != null && rulesProfile != null)
+    	{    
+        	Rule rule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
+            ActiveRule activeRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
+    
+            if (rule != null && activeRule != null)
+            {
+                for (XsdArchitectureViolation violation : violations.getArchitectureViolations())
+            	{
+            		String toName = getAttribute(violation.getArchitectureViolation().getAttribute(), "To");
+            		String toElemType = getAttribute(violation.getArchitectureViolation().getAttribute(), "To element type").toLowerCase();
+            		String target = toElemType+' '+toName;
+            		
+            		for (XsdTypeRelation rel : violation.getTypeRelation())
+            		{
+            			String fromType = getAttribute(rel.getAttribute(), "From");
+            			String toType = getAttribute(rel.getAttribute(), "To");
+            			String msg = "Type "+toType+" from "+target+" must not be used from here";
+            			Resource javaFile = sensorContext.getResource(fromType);
+            			
+            			if (javaFile == null)
+            			{
+            			    LOG.error("Cannot obtain resource "+fromType);
+            			    continue;
+            			}
+            			for (XsdPosition pos : rel.getPosition())
+            			{
+            				Violation v = new Violation(rule, javaFile);
+            				
+            				v.setMessage(msg);
+            				v.setLineId(Integer.valueOf(pos.getLine()));
+            				v.setPriority(activeRule.getPriority());
+            				sensorContext.saveViolation(v);
+            				LOG.info("Adding violation");
+            			}
+            		}
+            	}
+            }
+            else if (rule == null)
+            {
+                LOG.error("SonarJ architecture rule not found");
+            }
+            else if (activeRule == null)
+            {
+                LOG.info("SonarJ architecture rule deactivated");
+            }
     	}
     }
     

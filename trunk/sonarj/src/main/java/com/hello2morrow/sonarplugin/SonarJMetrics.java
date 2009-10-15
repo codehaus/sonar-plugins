@@ -7,7 +7,7 @@ import org.sonar.api.measures.CoreMetrics;
 import java.util.List;
 import java.util.Arrays;
 
-public class SonarJMetrics implements Metrics
+public final class SonarJMetrics implements Metrics
 {
     public static final Metric ACD = new Metric("sonarj.acd", "ACD", "Average Component Dependency (John Lakos)", Metric.ValueType.FLOAT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);

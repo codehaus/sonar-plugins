@@ -7,9 +7,8 @@ import org.sonar.api.web.UserRole;
 
 @NavigationSection(NavigationSection.RESOURCE)
 @UserRole(UserRole.VIEWER)
-public class SonarJStructureDashboard extends AbstractRubyTemplate implements RubyRailsWidget
+public final class SonarJStructureDashboard extends AbstractRubyTemplate implements RubyRailsWidget
 {
-
     public String getId()
     {
         return "sonarj";
