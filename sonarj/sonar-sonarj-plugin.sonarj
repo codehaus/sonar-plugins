@@ -32,6 +32,62 @@
                 <property name="NamedElementGroup" value="Method"/>
                 <property name="UpperValue" value="25"/>
             </item>
+            <item type="CutTypeDependencyItem">
+                <property name="AssignedTo" value="Peter"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-15 13:46:59"/>
+                <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
+                <property name="Priority" value="Medium"/>
+                <property name="ToType" value="javax.xml.bind.Unmarshaller"/>
+            </item>
+            <item type="CutTypeDependencyItem">
+                <property name="AssignedTo" value="Peter"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-15 13:46:59"/>
+                <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
+                <property name="Priority" value="Medium"/>
+                <property name="ToType" value="javax.xml.bind.JAXBException"/>
+            </item>
+            <item type="CutTypeDependencyItem">
+                <property name="AssignedTo" value="Peter"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-15 13:46:59"/>
+                <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
+                <property name="Priority" value="Medium"/>
+                <property name="ToType" value="javax.xml.bind.JAXBContext"/>
+            </item>
+            <item type="FixWarningFilterItem">
+                <property name="AssignedTo" value="Peter"/>
+                <property name="AttributeId" value="NumberOfStatements"/>
+                <property name="Comment" value="The Comment"/>
+                <property name="Date" value="2009-10-15 14:56:56"/>
+                <property name="ElementType" value="ObjectMethod"/>
+                <property name="Pattern" value="com.hello2morrow.sonarplugin.SonarJSensor::analyseCycleGroups(com.hello2morrow.sonarplugin.xsd.ReportContext, Number){}"/>
+                <property name="Priority" value="Low"/>
+            </item>
+            <item type="DeleteTypeItem">
+                <property name="AssignedTo" value=""/>
+                <property name="Comment" value="None"/>
+                <property name="Date" value="2009-10-15 16:43:07"/>
+                <property name="Priority" value="High"/>
+                <property name="Type" value="com.hello2morrow.sonarplugin.xsd.Dummy"/>
+            </item>
+            <item type="MoveTypeItem">
+                <property name="AssignedTo" value=""/>
+                <property name="Comment" value="none"/>
+                <property name="Date" value="2009-10-15 16:44:36"/>
+                <property name="Priority" value="Medium"/>
+                <property name="TargetNamespace" value="com.hello2morrow.sonarplugin"/>
+                <property name="TargetScope" value="My Project"/>
+                <property name="Type" value="com.hello2morrow.sonarplugin.xsd.ObjectFactory"/>
+            </item>
+            <item type="DeleteTypeItem">
+                <property name="AssignedTo" value=""/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-15 17:21:20"/>
+                <property name="Priority" value="Medium"/>
+                <property name="Type" value="com.hello2morrow.sonarplugin.xsd.ReportContext"/>
+            </item>
         </itemDefinition>
     </scope>
     <scope name="External" type="External">
@@ -67,7 +123,9 @@
         </architecture>
     </scope>
     <scope name="Global" type="Global">
-        <element name="Configuration" type="Configuration"/>
+        <element name="Configuration" type="Configuration">
+            <property name="ParseSourceFile" value="false"/>
+        </element>
         <element name="Filter" type="TypeFilter">
             <element name="**" type="IncludeTypePattern"/>
         </element>
