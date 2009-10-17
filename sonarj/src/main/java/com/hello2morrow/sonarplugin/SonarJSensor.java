@@ -74,6 +74,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private static final String TASKS = "Number of tasks";
     private static final String THRESHOLD_WARNINGS = "Number of warnings (thresholds)";
     private static final String WORKSPACE_WARNINGS = "Number of warnings (workspace)";
+    private static final String EROSION_REFS = "Structural erosion - reference level";
+    private static final String EROSION_TYPES = "Structural erosion - type level";
     
     private final SonarJPluginHandler pluginHandler;
     private Map<String, Number> generalMetrics;
@@ -177,9 +179,9 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return result;
     }
     
-    private void saveMeasure(String key, Metric metric)
+    private double saveMeasure(String key, Metric metric)
     {
-    	saveMeasure(key, metric, Double.MAX_VALUE, Double.MAX_VALUE);
+    	return saveMeasure(key, metric, Double.MAX_VALUE, Double.MAX_VALUE);
     }
     
     private void saveMeasure(Metric metric, double value)
@@ -187,11 +189,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	saveMeasure(metric, value, Double.MAX_VALUE, Double.MAX_VALUE);    	
     }
     
-    private void saveMeasure(String key, Metric metric, double warnThreshold, double errorThreshold)
+    private double saveMeasure(String key, Metric metric, double warnThreshold, double errorThreshold)
     {
     	double value = projectMetrics.get(key).doubleValue();
     	
     	saveMeasure(metric, value, warnThreshold, errorThreshold);
+    	return value;
     }
     
     private void saveMeasure(Metric metric, double value, double warnThreshold, double errorThreshold)
@@ -500,7 +503,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     		cyclicArtifacts += projectMetrics.get(key).intValue();
     	}
     	saveMeasure(SonarJMetrics.CYCLIC_ARTIFACTS, cyclicArtifacts, 2.0, 5.0);
-        saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES);
     	saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 1, 20);
     	saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 20, 50);
     	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 20, 50);
@@ -567,7 +569,11 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(SonarJMetrics.NCCD, nccd, alertLevel);
         saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS);
         saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES);
-        analyseCycleGroups(report, internalPackages);
+        saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES);
+        saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS);
+        saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES);
+        analyseCycleGroups(report, internalPackages);        
+
         if (pluginHandler.isUsingArchitectureDescription())
         {
         	addArchitectureMeasures(report);
