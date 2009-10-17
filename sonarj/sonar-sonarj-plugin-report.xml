@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<reportContext name="sonar-sonarj-plugin" productFamily="SonarJ">
+    <general>
+        <attribute name="Path" value="/Users/sascha/sonarplugin/sonar-sonarj-plugin/sonar-sonarj-plugin.sonarj"/>
+        <attribute name="Base Path" value="/Users/sascha/sonarplugin/sonar-sonarj-plugin"/>
+        <attribute name="Description" value=""/>
+        <attribute name="Sonar Product" value="SonarJ-any 5.0.2 [Build 400]"/>
+        <attribute name="Sonar User" value="Sascha"/>
+        <attribute name="Sonar Expiration" value="never"/>
+        <attribute name="Report Creation" value="2009-10-16"/>
+    </general>
+    <attributes>
+        <attributeCategory name="Cycle Metrics">
+            <attribute name="Number of cyclic packages" value="0"/>
+        </attributeCategory>
+        <attributeCategory name="Size Metrics">
+            <attribute name="Number of Java source files (non-excluded)" value="8"/>
+            <attribute name="Number of instructions" value="0"/>
+            <attribute name="Number of internal packages" value="0"/>
+        </attributeCategory>
+    </attributes>
+    <projects>
+        <project description="" name="My Project">
+            <attributeCategory name="Cycle Metrics">
+                <attribute name="Number of cyclic packages" value="0"/>
+                <attribute name="Structural erosion - reference level" value="0"/>
+                <attribute name="Structural erosion - type level" value="0"/>
+            </attributeCategory>
+            <attributeCategory name="Size Metrics">
+                <attribute name="Number of Java source files (non-excluded)" value="8"/>
+                <attribute name="Number of instructions" value="0"/>
+                <attribute name="Number of internal packages" value="0"/>
+            </attributeCategory>
+            <attributeCategory name="John Lakos Metrics">
+                <attribute name="Average component dependency (ACD)" value="0.00"/>
+                <attribute name="Normalized cumulative component dependency (NCCD)" value="0.00"/>
+            </attributeCategory>
+        </project>
+    </projects>
+    <configurations>
+        <configuration sourcefileWarnings="false" namespaceWarnings="true" asymetricAnalysis="false" parseSourceFiles="false" project="My Project"/>
+    </configurations>
+    <workspaces>
+        <workspace project="My Project">
+            <workspacePath description="" path="target/classes"/>
+            <workspacePath description="" path="src/main/java"/>
+        </workspace>
+    </workspaces>
+    <violations percentageOfViolatingTypeRelations="0.0" numberOfViolatingTypeRelations="0" numberOfTypeRelations="0" numberOf="0"/>
+    <consistencyProblems numberOf="1"/>
+    <cycleGroups numberOf="0"/>
+    <warnings numberOf="0"/>
+    <tasks numberOf="0"/>
+    <exclusions numberOf="0" name="Internal"/>
+    <exclusions numberOf="0" name="External"/>
+    <metrics>
+        <metric standardName="NumberOfInstructions" name="Number of instructions" description="Total number of byte code instructions of a class file aggregated for the measured element" sort="descending"/>
+        <metric standardName="AverageComponentDependency" name="Average component dependency (ACD)" description="Average number of components (source files) a component (source file) depends on directly and indirectly. This metric can be used to characterize the overall average coupling of project internal components (source files)" sort="descending"/>
+        <metric standardName="NormalizedCumulativeComponentDependency" name="Normalized cumulative component dependency (NCCD)" description="The ratio between the cumulative component dependency of a project and the cumulative component dependency of a balanced binary tree of the same size. A value greater than 1 indicates a more vertical design. A value less than 1 indicates a more horizontal design." sort="descending"/>
+        <metric standardName="NumberOfInternalNamespaces" name="Number of internal packages" description="Total number of internal packages contained in a project or system" sort="descending"/>
+        <metric standardName="NumberOfCyclicNamespaces" name="Number of cyclic packages" description="Total number of cyclically coupled packages contained in a project" sort="descending"/>
+        <metric standardName="StructuralErosionTypeLevel" name="Structural erosion - type level" description="Number of type dependencies that must be cut in order to remove all package cycles in a project (this is not always the exact minimum number, but a heuristic-based guess)" sort="descending"/>
+        <metric standardName="StructuralErosionReferenceLevel" name="Structural erosion - reference level" description="Number of code references that must be removed in order to remove all package cycles in a project (this is not always the exact minimum number, but a heuristic-based guess)" sort="descending"/>
+        <metric standardName="NumberOfNonExcludedSourceFiles" name="Number of Java source files (non-excluded)" description="Total number of Java source files contained in the measured element; all files are counted which contain at least one non-excluded type" sort="descending"/>
+    </metrics>
+</reportContext>
