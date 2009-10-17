@@ -156,7 +156,7 @@
           <target>1.5</target>
         </configuration>
       </plugin>
-      
+      <!-- 
       <plugin>
         <groupId>com.hello2morrow.sonar</groupId>
         <artifactId>maven-sonarj-plugin</artifactId>
@@ -166,7 +166,7 @@
           <file>sonar-sonarj-plugin.sonarj</file>
         </configuration>
       </plugin>
-      
+      -->
     </plugins>
   </build>
 </project>

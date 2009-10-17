@@ -36,7 +36,7 @@ public class SonarJPluginHandler implements MavenPluginHandler
 
     public final String getVersion()
     {
-        return "5.0.1-SNAPSHOT";
+        return "5.0.2";
     }
 
     public final boolean isFixedVersion()

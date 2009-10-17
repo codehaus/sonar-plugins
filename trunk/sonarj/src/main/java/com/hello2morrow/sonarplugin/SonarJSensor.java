@@ -136,12 +136,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
     }
     
-    public final MavenPluginHandler getMavenPluginHandler(Project proj)
+    public MavenPluginHandler getMavenPluginHandler(Project proj)
     {
         return pluginHandler;
     }
 
-    public final boolean shouldExecuteOnProject(Project project)
+    public boolean shouldExecuteOnProject(Project project)
     {
         return true; 
     }
@@ -261,8 +261,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                     
                     if (thePackage != null)
                     {
-                        sensorContext.saveMeasure(thePackage, SonarJMetrics.CYCLE_GROUP_SIZE, new Double(groupSize));
-                        sensorContext.saveMeasure(thePackage, SonarJMetrics.CYCLE_GROUP_ID, new Double(cycleGroupId));
+                        sensorContext.saveMeasure(thePackage, SonarJMetrics.CYCLE_GROUP_SIZE, Double.valueOf(groupSize));
+                        sensorContext.saveMeasure(thePackage, SonarJMetrics.CYCLE_GROUP_ID, Double.valueOf(cycleGroupId));
                     }
                     else
                     {
@@ -271,17 +271,13 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 }
             }
         }
-
-        final double bcgLimit = 5.0; // TODO: make configurable
-        
-        saveMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP, biggestCycleGroupSize, bcgLimit, 2.0*bcgLimit);
+        saveMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP, biggestCycleGroupSize, 5.0, 2.0 * 5.0);
         saveMeasure(SonarJMetrics.CYCLICITY, cyclicity);
         saveMeasure(SonarJMetrics.CYCLIC_PACKAGES, cyclicPackages);
         
-        final double rcLimit = 7.5; // TODO: make configurable
         double relativeCyclicity = 100.0 * Math.sqrt(cyclicity) / internalPackages.doubleValue(); 
         
-        saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relativeCyclicity, rcLimit, 2.0 * rcLimit);
+        saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relativeCyclicity, 7.5, 2.0 * 7.5);
 
         sensorContext.saveMeasure(SonarJMetrics.INTERNAL_PACKAGES, internalPackages.doubleValue());        
     }
@@ -476,7 +472,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
             String assignedTo = getAttribute(task.getAttribute(), "Assigned to");
 
             description = handleDescription(description); // This should not be needed, but the current description suck
-            if (assignedTo != null);
+            if (assignedTo != null)
             {
                 assignedTo = '['+StringUtils.trim(assignedTo)+']';
                 if (assignedTo.length() > 2)
@@ -495,7 +491,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
     }
     
-    private void addArchitectureMeasures(Project project, ReportContext report)
+    private void addArchitectureMeasures(ReportContext report)
     {
     	int cyclicArtifacts = 0;
     	
@@ -530,7 +526,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	}
     }
     
-    protected final void analyse(Project project, SensorContext sensorContext, ReportContext report)
+    protected void analyse(Project project, SensorContext sensorContext, ReportContext report)
     {
     	this.sensorContext = sensorContext;
         generalMetrics = readAttributes(report.getAttributes());
@@ -554,17 +550,16 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         projectMetrics = readAttributes(projectList.get(0));
         
-        final double nccdLimit = 6.5; // TODO: Replace by configuration parameter
         double acd = projectMetrics.get(ACD).doubleValue();
         double nccd = projectMetrics.get(NCCD).doubleValue();
 
         Metric.Level alertLevel = Metric.Level.OK;
         
-        if (nccd >= 1.5 * nccdLimit)
+        if (nccd >= 1.5 * 6.5)
         {
             alertLevel = Metric.Level.ERROR;
         }
-        else if (nccd  >= nccdLimit)
+        else if (nccd  >= 6.5)
         {
             alertLevel = Metric.Level.WARN;
         }
@@ -575,11 +570,11 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         analyseCycleGroups(report, internalPackages);
         if (pluginHandler.isUsingArchitectureDescription())
         {
-        	addArchitectureMeasures(project, report);
+        	addArchitectureMeasures(report);
         }
     }
     
-    public final void analyse(Project project, SensorContext sensorContext)
+    public void analyse(Project project, SensorContext sensorContext)
     {
         ReportContext report = readSonarjReport(pluginHandler.getReportFileName());
         

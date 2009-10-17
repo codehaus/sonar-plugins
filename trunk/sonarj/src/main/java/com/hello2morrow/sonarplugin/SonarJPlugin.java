@@ -26,22 +26,22 @@ import org.sonar.api.Property;
 
 public final class SonarJPlugin implements Plugin
 {
-    public final String getKey()
+    public String getKey()
     {
         return SonarJPluginBase.PLUGIN_KEY;
     }
 
-    public final String getName()
+    public String getName()
     {
         return SonarJPluginBase.PLUGIN_KEY;
     }
 
-    public final String getDescription()
+    public String getDescription()
     {
         return "Plugin for hello2morrow's architecture management tool SonarJ";
     }
 
-    public final List<Class<? extends Extension>> getExtensions()
+    public List<Class<? extends Extension>> getExtensions()
     {
         List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
@@ -53,7 +53,7 @@ public final class SonarJPlugin implements Plugin
     }
 
     @Override
-    public final String toString()
+    public String toString()
     {
         return getKey();
     }
