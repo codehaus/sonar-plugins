@@ -21,6 +21,16 @@ import org.sonar.api.Property;
         project = false,
         module = false,
         global = true
+    ),
+    
+    @Property
+    (
+        key = SonarJSensor.DEVELOPER_COST_PER_HOUR,
+        defaultValue = "70",
+        name = "Cost per Developer Hour in US$",
+        project = false,
+        module = false,
+        global = true
     )
 })
 
@@ -47,8 +57,9 @@ public final class SonarJPlugin implements Plugin
 
         list.add(SonarJMetrics.class);
         list.add(SonarJSensor.class);
-        list.add(SonarJStructureDashboard.class);
         list.add(SonarJRulesRepository.class);
+        list.add(SonarJStructuralDebtDashboard.class);
+        list.add(SonarJCyclicityDashboard.class);
         return list;
     }
 
