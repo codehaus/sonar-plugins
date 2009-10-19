@@ -128,7 +128,7 @@ public abstract class AbstractDecorator implements Decorator {
    *
    * @return the weight if exists, the default value otherwise
    */
-  private double computeAxisWeight() {
+  protected double computeAxisWeight() {
     return configuration.getDouble(axisWeight, Double.valueOf(defaultAxisWeight));
   }
 

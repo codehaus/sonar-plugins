@@ -91,34 +91,6 @@ public class AbstractViolationsDecoratorTest {
     assertThat(decorator.getWeightedViolations(map, set, context), is(24.0));
   }
 
-  /*  @Test
-  public void testGetStandardCodingRate() {
-    when(configuration.getString(anyString(), anyString())).
-      thenReturn("INFO=1;MINOR=1;MAJOR=3;CRITICAL=5;BLOCKER=10");
-    createMultiSetViolations();
-
-    when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 1.0));
-    when(context.getMeasure(CoreMetrics.NCLOC)).
-      thenReturn(new Measure(CoreMetrics.NCLOC, 97.0));
-
-    assertThat(decorator.getRate(context), is(0.25));
-  }
-
-  @Test
-  public void testGetExtremeCodingRate() {
-    when(configuration.getString(anyString(), anyString())).
-      thenReturn("INFO=1;MINOR=1;MAJOR=3;CRITICAL=5;BLOCKER=10");
-    createMultiSetViolations();
-
-    when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 1.0));
-    when(context.getMeasure(CoreMetrics.NCLOC)).
-      thenReturn(new Measure(CoreMetrics.NCLOC, 2.0));
-
-    assertThat(decorator.getRate(context), is(1.0));
-  }
-  */
   private void createMultiSetViolations() {
     List<Violation> violations = Lists.newArrayList(
         new Violation(new Rule(CoreProperties.PMD_PLUGIN, "a")).setPriority(RulePriority.BLOCKER),
