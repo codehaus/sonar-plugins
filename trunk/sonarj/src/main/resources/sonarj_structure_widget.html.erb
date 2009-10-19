@@ -19,36 +19,28 @@ if measure('sonarj.acd')
             </span>
         </td>
     </tr>
-    <tr>
-        <td><h3>Biggest Cycle Group Size</h3></td>
-        <td><h3>NCCD (John Lakos)</h3></td>
-    </tr>
-   <tr>
+   	<tr>
         <td>
-            <span class="big">
-              <%= format_measure('sonarj.biggest_cycle_group') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %>
-            </span>
+              <%= format_measure('sonarj.biggest_cycle_group', :suffix => ' Biggest cycle group size') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %>
         </td>
         <td>
-            <span class="big">
-              <%= format_measure('sonarj.nccd') -%> <%= tendency_icon(measure('sonarj.nccd')) %>
-            </span>
+              <%= format_measure('sonarj.nccd', :suffix => ' NCCD (John Lakos)') -%> <%= tendency_icon(measure('sonarj.nccd')) %>
         </td>
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj.cyclic_packages') -%> <%= tendency_icon(measure('sonarj.cyclic_packages')) %> Cyclic Packages
+              <%= format_measure('sonarj.cyclic_packages', :suffix => ' Cyclic packages') -%> <%= tendency_icon(measure('sonarj.cyclic_packages')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.packages') -%> <%= tendency_icon(measure('sonarj.packages')) %> Packages
+              <%= format_measure('sonarj.packages', :suffix => ' Packages') -%> <%= tendency_icon(measure('sonarj.packages')) %>
         </td>
     </tr>
    <tr>
         <td>
-              <%= format_measure('sonarj.cyclicity') -%> <%= tendency_icon(measure('sonarj.cyclicity')) %> Package Cyclicity
+              <%= format_measure('sonarj.cyclicity', :suffix => ' Package cyclicity') -%> <%= tendency_icon(measure('sonarj.cyclicity')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.instructions') -%> <%= tendency_icon(measure('sonarj.instructions')) %> Byte Code Instr.
+              <%= format_measure('sonarj.instructions', :suffix => ' Byte code instr.') -%> <%= tendency_icon(measure('sonarj.instructions')) %>
         </td>
     </tr>
   </table>

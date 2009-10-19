@@ -25,6 +25,7 @@ public class ReadTest extends TestCase
         
         context.checking(new Expectations() {{
             oneOf(config).getString(SonarJSensor.LICENSE_FILE_NAME); will(returnValue(null));
+            oneOf(config).getDouble(SonarJSensor.DEVELOPER_COST_PER_HOUR, 70.0); will(returnValue(70.0));
         }});
 
         SonarJSensor sensor = new SonarJSensor(config, null, null);

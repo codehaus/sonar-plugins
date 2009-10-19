@@ -1,0 +1,36 @@
+<%
+if measure('sonarj.erosion_cost')
+%>
+<div class="dashbox">
+  <table>
+    <tr>
+        <td width="190px"><h3>Cost of Structural Debt</h3></td>
+        <td><h3>Cost in Man Days</h3></td>
+    </tr>
+    <tr>
+		<td>
+        <span class="big">
+    		<%= format_measure('sonarj.erosion_cost', :prefix => '$ ') -%><%= tendency_icon(measure('sonarj.erosion_cost')) %>
+    	</span>
+		</td>
+		<td>
+        <span class="big">
+    		<%= format_measure('sonarj.erosion_days') -%><%= tendency_icon(measure('sonarj.erosion_days')) %>
+    	</span>
+		</td>
+    </tr>
+    <tr>
+    	<td>
+    	<%= format_measure('sonarj.erosion_types', :suffix => ' Type dependencies to cut') -%><%= tendency_icon(measure('sonarj.erosion_types')) %>
+    	</td>
+    </tr>
+    <tr>
+    	<td>
+    	<%= format_measure('sonarj.erosion_ref', :suffix => ' References to remove') -%><%= tendency_icon(measure('sonarj.erosion_ref')) %>
+    	</td>
+    </tr>
+  </table>
+</div>
+<%
+end
+%>  

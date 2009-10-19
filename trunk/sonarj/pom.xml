@@ -13,7 +13,7 @@
   <artifactId>sonar-sonarj-plugin</artifactId>
   <packaging>jar</packaging>
   <version>1.0</version>
-  <name>Sonar plugin</name>
+  <name>Sonar SonarJ Plugin</name>
 
   <properties>
     <sonar.plugin.class>com.hello2morrow.sonarplugin.SonarJPlugin</sonar.plugin.class>
@@ -156,17 +156,23 @@
           <target>1.5</target>
         </configuration>
       </plugin>
-      <!-- 
       <plugin>
         <groupId>com.hello2morrow.sonar</groupId>
         <artifactId>maven-sonarj-plugin</artifactId>
-        <version>5.0.1-SNAPSHOT</version>
+        <version>5.0.2</version>
         <configuration>
           <reportDir>target/sonarj</reportDir>
-          <file>sonar-sonarj-plugin.sonarj</file>
+          <!--  <license>/Users/sascha/Documents/hello2morrow Documents/Licenses/SonarJ-Sonar.license</license>-->
+          <!--  <file>sonar-sonarj-plugin.sonarj</file> -->
         </configuration>
+        <!--  <executions>
+          	<execution>
+            	<goals>
+              		<goal>sonarj</goal>
+            	</goals>
+          	</execution>
+        </executions> -->
       </plugin>
-      -->
     </plugins>
   </build>
 </project>

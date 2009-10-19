@@ -48,6 +48,12 @@ public final class SonarJMetrics implements Metrics
     public static final Metric EROSION_TYPES = new Metric("sonarj.erosion_types", "Structural Debt (Type Dependencies)", "Number of Type Dependencies to Cut to Achive Zero Package Cyclicity", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);
 
+    public static final Metric EROSION_COST = new Metric("sonarj.erosion_cost", "Structural Debt (US$)", "Estimated Cost to Repair Structural Erosion", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_COMPLEXITY);
+
+    public static final Metric EROSION_DAYS = new Metric("sonarj.erosion_days", "Structural Debt (Man Days)", "Estimated Effort to Repair Structural Erosion in Man Days", Metric.ValueType.FLOAT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_COMPLEXITY);
+
     public static final Metric VIOLATING_TYPES = new Metric("sonarj.violating_types", "Violating Types (SonarJ)", "Number of Types with Outgoing Architecture Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
@@ -88,6 +94,7 @@ public final class SonarJMetrics implements Metrics
     {
         return Arrays.asList(ACD, NCCD, CYCLICITY, BIGGEST_CYCLE_GROUP, CYCLIC_PACKAGES, RELATIVE_CYCLICITY, INTERNAL_PACKAGES, INSTRUCTIONS, CYCLE_GROUP_SIZE,
         		CYCLE_GROUP_ID, UNASSIGNED_TYPES, VIOLATING_TYPES, VIOLATING_DEPENDENCIES, CYCLIC_ARTIFACTS, TYPE_DEPENDENCIES, JAVA_FILES, TASKS,
-        		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, CONSISTENCY_WARNINGS, EROSION_REFS, EROSION_TYPES);
+        		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, CONSISTENCY_WARNINGS, EROSION_REFS, 
+        		EROSION_TYPES, EROSION_COST, EROSION_DAYS);
     }
 }

@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<reportContext name="crm-webdemo" productFamily="SonarJ">
+<reportContext name="sonarj-report" productFamily="SonarJ">
     <general>
-        <attribute name="Path" value="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/crm-webdemo.sonarj"/>
-        <attribute name="Base Path" value="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example"/>
+        <attribute name="Path" value="/Users/sascha/sonarplugin/sonar-sonarj-plugin/target/sonarj/sonarj-report.sonarj"/>
+        <attribute name="Base Path" value="/Users/sascha/sonarplugin/sonar-sonarj-plugin/target/sonarj"/>
         <attribute name="Description" value=""/>
-        <attribute name="Sonar Product" value="SonarJ-any 5.0.1 [Build 438]"/>
+        <attribute name="Sonar Product" value="SonarJ-any 5.0.2 [Build 400]"/>
         <attribute name="Sonar User" value="Sascha"/>
         <attribute name="Sonar Expiration" value="never"/>
-        <attribute name="Report Creation" value="2009-10-07"/>
+        <attribute name="Report Creation" value="2009-10-19"/>
     </general>
     <attributes>
         <attributeCategory name="Architecture Metrics">
-            <attribute name="Number of unassigned types" value="7"/>
-            <attribute name="Number of violating type dependencies" value="11"/>
-            <attribute name="Number of violating types" value="11"/>
+            <attribute name="Number of unassigned types" value="84"/>
+            <attribute name="Number of violating type dependencies" value="0"/>
+            <attribute name="Number of violating types" value="0"/>
         </attributeCategory>
         <attributeCategory name="Code Analysis Metrics">
-            <attribute name="Average assertion usage" value="4.23"/>
-            <attribute name="Number of assertions" value="600"/>
-            <attribute name="Number of public types" value="180"/>
+            <attribute name="Average assertion usage" value="0.14"/>
+            <attribute name="Number of assertions" value="1"/>
+            <attribute name="Number of public types" value="40"/>
         </attributeCategory>
         <attributeCategory name="Cycle Metrics">
-            <attribute name="Number of cyclic directories" value="0"/>
-            <attribute name="Number of cyclic elements" value="0"/>
+            <attribute name="Number of cyclic directories" value="2"/>
+            <attribute name="Number of cyclic elements" value="4"/>
             <attribute name="Number of cyclic layer groups" value="0"/>
             <attribute name="Number of cyclic layers" value="0"/>
-            <attribute name="Number of cyclic packages" value="0"/>
+            <attribute name="Number of cyclic packages" value="2"/>
             <attribute name="Number of cyclic path containers" value="0"/>
             <attribute name="Number of cyclic projects" value="0"/>
             <attribute name="Number of cyclic source files" value="0"/>
@@ -34,299 +34,389 @@
             <attribute name="Number of cyclic vertical slices" value="0"/>
         </attributeCategory>
         <attributeCategory name="Dependency Metrics">
-            <attribute name="Number of type dependencies (all)" value="986"/>
-        </attributeCategory>
-        <attributeCategory name="Info Metrics">
-            <attribute name="Timestamp" value="Oct 7, 2009 12:30:51 PM"/>
+            <attribute name="Number of type dependencies (all)" value="235"/>
         </attributeCategory>
         <attributeCategory name="Size Metrics">
-            <attribute name="Lines of code" value="7543"/>
-            <attribute name="Number of Java source files (all)" value="188"/>
-            <attribute name="Number of Java source files (non-excluded)" value="182"/>
-            <attribute name="Number of Java target files (all)" value="192"/>
-            <attribute name="Number of Java target files (non-excluded)" value="186"/>
-            <attribute name="Number of external packages" value="11"/>
-            <attribute name="Number of external types" value="11"/>
-            <attribute name="Number of instructions" value="27472"/>
-            <attribute name="Number of internal packages" value="65"/>
-            <attribute name="Number of internal types (abstract)" value="56"/>
-            <attribute name="Number of internal types (all)" value="186"/>
-            <attribute name="Number of internal types (w/ implementation)" value="142"/>
-            <attribute name="Number of methods (abstract)" value="95"/>
-            <attribute name="Number of methods (all)" value="816"/>
-            <attribute name="Number of methods (w/ implementation)" value="721"/>
-            <attribute name="Number of statements" value="2700"/>
+            <attribute name="Lines of code" value="767"/>
+            <attribute name="Number of Java source files (all)" value="8"/>
+            <attribute name="Number of Java source files (non-excluded)" value="8"/>
+            <attribute name="Number of Java target files (all)" value="40"/>
+            <attribute name="Number of Java target files (non-excluded)" value="40"/>
+            <attribute name="Number of external packages" value="13"/>
+            <attribute name="Number of external types" value="44"/>
+            <attribute name="Number of instructions" value="4239"/>
+            <attribute name="Number of internal packages" value="2"/>
+            <attribute name="Number of internal types (abstract)" value="0"/>
+            <attribute name="Number of internal types (all)" value="40"/>
+            <attribute name="Number of internal types (w/ implementation)" value="39"/>
+            <attribute name="Number of methods (abstract)" value="0"/>
+            <attribute name="Number of methods (all)" value="278"/>
+            <attribute name="Number of methods (w/ implementation)" value="278"/>
+            <attribute name="Number of statements" value="291"/>
         </attributeCategory>
         <attributeCategory name="Task and Filter Metrics">
-            <attribute name="Number of fix warning tasks" value="1"/>
+            <attribute name="Number of fix warning tasks" value="0"/>
             <attribute name="Number of ignored violations" value="0"/>
             <attribute name="Number of ignored warnings" value="0"/>
             <attribute name="Number of refactoring tasks" value="0"/>
-            <attribute name="Number of tasks" value="1"/>
-            <attribute name="Number of warnings (all)" value="1"/>
-            <attribute name="Number of warnings (thresholds)" value="1"/>
-            <attribute name="Number of warnings (workspace)" value="0"/>
+            <attribute name="Number of tasks" value="0"/>
+            <attribute name="Number of warnings (all)" value="34"/>
+            <attribute name="Number of warnings (thresholds)" value="0"/>
+            <attribute name="Number of warnings (workspace)" value="34"/>
         </attributeCategory>
     </attributes>
     <projects>
-        <project description="" name="crm-domain-example">
+        <project description="" name="My Project">
             <attributeCategory name="Architecture Metrics">
-                <attribute name="Number of layer groups" value="3"/>
-                <attribute name="Number of layers" value="4"/>
+                <attribute name="Number of layer groups" value="0"/>
+                <attribute name="Number of layers" value="0"/>
                 <attribute name="Number of named interfaces" value="0"/>
                 <attribute name="Number of subsystems" value="0"/>
-                <attribute name="Number of unassigned types" value="0"/>
-                <attribute name="Number of vertical slice groups" value="2"/>
-                <attribute name="Number of vertical slices" value="5"/>
-                <attribute name="Number of violating type dependencies" value="11"/>
-                <attribute name="Number of violating types" value="11"/>
+                <attribute name="Number of unassigned types" value="40"/>
+                <attribute name="Number of vertical slice groups" value="0"/>
+                <attribute name="Number of vertical slices" value="0"/>
+                <attribute name="Number of violating type dependencies" value="0"/>
+                <attribute name="Number of violating types" value="0"/>
             </attributeCategory>
             <attributeCategory name="Code Analysis Metrics">
-                <attribute name="Average assertion usage" value="4.23"/>
-                <attribute name="Number of assertions" value="600"/>
-                <attribute name="Number of public types" value="180"/>
+                <attribute name="Average assertion usage" value="0.14"/>
+                <attribute name="Number of assertions" value="1"/>
+                <attribute name="Number of public types" value="40"/>
             </attributeCategory>
             <attributeCategory name="Cycle Metrics">
-                <attribute name="Number of cyclic directories" value="0"/>
-                <attribute name="Number of cyclic elements" value="0"/>
+                <attribute name="Number of cyclic directories" value="2"/>
+                <attribute name="Number of cyclic elements" value="4"/>
                 <attribute name="Number of cyclic layer groups" value="0"/>
                 <attribute name="Number of cyclic layers" value="0"/>
-                <attribute name="Number of cyclic packages" value="0"/>
+                <attribute name="Number of cyclic packages" value="2"/>
                 <attribute name="Number of cyclic path containers" value="0"/>
                 <attribute name="Number of cyclic source files" value="0"/>
                 <attribute name="Number of cyclic subsystems" value="0"/>
                 <attribute name="Number of cyclic vertical slice groups" value="0"/>
                 <attribute name="Number of cyclic vertical slices" value="0"/>
+                <attribute name="Structural erosion - reference level" value="1"/>
+                <attribute name="Structural erosion - type level" value="1"/>
             </attributeCategory>
             <attributeCategory name="Dependency Metrics">
-                <attribute name="Number of type dependencies (all)" value="986"/>
-                <attribute name="Number of type dependencies (local)" value="931"/>
-                <attribute name="Number of type dependencies (remote)" value="55"/>
+                <attribute name="Number of type dependencies (all)" value="235"/>
+                <attribute name="Number of type dependencies (local)" value="98"/>
+                <attribute name="Number of type dependencies (remote)" value="137"/>
                 <attribute name="Number of used elements" value="1"/>
                 <attribute name="Number of using elements" value="0"/>
             </attributeCategory>
             <attributeCategory name="Size Metrics">
-                <attribute name="Lines of code" value="7543"/>
-                <attribute name="Number of Java source files (all)" value="188"/>
-                <attribute name="Number of Java source files (non-excluded)" value="182"/>
-                <attribute name="Number of Java target files (all)" value="192"/>
-                <attribute name="Number of Java target files (non-excluded)" value="186"/>
-                <attribute name="Number of instructions" value="27472"/>
-                <attribute name="Number of internal packages" value="65"/>
-                <attribute name="Number of internal types (abstract)" value="56"/>
-                <attribute name="Number of internal types (all)" value="186"/>
-                <attribute name="Number of internal types (w/ implementation)" value="142"/>
-                <attribute name="Number of methods (abstract)" value="95"/>
-                <attribute name="Number of methods (all)" value="816"/>
-                <attribute name="Number of methods (w/ implementation)" value="721"/>
-                <attribute name="Number of statements" value="2700"/>
+                <attribute name="Lines of code" value="767"/>
+                <attribute name="Number of Java source files (all)" value="8"/>
+                <attribute name="Number of Java source files (non-excluded)" value="8"/>
+                <attribute name="Number of Java target files (all)" value="40"/>
+                <attribute name="Number of Java target files (non-excluded)" value="40"/>
+                <attribute name="Number of instructions" value="4239"/>
+                <attribute name="Number of internal packages" value="2"/>
+                <attribute name="Number of internal types (abstract)" value="0"/>
+                <attribute name="Number of internal types (all)" value="40"/>
+                <attribute name="Number of internal types (w/ implementation)" value="39"/>
+                <attribute name="Number of methods (abstract)" value="0"/>
+                <attribute name="Number of methods (all)" value="278"/>
+                <attribute name="Number of methods (w/ implementation)" value="278"/>
+                <attribute name="Number of statements" value="291"/>
             </attributeCategory>
             <attributeCategory name="Task and Filter Metrics">
-                <attribute name="Number of fix warning tasks" value="1"/>
+                <attribute name="Number of fix warning tasks" value="0"/>
                 <attribute name="Number of ignored violations" value="0"/>
                 <attribute name="Number of ignored warnings" value="0"/>
                 <attribute name="Number of refactoring tasks" value="0"/>
-                <attribute name="Number of tasks" value="1"/>
-                <attribute name="Number of warnings (all)" value="1"/>
-                <attribute name="Number of warnings (thresholds)" value="1"/>
-                <attribute name="Number of warnings (workspace)" value="0"/>
+                <attribute name="Number of tasks" value="0"/>
+                <attribute name="Number of warnings (all)" value="34"/>
+                <attribute name="Number of warnings (thresholds)" value="0"/>
+                <attribute name="Number of warnings (workspace)" value="34"/>
             </attributeCategory>
             <attributeCategory name="John Lakos Metrics">
-                <attribute name="Average component dependency (ACD)" value="15.43"/>
-                <attribute name="Average type dependency" value="16.04"/>
+                <attribute name="Average component dependency (ACD)" value="2.75"/>
+                <attribute name="Average type dependency" value="6.60"/>
                 <attribute name="Depends upon" value="1"/>
                 <attribute name="Level" value="1"/>
-                <attribute name="Normalized cumulative component dependency (NCCD)" value="2.35"/>
-                <attribute name="Normalized cumulative type dependency" value="2.43"/>
-                <attribute name="Relative average component dependency" value="8.48"/>
-                <attribute name="Relative average type dependency" value="8.62"/>
+                <attribute name="Normalized cumulative component dependency (NCCD)" value="1.07"/>
+                <attribute name="Normalized cumulative type dependency" value="1.47"/>
+                <attribute name="Relative average component dependency" value="34.38"/>
+                <attribute name="Relative average type dependency" value="16.50"/>
             </attributeCategory>
             <attributeCategory name="Craig Larman Metrics">
-                <attribute name="Relational cohesion (RC)" value="5.01"/>
+                <attribute name="Relational cohesion (RC)" value="2.45"/>
             </attributeCategory>
             <attributeCategory name="Robert C. Martin Metrics">
-                <attribute name="A (Abstractness)" value="0.30"/>
+                <attribute name="A (Abstractness)" value="0.00"/>
                 <attribute name="Ca (Afferent coupling)" value="0"/>
-                <attribute name="Ce (Efferent coupling)" value="8"/>
-                <attribute name="D (Distance)" value="0.30"/>
+                <attribute name="Ce (Efferent coupling)" value="44"/>
+                <attribute name="D (Distance)" value="0.00"/>
                 <attribute name="I (Instability)" value="1.00"/>
             </attributeCategory>
             <attributeCategory name="Thomas J. McCabe Metrics">
-                <attribute name="Cyclomatic complexity (accumulated)" value="947"/>
-                <attribute name="Cyclomatic complexity (average accumulated per type)" value="6.67"/>
-                <attribute name="Cyclomatic complexity (average per method)" value="1.31"/>
-                <attribute name="Cyclomatic complexity (max accumulated per type)" value="20"/>
-                <attribute name="Cyclomatic complexity (max per method)" value="6"/>
-                <attribute name="Extended cyclomatic complexity (accumulated)" value="959"/>
-                <attribute name="Extended cyclomatic complexity (average accumulated per type)" value="6.75"/>
-                <attribute name="Extended cyclomatic complexity (average per method)" value="1.33"/>
-                <attribute name="Extended cyclomatic complexity (max accumulated per type)" value="21"/>
-                <attribute name="Extended cyclomatic complexity (max per method)" value="6"/>
-                <attribute name="Modified cyclomatic complexity (accumulated)" value="947"/>
-                <attribute name="Modified cyclomatic complexity (average accumulated per type)" value="6.67"/>
-                <attribute name="Modified cyclomatic complexity (average per method)" value="1.31"/>
-                <attribute name="Modified cyclomatic complexity (max accumulated per type)" value="20"/>
-                <attribute name="Modified cyclomatic complexity (max per method)" value="6"/>
+                <attribute name="Cyclomatic complexity (accumulated)" value="100"/>
+                <attribute name="Cyclomatic complexity (average accumulated per type)" value="2.56"/>
+                <attribute name="Cyclomatic complexity (average per method)" value="0.36"/>
+                <attribute name="Cyclomatic complexity (max accumulated per type)" value="74"/>
+                <attribute name="Cyclomatic complexity (max per method)" value="12"/>
+                <attribute name="Extended cyclomatic complexity (accumulated)" value="104"/>
+                <attribute name="Extended cyclomatic complexity (average accumulated per type)" value="2.67"/>
+                <attribute name="Extended cyclomatic complexity (average per method)" value="0.37"/>
+                <attribute name="Extended cyclomatic complexity (max accumulated per type)" value="77"/>
+                <attribute name="Extended cyclomatic complexity (max per method)" value="12"/>
+                <attribute name="Modified cyclomatic complexity (accumulated)" value="100"/>
+                <attribute name="Modified cyclomatic complexity (average accumulated per type)" value="2.56"/>
+                <attribute name="Modified cyclomatic complexity (average per method)" value="0.36"/>
+                <attribute name="Modified cyclomatic complexity (max accumulated per type)" value="74"/>
+                <attribute name="Modified cyclomatic complexity (max per method)" value="12"/>
             </attributeCategory>
         </project>
     </projects>
     <configurations>
-        <configuration sourcefileWarnings="false" namespaceWarnings="true" asymetricAnalysis="false" parseSourceFiles="true" project="crm-domain-example"/>
+        <configuration sourcefileWarnings="false" namespaceWarnings="true" asymetricAnalysis="false" parseSourceFiles="true" project="My Project"/>
     </configurations>
     <workspaces>
-        <workspace project="crm-domain-example">
-            <workspacePath description="" path="src/java"/>
-            <workspacePath description="" path="src/config/ear"/>
-            <workspacePath description="" path="src/config/test"/>
-            <workspacePath description="" path="target.eclipse/cls"/>
-            <workspacePath description="" path="src/java-test"/>
+        <workspace project="My Project">
+            <workspacePath description="" path="../../src/main/java"/>
+            <workspacePath description="" path="../classes"/>
         </workspace>
     </workspaces>
-    <violations percentageOfViolatingTypeRelations="1.12" numberOfViolatingTypeRelations="11" numberOfTypeRelations="986" numberOf="1">
-        <architectureViolations numberOfViolatingTypeRelations="11" explanation="Not in a named interface that may be accessed">
-            <architectureViolation>
-                <attribute name="From scope" value="crm-domain-example"/>
-                <attribute name="From element type" value="Layer"/>
-                <attribute name="From" value="business::controller"/>
-                <attribute name="To" value="reflection"/>
-                <attribute name="To element type" value="Subsystem"/>
-                <attribute name="To scope" value="External"/>
-                <attribute name="Type dependencies" value="11"/>
-            </architectureViolation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.customer.controller.VipCustomerDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="31" file="com/hello2morrow/ddaexample/business/customer/controller/VipCustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="28" file="com/hello2morrow/ddaexample/business/customer/controller/VipCustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.customer.controller.CustomerDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="32" file="com/hello2morrow/ddaexample/business/customer/controller/CustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="29" file="com/hello2morrow/ddaexample/business/customer/controller/CustomerDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForTestDriveDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForTestDriveDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForTestDriveDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForInformationDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForInformationDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForOfferDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForOfferDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/RequestForOfferDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.distributionpartner.controller.SalesAssistantDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="31" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/SalesAssistantDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="28" file="com/hello2morrow/ddaexample/business/distributionpartner/controller/SalesAssistantDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.dda.business.common.controller.DtoManager"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="65" file="com/hello2morrow/dda/business/common/controller/DtoManager.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="118" file="com/hello2morrow/dda/business/common/controller/DtoManager.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="119" file="com/hello2morrow/dda/business/common/controller/DtoManager.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.contact.controller.PersonDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="30" file="com/hello2morrow/ddaexample/business/contact/controller/PersonDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="27" file="com/hello2morrow/ddaexample/business/contact/controller/PersonDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.request.controller.StateNewDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="31" file="com/hello2morrow/ddaexample/business/request/controller/StateNewDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="28" file="com/hello2morrow/ddaexample/business/request/controller/StateNewDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.request.controller.RequestDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="30" file="com/hello2morrow/ddaexample/business/request/controller/RequestDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="27" file="com/hello2morrow/ddaexample/business/request/controller/RequestDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-            <typeRelation>
-                <attribute name="From" value="com.hello2morrow.ddaexample.business.request.controller.StateDtoMapper"/>
-                <attribute name="To" value="java.lang.reflect.Method"/>
-                <attribute name="Explanation" value="Type 'com.hello2morrow.ddaexample.business.distributionpartner.controller.RequestForInformationDtoMapper' may not access Type 'java.lang.reflect.Method' which it is not contained in one of the possible named interface(s)"/>
-                <position line="30" file="com/hello2morrow/ddaexample/business/request/controller/StateDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-                <position line="27" file="com/hello2morrow/ddaexample/business/request/controller/StateDtoMapper.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-            </typeRelation>
-        </architectureViolations>
-    </violations>
+    <violations percentageOfViolatingTypeRelations="0.0" numberOfViolatingTypeRelations="0" numberOfTypeRelations="235" numberOf="0"/>
     <consistencyProblems numberOf="0"/>
-    <cycleGroups numberOf="0"/>
-    <warnings numberOf="1">
-        <warningsByAttributeGroup attributeGroup="Threshold" numberOf="1">
-            <warningsByAttribute warningInfo="Threshold violation -  threshold range = [0, 200]" attributeDescription="Total number of lines of code in the measured element; counts every line that is not a blank or comment line, regardless of the number of statements" attributeName="Lines of code" numberOf="1">
+    <cycleGroups numberOf="1">
+        <cycleGroup namedElementGroup="Package" description="2 cyclic elements of type 'Package'" parent="My Project" elementScope="My Project">
+            <cyclePath parent="com.hello2morrow.sonarplugin.xsd" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
+            <cyclePath parent="com.hello2morrow.sonarplugin" description="19 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="19"/>
+        </cycleGroup>
+    </cycleGroups>
+    <warnings numberOf="34">
+        <warningsByAttributeGroup attributeGroup="Threshold" numberOf="0"/>
+        <warningsByAttributeGroup attributeGroup="Workspace" numberOf="34">
+            <warningsByAttribute attributeDescription="Indicates that a source file is newer than an associated class file" attributeName="Compilation needed" numberOf="1">
                 <warning>
-                    <attribute name="Project" value="crm-domain-example"/>
+                    <attribute name="Project" value="My Project"/>
                     <attribute name="Element type" value="Source file"/>
-                    <attribute name="Element" value="com/hello2morrow/dda/business/common/dsi/DomainObjectFactory.java"/>
-                    <attribute name="Attribute value" value="235 (Threshold violation -  threshold range = [0, 200])"/>
-                    <position offset="0" line="0" file="com/hello2morrow/dda/business/common/dsi/DomainObjectFactory.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
+                    <attribute name="Element" value="com/hello2morrow/sonarplugin/SonarJSensor.java"/>
+                    <attribute name="Attribute value" value=""/>
+                    <position offset="0" line="0" file="com/hello2morrow/sonarplugin/SonarJSensor.java" dir="/Users/sascha/sonarplugin/sonar-sonarj-plugin/src/main/java"/>
+                </warning>
+            </warningsByAttribute>
+            <warningsByAttribute attributeDescription="No source file found for the type" attributeName="No attached source file" numberOf="32">
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdCyclePath"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttributeGroup"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWorkspace"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdViolations"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdTask"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarning"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdArchitectureViolation"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdProblemCategory"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdElementProblem"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdAttribute"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdProjects"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWorkspacePath"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdConfigurations"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.ObjectFactory"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdCycleGroups"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdCycleGroup"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttribute"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdPosition"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.ReportContext"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdConsistencyProblems"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarnings"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdConfiguration"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdTypeRelation"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdMetric"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdDependencyProblem"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdAttributeRoot"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdExclusions"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdAttributeCategory"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWorkspaces"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Enum"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdMetricSort"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdMetrics"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class"/>
+                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdTasks"/>
+                    <attribute name="Attribute value" value=""/>
+                </warning>
+            </warningsByAttribute>
+            <warningsByAttribute attributeDescription="Indicates, that a class file is older than an associated source file" attributeName="Out of date" numberOf="1">
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Class file"/>
+                    <attribute name="Element" value="com/hello2morrow/sonarplugin/SonarJSensor.class"/>
+                    <attribute name="Attribute value" value=""/>
                 </warning>
             </warningsByAttribute>
         </warningsByAttributeGroup>
-        <warningsByAttributeGroup attributeGroup="Workspace" numberOf="0"/>
     </warnings>
-    <tasks numberOf="1">
-        <task>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element type" value="Class method"/>
-            <attribute name="Element" value="com.hello2morrow.dda.business.common.startup.SetupFactories::static initialize(){}"/>
-            <attribute name="Description" value="Fix warning: Number of statements"/>
-            <attribute name="Priority" value="Medium"/>
-            <attribute name="Assigned to" value="Peter"/>
-            <position offset="1195" line="29" file="com/hello2morrow/dda/business/common/startup/SetupFactories.java" dir="C:/Dokumente und Einstellungen/Sascha/workspace/crm-domain-example/src/java"/>
-        </task>
-    </tasks>
-    <exclusions numberOf="6" name="Internal">
+    <tasks numberOf="0"/>
+    <exclusions numberOf="0" name="Internal"/>
+    <exclusions numberOf="25" name="External">
         <excludedType>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element" value="com.hello2morrow.ddaexample.business.customer.service.CustomerControllerServiceTest"/>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.File"/>
         </excludedType>
         <excludedType>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element" value="com.hello2morrow.ddaexample.business.distributionpartner.service.DistributionPartnerControllerServiceTest"/>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.FileInputStream"/>
         </excludedType>
         <excludedType>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element" value="com.hello2morrow.ddaexample.business.request.service.RequestControllerServiceTest"/>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.io.FileNotFoundException"/>
         </excludedType>
-        <excludedType>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element" value="com.hello2morrow.ddaexample.business.testsuites.BusinessTestSuiteWithoutAppServer"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element" value="com.hello2morrow.ddaexample.business.testsuites.LogDomainObjectsTest"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="crm-domain-example"/>
-            <attribute name="Element" value="com.hello2morrow.ddaexample.business.user.service.UserControllerServiceTest"/>
-        </excludedType>
-    </exclusions>
-    <exclusions numberOf="39" name="External">
         <excludedType>
             <attribute name="Project" value="External"/>
             <attribute name="Element" value="java.io.IOException"/>
@@ -337,19 +427,11 @@
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.PrintStream"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.Serializable"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.UnsupportedEncodingException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
             <attribute name="Element" value="java.lang.AssertionError"/>
+        </excludedType>
+        <excludedType>
+            <attribute name="Project" value="External"/>
+            <attribute name="Element" value="java.lang.Boolean"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
@@ -357,15 +439,11 @@
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.ClassNotFoundException"/>
+            <attribute name="Element" value="java.lang.Double"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Exception"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.IllegalAccessException"/>
+            <attribute name="Element" value="java.lang.Enum"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
@@ -373,19 +451,19 @@
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.InstantiationException"/>
+            <attribute name="Element" value="java.lang.Integer"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Long"/>
+            <attribute name="Element" value="java.lang.Math"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.NoClassDefFoundError"/>
+            <attribute name="Element" value="java.lang.Number"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.NoSuchMethodException"/>
+            <attribute name="Element" value="java.lang.NumberFormatException"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
@@ -393,43 +471,15 @@
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.RuntimeException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.SecurityException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.StackTraceElement"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
             <attribute name="Element" value="java.lang.String"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.StringBuffer"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.System"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.ThreadLocal"/>
+            <attribute name="Element" value="java.lang.StringBuilder"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
             <attribute name="Element" value="java.lang.Throwable"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.text.DateFormat"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.text.ParseException"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
@@ -441,27 +491,11 @@
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Calendar"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Collection"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Date"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Enumeration"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
             <attribute name="Element" value="java.util.HashMap"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.HashSet"/>
+            <attribute name="Element" value="java.util.Iterator"/>
         </excludedType>
         <excludedType>
             <attribute name="Project" value="External"/>
@@ -470,18 +504,6 @@
         <excludedType>
             <attribute name="Project" value="External"/>
             <attribute name="Element" value="java.util.Map"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.MissingResourceException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Properties"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Set"/>
         </excludedType>
     </exclusions>
     <metrics>
@@ -554,6 +576,8 @@
         <metric standardName="NumberOfNamedInterfaces" name="Number of named interfaces" description="Total number of named interfaces defined in a projects architecture model" sort="descending"/>
         <metric standardName="NumberOfInternalNamespaces" name="Number of internal packages" description="Total number of internal packages contained in a project or system" sort="descending"/>
         <metric standardName="NumberOfCyclicNamespaces" name="Number of cyclic packages" description="Total number of cyclically coupled packages contained in a project" sort="descending"/>
+        <metric standardName="StructuralErosionTypeLevel" name="Structural erosion - type level" description="Number of type dependencies that must be cut in order to remove all package cycles in a project (this is not always the exact minimum number, but a heuristic-based guess)" sort="descending"/>
+        <metric standardName="StructuralErosionReferenceLevel" name="Structural erosion - reference level" description="Number of code references that must be removed in order to remove all package cycles in a project (this is not always the exact minimum number, but a heuristic-based guess)" sort="descending"/>
         <metric standardName="AverageAssertionUsage" name="Average assertion usage" description="Average number of assertions per type in an element. Only such types are considered that define at least one non-abstract and non-native method" sort="ascending"/>
         <metric standardName="Level" name="Level" description="Level of the measured element in the projects dependency hierarchy; see the User Manual for the definition of level" sort="descending"/>
         <metric standardName="NumberOfSourceFiles" name="Number of Java source files (all)" description="Total number of Java source files contained in the measured element" sort="descending"/>

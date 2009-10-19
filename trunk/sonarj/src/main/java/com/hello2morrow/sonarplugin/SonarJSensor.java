@@ -52,6 +52,7 @@ import com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttributeGroup;
 public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 {
     public static final String LICENSE_FILE_NAME = "sonarj.license";
+    public static final String DEVELOPER_COST_PER_HOUR = "sonarj.hourly_rate";
     
     private static final Logger LOG = LoggerFactory.getLogger(SonarJSensor.class);
 
@@ -83,6 +84,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private SensorContext sensorContext;
     private RulesManager rulesManager;
     private RulesProfile rulesProfile;
+    private double developerCostRate = 70.0;
     
     protected static ReportContext readSonarjReport(String fileName)
     {
@@ -125,6 +127,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     public SonarJSensor(Configuration config, RulesManager rulesManager, RulesProfile rulesProfile)
     {
         String licenseFileName = config.getString(LICENSE_FILE_NAME);
+        
+        developerCostRate = config.getDouble(DEVELOPER_COST_PER_HOUR, 70.0);
         pluginHandler = new SonarJPluginHandler(licenseFileName);
         this.rulesManager = rulesManager;
         this.rulesProfile = rulesProfile;
@@ -179,25 +183,33 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return result;
     }
     
-    private double saveMeasure(String key, Metric metric)
+    private double saveMeasure(String key, Metric metric, int precision)
     {
-    	return saveMeasure(key, metric, Double.MAX_VALUE, Double.MAX_VALUE);
+    	return saveMeasure(key, metric, Double.MAX_VALUE, Double.MAX_VALUE, precision);
     }
     
-    private void saveMeasure(Metric metric, double value)
+    private void saveMeasure(Metric metric, double value, int precision)
     {
-    	saveMeasure(metric, value, Double.MAX_VALUE, Double.MAX_VALUE);    	
+    	saveMeasure(metric, value, Double.MAX_VALUE, Double.MAX_VALUE, precision);    	
     }
     
-    private double saveMeasure(String key, Metric metric, double warnThreshold, double errorThreshold)
+    private double saveMeasure(String key, Metric metric, double warnThreshold, double errorThreshold, int precision)
     {
-    	double value = projectMetrics.get(key).doubleValue();
-    	
-    	saveMeasure(metric, value, warnThreshold, errorThreshold);
-    	return value;
+        Number num = projectMetrics.get(key);
+        
+        if (num == null)
+        {
+            LOG.error("Cannot find metric <"+key+"> in generated report");
+            return 0.0;
+        }
+
+        double value = projectMetrics.get(key).doubleValue();
+	
+        saveMeasure(metric, value, warnThreshold, errorThreshold, precision);
+        return value;
     }
     
-    private void saveMeasure(Metric metric, double value, double warnThreshold, double errorThreshold)
+    private void saveMeasure(Metric metric, double value, double warnThreshold, double errorThreshold, int precisision)
     {
     	Metric.Level alertLevel = Metric.Level.OK;
     	
@@ -209,12 +221,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	{
     		alertLevel = Metric.Level.WARN;
     	}
-    	saveMeasure(metric, value, alertLevel);
+    	saveMeasure(metric, value, alertLevel, precisision);
     }
     
-    private void saveMeasure(Metric metric, double value, Metric.Level alertLevel)
+    private void saveMeasure(Metric metric, double value, Metric.Level alertLevel, int precision)
     {
-    	Measure m = new Measure(metric, value);
+    	Measure m = new Measure(metric, value, precision);
     	
     	m.setAlertStatus(alertLevel);
     	sensorContext.saveMeasure(m);    	
@@ -274,13 +286,13 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 }
             }
         }
-        saveMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP, biggestCycleGroupSize, 5.0, 2.0 * 5.0);
-        saveMeasure(SonarJMetrics.CYCLICITY, cyclicity);
-        saveMeasure(SonarJMetrics.CYCLIC_PACKAGES, cyclicPackages);
+        saveMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP, biggestCycleGroupSize, 5.0, 2.0 * 5.0, 0);
+        saveMeasure(SonarJMetrics.CYCLICITY, cyclicity, 0);
+        saveMeasure(SonarJMetrics.CYCLIC_PACKAGES, cyclicPackages, 0);
         
         double relativeCyclicity = 100.0 * Math.sqrt(cyclicity) / internalPackages.doubleValue(); 
         
-        saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relativeCyclicity, 7.5, 2.0 * 7.5);
+        saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relativeCyclicity, 7.5, 2.0 * 7.5, 1);
 
         sensorContext.saveMeasure(SonarJMetrics.INTERNAL_PACKAGES, internalPackages.doubleValue());        
     }
@@ -502,23 +514,23 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	{
     		cyclicArtifacts += projectMetrics.get(key).intValue();
     	}
-    	saveMeasure(SonarJMetrics.CYCLIC_ARTIFACTS, cyclicArtifacts, 2.0, 5.0);
-    	saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 1, 20);
-    	saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 20, 50);
-    	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 20, 50);
-    	saveMeasure(TASKS, SonarJMetrics.TASKS, 50, 100);
-    	saveMeasure(THRESHOLD_WARNINGS, SonarJMetrics.THRESHOLD_WARNINGS, 50, 100);
-    	saveMeasure(WORKSPACE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS, 10, 20);
-    	saveMeasure(IGNORED_VIOLATIONS, SonarJMetrics.IGNORED_VIOLATONS);
-    	saveMeasure(IGNORED_WARNINGS, SonarJMetrics.IGNORED_WARNINGS);
+    	saveMeasure(SonarJMetrics.CYCLIC_ARTIFACTS, cyclicArtifacts, 2.0, 5.0, 0);
+    	saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 1, 20, 0);
+    	saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 20, 50, 0);
+    	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 20, 50, 0);
+    	saveMeasure(TASKS, SonarJMetrics.TASKS, 50, 100, 0);
+    	saveMeasure(THRESHOLD_WARNINGS, SonarJMetrics.THRESHOLD_WARNINGS, 50, 100, 0);
+    	saveMeasure(WORKSPACE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS, 10, 20, 0);
+    	saveMeasure(IGNORED_VIOLATIONS, SonarJMetrics.IGNORED_VIOLATONS, 0);
+    	saveMeasure(IGNORED_WARNINGS, SonarJMetrics.IGNORED_WARNINGS, 0);
     	
     	int consistencyWarnings = Integer.valueOf(report.getConsistencyProblems().getNumberOf());
     	
-    	saveMeasure(SonarJMetrics.CONSISTENCY_WARNINGS, consistencyWarnings, 1, 10);
+    	saveMeasure(SonarJMetrics.CONSISTENCY_WARNINGS, consistencyWarnings, 1, 10, 0);
     	
     	XsdViolations violations = report.getViolations();
     	
-    	saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, Double.valueOf(violations.getNumberOf()), 5, 10);
+    	saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, Double.valueOf(violations.getNumberOf()), 5, 10, 0);
         
     	if (rulesManager != null && rulesProfile != null)
     	{    
@@ -565,13 +577,18 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         {
             alertLevel = Metric.Level.WARN;
         }
-        saveMeasure(SonarJMetrics.ACD, acd, alertLevel);
-        saveMeasure(SonarJMetrics.NCCD, nccd, alertLevel);
-        saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS);
-        saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES);
-        saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES);
-        saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS);
-        saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES);
+        saveMeasure(SonarJMetrics.ACD, acd, alertLevel, 1);
+        saveMeasure(SonarJMetrics.NCCD, nccd, alertLevel, 1);
+        saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS, 0);
+        saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES, 0);
+        saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES, 0);
+        double deps = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0);
+        double refs = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0);
+        double effortInHours = deps + refs/10;
+        double effortInDays = effortInHours/8.0;
+        double cost = effortInHours * developerCostRate;
+        saveMeasure(SonarJMetrics.EROSION_COST, cost, 40 * developerCostRate, 160 * developerCostRate, 0);
+        saveMeasure(SonarJMetrics.EROSION_DAYS, effortInDays, 5, 20, 1);
         analyseCycleGroups(report, internalPackages);        
 
         if (pluginHandler.isUsingArchitectureDescription())
