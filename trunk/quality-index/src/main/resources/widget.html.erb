@@ -35,19 +35,19 @@ table.qidata td {
           <td>
 	         <b><%= format_measure('qi-coding-violations', :url => url_for_drilldown('qi-coding-violations')) %></b> /<%=codingWeight-%><%= tendency_icon('qi-coding-violations') -%>
 	     </td>
-          <td><a style="display: block;width: <%=codingLength-%>px; height: 0.9em; border: 0; float: left; margin: 0 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-coding-violations') -%>"><div style="width: <%=codingRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
+          <td><a style="display: block;width: <%=codingLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-coding-violations') -%>"><div style="width: <%=codingRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
         </tr>
         <tr>
           <td>Complexity</td><td><b><%= format_measure('qi-complexity', :url => url_for_drilldown('qi-complexity')) %></b> /<%=complexityWeight-%><%= tendency_icon('qi-complexity') -%></td>
-          <td><a style="display: block; width: <%=complexityLength-%>px; height: 0.9em; border: 0; float: left; margin: 0 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-complexity') -%>"><div style="width: <%=complexityRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
+          <td><a style="display: block; width: <%=complexityLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-complexity') -%>"><div style="width: <%=complexityRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
         </tr>
         <tr>
           <td>Coverage</td><td><b><%= format_measure('qi-test-coverage', :url => url_for_drilldown('qi-test-coverage')) %></b> /<%=coverageWeight-%><%= tendency_icon('qi-test-coverage') -%></td>
-          <td><a style="display: block;width: <%=coverageLength-%>px; height: 0.9em; border: 0; float: left; margin: 0 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-test-coverage') -%>"><div style="width: <%=coverageRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
+          <td><a style="display: block;width: <%=coverageLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-test-coverage') -%>"><div style="width: <%=coverageRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
         </tr>
         <tr>
           <td>Style</td><td><b><%= format_measure('qi-style-violations', :url => url_for_drilldown('qi-style-violations')) %></b> /<%=styleWeight-%><%= tendency_icon('qi-style-violations') -%></td>
-          <td><a style="display: block;width: <%=styleLength-%>px; height: 0.9em; border: 0; float: left; margin: 0 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-style-violations') -%>"><div style="width: <%=styleRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
+          <td><a style="display: block;width: <%=styleLength-%>px; height: 0.9em; border: 0; float: left; margin: 3px 5px; padding: 0;background-color: #00DF00" href="<%= url_for_drilldown('qi-style-violations') -%>"><div style="width: <%=styleRatio-%>%; height: 0.9em; background-color: #DF0000"></div></a></td>
         </tr>
       </table>
     </div>
