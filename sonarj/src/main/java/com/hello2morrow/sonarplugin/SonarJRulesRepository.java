@@ -9,7 +9,6 @@ import org.sonar.api.resources.Java;
 import org.sonar.api.rules.Iso9126RulesCategories;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.RulesCategory;
 import org.sonar.api.rules.RulesRepository;
 
 public final class SonarJRulesRepository implements RulesRepository<Java>
