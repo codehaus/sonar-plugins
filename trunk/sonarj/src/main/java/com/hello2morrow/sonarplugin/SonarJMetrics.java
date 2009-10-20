@@ -42,6 +42,9 @@ public final class SonarJMetrics implements Metrics
     public static final Metric UNASSIGNED_TYPES = new Metric("sonarj.unassigned_types", "Unassigned Types (SonarJ)", "Number of Types not Assigned to any Architectural Artifacts", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
 
+    public static final Metric UNASSIGNED_TYPES_PERCENT = new Metric("sonarj.unassigned_types_percent", "Percentage of Unassigned Types (SonarJ)", "Percentage of Types not Assigned to any Architectural Artifacts", Metric.ValueType.PERCENT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_RULES);
+
     public static final Metric EROSION_REFS = new Metric("sonarj.erosion_ref", "Structural Debt (References) ", "Number of References to Cut to Achive Zero Package Cyclicity", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);
     
@@ -57,10 +60,16 @@ public final class SonarJMetrics implements Metrics
     public static final Metric VIOLATING_TYPES = new Metric("sonarj.violating_types", "Violating Types (SonarJ)", "Number of Types with Outgoing Architecture Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
+    public static final Metric VIOLATING_TYPES_PERCENT = new Metric("sonarj.violating_types_percent", "Percentage of Violating Types (SonarJ)", "Percentage of Types with Outgoing Architecture Violations", Metric.ValueType.PERCENT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_RULES);
+    
+    public static final Metric INTERNAL_TYPES = new Metric("sonarj.internal_types", "Internal Types (SonarJ)", "Number of Internal Types", Metric.ValueType.INT, Metric.DIRECTION_NONE, false,
+            CoreMetrics.DOMAIN_SIZE);
+
     public static final Metric VIOLATING_DEPENDENCIES = new Metric("sonarj.violating_dependencies", "Violating Dependencies (SonarJ)", "Number of Violating Type Dependencies", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
-    public static final Metric ARCHITECTURE_VIOLATIONS = new Metric("sonarj.architecture_violations", "Architecture Violations (SonarJ)", "Number of Violating Artifact Dependencies", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
+    public static final Metric ARCHITECTURE_VIOLATIONS = new Metric("sonarj.architecture_violations", "Architecture Violations (SonarJ)", "Number of Violating References", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
 
     public static final Metric CYCLIC_ARTIFACTS = new Metric("sonarj.cyclic_artifacts", "Cyclic Architecture Artifacts (SonarJ)", "Number of Architectural Artifacts Involved in Cyclic Dependencies", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
@@ -75,6 +84,9 @@ public final class SonarJMetrics implements Metrics
     public static final Metric TASKS = new Metric("sonarj.tasks", "Open Tasks (SonarJ)", "Number of Open Tasks", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
+    public static final Metric TASK_REFS = new Metric("sonarj.task_refs", "Open Tasks - Lines to Change (SonarJ)", "Number of Lines Associated with Open Tasks", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_RULES);
+
     public static final Metric THRESHOLD_WARNINGS = new Metric("sonarj.threshold_warnings", "Threshold Violations (SonarJ)", "Number of Threshold Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
@@ -95,6 +107,6 @@ public final class SonarJMetrics implements Metrics
         return Arrays.asList(ACD, NCCD, CYCLICITY, BIGGEST_CYCLE_GROUP, CYCLIC_PACKAGES, RELATIVE_CYCLICITY, INTERNAL_PACKAGES, INSTRUCTIONS, CYCLE_GROUP_SIZE,
         		CYCLE_GROUP_ID, UNASSIGNED_TYPES, VIOLATING_TYPES, VIOLATING_DEPENDENCIES, CYCLIC_ARTIFACTS, TYPE_DEPENDENCIES, JAVA_FILES, TASKS,
         		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, CONSISTENCY_WARNINGS, EROSION_REFS, 
-        		EROSION_TYPES, EROSION_COST, EROSION_DAYS);
+        		EROSION_TYPES, EROSION_COST, EROSION_DAYS, INTERNAL_TYPES, TASK_REFS, UNASSIGNED_TYPES_PERCENT, VIOLATING_TYPES_PERCENT);
     }
 }

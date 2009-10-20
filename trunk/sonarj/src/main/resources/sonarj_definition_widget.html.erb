@@ -1,0 +1,33 @@
+<%
+u = measure('sonarj.unassigned_types')
+c = measure('sonarj.consistency_warnings')
+w = measure('sonarj.workspace_warnings')
+if u && c && w && (u.value > 0 || c.value > 0 || w.value > 0) 
+%>
+<div class="dashbox">
+  <table>
+    <tr>
+        <td colspan='2'><h3>SonarJ Architecture Definition Problems</h3></td>
+    </tr>
+    <tr>
+        <td width='190px'>
+              <%= format_measure('sonarj.unassigned_types', :suffix => ' unassigned types') -%> <%= tendency_icon(measure('sonarj.unassigned_types')) %>
+        </td>
+        <td>
+              <%= format_measure('sonarj.unassigned_types_percent', :suffix => ' of all types') -%> <%= tendency_icon(measure('sonarj.unassigned_types_percent')) %> 
+        </td>
+    </tr>
+    <tr>
+        <td>
+              <%= format_measure('sonarj.consistency_warnings', :suffix => ' consistency warnings') -%> <%= tendency_icon(measure('sonarj.consistency_warnings')) %>
+        </td>
+        <td>
+              <%= format_measure('sonarj.workspace_warnings', :suffix => ' parsing problems') -%> <%= tendency_icon(measure('sonarj.workspace_warnings')) %>
+        </td>
+    </tr>
+  </table>
+</div>
+
+<%
+end
+%>  

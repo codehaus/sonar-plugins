@@ -77,6 +77,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private static final String WORKSPACE_WARNINGS = "Number of warnings (workspace)";
     private static final String EROSION_REFS = "Structural erosion - reference level";
     private static final String EROSION_TYPES = "Structural erosion - type level";
+    private static final String INTERNAL_TYPES = "Number of internal types (all)";
     
     private final SonarJPluginHandler pluginHandler;
     private Map<String, Number> generalMetrics;
@@ -183,7 +184,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return result;
     }
     
-    private double saveMeasure(String key, Metric metric, int precision)
+    private Measure saveMeasure(String key, Metric metric, int precision)
     {
     	return saveMeasure(key, metric, Double.MAX_VALUE, Double.MAX_VALUE, precision);
     }
@@ -193,7 +194,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	saveMeasure(metric, value, Double.MAX_VALUE, Double.MAX_VALUE, precision);    	
     }
     
-    private double saveMeasure(String key, Metric metric, double warnThreshold, double errorThreshold, int precision)
+    private double getProjectMetric(String key)
     {
         Number num = projectMetrics.get(key);
         
@@ -202,14 +203,17 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
             LOG.error("Cannot find metric <"+key+"> in generated report");
             return 0.0;
         }
-
-        double value = projectMetrics.get(key).doubleValue();
-	
-        saveMeasure(metric, value, warnThreshold, errorThreshold, precision);
-        return value;
+        return num.doubleValue();
     }
     
-    private void saveMeasure(Metric metric, double value, double warnThreshold, double errorThreshold, int precisision)
+    private Measure saveMeasure(String key, Metric metric, double warnThreshold, double errorThreshold, int precision)
+    {
+        double value = getProjectMetric(key);
+	
+        return saveMeasure(metric, value, warnThreshold, errorThreshold, precision);
+    }
+    
+    private Measure saveMeasure(Metric metric, double value, double warnThreshold, double errorThreshold, int precisision)
     {
     	Metric.Level alertLevel = Metric.Level.OK;
     	
@@ -221,15 +225,16 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	{
     		alertLevel = Metric.Level.WARN;
     	}
-    	saveMeasure(metric, value, alertLevel, precisision);
+    	return saveMeasure(metric, value, alertLevel, precisision);
     }
     
-    private void saveMeasure(Metric metric, double value, Metric.Level alertLevel, int precision)
+    private Measure saveMeasure(Metric metric, double value, Metric.Level alertLevel, int precision)
     {
     	Measure m = new Measure(metric, value, precision);
     	
     	m.setAlertStatus(alertLevel);
-    	sensorContext.saveMeasure(m);    	
+    	sensorContext.saveMeasure(m);  
+    	return m;
     }
     
     private String getAttribute(List<XsdAttribute> map, String name)
@@ -317,11 +322,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
     }
     
-    private void handleArchitectureViolations(XsdViolations violations)
+    private int handleArchitectureViolations(XsdViolations violations)
     {
         Rule rule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
         ActiveRule activeRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
-
+        int count = 0;
+        
         if (rule != null && activeRule != null)
         {
             for (XsdArchitectureViolation violation : violations.getArchitectureViolations())
@@ -339,6 +345,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                     for (XsdPosition pos : rel.getPosition())
                     {
                         saveViolation(rule, activeRule, fromType, Integer.valueOf(pos.getLine()), msg);
+                        count++;
                     }
                 }
             }
@@ -351,6 +358,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         {
             LOG.info("SonarJ architecture rule deactivated");
         }  
+        return count;
     }
 
     private void handleThresholdViolations(XsdWarnings warnings)
@@ -415,34 +423,36 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
         if (descr.startsWith("Delete type"))
         {
-            return "Delete this type";
+            String toDelete = descr.substring(decsr.indexOf("delete ")+7);
+            return "Delete "+toDelete;
         }
         LOG.warn("Unprocessed description: "+descr);
         return descr;
     }
     
-    private void handleTasks(XsdTasks tasks)
+    private int handleTasks(XsdTasks tasks)
     {
         Map<String, Rule> ruleMap = new HashMap<String, Rule>();
         
         Rule lowRule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_LOW_RULE_KEY);
         Rule mediumRule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_MEDIUM_RULE_KEY);
         Rule highRule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_HIGH_RULE_KEY);
+        int count = 0;
         
         if (lowRule == null)
         {
             LOG.error("SonarJ low priority task rule not found");
-            return;
+            return 0;
         }
         if (mediumRule == null)
         {
             LOG.error("SonarJ medium priority task rule not found");
-            return;
+            return 0;
         }
         if (highRule == null)
         {
             LOG.error("SonarJ high priority task rule not found");
-            return;
+            return 0;
         }
         ruleMap.put("Low", lowRule);
         ruleMap.put("Medium", mediumRule);
@@ -502,8 +512,10 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 int line = Integer.valueOf(pos.getLine());
                 
                 saveViolation(rule, activeRule, fqName, line, description);
+                count++;
             }
         }
+        return count;
     }
     
     private void addArchitectureMeasures(ReportContext report)
@@ -514,29 +526,36 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	{
     		cyclicArtifacts += projectMetrics.get(key).intValue();
     	}
-    	saveMeasure(SonarJMetrics.CYCLIC_ARTIFACTS, cyclicArtifacts, 2.0, 5.0, 0);
-    	saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 1, 20, 0);
-    	saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 20, 50, 0);
-    	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 20, 50, 0);
+        double types = saveMeasure(INTERNAL_TYPES, SonarJMetrics.INTERNAL_TYPES, 0).getValue();
+    	saveMeasure(SonarJMetrics.CYCLIC_ARTIFACTS, cyclicArtifacts, 2.0, 10.0, 0);
+    	Measure unassignedTypes = saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 1, 20, 0);
+    	Measure violatingTypes = saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 20, 50, 0);
+    	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 0);
     	saveMeasure(TASKS, SonarJMetrics.TASKS, 50, 100, 0);
     	saveMeasure(THRESHOLD_WARNINGS, SonarJMetrics.THRESHOLD_WARNINGS, 50, 100, 0);
-    	saveMeasure(WORKSPACE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS, 10, 20, 0);
+    	saveMeasure(WORKSPACE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS, 1, 10, 0);
     	saveMeasure(IGNORED_VIOLATIONS, SonarJMetrics.IGNORED_VIOLATONS, 0);
     	saveMeasure(IGNORED_WARNINGS, SonarJMetrics.IGNORED_WARNINGS, 0);
     	
+    	assert types >= 1.0 : "Project must not be empty !";
+
+    	saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0 * violatingTypes.getValue()/types, violatingTypes.getAlertStatus(), 1);
+    	saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypes.getValue()/types, unassignedTypes.getAlertStatus(), 1);
+
     	int consistencyWarnings = Integer.valueOf(report.getConsistencyProblems().getNumberOf());
     	
     	saveMeasure(SonarJMetrics.CONSISTENCY_WARNINGS, consistencyWarnings, 1, 10, 0);
     	
     	XsdViolations violations = report.getViolations();
     	
-    	saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, Double.valueOf(violations.getNumberOf()), 5, 10, 0);
-        
-    	if (rulesManager != null && rulesProfile != null)
+       	if (rulesManager != null && rulesProfile != null)
     	{    
-    	    handleArchitectureViolations(violations);
+    	    double violating_refs = handleArchitectureViolations(violations);
     	    handleThresholdViolations(report.getWarnings());
-    	    handleTasks(report.getTasks());
+    	    double task_refs = handleTasks(report.getTasks());
+    	    
+            saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, violating_refs, 50, 100, 0);
+            saveMeasure(SonarJMetrics.TASK_REFS, task_refs, 50, 100, 0);
     	}
     }
     
@@ -569,7 +588,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 
         Metric.Level alertLevel = Metric.Level.OK;
         
-        if (nccd >= 1.5 * 6.5)
+        if (nccd >= 2.0 * 6.5)
         {
             alertLevel = Metric.Level.ERROR;
         }
@@ -582,8 +601,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS, 0);
         saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES, 0);
         saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES, 0);
-        double deps = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0);
-        double refs = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0);
+        double deps = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
+        double refs = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
         double effortInHours = deps + refs/10;
         double effortInDays = effortInHours/8.0;
         double cost = effortInHours * developerCostRate;
