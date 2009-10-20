@@ -21,7 +21,7 @@ if measure('sonarj.acd')
     </tr>
    	<tr>
         <td>
-              <%= format_measure('sonarj.biggest_cycle_group', :suffix => ' biggest cycle group size') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %>
+              <%= format_measure('sonarj.biggest_cycle_group', :suffix => ' Biggest cycle group size') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %>
         </td>
         <td>
               <%= format_measure('sonarj.nccd', :suffix => ' NCCD (John Lakos)') -%> <%= tendency_icon(measure('sonarj.nccd')) %>
@@ -29,22 +29,23 @@ if measure('sonarj.acd')
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj.cyclic_packages', :suffix => ' cyclic packages') -%> <%= tendency_icon(measure('sonarj.cyclic_packages')) %>
+              <%= format_measure('sonarj.cyclic_packages', :suffix => ' Cyclic packages') -%> <%= tendency_icon(measure('sonarj.cyclic_packages')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.packages', :suffix => ' packages') -%> <%= tendency_icon(measure('sonarj.packages')) %>
+              <%= format_measure('sonarj.packages', :suffix => ' Packages') -%> <%= tendency_icon(measure('sonarj.packages')) %>
         </td>
     </tr>
    <tr>
         <td>
-              <%= format_measure('sonarj.cyclicity', :suffix => ' package cyclicity') -%> <%= tendency_icon(measure('sonarj.cyclicity')) %>
+              <%= format_measure('sonarj.cyclicity', :suffix => ' Package cyclicity') -%> <%= tendency_icon(measure('sonarj.cyclicity')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.instructions', :suffix => ' byte code instr.') -%> <%= tendency_icon(measure('sonarj.instructions')) %>
+              <%= format_measure('sonarj.instructions', :suffix => ' Byte code instr.') -%> <%= tendency_icon(measure('sonarj.instructions')) %>
         </td>
     </tr>
   </table>
 </div>
-<% 
+
+<%
 end
 %>  

@@ -88,6 +88,20 @@
                 <property name="Priority" value="Medium"/>
                 <property name="Type" value="com.hello2morrow.sonarplugin.xsd.ReportContext"/>
             </item>
+            <item type="IgnoreWarningFilterItem">
+                <property name="AttributeId" value="NoAttachedSourceFile"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-20 18:31:45"/>
+                <property name="ElementType" value="Class"/>
+                <property name="Pattern" value="com.hello2morrow.sonarplugin.ObjectFactory"/>
+            </item>
+            <item type="IgnoreWarningFilterItem">
+                <property name="AttributeId" value="NoAttachedSourceFile"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2009-10-20 18:31:50"/>
+                <property name="ElementType" value="Enum"/>
+                <property name="Pattern" value="com.hello2morrow.sonarplugin.xsd.XsdMetricSort"/>
+            </item>
         </itemDefinition>
     </scope>
     <scope name="External" type="External">

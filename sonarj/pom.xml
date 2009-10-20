@@ -163,7 +163,7 @@
         <configuration>
           <reportDir>target/sonarj</reportDir>
           <!--  <license>/Users/sascha/Documents/hello2morrow Documents/Licenses/SonarJ-Sonar.license</license>-->
-          <!--  <file>sonar-sonarj-plugin.sonarj</file> -->
+          <file>sonar-sonarj-plugin.sonarj</file>
         </configuration>
         <!--  <executions>
           	<execution>

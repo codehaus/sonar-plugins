@@ -60,6 +60,8 @@ public final class SonarJPlugin implements Plugin
         list.add(SonarJRulesRepository.class);
         list.add(SonarJStructuralDebtDashboard.class);
         list.add(SonarJCyclicityDashboard.class);
+        //list.add(SonarJArchitectureDashboard.class);
+        list.add(SonarJDefinitionDashboad.class);
         return list;
     }
 
