@@ -15,22 +15,18 @@ public final class SonarJRulesRepository implements RulesRepository<Java>
 {
     public final static Rule ARCH = new Rule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY, "SonarJ Architecture Violation", Iso9126RulesCategories.MAINTAINABILITY, RulePriority.MAJOR);
     public final static Rule THRESHOLD = new Rule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.THRESHOLD_RULE_KEY, "SonarJ Threshold Violation", Iso9126RulesCategories.MAINTAINABILITY, RulePriority.MINOR);
-    public final static Rule TASK_LOW = new Rule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_LOW_RULE_KEY, "SonarJ Task (Low Priority)", Iso9126RulesCategories.MAINTAINABILITY, RulePriority.INFO);
-    public final static Rule TASK_MEDIUM = new Rule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_MEDIUM_RULE_KEY, "SonarJ Task (Medium Priority)", Iso9126RulesCategories.MAINTAINABILITY, RulePriority.MINOR);
-    public final static Rule TASK_HIGH = new Rule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_HIGH_RULE_KEY, "SonarJ Task (High Priority)", Iso9126RulesCategories.MAINTAINABILITY, RulePriority.MAJOR);
+    public final static Rule TASK = new Rule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_RULE_KEY, "SonarJ Task", Iso9126RulesCategories.MAINTAINABILITY, RulePriority.MINOR);
 
     static
     {
         ARCH.setConfigKey(SonarJPluginBase.ARCH_RULE_KEY);
         THRESHOLD.setConfigKey(SonarJPluginBase.THRESHOLD_RULE_KEY);
-        TASK_LOW.setConfigKey(SonarJPluginBase.TASK_LOW_RULE_KEY);
-        TASK_MEDIUM.setConfigKey(SonarJPluginBase.TASK_MEDIUM_RULE_KEY);
-        TASK_HIGH.setConfigKey(SonarJPluginBase.TASK_HIGH_RULE_KEY);
+        TASK.setConfigKey(SonarJPluginBase.TASK_RULE_KEY);
     }
     
     public List<Rule> getInitialReferential()
     {
-        return Arrays.asList(ARCH, THRESHOLD, TASK_LOW, TASK_MEDIUM, TASK_HIGH);
+        return Arrays.asList(ARCH, THRESHOLD, TASK);
     }
 
     public Java getLanguage()

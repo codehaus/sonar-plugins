@@ -5,6 +5,7 @@
             <element name="plugin" type="Subsystem">
                 <element name="Assignment" type="TypeFilter">
                     <element name="com.hello2morrow.sonarplugin.*" type="IncludeTypePattern"/>
+                    <element name="com.hello2morrow.sonarplugin.xsd.*" type="IncludeTypePattern"/>
                 </element>
                 <dependency type="AllowedDependency" toName="Project|My Project::Subsystem|xsd"/>
             </element>
@@ -17,15 +18,9 @@
         <workspace>
             <element name="target/classes" type="JavaRootDirectory"/>
             <element name="src/main/java" type="JavaRootDirectory"/>
+            <element name="target/generated-sources/jaxb" type="JavaRootDirectory"/>
         </workspace>
         <itemDefinition>
-            <item type="IgnoreWarningFilterItem">
-                <property name="AttributeId" value="NoAttachedSourceFile"/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-14 16:08:42"/>
-                <property name="ElementType" value="Class"/>
-                <property name="Pattern" value="com.hello2morrow.sonarplugin.xsd.*"/>
-            </item>
             <item type="ThresholdItem">
                 <property name="AttributeId" value="NumberOfStatements"/>
                 <property name="LowerValue" value="0"/>
@@ -87,20 +82,6 @@
                 <property name="Date" value="2009-10-15 17:21:20"/>
                 <property name="Priority" value="Medium"/>
                 <property name="Type" value="com.hello2morrow.sonarplugin.xsd.ReportContext"/>
-            </item>
-            <item type="IgnoreWarningFilterItem">
-                <property name="AttributeId" value="NoAttachedSourceFile"/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-20 18:31:45"/>
-                <property name="ElementType" value="Class"/>
-                <property name="Pattern" value="com.hello2morrow.sonarplugin.ObjectFactory"/>
-            </item>
-            <item type="IgnoreWarningFilterItem">
-                <property name="AttributeId" value="NoAttachedSourceFile"/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-20 18:31:50"/>
-                <property name="ElementType" value="Enum"/>
-                <property name="Pattern" value="com.hello2morrow.sonarplugin.xsd.XsdMetricSort"/>
             </item>
         </itemDefinition>
     </scope>
