@@ -27,6 +27,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.rules.Violation;
 
@@ -303,7 +304,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     }
     
     @SuppressWarnings("unchecked")
-    private void saveViolation(Rule rule, ActiveRule activeRule, String fqName, int line, String msg)
+    private void saveViolation(Rule rule, ActiveRule activeRule, RulePriority priority, String fqName, int line, String msg)
     {
         Resource javaFile = sensorContext.getResource(fqName);
         
@@ -317,7 +318,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 
             v.setMessage(msg);
             v.setLineId(line);
-            v.setPriority(activeRule.getPriority());
+            v.setPriority(priority);
             sensorContext.saveViolation(v);
         }
     }
@@ -344,7 +345,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                     
                     for (XsdPosition pos : rel.getPosition())
                     {
-                        saveViolation(rule, activeRule, fromType, Integer.valueOf(pos.getLine()), msg);
+                        saveViolation(rule, activeRule, activeRule.getPriority(), fromType, Integer.valueOf(pos.getLine()), msg);
                         count++;
                     }
                 }
@@ -385,7 +386,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                                 String relFileName = pos.getFile();
                                 String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
                                 
-                                saveViolation(rule, activeRule, fqName, Integer.valueOf(pos.getLine()), msg);
+                                saveViolation(rule, activeRule, activeRule.getPriority(), fqName, Integer.valueOf(pos.getLine()), msg);
                             }
                         }
                     }
@@ -423,7 +424,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
         if (descr.startsWith("Delete type"))
         {
-            String toDelete = descr.substring(decsr.indexOf("delete ")+7);
+            String toDelete = descr.substring(descr.indexOf("delete ")+7);
             return "Delete "+toDelete;
         }
         LOG.warn("Unprocessed description: "+descr);
@@ -432,67 +433,32 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     
     private int handleTasks(XsdTasks tasks)
     {
-        Map<String, Rule> ruleMap = new HashMap<String, Rule>();
+        Map<String, RulePriority> priorityMap = new HashMap<String, RulePriority>();
         
-        Rule lowRule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_LOW_RULE_KEY);
-        Rule mediumRule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_MEDIUM_RULE_KEY);
-        Rule highRule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_HIGH_RULE_KEY);
+        Rule rule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_RULE_KEY);
         int count = 0;
         
-        if (lowRule == null)
+        if (rule == null)
         {
-            LOG.error("SonarJ low priority task rule not found");
+            LOG.error("SonarJ task rule not found");
             return 0;
-        }
-        if (mediumRule == null)
-        {
-            LOG.error("SonarJ medium priority task rule not found");
-            return 0;
-        }
-        if (highRule == null)
-        {
-            LOG.error("SonarJ high priority task rule not found");
-            return 0;
-        }
-        ruleMap.put("Low", lowRule);
-        ruleMap.put("Medium", mediumRule);
-        ruleMap.put("High" , highRule);
-
-        ActiveRule lowActiveRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_LOW_RULE_KEY);
-        ActiveRule mediumActiveRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_MEDIUM_RULE_KEY);
-        ActiveRule highActiveRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_HIGH_RULE_KEY);
-        
-        if (lowActiveRule == null)
-        {
-            LOG.info("SonarJ low priority task rule not activated");
-        }
-        if (mediumActiveRule == null)
-        {
-            LOG.info("SonarJ medium priority task rule not activated");
-        }
-        if (highActiveRule == null)
-        {
-            LOG.info("SonarJ high priority task rule not activated");
         }
 
-        Map<String, ActiveRule> activeRuleMap = new HashMap<String, ActiveRule>();
+        ActiveRule activeRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.TASK_RULE_KEY);
         
-        activeRuleMap.put("Low", lowActiveRule);
-        activeRuleMap.put("Medium", mediumActiveRule);
-        activeRuleMap.put("High" , highActiveRule);
+        if (activeRule == null)
+        {
+            LOG.info("SonarJ task rule not activated");
+            return 0;
+        }
+
+        priorityMap.put("Low", RulePriority.INFO);
+        priorityMap.put("Medium", RulePriority.MINOR);
+        priorityMap.put("High" , RulePriority.MAJOR);
         
         for (XsdTask task : tasks.getTask())
         {
-            String priority = getAttribute(task.getAttribute(), "Priority");
-            
-            ActiveRule activeRule = activeRuleMap.get(priority);
-            
-            if (activeRule == null)
-            {
-                continue;
-            }
-            
-            Rule rule = ruleMap.get(priority);
+            String priority = getAttribute(task.getAttribute(), "Priority");            
             String description = getAttribute(task.getAttribute(), "Description");
             String assignedTo = getAttribute(task.getAttribute(), "Assigned to");
 
@@ -511,7 +477,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
                 int line = Integer.valueOf(pos.getLine());
                 
-                saveViolation(rule, activeRule, fqName, line, description);
+                saveViolation(rule, activeRule, priorityMap.get(priority), fqName, line, description);
                 count++;
             }
         }
@@ -531,16 +497,16 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	Measure unassignedTypes = saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 1, 20, 0);
     	Measure violatingTypes = saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 20, 50, 0);
     	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 0);
-    	saveMeasure(TASKS, SonarJMetrics.TASKS, 50, 100, 0);
-    	saveMeasure(THRESHOLD_WARNINGS, SonarJMetrics.THRESHOLD_WARNINGS, 50, 100, 0);
+    	saveMeasure(TASKS, SonarJMetrics.TASKS, 20, 50, 0);
+    	Measure tasks = saveMeasure(THRESHOLD_WARNINGS, SonarJMetrics.THRESHOLD_WARNINGS, 20, 50, 0);
     	saveMeasure(WORKSPACE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS, 1, 10, 0);
     	saveMeasure(IGNORED_VIOLATIONS, SonarJMetrics.IGNORED_VIOLATONS, 0);
     	saveMeasure(IGNORED_WARNINGS, SonarJMetrics.IGNORED_WARNINGS, 0);
     	
     	assert types >= 1.0 : "Project must not be empty !";
 
-    	saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0 * violatingTypes.getValue()/types, violatingTypes.getAlertStatus(), 1);
-    	saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypes.getValue()/types, unassignedTypes.getAlertStatus(), 1);
+    	saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0 * violatingTypes.getValue()/types, 1);
+    	saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypes.getValue()/types, 1);
 
     	int consistencyWarnings = Integer.valueOf(report.getConsistencyProblems().getNumberOf());
     	
@@ -554,8 +520,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	    handleThresholdViolations(report.getWarnings());
     	    double task_refs = handleTasks(report.getTasks());
     	    
-            saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, violating_refs, 50, 100, 0);
-            saveMeasure(SonarJMetrics.TASK_REFS, task_refs, 50, 100, 0);
+            saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, violating_refs, violatingTypes.getAlertStatus(), 0);
+            saveMeasure(SonarJMetrics.TASK_REFS, task_refs, tasks.getAlertStatus(), 0);
     	}
     }
     
@@ -601,8 +567,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS, 0);
         saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES, 0);
         saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES, 0);
-        double deps = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
-        double refs = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
+        double refs = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
+        double deps = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
         double effortInHours = deps + refs/10;
         double effortInDays = effortInHours/8.0;
         double cost = effortInHours * developerCostRate;

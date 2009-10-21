@@ -1,46 +1,46 @@
 <%
-if measure('sonarj.acd')
+if measure('sonarj.architecture_violations')
 %>
 <div class="dashbox">
   <table>
     <tr>
-        <td width="190px"><h3>Relative Package Cyclicity</h3></td>
-        <td><h3>ACD (John Lakos)</h3></td>
+        <td width="190px"><h3>Architecture Violations</h3></td>
+        <td><h3>Cyclic Arch. Elements</h3></td>
     </tr>
     <tr>
         <td>
             <span class="big">
-              <%= format_measure('sonarj.relative_cyclicity') -%> <%= tendency_icon(measure('sonarj.relative_cyclicity')) %> 
+              <%= format_measure('sonarj.architecture_violations', :url => '/drilldown/violations/org.codehaus.sonar-plugins:sonar-sonarj-plugin?priority=MAJOR&rule=SonarJ%3Asonarj.architecture') -%> <%= tendency_icon(measure('sonarj.architecture_violations')) %> 
             </span>
         </td>
         <td>
             <span class="big">
-              <%= format_measure('sonarj.acd') -%> <%= tendency_icon(measure('sonarj.acd')) %> 
+              <%= format_measure('sonarj.cyclic_artifacts') -%> <%= tendency_icon(measure('sonarj.cyclic_artifacts')) %> 
             </span>
         </td>
     </tr>
    	<tr>
         <td>
-              <%= format_measure('sonarj.biggest_cycle_group', :suffix => ' Biggest cycle group size') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %>
+              <%= format_measure('sonarj.violating_types', :suffix => ' violating types') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %> <%= format_measure('sonarj.violating_types_percent', :prefix => '(', :suffix => ')') -%>
         </td>
         <td>
-              <%= format_measure('sonarj.nccd', :suffix => ' NCCD (John Lakos)') -%> <%= tendency_icon(measure('sonarj.nccd')) %>
+              <%= format_measure('sonarj.ignored_violations', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj.ignored_violations')) %>
         </td>
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj.cyclic_packages', :suffix => ' Cyclic packages') -%> <%= tendency_icon(measure('sonarj.cyclic_packages')) %>
+              <%= format_measure('sonarj.threshold_warnings', :suffix => ' threshold violations') -%> <%= tendency_icon(measure('sonarj.threshold_warnings')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.packages', :suffix => ' Packages') -%> <%= tendency_icon(measure('sonarj.packages')) %>
+              <%= format_measure('sonarj.ignored_warnings', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj.ignored_warnings')) %>
         </td>
     </tr>
    <tr>
         <td>
-              <%= format_measure('sonarj.cyclicity', :suffix => ' Package cyclicity') -%> <%= tendency_icon(measure('sonarj.cyclicity')) %>
+              <%= format_measure('sonarj.tasks', :suffix => ' open tasks') -%> <%= tendency_icon(measure('sonarj.tasks')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.instructions', :suffix => ' Byte code instr.') -%> <%= tendency_icon(measure('sonarj.instructions')) %>
+              <%= format_measure('sonarj.task_refs', :suffix => ' open tasks (references)') -%> <%= tendency_icon(measure('sonarj.task_refs')) %>
         </td>
     </tr>
   </table>

@@ -165,13 +165,13 @@
           <!--  <license>/Users/sascha/Documents/hello2morrow Documents/Licenses/SonarJ-Sonar.license</license>-->
           <file>sonar-sonarj-plugin.sonarj</file>
         </configuration>
-        <!--  <executions>
+        <executions>
           	<execution>
             	<goals>
-              		<goal>sonarj</goal>
+              		<goal>sonarj-only</goal>
             	</goals>
           	</execution>
-        </executions> -->
+        </executions>
       </plugin>
     </plugins>
   </build>
