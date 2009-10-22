@@ -1,5 +1,5 @@
 <%
-if measure('sonarj.architecture_violations')
+if measure('sonarj_architecture_violations')
 %>
 <div class="dashbox">
   <table>
@@ -10,37 +10,37 @@ if measure('sonarj.architecture_violations')
     <tr>
         <td>
             <span class="big">
-              <%= format_measure('sonarj.architecture_violations', :url => '/drilldown/violations/org.codehaus.sonar-plugins:sonar-sonarj-plugin?priority=MAJOR&rule=SonarJ%3Asonarj.architecture') -%> <%= tendency_icon(measure('sonarj.architecture_violations')) %> 
+              <%= format_measure('sonarj_architecture_violations', :url => '/drilldown/violations/org.codehaus.sonar-plugins:sonar-sonarj-plugin?priority=MAJOR&rule=SonarJ%3Asonarj_architecture') -%> <%= tendency_icon(measure('sonarj_architecture_violations')) %> 
             </span>
         </td>
         <td>
             <span class="big">
-              <%= format_measure('sonarj.cyclic_artifacts') -%> <%= tendency_icon(measure('sonarj.cyclic_artifacts')) %> 
+              <%= format_measure('sonarj_cyclic_artifacts') -%> <%= tendency_icon(measure('sonarj_cyclic_artifacts')) %> 
             </span>
         </td>
     </tr>
    	<tr>
         <td>
-              <%= format_measure('sonarj.violating_types', :suffix => ' violating types') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %> <%= format_measure('sonarj.violating_types_percent', :prefix => '(', :suffix => ')') -%>
+              <%= format_measure('sonarj_violating_types', :suffix => ' violating types') -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %> <%= format_measure('sonarj_violating_types_percent', :prefix => '(', :suffix => ')') -%>
         </td>
         <td>
-              <%= format_measure('sonarj.ignored_violations', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj.ignored_violations')) %>
+              <%= format_measure('sonarj_ignored_violations', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj_ignored_violations')) %>
         </td>
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj.threshold_warnings', :suffix => ' threshold violations') -%> <%= tendency_icon(measure('sonarj.threshold_warnings')) %>
+              <%= format_measure('sonarj_threshold_warnings', :suffix => ' threshold violations') -%> <%= tendency_icon(measure('sonarj_threshold_warnings')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.ignored_warnings', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj.ignored_warnings')) %>
+              <%= format_measure('sonarj_ignored_warnings', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj_ignored_warnings')) %>
         </td>
     </tr>
    <tr>
         <td>
-              <%= format_measure('sonarj.tasks', :suffix => ' open tasks') -%> <%= tendency_icon(measure('sonarj.tasks')) %>
+              <%= format_measure('sonarj_tasks', :suffix => ' open tasks') -%> <%= tendency_icon(measure('sonarj_tasks')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.task_refs', :suffix => ' open tasks (references)') -%> <%= tendency_icon(measure('sonarj.task_refs')) %>
+              <%= format_measure('sonarj_task_refs', :suffix => ' open tasks (references)') -%> <%= tendency_icon(measure('sonarj_task_refs')) %>
         </td>
     </tr>
   </table>

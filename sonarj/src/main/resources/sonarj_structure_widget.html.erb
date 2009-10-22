@@ -1,5 +1,5 @@
 <%
-if measure('sonarj.acd')
+if measure('sonarj_biggest_cycle_group')
 %>
 <div class="dashbox">
   <table>
@@ -10,37 +10,37 @@ if measure('sonarj.acd')
     <tr>
         <td>
             <span class="big">
-              <%= format_measure('sonarj.relative_cyclicity') -%> <%= tendency_icon(measure('sonarj.relative_cyclicity')) %> 
+              <%= format_measure('sonarj_relative_cyclicity') -%> <%= tendency_icon(measure('sonarj_relative_cyclicity')) %> 
             </span>
         </td>
         <td>
             <span class="big">
-              <%= format_measure('sonarj.acd') -%> <%= tendency_icon(measure('sonarj.acd')) %> 
+              <%= format_measure('sonarj_acd') -%> <%= tendency_icon(measure('sonarj_acd')) %> 
             </span>
         </td>
     </tr>
    	<tr>
         <td>
-              <%= format_measure('sonarj.biggest_cycle_group', :suffix => ' biggest cycle group size') -%> <%= tendency_icon(measure('sonarj.biggest_cycle_group')) %>
+              <%= format_measure('sonarj_biggest_cycle_group', :suffix => ' biggest cycle group size') -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.nccd', :suffix => ' NCCD (John Lakos)') -%> <%= tendency_icon(measure('sonarj.nccd')) %>
+              <%= format_measure('sonarj_nccd', :suffix => ' NCCD (John Lakos)') -%> <%= tendency_icon(measure('sonarj_nccd')) %>
         </td>
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj.cyclic_packages', :suffix => ' cyclic packages') -%> <%= tendency_icon(measure('sonarj.cyclic_packages')) %>
+              <%= format_measure('sonarj_cyclic_packages', :suffix => ' cyclic packages') -%> <%= tendency_icon(measure('sonarj_cyclic_packages')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.packages', :suffix => ' packages') -%> <%= tendency_icon(measure('sonarj.packages')) %>
+              <%= format_measure('sonarj_packages', :suffix => ' packages') -%> <%= tendency_icon(measure('sonarj_packages')) %>
         </td>
     </tr>
    <tr>
         <td>
-              <%= format_measure('sonarj.cyclicity', :suffix => ' package cyclicity') -%> <%= tendency_icon(measure('sonarj.cyclicity')) %>
+              <%= format_measure('sonarj_cyclicity', :suffix => ' package cyclicity') -%> <%= tendency_icon(measure('sonarj_cyclicity')) %>
         </td>
         <td>
-              <%= format_measure('sonarj.instructions', :suffix => ' byte code instr.') -%> <%= tendency_icon(measure('sonarj.instructions')) %>
+              <%= format_measure('sonarj_instructions', :suffix => ' byte code instr.') -%> <%= tendency_icon(measure('sonarj_instructions')) %>
         </td>
     </tr>
   </table>

@@ -1,5 +1,5 @@
 <%
-m = measure('sonarj.erosion_cost') 
+m = measure('sonarj_erosion_cost') 
 if m && m.value > 0 
 %>
 <div class="dashbox">
@@ -11,23 +11,23 @@ if m && m.value > 0
     <tr>
 		<td>
         <span class="big">
-    		<%= format_measure('sonarj.erosion_cost', :prefix => '$ ') -%><%= tendency_icon(measure('sonarj.erosion_cost')) %>
+    		<%= format_measure('sonarj_erosion_cost', :prefix => '$ ') -%><%= tendency_icon(measure('sonarj_erosion_cost')) %>
     	</span>
 		</td>
 		<td>
         <span class="big">
-    		<%= format_measure('sonarj.erosion_days') -%><%= tendency_icon(measure('sonarj.erosion_days')) %>
+    		<%= format_measure('sonarj_erosion_days') -%><%= tendency_icon(measure('sonarj_erosion_days')) %>
     	</span>
 		</td>
     </tr>
     <tr>
     	<td>
-    	<%= format_measure('sonarj.erosion_types', :suffix => ' type dependencies to cut') -%><%= tendency_icon(measure('sonarj.erosion_types')) %>
+    	<%= format_measure('sonarj_erosion_types', :suffix => ' type dependencies to cut') -%><%= tendency_icon(measure('sonarj_erosion_types')) %>
     	</td>
     </tr>
     <tr>
     	<td>
-    	<%= format_measure('sonarj.erosion_ref', :suffix => ' references to remove') -%><%= tendency_icon(measure('sonarj.erosion_ref')) %>
+    	<%= format_measure('sonarj_erosion_ref', :suffix => ' references to remove') -%><%= tendency_icon(measure('sonarj_erosion_ref')) %>
     	</td>
     </tr>
   </table>
