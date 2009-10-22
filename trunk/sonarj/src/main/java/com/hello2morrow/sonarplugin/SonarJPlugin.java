@@ -62,6 +62,7 @@ public final class SonarJPlugin implements Plugin
         list.add(SonarJCyclicityDashboard.class);
         list.add(SonarJArchitectureDashboard.class);
         list.add(SonarJDefinitionDashboad.class);
+        list.add(SonarJMetricAggregator.class);
         return list;
     }
 

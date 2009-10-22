@@ -5,7 +5,6 @@
             <element name="plugin" type="Subsystem">
                 <element name="Assignment" type="TypeFilter">
                     <element name="com.hello2morrow.sonarplugin.*" type="IncludeTypePattern"/>
-                    <element name="com.hello2morrow.sonarplugin.xsd.*" type="IncludeTypePattern"/>
                 </element>
                 <dependency type="AllowedDependency" toName="Project|My Project::Subsystem|xsd"/>
             </element>
@@ -33,14 +32,6 @@
                 <property name="Date" value="2009-10-15 13:46:59"/>
                 <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
                 <property name="Priority" value="Medium"/>
-                <property name="ToType" value="javax.xml.bind.Unmarshaller"/>
-            </item>
-            <item type="CutTypeDependencyItem">
-                <property name="AssignedTo" value="Peter"/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-15 13:46:59"/>
-                <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
-                <property name="Priority" value="Medium"/>
                 <property name="ToType" value="javax.xml.bind.JAXBException"/>
             </item>
             <item type="CutTypeDependencyItem">
@@ -59,13 +50,6 @@
                 <property name="ElementType" value="ObjectMethod"/>
                 <property name="Pattern" value="com.hello2morrow.sonarplugin.SonarJSensor::analyseCycleGroups(com.hello2morrow.sonarplugin.xsd.ReportContext, Number){}"/>
                 <property name="Priority" value="Low"/>
-            </item>
-            <item type="DeleteTypeItem">
-                <property name="AssignedTo" value=""/>
-                <property name="Comment" value="None"/>
-                <property name="Date" value="2009-10-15 16:43:07"/>
-                <property name="Priority" value="High"/>
-                <property name="Type" value="com.hello2morrow.sonarplugin.xsd.Dummy"/>
             </item>
             <item type="MoveTypeItem">
                 <property name="AssignedTo" value=""/>
@@ -118,9 +102,7 @@
         </architecture>
     </scope>
     <scope name="Global" type="Global">
-        <element name="Configuration" type="Configuration">
-            <property name="ParseSourceFile" value="false"/>
-        </element>
+        <element name="Configuration" type="Configuration"/>
         <element name="Filter" type="TypeFilter">
             <element name="**" type="IncludeTypePattern"/>
         </element>
