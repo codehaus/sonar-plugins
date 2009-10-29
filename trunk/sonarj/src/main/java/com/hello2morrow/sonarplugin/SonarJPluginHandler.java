@@ -1,5 +1,7 @@
 package com.hello2morrow.sonarplugin;
 
+import java.io.File;
+
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.resources.Project;
@@ -57,6 +59,13 @@ public class SonarJPluginHandler implements MavenPluginHandler
         if (plugin.getParameter("file") != null)
         {
         	usesArchitectureDescription = true;
+        }
+        else
+        {
+            String artifactId = project.getArtifactId();
+            File file = new File(artifactId+".sonarj");
+            
+            usesArchitectureDescription = file.exists();
         }
     }
     

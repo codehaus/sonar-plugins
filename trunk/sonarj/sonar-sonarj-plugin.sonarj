@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<context version="5.0.1.439">
-    <scope name="My Project" type="Project">
+<context version="5.0.2.400">
+    <scope name="sonar-sonarj-plugin" type="Project">
         <architecture>
             <element name="plugin" type="Subsystem">
                 <element name="Assignment" type="TypeFilter">
                     <element name="com.hello2morrow.sonarplugin.*" type="IncludeTypePattern"/>
                 </element>
-                <dependency type="AllowedDependency" toName="Project|My Project::Subsystem|xsd"/>
+                <dependency type="AllowedDependency" toName="Project|sonar-sonarj-plugin::Subsystem|xsd"/>
             </element>
             <element name="xsd" type="Subsystem">
                 <element name="Assignment" type="TypeFilter">
@@ -15,9 +15,9 @@
             </element>
         </architecture>
         <workspace>
-            <element name="target/classes" type="JavaRootDirectory"/>
-            <element name="src/main/java" type="JavaRootDirectory"/>
-            <element name="target/generated-sources/jaxb" type="JavaRootDirectory"/>
+            <element name="/Users/sascha/sonarplugin/sonar-sonarj-plugin/src/main/java" type="JavaRootDirectory"/>
+            <element name="/Users/sascha/sonarplugin/sonar-sonarj-plugin/target/generated-sources/jaxb" type="JavaRootDirectory"/>
+            <element name="/Users/sascha/sonarplugin/sonar-sonarj-plugin/target/classes" type="JavaRootDirectory"/>
         </workspace>
         <itemDefinition>
             <item type="ThresholdItem">
