@@ -3,6 +3,8 @@ package com.hello2morrow.sonarplugin;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.AbstractSumChildrenDecorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
@@ -12,6 +14,8 @@ import org.sonar.api.resources.Resource;
 
 public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
 {
+    private static final Logger LOG = LoggerFactory.getLogger(SonarJMetricAggregator.class);
+
     @Override
     @DependedUpon
     public List<Metric> generatesMetrics()
@@ -63,9 +67,17 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
         Measure cyclicity = context.getMeasure(SonarJMetrics.CYCLICITY);
         Measure packages = context.getMeasure(SonarJMetrics.INTERNAL_PACKAGES);
         
-        double relCyclicity = 100.0 * Math.sqrt(cyclicity.getValue()) / packages.getValue();
+        if (cyclicity == null || packages == null)
+        {
+            LOG.error("Problem in aggregator on project: "+context.getProject().getKey());
+        }
+        else
+        {
+            double relCyclicity = 100.0 * Math.sqrt(cyclicity.getValue()) / packages.getValue();
+            
+            context.saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relCyclicity);            
+        }
         
-        context.saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relCyclicity);
         
         Measure violatingTypes = context.getMeasure(SonarJMetrics.VIOLATING_TYPES);
         Measure internalTypes = context.getMeasure(SonarJMetrics.INTERNAL_TYPES);
@@ -80,7 +92,7 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
     @Override
     public boolean shouldDecorateResource(Resource resource)
     {
-        return Arrays.asList(Resource.QUALIFIER_PROJECT).contains(resource.getQualifier());
+        return Arrays.asList(Resource.QUALIFIER_PROJECT, Resource.QUALIFIER_MODULE).contains(resource.getQualifier());
     }
 
 }
