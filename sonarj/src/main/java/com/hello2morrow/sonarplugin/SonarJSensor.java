@@ -90,7 +90,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private RulesProfile rulesProfile;
     private double developerCostRate = 70.0;
     private Project project;
-    private Resource<Project> currentProject;
     private int cycleGroupId = 0;
    
     protected static ReportContext readSonarjReport(String fileName)
@@ -239,7 +238,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	Measure m = new Measure(metric, value, precision);
     	
     	m.setAlertStatus(alertLevel);
-    	sensorContext.saveMeasure(currentProject, m);  
+    	sensorContext.saveMeasure(m);  
     	return m;
     }
     
@@ -323,7 +322,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
             v.setLineId(line);
             v.setPriority(priority);
             sensorContext.saveViolation(v);
-            LOG.warn("Saved violation on "+fqName);
         }
     }
     
@@ -568,36 +566,33 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         String projectName = xsdProject.getName();
         projectMetrics = readAttributes(xsdProject);
         
-        if (currentProject == null)
+        Number internalPackages = projectMetrics.get(INTERNAL_PACKAGES);
+        double acd = projectMetrics.get(ACD).doubleValue();
+        double nccd = projectMetrics.get(NCCD).doubleValue();
+
+        Metric.Level alertLevel = Metric.Level.OK;
+        
+        if (nccd >= 2.0 * 6.5)
         {
-            Number internalPackages = projectMetrics.get(INTERNAL_PACKAGES);
-            double acd = projectMetrics.get(ACD).doubleValue();
-            double nccd = projectMetrics.get(NCCD).doubleValue();
-    
-            Metric.Level alertLevel = Metric.Level.OK;
-            
-            if (nccd >= 2.0 * 6.5)
-            {
-                alertLevel = Metric.Level.ERROR;
-            }
-            else if (nccd  >= 6.5)
-            {
-                alertLevel = Metric.Level.WARN;
-            }
-            saveMeasure(SonarJMetrics.ACD, acd, alertLevel, 1);
-            saveMeasure(SonarJMetrics.NCCD, nccd, alertLevel, 1);
-            saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS, 0);
-            saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES, 0);
-            saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES, 0);
-            double refs = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
-            double deps = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
-            double effortInHours = deps + refs/10;
-            double effortInDays = effortInHours/8.0;
-            double cost = effortInHours * developerCostRate;
-            saveMeasure(SonarJMetrics.EROSION_COST, cost, 40 * developerCostRate, 160 * developerCostRate, 0);
-            saveMeasure(SonarJMetrics.EROSION_DAYS, effortInDays, 5, 20, 1);
-            analyseCycleGroups(report, internalPackages, projectName);        
+            alertLevel = Metric.Level.ERROR;
         }
+        else if (nccd  >= 6.5)
+        {
+            alertLevel = Metric.Level.WARN;
+        }
+        saveMeasure(SonarJMetrics.ACD, acd, alertLevel, 1);
+        saveMeasure(SonarJMetrics.NCCD, nccd, alertLevel, 1);
+        saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS, 0);
+        saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES, 0);
+        saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES, 0);
+        double refs = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
+        double deps = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
+        double effortInHours = deps + refs/10;
+        double effortInDays = effortInHours/8.0;
+        double cost = effortInHours * developerCostRate;
+        saveMeasure(SonarJMetrics.EROSION_DAYS, effortInDays, 5, 20, 1);
+        saveMeasure(SonarJMetrics.EROSION_COST, cost, 40 * developerCostRate, 160 * developerCostRate, 0);
+        analyseCycleGroups(report, internalPackages, projectName);        
         if (pluginHandler.isUsingArchitectureDescription())
         {
             addArchitectureMeasures(report, projectName);
@@ -623,58 +618,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         if (projectList.size() > 1)
         {
-            for (XsdAttributeRoot prj : projectList)
-            {
-                currentProject = findModule(prj.getName());
-                if (currentProject == null)
-                {
-                    LOG.error("Cannot find module: "+prj.getName());
-                }
-                else
-                {
-                    //analyse(prj, report);
-                }
-            }
+            LOG.error("The SonarJ plugin currently cannot analyze the architecture scope of SonarJ projects witj multiple sub-projects. This will be implemented after Sonar 1.12 is available.");
         }   
         else
         {
-            currentProject = null;
             analyse(projectList.get(0), report);
         }
-    }
-    
-    private Project findModule(Project mod, String name)
-    {
-        Project result = null;
-        
-        if (mod.getArtifactId().equalsIgnoreCase(name))
-        {
-            result = mod;
-        }
-        else
-        {
-            for (Project child : mod.getModules())
-            {
-                result = findModule(child, name);
-                if (result != null)
-                {
-                    break;
-                }
-            }
-        }
-        return result;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private Resource<Project> findModule(String name)
-    {
-        Resource result = findModule(project, name);
-        
-        if (result != null)
-        {
-            //result = sensorContext.getResource(result.getKey());
-        }
-        return result;
     }
     
     public void analyse(Project project, SensorContext sensorContext)

@@ -34,7 +34,7 @@ public class ReadTest extends TestCase
         final SensorContext sensorContext = context.mock(SensorContext.class);
         
         context.checking(new Expectations() {{
-            atLeast(1).of(sensorContext).saveMeasure(with(any(Resource.class)), with(any(Measure.class)));
+            atLeast(1).of(sensorContext).saveMeasure(with(any(Measure.class)));
             allowing(sensorContext).getResource(with(any(String.class))); will(returnValue(null)); 
         }});
         sensor.analyse(sensorContext, report);

@@ -8,12 +8,13 @@ if u && c && w && (u.value > 0 || c.value > 0 || w.value > 0)
   <table>
     <tr>
         <td colspan='2'><h3>SonarJ Architecture Definition Problems</h3></td>
+        <td align="right"><a href="http://www.hello2morrow.com/products/sonarj/sonar" target="_blank"><%= image_tag 'help.png', :class => 'png' -%></a></td>
     </tr>
     <tr>
         <td width='190px'>
               <%= format_measure('sonarj_unassigned_types', :suffix => ' unassigned types') -%> <%= tendency_icon(measure('sonarj_unassigned_types')) %>
         </td>
-        <td>
+        <td width="160px">
               <%= format_measure('sonarj_unassigned_types_percent', :suffix => ' of all types') -%> <%= tendency_icon(measure('sonarj_unassigned_types_percent')) %> 
         </td>
     </tr>
