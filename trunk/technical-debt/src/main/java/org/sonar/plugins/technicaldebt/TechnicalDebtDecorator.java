@@ -65,8 +65,8 @@ public final class TechnicalDebtDecorator implements Decorator {
   }
 
   /**
- * {@inheritDoc}
- */
+   * {@inheritDoc}
+   */
   public boolean shouldExecuteOnProject(Project project) {
     return true;
   }
@@ -97,12 +97,16 @@ public final class TechnicalDebtDecorator implements Decorator {
     double denominatorDensity = 0;
     PropertiesBuilder<String, Double> techDebtRepartition = new PropertiesBuilder<String, Double>(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
 
+    // We calculate the total absolute debt and total maximum debt
     for (AxisDebtCalculator axis : axisList) {
-        double debt = axis.calculateAbsoluteDebt(context);
-        sonarDebt += debt;
-        denominatorDensity += axis.calculateTotalPossibleDebt(context);
-        addToRepartition(techDebtRepartition, axis.getName(), debt);
-      }
+      sonarDebt += axis.calculateAbsoluteDebt(context);
+      denominatorDensity += axis.calculateTotalPossibleDebt(context);
+    }
+
+    // Then we calculate the % of each axis for this debt
+    for (AxisDebtCalculator axis : axisList) {
+      addToRepartition(techDebtRepartition, axis.getName(), axis.calculateAbsoluteDebt(context) / sonarDebt * 100);
+    }
 
     double dailyRate = Double.valueOf(configuration.getString(TechnicalDebtPlugin.TD_DAILY_RATE, TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT));
 
