@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<context version="5.0.2.467">
+<context version="5.0.2.475">
     <scope name="sonar-sonarj-plugin" type="Project">
         <architecture>
             <element name="plugin" type="Subsystem">
@@ -11,7 +11,6 @@
             <element name="xsd" type="Subsystem">
                 <element name="Assignment" type="TypeFilter">
                     <element name="com.hello2morrow.sonarplugin.xsd.*" type="IncludeTypePattern"/>
-                    <element name="**Factory" type="ExcludeTypePattern"/>
                 </element>
             </element>
         </architecture>
@@ -21,28 +20,6 @@
             <element name="target/classes" type="JavaRootDirectory"/>
         </workspace>
         <itemDefinition>
-            <item type="ThresholdItem">
-                <property name="AttributeId" value="NumberOfStatements"/>
-                <property name="LowerValue" value="0"/>
-                <property name="NamedElementGroup" value="Method"/>
-                <property name="UpperValue" value="25"/>
-            </item>
-            <item type="CutTypeDependencyItem">
-                <property name="AssignedTo" value="Peter"/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-15 13:46:59"/>
-                <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
-                <property name="Priority" value="Medium"/>
-                <property name="ToType" value="javax.xml.bind.JAXBException"/>
-            </item>
-            <item type="CutTypeDependencyItem">
-                <property name="AssignedTo" value="Peter"/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-15 13:46:59"/>
-                <property name="FromType" value="com.hello2morrow.sonarplugin.SonarJSensor"/>
-                <property name="Priority" value="Medium"/>
-                <property name="ToType" value="javax.xml.bind.JAXBContext"/>
-            </item>
             <item type="FixWarningFilterItem">
                 <property name="AssignedTo" value="Peter"/>
                 <property name="AttributeId" value="NumberOfStatements"/>
@@ -51,13 +28,6 @@
                 <property name="ElementType" value="ObjectMethod"/>
                 <property name="Pattern" value="com.hello2morrow.sonarplugin.SonarJSensor::analyseCycleGroups(com.hello2morrow.sonarplugin.xsd.ReportContext, Number){}"/>
                 <property name="Priority" value="Low"/>
-            </item>
-            <item type="DeleteTypeItem">
-                <property name="AssignedTo" value=""/>
-                <property name="Comment" value=""/>
-                <property name="Date" value="2009-10-15 17:21:20"/>
-                <property name="Priority" value="Medium"/>
-                <property name="Type" value="com.hello2morrow.sonarplugin.xsd.ReportContext"/>
             </item>
         </itemDefinition>
     </scope>
@@ -87,8 +57,29 @@
                     <element name="javax.xml.bind.*" type="IncludeTypePattern"/>
                     <element name="javax.xml.bind.annotation.*" type="IncludeTypePattern"/>
                 </element>
-                <element name="api" type="NamedInterface">
-                    <element name="Assignment" type="TypeFilter"/>
+            </element>
+            <element name="sonar-api" type="Subsystem">
+                <element name="Assignment" type="TypeFilter">
+                    <element name="org.sonar.api.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.resources.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.batch.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.web.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.rules.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.measures.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.profiles.*" type="IncludeTypePattern"/>
+                    <element name="org.sonar.api.batch.maven.*" type="IncludeTypePattern"/>
+                </element>
+            </element>
+            <element name="logging" type="Subsystem">
+                <element name="Assignment" type="TypeFilter">
+                    <element name="org.slf4j.*" type="IncludeTypePattern"/>
+                </element>
+            </element>
+            <element name="apache-commons" type="Subsystem">
+                <element name="Assignment" type="TypeFilter">
+                    <element name="org.apache.commons.*" type="IncludeTypePattern"/>
+                    <element name="org.apache.commons.lang.*" type="IncludeTypePattern"/>
+                    <element name="org.apache.commons.configuration.*" type="IncludeTypePattern"/>
                 </element>
             </element>
         </architecture>

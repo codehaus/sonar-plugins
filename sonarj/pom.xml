@@ -63,6 +63,11 @@
       <url>http://maven.hello2morrow.com/repository</url>
     </pluginRepository>
   </pluginRepositories>
+  <scm>
+  	<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonar-sonarj-plugin</connection>
+  	<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonar-sonarj-plugin</developerConnection>
+  	<url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
 
   <build>
     <plugins>
@@ -155,23 +160,6 @@
           <source>1.5</source>
           <target>1.5</target>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>com.hello2morrow.sonar</groupId>
-        <artifactId>maven-sonarj-plugin</artifactId>
-        <version>5.0.2</version>
-        <configuration>
-          <reportDir>target/sonarj</reportDir>
-          <!--  <license>/Users/sascha/Documents/hello2morrow Documents/Licenses/SonarJ-Sonar.license</license>-->
-          <file>sonar-sonarj-plugin.sonarj</file>
-        </configuration>
-        <executions>
-          	<execution>
-            	<goals>
-              		<goal>sonarj-only</goal>
-            	</goals>
-          	</execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
