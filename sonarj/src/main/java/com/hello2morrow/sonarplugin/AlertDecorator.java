@@ -47,7 +47,7 @@ public final class AlertDecorator
             new AlertThreshold(SonarJMetrics.VIOLATING_TYPES, 10.0, 20.0), new AlertThreshold(SonarJMetrics.TASKS, 20.0, 50.0),
             new AlertThreshold(SonarJMetrics.THRESHOLD_WARNINGS, 20.0, 50.0), new AlertThreshold(SonarJMetrics.WORKSPACE_WARNINGS, 1.0, 10.0),
             new AlertThreshold(SonarJMetrics.CONSISTENCY_WARNINGS, 1.0, 10.0), new AlertThreshold(SonarJMetrics.NCCD, 6.5, 10.0),
-            new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 8) };
+            new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 7), new AlertThreshold(SonarJMetrics.CYCLICITY, 25, 50) };
 
     private static void copyAlertLevel(ProjectContext context, Metric from, Metric to)
     {
@@ -80,6 +80,6 @@ public final class AlertDecorator
         copyAlertLevel(context, SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.ARCHITECTURE_VIOLATIONS);
         copyAlertLevel(context, SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS);
         copyAlertLevel(context, SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS);
-        copyAlertLevel(context, SonarJMetrics.BIGGEST_CYCLE_GROUP, SonarJMetrics.RELATIVE_CYCLICITY);
+        copyAlertLevel(context, SonarJMetrics.CYCLICITY, SonarJMetrics.RELATIVE_CYCLICITY);
     }
 }
