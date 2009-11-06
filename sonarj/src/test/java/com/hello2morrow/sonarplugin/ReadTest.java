@@ -36,6 +36,7 @@ public class ReadTest extends TestCase
         context.checking(new Expectations() {{
             atLeast(1).of(sensorContext).saveMeasure(with(any(Measure.class)));
             allowing(sensorContext).getResource(with(any(String.class))); will(returnValue(null)); 
+            allowing(sensorContext).getMeasure(with(any(Metric.class))); will(returnValue(null)); 
         }});
         sensor.analyse(sensorContext, report);
         

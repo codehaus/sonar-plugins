@@ -20,12 +20,12 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
     @DependedUpon
     public List<Metric> generatesMetrics()
     {
-        return Arrays.asList(SonarJMetrics.ARCHITECTURE_VIOLATIONS, SonarJMetrics.CYCLIC_ARTIFACTS,
-                SonarJMetrics.CYCLIC_PACKAGES, SonarJMetrics.CYCLICITY, SonarJMetrics.EROSION_COST, SonarJMetrics.EROSION_DAYS,
+        return Arrays.asList(SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.CYCLIC_ARTIFACTS,
+                SonarJMetrics.CYCLIC_PACKAGES, SonarJMetrics.CYCLICITY, SonarJMetrics.EROSION_DAYS, SonarJMetrics.EROSION_COST, 
                 SonarJMetrics.EROSION_REFS, SonarJMetrics.EROSION_TYPES, SonarJMetrics.IGNORED_VIOLATONS, SonarJMetrics.IGNORED_WARNINGS,
                 SonarJMetrics.INSTRUCTIONS, SonarJMetrics.INTERNAL_PACKAGES, SonarJMetrics.INTERNAL_TYPES, SonarJMetrics.JAVA_FILES,
-                SonarJMetrics.TASK_REFS, SonarJMetrics.TASKS, SonarJMetrics.THRESHOLD_WARNINGS, SonarJMetrics.TYPE_DEPENDENCIES,
-                SonarJMetrics.VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_TYPES);
+                SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS, SonarJMetrics.THRESHOLD_WARNINGS, SonarJMetrics.TYPE_DEPENDENCIES,
+                SonarJMetrics.VIOLATING_DEPENDENCIES, SonarJMetrics.ARCHITECTURE_VIOLATIONS);
     }
 
     @Override
@@ -77,8 +77,7 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
             
             context.saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relCyclicity);            
         }
-        
-        
+                
         Measure violatingTypes = context.getMeasure(SonarJMetrics.VIOLATING_TYPES);
         Measure internalTypes = context.getMeasure(SonarJMetrics.INTERNAL_TYPES);
         
@@ -86,6 +85,7 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
         {
             context.saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0*violatingTypes.getValue()/internalTypes.getValue());
         }
+        AlertDecorator.setAlertLevels(new DecoratorProjectContext(context));
     }
 
     @SuppressWarnings("unchecked")
