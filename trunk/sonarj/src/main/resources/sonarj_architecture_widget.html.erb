@@ -41,7 +41,7 @@ if measure('sonarj_architecture_violations')
               <%= format_measure('sonarj_tasks', :suffix => ' open tasks', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_tasks')) %>
         </td>
         <td colspan="2">
-              <%= format_measure('sonarj_task_refs', :suffix => ' open tasks (references)', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_task_refs')) %>
+              <%= format_measure('sonarj_task_refs', :suffix => ' open task markers', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_task_refs')) %>
         </td>
     </tr>
   </table>
