@@ -35,16 +35,17 @@
 		    <module>rules-meter</module>
 		    <module>security-rules</module>
 		    <module>sigmm</module>
+		    <module>sonarj</module>
 		    <module>sonar-squid-gui</module>
 		    <module>taglist</module>
 		    <module>technical-debt</module>
 		    <module>testability-explorer</module>
+		    <module>timeline</module>
 		  </modules>
 		</profile>
 		<profile>
 			<id>unstableProjects</id>
 			<modules>
-		    <module>timeline</module>
 		  </modules>
 		</profile>
 	</profiles>
