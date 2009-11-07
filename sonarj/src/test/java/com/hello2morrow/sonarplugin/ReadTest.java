@@ -8,7 +8,6 @@ import org.jmock.Mockery;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.Resource;
 
 import com.hello2morrow.sonarplugin.xsd.ReportContext;
 
