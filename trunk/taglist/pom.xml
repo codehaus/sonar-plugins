@@ -7,7 +7,7 @@
     <relativePath>../parent</relativePath>
   </parent>
   <artifactId>sonar-taglist-plugin</artifactId>
-  <name>sonar-plugin-taglist</name>
+  <name>Sonar Taglist Plugin</name>
   <version>0.7-SNAPSHOT</version>
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
