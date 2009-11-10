@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>3</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>sonar-radiator-plugin</artifactId>
+  <packaging>jar</packaging>
+  <version>0.1</version>
+  <name>Sonar Radiator plugin</name>
+  <description>Display measures in a big treemap.</description>
+
+  <properties>
+    <sonar.plugin.class>org.sonar.plugins.radiator.RadiatorPlugin</sonar.plugin.class>
+    <sonar.version>1.11</sonar.version>
+  </properties>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-radiator-plugin-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-radiator-plugin-0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-radiator-plugin-0.1</url>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License (LGPL), v.3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>cedric.munger</id>
+      <name>Cedric Munger</name>
+      <email>cedric.munger@gmail.com</email>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <email>simon.brandhof@sonarsource.com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Plugin-Class>${sonar.plugin.class}</Plugin-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
