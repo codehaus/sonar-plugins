@@ -8,7 +8,7 @@
   </parent>
   <artifactId>sonar-technicaldebt-plugin</artifactId>
   <name>Technical Debt Sonar plugin</name>
-  <version>0.4</version>
+  <version>0.5-SNAPSHOT</version>
   <description>Calculate the technical debt</description>
 
   <developers>
@@ -69,8 +69,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-technicaldebt-plugin-0.4</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-technicaldebt-plugin-0.4</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-technicaldebt-plugin-0.4</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/technical-debt</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/technical-debt</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
 </project>
