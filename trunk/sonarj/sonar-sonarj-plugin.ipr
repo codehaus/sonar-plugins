@@ -360,9 +360,6 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
-  <component name="ReadonlyStatusHandler">
-    <option name="SHOW_DIALOG" value="true" />
-  </component>
   <component name="RmicSettings">
     <option name="IS_EANABLED" value="false" />
     <option name="DEBUGGING_INFO" value="true" />
@@ -397,6 +394,214 @@
     <option name="myReportErrorsAsWarnings" value="true" />
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://svn.codehaus.org:443/sonar-plugins/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://svn.codehaus.org:443/sonar-plugins/tags">
+                    <value>
+                      <list>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1257851825973" />
+                          <option name="revision" value="888" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-technicaldebt-plugin-0.4" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1257842508177" />
+                          <option name="revision" value="885" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-radiator-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1256850827680" />
+                          <option name="revision" value="863" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-timeline-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1256577227970" />
+                          <option name="revision" value="860" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-motion-chart-plugin-0.2" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1256071842920" />
+                          <option name="revision" value="852" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-motion-chart-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1255278965600" />
+                          <option name="revision" value="787" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-sigmm-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1254217387974" />
+                          <option name="revision" value="761" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-taglist-plugin-0.6" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1253976089248" />
+                          <option name="revision" value="748" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-security-rules-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1253822039220" />
+                          <option name="revision" value="738" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-artifact-size-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1253785648189" />
+                          <option name="revision" value="727" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/parent-3" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1253573213268" />
+                          <option name="revision" value="701" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/pdf-report-0.3" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1252939308433" />
+                          <option name="revision" value="667" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-rulesmeter-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1251466009137" />
+                          <option name="revision" value="615" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-jira-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1251395119208" />
+                          <option name="revision" value="611" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/hello-world-1.10" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1251108158539" />
+                          <option name="revision" value="582" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-greenpepper-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1251105968913" />
+                          <option name="revision" value="576" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-emma-plugin-0.3" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1251105954667" />
+                          <option name="revision" value="573" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-build-breaker-plugin-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1250863675639" />
+                          <option name="revision" value="569" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-plugin-taglist-0.5" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1250862751396" />
+                          <option name="revision" value="566" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/technical-debt-0.3" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1248434828360" />
+                          <option name="revision" value="462" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-plugin-hammurapi-1.0" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1244809238217" />
+                          <option name="revision" value="360" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-plugin-taglist-0.4" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1244287162494" />
+                          <option name="revision" value="351" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/technical-debt-0.2" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1244202569230" />
+                          <option name="revision" value="348" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-plugin-taglist-0.3" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1243540621780" />
+                          <option name="revision" value="329" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/technical-debt-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1243448167734" />
+                          <option name="revision" value="323" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/pdf-report-0.2" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1243257956034" />
+                          <option name="revision" value="311" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/emma-0.2" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1243231178714" />
+                          <option name="revision" value="301" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/hello-world-1.9" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1240580074215" />
+                          <option name="revision" value="254" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/hello-world-1.8" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1240264206147" />
+                          <option name="revision" value="246" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-plugin-taglist-0.2" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1240213778396" />
+                          <option name="revision" value="239" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/pdf-report-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1239972012081" />
+                          <option name="revision" value="224" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/sonar-plugin-taglist-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1239970432108" />
+                          <option name="revision" value="212" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/parent-2" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1238832413921" />
+                          <option name="revision" value="147" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/maven-report-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1238700152684" />
+                          <option name="revision" value="140" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/emma-0.1" />
+                        </SvnBranchItem>
+                        <SvnBranchItem>
+                          <option name="creationDateMillis" value="1236448851641" />
+                          <option name="revision" value="34" />
+                          <option name="url" value="https://svn.codehaus.org:443/sonar-plugins/tags/parent-1" />
+                        </SvnBranchItem>
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://svn.codehaus.org:443/sonar-plugins/branches" />
+                  <option value="https://svn.codehaus.org:443/sonar-plugins/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://svn.codehaus.org:443/sonar-plugins/trunk" />
+              <option name="userinfoInUrl" value="true" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="SvnChangesBrowserSettings">
@@ -1047,12 +1252,30 @@
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
       </SOURCES>
