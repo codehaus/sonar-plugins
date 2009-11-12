@@ -129,10 +129,6 @@
   <component name="EntryPointsManager">
     <entry_points />
   </component>
-  <component name="ErrorTreeViewConfiguration">
-    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
-    <option name="HIDE_WARNINGS" value="false" />
-  </component>
   <component name="ExportToHTMLSettings">
     <option name="PRINT_LINE_NUMBERS" value="false" />
     <option name="OPEN_IN_BROWSER" value="false" />
@@ -1070,6 +1066,8 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
@@ -1082,8 +1080,12 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/sonar/sonar-plugin-api/1.11/sonar-plugin-api-1.11-tests-sources.jar!/" />
