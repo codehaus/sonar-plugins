@@ -12,7 +12,7 @@
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-sonarj-plugin</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Sonar SonarJ Plugin</name>
 
   <properties>
@@ -64,9 +64,9 @@
     </pluginRepository>
   </pluginRepositories>
   <scm>
-  	<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/1.0</connection>
-  	<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/1.0</developerConnection>
-  	<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/1.0</url>
+  	<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-sonarj-plugin-1.0</connection>
+  	<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sonarj-plugin-1.0</developerConnection>
+  	<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sonarj-plugin-1.0</url>
   </scm>
 
   <build>
