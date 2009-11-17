@@ -17,7 +17,8 @@
 # License along with Sonar; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
 #
-class Api::RadiatorWebServiceController < Api::ResourceRestController
+require "json"
+class Api::RadiatorWebServiceController < Api::RestController
 
   def initialize()
     @min = 0
@@ -31,6 +32,8 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
   
   def rest_call
     parent_resource_key=nil
+    @resource=Project.by_key(params[:resource]) if params[:resource]
+
     if @resource
       last_snapshot=@resource.last_snapshot
       snapshots = Snapshot.find(:all,
@@ -39,8 +42,10 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
       parent_snapshot=last_snapshot.parent
       parent_resource_key = parent_snapshot.project_id if parent_snapshot 
     else
-      snapshots = Snapshot.last_authorized_enabled_projects(current_user)
+      snapshots = Snapshot.last_enabled_projects
     end
+
+    snapshots=select_authorized(:user, snapshots)
 
     size_metric = Metric.by_key(params[:size]) || Sonar::TreemapBuilder.default_size_metric
     color_metric = Metric.by_key(params[:color]) || Sonar::TreemapBuilder.default_color_metric
@@ -87,8 +92,8 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
       end
     end
     
-    {:children => children, :data => { '$area' => area }, :id => "radiator", :name => "Radiator", :parent => parent_resource_key, 
-      :min => @min, :max => @max, :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction}.to_json
+    JSON({:children => children, :data => { '$area' => area }, :id => "radiator", :name => "Radiator", :parent => parent_resource_key, 
+      :min => @min, :max => @max, :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction})
   end
   
   def get_measure(metric, measures)
@@ -111,7 +116,7 @@ class Api::RadiatorWebServiceController < Api::ResourceRestController
           when Metric::TYPE_LEVEL_ERROR : value=0
         end
       else
-        value = measure.value
+        value = measure.value.to_f
       end
     end
     value
