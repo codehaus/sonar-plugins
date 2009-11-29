@@ -82,7 +82,8 @@ public class MMSensor implements Sensor {
   }
 
   protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
-    String key = StringUtils.removeEnd(file.getKey(), ".java");
+    String key = MMPlugin.convertKeyFromSquidToSonarFormat(file.getKey());
+    //StringUtils.removeEnd(file.getKey(), ".java");
     Resource resource = context.getResource(key);
     context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
   }
