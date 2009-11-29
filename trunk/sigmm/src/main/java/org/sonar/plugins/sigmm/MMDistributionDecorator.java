@@ -41,7 +41,7 @@ public class MMDistributionDecorator implements Decorator {
 
   public void decorate(Resource resource, DecoratorContext context) {
     // Distribution has already been calculated by the Sensor at file level
-    if (ResourceUtils.isEntity(resource)) {
+    if (!MMPlugin.shouldPersistMeasures(resource)) {
       return;
     }
     computeAndSaveDistributionFromChildren(resource, context, MMConfiguration.CC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_CC_DISTRIB);
@@ -50,9 +50,6 @@ public class MMDistributionDecorator implements Decorator {
 
   protected void computeAndSaveDistributionFromChildren(Resource resource, DecoratorContext context, Number[] bottomLimits, Metric metric) {
     Measure measure = computeDistributionFromChildren(context, bottomLimits, metric);
-    if (!MMPlugin.shouldPersistMeasures(resource)) {
-      measure.setPersistenceMode(PersistenceMode.MEMORY);
-    }
     context.saveMeasure(measure);
   }
 

@@ -74,7 +74,7 @@ public final class MMPlugin implements org.sonar.api.Plugin {
   }
 
   protected static boolean shouldPersistMeasures(Resource resource) {
-    if (ResourceUtils.isRootProject(resource)) {
+    if (! ResourceUtils.isFile(resource) && ! ResourceUtils.isClass(resource)) {
       return true;
     }
     return false;
