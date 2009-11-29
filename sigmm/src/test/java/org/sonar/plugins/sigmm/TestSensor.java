@@ -56,10 +56,10 @@ public class TestSensor {
   public void testMeasureSaving() {
     SensorContext context = mock(SensorContext.class);
     Resource resource = new File("foo");
-    when(context.getResource("foo")).
+    when(context.getResource("[default].foo")).
       thenReturn(resource);
 
-    SourceCode file = new SourceFile("foo");
+    SourceCode file = new SourceFile("foo.java");
     Number[] bLimits = {30, 20, 10, 0};
     RangeDistributionBuilder distrib = new RangeDistributionBuilder(MMMetrics.NCLOC_BY_NCLOC_DISTRIB, bLimits);
     MMSensor sensor = new MMSensor(null);
@@ -69,13 +69,13 @@ public class TestSensor {
       public boolean matches(Object o) {
         Measure m = (Measure)o;
 
-        return StringUtils.isNotEmpty(m.getData()); //To change body of implemented methods use File | Settings | File Templates.
+        return StringUtils.isNotEmpty(m.getData());
       }
 
       public void describeTo(Description description) {
       }
     }));
-    // Vérifier que Measure a bien une persistence mémoire
+    // Vï¿½rifier que Measure a bien une persistence mï¿½moire
   }
 
 
