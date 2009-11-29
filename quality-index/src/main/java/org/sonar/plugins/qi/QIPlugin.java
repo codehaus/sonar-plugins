@@ -124,14 +124,14 @@ public class QIPlugin implements Plugin {
    * @return the plugin name
    */
   public String getName() {
-    return "The Quality Index Sonar Plugin";
+    return "Quality Index";
   }
 
   /**
    * @return the plugin description
    */
   public String getDescription() {
-    return "The Quality Index Sonar Plugin";
+    return "Quality Index";
   }
 
   /**
