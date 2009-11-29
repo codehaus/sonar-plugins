@@ -25,17 +25,6 @@ import org.sonar.api.web.AbstractDashboardWidget;
  * {@inheritDoc}
  */
 public final class MMWidget extends AbstractDashboardWidget {
-
-   /*public String getTemplate() {
-      try {
-          return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/Windows/Temp/toto.erb"), "UTF-8");
-
-      } catch (java.io.IOException e) {
-          throw new RuntimeException("Can not load the file");
-      }
-  }*/
-
-
   protected String getTemplatePath() {
     return "/org/sonar/plugins/sigmm/mm_widget.erb";
   }
