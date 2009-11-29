@@ -56,7 +56,7 @@ public class ComplexityDistributionSensorTest {
     SensorContext context = mock(SensorContext.class);
     Resource resource = new File("foo");
 
-    when(context.getResource("foo")).
+    when(context.getResource("[default].foo")).
         thenReturn(resource);
 
     RangeDistributionBuilder distrib = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);

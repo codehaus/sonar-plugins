@@ -122,7 +122,7 @@ public class ComplexityDistributionSensor implements Sensor {
    * @param nclocDistribution the distribution
    */
   protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
-    String key = StringUtils.removeEnd(file.getKey(), ".java");
+    String key = QIPlugin.convertKeyFromSquidToSonarFormat(file.getKey());
     Resource resource = context.getResource(key);
     context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
   }

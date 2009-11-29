@@ -34,7 +34,8 @@ public class QIMetrics implements org.sonar.api.measures.Metrics {
    * The QI metric
    */
   public static final Metric QI_QUALITY_INDEX = new Metric("qi-quality-index", "Quality Index",
-      "The quality index of a project", Metric.ValueType.FLOAT, 1, true, CoreMetrics.DOMAIN_GENERAL);
+      "The quality index of a project", Metric.ValueType.FLOAT, 1, true, CoreMetrics.DOMAIN_GENERAL)
+    .setBestValue(10.0).setWorstValue(0.0);
 
   /**
    * The coding axis metric for QI

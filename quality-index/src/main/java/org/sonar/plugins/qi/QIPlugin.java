@@ -28,23 +28,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Properties({
-    @Property(key = QIPlugin.QI_CODING_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT,
-        name = "A weight is associated to each CODING violation, depending on the priority", description = ""),
+  @Property(key = QIPlugin.QI_CODING_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT,
+    name = "A weight is associated to each CODING violation, depending on the priority", description = ""),
 
-    @Property(key = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS_DEFAULT,
-        name = "A weight is associated to each STYLE violation, depending on the priority", description = ""),
+  @Property(key = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS, defaultValue = QIPlugin.QI_STYLE_PRIORITY_WEIGHTS_DEFAULT,
+    name = "A weight is associated to each STYLE violation, depending on the priority", description = ""),
 
-    @Property(key = QIPlugin.QI_CODING_AXIS_WEIGHT, defaultValue = QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT,
-        name = "The weight the CODING axis is given", description = ""),
+  @Property(key = QIPlugin.QI_CODING_AXIS_WEIGHT, defaultValue = QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT,
+    name = "The weight the CODING axis is given", description = ""),
 
-    @Property(key = QIPlugin.QI_STYLE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_STYLE_AXIS_WEIGHT_DEFAULT,
-        name = "The weight the STYLE axis is given", description = ""),
+  @Property(key = QIPlugin.QI_STYLE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_STYLE_AXIS_WEIGHT_DEFAULT,
+    name = "The weight the STYLE axis is given", description = ""),
 
-    @Property(key = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT,
-        name = "The weight the COMPLEXITY axis is given", description = ""),
+  @Property(key = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT,
+    name = "The weight the COMPLEXITY axis is given", description = ""),
 
-    @Property(key = QIPlugin.QI_COVERAGE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT,
-        name = "The weight the COVERAGE axis is given", description = "")
+  @Property(key = QIPlugin.QI_COVERAGE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT,
+    name = "The weight the COVERAGE axis is given", description = "")
 })
 
 public class QIPlugin implements Plugin {
@@ -149,6 +149,21 @@ public class QIPlugin implements Plugin {
     list.add(QIWidget.class);
     list.add(StyleViolationsDecorator.class);
     return list;
+  }
+
+  // Temporary work around until API is updated
+  static String convertKeyFromSquidToSonarFormat(String key) {
+    boolean isJavaFile = key.endsWith(".java");
+    if (isJavaFile) {
+      key = key.substring(0, key.length() - ".java".length());
+    }
+    String convertedKey = key.replace('/', '.');
+    if (convertedKey.indexOf('.') == -1 && !convertedKey.equals("")) {
+      convertedKey = "[default]." + convertedKey;
+    } else if (convertedKey.indexOf('.') == -1) {
+      convertedKey = "[default]";
+    }
+    return convertedKey;
   }
 
   @Override

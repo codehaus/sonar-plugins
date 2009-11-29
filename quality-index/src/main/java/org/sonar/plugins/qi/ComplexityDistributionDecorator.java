@@ -46,7 +46,7 @@ public class ComplexityDistributionDecorator implements Decorator {
 
   public void decorate(Resource resource, DecoratorContext context) {
     // Distribution has already been calculated by the ComplexityDistributionSensor at file level
-    if (resource.getQualifier().equals(Resource.QUALIFIER_FILE) && Utils.shouldSaveMeasure(resource)) {
+    if (!resource.getQualifier().equals(Resource.QUALIFIER_FILE) && Utils.shouldSaveMeasure(resource)) {
       computeAndSaveComplexityDistribution(resource, context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
     }
   }
