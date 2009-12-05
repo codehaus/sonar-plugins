@@ -11,7 +11,7 @@
 
   <artifactId>sonar-radiator-plugin</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <name>Sonar Radiator plugin</name>
   <description>Display measures in a big treemap.</description>
 
@@ -20,9 +20,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-radiator-plugin-1.0</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-radiator-plugin-1.0</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-radiator-plugin-1.0</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/radiator</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/radiator</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
 
   <licenses>
