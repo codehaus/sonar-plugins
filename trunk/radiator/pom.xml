@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>1.12-SNAPSHOT</version>
+      <version>1.12</version>
     </dependency>
   </dependencies>
 
