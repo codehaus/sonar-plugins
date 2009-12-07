@@ -23,10 +23,7 @@ package org.sonar.plugins.sigmm;
 
 import java.util.*;
 
-import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.Sensor;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.SquidSearch;
+import org.sonar.api.batch.*;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.measures.RangeDistributionBuilder;
@@ -82,7 +79,7 @@ public class MMSensor implements Sensor {
   }
 
   protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
-    String key = MMPlugin.convertKeyFromSquidToSonarFormat(file.getKey());
+    String key = SquidUtils.convertKeyFromSquidToSonarFormat(file.getKey());
     Resource resource = context.getResource(key);
     context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
   }

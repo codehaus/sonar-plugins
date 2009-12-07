@@ -79,19 +79,4 @@ public final class MMPlugin implements org.sonar.api.Plugin {
     }
     return false;
   }
-
-  // Temporary work around until API is updated
-  static String convertKeyFromSquidToSonarFormat(String key) {
-    boolean isJavaFile = key.endsWith(".java");
-    if (isJavaFile) {
-      key = key.substring(0, key.length() - ".java".length());
-    }
-    String convertedKey = key.replace('/', '.');
-    if (convertedKey.indexOf('.') == -1 && !convertedKey.equals("")) {
-      convertedKey = "[default]." + convertedKey;
-    } else if (convertedKey.indexOf('.') == -1) {
-      convertedKey = "[default]";
-    }
-    return convertedKey;
-  }
 }

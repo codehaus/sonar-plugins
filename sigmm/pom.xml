@@ -12,7 +12,7 @@
   <description>Implementation of the SIG Maintainability Model</description>
 
   <properties>
-    <sonar.version>1.12RC3</sonar.version>
+    <sonar.version>1.12</sonar.version>
   </properties>
 
   <developers>
