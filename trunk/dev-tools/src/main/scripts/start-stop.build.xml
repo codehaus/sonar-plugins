@@ -1,0 +1,232 @@
+<project>
+  <property name="tmpdir" value="${java.io.tmpdir}/sonar"/>
+  <property name="tomcat6.home" value="${tmpdir}/tomcat6"/>
+
+  <taskdef resource="cargo.tasks"/>
+  <taskdef name="httpmpost" classname="net.sf.fikin.ant.httpclientanttask.AntMultipartPostMethod"/>
+  <taskdef name="httppost" classname="net.sf.fikin.ant.httpclientanttask.AntPostMethod"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <!---->
+  <!--<taskdef name="for" classname="net.sf.antcontrib.logic.ForTask"/>-->
+
+
+  <!-- entry points : start and stop -->
+  <target name="start" depends="drop-database,build-war">
+    <condition property="execute.analyze.maven.projects">
+      <and>
+        <available file="${mavenProjectsDir}" type="dir" property="has.maven.projects"/>
+        <istrue value="${analyzeProjects}"/>
+      </and>
+    </condition>
+
+    <parallel>
+      <antcall target="start-container"/>
+      <sequential>
+        <antcall target="setup"/>
+        <antcall target="analyze-maven-projects"/>
+      </sequential>
+    </parallel>
+  </target>
+
+
+  <target name="stop" depends="stop-container"/>
+
+
+  <!-- STEP 1 : initialize the database -->
+  <target name="drop-database">
+    <condition property="execute.drop.database">
+      <istrue value="${dropDatabase}"/>
+    </condition>
+    <antcall target="do-drop-database"/>
+  </target>
+
+  <target name="do-drop-database" if="execute.drop.database">
+    <fail unless="database" message="Missing database parameter"/>
+
+    <sql driver="${jdbcDriver}"
+         url="${jdbcRootUrl}"
+         userid="${jdbcRootUsername}"
+         password="${jdbcRootPassword}"
+         onerror="continue"
+         autocommit="true"
+         expandProperties="true">
+      <resources>
+        <javaresource name="database/${database}/drop-db.sql"/>
+        <javaresource name="database/${database}/drop-user.sql"/>
+        <javaresource name="database/${database}/create-user.sql"/>
+        <javaresource name="database/${database}/create-db.sql"/>
+      </resources>
+    </sql>
+
+    <echo>Database is ready</echo>
+  </target>
+
+
+  <!-- STEP 2 : install Sonar -->
+  <target name="clean-sonar-home" if="clean">
+    <delete dir="${tmpdir}/sonar-${sonarVersion}"/>
+    <mkdir dir="${tmpdir}"/>
+  </target>
+
+
+  <target name="prepare-sonar-home" unless="is.installed">
+    <copy tofile="${tmpdir}/sonar-${sonarVersion}.zip" overwrite="true" verbose="true" flatten="true"
+          failonerror="false"
+          file="${settings.localRepository}/org/codehaus/sonar/sonar-application/${sonarVersion}/sonar-application-${sonarVersion}.zip">
+    </copy>
+    <condition property="execute.download-sonar">
+      <not>
+        <available file="${tmpdir}/sonar-${sonarVersion}.zip"/>
+      </not>
+    </condition>
+    <antcall target="download-sonar"/>
+    <unzip src="${tmpdir}/sonar-${sonarVersion}.zip" dest="${tmpdir}"/>
+  </target>
+
+
+  <target name="download-sonar" if="execute.download-sonar">
+    <echo>Downloading sonar</echo>
+    <get src="http://dist.sonar.codehaus.org/sonar-${sonarVersion}.zip" dest="${tmpdir}/sonar-${sonarVersion}.zip"/>
+  </target>
+
+
+  <target name="copy-extensions" if="has.extensions">
+    <echo>Copy extensions...</echo>
+    <copy todir="${tmpdir}/sonar-${sonarVersion}/extensions" overwrite="true" verbose="true" flatten="false">
+      <fileset dir="${extensionsDir}"/>
+    </copy>
+  </target>
+
+
+  <target name="copy-plugin-artifact" if="has.plugin.artifact">
+    <echo>Copy plugin artifact...</echo>
+    <copy todir="${tmpdir}/sonar-${sonarVersion}/extensions/plugins" overwrite="true" verbose="true" flatten="true"
+          file="${pluginArtifact}">
+    </copy>
+  </target>
+
+
+  <target name="build-war" depends="clean-sonar-home">
+    <available property="is.installed" file="${tmpdir}/sonar-${sonarVersion}/conf/sonar.properties"/>
+    <antcall target="prepare-sonar-home"/>
+
+    <copy todir="${tmpdir}/sonar-${sonarVersion}/conf/" overwrite="true" verbose="true" flatten="true">
+      <resources>
+        <javaresource name="server/sonar.properties"/>
+      </resources>
+    </copy>
+
+    <available property="has.extensions" file="${extensionsDir}"/>
+    <antcall target="copy-extensions"/>
+
+    <available file="${pluginArtifact}" property="has.plugin.artifact"/>
+    <antcall target="copy-plugin-artifact"/>
+
+    <ant dir="${tmpdir}/sonar-${sonarVersion}/war/" inheritAll="false"/>
+  </target>
+
+
+  <!-- STEP 3 : start web server -->
+
+  <target name="start-container">
+    <echo>Starting tomcat</echo>
+    <mkdir dir="${tomcat6.home}"/>
+    <cargo containerId="tomcat6x" action="start" wait="${wait}" id="tmptmct6-${sonarVersion}">
+      <!-- http://apache.crihan.fr/dist/tomcat/tomcat-6/v6.0.18/bin/apache-tomcat-6.0.18.zip -->
+      <zipurlinstaller
+          installurl="ftp://mirror.switch.ch/mirror/apache/dist/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.zip"/>
+      <configuration type="standalone" home="${tomcat6.home}">
+        <property name="cargo.jvmargs"
+                  value="-Xmx768m -server -Dsonar.runtime.mode=${environment} -Dsonar.jdbc.url=${jdbcUrl} -Dsonar.jdbc.driverClassName=${jdbcDriver} -Dsonar.jdbc.username=${jdbcUsername} -Dsonar.jdbc.password=${jdbcPassword}"/>
+        <property name="cargo.servlet.port" value="9000"/>
+        <property name="cargo.remote.username" value="admin"/>
+        <property name="cargo.remote.password" value=""/>
+        <deployable type="war" file="${tmpdir}/sonar-${sonarVersion}/war/sonar.war">
+          <property name="context" value="ROOT"/>
+        </deployable>
+      </configuration>
+    </cargo>
+    <antcall target="wait-for-server"/>
+  </target>
+
+  <target name="stop-container">
+    <echo>Stopping tomcat</echo>
+    <cargo containerId="tomcat6x" action="stop" wait="true" id="tmptmct6-${sonarVersion}">
+      <zipurlinstaller installurl="ftp://mirror.switch.ch/mirror/apache/dist/tomcat/tomcat-6/v6.0.20/bin/apache-tomcat-6.0.20.zip"/>
+      <configuration type="standalone" home="${tomcat6.home}">
+        <property name="cargo.jvmargs" value="-Xmx768m -server"/>
+        <property name="cargo.servlet.port" value="9000"/>
+        <property name="cargo.remote.username" value="admin"/>
+        <property name="cargo.remote.password" value=""/>
+      </configuration>
+    </cargo>
+  </target>
+
+
+  <!-- STEP 4 : setup sonar -->
+
+  <target name="wait-for-server">
+    <waitfor maxwait="5" maxwaitunit="minute" checkevery="10" checkeveryunit="second">
+      <http url="http://localhost:9000"/>
+    </waitfor>
+  </target>
+
+  <target name="setup" depends="wait-for-server">
+    <httppost url="http://localhost:9000/setup/setup_database" logLevel="none"/>
+    <echo message="Database is up."/>
+
+    <condition property="execute.restore.backup" value="true">
+      <isset property="configBackup"/>
+    </condition>
+    <antcall target="restore-backup"/>
+  </target>
+
+
+  <target name="restore-backup" if="execute.restore.backup">
+    <echo message="Restoring sonar backup"/>
+
+    <httppost url="http://localhost:9000/sessions/login" logLevel="none">
+      <post name="login" value="admin"/>
+      <post name="password" value="admin"/>
+    </httppost>
+    <echo message="Logged in."/>
+
+    <httpmpost url="http://localhost:9000/backup/import" logLevel="none">
+      <postFile name="file" file="${configBackup}"/>
+    </httpmpost>
+    <echo message="Backup is restored."/>
+  </target>
+
+
+  <!-- STEP 5 : analyze projects -->
+
+  <target name="analyze-maven-projects" if="execute.analyze.maven.projects">
+    <for param="pom">
+      <path>
+        <fileset dir="${mavenProjectsDir}" includes="*/pom.xml"/>
+      </path>
+      <sequential>
+        <mvn pom="@{pom}" failonerror="false" args="install -DskipTests"/>
+        <mvn pom="@{pom}" failonerror="true"
+             args="sonar:sonar -Dsonar.jdbc.url=${jdbcUrl} -Dsonar.jdbc.driver=${jdbcDriver} -Dsonar.jdbc.username=${jdbcUsername} -Dsonar.jdbc.password=${jdbcPassword}"/>
+      </sequential>
+    </for>
+  </target>
+
+  <macrodef name="mvn">
+    <attribute name="failonerror" default="true"/>
+    <attribute name="pom"/>
+    <attribute name="args" default=""/>
+
+    <sequential>
+      <exec failonerror="@{failonerror}" executable="mvn.bat" osfamily="Windows">
+        <arg line="-f @{pom}"/>
+        <arg line="@{args}"/>
+      </exec>
+      <exec failonerror="@{failonerror}" executable="mvn" osfamily="unix">
+        <arg line="-f @{pom}"/>
+        <arg line="@{args} "/>
+      </exec>
+    </sequential>
+  </macrodef>
+</project>
