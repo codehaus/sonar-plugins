@@ -1,0 +1,5 @@
+CREATE USER ${jdbcUsername} IDENTIFIED BY ${jdbcPassword} DEFAULT TABLESPACE USERS ACCOUNT UNLOCK;
+GRANT CONNECT TO ${jdbcUsername};
+GRANT RESOURCE TO ${jdbcUsername};
+GRANT CREATE TABLE to ${jdbcUsername};
+GRANT CREATE SEQUENCE to ${jdbcUsername};
