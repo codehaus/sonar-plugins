@@ -1,5 +1,6 @@
 package org.codehaus.sonar.plugins.testability.client;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.sonar.api.web.gwt.client.webservices.ResourcesQuery;
 import org.sonar.api.web.gwt.client.widgets.AbstractSourcePanel;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.user.client.Window;
 
 public class GwtTestabilitySourcePanel extends AbstractSourcePanel {
 
@@ -83,9 +85,30 @@ public class GwtTestabilitySourcePanel extends AbstractSourcePanel {
   private List<Row> decorateSourceLine(int index, String source) {
     List<Row> rows;
     if (hasCost(index)) {
-      rows =  Arrays.asList(new Row().setLineIndex(index, "red").setSource(source, "red").unsetValue());
+      rows = decorateSourceLineWithCosts(index, source);
     } else {
       rows = Arrays.asList(new Row(index, source));
+    }
+    return rows;
+  }
+
+  private List<Row> decorateSourceLineWithCosts(int lineIndex, String source) {
+    List<Row> rows;
+    if (hasLineViolationsCost(lineIndex)) {
+      rows = getViolationCostRows(lineIndex, source);
+    } else {
+      rows = Arrays.asList((Row)new HasCostDataRow(getMethodTestabilityCostData().getMethodCostOfLine(lineIndex), lineIndex, source));
+    }
+    return rows;
+  }
+
+  private List<Row> getViolationCostRows(int lineIndex, String source) {
+    List<Row> rows;
+    rows = new ArrayList<Row>();
+    rows.add(new Row().setLineIndex(lineIndex, "red").setSource(source, "red").unsetValue());
+    List<ViolationCostDetail> violationsOfLine = getMethodTestabilityCostData().getViolationsOfLine(lineIndex);
+    for (ViolationCostDetail violationCostDetail : violationsOfLine) {
+      rows.add(new HasCostDataRow(violationCostDetail, lineIndex, violationCostDetail.getReason()));
     }
     return rows;
   }
@@ -95,9 +118,12 @@ public class GwtTestabilitySourcePanel extends AbstractSourcePanel {
   }
   
   private boolean hasCost(int lineIndex) {
+    return hasLineViolationsCost(lineIndex) || getMethodTestabilityCostData().getMethodCostOfLine(lineIndex) != null;
+  }
+  
+  private boolean hasLineViolationsCost(int lineIndex) {
     List<ViolationCostDetail> violationsOfLine = getMethodTestabilityCostData().getViolationsOfLine(lineIndex);
-    return (violationsOfLine != null && violationsOfLine.size() > 0)
-        || getMethodTestabilityCostData().getMethodCostOfLine(lineIndex) != null;
+    return violationsOfLine != null && violationsOfLine.size() > 0;
   }
 
 }
