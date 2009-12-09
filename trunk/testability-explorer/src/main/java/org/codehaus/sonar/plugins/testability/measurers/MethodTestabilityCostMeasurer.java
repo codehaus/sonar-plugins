@@ -5,8 +5,8 @@ import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.METHOD_D
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostData;
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
-import org.sonar.commons.resources.Measure;
-import org.sonar.plugins.api.measures.MeasureBuilder;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.MeasureBuilder;
 
 public class MethodTestabilityCostMeasurer implements MeasureBuilder { 
   

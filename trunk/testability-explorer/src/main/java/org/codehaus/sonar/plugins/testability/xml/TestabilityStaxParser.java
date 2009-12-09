@@ -1,6 +1,9 @@
 package org.codehaus.sonar.plugins.testability.xml;
 
-import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.*;
+import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.ACCEPTABLE_CLASSES;
+import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.EXCELLENT_CLASSES;
+import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.NEEDSWORK_CLASSES;
+import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.TESTABILITY_COST;
 
 import java.io.File;
 
@@ -13,11 +16,12 @@ import org.codehaus.sonar.plugins.testability.measurers.MethodTestabilityCostMea
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMEvent;
 import org.codehaus.staxmate.in.SMInputCursor;
-import org.sonar.commons.resources.Measure;
-import org.sonar.commons.resources.Resource;
-import org.sonar.plugins.api.Java;
-import org.sonar.plugins.api.maven.ProjectContext;
-import org.sonar.plugins.api.maven.xml.XmlParserException;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.JavaFile;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.utils.XmlParserException;
 
 public class TestabilityStaxParser {
 
@@ -34,7 +38,7 @@ public class TestabilityStaxParser {
   private static final String METHOD_TAG = "method";
   private static final String COST_TAG = "cost";
 
-  public void parse(File file, ProjectContext context) {
+  public void parse(File file, SensorContext context) {
     SMInputFactory inf = new SMInputFactory(XMLInputFactory.newInstance());
     try {
       SMInputCursor cursor = inf.rootElementCursor(file).advance();
@@ -45,24 +49,24 @@ public class TestabilityStaxParser {
     }
   }
 
-  private void parseTestability(SMInputCursor cursor, ProjectContext context) throws XMLStreamException {
-    context.addMeasure(EXCELLENT_CLASSES, StaxMateHelper.getDoubleValue(cursor, EXCELLENT_ATTR));
-    context.addMeasure(ACCEPTABLE_CLASSES, StaxMateHelper.getDoubleValue(cursor, GOOD_ATTR));
-    context.addMeasure(NEEDSWORK_CLASSES, StaxMateHelper.getDoubleValue(cursor, NEEDS_WORK_ATTR));
-    context.addMeasure(TESTABILITY_COST, StaxMateHelper.getDoubleValue(cursor, OVERALL_ATTR));
+  private void parseTestability(SMInputCursor cursor, SensorContext context) throws XMLStreamException {
+    context.saveMeasure(EXCELLENT_CLASSES, StaxMateHelper.getDoubleValue(cursor, EXCELLENT_ATTR));
+    context.saveMeasure(ACCEPTABLE_CLASSES, StaxMateHelper.getDoubleValue(cursor, GOOD_ATTR));
+    context.saveMeasure(NEEDSWORK_CLASSES, StaxMateHelper.getDoubleValue(cursor, NEEDS_WORK_ATTR));
+    context.saveMeasure(TESTABILITY_COST, StaxMateHelper.getDoubleValue(cursor, OVERALL_ATTR));
     parseClasses(cursor, context);
   }
 
-  private void parseClasses(SMInputCursor cursor, ProjectContext context) throws XMLStreamException {
+  private void parseClasses(SMInputCursor cursor, SensorContext context) throws XMLStreamException {
     SMInputCursor classCursor = cursor.descendantElementCursor(CLASS_TAG);
     SMEvent event = null;
     while ((event = classCursor.getNext()) != null) {
       if (event.compareTo(SMEvent.START_ELEMENT) == 0) {
-        Resource resource = Java.newClass(StaxMateHelper.getStringValue(classCursor, CLASS_TAG));
-        context.addMeasure(resource, new Measure(TESTABILITY_COST, StaxMateHelper.getDoubleValue(classCursor, COST_TAG)));
+        Resource<?> resource = new JavaFile(StaxMateHelper.getStringValue(classCursor, CLASS_TAG));
+        context.saveMeasure(resource, new Measure(TESTABILITY_COST, StaxMateHelper.getDoubleValue(classCursor, COST_TAG)));
         MethodTestabilityCostMeasurer measurer = new MethodTestabilityCostMeasurer();
         parseMethods(classCursor, measurer);
-        context.addMeasure(resource, measurer.build());
+        context.saveMeasure(resource, measurer.build());
       }
     }
   }

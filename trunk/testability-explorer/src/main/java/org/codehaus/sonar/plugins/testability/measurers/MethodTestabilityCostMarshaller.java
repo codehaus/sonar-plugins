@@ -3,8 +3,9 @@ package org.codehaus.sonar.plugins.testability.measurers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.sonar.plugins.testability.client.model.HasCostData;
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
-import org.sonar.plugins.api.measures.KeyValueFormat;
+import org.sonar.api.utils.KeyValueFormat;
 
 public class MethodTestabilityCostMarshaller implements CostMarshaller<MethodTestabilityCostDetail> {
 

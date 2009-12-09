@@ -5,6 +5,7 @@ import static org.codehaus.sonar.plugins.testability.client.model.SerializationC
 import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.LOD;
 import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.OVERALL;
 
+import org.codehaus.sonar.plugins.testability.client.model.HasCostData;
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
 /**
  * Marshalls a org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail

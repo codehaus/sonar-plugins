@@ -9,7 +9,7 @@ public class MethodTestabilityCostDataDecoderGwtTest extends GWTTestCase {
   public void testDecodeMethodTestabilityCostDetail() {
     MethodTestabilityCostDataDecoderImpl decoder = new MethodTestabilityCostDataDecoderImpl();
     JSONValue jsonValue = JSONParser.parse("{\"cyclomatic\":1,\"global\":2,\"lod\":3,\"overall\":4}");
-    MethodTestabilityCostDetail methodCost = decoder.createMethodCost(jsonValue.isObject());
+    HasCostData methodCost = decoder.createMethodCost(jsonValue.isObject());
     assertEquals("MethodTestabilityCostDetail - Cyclomatic", 1, methodCost.getCyclomaticComplexity());
     assertEquals("MethodTestabilityCostDetail - Global", 2, methodCost.getGlobal());
     assertEquals("MethodTestabilityCostDetail - Law of Demeter", 3, methodCost.getLawOfDemeter());

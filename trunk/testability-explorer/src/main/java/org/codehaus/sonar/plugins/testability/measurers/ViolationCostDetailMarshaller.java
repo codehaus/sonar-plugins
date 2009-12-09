@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
-import org.sonar.plugins.api.measures.KeyValueFormat;
+import org.sonar.api.utils.KeyValueFormat;
 
 public class ViolationCostDetailMarshaller implements CostMarshaller<ViolationCostDetail> {
 

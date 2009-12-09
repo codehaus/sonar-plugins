@@ -1,7 +1,7 @@
 package org.codehaus.sonar.plugins.testability.client.model;
 
 
-public class MethodTestabilityCostDetail implements CostDetail {
+public class MethodTestabilityCostDetail implements CostDetail, HasCostData {
   private int cyclomaticComplexity;
   private int global;
   private int lawOfDemeter;

@@ -1,21 +1,17 @@
 package org.codehaus.sonar.plugins.testability.client;
 
 import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
-import org.sonar.plugins.api.web.gwt.client.AbstractSourcesResourceTab;
-import org.sonar.plugins.api.web.gwt.client.ResourcePanel;
-import org.sonar.plugins.api.web.gwt.client.SourceDecorator;
-import org.sonar.plugins.api.web.gwt.client.webservices.Resource;
-import org.sonar.plugins.api.web.gwt.client.webservices.WSMetrics.Metric;
+import org.sonar.api.web.gwt.client.AbstractViewer;
+import org.sonar.api.web.gwt.client.webservices.Resource;
+import org.sonar.api.web.gwt.client.webservices.WSMetrics.Metric;
 
-public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Widget;
+
+public class GwtTestabilityDetailsViewer extends AbstractViewer {
   
   public static final String GWT_ID = "org.codehaus.sonar.plugins.testability.GwtTestabilityDetailsViewer";
   
-  @Override
-  protected ResourcePanel getHeaderPanel(Resource resource) {
-    return new TestabilityMetricsHeaderWidget(resource);
-  }
-
   @Override
   protected void exportJavascript() {
     exportNativeJavascript(this);
@@ -42,12 +38,16 @@ public class GwtTestabilityDetailsViewer extends AbstractSourcesResourceTab {
 
   @Override
   protected boolean isForResource(Resource resource) {
-    return resource.getScope().equals(Resource.SCOPE_FILE) && resource.getQualifier().equals(Resource.QUALIFIER_CLASS);
+    return resource.getScope().equals(Resource.SCOPE_ENTITY) && resource.getQualifier().equals(Resource.QUALIFIER_CLASS);
   }
 
-  @Override
-  protected SourceDecorator<?> getDecorator(Resource resource) {
-    return new TestabilitySourceDecorator(resource);
-  }
+	@Override
+	protected Widget render(Resource resource) {
+	  FlowPanel panel = new FlowPanel();
+	  panel.setWidth("100%");
+	  panel.add(new GwtTestabilitySourceHeader(resource));
+	  panel.add(new GwtTestabilitySourcePanel(resource));
+	  return panel;
+	}
 
 }

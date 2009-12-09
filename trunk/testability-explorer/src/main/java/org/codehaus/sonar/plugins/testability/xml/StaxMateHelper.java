@@ -3,7 +3,7 @@ package org.codehaus.sonar.plugins.testability.xml;
 import javax.xml.stream.XMLStreamException;
 
 import org.codehaus.staxmate.in.SMInputCursor;
-import org.sonar.plugins.api.maven.xml.XmlParserException;
+import org.sonar.api.utils.XmlParserException;
 
 public final class StaxMateHelper {
   
