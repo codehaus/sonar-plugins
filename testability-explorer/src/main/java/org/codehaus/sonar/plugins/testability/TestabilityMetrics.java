@@ -3,8 +3,8 @@ package org.codehaus.sonar.plugins.testability;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.commons.Metric;
-import org.sonar.plugins.api.metrics.Metrics;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Metrics;
 
 public class TestabilityMetrics implements Metrics {
 	
@@ -16,11 +16,11 @@ public class TestabilityMetrics implements Metrics {
 
 	private static final String DOMAIN_GLOBAL = "testability_global_metrics"; 
 	
-	public static final Metric EXCELLENT_CLASSES = new Metric(KEY_EXCELLENT_CLASSES, "Excellent classes", "Number of classes qualified as excellent", Metric.ValueType.INT, Metric.DIRECTION_BETTER, false, DOMAIN_GLOBAL, false);
-	public static final Metric ACCEPTABLE_CLASSES = new Metric(KEY_ACCEPTABLE_CLASSES, "Acceptable classes", "Number of classes qualified as acceptable", Metric.ValueType.INT, Metric.DIRECTION_NONE, false, DOMAIN_GLOBAL, false);
-	public static final Metric NEEDSWORK_CLASSES = new Metric(KEY_NEEDSWORK_CLASSES, "Needs work classes", "Number of classes qualified as hard to test (needs work)", Metric.ValueType.INT, Metric.DIRECTION_WORST, false, DOMAIN_GLOBAL, false);
-	public static final Metric TESTABILITY_COST = new Metric(KEY_TESTABILITY_COST, "Overall cost", "Cost of testability", Metric.ValueType.INT, Metric.DIRECTION_WORST, false, DOMAIN_GLOBAL, false);
-	public static final Metric METHOD_DETAILS_COST = new Metric(KEY_METHOD_DETAILS, "Mthod details", "Cost of testability detailed by method and line", Metric.ValueType.DATA, Metric.DIRECTION_NONE, false, DOMAIN_GLOBAL, false);
+	public static final Metric EXCELLENT_CLASSES = new Metric(KEY_EXCELLENT_CLASSES, "Excellent classes", "Number of classes qualified as excellent", Metric.ValueType.INT, Metric.DIRECTION_BETTER, false, DOMAIN_GLOBAL);
+	public static final Metric ACCEPTABLE_CLASSES = new Metric(KEY_ACCEPTABLE_CLASSES, "Acceptable classes", "Number of classes qualified as acceptable", Metric.ValueType.INT, Metric.DIRECTION_NONE, false, DOMAIN_GLOBAL);
+	public static final Metric NEEDSWORK_CLASSES = new Metric(KEY_NEEDSWORK_CLASSES, "Needs work classes", "Number of classes qualified as hard to test (needs work)", Metric.ValueType.INT, Metric.DIRECTION_WORST, false, DOMAIN_GLOBAL);
+	public static final Metric TESTABILITY_COST = new Metric(KEY_TESTABILITY_COST, "Overall cost", "Cost of testability", Metric.ValueType.INT, Metric.DIRECTION_WORST, false, DOMAIN_GLOBAL);
+	public static final Metric METHOD_DETAILS_COST = new Metric(KEY_METHOD_DETAILS, "Mthod details", "Cost of testability detailed by method and line", Metric.ValueType.DATA, Metric.DIRECTION_NONE, false, DOMAIN_GLOBAL);
 		
 	public List<Metric> getMetrics() {
 		ArrayList<Metric> list = new ArrayList<Metric>();

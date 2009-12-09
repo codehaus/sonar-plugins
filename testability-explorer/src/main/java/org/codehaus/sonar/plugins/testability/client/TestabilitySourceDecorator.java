@@ -1,45 +1,10 @@
 package org.codehaus.sonar.plugins.testability.client;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostData;
-import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
-import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
-import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
-import org.sonar.plugins.api.web.gwt.client.SourceDecorator;
-import org.sonar.plugins.api.web.gwt.client.SourcePanel;
-import org.sonar.plugins.api.web.gwt.client.SourcePanel.DecoratorCallBack;
-import org.sonar.plugins.api.web.gwt.client.webservices.Query;
-import org.sonar.plugins.api.web.gwt.client.webservices.Resource;
-import org.sonar.plugins.api.web.gwt.client.webservices.Resources;
-import org.sonar.plugins.api.web.gwt.client.webservices.ResourcesQuery;
 
 
-public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
+public class TestabilitySourceDecorator /*extends SourceDecorator<Resources>*/ {
+/*
 
-  private MethodTestabilityCostData costData;
-
-  public TestabilitySourceDecorator(Resource resource) {
-    super(resource);
-  }
-
-  protected MethodTestabilityCostData getCostData() {
-    if (this.costData == null) {
-      this.costData = new MethodTestabilityCostData();
-    }
-    return this.costData;
-  }
-
-  @Override
-  protected Query<Resources> getDecorationQuery() {
-    return ResourcesQuery.get(getResource().getKey()).setMetrics(Arrays.asList(WSTestabilityMetrics.METHOD_DETAILS_COST));
-  }
-
-  @Override
-  protected DecoratorCallBack<Resources> getQueryCallBack(SourcePanel sourcePanel) {
-    return new TestabilityDecoratorCallBack(sourcePanel, this);
-  }
 
   @Override
   public String decorateValue(int lineIndex) {
@@ -50,10 +15,7 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
     return "<div class='" + CSS_CLASS_VALUE + " " + cssClass + "'>" + lineIndex + "</div>";
   }
 
-  private boolean hasCost(int lineIndex) {
-    List<ViolationCostDetail> violationsOfLine = getCostData().getViolationsOfLine(lineIndex);
-    return (violationsOfLine != null && violationsOfLine.size() > 0) || getCostData().getMethodCostOfLine(lineIndex) != null;
-  }
+
 
   @Override
   public String decorateSource(int lineIndex, String source) {
@@ -82,7 +44,7 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
   }
 
   private String getMethodCostMessage(int lineIndex) {
-    MethodTestabilityCostDetail methodCost = getCostData().getMethodCostOfLine(lineIndex);
+    HasCostData methodCost = getCostData().getMethodCostOfLine(lineIndex);
     String html = "";
     if (methodCost != null) {
       html = "<div class='msg'><ul>";
@@ -98,5 +60,5 @@ public class TestabilitySourceDecorator extends SourceDecorator<Resources> {
   public void setMethodTestabilityCostData(MethodTestabilityCostData costData) {
     this.costData = costData;
   }
-
+*/
 }

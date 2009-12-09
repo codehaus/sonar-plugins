@@ -10,13 +10,13 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 import org.junit.Test;
-import org.sonar.commons.Metric;
-import org.sonar.plugins.api.maven.ProjectContext;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.Metric;
 
 public class TestStaxParser {
   @Test
   public void shouldAdd4MeasuresToProject() {
-    ProjectContext projectContext = mock(ProjectContext.class);
+    SensorContext projectContext = mock(SensorContext.class);
     File file;
     try {
       file = new File(getClass().getResource("/org/codehaus/sonar/plugins/testability/xml/testability.xml").toURI());
@@ -24,7 +24,7 @@ public class TestStaxParser {
       throw new RuntimeException(e);
     }
     new TestabilityStaxParser().parse(file, projectContext);
-    verify(projectContext, times(4)).addMeasure(any(Metric.class), anyDouble());
+    verify(projectContext, times(4)).saveMeasure(any(Metric.class), anyDouble());
   }
   
 }

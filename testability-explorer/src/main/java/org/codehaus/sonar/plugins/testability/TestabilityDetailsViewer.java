@@ -1,7 +1,7 @@
 package org.codehaus.sonar.plugins.testability;
 
 import org.codehaus.sonar.plugins.testability.client.GwtTestabilityDetailsViewer;
-import org.sonar.plugins.api.web.ResourceViewer;
+import org.sonar.api.web.ResourceViewer;
 
 public class TestabilityDetailsViewer implements ResourceViewer {
 

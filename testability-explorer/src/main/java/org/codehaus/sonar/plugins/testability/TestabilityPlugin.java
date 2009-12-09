@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.sonar.plugins.testability.dashboardwidgets.TestabilityGlobalDashboardWidget;
-import org.sonar.plugins.api.EditableProperties;
-import org.sonar.plugins.api.EditableProperty;
-import org.sonar.plugins.api.Extension;
-import org.sonar.plugins.api.Plugin;
+import org.sonar.api.Extension;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
+import org.sonar.api.Plugin;
 
-@EditableProperties( {
-		@EditableProperty(key = TestabilityPlugin.KEY_MAX_ACCEPTABLE_COST, defaultValue = TestabilityPlugin.MAX_ACCEPTABLE_COST_DEFAULT, name = "Maximum cost to be acceptable", description = "Maximum Total Class cost to classify it as 'acceptable'"),
-		@EditableProperty(key = TestabilityPlugin.KEY_MAX_EXCELLENT_COST, defaultValue = TestabilityPlugin.MAX_EXCELLENT_COST_DEFAULT, name = "Maximum cost to be excellent", description = "Maximum Total Class cost to classify it as 'excellent'"),
-		@EditableProperty(key = TestabilityPlugin.KEY_WORST_OFFENDER_COUNT, defaultValue = TestabilityPlugin.WORST_OFFENDER_COUNT_DEFAULT, name = "Number of worst offending classes", description = "Print N number of worst offending classes") })
+@Properties( {
+		@Property(key = TestabilityPlugin.KEY_MAX_ACCEPTABLE_COST, defaultValue = TestabilityPlugin.MAX_ACCEPTABLE_COST_DEFAULT, name = "Maximum cost to be acceptable", description = "Maximum Total Class cost to classify it as 'acceptable'"),
+		@Property(key = TestabilityPlugin.KEY_MAX_EXCELLENT_COST, defaultValue = TestabilityPlugin.MAX_EXCELLENT_COST_DEFAULT, name = "Maximum cost to be excellent", description = "Maximum Total Class cost to classify it as 'excellent'"),
+		@Property(key = TestabilityPlugin.KEY_WORST_OFFENDER_COUNT, defaultValue = TestabilityPlugin.WORST_OFFENDER_COUNT_DEFAULT, name = "Number of worst offending classes", description = "Print N number of worst offending classes") })
 public class TestabilityPlugin implements Plugin {
 
 	public static final String KEY = "testability";
@@ -31,6 +31,7 @@ public class TestabilityPlugin implements Plugin {
 	public List<Class<? extends Extension>> getExtensions() {
 		List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 		list.add(TestabilityMavenCollector.class);
+		list.add(TestabilityMavenPluginHandler.class);
 		list.add(TestabilityMetrics.class);
 		list.add(TestabilityGlobalDashboardWidget.class);
 		list.add(TestabilityDetailsViewer.class);
