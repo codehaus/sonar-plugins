@@ -88,7 +88,7 @@ public class TestabilityStaxParser {
     methodCostDetail.setGlobal(StaxMateHelper.getIntValue(cursor, GLOBAL_ATTR));
     methodCostDetail.setLawOfDemeter(StaxMateHelper.getIntValue(cursor, LOD_ATTR));
     methodCostDetail.setOverall(StaxMateHelper.getIntValue(cursor, OVERALL_ATTR));
-    measurer.addMethodCost(StaxMateHelper.getIntValue(cursor, LINE_ATTR), methodCostDetail);
+    measurer.addMethodCost(StaxMateHelper.getIntValue(cursor, LINE_ATTR) - 1, methodCostDetail);
   }
 
   private void parseViolations(SMInputCursor cursor, MethodTestabilityCostMeasurer measurer) throws XMLStreamException {
