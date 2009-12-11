@@ -8,7 +8,7 @@
   </parent>
   <artifactId>sonar-sigmm-plugin</artifactId>
   <name>SIG MM Sonar plugin</name>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <description>Implementation of the SIG Maintainability Model</description>
 
   <properties>
@@ -84,8 +84,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</url>
+    <connection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sigmm-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sigmm-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sigmm-plugin-0.2</url>
   </scm>
 </project>
