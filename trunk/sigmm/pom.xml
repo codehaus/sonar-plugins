@@ -84,8 +84,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sigmm</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-sigmm-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sigmm-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sigmm-plugin-0.2</url>
   </scm>
 </project>
