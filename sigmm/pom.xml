@@ -8,7 +8,7 @@
   </parent>
   <artifactId>sonar-sigmm-plugin</artifactId>
   <name>SIG MM Sonar plugin</name>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   <description>Implementation of the SIG Maintainability Model</description>
 
   <properties>
