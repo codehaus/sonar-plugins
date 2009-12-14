@@ -39,13 +39,13 @@
 		    <module>sonar-squid-gui</module>
 		    <module>taglist</module>
 		    <module>technical-debt</module>
-		    <module>testability-explorer</module>
 		  </modules>
 		</profile>
 		<profile>
 			<id>unstableProjects</id>
 			<modules>
 		    <module>timeline</module>
+		    <module>testability-explorer</module>
 		  </modules>
 		</profile>
 	</profiles>
