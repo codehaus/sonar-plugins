@@ -51,7 +51,7 @@ public class CoverageDecorator extends AbstractDecorator {
    */
   @Override
   public List<Metric> dependsUpon() {
-    return Arrays.asList(CoreMetrics.LINES_TO_COVER, CoreMetrics.UNCOVERED_LINES);
+    return Arrays.asList(CoreMetrics.COVERAGE, CoreMetrics.NCLOC);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
@@ -60,11 +60,10 @@ public class CoverageDecorator extends AbstractDecorator {
     }
   }
 
+  // Duplicated lines are not taken into account
   protected double computeCoverage(DecoratorContext context) {
-    double linesToCover = MeasureUtils.getValue(context.getMeasure(CoreMetrics.LINES_TO_COVER), 0.0);
-    double uncoveredLines = MeasureUtils.getValue(context.getMeasure(CoreMetrics.UNCOVERED_LINES), 0.0);
+    double coverage = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COVERAGE), 0.0);
 
-    double coveredLines = linesToCover - uncoveredLines;
-    return 1 - (coveredLines / getValidLines(context));
+    return 1 - (coverage / 100);
   }
 }
