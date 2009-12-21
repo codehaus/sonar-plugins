@@ -20,6 +20,7 @@
 		    <module>clirr</module>
 		    <module>cpp</module>
 		    <module>emma</module>
+		    <module>flex</module>
 		    <module>greenpepper</module>
 		    <module>hammurapi</module>
 		    <module>jira</module>
