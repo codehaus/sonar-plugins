@@ -17,7 +17,6 @@
 		    <module>authorization</module>
 		    <module>artifact-size</module>
 		    <module>build-breaker</module>
-		    <module>clirr</module>
 		    <module>cpp</module>
 		    <module>emma</module>
 		    <module>flex</module>
@@ -45,6 +44,7 @@
 		<profile>
 			<id>unstableProjects</id>
 			<modules>
+		    <module>clirr</module>
 		    <module>timeline</module>
 		    <module>testability-explorer</module>
 		  </modules>
