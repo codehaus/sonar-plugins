@@ -37,19 +37,16 @@ public class CoverageDecoratorTest {
 
   @Test
   public void testCoverComputation() {
-    DecoratorContext context = mock(DecoratorContext.class);
-    when(context.getMeasure(CoreMetrics.LINES_TO_COVER)).
-        thenReturn(new Measure(CoreMetrics.LINES_TO_COVER, 233.0));
-    when(context.getMeasure(CoreMetrics.UNCOVERED_LINES)).
-        thenReturn(new Measure(CoreMetrics.UNCOVERED_LINES, 33.0));
-    when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
-        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 0.0));
-    when(context.getMeasure(CoreMetrics.NCLOC)).
-        thenReturn(new Measure(CoreMetrics.NCLOC, 500.0));
-
     CoverageDecorator decorator = new CoverageDecorator(null);
 
-    assertThat(decorator.computeCoverage(context), is(0.6));
+    DecoratorContext context = mock(DecoratorContext.class);
+    when(context.getMeasure(CoreMetrics.COVERAGE)).
+        thenReturn(new Measure(CoreMetrics.COVERAGE, 65.4));
+    assertThat(decorator.computeCoverage(context), is(0.346));
+
+    when(context.getMeasure(CoreMetrics.COVERAGE)).
+        thenReturn(null);
+    assertThat(decorator.computeCoverage(context), is(1.0));
 
   }
 }

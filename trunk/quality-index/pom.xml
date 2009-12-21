@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>sonar-quality-index-plugin</artifactId>
-  <version>1.0RC2-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
   <name>Sonar Quality Index Plugin</name>
 
   <developers>
@@ -22,7 +22,7 @@
 
   <properties>
     <sonar.plugin.class>org.sonar.plugins.qi.QIPlugin</sonar.plugin.class>
-    <sonar.version>1.12RC3</sonar.version>
+    <sonar.version>1.12</sonar.version>
   </properties>
 
   <dependencies>
