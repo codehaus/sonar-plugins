@@ -1,53 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
-  
-	<profiles>
-		<profile>
-			<id>stableProjects</id>
-			<activation>
-      	<activeByDefault>true</activeByDefault>
-    	</activation>
-			<modules>
-		    <module>authorization</module>
-		    <module>artifact-size</module>
-		    <module>build-breaker</module>
-		    <module>cpp</module>
-		    <module>emma</module>
-		    <module>flex</module>
-		    <module>greenpepper</module>
-		    <module>hammurapi</module>
-		    <module>jira</module>
-		    <module>jlint</module>
-		    <module>jtest</module>
-		    <module>maven-report</module>
-		    <module>motion-chart</module>
-		    <module>parent</module>
-		    <module>pdf-report</module>
-		    <module>php</module>
-        <module>quality-index</module>
-		    <module>radiator</module>
-		    <module>rules-meter</module>
-		    <module>security-rules</module>
-		    <module>sigmm</module>
-		    <module>sonarj</module>
-		    <module>sonar-squid-gui</module>
-		    <module>taglist</module>
-		    <module>technical-debt</module>
-		  </modules>
-		</profile>
-		<profile>
-			<id>unstableProjects</id>
-			<modules>
-		    <module>clirr</module>
-		    <module>timeline</module>
-		    <module>testability-explorer</module>
-		  </modules>
-		</profile>
-	</profiles>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>all</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>All Sonar plugins</name>
+
+    <profiles>
+        <profile>
+            <id>stableProjects</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>authorization</module>
+                <module>artifact-size</module>
+                <module>build-breaker</module>
+                <module>cpp</module>
+                <module>emma</module>
+                <module>flex</module>
+                <module>greenpepper</module>
+                <module>hammurapi</module>
+                <module>jira</module>
+                <module>jlint</module>
+                <module>jtest</module>
+                <module>maven-report</module>
+                <module>motion-chart</module>
+                <module>parent</module>
+                <module>pdf-report</module>
+                <module>php</module>
+                <module>quality-index</module>
+                <module>radiator</module>
+                <module>rules-meter</module>
+                <module>security-rules</module>
+                <module>sigmm</module>
+                <module>sonarj</module>
+                <module>sonar-squid-gui</module>
+                <module>taglist</module>
+                <module>technical-debt</module>
+                <module>crowd</module>
+                <module>ldap</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>unstableProjects</id>
+            <modules>
+                <module>clirr</module>
+                <module>timeline</module>
+                <module>testability-explorer</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
