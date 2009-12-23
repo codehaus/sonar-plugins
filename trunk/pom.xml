@@ -41,12 +41,12 @@
                 <module>taglist</module>
                 <module>technical-debt</module>
                 <module>ldap</module>
+                <module>crowd</module>
             </modules>
         </profile>
         <profile>
             <id>unstableProjects</id>
             <modules>
-                <module>crowd</module>
                 <module>clirr</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
