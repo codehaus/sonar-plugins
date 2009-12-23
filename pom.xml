@@ -19,6 +19,7 @@
                 <module>artifact-size</module>
                 <module>build-breaker</module>
                 <module>cpp</module>
+                <module>crowd</module>
                 <module>emma</module>
                 <module>flex</module>
                 <module>greenpepper</module>
@@ -26,6 +27,7 @@
                 <module>jira</module>
                 <module>jlint</module>
                 <module>jtest</module>
+                <module>ldap</module>
                 <module>maven-report</module>
                 <module>motion-chart</module>
                 <module>parent</module>
@@ -40,8 +42,6 @@
                 <module>sonar-squid-gui</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
-                <module>ldap</module>
-                <module>crowd</module>
             </modules>
         </profile>
         <profile>
