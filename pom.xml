@@ -40,13 +40,13 @@
                 <module>sonar-squid-gui</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
-                <module>crowd</module>
                 <module>ldap</module>
             </modules>
         </profile>
         <profile>
             <id>unstableProjects</id>
             <modules>
+                <module>crowd</module>
                 <module>clirr</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
