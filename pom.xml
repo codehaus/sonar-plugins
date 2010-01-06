@@ -15,7 +15,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>authorization</module>
                 <module>artifact-size</module>
                 <module>build-breaker</module>
                 <module>cpp</module>
