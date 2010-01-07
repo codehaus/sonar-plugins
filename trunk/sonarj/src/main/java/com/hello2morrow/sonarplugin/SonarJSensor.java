@@ -581,7 +581,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(SonarJMetrics.EROSION_DAYS, effortInDays, 1);
         saveMeasure(SonarJMetrics.EROSION_COST, cost, 0);
         analyseCycleGroups(report, internalPackages, projectName);        
-        if (pluginHandler.isUsingArchitectureDescription())
+        if (pluginHandler.isUsingArchitectureDescription() && projectMetrics.get(CYCLIC_LAYERS) != null)
         {
             addArchitectureMeasures(report, projectName);
         }
