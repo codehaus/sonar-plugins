@@ -17,7 +17,7 @@
 
   <properties>
     <sonar.plugin.class>com.hello2morrow.sonarplugin.SonarJPlugin</sonar.plugin.class>
-    <sonar.version>1.11</sonar.version>
+    <sonar.version>1.12</sonar.version>
   </properties>
 
   <dependencies>
@@ -88,7 +88,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>1.3</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -98,6 +98,7 @@
             <configuration>
               <artifactSet>
                 <includes>
+                  <include>org.codehaus.sonar-plugins:sonar-sonarj-plugin</include>
                   <include>javax.xml.bind:jaxb-api</include>
                   <include>javax.xml.bind:jsr173_api</include>
                   <include>javax.activation:activation</include>
