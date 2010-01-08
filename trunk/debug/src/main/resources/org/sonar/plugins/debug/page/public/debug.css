@@ -1,0 +1,18 @@
+.debug {
+  font-family: sans-serif;
+}
+.debug .col {
+}
+.debug .box {
+  border: 1px solid #ddd;
+  padding: 5px;
+  margin: 5px;
+}
+/* box title */
+.debug .boxt {
+  font-weight: bold;
+}
+/* sub-box */
+.debug .subbox {
+  font-size: 77%;
+}
