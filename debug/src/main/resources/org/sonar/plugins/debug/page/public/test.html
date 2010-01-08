@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Debug test</title>
+</head>
+
+<body>
+<script type="text/javascript">
+var config = {
+  "sonar_url": "http://localhost:9000",
+  "resource_key" : "org.apache.shiro:shiro-root"
+};
+</script>
+
+<div class="error" id="error" style="display:none"><span id="errormsg"></span> &nbsp;&nbsp;[<a href="#" onclick="javascript:$('error').hide();return false;">hide</a>]</div>
+<div class="warning" id="warning" style="display:none"><span id="warningmsg"></span> &nbsp;&nbsp;[<a href="#" onclick="javascript:$('warning').hide();return false;">hide</a>]</div>
+<div class="notice" id="info" style="display:none"><span id="infomsg"></span> &nbsp;&nbsp;[<a href="#" onclick="javascript:$('info').hide();return false;">hide</a>]</div>
+
+<div id="gwtpage">
+</div>
+
+<script type="text/javascript" language="javascript" src="org.sonar.plugins.debug.page.DebugPage.nocache.js"></script>
+</body>
+</html>
