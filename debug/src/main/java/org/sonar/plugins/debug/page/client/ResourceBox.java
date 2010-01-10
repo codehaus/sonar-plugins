@@ -20,8 +20,8 @@
 package org.sonar.plugins.debug.page.client;
 
 import com.google.gwt.user.client.ui.*;
-import org.sonar.client.api.resources.Measure;
-import org.sonar.client.api.resources.Resource;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Resource;
 
 import java.util.*;
 
