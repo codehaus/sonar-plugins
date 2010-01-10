@@ -23,12 +23,12 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.sonar.api.web.gwt.client.AbstractPage;
 import org.sonar.api.web.gwt.client.ResourceDictionary;
-import org.sonar.client.api.resources.Resource;
-import org.sonar.client.api.resources.ResourceQuery;
-import org.sonar.client.gwt.AbstractCollectionCallback;
-import org.sonar.client.gwt.SonarGwtClient;
+import org.sonar.wsclient.gwt.AbstractListCallback;
+import org.sonar.wsclient.gwt.Sonar;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
 
-import java.util.Collection;
+import java.util.List;
 
 public class DebugPage extends AbstractPage {
   public static final String GWT_ID = "org.sonar.plugins.debug.page.DebugPage";
@@ -50,9 +50,9 @@ public class DebugPage extends AbstractPage {
   }
 
   private void loadColumn(String resourceKey, int depth) {
-    SonarGwtClient.getInstance().findAll(ResourceQuery.build(resourceKey, "true").setVerbose(true).setDepth(depth), new AbstractCollectionCallback<Resource>() {
+    Sonar.getInstance().findAll(ResourceQuery.build(resourceKey, "true").setVerbose(true).setDepth(depth), new AbstractListCallback<Resource>() {
       @Override
-      protected void doOnResponse(final Collection<Resource> resources) {
+      protected void doOnResponse(final List<Resource> resources) {
         VerticalPanel column = new VerticalPanel();
         column.setStyleName("col");
         for (Resource resource : resources) {

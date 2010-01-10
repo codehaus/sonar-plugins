@@ -71,21 +71,18 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-client</artifactId>
+      <artifactId>sonar-gwt-api</artifactId>
       <version>1.13-SNAPSHOT</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <version>1.7.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-incubator</artifactId>
       <version>july-14-2009</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- unit tests -->
