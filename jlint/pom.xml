@@ -68,4 +68,10 @@
 
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jlint</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jlint</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
 </project>
