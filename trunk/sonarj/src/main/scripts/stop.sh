@@ -1,5 +1,5 @@
-sonardir=/opt/sonar-1.11
-arch=macosx-universal-32
+sonardir=/opt/sonar-1.12
+arch=macosx-universal-64
 $sonardir/bin/$arch/sonar.sh stop
 
 
