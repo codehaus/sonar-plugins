@@ -5,17 +5,21 @@
   <artifactId>sonar-squid-cli</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>Sonar Squid</name>
+  <name>Sonar Squid CLI / Ant integration</name>
+
+  <properties>
+  	<squid.version>1.12</squid.version>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-squid</artifactId>    
-      <version>1.11-SNAPSHOT</version>
+      <version>${squid.version}</version>
     </dependency>
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId> 
-      <artifactId>xstream</artifactId>                                                                                                   
+      <artifactId>xstream</artifactId>
       <version>1.3.1</version>
     </dependency>
     <!-- AntTask related dependancies -->
@@ -52,7 +56,7 @@
                   <property name="squid.classes"   value="${basedir}/target/classes"/>
                   <property name="src"             value="${basedir}/src/test/resources/commons-collections-3.2.1-src/"/>
                   <property name="target"          value="target"/>
-		  <property name="squid.version" value="1.11-SNAPSHOT"/>
+		  <property name="squid.version" value="${squid.version}"/>
                   <property name="target.classes"  value="${basedir}/src/test/resources/commons-collections-3.2.1-bin/"/>
                   <property name="repository"      value="/home/rpelisse/.m2/repository/"/>
                 </ant>
