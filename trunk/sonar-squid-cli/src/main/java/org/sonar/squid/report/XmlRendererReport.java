@@ -68,7 +68,7 @@ public class XmlRendererReport {
 		try {
 			reportAsStream.write(xmlReport.getBytes());
 		} catch (IOException e) {
-			reportAsStream = null; //FIXME: Do better than this !
+			throw new Error(e);
 		}		
 		return reportAsStream;
 	}
