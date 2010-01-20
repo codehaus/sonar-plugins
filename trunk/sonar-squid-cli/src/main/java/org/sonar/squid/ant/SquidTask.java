@@ -56,11 +56,11 @@ public class SquidTask extends Task {
 	public void execute() {
 		// Validate if task is properly defining
 		validate();
-		
-      // TODO:Hack to explain !
-      Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-      //
-		
+
+		// TODO:Hack to explain !
+		Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+		//
+
 		// Let's prepare Squid
 		SquidConfiguration conf = new SquidConfiguration();
 		Squid squid = new Squid(conf);
@@ -71,27 +71,27 @@ public class SquidTask extends Task {
 		log("Scanning done, preparing report : " + reportFilename);
 		// Now let set up report results
 		SquidReport report = new SquidReport();
-        // Basic metrics
-        SquidUnit measures = squid.computeMeasures();
-        report.getMetrics().put("accessors",Integer.valueOf(measures.getInt(Metric.ACCESSORS)));
-        report.getMetrics().put("lines",Integer.valueOf(measures.getInt(Metric.LINES)));
-        report.getMetrics().put("ncloc",Integer.valueOf(measures.getInt(Metric.NCLOC)));
-        report.getMetrics().put("blank-lines",Integer.valueOf(measures.getInt(Metric.BLANK_LINES)));
-        report.getMetrics().put("statements",Integer.valueOf(measures.getInt(Metric.STATEMENTS)));
-        report.getMetrics().put("complexity",Integer.valueOf(measures.getInt(Metric.COMPLEXITY)));
-        report.getMetrics().put("branches",Integer.valueOf(measures.getInt(Metric.BRANCHES)));
-        report.getMetrics().put("comment-lines",Integer.valueOf(measures.getInt(Metric.COMMENT_LINES)));
-        report.getMetrics().put("comment-blank-lines",Integer.valueOf(measures.getInt(Metric.COMMENT_BLANK_LINES)));
-        report.getMetrics().put("comment-lines-density",Integer.valueOf(measures.getInt(Metric.COMMENT_LINES_DENSITY)));
-        // Search for cycle dependencies
-        CycleDetector cycleDetector = new CycleDetector(squid.search(new QueryByType(SquidPackage.class)));
-        report.getMetrics().put("cycles",cycleDetector.getCyclesNumber());
-        // Measures on Public API
-        report.getMetrics().put("public-api",Integer.valueOf(measures.getInt(Metric.PUBLIC_API)));
-        report.getMetrics().put("public-doc-api",Integer.valueOf(measures.getInt(Metric.PUBLIC_DOC_API)));
-        // Search for commented out code //TODO:Add to the package analysis instead...
+		// Basic metrics
+		SquidUnit measures = squid.computeMeasures();
+		report.getMetrics().put("accessors",Integer.valueOf(measures.getInt(Metric.ACCESSORS)));
+		report.getMetrics().put("lines",Integer.valueOf(measures.getInt(Metric.LINES)));
+		report.getMetrics().put("ncloc",Integer.valueOf(measures.getInt(Metric.NCLOC)));
+		report.getMetrics().put("blank-lines",Integer.valueOf(measures.getInt(Metric.BLANK_LINES)));
+		report.getMetrics().put("statements",Integer.valueOf(measures.getInt(Metric.STATEMENTS)));
+		report.getMetrics().put("complexity",Integer.valueOf(measures.getInt(Metric.COMPLEXITY)));
+		report.getMetrics().put("branches",Integer.valueOf(measures.getInt(Metric.BRANCHES)));
+		report.getMetrics().put("comment-lines",Integer.valueOf(measures.getInt(Metric.COMMENT_LINES)));
+		report.getMetrics().put("comment-blank-lines",Integer.valueOf(measures.getInt(Metric.COMMENT_BLANK_LINES)));
+		report.getMetrics().put("comment-lines-density",Integer.valueOf(measures.getInt(Metric.COMMENT_LINES_DENSITY)));
+		// Search for cycle dependencies
+		CycleDetector cycleDetector = new CycleDetector(squid.search(new QueryByType(SquidPackage.class)));
+		report.getMetrics().put("cycles",cycleDetector.getCyclesNumber());
+		// Measures on Public API
+		report.getMetrics().put("public-api",Integer.valueOf(measures.getInt(Metric.PUBLIC_API)));
+		report.getMetrics().put("public-doc-api",Integer.valueOf(measures.getInt(Metric.PUBLIC_DOC_API)));
+		// Search for commented out code //TODO:Add to the package analysis instead...
 		for (SquidUnit unit : squid.search(new QueryByType(SquidFile.class), new QueryByMeasure(
-                Metric.COMMENTED_OUT_CODE_LINES, Operator.GREATER_THAN,0))) {
+				Metric.COMMENTED_OUT_CODE_LINES, Operator.GREATER_THAN,0))) {
 			report.getFilesWithCommentedCode().put(unit.getKey(), Integer.valueOf(unit.getInt(Metric.COMMENTED_OUT_CODE_LINES)));		
 		}
 		// 
@@ -113,7 +113,7 @@ public class SquidTask extends Task {
 		this.writeReportFile(report);
 	}
 
-	
+
 	private void writeReportFile(SquidReport report) {
 		File reportFile = new File(this.reportFilename);
 		// TODO: file checking stuff
@@ -126,7 +126,7 @@ public class SquidTask extends Task {
 			throw new BuildException("Can't write on report file:" + this.reportFilename,e);
 		} 		
 	}
-	
+
 	public String getSrc() {
 		return src;
 	}
