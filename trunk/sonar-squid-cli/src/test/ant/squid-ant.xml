@@ -72,7 +72,8 @@ squid version:${squid.version}
   
     <property name="ant.dir" value="${target}/ant-integration-test/"/>
     <mkdir dir="${ant.dir}"/>
-    <squid   src="${src}" 
+    <squid   id="ant-squid-integration-test"
+             src="${src}"
              classes="${target.classes}"
              reportFile="${ant.dir}/ant-report.xml"/>
   </target>

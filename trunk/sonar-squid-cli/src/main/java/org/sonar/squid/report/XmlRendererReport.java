@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.sonar.squid.report.converter.FilesMetricsMapConverter;
-import org.sonar.squid.report.converter.PackageAnalysis;
-import org.sonar.squid.report.converter.PackagesMapConverter;
 import org.sonar.squid.report.converter.SimpleMetricsMapConverter;
 
 import com.thoughtworks.xstream.XStream;
@@ -89,9 +87,7 @@ public class XmlRendererReport {
 			XStream xstream = new XStream();
 			xstream.registerConverter(new FilesMetricsMapConverter());
 			xstream.registerConverter(new SimpleMetricsMapConverter());
-			xstream.registerConverter(new PackagesMapConverter());
-			xstream.alias("squid-report", SquidReport.class);
-			xstream.alias("package", PackageAnalysis.class);			
+                        xstream.autodetectAnnotations(true);
 			xmlReport = xstream.toXML(report);
 		}
 		return xmlReport;

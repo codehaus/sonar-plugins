@@ -19,6 +19,7 @@
  */
 package org.sonar.squid.report.converter;
 
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import java.util.Map;
 
 
@@ -35,6 +36,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * @author Romain PELISSE <belaran@gmail.com>
  *
  */
+
 public class FilesMetricsMapConverter extends AbstractMapConverter {
 
 	// Can't type Class, change signature, override will failed.
