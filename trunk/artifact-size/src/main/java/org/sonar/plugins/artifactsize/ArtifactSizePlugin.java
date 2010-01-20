@@ -43,7 +43,7 @@ public class ArtifactSizePlugin implements Plugin {
   public static final String ARTIFACT_PATH = "sonar.artifact.path";
 
   public String getDescription() {
-    return "Reports on the project artifact size";
+    return "Monitor project artifact size";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
