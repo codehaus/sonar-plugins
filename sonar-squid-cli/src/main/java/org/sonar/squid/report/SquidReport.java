@@ -19,12 +19,12 @@
  */
 package org.sonar.squid.report;
 
-import java.util.Map;
+import org.sonar.squid.report.entries.AbstractReportEntry;
+import org.sonar.squid.report.entries.PackageReportEntry;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import java.util.List;
 
-import org.sonar.squid.report.converter.FilesMetricsMap;
-import org.sonar.squid.report.converter.PackageAnalysis;
-import org.sonar.squid.report.converter.PackageMetricsMaps;
-import org.sonar.squid.report.converter.SimpleMetricsMap;
 
 /**
  * 
@@ -34,57 +34,22 @@ import org.sonar.squid.report.converter.SimpleMetricsMap;
  * @author Romain PELISSE, belaran@gmail.com
  *
  */
-public class SquidReport {
+@XStreamAlias("project")
+public class SquidReport extends AbstractReportEntry {
+    
+    @XStreamImplicit
+    private List<PackageReportEntry> packages;
 
-	private Map<String,Integer> metrics = new SimpleMetricsMap<String, Integer>(0);
-	private Map<String,Integer> filesWithCommentedCode = new FilesMetricsMap<String, Integer>(0);
-	private Map<String,PackageAnalysis> packages = new PackageMetricsMaps<String,PackageAnalysis>(0);
-	
-	/** 
-	 * <p>Default empty constructors - does nothing.</p>
-	 */
-	public SquidReport() {}
+    public SquidReport(String name) {
+        super(name);
+    }
 
-	/**
-	 * @return the metrics
-	 */
-	public Map<String, Integer> getMetrics() {
-		return metrics;
-	}
+    public List<PackageReportEntry> getPackages() {
+        return packages;
+    }
 
-	/**
-	 * @param metrics the metrics to set
-	 */
-	public void setMetrics(Map<String, Integer> metrics) {
-		this.metrics = metrics;
-	}
+    public void setPackages(List<PackageReportEntry> packages) {
+        this.packages = packages;
+    }
 
-	/**
-	 * @return the filesWithCommentedCode
-	 */
-	public Map<String, Integer> getFilesWithCommentedCode() {
-		return filesWithCommentedCode;
-	}
-
-	/**
-	 * @param filesWithCommentedCode the filesWithCommentedCode to set
-	 */
-	public void setFilesWithCommentedCode(
-			Map<String, Integer> filesWithCommentedCode) {
-		this.filesWithCommentedCode = filesWithCommentedCode;
-	}
-
-	/**
-	 * @return the packages
-	 */
-	public Map<String, PackageAnalysis> getPackages() {
-		return packages;
-	}
-
-	/**
-	 * @param packages the packages to set
-	 */
-	public void setPackages(Map<String, PackageAnalysis> packages) {
-		this.packages = packages;
-	}
 }
