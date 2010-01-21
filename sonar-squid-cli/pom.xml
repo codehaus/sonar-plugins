@@ -58,7 +58,7 @@
                   <property name="target"          value="target"/>
 		  <property name="squid.version" value="${squid.version}"/>
                   <property name="target.classes"  value="${basedir}/src/test/resources/commons-collections-3.2.1-bin/"/>
-                  <property name="repository"      value="/home/rpelisse/.m2/repository/"/>
+                  <property name="repository"      value="${settings.localRepository}"/>
                 </ant>
               </tasks>
             </configuration>
