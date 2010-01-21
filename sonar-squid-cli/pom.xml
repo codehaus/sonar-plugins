@@ -6,19 +6,42 @@
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>Sonar Squid CLI / Ant integration</name>
-
+  <description><![CDATA[
+  Command line integration for Squid, including an AntTask. This integration hence allows you to run Sonar Squid outside of Sonar, into a regular Ant scripts for instance.
+  ]]></description>
   <properties>
-  	<squid.version>1.12</squid.version>
+    <squid.version>1.12</squid.version>
   </properties>
-
+  <developers>
+    <developer>
+      <id>rpelisse</id>
+      <name>Romain Pelisse</name>
+      <email>rpelisse@users.sourceforge.net</email>
+      <url>http://belaran.eu/</url>
+      <organization>Atos Origin</organization>
+      <organizationUrl>https://osc-service.si.fr.atosorigin.com/</organizationUrl>
+      <roles>
+        <role>Developer</role>
+      </roles>
+            <timezone>+1</timezone>
+      <properties>
+        <picUrl>http://belaran.eu/wordpress/wp-content/uploads/2008/05/RomainPELISSE.jpg</picUrl>
+      </properties>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonar-squid-cli</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonar-squid-cli</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-squid</artifactId>    
+      <artifactId>sonar-squid</artifactId>
       <version>${squid.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.thoughtworks.xstream</groupId> 
+      <groupId>com.thoughtworks.xstream</groupId>
       <artifactId>xstream</artifactId>
       <version>1.3.1</version>
     </dependency>
