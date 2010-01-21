@@ -39,6 +39,7 @@
                 <module>sigmm</module>
                 <module>sonarj</module>
                 <module>sonar-squid-gui</module>
+                <module>sonar-squid-cli</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
             </modules>
