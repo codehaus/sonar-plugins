@@ -35,6 +35,7 @@
                 <module>quality-index</module>
                 <module>radiator</module>
                 <module>rules-meter</module>
+                <module>scm-activity</module>
                 <module>security-rules</module>
                 <module>sigmm</module>
                 <module>sonarj</module>
@@ -48,7 +49,6 @@
             <id>unstableProjects</id>
             <modules>
                 <module>clirr</module>
-                <module>scm-activity</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
             </modules>
