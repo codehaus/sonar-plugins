@@ -60,7 +60,7 @@ public class EmmaMavenPluginHandler implements MavenPluginHandler {
         }
         pattern = pattern.startsWith("/") ? pattern.substring(1) : pattern;
         pattern = pattern.replace("**", "*").replace('/', '.');
-        plugin.addParameter("filters/filter", pattern);
+        plugin.addParameter("filters/filter", "-" + pattern);
       }
     }
   }
