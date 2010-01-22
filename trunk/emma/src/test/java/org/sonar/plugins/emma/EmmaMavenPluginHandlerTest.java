@@ -70,6 +70,6 @@ public class EmmaMavenPluginHandlerTest {
     handler.configure(project, plugin);
 
     assertEquals(1, plugin.getParameters("filters/filter").length);
-    assertThat(plugin.getParameters("filters/filter"), is(new String[]{"com.foo*.bar.Ba*"}));
+    assertThat(plugin.getParameters("filters/filter"), is(new String[]{"-com.foo*.bar.Ba*"}));
   }
 }
