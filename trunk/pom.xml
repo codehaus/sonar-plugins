@@ -35,12 +35,10 @@
                 <module>quality-index</module>
                 <module>radiator</module>
                 <module>rules-meter</module>
-                <module>scm-activity</module>
                 <module>security-rules</module>
                 <module>sigmm</module>
                 <module>sonarj</module>
                 <module>sonar-squid-gui</module>
-                <module>sonar-squid-cli</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
             </modules>
@@ -48,7 +46,9 @@
         <profile>
             <id>unstableProjects</id>
             <modules>
+                <module>scm-activity</module>
                 <module>clirr</module>
+                <module>sonar-squid-cli</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
             </modules>
