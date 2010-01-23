@@ -12,7 +12,7 @@
   <name>Sonar Emma plugin</name>
 
   <properties>
-    <sonarVersion>1.10</sonarVersion>
+    <sonarVersion>1.12</sonarVersion>
   </properties>
 
   <dependencies>
@@ -137,7 +137,7 @@
             </executions>
           </plugin>
         </plugins>
-      </build>
+      </build> 
     </profile>
   </profiles>
   <licenses>
