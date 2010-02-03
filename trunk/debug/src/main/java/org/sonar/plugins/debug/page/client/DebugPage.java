@@ -21,8 +21,8 @@ package org.sonar.plugins.debug.page.client;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import org.sonar.api.web.gwt.client.AbstractPage;
-import org.sonar.api.web.gwt.client.ResourceDictionary;
+import com.google.gwt.user.client.ui.Widget;
+import org.sonar.gwt.ui.Page;
 import org.sonar.wsclient.gwt.AbstractListCallback;
 import org.sonar.wsclient.gwt.Sonar;
 import org.sonar.wsclient.services.Resource;
@@ -30,27 +30,30 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import java.util.List;
 
-public class DebugPage extends AbstractPage {
+public class DebugPage extends Page {
   public static final String GWT_ID = "org.sonar.plugins.debug.page.DebugPage";
 
   private HorizontalPanel columnsPanel = new HorizontalPanel();
 
-  public void onModuleLoad() {
+  @Override
+  protected Widget doOnResourceLoad(Resource resource) {
     columnsPanel.setStylePrimaryName("debug");
-    loadData();
-    displayView(columnsPanel);
+    loadData(resource);
+    return columnsPanel;
   }
 
-  private void loadData() {
-    String resourceKey = ResourceDictionary.getResourceKey();
-
-    loadColumn(resourceKey, 0);
-    loadColumn(resourceKey, 1);
-    loadColumn(resourceKey, 2);
+  private void loadData(Resource resource) {
+    loadColumn(resource, 0);
+    loadColumn(resource, 1);
+    loadColumn(resource, 2);
   }
 
-  private void loadColumn(String resourceKey, int depth) {
-    Sonar.getInstance().findAll(ResourceQuery.build(resourceKey, "true").setVerbose(true).setDepth(depth), new AbstractListCallback<Resource>() {
+  private void loadColumn(Resource resource, int depth) {
+    ResourceQuery query = ResourceQuery.createForMetrics(resource.getId().toString(), "true")
+        .setVerbose(true)
+        .setDepth(depth);
+
+    Sonar.getInstance().findAll(query, new AbstractListCallback<Resource>() {
       @Override
       protected void doOnResponse(final List<Resource> resources) {
         VerticalPanel column = new VerticalPanel();

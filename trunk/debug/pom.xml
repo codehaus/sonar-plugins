@@ -31,10 +31,6 @@
   <version>0.1-SNAPSHOT</version>
   <name>Sonar Plugins :: Debug</name>
 
-  <properties>
-    <sonar.plugin.class>org.sonar.plugins.debug.DebugPlugin</sonar.plugin.class>
-  </properties>
-  
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/debug</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/debug</developerConnection>
@@ -114,7 +110,6 @@
               <modules>
                 <module>org.sonar.plugins.debug.page.DebugPage</module>
               </modules>
-              <skip>${skipGwt}</skip>
               <webappDirectory>${project.build.directory}/classes</webappDirectory>
               <extraJvmArgs>-Xmx512m -Dgwt.jjs.permutationWorkerFactory=com.google.gwt.dev.ThreadedPermutationWorkerFactory</extraJvmArgs>
             </configuration>
@@ -133,7 +128,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Plugin-Class>${sonar.plugin.class}</Plugin-Class>
+              <Plugin-Class>org.sonar.plugins.debug.DebugPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
         </configuration>
