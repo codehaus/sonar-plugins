@@ -44,6 +44,11 @@ if measure('sonarj_architecture_violations')
               <%= format_measure('sonarj_task_refs', :suffix => ' open task markers', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_task_refs')) %>
         </td>
     </tr>
+      <tr>
+           <td colspan="3">
+                 <%= format_measure('sonarj_duplicate_warnings', :suffix => ' duplicated code blocks') -%> <%= tendency_icon(measure('sonarj_duplicate_warnings')) %>
+           </td>
+       </tr>
   </table>
 </div>
 
