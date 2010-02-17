@@ -67,7 +67,8 @@ public final class AlertDecorator
             new AlertThreshold(SonarJMetrics.VIOLATING_TYPES, 10.0, 20.0), new AlertThreshold(SonarJMetrics.TASKS, 20.0, 50.0),
             new AlertThreshold(SonarJMetrics.THRESHOLD_WARNINGS, 20.0, 50.0), new AlertThreshold(SonarJMetrics.WORKSPACE_WARNINGS, 1.0, 10.0),
             new AlertThreshold(SonarJMetrics.CONSISTENCY_WARNINGS, 1.0, 10.0), new AlertThreshold(SonarJMetrics.NCCD, 6.5, 10.0),
-            new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 7), new AlertThreshold(SonarJMetrics.CYCLICITY, 25, 50) };
+            new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 7), new AlertThreshold(SonarJMetrics.CYCLICITY, 25, 50),
+            new AlertThreshold(SonarJMetrics.DUPLICATE_WARNINGS, 10, 20) };
 
     private static void copyAlertLevel(ProjectContext context, Metric from, Metric to)
     {

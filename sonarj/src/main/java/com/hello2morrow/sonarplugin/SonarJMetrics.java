@@ -110,6 +110,9 @@ public final class SonarJMetrics implements Metrics
     public static final Metric THRESHOLD_WARNINGS = new Metric("sonarj_threshold_warnings", "Threshold Violations (SonarJ)", "Number of Threshold Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
+    public static final Metric DUPLICATE_WARNINGS = new Metric("sonarj_duplicate_warnings", "Dulpicate Code Blocks (SonarJ)", "Number of Duplicate Code Blocks", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_DUPLICATION);
+
     public static final Metric WORKSPACE_WARNINGS = new Metric("sonarj_workspace_warnings", "Parser Warnings (SonarJ)", "Number of SonarJ Parser Warnings", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
@@ -127,6 +130,6 @@ public final class SonarJMetrics implements Metrics
         return Arrays.asList(ACD, NCCD, CYCLICITY, BIGGEST_CYCLE_GROUP, CYCLIC_PACKAGES, RELATIVE_CYCLICITY, INTERNAL_PACKAGES, INSTRUCTIONS, CYCLE_GROUP_SIZE,
         		CYCLE_GROUP_ID, UNASSIGNED_TYPES, VIOLATING_TYPES, VIOLATING_DEPENDENCIES, CYCLIC_ARTIFACTS, TYPE_DEPENDENCIES, JAVA_FILES, TASKS,
         		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, CONSISTENCY_WARNINGS, EROSION_REFS, 
-        		EROSION_TYPES, EROSION_COST, EROSION_DAYS, INTERNAL_TYPES, TASK_REFS, UNASSIGNED_TYPES_PERCENT, VIOLATING_TYPES_PERCENT);
+        		EROSION_TYPES, EROSION_COST, EROSION_DAYS, INTERNAL_TYPES, TASK_REFS, UNASSIGNED_TYPES_PERCENT, VIOLATING_TYPES_PERCENT, DUPLICATE_WARNINGS);
     }
 }

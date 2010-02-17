@@ -1,511 +1,1149 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<reportContext name="sonarj-report" productFamily="SonarJ">
+<reportContext name="infoglue21_refactorings" productFamily="SonarJ">
     <general>
-        <attribute name="Path" value="/Users/sascha/sonarplugin/sonar-sonarj-plugin/target/sonarj/sonarj-report.sonarj"/>
-        <attribute name="Base Path" value="/Users/sascha/sonarplugin/sonar-sonarj-plugin/target/sonarj"/>
+        <attribute name="Path" value="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21_refactorings.sonarj"/>
+        <attribute name="Base Path" value="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples"/>
         <attribute name="Description" value=""/>
-        <attribute name="Sonar Product" value="SonarJ-any 5.0.2 [Build 400]"/>
+        <attribute name="Sonar Product" value="SonarJ-any 5.1.1 [Build 400]"/>
         <attribute name="Sonar User" value="Sascha"/>
-        <attribute name="Sonar Expiration" value="never"/>
-        <attribute name="Report Creation" value="2009-10-19"/>
+        <attribute name="Sonar Expiration" value="2010-12-31"/>
+        <attribute name="Report Creation" value="2010-02-16"/>
     </general>
     <attributes>
         <attributeCategory name="Architecture Metrics">
-            <attribute name="Number of unassigned types" value="84"/>
-            <attribute name="Number of violating type dependencies" value="0"/>
-            <attribute name="Number of violating types" value="0"/>
+            <attribute name="Number of unassigned types" value="569"/>
+            <attribute name="Number of violating type dependencies" value="5"/>
+            <attribute name="Number of violating types" value="5"/>
         </attributeCategory>
         <attributeCategory name="Code Analysis Metrics">
-            <attribute name="Average assertion usage" value="0.14"/>
-            <attribute name="Number of assertions" value="1"/>
-            <attribute name="Number of public types" value="40"/>
+            <attribute name="Average assertion usage" value="0.00"/>
+            <attribute name="Number of assertions" value="0"/>
+            <attribute name="Number of duplicate code blocks" value="63"/>
+            <attribute name="Number of public types" value="509"/>
         </attributeCategory>
         <attributeCategory name="Cycle Metrics">
-            <attribute name="Number of cyclic directories" value="2"/>
-            <attribute name="Number of cyclic elements" value="4"/>
+            <attribute name="Number of cyclic directories" value="46"/>
+            <attribute name="Number of cyclic elements" value="122"/>
             <attribute name="Number of cyclic layer groups" value="0"/>
-            <attribute name="Number of cyclic layers" value="0"/>
-            <attribute name="Number of cyclic packages" value="2"/>
-            <attribute name="Number of cyclic path containers" value="0"/>
+            <attribute name="Number of cyclic layers" value="2"/>
+            <attribute name="Number of cyclic packages" value="32"/>
+            <attribute name="Number of cyclic path containers" value="5"/>
             <attribute name="Number of cyclic projects" value="0"/>
-            <attribute name="Number of cyclic source files" value="0"/>
+            <attribute name="Number of cyclic source files" value="37"/>
             <attribute name="Number of cyclic subsystems" value="0"/>
             <attribute name="Number of cyclic vertical slice groups" value="0"/>
             <attribute name="Number of cyclic vertical slices" value="0"/>
         </attributeCategory>
         <attributeCategory name="Dependency Metrics">
-            <attribute name="Number of type dependencies (all)" value="235"/>
+            <attribute name="Number of type dependencies (all)" value="6370"/>
+        </attributeCategory>
+        <attributeCategory name="Info Metrics">
+            <attribute name="Timestamp" value="Feb 15, 2010 11:46:35 AM"/>
         </attributeCategory>
         <attributeCategory name="Size Metrics">
-            <attribute name="Lines of code" value="767"/>
-            <attribute name="Number of Java source files (all)" value="8"/>
-            <attribute name="Number of Java source files (non-excluded)" value="8"/>
-            <attribute name="Number of Java target files (all)" value="40"/>
-            <attribute name="Number of Java target files (non-excluded)" value="40"/>
-            <attribute name="Number of external packages" value="13"/>
-            <attribute name="Number of external types" value="44"/>
-            <attribute name="Number of instructions" value="4239"/>
-            <attribute name="Number of internal packages" value="2"/>
-            <attribute name="Number of internal types (abstract)" value="0"/>
-            <attribute name="Number of internal types (all)" value="40"/>
-            <attribute name="Number of internal types (w/ implementation)" value="39"/>
-            <attribute name="Number of methods (abstract)" value="0"/>
-            <attribute name="Number of methods (all)" value="278"/>
-            <attribute name="Number of methods (w/ implementation)" value="278"/>
-            <attribute name="Number of statements" value="291"/>
+            <attribute name="Lines of code" value="47156"/>
+            <attribute name="Number of Java source files (all)" value="513"/>
+            <attribute name="Number of Java source files (non-excluded)" value="511"/>
+            <attribute name="Number of Java target files (all)" value="526"/>
+            <attribute name="Number of Java target files (non-excluded)" value="524"/>
+            <attribute name="Number of external packages" value="73"/>
+            <attribute name="Number of external types" value="333"/>
+            <attribute name="Number of instructions" value="130618"/>
+            <attribute name="Number of internal packages" value="49"/>
+            <attribute name="Number of internal types (abstract)" value="78"/>
+            <attribute name="Number of internal types (all)" value="523"/>
+            <attribute name="Number of internal types (w/ implementation)" value="452"/>
+            <attribute name="Number of methods (abstract)" value="656"/>
+            <attribute name="Number of methods (all)" value="5714"/>
+            <attribute name="Number of methods (w/ implementation)" value="5058"/>
+            <attribute name="Number of statements" value="19032"/>
         </attributeCategory>
         <attributeCategory name="Task and Filter Metrics">
             <attribute name="Number of fix warning tasks" value="0"/>
             <attribute name="Number of ignored violations" value="0"/>
             <attribute name="Number of ignored warnings" value="0"/>
-            <attribute name="Number of refactoring tasks" value="0"/>
-            <attribute name="Number of tasks" value="0"/>
-            <attribute name="Number of warnings (all)" value="34"/>
-            <attribute name="Number of warnings (thresholds)" value="0"/>
-            <attribute name="Number of warnings (workspace)" value="34"/>
+            <attribute name="Number of refactoring tasks" value="6"/>
+            <attribute name="Number of tasks" value="6"/>
+            <attribute name="Number of warnings (all)" value="84"/>
+            <attribute name="Number of warnings (cyclic)" value="3"/>
+            <attribute name="Number of warnings (duplicate code blocks)" value="63"/>
+            <attribute name="Number of warnings (thresholds)" value="2"/>
+            <attribute name="Number of warnings (workspace)" value="16"/>
         </attributeCategory>
     </attributes>
     <projects>
         <project description="" name="My Project">
             <attributeCategory name="Architecture Metrics">
                 <attribute name="Number of layer groups" value="0"/>
-                <attribute name="Number of layers" value="0"/>
+                <attribute name="Number of layers" value="2"/>
                 <attribute name="Number of named interfaces" value="0"/>
                 <attribute name="Number of subsystems" value="0"/>
-                <attribute name="Number of unassigned types" value="40"/>
+                <attribute name="Number of unassigned types" value="236"/>
                 <attribute name="Number of vertical slice groups" value="0"/>
                 <attribute name="Number of vertical slices" value="0"/>
-                <attribute name="Number of violating type dependencies" value="0"/>
-                <attribute name="Number of violating types" value="0"/>
+                <attribute name="Number of violating type dependencies" value="5"/>
+                <attribute name="Number of violating types" value="5"/>
             </attributeCategory>
             <attributeCategory name="Code Analysis Metrics">
-                <attribute name="Average assertion usage" value="0.14"/>
-                <attribute name="Number of assertions" value="1"/>
-                <attribute name="Number of public types" value="40"/>
+                <attribute name="Average assertion usage" value="0.00"/>
+                <attribute name="Number of assertions" value="0"/>
+                <attribute name="Number of duplicate code blocks" value="63"/>
+                <attribute name="Number of public types" value="509"/>
             </attributeCategory>
             <attributeCategory name="Cycle Metrics">
-                <attribute name="Number of cyclic directories" value="2"/>
-                <attribute name="Number of cyclic elements" value="4"/>
+                <attribute name="Number of cyclic directories" value="46"/>
+                <attribute name="Number of cyclic elements" value="122"/>
                 <attribute name="Number of cyclic layer groups" value="0"/>
-                <attribute name="Number of cyclic layers" value="0"/>
-                <attribute name="Number of cyclic packages" value="2"/>
-                <attribute name="Number of cyclic path containers" value="0"/>
-                <attribute name="Number of cyclic source files" value="0"/>
+                <attribute name="Number of cyclic layers" value="2"/>
+                <attribute name="Number of cyclic packages" value="32"/>
+                <attribute name="Number of cyclic path containers" value="5"/>
+                <attribute name="Number of cyclic source files" value="37"/>
                 <attribute name="Number of cyclic subsystems" value="0"/>
                 <attribute name="Number of cyclic vertical slice groups" value="0"/>
                 <attribute name="Number of cyclic vertical slices" value="0"/>
-                <attribute name="Structural erosion - reference level" value="1"/>
-                <attribute name="Structural erosion - type level" value="1"/>
+                <attribute name="Structural erosion - reference level" value="359"/>
+                <attribute name="Structural erosion - type level" value="75"/>
             </attributeCategory>
             <attributeCategory name="Dependency Metrics">
-                <attribute name="Number of type dependencies (all)" value="235"/>
-                <attribute name="Number of type dependencies (local)" value="98"/>
-                <attribute name="Number of type dependencies (remote)" value="137"/>
+                <attribute name="Number of type dependencies (all)" value="6370"/>
+                <attribute name="Number of type dependencies (local)" value="2785"/>
+                <attribute name="Number of type dependencies (remote)" value="3585"/>
                 <attribute name="Number of used elements" value="1"/>
                 <attribute name="Number of using elements" value="0"/>
             </attributeCategory>
             <attributeCategory name="Size Metrics">
-                <attribute name="Lines of code" value="767"/>
-                <attribute name="Number of Java source files (all)" value="8"/>
-                <attribute name="Number of Java source files (non-excluded)" value="8"/>
-                <attribute name="Number of Java target files (all)" value="40"/>
-                <attribute name="Number of Java target files (non-excluded)" value="40"/>
-                <attribute name="Number of instructions" value="4239"/>
-                <attribute name="Number of internal packages" value="2"/>
-                <attribute name="Number of internal types (abstract)" value="0"/>
-                <attribute name="Number of internal types (all)" value="40"/>
-                <attribute name="Number of internal types (w/ implementation)" value="39"/>
-                <attribute name="Number of methods (abstract)" value="0"/>
-                <attribute name="Number of methods (all)" value="278"/>
-                <attribute name="Number of methods (w/ implementation)" value="278"/>
-                <attribute name="Number of statements" value="291"/>
+                <attribute name="Lines of code" value="47156"/>
+                <attribute name="Number of Java source files (all)" value="513"/>
+                <attribute name="Number of Java source files (non-excluded)" value="511"/>
+                <attribute name="Number of Java target files (all)" value="526"/>
+                <attribute name="Number of Java target files (non-excluded)" value="524"/>
+                <attribute name="Number of instructions" value="130618"/>
+                <attribute name="Number of internal packages" value="49"/>
+                <attribute name="Number of internal types (abstract)" value="78"/>
+                <attribute name="Number of internal types (all)" value="523"/>
+                <attribute name="Number of internal types (w/ implementation)" value="452"/>
+                <attribute name="Number of methods (abstract)" value="656"/>
+                <attribute name="Number of methods (all)" value="5714"/>
+                <attribute name="Number of methods (w/ implementation)" value="5058"/>
+                <attribute name="Number of statements" value="19032"/>
             </attributeCategory>
             <attributeCategory name="Task and Filter Metrics">
                 <attribute name="Number of fix warning tasks" value="0"/>
                 <attribute name="Number of ignored violations" value="0"/>
                 <attribute name="Number of ignored warnings" value="0"/>
-                <attribute name="Number of refactoring tasks" value="0"/>
-                <attribute name="Number of tasks" value="0"/>
-                <attribute name="Number of warnings (all)" value="34"/>
-                <attribute name="Number of warnings (thresholds)" value="0"/>
-                <attribute name="Number of warnings (workspace)" value="34"/>
+                <attribute name="Number of refactoring tasks" value="6"/>
+                <attribute name="Number of tasks" value="6"/>
+                <attribute name="Number of warnings (all)" value="84"/>
+                <attribute name="Number of warnings (cyclic)" value="3"/>
+                <attribute name="Number of warnings (duplicate code blocks)" value="63"/>
+                <attribute name="Number of warnings (thresholds)" value="2"/>
+                <attribute name="Number of warnings (workspace)" value="16"/>
             </attributeCategory>
             <attributeCategory name="John Lakos Metrics">
-                <attribute name="Average component dependency (ACD)" value="2.75"/>
-                <attribute name="Average type dependency" value="6.60"/>
+                <attribute name="Average component dependency (ACD)" value="108.17"/>
+                <attribute name="Average type dependency" value="106.54"/>
                 <attribute name="Depends upon" value="1"/>
                 <attribute name="Level" value="1"/>
-                <attribute name="Normalized cumulative component dependency (NCCD)" value="1.07"/>
-                <attribute name="Normalized cumulative type dependency" value="1.47"/>
-                <attribute name="Relative average component dependency" value="34.38"/>
-                <attribute name="Relative average type dependency" value="16.50"/>
+                <attribute name="Normalized cumulative component dependency (NCCD)" value="13.49"/>
+                <attribute name="Normalized cumulative type dependency" value="13.23"/>
+                <attribute name="Relative average component dependency" value="21.17"/>
+                <attribute name="Relative average type dependency" value="20.37"/>
             </attributeCategory>
             <attributeCategory name="Craig Larman Metrics">
-                <attribute name="Relational cohesion (RC)" value="2.45"/>
+                <attribute name="Relational cohesion (RC)" value="5.33"/>
             </attributeCategory>
             <attributeCategory name="Robert C. Martin Metrics">
-                <attribute name="A (Abstractness)" value="0.00"/>
+                <attribute name="A (Abstractness)" value="0.15"/>
                 <attribute name="Ca (Afferent coupling)" value="0"/>
-                <attribute name="Ce (Efferent coupling)" value="44"/>
-                <attribute name="D (Distance)" value="0.00"/>
+                <attribute name="Ce (Efferent coupling)" value="333"/>
+                <attribute name="D (Distance)" value="0.15"/>
                 <attribute name="I (Instability)" value="1.00"/>
             </attributeCategory>
             <attributeCategory name="Thomas J. McCabe Metrics">
-                <attribute name="Cyclomatic complexity (accumulated)" value="100"/>
-                <attribute name="Cyclomatic complexity (average accumulated per type)" value="2.56"/>
-                <attribute name="Cyclomatic complexity (average per method)" value="0.36"/>
-                <attribute name="Cyclomatic complexity (max accumulated per type)" value="74"/>
-                <attribute name="Cyclomatic complexity (max per method)" value="12"/>
-                <attribute name="Extended cyclomatic complexity (accumulated)" value="104"/>
-                <attribute name="Extended cyclomatic complexity (average accumulated per type)" value="2.67"/>
-                <attribute name="Extended cyclomatic complexity (average per method)" value="0.37"/>
-                <attribute name="Extended cyclomatic complexity (max accumulated per type)" value="77"/>
-                <attribute name="Extended cyclomatic complexity (max per method)" value="12"/>
-                <attribute name="Modified cyclomatic complexity (accumulated)" value="100"/>
-                <attribute name="Modified cyclomatic complexity (average accumulated per type)" value="2.56"/>
-                <attribute name="Modified cyclomatic complexity (average per method)" value="0.36"/>
-                <attribute name="Modified cyclomatic complexity (max accumulated per type)" value="74"/>
-                <attribute name="Modified cyclomatic complexity (max per method)" value="12"/>
+                <attribute name="Cyclomatic complexity (accumulated)" value="6906"/>
+                <attribute name="Cyclomatic complexity (average accumulated per type)" value="15.28"/>
+                <attribute name="Cyclomatic complexity (average per method)" value="1.37"/>
+                <attribute name="Cyclomatic complexity (max accumulated per type)" value="102"/>
+                <attribute name="Cyclomatic complexity (max per method)" value="55"/>
+                <attribute name="Extended cyclomatic complexity (accumulated)" value="7264"/>
+                <attribute name="Extended cyclomatic complexity (average accumulated per type)" value="16.07"/>
+                <attribute name="Extended cyclomatic complexity (average per method)" value="1.44"/>
+                <attribute name="Extended cyclomatic complexity (max accumulated per type)" value="117"/>
+                <attribute name="Extended cyclomatic complexity (max per method)" value="73"/>
+                <attribute name="Modified cyclomatic complexity (accumulated)" value="6804"/>
+                <attribute name="Modified cyclomatic complexity (average accumulated per type)" value="15.05"/>
+                <attribute name="Modified cyclomatic complexity (average per method)" value="1.35"/>
+                <attribute name="Modified cyclomatic complexity (max accumulated per type)" value="102"/>
+                <attribute name="Modified cyclomatic complexity (max per method)" value="55"/>
             </attributeCategory>
         </project>
     </projects>
     <configurations>
-        <configuration sourcefileWarnings="false" namespaceWarnings="true" asymetricAnalysis="false" parseSourceFiles="true" project="My Project"/>
+        <configuration sourcefileWarnings="false" workspaceRootWarnings="true" namespaceWarnings="true" asymetricAnalysis="false" parseSourceFiles="true" project="My Project"/>
     </configurations>
     <workspaces>
         <workspace project="My Project">
-            <workspacePath description="" path="../../src/main/java"/>
-            <workspacePath description="" path="../classes"/>
+            <workspacePath description="" path="infoglue21/build/libs/application.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/basicutilities.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/controllers.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/entities.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/frovi.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/netscape.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/plugin.jar"/>
+            <workspacePath description="" path="infoglue21/build/libs/service.jar"/>
+            <workspacePath description="" path="infoglue21/src"/>
         </workspace>
     </workspaces>
-    <violations percentageOfViolatingTypeRelations="0.0" numberOfViolatingTypeRelations="0" numberOfTypeRelations="235" numberOf="0"/>
+    <violations percentageOfViolatingTypeRelations="0.08" numberOfViolatingTypeRelations="5" numberOfTypeRelations="6370" numberOf="1">
+        <architectureViolations numberOfViolatingTypeRelations="5" explanation="No allowing definitions">
+            <architectureViolation>
+                <attribute name="From scope" value="My Project"/>
+                <attribute name="From element type" value="Layer"/>
+                <attribute name="From" value="Controllers"/>
+                <attribute name="To" value="Applications"/>
+                <attribute name="To element type" value="Layer"/>
+                <attribute name="To scope" value="My Project"/>
+                <attribute name="Type dependencies" value="5"/>
+            </architectureViolation>
+            <typeRelation>
+                <attribute name="From" value="org.infoglue.cms.controllers.kernel.impl.simple.UserPropertiesController"/>
+                <attribute name="To" value="org.infoglue.cms.applications.common.VisualFormatter"/>
+                <attribute name="Explanation" value="Layer 'Controllers' may not access Layer 'Applications'  - the dependency is forbidden because there are no allowing definitions"/>
+                <position line="494" file="org/infoglue/cms/controllers/kernel/impl/simple/UserPropertiesController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="org.infoglue.cms.controllers.kernel.impl.simple.ContentVersionController"/>
+                <attribute name="To" value="org.infoglue.cms.applications.common.VisualFormatter"/>
+                <attribute name="Explanation" value="Layer 'Controllers' may not access Layer 'Applications'  - the dependency is forbidden because there are no allowing definitions"/>
+                <position line="789" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentVersionController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="org.infoglue.cms.controllers.kernel.impl.simple.RolePropertiesController"/>
+                <attribute name="To" value="org.infoglue.cms.applications.common.VisualFormatter"/>
+                <attribute name="Explanation" value="Layer 'Controllers' may not access Layer 'Applications'  - the dependency is forbidden because there are no allowing definitions"/>
+                <position line="529" file="org/infoglue/cms/controllers/kernel/impl/simple/RolePropertiesController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="org.infoglue.cms.controllers.kernel.impl.simple.ContentControllerProxy"/>
+                <attribute name="To" value="org.infoglue.cms.applications.contenttool.wizards.actions.CreateContentWizardInfoBean"/>
+                <attribute name="Explanation" value="Layer 'Controllers' may not access Layer 'Applications'  - the dependency is forbidden because there are no allowing definitions"/>
+                <position line="166" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentControllerProxy.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                <position line="173" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentControllerProxy.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            </typeRelation>
+            <typeRelation>
+                <attribute name="From" value="org.infoglue.cms.controllers.kernel.impl.simple.ContentController"/>
+                <attribute name="To" value="org.infoglue.cms.applications.contenttool.wizards.actions.CreateContentWizardInfoBean"/>
+                <attribute name="Explanation" value="Layer 'Controllers' may not access Layer 'Applications'  - the dependency is forbidden because there are no allowing definitions"/>
+                <position line="92" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                <position line="103" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                <position line="105" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                <position line="110" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            </typeRelation>
+        </architectureViolations>
+    </violations>
     <consistencyProblems numberOf="0"/>
-    <cycleGroups numberOf="1">
-        <cycleGroup namedElementGroup="Package" description="2 cyclic elements of type 'Package'" parent="My Project" elementScope="My Project">
-            <cyclePath parent="com.hello2morrow.sonarplugin.xsd" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
-            <cyclePath parent="com.hello2morrow.sonarplugin" description="19 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="19"/>
+    <cycleGroups numberOf="3">
+        <cycleGroup namedElementGroup="Package" description="32 cyclic elements of type 'Package'" parent="My Project" elementScope="My Project">
+            <cyclePath parent="org.infoglue.cms.applications.cmstool.actions" description="20 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="20"/>
+            <cyclePath parent="org.infoglue.cms.applications.common" description="6 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="6"/>
+            <cyclePath parent="org.infoglue.cms.applications.common.actions" description="35 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="35"/>
+            <cyclePath parent="org.infoglue.cms.applications.contenttool.actions" description="292 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="292"/>
+            <cyclePath parent="org.infoglue.cms.applications.contenttool.wizards.actions" description="52 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="52"/>
+            <cyclePath parent="org.infoglue.cms.controllers.kernel.impl.simple" description="429 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="429"/>
+            <cyclePath parent="org.infoglue.cms.controllers.usecases.common" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
+            <cyclePath parent="org.infoglue.cms.controllers.usecases.common.impl.simple" description="6 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="6"/>
+            <cyclePath parent="org.infoglue.cms.controllers.usecases.structuretool" description="19 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="19"/>
+            <cyclePath parent="org.infoglue.cms.controllers.usecases.structuretool.impl.simple" description="86 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="86"/>
+            <cyclePath parent="org.infoglue.cms.entities.content" description="20 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="20"/>
+            <cyclePath parent="org.infoglue.cms.entities.content.impl.simple" description="25 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="25"/>
+            <cyclePath parent="org.infoglue.cms.entities.kernel" description="9 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="9"/>
+            <cyclePath parent="org.infoglue.cms.entities.management" description="87 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="87"/>
+            <cyclePath parent="org.infoglue.cms.entities.management.impl.simple" description="66 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="66"/>
+            <cyclePath parent="org.infoglue.cms.entities.mydesktop" description="6 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="6"/>
+            <cyclePath parent="org.infoglue.cms.entities.publishing" description="13 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="13"/>
+            <cyclePath parent="org.infoglue.cms.entities.publishing.impl.simple" description="6 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="6"/>
+            <cyclePath parent="org.infoglue.cms.entities.structure" description="22 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="22"/>
+            <cyclePath parent="org.infoglue.cms.entities.structure.impl.simple" description="16 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="16"/>
+            <cyclePath parent="org.infoglue.cms.entities.workflow" description="25 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="25"/>
+            <cyclePath parent="org.infoglue.cms.entities.workflow.impl.simple" description="21 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="21"/>
+            <cyclePath parent="org.infoglue.cms.security" description="26 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="26"/>
+            <cyclePath parent="org.infoglue.cms.security.interceptors" description="28 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="28"/>
+            <cyclePath parent="org.infoglue.cms.services" description="2 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="2"/>
+            <cyclePath parent="org.infoglue.cms.treeservice.ss" description="20 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="20"/>
+            <cyclePath parent="org.infoglue.cms.util" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
+            <cyclePath parent="org.infoglue.cms.util.css" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
+            <cyclePath parent="org.infoglue.cms.util.dom" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
+            <cyclePath parent="org.infoglue.cms.util.mail" description="1 type relation in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1"/>
+            <cyclePath parent="org.infoglue.cms.util.sorters" description="2 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="2"/>
+            <cyclePath parent="org.infoglue.cms.util.validators" description="7 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="7"/>
+        </cycleGroup>
+        <cycleGroup namedElementGroup="Layer" description="2 cyclic elements of type 'Layer'" parent="My Project" elementScope="My Project">
+            <cyclePath parent="Applications" description="352 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="352"/>
+            <cyclePath parent="Controllers" description="5 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="5"/>
+        </cycleGroup>
+        <cycleGroup namedElementGroup="Path container" description="5 cyclic elements of type 'Path container'" parent="My Project" elementScope="My Project">
+            <cyclePath parent="infoglue21/build/libs/application.jar" description="1001 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="1001"/>
+            <cyclePath parent="infoglue21/build/libs/basicutilities.jar" description="6 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="6"/>
+            <cyclePath parent="infoglue21/build/libs/controllers.jar" description="644 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="644"/>
+            <cyclePath parent="infoglue21/build/libs/entities.jar" description="113 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="113"/>
+            <cyclePath parent="infoglue21/build/libs/service.jar" description="108 type relations in cycle group" numberOfEfferentTypeRelationsInCycleGroup="108"/>
         </cycleGroup>
     </cycleGroups>
-    <warnings numberOf="34">
-        <warningsByAttributeGroup attributeGroup="Threshold" numberOf="0"/>
-        <warningsByAttributeGroup attributeGroup="Workspace" numberOf="34">
-            <warningsByAttribute attributeDescription="Indicates that a source file is newer than an associated class file" attributeName="Compilation needed" numberOf="1">
+    <warnings numberOf="81">
+        <warningsByAttributeGroup attributeGroup="Duplicate code" numberOf="63">
+            <warningsByAttribute attributeDescription="Blocks of duplicated code that occur in the source file" attributeName="Duplicate code blocks" numberOf="63">
                 <warning>
                     <attribute name="Project" value="My Project"/>
                     <attribute name="Element type" value="Source file"/>
-                    <attribute name="Element" value="com/hello2morrow/sonarplugin/SonarJSensor.java"/>
-                    <attribute name="Attribute value" value=""/>
-                    <position offset="0" line="0" file="com/hello2morrow/sonarplugin/SonarJSensor.java" dir="/Users/sascha/sonarplugin/sonar-sonarj-plugin/src/main/java"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/CreateAvailableServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="128 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/CreateAvailableServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/security/CASBasicAuthenticationModule.java"/>
+                    <attribute name="Attribute value" value="98 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/security/CASBasicAuthenticationModule.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/workflow/EventVO.java"/>
+                    <attribute name="Attribute value" value="88 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/workflow/EventVO.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/CreateContentAction.java"/>
+                    <attribute name="Attribute value" value="105 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/CreateContentAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/mydesktoptool/actions/ViewMyDesktopToolToolBarAction.java"/>
+                    <attribute name="Attribute value" value="168 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/mydesktoptool/actions/ViewMyDesktopToolToolBarAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/ViewListTemplateAction.java"/>
+                    <attribute name="Attribute value" value="98 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/ViewListTemplateAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/ViewMultiSelectContentTreeForServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="480 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/ViewMultiSelectContentTreeForServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/util/workflow/InfoGlueJDBCWorkflowStore.java"/>
+                    <attribute name="Attribute value" value="65 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/util/workflow/InfoGlueJDBCWorkflowStore.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/BaseController.java"/>
+                    <attribute name="Attribute value" value="81 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/BaseController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/ViewStructureTreeForServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="161 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureTreeForServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/PublicationController.java"/>
+                    <attribute name="Attribute value" value="68 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/PublicationController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/SmallContentImpl.java"/>
+                    <attribute name="Attribute value" value="155 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/SmallContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java"/>
+                    <attribute name="Attribute value" value="117 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/ViewContentVersionAction.java"/>
+                    <attribute name="Attribute value" value="67 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/ViewContentVersionAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/security/interceptors/InfoGlueCommonAccessRightsInterceptor.java"/>
+                    <attribute name="Attribute value" value="120 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/security/interceptors/InfoGlueCommonAccessRightsInterceptor.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java"/>
+                    <attribute name="Attribute value" value="77 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/CreatePageTemplateAction.java"/>
+                    <attribute name="Attribute value" value="97 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/CreatePageTemplateAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/ViewSystemUserPropertiesAction.java"/>
+                    <attribute name="Attribute value" value="102 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/ViewSystemUserPropertiesAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/MediumContentImpl.java"/>
+                    <attribute name="Attribute value" value="102 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/MediumContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/ViewUserPropertiesAction.java"/>
+                    <attribute name="Attribute value" value="107 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/ViewUserPropertiesAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/wizards/actions/CreateContentWizardAction.java"/>
+                    <attribute name="Attribute value" value="103 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/wizards/actions/CreateContentWizardAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/ContentControllerProxy.java"/>
+                    <attribute name="Attribute value" value="81 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentControllerProxy.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/ContentImpl.java"/>
+                    <attribute name="Attribute value" value="226 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/ContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/LanguageController.java"/>
+                    <attribute name="Attribute value" value="63 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/LanguageController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/ViewSiteNodeTreeAction.java"/>
+                    <attribute name="Attribute value" value="60 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/ViewSiteNodeTreeAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/SimpleContentXmlAction.java"/>
+                    <attribute name="Attribute value" value="77 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/SimpleContentXmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/SmallContentImpl.java"/>
+                    <attribute name="Attribute value" value="227 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/SmallContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/UserPropertiesController.java"/>
+                    <attribute name="Attribute value" value="104 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/UserPropertiesController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/ViewSystemUserPropertiesAction.java"/>
+                    <attribute name="Attribute value" value="100 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/ViewSystemUserPropertiesAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/ViewUserPropertiesAction.java"/>
+                    <attribute name="Attribute value" value="99 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/ViewUserPropertiesAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/security/InfoGlueBasicAuthenticationModule.java"/>
+                    <attribute name="Attribute value" value="98 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/security/InfoGlueBasicAuthenticationModule.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java"/>
+                    <attribute name="Attribute value" value="71 lines"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/ViewUserPropertiesAction.java"/>
+                    <attribute name="Attribute value" value="132 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/ViewUserPropertiesAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/CreateServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="108 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/CreateServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java"/>
+                    <attribute name="Attribute value" value="78 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java"/>
+                    <attribute name="Attribute value" value="83 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/ViewContentTreeAction.java"/>
+                    <attribute name="Attribute value" value="59 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/ViewContentTreeAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/wizards/actions/CreateContentWizardChooseParentAction.java"/>
+                    <attribute name="Attribute value" value="92 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/wizards/actions/CreateContentWizardChooseParentAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/security/JNDIBasicAuthorizationModule.java"/>
+                    <attribute name="Attribute value" value="51 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/security/JNDIBasicAuthorizationModule.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/ViewContentTreeForServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="162 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/ViewContentTreeForServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/kernel/ValidatableEntityVO.java"/>
+                    <attribute name="Attribute value" value="80 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/kernel/ValidatableEntityVO.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/MediumContentImpl.java"/>
+                    <attribute name="Attribute value" value="99 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/MediumContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/SmallContentImpl.java"/>
+                    <attribute name="Attribute value" value="99 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/SmallContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/ContentImpl.java"/>
+                    <attribute name="Attribute value" value="101 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/ContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/ViewContentVersionAction.java"/>
+                    <attribute name="Attribute value" value="59 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/ViewContentVersionAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/PublicationController.java"/>
+                    <attribute name="Attribute value" value="70 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/PublicationController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/util/RemoteCacheUpdater.java"/>
+                    <attribute name="Attribute value" value="70 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/util/RemoteCacheUpdater.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/ViewMultiSelectStructureTreeForServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="479 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/ViewMultiSelectStructureTreeForServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/security/JNDIBasicAuthorizationModule.java"/>
+                    <attribute name="Attribute value" value="49 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/security/JNDIBasicAuthorizationModule.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/RolePropertiesController.java"/>
+                    <attribute name="Attribute value" value="104 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/RolePropertiesController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/publishing/PublicationDetailVO.java"/>
+                    <attribute name="Attribute value" value="88 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/publishing/PublicationDetailVO.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/util/workflow/InfoGlueJDBCWorkflowStore.java"/>
+                    <attribute name="Attribute value" value="64 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/util/workflow/InfoGlueJDBCWorkflowStore.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/security/interceptors/InfoGlueOSWorkflowInterceptor.java"/>
+                    <attribute name="Attribute value" value="120 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/security/interceptors/InfoGlueOSWorkflowInterceptor.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/entities/content/impl/simple/MediumContentImpl.java"/>
+                    <attribute name="Attribute value" value="156 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/entities/content/impl/simple/MediumContentImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/common/VisualFormatter.java"/>
+                    <attribute name="Attribute value" value="63 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/common/VisualFormatter.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/common/VisualFormatter.java"/>
+                    <attribute name="Attribute value" value="63 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/common/VisualFormatter.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/ViewRolePropertiesAction.java"/>
+                    <attribute name="Attribute value" value="132 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/ViewRolePropertiesAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/publishingtool/actions/ViewPublishingToolToolBarAction.java"/>
+                    <attribute name="Attribute value" value="168 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/publishingtool/actions/ViewPublishingToolToolBarAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/LanguageController.java"/>
+                    <attribute name="Attribute value" value="63 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/LanguageController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/managementtool/actions/UpdateAvailableServiceBindingAction.java"/>
+                    <attribute name="Attribute value" value="127 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/managementtool/actions/UpdateAvailableServiceBindingAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/ContentVersionControllerProxy.java"/>
+                    <attribute name="Attribute value" value="81 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentVersionControllerProxy.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java"/>
+                    <attribute name="Attribute value" value="118 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/common/VisualFormatter.java"/>
+                    <attribute name="Attribute value" value="59 lines"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/common/VisualFormatter.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
                 </warning>
             </warningsByAttribute>
-            <warningsByAttribute attributeDescription="No source file found for the type" attributeName="No attached source file" numberOf="32">
+        </warningsByAttributeGroup>
+        <warningsByAttributeGroup attributeGroup="Threshold" numberOf="2">
+            <warningsByAttribute warningInfo="Threshold violation -  threshold range = [0, 700]" attributeDescription="Total number of lines of code in the measured element; counts every line that is not a blank or comment line, regardless of the number of statements" attributeName="Lines of code" numberOf="2">
                 <warning>
                     <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdCyclePath"/>
-                    <attribute name="Attribute value" value=""/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/controllers/kernel/impl/simple/ContentController.java"/>
+                    <attribute name="Attribute value" value="750 (Threshold violation -  threshold range = [0, 700])"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/controllers/kernel/impl/simple/ContentController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
                 </warning>
                 <warning>
                     <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttributeGroup"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWorkspace"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdViolations"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdTask"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarning"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdArchitectureViolation"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdProblemCategory"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdElementProblem"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdAttribute"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdProjects"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWorkspacePath"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdConfigurations"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.ObjectFactory"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdCycleGroups"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdCycleGroup"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttribute"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdPosition"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.ReportContext"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdConsistencyProblems"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWarnings"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdConfiguration"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdTypeRelation"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdMetric"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdDependencyProblem"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdAttributeRoot"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdExclusions"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdAttributeCategory"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdWorkspaces"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Enum"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdMetricSort"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdMetrics"/>
-                    <attribute name="Attribute value" value=""/>
-                </warning>
-                <warning>
-                    <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class"/>
-                    <attribute name="Element" value="com.hello2morrow.sonarplugin.xsd.XsdTasks"/>
-                    <attribute name="Attribute value" value=""/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/infoglue/cms/applications/structuretool/actions/ViewSiteNodePageComponentsAction.java"/>
+                    <attribute name="Attribute value" value="728 (Threshold violation -  threshold range = [0, 700])"/>
+                    <position offset="0" line="0" file="org/infoglue/cms/applications/structuretool/actions/ViewSiteNodePageComponentsAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
                 </warning>
             </warningsByAttribute>
-            <warningsByAttribute attributeDescription="Indicates, that a class file is older than an associated source file" attributeName="Out of date" numberOf="1">
+        </warningsByAttributeGroup>
+        <warningsByAttributeGroup attributeGroup="Workspace" numberOf="16">
+            <warningsByAttribute attributeDescription="Marks files that are misplaced with respect to the package of defining type" attributeName="Misplaced file" numberOf="16">
                 <warning>
                     <attribute name="Project" value="My Project"/>
-                    <attribute name="Element type" value="Class file"/>
-                    <attribute name="Element" value="com/hello2morrow/sonarplugin/SonarJSensor.class"/>
-                    <attribute name="Attribute value" value=""/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/CMSNode.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/opentree' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/CMSNode.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/Rule.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/Rule.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueCodeEditorApplet.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueCodeEditorApplet.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/opentree' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/netscape/javascript/JSObject.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'netscape/javascript' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/netscape/javascript/JSObject.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueTextArea.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueTextArea.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/opentree' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueCodeEditorController.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueCodeEditorController.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/NodeTreeSelectionListener.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/opentree' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/NodeTreeSelectionListener.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/OpenTree.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/opentree' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/OpenTree.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/CMSTreeListener.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/opentree' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/CMSTreeListener.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/CodeHelperDialog.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/CodeHelperDialog.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/TextAreaInputListener.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/TextAreaInputListener.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/HttpUtilities.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/HttpUtilities.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueCodeEditor.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'org/infoglue/cms/plugins/codeeditor' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/org/infoglue/cms/plugins/codeeditor/InfoGlueCodeEditor.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+                </warning>
+                <warning>
+                    <attribute name="Project" value="My Project"/>
+                    <attribute name="Element type" value="Source file"/>
+                    <attribute name="Element" value="org/netscape/javascript/JSException.java"/>
+                    <attribute name="Attribute value" value="Subdirectory 'netscape/javascript' expected"/>
+                    <position offset="0" line="0" file="webapps/applications/InfoGlueCodeEditor/netscape/javascript/JSException.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
                 </warning>
             </warningsByAttribute>
         </warningsByAttributeGroup>
     </warnings>
-    <tasks numberOf="0"/>
-    <exclusions numberOf="0" name="Internal"/>
-    <exclusions numberOf="25" name="External">
+    <tasks numberOf="6">
+        <task>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element type" value="Class"/>
+            <attribute name="Element" value="org.infoglue.cms.net.Node"/>
+            <attribute name="Description" value="Delete type 'org.infoglue.cms.net.Node'"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value=""/>
+            <position offset="1144" line="28" file="org/infoglue/cms/net/Node.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="105" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="110" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="111" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="112" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="113" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="137" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="142" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="143" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="144" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="145" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="170" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="182" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="183" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="184" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="185" file="org/infoglue/cms/treeservice/SiteNodeService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="118" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="119" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="120" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="121" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="145" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="146" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="147" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="148" file="org/infoglue/cms/treeservice/JServiceBuilder.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="118" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="119" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="131" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="132" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="154" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="157" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="158" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="159" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="172" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="173" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="175" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="176" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="177" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Controller.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="103" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="109" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="110" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="111" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="112" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="136" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="140" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="141" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="142" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="143" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="168" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="179" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="180" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="181" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="182" file="org/infoglue/cms/treeservice/ContentService.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="47" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="53" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="54" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="69" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="76" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="82" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="83" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="98" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="113" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="114" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="286" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="287" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="288" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="289" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="310" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="311" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="312" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="313" file="webapps/applications/OpenTree/org/infoglue/cms/plugins/opentree/Communicator.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+        </task>
+        <task>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element type" value="Package"/>
+            <attribute name="Element" value="com.frovi.ss.Tree"/>
+            <attribute name="Description" value="Delete package 'com.frovi.ss.Tree' hierarchically"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value=""/>
+            <position offset="1361" line="38" file="com/frovi/ss/Tree/BaseNode.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position offset="185" line="11" file="com/frovi/ss/Tree/INodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position offset="193" line="11" file="com/frovi/ss/Tree/BaseNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position offset="268" line="15" file="com/frovi/ss/Tree/MakeTree.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="65" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="66" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="67" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="68" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="69" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="77" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="78" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="79" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="80" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="81" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="145" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="146" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="147" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="149" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="65" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="104" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="41" file="org/infoglue/cms/treeservice/ss/ManagementToolNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="47" file="org/infoglue/cms/treeservice/ss/ManagementToolNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="26" file="org/infoglue/cms/applications/structuretool/actions/SimpleStructureXmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="83" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="228" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="232" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="255" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="256" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="265" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="267" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="50" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="29" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="66" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="67" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="68" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="69" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="71" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="120" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="121" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="125" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="126" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="131" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="49" file="org/infoglue/cms/treeservice/ss/ManagementToolNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="51" file="org/infoglue/cms/treeservice/ss/ManagementToolNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="26" file="org/infoglue/cms/applications/common/actions/TreeViewAbstractAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="38" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="55" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="105" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="106" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="108" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="109" file="org/infoglue/cms/applications/structuretool/actions/ViewStructureToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="63" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="64" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="65" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="66" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="68" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="120" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="121" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="125" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="126" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="132" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="52" file="org/infoglue/cms/applications/managementtool/actions/ViewManagementToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="51" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="59" file="org/infoglue/cms/treeservice/ss/SiteNodeNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="93" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="96" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="317" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="318" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="320" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="326" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="348" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="349" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="351" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="354" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="360" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="369" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="375" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="376" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="377" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="380" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="391" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="397" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="47" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="55" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplierJDBC.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="47" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="55" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="29" file="org/infoglue/cms/treeservice/ss/ContentNodeImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="61" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="62" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="63" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="64" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="65" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="116" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="117" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="119" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="121" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="135" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="136" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="137" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="138" file="org/infoglue/cms/treeservice/ss/ContentNodeVersionSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="21" file="org/infoglue/cms/applications/common/actions/TreeViewAbstractAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="26" file="org/infoglue/cms/applications/common/actions/TreeViewAbstractAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="97" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="100" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="232" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="233" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="235" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="241" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="264" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="265" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="267" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="271" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="277" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="287" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="293" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="294" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="295" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="298" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="309" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="315" file="org/infoglue/cms/applications/common/actions/SimpleXmlServiceAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="68" file="org/infoglue/cms/applications/contenttool/actions/SimpleContentXmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="45" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="104" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="190" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="192" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="194" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="196" file="org/infoglue/cms/applications/contenttool/actions/ViewContentToolMenuHtmlAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="83" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="312" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="317" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="339" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="340" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="349" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="351" file="org/infoglue/cms/applications/contenttool/actions/ContentTreeXMLAction.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="50" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="57" file="org/infoglue/cms/treeservice/ss/ContentNodeSupplier.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="29" file="org/infoglue/cms/treeservice/ss/ManagementNodeImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position line="34" file="org/infoglue/cms/treeservice/ss/ManagementNodeImpl.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+        </task>
+        <task>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element type" value="Class"/>
+            <attribute name="Element" value="org.infoglue.cms.net.CommunicationEnvelopeNew"/>
+            <attribute name="Description" value="Rename type 'org.infoglue.cms.net.CommunicationEnvelope' to 'CommunicationEnvelopeNew'"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value=""/>
+            <position offset="1179" line="29" file="org/infoglue/cms/net/CommunicationEnvelope.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+        </task>
+        <task>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element type" value="Package"/>
+            <attribute name="Element" value="org.netscape.javascript"/>
+            <attribute name="Description" value="Rename package 'netscape.javascript' hierarchically to 'org.netscape.javascript'"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value=""/>
+            <position offset="364" line="13" file="webapps/applications/InfoGlueCodeEditor/netscape/javascript/JSObject.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+            <position offset="335" line="10" file="webapps/applications/InfoGlueCodeEditor/netscape/javascript/JSException.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+        </task>
+        <task>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element type" value="Class"/>
+            <attribute name="Element" value="org.infoglue.cms.net.FileHelper"/>
+            <attribute name="Description" value="Move type 'org.infoglue.cms.io.FileHelper' to package 'org.infoglue.cms.net'"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value=""/>
+            <position offset="1146" line="29" file="org/infoglue/cms/io/FileHelper.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+        </task>
+        <task>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element type" value="Class"/>
+            <attribute name="Element" value="org.infoglue.cms.entities.content.ContentVO"/>
+            <attribute name="Description" value="Cut type dependency from 'org.infoglue.cms.entities.content.ContentVO' to 'org.infoglue.cms.exception.ConstraintException'"/>
+            <attribute name="Priority" value="Medium"/>
+            <attribute name="Assigned to" value=""/>
+            <position offset="1388" line="35" file="org/infoglue/cms/entities/content/ContentVO.java" dir="/Users/sascha/Documents/hello2morrow Documents/Soto Tools/code examples/infoglue21/src"/>
+        </task>
+    </tasks>
+    <exclusions numberOf="2" name="Internal">
         <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.File"/>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element" value="com.frovi.ss.tests.testRecursive"/>
         </excludedType>
         <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.FileInputStream"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.FileNotFoundException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.IOException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.io.InputStream"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.AssertionError"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Boolean"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Class"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Double"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Enum"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.IllegalArgumentException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Integer"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Math"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Number"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.NumberFormatException"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Object"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.String"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.StringBuilder"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.lang.Throwable"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.ArrayList"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Arrays"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.HashMap"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Iterator"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.List"/>
-        </excludedType>
-        <excludedType>
-            <attribute name="Project" value="External"/>
-            <attribute name="Element" value="java.util.Map"/>
+            <attribute name="Project" value="My Project"/>
+            <attribute name="Element" value="com.frovi.ss.tests.testclass"/>
         </excludedType>
     </exclusions>
+    <exclusions numberOf="0" name="External"/>
     <metrics>
         <metric standardName="NumberOfInternalTypes" name="Number of internal types (all)" description="Total number of internal types contained in the measured element" sort="descending"/>
         <metric standardName="NumberOfNotAssignedTypes" name="Number of unassigned types" description="Total number of types that are not assigned any logical element defined in the architecture model" sort="descending"/>
@@ -541,6 +1179,7 @@
         <metric standardName="AverageModifiedCyclomaticComplexityPerMethod" name="Modified cyclomatic complexity (average per method)" description="Average modified cyclomatic complexity per method - calculated for all methods in the measured element" sort="descending"/>
         <metric standardName="AverageAccumulatedModifiedCyclomaticComplexityPerType" name="Modified cyclomatic complexity (average accumulated per type)" description="Average accumulated modified cyclomatic complexity per type - calculated for all types in the measured element" sort="descending"/>
         <metric standardName="NumberOfAccessibleTypes" name="Number of public types" description="Number of types accessible from outside of the measured element, i.e. all public types" sort="descending"/>
+        <metric standardName="NumberOfDuplicateCodeBlocks" name="Number of duplicate code blocks" description="Number of duplicate code blocks detected in source files associated with types that are located in the measured element" sort="descending"/>
         <metric standardName="NumberOfAssertions" name="Number of assertions" description="Total number of assertions of the measured element" sort="ascending"/>
         <metric standardName="NumberOfStatements" name="Number of statements" description="Total number of statements contained in the measured element" sort="descending"/>
         <metric standardName="NumberOfInstructions" name="Number of instructions" description="Total number of byte code instructions of a class file aggregated for the measured element" sort="descending"/>
@@ -558,6 +1197,8 @@
         <metric standardName="NumberOfWarnings" name="Number of warnings (all)" description="Total number of warnings which are related to the measured element; all kinds of warnings are counted" sort="descending"/>
         <metric standardName="NumberOfCyclicElements" name="Number of cyclic elements" description="Total number of cyclic coupled elements of any kind contained in a system" sort="descending"/>
         <metric standardName="NumberOfMetricWarnings" name="Number of warnings (thresholds)" description="Total number of warnings which are related to the measured element; only threshold warnings are counted" sort="descending"/>
+        <metric standardName="NumberOfDuplicateCodeBlocksWarnings" name="Number of warnings (duplicate code blocks)" description="Total number of duplicate code blocks warnings in the measured element" sort="descending"/>
+        <metric standardName="NumberOfCyclicWarnings" name="Number of warnings (cyclic)" description="Total number of cyclic warnings in the measured element" sort="descending"/>
         <metric standardName="NumberOfWorkspaceWarnings" name="Number of warnings (workspace)" description="Total number of warnings which are related to the measured element; only workspace warnings are counted" sort="descending"/>
         <metric standardName="NumberOfIgnoredViolations" name="Number of ignored violations" description="Total number of violations which are related to the measured element and filtered out by a violation filter" sort="descending"/>
         <metric standardName="NumberOfIgnoredWarnings" name="Number of ignored warnings" description="Total number of warnings which are related to the measured element and filtered out by an ignore warning filter" sort="descending"/>
