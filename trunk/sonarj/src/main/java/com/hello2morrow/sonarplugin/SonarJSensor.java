@@ -581,7 +581,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         openTasks += taskCount.getValue();
     }
     
-    private void analyse(XsdAttributeRoot xsdProject, ReportContext report)
+    private void analyse(XsdAttributeRoot xsdProject, ReportContext report, boolean isMultiModuleProject)
     {
         String projectName = xsdProject.getName();
         projectMetrics = readAttributes(xsdProject);
@@ -598,11 +598,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         taskReferences = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
         openTasks = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
         analyseCycleGroups(report, internalPackages, projectName);
-        if (pluginHandler.isUsingArchitectureDescription() && projectMetrics.get(CYCLIC_LAYERS) != null)
+        if ((isMultiModuleProject || pluginHandler.isUsingArchitectureDescription()) && projectMetrics.get(CYCLIC_LAYERS) != null)
         {
+            LOG.info("Adding architecture measures for "+project.getName());
             addArchitectureMeasures(report, projectName);
         }
-        double effortInHours = openTasks + taskReferences/6;
+        double effortInHours = openTasks + taskReferences/10;
         double effortInDays = effortInHours/8.0;
         double cost = effortInHours * developerCostRate;
         saveMeasure(SonarJMetrics.EROSION_DAYS, effortInDays, 1);
@@ -625,14 +626,25 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         XsdProjects projects = report.getProjects();  
         List<XsdAttributeRoot> projectList = projects.getProject();
-        
+
         if (projectList.size() > 1)
         {
-            LOG.error("The SonarJ plugin currently cannot analyze the architecture scope of SonarJ projects with multiple sub-projects. This will be implemented after Sonar 2.0 is available.");
-        }   
+            for (XsdAttributeRoot sonarjProject : projectList)
+            {
+                String sonarjName = sonarjProject.getName();
+                String longName = project.getArtifactId()+"["+project.getGroupId()+"]";
+
+                if (sonarjName.equals(project.getArtifactId()) || sonarjName.equals(longName))
+                {
+                    LOG.info("Adding measures for "+project.getName());
+                    analyse(sonarjProject, report, true);
+                    break;
+                }
+            }
+        }
         else
         {
-            analyse(projectList.get(0), report);
+            analyse(projectList.get(0), report, false);
         }
     }
     

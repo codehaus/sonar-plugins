@@ -28,7 +28,7 @@ import org.sonar.api.resources.Project;
 
 public class SonarJPluginHandler implements MavenPluginHandler
 {
-	private static final String REPORT_DIR = "/sonarj-sonar-plugin";
+	private static final String REPORT_DIR = "sonarj-sonar-plugin";
     private static final String ARTIFACT_ID = "maven-sonarj-plugin";
     private static final String GROUP_ID = "com.hello2morrow.sonar";
     
@@ -69,10 +69,10 @@ public class SonarJPluginHandler implements MavenPluginHandler
     public final void configure(Project project, MavenPlugin plugin)
     {
         target = project.getFileSystem().getBuildDir().getPath();
-        plugin.setParameter("reportDir", target+REPORT_DIR);  
-        plugin.setParameter("reportName", "sonarj-report");
+        plugin.setParameter("sonarReportDir", REPORT_DIR);
+        plugin.setParameter("sonarReportName", "sonarj-report");
         plugin.setParameter("context", "Sonar");
-        if (licenseFileName != null && licenseFileName.length() > 0)
+        if (licenseFileName != null && licenseFileName.length() > 0 && plugin.getParameter("license") == null)
         {
             plugin.setParameter("license", licenseFileName);
         }
@@ -98,6 +98,6 @@ public class SonarJPluginHandler implements MavenPluginHandler
     {
         assert target != null;
         
-        return target+REPORT_DIR+"/sonarj-report.xml";
+        return target+"/"+REPORT_DIR+"/sonarj-report.xml";
     }
 }
