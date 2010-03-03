@@ -1,0 +1,13 @@
+<module>
+  <inherits name="com.google.gwt.user.User"/>
+  <inherits name="com.google.gwt.json.JSON"/>
+  <inherits name="com.google.gwt.http.HTTP"/>
+  <inherits name="org.sonar.api.web.gwt.Sonar"/>
+  <inherits name="com.google.gwt.gen2.table.Table"/>
+
+  <stylesheet src="codereviewviewer.css" />
+
+  <entry-point class="org.sonar.plugins.codereview.codereviewviewer.client.CodeReviewViewer"/>
+  <servlet path="/submitComments" class="org.sonar.plugins.codereview.codereviewviewer.server.SubmitCommentsServiceImpl" />
+
+</module>
