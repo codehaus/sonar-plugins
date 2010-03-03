@@ -1,0 +1,9 @@
+Steps to install CodeReview Plugin
+
+3. Copy sonar-codereview-server.jar  WEB-INF/lib directory
+4. Edit WEB-INF/web.xml.  Add servlet mapping and parameters for /submitComments
+5. Copy gwt-servlet.jar to WEB-INF/lib directory
+6. Install svn-kit.jar to WEB-INF/lib directory
+7. Copy javamailapi-1.4.2 (mail.jar) & JAF 1.1.1 (activation.jar) to WEB-INF/lib
+8. Web.xml has to have secure privileges as svn password is stored in it in plain text format
+
