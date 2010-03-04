@@ -35,10 +35,11 @@ import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.File;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.api.SourceMethod;
-import org.sonar.squid.indexer.Query;
+import org.sonar.squid.api.Query;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,10 +55,7 @@ public class ComplexityDistributionSensorTest {
   @Test
   public void testMeasureSaving() {
     SensorContext context = mock(SensorContext.class);
-    Resource resource = new File("foo");
-
-    when(context.getResource("[default].foo")).
-        thenReturn(resource);
+    Resource resource = new JavaFile("foo");
 
     RangeDistributionBuilder distrib = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
     ComplexityDistributionSensor complexityDistributionSensor = new ComplexityDistributionSensor(null);

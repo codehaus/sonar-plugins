@@ -151,21 +151,6 @@ public class QIPlugin implements Plugin {
     return list;
   }
 
-  // Temporary work around until API is updated
-  static String convertKeyFromSquidToSonarFormat(String key) {
-    boolean isJavaFile = key.endsWith(".java");
-    if (isJavaFile) {
-      key = key.substring(0, key.length() - ".java".length());
-    }
-    String convertedKey = key.replace('/', '.');
-    if (convertedKey.indexOf('.') == -1 && !convertedKey.equals("")) {
-      convertedKey = "[default]." + convertedKey;
-    } else if (convertedKey.indexOf('.') == -1) {
-      convertedKey = "[default]";
-    }
-    return convertedKey;
-  }
-
   @Override
   public String toString() {
     return getKey();

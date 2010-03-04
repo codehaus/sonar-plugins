@@ -20,14 +20,12 @@
 package org.sonar.plugins.qi;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.Sensor;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.SquidSearch;
+import org.sonar.api.batch.*;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.api.SourceMethod;
@@ -118,12 +116,11 @@ public class ComplexityDistributionSensor implements Sensor {
    * Save the complexity distribution at file level. Will only keep it in memory
    *
    * @param context           the context
-   * @param file              the file
+   * @param squidFile              the file
    * @param nclocDistribution the distribution
    */
-  protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
-    String key = QIPlugin.convertKeyFromSquidToSonarFormat(file.getKey());
-    Resource resource = context.getResource(key);
-    context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+  protected void saveMeasure(SensorContext context, SourceCode squidFile, RangeDistributionBuilder nclocDistribution) {
+    JavaFile sonarFile = SquidUtils.convertJavaFileKeyFromSquidFormat(squidFile.getKey());
+    context.saveMeasure(sonarFile, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
   }
 }
