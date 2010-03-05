@@ -139,24 +139,7 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
   protected Map<RulePriority, Integer> getWeightsByPriority() {
     String property = configuration.getString(getConfigurationKey(), getDefaultConfigurationKey());
 
-    return KeyValueFormat.parse(property, new RulePriorityNumbersPairTransformer());
-  }
-
-  // TODO This should be removed as soon as Sonar 1.12 is out
-  public static class RulePriorityNumbersPairTransformer implements KeyValueFormat.Transformer<RulePriority, Integer> {
-
-    public KeyValue<RulePriority, Integer> transform(String key, String value) {
-      try {
-        if (StringUtils.isBlank(value)) {
-          value = "0";
-        }
-        return new KeyValue<RulePriority, Integer>(RulePriority.valueOf(key.toUpperCase()), Integer.parseInt(value));
-      }
-      catch (Exception e) {
-        LoggerFactory.getLogger(RulePriorityNumbersPairTransformer.class).warn("Property " + key + " has invalid value: " + value, e);
-        return null;
-      }
-    }
+    return KeyValueFormat.parse(property, new KeyValueFormat.RulePriorityNumbersPairTransformer());
   }
 
   /**
