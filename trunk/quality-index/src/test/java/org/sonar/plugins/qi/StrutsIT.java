@@ -69,10 +69,10 @@ public class StrutsIT {
   @Test
   public void modulesMetrics() {
     assertThat(getCoreModuleMeasure("qi-quality-index").getValue(), is(8.3));
-//    assertThat(getCoreModuleMeasure("qi-coding-violations").getValue(), is(0.0));
-//    assertThat(getCoreModuleMeasure("qi-coding-weighted-violations").getIntValue(), is(0));
+    assertThat(getCoreModuleMeasure("qi-coding-violations").getValue(), is(0.3));
+    assertThat(getCoreModuleMeasure("qi-coding-weighted-violations").getIntValue(), is(954));
     assertThat(getCoreModuleMeasure("qi-style-violations").getValue(), is(0.0));
-//    assertThat(getCoreModuleMeasure("qi-style-weighted-violations").getIntValue(), is(0));
+    assertThat(getCoreModuleMeasure("qi-style-weighted-violations").getIntValue(), is(1573));
     assertThat(getCoreModuleMeasure("qi-test-coverage").getValue(), is(1.3));
     assertThat(getCoreModuleMeasure("qi-complexity").getValue(), is(0.1));
     assertThat(getCoreModuleMeasure("qi-complexity-factor").getValue(), is(4.3));
