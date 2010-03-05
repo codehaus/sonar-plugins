@@ -64,6 +64,7 @@ public class StrutsIT {
     assertThat(getProjectMeasure("qi-complexity").getValue(), is(2.0));
     assertThat(getProjectMeasure("qi-complexity-factor").getValue(), is(15.2));
     assertThat(getProjectMeasure("qi-complexity-factor-methods").getIntValue(), is(37));
+    assertThat(getProjectMeasure("qi-complex-distrib").getData(), is("1=3077;2=1013;10=138;20=27;30=37"));
   }
 
   @Test
@@ -77,6 +78,7 @@ public class StrutsIT {
     assertThat(getCoreModuleMeasure("qi-complexity").getValue(), is(0.1));
     assertThat(getCoreModuleMeasure("qi-complexity-factor").getValue(), is(4.3));
     assertThat(getCoreModuleMeasure("qi-complexity-factor-methods").getIntValue(), is(5));
+    assertThat(getCoreModuleMeasure("qi-complex-distrib").getData(), is("1=851;2=529;10=43;20=9;30=5"));
   }
 
   @Test
@@ -90,6 +92,7 @@ public class StrutsIT {
     assertThat(getPackageMeasure("qi-complexity").getValue(), is(0.1));
     assertThat(getPackageMeasure("qi-complexity-factor").getValue(), is(0.0));
     assertThat(getPackageMeasure("qi-complexity-factor-methods").getIntValue(), is(0));
+    assertNull(getPackageMeasure("qi-complex-distrib"));
   }
 
   @Test
@@ -103,6 +106,7 @@ public class StrutsIT {
     assertThat(getFileMeasure("qi-complexity").getValue(), is(0.1));
     assertThat(getFileMeasure("qi-complexity-factor").getValue(), is(0.0));
     assertThat(getFileMeasure("qi-complexity-factor-methods").getIntValue(), is(0));
+    assertNull(getFileMeasure("qi-complex-distrib"));
   }
 
   private Measure getFileMeasure(String metricKey) {

@@ -62,6 +62,7 @@ public class CommonsCollectionIT {
     assertThat(getProjectMeasure("qi-complexity").getValue(), is(0.2));
     assertThat(getProjectMeasure("qi-complexity-factor").getValue(), is(0.6));
     assertThat(getProjectMeasure("qi-complexity-factor-methods").getIntValue(), is(2));
+    assertThat(getProjectMeasure("qi-complex-distrib").getData(), is("1=2270;2=1464;10=82;20=10;30=2"));
   }
 
   @Test
@@ -75,6 +76,7 @@ public class CommonsCollectionIT {
     assertThat(getPackageMeasure("qi-complexity").getValue(), is(0.2));
     assertThat(getPackageMeasure("qi-complexity-factor").getValue(), is(0.0));
     assertThat(getPackageMeasure("qi-complexity-factor-methods").getIntValue(), is(0));
+    assertNull(getPackageMeasure("qi-complex-distrib"));
   }
 
   @Test
@@ -88,6 +90,7 @@ public class CommonsCollectionIT {
     assertNull(getFileMeasure("qi-complexity"));
     assertThat(getFileMeasure("qi-complexity-factor").getValue(), is(0.0));
     assertThat(getFileMeasure("qi-complexity-factor-methods").getIntValue(), is(0));
+    assertNull(getFileMeasure("qi-complex-distrib"));
   }
 
   private Measure getFileMeasure(String metricKey) {
