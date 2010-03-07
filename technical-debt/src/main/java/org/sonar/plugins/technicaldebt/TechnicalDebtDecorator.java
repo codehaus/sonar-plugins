@@ -21,10 +21,7 @@ package org.sonar.plugins.technicaldebt;
 
 import org.apache.commons.configuration.Configuration;
 
-import org.sonar.api.batch.Decorator;
-import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.DependedUpon;
+import org.sonar.api.batch.*;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Resource;
