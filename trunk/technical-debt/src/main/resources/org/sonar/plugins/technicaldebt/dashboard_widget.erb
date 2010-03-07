@@ -20,7 +20,13 @@
       <%= piechart(measure('technical_debt_repart'), { :size => "248x65"}) -%>
     <%
       if !measure('coverage')%>
-        <center><div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div></center>
+        <div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div>
+    <%
+    	end
+    %>
+    <%
+      if !measure('package_tangles')%>
+        <div class="note" style="font-size: 80%;padding-top: 10px">No information available on design</div>
     <%
     	end
     %>

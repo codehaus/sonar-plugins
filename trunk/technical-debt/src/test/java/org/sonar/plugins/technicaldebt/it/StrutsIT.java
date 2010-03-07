@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.technicaldebt;
+package org.sonar.plugins.technicaldebt.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
@@ -52,18 +52,18 @@ public class StrutsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(266455.3));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(29.4));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(532.9));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=4.9;Complexity=13.24;Coverage=34.12;Duplication=30.3;Violations=17.42"));
+    assertThat(getProjectMeasure("technical_debt").getValue(), is(271330.3));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(28.7));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(542.7));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=4.81;Complexity=13.0;Coverage=33.51;Design=1.79;Duplication=29.76;Violations=17.11"));
   }
 
   @Test
   public void modulesMetrics() {
-    assertThat(getCoreModuleMeasure("technical_debt").getValue(), is(53258.9));
-    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), is(16.8));
-    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), is(106.5));
-    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), is("Comments=11.87;Complexity=24.23;Coverage=40.58;Duplication=1.4;Violations=21.89"));
+    assertThat(getCoreModuleMeasure("technical_debt").getValue(), is(57758.9));
+    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), is(17.0));
+    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), is(115.5));
+    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), is("Comments=10.95;Complexity=22.34;Coverage=37.42;Design=7.79;Duplication=1.29;Violations=20.19"));
   }
 
   @Test

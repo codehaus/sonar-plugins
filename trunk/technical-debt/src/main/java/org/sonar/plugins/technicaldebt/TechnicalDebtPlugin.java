@@ -34,7 +34,8 @@ import java.util.List;
   @Property(key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix one block duplication block (in hours)", description = ""),
   @Property(key = TechnicalDebtPlugin.TD_COST_VIOLATION, defaultValue = TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT, name = "Average time to fix a coding violation (in hours)", description = ""),
   @Property(key = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, defaultValue = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT, name = "Average time to cover complexity of one (in hours)", description = ""),
-  @Property(key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = "")
+  @Property(key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT, name = "Average time to document 1 API (in hours)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_COST_CYCLE, defaultValue = TechnicalDebtPlugin.TD_COST_CYCLE_DEFAULT, name = "Average time to cut a dependecy between two files (in hours)", description = "")
 })
 
 /** {@inheritDoc} */
@@ -59,6 +60,9 @@ public final class TechnicalDebtPlugin implements Plugin {
 
   public static final String TD_COST_UNDOCUMENTED_API = "technicaldebt.undocumented.api";
   public static final String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.2";
+
+  public static final String TD_COST_CYCLE = "technicaldebt.cut.cycle";
+  public static final String TD_COST_CYCLE_DEFAULT = "2";
 
   /**
    * {@inheritDoc}
