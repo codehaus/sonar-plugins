@@ -30,12 +30,7 @@ import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
 
-import org.sonar.plugins.technicaldebt.axis.AxisDebtCalculator;
-import org.sonar.plugins.technicaldebt.axis.DuplicationDebtCalculator;
-import org.sonar.plugins.technicaldebt.axis.CommentDebtCalculator;
-import org.sonar.plugins.technicaldebt.axis.ComplexityDebtCalculator;
-import org.sonar.plugins.technicaldebt.axis.CoverageDebtCalculator;
-import org.sonar.plugins.technicaldebt.axis.ViolationsDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +55,8 @@ public final class TechnicalDebtDecorator implements Decorator {
       new ComplexityDebtCalculator(configuration),
       new CoverageDebtCalculator(configuration),
       new DuplicationDebtCalculator(configuration),
-      new ViolationsDebtCalculator(configuration)
+      new ViolationsDebtCalculator(configuration),
+      new DesignDebtCalculator(configuration)
     );
   }
 

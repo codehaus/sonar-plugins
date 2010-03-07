@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.technicaldebt;
+package org.sonar.plugins.technicaldebt.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
