@@ -29,6 +29,7 @@ import java.util.List;
 
 @Properties({
   @Property(key = TechnicalDebtPlugin.TD_DAILY_RATE, defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT, name = "Daily rate of a developer (in $)", description = ""),
+  @Property(key = TechnicalDebtPlugin.TD_MAX_COMPLEXITY, defaultValue = TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT, name = "Maximum complexity above which componentn should be broken", description = ""),
   @Property(key = TechnicalDebtPlugin.TD_COST_COMP_CLASS, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT, name = "Average time to split a class that has a too high complexity (in hours)", description = ""),
   @Property(key = TechnicalDebtPlugin.TD_COST_COMP_METHOD, defaultValue = TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT, name = "Average time to split a method that has a too high complexity (in hours)", description = ""),
   @Property(key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT, name = "Average time to fix one block duplication block (in hours)", description = ""),
@@ -64,6 +65,10 @@ public final class TechnicalDebtPlugin implements Plugin {
   public static final String TD_COST_CYCLE = "technicaldebt.cut.cycle";
   public static final String TD_COST_CYCLE_DEFAULT = "2";
 
+  public static final String TD_MAX_COMPLEXITY = "technicaldebt.complexity.max";
+  public static final String TD_MAX_COMPLEXITY_DEFAULT = "CLASS=60;METHOD=8";
+
+
   /**
    * {@inheritDoc}
    */
@@ -79,6 +84,8 @@ public final class TechnicalDebtPlugin implements Plugin {
     list.add(TechnicalDebtMetrics.class);
     list.add(TechnicalDebtDecorator.class);
     list.add(TechnicalDebtWidget.class);
+    list.add(ComplexityDebtSensor.class);
+    list.add(ComplexityDebtDecorator.class);
     return list;
   }
 

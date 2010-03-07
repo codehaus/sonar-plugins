@@ -66,10 +66,10 @@ public class CommonsLangModeLightIT {
 
   @Test
   public void filesMetrics() {
-    assertThat(getFileMeasure("technical_debt").getValue(), is(50.0));
-    assertThat(getFileMeasure("technical_debt_ratio").getValue(), is(1.7));
+    assertThat(getFileMeasure("technical_debt").getValue(), is(81.3));
+    assertThat(getFileMeasure("technical_debt_ratio").getValue(), is(2.8));
     assertNull(getFileMeasure("technical_debt_days"));
-    assertThat(getFileMeasure("technical_debt_repart").getData(), is("Violations=100.0"));
+    assertThat(getFileMeasure("technical_debt_repart").getData(), is("Complexity=38.46;Violations=61.53"));
   }
 
   private Measure getFileMeasure(String metricKey) {

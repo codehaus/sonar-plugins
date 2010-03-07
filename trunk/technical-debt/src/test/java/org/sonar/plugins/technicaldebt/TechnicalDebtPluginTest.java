@@ -19,15 +19,16 @@
  */
 package org.sonar.plugins.technicaldebt;
 
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+
 
 public class TechnicalDebtPluginTest {
 
   @Test
   public void defineMetrics() {
-    assertThat(new TechnicalDebtPlugin().getExtensions().size(), greaterThan(2));
+    assertThat(new TechnicalDebtPlugin().getExtensions().size(), is(5));
   }
 
 }
