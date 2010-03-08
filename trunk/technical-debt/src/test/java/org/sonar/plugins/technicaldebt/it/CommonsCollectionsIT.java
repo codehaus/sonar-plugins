@@ -53,10 +53,10 @@ public class CommonsCollectionsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(85650.0));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(12.0));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(171.3));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=18.25;Complexity=27.32;Design=21.16;Duplication=12.55;Violations=20.7"));
+    assertThat(getProjectMeasure("technical_debt").getValue(), is(103775.0));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(13.9));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(207.6));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=15.06;Complexity=22.55;Design=34.93;Duplication=10.35;Violations=17.08"));
   }
 
   @Test

@@ -63,7 +63,7 @@ public final class TechnicalDebtPlugin implements Plugin {
   public static final String TD_COST_UNDOCUMENTED_API_DEFAULT = "0.2";
 
   public static final String TD_COST_CYCLE = "technicaldebt.cut.cycle";
-  public static final String TD_COST_CYCLE_DEFAULT = "2";
+  public static final String TD_COST_CYCLE_DEFAULT = "4";
 
   public static final String TD_MAX_COMPLEXITY = "technicaldebt.complexity.max";
   public static final String TD_MAX_COMPLEXITY_DEFAULT = "CLASS=60;METHOD=8";

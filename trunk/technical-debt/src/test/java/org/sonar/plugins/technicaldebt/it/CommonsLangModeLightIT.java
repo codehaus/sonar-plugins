@@ -50,10 +50,10 @@ public class CommonsLangModeLightIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(36931.3));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(9.7));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(73.9));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Complexity=59.14;Duplication=11.5;Violations=29.34"));
+    assertThat(getProjectMeasure("technical_debt").getValue(), is(39431.3));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(10.2));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(78.9));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Complexity=55.39;Design=6.34;Duplication=10.77;Violations=27.48"));
   }
 
   @Test
