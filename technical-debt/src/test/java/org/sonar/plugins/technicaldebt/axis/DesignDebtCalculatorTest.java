@@ -70,11 +70,11 @@ public class DesignDebtCalculatorTest {
   public void testCalculateDebt() {
     when(context.getMeasure(CoreMetrics.PACKAGE_TANGLES)).
       thenReturn(new Measure(CoreMetrics.PACKAGE_TANGLES, 16.0));
-    assertEquals(4, calculator.calculateAbsoluteDebt(context), 0);
+    assertEquals(8, calculator.calculateAbsoluteDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.PACKAGE_EDGES_WEIGHT)).
       thenReturn(new Measure(CoreMetrics.PACKAGE_EDGES_WEIGHT, 100.0));
-    assertEquals(12.5, calculator.calculateTotalPossibleDebt(context), 0);
+    assertEquals(25, calculator.calculateTotalPossibleDebt(context), 0);
   }
 
   @Test

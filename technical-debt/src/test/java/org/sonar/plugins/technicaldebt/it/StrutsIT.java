@@ -52,18 +52,18 @@ public class StrutsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(271330.3));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(28.7));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(542.7));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=4.81;Complexity=13.0;Coverage=33.51;Design=1.79;Duplication=29.76;Violations=17.11"));
+    assertThat(getProjectMeasure("technical_debt").getValue(), is(276205.3));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(27.9));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(552.4));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=4.72;Complexity=12.77;Coverage=32.92;Design=3.52;Duplication=29.23;Violations=16.81"));
   }
 
   @Test
   public void modulesMetrics() {
-    assertThat(getCoreModuleMeasure("technical_debt").getValue(), is(57758.9));
-    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), is(17.0));
-    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), is(115.5));
-    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), is("Comments=10.95;Complexity=22.34;Coverage=37.42;Design=7.79;Duplication=1.29;Violations=20.19"));
+    assertThat(getCoreModuleMeasure("technical_debt").getValue(), is(62258.9));
+    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), is(17.3));
+    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), is(124.5));
+    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.73"));
   }
 
   @Test
