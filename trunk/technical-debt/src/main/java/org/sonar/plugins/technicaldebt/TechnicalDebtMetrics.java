@@ -37,7 +37,7 @@ public final class TechnicalDebtMetrics implements Metrics {
   public static final Metric TECHNICAL_DEBT_RATIO = new Metric("technical_debt_ratio", "Technical Debt ratio", "This is the debt ratio", Metric.ValueType.PERCENT, -1, true, CoreMetrics.DOMAIN_GENERAL);
   public static final Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
   public static final Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical debt repartition", "This is the detail of the technical debt", Metric.ValueType.DISTRIB, 0, false, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric("technical_debt_complexity", "Technical debt complexity", "This is the number of methods and classes above max complexity", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_GENERAL)
+  public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric("technical_debt_complexity", "Technical debt complexity", "This is the number of methods and classes above max complexity", Metric.ValueType.DISTRIB, 0, false, CoreMetrics.DOMAIN_GENERAL)
     .setHidden(true);
 
   /**
