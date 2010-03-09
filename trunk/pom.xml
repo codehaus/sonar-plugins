@@ -30,7 +30,6 @@
                 <module>ldap</module>
                 <module>maven-report</module>
                 <module>motion-chart</module>
-                <module>parent</module>
                 <module>php</module>
                 <module>quality-index</module>
                 <module>radiator</module>
