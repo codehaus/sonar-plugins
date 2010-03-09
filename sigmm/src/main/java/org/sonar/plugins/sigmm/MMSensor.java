@@ -25,7 +25,7 @@ import java.util.*;
 
 import org.sonar.api.batch.*;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PersistenceMode;
@@ -34,7 +34,6 @@ import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.indexer.QueryByType;
 import org.sonar.squid.indexer.QueryByParent;
-import org.apache.commons.lang.StringUtils;
 
 public class MMSensor implements Sensor {
   private SquidSearch squid;
@@ -79,9 +78,8 @@ public class MMSensor implements Sensor {
   }
 
   protected void saveMeasure(SensorContext context, SourceCode file, RangeDistributionBuilder nclocDistribution) {
-    String key = SquidUtils.convertKeyFromSquidToSonarFormat(file.getKey());
-    Resource resource = context.getResource(key);
-    context.saveMeasure(resource, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
+    JavaFile sonarFile = SquidUtils.convertJavaFileKeyFromSquidFormat(file.getKey());
+    context.saveMeasure(sonarFile, nclocDistribution.build().setPersistenceMode(PersistenceMode.MEMORY));
   }
 
   protected int mapKey(Metric metric, int ncloc, int cc) {
