@@ -12,8 +12,8 @@
   <description>Calculate the technical debt</description>
 
   <properties>
-    <sonar.version>2.0RC3</sonar.version>
-    <sonarVersion>2.0RC3</sonarVersion>
+    <sonar.version>2.0</sonar.version>
+    <sonarVersion>2.0</sonarVersion>
   </properties>
  
   <developers>
