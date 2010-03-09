@@ -1,0 +1,25 @@
+
+28-Oct-2009:  Christopher Moraes
+Issue: Jlint seems to behave diferently on Windows and on linux. 
+Description:
+Windows: Jlint 3.1 compiled on Windows with Cygwin (gcc 3.4.x)
+Linux: Jlint 3.0. provided with Ubuntu 9.04 and
+       Jlint 3.1 compile from source on Ubuntu 9.04
+
+On windows, the output produced by Jlint does not include the full
+pathname.  E.g. this is the output of Jlint on windows when the following command
+is run
+
+c:\> jlint <project dir>\target\classes
+org/jgroups/demos/TotalTokenDemo.java:175: Comparison always produces the same result.
+org/jgroups/demos/TotalTokenDemo.java:192: Comparison always produces the same result.
+
+Jlint does not output the full path of the java source file. It only outputs the 
+package structure - which is what is needed.
+
+On Ubuntu 9.04, Jlint produced the full path name.  E.g.
+target/classes/com/symcor/bs/common/util/jmx/JMXUtils.java:92: Value of referenced variable 'servers' may be NULL.
+
+Notice the path "target/classes" preceeding the package structure.
+
+
