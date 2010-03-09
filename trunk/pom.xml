@@ -18,6 +18,7 @@
                 <module>artifact-size</module>
                 <module>build-breaker</module>
                 <module>build-stability</module>
+                <module>codereview</module>
                 <module>cpp</module>
                 <module>crowd</module>
                 <module>emma</module>
