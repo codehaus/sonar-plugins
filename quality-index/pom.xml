@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>sonar-quality-index-plugin</artifactId>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <name>Sonar Quality Index Plugin</name>
 
   <developers>
@@ -219,8 +219,8 @@
     </profile>
   </profiles>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/quality-index</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</url>
   </scm>
 </project>
