@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
@@ -10,7 +9,7 @@
   </parent>
 
   <artifactId>sonar-quality-index-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <name>Sonar Quality Index Plugin</name>
 
   <developers>
@@ -220,8 +219,8 @@
     </profile>
   </profiles>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/quality-index</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1</url>
   </scm>
 </project>
