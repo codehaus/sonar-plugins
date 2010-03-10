@@ -18,7 +18,6 @@
                 <module>artifact-size</module>
                 <module>build-breaker</module>
                 <module>build-stability</module>
-                <module>codereview</module>
                 <module>cpp</module>
                 <module>crowd</module>
                 <module>emma</module>
@@ -48,6 +47,7 @@
             <id>unstableProjects</id>
             <modules>
                 <module>clirr</module>
+                <module>codereview</module>
                 <module>sonar-squid-cli</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
