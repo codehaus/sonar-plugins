@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
@@ -9,7 +8,7 @@
   </parent>
   <artifactId>sonar-taglist-plugin</artifactId>
   <name>Sonar Taglist Plugin</name>
-  <version>0.7-SNAPSHOT</version>
+  <version>0.7</version>
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
   <properties>
@@ -102,8 +101,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/taglist</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-taglist-plugin-0.7</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-taglist-plugin-0.7</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-taglist-plugin-0.7</url>
   </scm>
 </project>
