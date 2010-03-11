@@ -26,7 +26,6 @@ import org.sonar.api.batch.AbstractSumChildrenDecorator;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Java;
 
 public class TaglistDecorator extends AbstractSumChildrenDecorator {
 
@@ -39,7 +38,7 @@ public class TaglistDecorator extends AbstractSumChildrenDecorator {
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(Java.INSTANCE);
+    return true;
   }
 
   protected boolean shouldSaveZeroIfNoChildMeasures() {

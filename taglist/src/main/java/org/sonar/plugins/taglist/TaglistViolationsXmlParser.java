@@ -21,13 +21,15 @@ package org.sonar.plugins.taglist;
 
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.PersistenceMode;
+import org.sonar.api.measures.CountDistributionBuilder;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Resource;
-import org.sonar.api.rules.*;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.XpathParser;
+import org.sonar.api.rules.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -70,6 +72,8 @@ public class TaglistViolationsXmlParser {
       saveMeasure(context, javaFile, TaglistMetrics.TAGS, violations.mandatory + violations.optional);
       saveMeasure(context, javaFile, TaglistMetrics.MANDATORY_TAGS, violations.mandatory);
       saveMeasure(context, javaFile, TaglistMetrics.OPTIONAL_TAGS, violations.optional);
+      context.saveMeasure(javaFile, violations.distrib.build().setPersistenceMode(PersistenceMode.MEMORY));
+
     }
   }
 
@@ -100,6 +104,7 @@ public class TaglistViolationsXmlParser {
       } else {
         violationsCount.optional += violationsForClass;
       }
+      violationsCount.distrib.add(rule.getKey());
     }
   }
 
@@ -129,5 +134,6 @@ public class TaglistViolationsXmlParser {
   private class ViolationsCount {
     private int mandatory;
     private int optional;
+    private CountDistributionBuilder distrib = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
   }
 }
