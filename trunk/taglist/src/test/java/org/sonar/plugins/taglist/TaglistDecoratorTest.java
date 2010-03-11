@@ -19,10 +19,8 @@
  */
 package org.sonar.plugins.taglist;
 
-import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +33,6 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
 import org.sonar.api.measures.Measure;
-import org.apache.maven.project.MavenProject;
 
 public class TaglistDecoratorTest {
 
@@ -47,7 +44,7 @@ public class TaglistDecoratorTest {
   public void setUp() throws Exception {
     decorator = new TaglistDecorator();
     decoratorContext = mock(DecoratorContext.class);
-    resource = new Project(new MavenProject());
+    resource = new Project("foo");
   }
 
   @Test

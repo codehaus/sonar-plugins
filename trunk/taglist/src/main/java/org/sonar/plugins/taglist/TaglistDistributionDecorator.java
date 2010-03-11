@@ -25,14 +25,10 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.*;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
-import org.sonar.api.rules.ActiveRule;
-import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulesManager;
-import org.sonar.api.rules.Violation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +38,7 @@ public class TaglistDistributionDecorator implements Decorator {
   private RulesManager rulesManager;
   private RulesProfile rulesProfile;
 
-  public TaglistDistributionDecorator(RulesManager rulesManager, RulesProfile rulesProfile) {
+  public TaglistDistributionDecorator() {
     this.rulesManager = rulesManager;
     this.rulesProfile = rulesProfile;
   }
@@ -56,7 +52,7 @@ public class TaglistDistributionDecorator implements Decorator {
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(Java.INSTANCE);
+    return true;
   }
 
   /**
@@ -66,7 +62,7 @@ public class TaglistDistributionDecorator implements Decorator {
 
     // Calculate distribution on classes, but keep it in memory, not in DB
     if (ResourceUtils.isFile(resource)) {
-      context.saveMeasure(computeDistribution(context).build().setPersistenceMode(PersistenceMode.MEMORY));
+      return;
     } else {
       // Otherwise, aggregate the distribution
       CountDistributionBuilder builder = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
@@ -81,24 +77,4 @@ public class TaglistDistributionDecorator implements Decorator {
       }
     }
   }
-
-  // This method should disappear after the rule management API gets refactored
-  private PropertiesBuilder<String, Integer> computeDistribution(DecoratorContext context) {
-    PropertiesBuilder<String, Integer> tagsDistrib = new PropertiesBuilder<String, Integer>(TaglistMetrics.TAGS_DISTRIBUTION);
-    for (Rule rule : rulesManager.getPluginRules(TaglistPlugin.KEY)) {
-      ActiveRule activeRule = rulesProfile.getActiveRule(TaglistPlugin.KEY, rule.getKey());
-      int violationsForTag = 0;
-      if (activeRule != null) {
-        for (Violation violation : context.getViolations()) {
-          if (violation.getRule().equals(activeRule.getRule())) {
-            violationsForTag++;
-          }
-        }
-      }
-      tagsDistrib.add(rule.getKey(), violationsForTag);
-    }
-    return tagsDistrib;
-  }
-
-
 }

@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>parent</artifactId>
-    <version>3</version>
+    <artifactId>parent</artifactId> 
+    <version>5</version>
     <relativePath>../parent</relativePath>
   </parent>
   <artifactId>sonar-taglist-plugin</artifactId>
@@ -12,7 +13,7 @@
   <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
   <properties>
-    <sonar.version>1.10</sonar.version>
+    <sonar.version>2.0</sonar.version>
   </properties>
 
   <developers>
@@ -34,6 +35,13 @@
       <id>cedric.munger</id>
       <name>Cedric Munger</name>
       <email>cedric.munger@sonarsource.com</email>
+      <organization>SonarSource</organization>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>Olivier.gaudin</id>
+      <name>Olivier Gaudin</name>
+      <email>olivier.gaudin@sonarsource.com</email>
       <organization>SonarSource</organization>
       <timezone>+1</timezone>
     </developer>
@@ -92,16 +100,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>clirr-maven-plugin</artifactId>
-        <version>2.2.1</version>
-      </plugin>
-    </plugins>
-  </reporting>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/taglist</connection>
