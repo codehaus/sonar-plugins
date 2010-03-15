@@ -41,6 +41,7 @@
                 <module>sonar-squid-gui</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
+                <moduke>total-quality</module>
             </modules>
         </profile>
         <profile>
