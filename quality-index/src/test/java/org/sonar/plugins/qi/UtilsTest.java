@@ -54,7 +54,7 @@ public class UtilsTest {
         return new String[0];
       }
     });
-    assertThat(Utils.shouldExecuteOnProject(plsqlProject), is(false));
+    assertThat(Utils.shouldExecuteOnProject(plsqlProject), is(true));
   }
 
   @Test
