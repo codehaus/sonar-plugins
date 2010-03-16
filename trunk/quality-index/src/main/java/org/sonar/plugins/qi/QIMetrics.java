@@ -89,7 +89,7 @@ public class QIMetrics implements org.sonar.api.measures.Metrics {
    * A technical metric to propagate complexity distribution bottom up
    */
   public static final Metric QI_COMPLEX_DISTRIBUTION = new Metric("qi-complex-distrib", "Complexity distribution",
-      "Complexity distribution", Metric.ValueType.DATA, 0, false, CoreMetrics.DOMAIN_COMPLEXITY);
+      "Complexity distribution", Metric.ValueType.DISTRIB, 0, false, CoreMetrics.DOMAIN_COMPLEXITY);
 
   /**
    * @return the declare metrics

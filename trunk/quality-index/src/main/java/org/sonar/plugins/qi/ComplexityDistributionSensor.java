@@ -19,13 +19,12 @@
  */
 package org.sonar.plugins.qi;
 
-import org.apache.commons.lang.StringUtils;
 import org.sonar.api.batch.*;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.JavaFile;
+import org.sonar.api.resources.Java;
 import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.api.SourceMethod;
@@ -67,7 +66,7 @@ public class ComplexityDistributionSensor implements Sensor {
    * @return whether to execute the sensor on the project
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return Utils.shouldExecuteOnProject(project);
+    return Java.INSTANCE.equals(project.getLanguage());
   }
 
   /**

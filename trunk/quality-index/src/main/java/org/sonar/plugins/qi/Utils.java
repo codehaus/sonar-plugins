@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.qi;
 
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 
@@ -35,7 +34,7 @@ public final class Utils {
    * @return whether to run the various decorators / sensors on the project
    */
   public static boolean shouldExecuteOnProject(final Project project) {
-    return Java.INSTANCE.equals(project.getLanguage());
+    return true;
   }
 
   /**
