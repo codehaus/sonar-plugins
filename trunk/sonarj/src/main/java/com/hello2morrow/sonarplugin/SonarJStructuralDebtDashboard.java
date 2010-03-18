@@ -25,8 +25,6 @@ import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 
-@NavigationSection(NavigationSection.RESOURCE)
-@UserRole(UserRole.VIEWER)
 public final class SonarJStructuralDebtDashboard extends AbstractRubyTemplate implements RubyRailsWidget
 {
     public String getId()

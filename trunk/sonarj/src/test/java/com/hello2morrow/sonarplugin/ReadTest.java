@@ -30,6 +30,7 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 
 import com.hello2morrow.sonarplugin.xsd.ReportContext;
+import org.sonar.api.resources.Resource;
 
 public class ReadTest extends TestCase
 {
@@ -37,7 +38,7 @@ public class ReadTest extends TestCase
     
     public void testAnalyse()
     {
-        ReportContext report = SonarJSensor.readSonarjReport("src/test/resources/sonarj-report.xml");
+        ReportContext report = SonarJSensor.readSonarjReport("src/test/resources/sonarj-report.xml", "");
         
         assertNotNull(report);
 
@@ -54,7 +55,7 @@ public class ReadTest extends TestCase
         
         context.checking(new Expectations() {{
             atLeast(1).of(sensorContext).saveMeasure(with(any(Measure.class)));
-            allowing(sensorContext).getResource(with(any(String.class))); will(returnValue(null)); 
+            allowing(sensorContext).getResource(with(any(Resource.class))); will(returnValue(null)); 
             allowing(sensorContext).getMeasure(with(any(Metric.class))); will(returnValue(null)); 
         }});
         sensor.analyse(sensorContext, report);

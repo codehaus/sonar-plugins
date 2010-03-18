@@ -43,6 +43,8 @@ import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.JavaFile;
+import org.sonar.api.resources.JavaPackage;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.ActiveRule;
@@ -115,7 +117,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private double openTasks = 0;
     private double taskReferences = 0;
 
-    protected static ReportContext readSonarjReport(String fileName)
+    protected static ReportContext readSonarjReport(String fileName, String packaging)
     {
         ReportContext result = null;
         InputStream input = null;
@@ -134,8 +136,11 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
         catch (FileNotFoundException e)
         {
-            LOG.error("Cannot open "+fileName, e);
-        }
+            if (!packaging.equalsIgnoreCase("pom"))
+            {
+                LOG.error("Cannot open "+fileName, e);
+            }
+        }   
         finally
         {
             if (input != null)
@@ -278,7 +283,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 for (XsdCyclePath cycleMember : group.getCyclePath())
                 {
                     String packageName = cycleMember.getParent();
-                    Resource thePackage = sensorContext.getResource(packageName);
+                    Resource thePackage = sensorContext.getResource(new JavaPackage(packageName));
                     
                     if (thePackage != null)
                     {
@@ -305,7 +310,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     @SuppressWarnings("unchecked")
     private void saveViolation(Rule rule, RulePriority priority, String fqName, int line, String msg)
     {
-        Resource javaFile = sensorContext.getResource(fqName);
+        Resource javaFile = sensorContext.getResource(new JavaFile(fqName));
         
         if (javaFile == null)
         {
@@ -650,7 +655,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     
     public void analyse(Project project, SensorContext sensorContext)
     {
-        ReportContext report = readSonarjReport(pluginHandler.getReportFileName());
+        ReportContext report = readSonarjReport(pluginHandler.getReportFileName(), project.getPackaging());
         
         if (report != null)
         {
