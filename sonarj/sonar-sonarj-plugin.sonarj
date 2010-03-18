@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<context version="5.0.2.475">
+<context version="5.1.2.620">
     <scope name="sonar-sonarj-plugin" type="Project">
         <architecture>
             <element name="plugin" type="Subsystem">
@@ -28,6 +28,13 @@
                 <property name="ElementType" value="ObjectMethod"/>
                 <property name="Pattern" value="com.hello2morrow.sonarplugin.SonarJSensor::analyseCycleGroups(com.hello2morrow.sonarplugin.xsd.ReportContext, Number){}"/>
                 <property name="Priority" value="Low"/>
+            </item>
+            <item type="IgnoreWarningFilterItem">
+                <property name="AttributeId" value="DuplicateCodeBlocks"/>
+                <property name="Comment" value=""/>
+                <property name="Date" value="2010-03-18 15:44:24"/>
+                <property name="ElementType" value="JavaSourceFile"/>
+                <property name="Pattern" value="com/hello2morrow/sonarplugin/xsd/*.java # com/hello2morrow/sonarplugin/xsd/*.java"/>
             </item>
         </itemDefinition>
     </scope>
