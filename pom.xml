@@ -1,58 +1,88 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>all</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
-    <name>All Sonar plugins</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+	  <groupId>org.codehaus.sonar-plugins</groupId>
+	  <artifactId>parent</artifactId>
+	  <version>5</version>
+	  <relativePath>../parent</relativePath>
+	</parent>
+	
+	<artifactId>sonar-total-quality-plugin</artifactId>
+	<name>Sonar Total Quality Plugin</name>
+	<version>1.0</version>
+    
+    <inceptionYear>2010</inceptionYear>
+    <licenses>
+        <license>
+             <name>GNU Lesser General Public License (LGPL), v.3</name>
+             <url>http://www.gnu.org/licenses/lgpl.txt</url>
+             <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+	<properties>
+		<sonar.plugin.class>org.sonar.plugins.totalquality.TQPlugin</sonar.plugin.class>
+		<sonar.version>2.0</sonar.version>
+	</properties>
 
-    <profiles>
-        <profile>
-            <id>stableProjects</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>artifact-size</module>
-                <module>build-breaker</module>
-                <module>build-stability</module>
-                <module>cpp</module>
-                <module>crowd</module>
-                <module>emma</module>
-                <module>flex</module>
-                <module>greenpepper</module>
-                <module>hammurapi</module>
-                <module>jira</module>
-                <module>jlint</module>
-                <module>jtest</module>
-                <module>ldap</module>
-                <module>maven-report</module>
-                <module>motion-chart</module>
-                <module>php</module>
-                <module>quality-index</module>
-                <module>radiator</module>
-                <module>rules-meter</module>
-                <module>scm-activity</module>
-                <module>security-rules</module>
-                <module>sigmm</module>
-                <module>sonarj</module>
-                <module>sonar-squid-gui</module>
-                <module>taglist</module>
-                <module>technical-debt</module>
-                <module>total-quality</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>unstableProjects</id>
-            <modules>
-                <module>clirr</module>
-                <module>codereview</module>
-                <module>sonar-squid-cli</module>
-                <module>timeline</module>
-                <module>testability-explorer</module>
-            </modules>
-        </profile>
-    </profiles>
+	<dependencies>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-plugin-api</artifactId>
+			<version>${sonar.version}</version>
+		</dependency>
+
+		<!-- unit tests -->
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-plugin-api</artifactId>
+			<version>${sonar.version}</version>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>2.0.7</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	<scm>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-total-quality-plugin-1.0</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-total-quality-plugin-1.0</developerConnection>
+		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-total-quality-plugin-1.0</url>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- complete META-INF/MANIFEST.MF -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Plugin-Class>${sonar.plugin.class}</Plugin-Class>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
