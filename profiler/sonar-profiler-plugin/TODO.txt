@@ -1,0 +1,2 @@
+- Generate profiler configuration from template in order to insert license key
+- Determine path to jprofiler in order to invoke export tool
