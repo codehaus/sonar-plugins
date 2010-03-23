@@ -27,8 +27,8 @@ public class JProfilerExporter {
 
   public static final String JPS_EXT = ".jps";
 
-  public static JProfilerExporter create(String pathToTool, File basedir, String filename) {
-    return new JProfilerExporter(pathToTool, basedir, filename);
+  public static JProfilerExporter create(String jprofilerHome, File basedir, String filename) {
+    return new JProfilerExporter(jprofilerHome + "/bin/jpexport", basedir, filename);
   }
 
   private String baseFilename;
@@ -71,10 +71,9 @@ public class JProfilerExporter {
    * @return this, for method chaining
    */
   public JProfilerExporter addHotSpotsView(String format, String aggregation, String hotspottype, boolean expandbacktraces) {
-    cmd.createArg().setValue(ALLOCATION_HOTSPOTS_VIEW);
+    cmd.createArg().setValue(HOTSPOTS_VIEW);
     cmd.createArg().setValue("-aggregation=" + aggregation);
-    // TODO the The option "hotspottype" is invalid.
-    //cmd.createArg().setValue("-hotspottype=" + hotspottype);
+    cmd.createArg().setValue("-hotspottype=" + hotspottype);
     cmd.createArg().setValue("-expandbacktraces=" + expandbacktraces);
     return addFormatAndFile(HOTSPOTS_VIEW, format);
   }

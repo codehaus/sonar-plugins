@@ -1,7 +1,7 @@
 package org.sonar.plugins.profiler.viewer.client;
 
-import com.google.gwt.gen2.table.override.client.FlexTable;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import org.sonar.gwt.ui.Loading;
@@ -47,38 +47,10 @@ public class ProfilerPanel extends Composite {
       }
     }
 
-    private FlexTable table;
-
     private void process(String profilerData) {
-      // TODO show data from metric
-      /*
-      table = new FlexTable();
-      table.setText(0, 0, "HotSpot");
-      table.setText(0, 1, "Inherent time (microseconds)");
-      table.setText(0, 2, "Invocations");
-
-      int rowCounter = 1;
-      String[] lines = profilerData.split(";");
-      for (String line : lines) {
-        String[] args = line.split("=");
-        addRow(rowCounter, args[0], args[1]);
-        rowCounter++;
-      }
-      
-      panel.add(table);
-      */
+      HTML html = new HTML();
+      html.setHTML(profilerData);
+      panel.add(html);
     }
-
-    /*
-    private void addRow(int row, String hotSpot, String line) {
-      table.setText(row, 0, hotSpot);
-      String[] params = line.split(",");
-      int col = 1;
-      for (String param : params) {
-        table.setText(row, col, param);
-        col++;
-      }
-    }
-    */
   }
 }

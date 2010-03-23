@@ -2,7 +2,6 @@ package org.sonar.plugins.profiler;
 
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
-import sun.security.jgss.spi.MechanismFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,9 +12,19 @@ import java.util.List;
 public class ProfilerMetrics implements Metrics {
   public static final String DOMAIN = "Profiler";
 
+  public static final Metric TESTS = new Metric(
+      "profiler_tests",
+      "Profiled tests",
+      "Number of profiled tests",
+      Metric.ValueType.INT,
+      Metric.DIRECTION_WORST,
+      false,
+      DOMAIN
+  );
+
   public static final Metric CPU_HOTSPOTS_DATA = new Metric(
       "profiler_cpu_hotspots",
-      "", // name
+      "CPU Hotspots", // name
       "", // description
       Metric.ValueType.DATA,
       Metric.DIRECTION_NONE,
@@ -25,7 +34,7 @@ public class ProfilerMetrics implements Metrics {
 
   public static final Metric MEMORY_HOTSPOTS_DATA = new Metric(
       "profiler_memory_hotspots",
-      "", // name
+      "Memory Hotspots", // name
       "", // description
       Metric.ValueType.DATA,
       Metric.DIRECTION_NONE,
@@ -35,6 +44,7 @@ public class ProfilerMetrics implements Metrics {
 
   public List<Metric> getMetrics() {
     return Arrays.asList(
+        TESTS,
         CPU_HOTSPOTS_DATA,
         MEMORY_HOTSPOTS_DATA
     );

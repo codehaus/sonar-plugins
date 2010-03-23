@@ -1,0 +1,19 @@
+<%
+   profiled_tests_measure = measure('profiler_tests')
+
+   if profiled_tests_measure
+%>
+  <div class="yui-gd">
+    <div class="yui-u first">
+      <div class="dashbox">
+        <h3>Profiled tests</h3>
+
+        <p>
+          <span class="big">
+            <%= format_measure(profiled_tests_measure, :suffix => '', :url => url_for_drilldown(profiled_tests_measure)) %> <%= tendency_icon(profiled_tests_measure, false) %>
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -15,7 +15,7 @@ public class ProfilerMetricsTest {
   @Test
   public void testGetMetrics() throws Exception {
     List<Metric> metrics = new ProfilerMetrics().getMetrics();
-    assertThat(metrics.size(), is(2));
+    assertThat(metrics.size(), is(3));
     for (Metric metric : metrics) {
       assertThat("Domain", metric.getDomain(), is(ProfilerMetrics.DOMAIN));
     }
