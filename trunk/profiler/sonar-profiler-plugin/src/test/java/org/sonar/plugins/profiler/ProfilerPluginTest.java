@@ -11,6 +11,6 @@ import static org.junit.Assert.assertThat;
 public class ProfilerPluginTest {
   @Test
   public void testGetExtensions() throws Exception {
-    assertThat(new ProfilerPlugin().getExtensions().size(), is(4));
+    assertThat(new ProfilerPlugin().getExtensions().size(), is(5));
   }
 }

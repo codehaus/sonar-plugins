@@ -6,6 +6,7 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.IsMeasure;
+import org.sonar.api.test.IsResource;
 
 import java.io.File;
 
@@ -25,33 +26,26 @@ public class ProfilerSensorTest {
   }
 
   @Test
-  public void testGetResourceKey() {
-    // className-snapshotName-view.ext
+  public void testGetProfilerResource() {
     assertThat(
-        sensor.getResourceKey(new File("SimpleTest-single-HotSpots.csv")),
-        is("SimpleTest")
+        sensor.getProfilerResource(new File("SimpleTest-someMethod-HotSpots.html")).getKey(),
+        is("[default].SimpleTest-someMethod")
     );
     assertThat(
-        sensor.getResourceKey(new File("org.sonar.tests.SimpleTest-all-HotSpots.csv")),
-        is("org.sonar.tests.SimpleTest")
-    );
-  }
-
-  @Test
-  public void testGetTestName() {
-    assertThat(
-        sensor.getTestName(new File("SimpleTest-single-HotSpots.csv")),
-        is("single")
-    );
-    assertThat(
-        sensor.getTestName(new File("org.sonar.tests.SimpleTest-all-HotSpots.csv")),
-        is("all")
+        sensor.getProfilerResource(new File("org.sonar.tests.SimpleTest-someMethod-HotSpots.html")).getKey(),
+        is("org.sonar.tests.SimpleTest-someMethod")
     );
   }
 
   @Test
   public void testShouldExecuteOnProject() throws Exception {
     Project project = mock(Project.class);
+
     assertThat(sensor.shouldExecuteOnProject(project), is(true));
+  }
+
+  @Test
+  public void testToString() {
+    assertThat(sensor.toString(), is("ProfilerSensor"));
   }
 }
