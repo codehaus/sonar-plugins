@@ -4,12 +4,8 @@ import java.io.File;
 import java.lang.reflect.Method;
 
 /**
- * This class shows how to use the offline profiling API in the Controller class.
- * <p>
- * Please see the "Offline profiling" topic in the reference section of the manual
- * for a systematic discussion of this feature.
- * </p>
- * Developed using JProfiler 5.2.4.
+ * This class was developed for JProfiler 5.2.4 and inspired by idea from
+ * <a href="http://www.sonatype.com/people/2009/09/profiling-maven-tests/">Sonatype Blog - Profiling Maven Tests</a>.
  *
  * @author Evgeny Mandrikov
  */
@@ -64,6 +60,7 @@ final class JProfiler implements Profiler {
   public void saveSnapshot(String filename) {
     if (controllerClass != null) {
       File file = new File(filename + ".jps");
+      //noinspection ResultOfMethodCallIgnored
       file.getParentFile().mkdirs();
       // Controller.saveSnapshot(file);
       invokeStatic(saveSnapshot, file);
