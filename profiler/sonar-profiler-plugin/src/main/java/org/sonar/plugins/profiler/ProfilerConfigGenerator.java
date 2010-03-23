@@ -30,6 +30,7 @@ public class ProfilerConfigGenerator implements Sensor {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
+    // TODO template should exist
     return isLicenseDefined(project);
   }
 
