@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>5</version>
+  </parent>
+
+  <groupId>org.codehaus.sonar-plugins.profiler</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>Sonar Profiler Plugin :: Parent</name>
+
+  <inceptionYear>2010</inceptionYear>
+
+  <organization>
+    <name>Evgeny Mandrikov</name>
+    <url>http://godin.net.ru/</url>
+  </organization>
+
+  <properties>
+    <license.failIfMissing>false</license.failIfMissing>
+  </properties>
+
+  <modules>
+    <module>sonar-profiler-api</module>
+    <module>sonar-profiler-plugin</module>
+  </modules>
+
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+      <timezone>+3</timezone>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+</project>

@@ -1,0 +1,84 @@
+package org.sonar.plugins.profiler;
+
+import java.io.File;
+import java.lang.reflect.Method;
+
+/**
+ * This class shows how to use the offline profiling API in the Controller class.
+ * <p>
+ * Please see the "Offline profiling" topic in the reference section of the manual
+ * for a systematic discussion of this feature.
+ * </p>
+ * Developed using JProfiler 5.2.4.
+ *
+ * @author Evgeny Mandrikov
+ */
+final class JProfiler implements Profiler {
+  private Class controllerClass;
+  private Method saveSnapshot;
+  private Method stopCPURecording;
+  private Method startCPURecording;
+
+  public JProfiler() {
+    try {
+      // Controller
+      controllerClass = Class.forName("com.jprofiler.api.agent.Controller");
+      startCPURecording = getMethod("startCPURecording", boolean.class);
+      stopCPURecording = getMethod("stopCPURecording");
+      saveSnapshot = getMethod("saveSnapshot", File.class);
+    } catch (Exception e) {
+      // ignore - profiler not present
+      controllerClass = null;
+    }
+  }
+
+  private Method getMethod(String name, Class<?>... parameterTypes) {
+    if (controllerClass == null) {
+      // Should never happen
+      return null;
+    }
+    try {
+      return controllerClass.getMethod(name, parameterTypes);
+    } catch (Exception e) {
+      throw new ProfilerException("Profiler was active, but failed due: " + e.getMessage(), e);
+    }
+  }
+
+  public void start() {
+    // On startup, JProfiler does not record any data. The various recording subsystems have to be
+    // switched on programatically.
+    if (controllerClass != null) {
+      // Controller.startCPURecording(true);
+      invokeStatic(startCPURecording, true);
+    }
+  }
+
+  public void stop() {
+    // You can switch off recording at any point. Recording can be switched on again.
+    if (controllerClass != null) {
+      // Controller.stopCPURecording();
+      invokeStatic(stopCPURecording);
+    }
+  }
+
+  public void saveSnapshot(String filename) {
+    if (controllerClass != null) {
+      File file = new File(filename + ".jps");
+      file.getParentFile().mkdirs();
+      // Controller.saveSnapshot(file);
+      invokeStatic(saveSnapshot, file);
+    }
+  }
+
+  private static void invokeStatic(Method method, Object... args) {
+    if (method == null) {
+      // Should never happen
+      return;
+    }
+    try {
+      method.invoke(null, args);
+    } catch (Exception e) {
+      throw new ProfilerException("Profiler was active, but failed due: " + e.getMessage(), e);
+    }
+  }
+}
