@@ -21,6 +21,7 @@ import java.util.List;
 )
 public class ProfilerPlugin implements Plugin {
   public static final String LICENSE_PROPERTY = "sonar.profiler.license.secured";
+  public static final String JPROFILER_HOME_PROPERTY = "jprofiler.home";
 
   public String getKey() {
     return "profiler";

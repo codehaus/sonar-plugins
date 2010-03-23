@@ -27,6 +27,8 @@ public class ProfilerSensor implements Sensor {
   private static final Logger LOG = LoggerFactory.getLogger(ProfilerSensor.class);
 
   public boolean shouldExecuteOnProject(Project project) {
+    // TODO jprofiler.home should be defined and exist
+    // project.getConfiguration().getString(ProfilerPlugin.JPROFILER_HOME_PROPERTY)
     return true;
   }
 
@@ -45,13 +47,13 @@ public class ProfilerSensor implements Sensor {
       exportDir(dir);
 
       File[] files;
-      files = dir.listFiles(new FilterFilesBySuffix(JProfilerExporter.HOTSPOTS_VIEW + ".html"));
+      files = dir.listFiles(new FilterFilesBySuffix("-" + JProfilerExporter.HOTSPOTS_VIEW + ".html"));
       for (File file : files) {
         context.saveMeasure(getProfilerResource(file), ProfilerMetrics.TESTS, 1.0); // TODO
         saveMeasure(ProfilerMetrics.CPU_HOTSPOTS_DATA, file, context);
       }
 
-      files = dir.listFiles(new FilterFilesBySuffix(JProfilerExporter.ALLOCATION_HOTSPOTS_VIEW + ".html"));
+      files = dir.listFiles(new FilterFilesBySuffix("-" + JProfilerExporter.ALLOCATION_HOTSPOTS_VIEW + ".html"));
       for (File file : files) {
         saveMeasure(ProfilerMetrics.MEMORY_HOTSPOTS_DATA, file, context);
       }
