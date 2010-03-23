@@ -13,7 +13,6 @@ public class ProfilerWatchman extends TestWatchman {
 
   @Override
   public void starting(FrameworkMethod method) {
-    System.out.println("Starting " + getTestName(method));
     init();
     profiler.start();
   }
@@ -22,10 +21,10 @@ public class ProfilerWatchman extends TestWatchman {
   public void finished(FrameworkMethod method) {
     profiler.stop();
     profiler.saveSnapshot(getFilename(method));
-    System.out.println("Finished " + getTestName(method));
   }
 
   private String getFilename(FrameworkMethod method) {
+    // TODO change path
     return "target/profiler/" + getClassName(method) + "-" + getTestName(method);
   }
 
