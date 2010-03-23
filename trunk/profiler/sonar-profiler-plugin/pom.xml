@@ -112,7 +112,8 @@
           <execution>
             <configuration>
               <modules>
-                <module>org.sonar.plugins.profiler.viewer.ProfilerViewer</module>
+                <module>org.sonar.plugins.profiler.viewer.CpuHotspotsViewer</module>
+                <module>org.sonar.plugins.profiler.viewer.MemoryHotspotsViewer</module>
               </modules>
               <skip>${skipGwt}</skip>
               <webappDirectory>${project.build.directory}/classes</webappDirectory>
