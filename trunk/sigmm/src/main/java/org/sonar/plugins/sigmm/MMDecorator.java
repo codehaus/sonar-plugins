@@ -23,7 +23,6 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
@@ -40,7 +39,7 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return MMPlugin.shouldExecuteOnProject(project);
+    return true;
   }
 
   @DependsUpon

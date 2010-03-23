@@ -22,11 +22,9 @@ package org.sonar.plugins.sigmm;
 
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.measures.*;
 
 import java.util.List;
@@ -44,11 +42,11 @@ public class MMDistributionDecorator implements Decorator {
     if (!MMPlugin.shouldPersistMeasures(resource)) {
       return;
     }
-    computeAndSaveDistributionFromChildren(resource, context, MMConfiguration.CC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_CC_DISTRIB);
-    computeAndSaveDistributionFromChildren(resource, context, MMConfiguration.NCLOC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_NCLOC_DISTRIB);
+    computeAndSaveDistributionFromChildren(context, MMConfiguration.CC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_CC_DISTRIB);
+    computeAndSaveDistributionFromChildren(context, MMConfiguration.NCLOC_DISTRIBUTION_BOTTOM_LIMITS, MMMetrics.NCLOC_BY_NCLOC_DISTRIB);
   }
 
-  protected void computeAndSaveDistributionFromChildren(Resource resource, DecoratorContext context, Number[] bottomLimits, Metric metric) {
+  protected void computeAndSaveDistributionFromChildren(DecoratorContext context, Number[] bottomLimits, Metric metric) {
     Measure measure = computeDistributionFromChildren(context, bottomLimits, metric);
     context.saveMeasure(measure);
   }
@@ -62,6 +60,6 @@ public class MMDistributionDecorator implements Decorator {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return MMPlugin.shouldExecuteOnProject(project);
+    return true;
   }
 }
