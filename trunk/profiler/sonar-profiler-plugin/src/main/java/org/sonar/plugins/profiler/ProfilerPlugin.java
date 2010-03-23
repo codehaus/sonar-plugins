@@ -20,7 +20,7 @@ import java.util.List;
     )
 )
 public class ProfilerPlugin implements Plugin {
-  public static final String LICENSE_PROPERTY = "sonar.profiler.license";
+  public static final String LICENSE_PROPERTY = "sonar.profiler.license.secured";
 
   public String getKey() {
     return "profiler";
@@ -31,7 +31,7 @@ public class ProfilerPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return "TODO";
+    return "<a href='http://www.ej-technologies.com/products/jprofiler/overview.html'>JProfiler</a> is a Java profiler.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
@@ -39,6 +39,9 @@ public class ProfilerPlugin implements Plugin {
         ProfilerMetrics.class,
         ProfilerConfigGenerator.class,
         ProfilerSensor.class,
+        ProfilerDecorator.class,
+
+        ProfilerWidget.class,
 
         CpuHotspotsViewerDefinition.class,
         MemoryHotspotsViewerDefinition.class

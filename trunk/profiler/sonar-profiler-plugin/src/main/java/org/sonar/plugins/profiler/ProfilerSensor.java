@@ -35,17 +35,19 @@ public class ProfilerSensor implements Sensor {
    * @return ${basedir}/target/profiler
    */
   private File getDir(Project project) {
-    return new File(project.getFileSystem().getBuildDir(), "profiler");
+    return new File(project.getFileSystem().getBuildDir(), "/profiler");
   }
 
   public void analyse(Project project, SensorContext context) {
     try {
       File dir = getDir(project);
+      LOG.info("Parsing {}", dir);
       exportDir(dir);
 
       File[] files;
       files = dir.listFiles(new FilterFilesBySuffix(JProfilerExporter.HOTSPOTS_VIEW + ".html"));
       for (File file : files) {
+        context.saveMeasure(getProfilerResource(file), ProfilerMetrics.TESTS, 1.0); // TODO
         saveMeasure(ProfilerMetrics.CPU_HOTSPOTS_DATA, file, context);
       }
 
@@ -62,7 +64,9 @@ public class ProfilerSensor implements Sensor {
     Measure measure = new Measure(metric);
     String data = FileUtils.readFileToString(file);
     measure.setData(data);
-    context.saveMeasure(getProfilerResource(file), measure);
+    Resource<?> resource = getProfilerResource(file);
+    LOG.info("Saving {} for {} from {}", new Object[]{metric.getName(), resource.getKey(), file});
+    context.saveMeasure(resource, measure);
   }
 
   protected Resource<?> getProfilerResource(File file) {
@@ -78,11 +82,11 @@ public class ProfilerSensor implements Sensor {
 
   private static void exportDir(File dir) {
     for (String filename : dir.list(new FilterFilesBySuffix(JProfilerExporter.JPS_EXT))) {
-      JProfilerExporter.create("~/applications/jprofiler5/bin/jpexport", dir, filename)
+      // TODO get jprofiler.home from maven properties
+      JProfilerExporter.create("~/applications/jprofiler5", dir, filename)
           .setExportDir(dir)
-          .addHotSpotsView(JProfilerExporter.CSV_FORMAT, "method", "method", false)
-          .addHotSpotsView(JProfilerExporter.HTML_FORMAT, "method", "method", true)
-          .addAllocationHotSpotsView(JProfilerExporter.HTML_FORMAT, "method", true)
+          .addHotSpotsView(JProfilerExporter.HTML_FORMAT, "method", "method", false)
+          .addAllocationHotSpotsView(JProfilerExporter.HTML_FORMAT, "method", false)
           .export();
     }
   }
