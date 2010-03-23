@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.perforce:p4java:2009.1.207127">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/perforce/p4java/2009.1.207127/p4java-2009.1.207127.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/perforce/p4java/2009.1.207127/p4java-2009.1.207127-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/perforce/p4java/2009.1.207127/p4java-2009.1.207127-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
