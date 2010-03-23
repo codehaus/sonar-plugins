@@ -1,12 +1,14 @@
 package org.sonar.plugins.profiler;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.Phase;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
@@ -14,11 +16,13 @@ import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.profiler.jprofiler.JProfilerExporter;
 import org.sonar.plugins.profiler.utils.FilterFilesBySuffix;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Evgeny Mandrikov
  */
+@Phase(name = Phase.Name.POST)
 public class ProfilerSensor implements Sensor {
   private static final Logger LOG = LoggerFactory.getLogger(ProfilerSensor.class);
 
@@ -39,68 +43,32 @@ public class ProfilerSensor implements Sensor {
       File dir = getDir(project);
       exportDir(dir);
 
-      File[] hotspots = dir.listFiles(new FilterFilesBySuffix(JProfilerExporter.HOTSPOTS_VIEW + ".csv"));
-      // TODO support multiple snapshots for one test file
-      for (File file : hotspots) {
-        analyzeHotSpots(file, context);
+      File[] files;
+      files = dir.listFiles(new FilterFilesBySuffix(JProfilerExporter.HOTSPOTS_VIEW + ".html"));
+      for (File file : files) {
+        saveMeasure(ProfilerMetrics.CPU_HOTSPOTS_DATA, file, context);
+      }
+
+      files = dir.listFiles(new FilterFilesBySuffix(JProfilerExporter.ALLOCATION_HOTSPOTS_VIEW + ".html"));
+      for (File file : files) {
+        saveMeasure(ProfilerMetrics.MEMORY_HOTSPOTS_DATA, file, context);
       }
     } catch (Exception e) {
       throw new SonarException(e);
     }
   }
 
-  protected void analyzeHotSpots(File file, SensorContext context) throws IOException {
-    LOG.info("Analyzing {}", file);
-
-    /*
-    PropertiesBuilder<String, String> builder = new PropertiesBuilder<String, String>(ProfilerMetrics.CPU_HOTSPOTS_DATA);
-
-    BufferedReader reader = new BufferedReader(new FileReader(file));
-    String line;
-    int row = 0;
-    while ((line = reader.readLine()) != null) {
-      // Add "-Djprofiler.csvSeparator=;" to jpexport.vmoptions
-      String[] col = StringUtils.split(line, ';');
-      if (row > 0) {
-        // 0 - HotSpot
-        // 1 - Inherent time (microseconds)
-        // 2 - Average Time
-        // 3 - Invocations
-        String hotSpot = unwrap(col[0]);
-        String inherentTime = col[1];
-        String invocations =  col[3];
-        builder.add(hotSpot, inherentTime + "," + invocations);
-      }
-      row++;
-    }
-
-    context.saveMeasure(
-        getProfilerResource(file),
-        new Measure(ProfilerMetrics.CPU_HOTSPOTS_DATA).setData(builder.buildData())
-    );
-    */
+  protected void saveMeasure(Metric metric, File file, SensorContext context) throws IOException {
+    Measure measure = new Measure(metric);
+    String data = FileUtils.readFileToString(file);
+    measure.setData(data);
+    context.saveMeasure(getProfilerResource(file), measure);
   }
 
-  public String unwrap(String value) {
-    String result = StringUtils.removeStart(value, "\"");
-    result = StringUtils.removeEnd(result, "\"");
-    return result;
-  }
-
-  private Resource<?> getProfilerResource(String key) {
+  protected Resource<?> getProfilerResource(File file) {
+    // TODO support multiple snapshots for one test file
+    String key = StringUtils.substringBeforeLast(file.getName(), "-");
     return new JavaFile(key, true);
-  }
-
-  private Resource<?> getProfilerResource(File file) {
-    return new JavaFile(getResourceKey(file), true);
-  }
-
-  protected String getResourceKey(File file) {
-    return StringUtils.substringBefore(file.getName(), "-");
-  }
-
-  protected String getTestName(File file) {
-    return StringUtils.substringBeforeLast(StringUtils.substringAfter(file.getName(), "-"), "-");
   }
 
   @Override

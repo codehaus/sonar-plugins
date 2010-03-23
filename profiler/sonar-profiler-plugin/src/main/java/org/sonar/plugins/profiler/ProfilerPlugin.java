@@ -37,6 +37,7 @@ public class ProfilerPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     return Arrays.asList(
         ProfilerMetrics.class,
+        ProfilerConfigGenerator.class,
         ProfilerSensor.class,
 
         CpuHotspotsViewerDefinition.class,

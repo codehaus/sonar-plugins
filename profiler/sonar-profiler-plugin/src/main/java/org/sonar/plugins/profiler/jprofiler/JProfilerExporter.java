@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.utils.SonarException;
 
 import java.io.File;
-import java.io.FilenameFilter;
 
 /**
  * See <a href="resources.ej-technologies.com/jprofiler/help/doc/export/cmdlineExport.html">JProfiler Help - Command Line Export Executable</a>.
@@ -74,7 +73,8 @@ public class JProfilerExporter {
   public JProfilerExporter addHotSpotsView(String format, String aggregation, String hotspottype, boolean expandbacktraces) {
     cmd.createArg().setValue(ALLOCATION_HOTSPOTS_VIEW);
     cmd.createArg().setValue("-aggregation=" + aggregation);
-    cmd.createArg().setValue("-hotspottype=" + hotspottype);
+    // TODO the The option "hotspottype" is invalid.
+    //cmd.createArg().setValue("-hotspottype=" + hotspottype);
     cmd.createArg().setValue("-expandbacktraces=" + expandbacktraces);
     return addFormatAndFile(HOTSPOTS_VIEW, format);
   }
