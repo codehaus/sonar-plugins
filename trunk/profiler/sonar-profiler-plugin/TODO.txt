@@ -1,1 +1,0 @@
-- Use jprofiler.home as a path to jprofiler in order to invoke export tool
