@@ -26,10 +26,13 @@ import java.io.IOException;
 public class ProfilerSensor implements Sensor {
   private static final Logger LOG = LoggerFactory.getLogger(ProfilerSensor.class);
 
+  private String getJProfilerHome(Project project) {
+    return project.getConfiguration().getString(ProfilerPlugin.JPROFILER_HOME_PROPERTY);
+  }
+
   public boolean shouldExecuteOnProject(Project project) {
-    // TODO jprofiler.home should be defined and exist
-    // project.getConfiguration().getString(ProfilerPlugin.JPROFILER_HOME_PROPERTY)
-    return true;
+    String jProfilerHome = getJProfilerHome(project);
+    return !StringUtils.isBlank(jProfilerHome) && new File(jProfilerHome).isDirectory();
   }
 
   /**
@@ -44,7 +47,7 @@ public class ProfilerSensor implements Sensor {
     try {
       File dir = getDir(project);
       LOG.info("Parsing {}", dir);
-      exportDir(dir);
+      exportDir(getJProfilerHome(project), dir);
 
       File[] files;
       files = dir.listFiles(new FilterFilesBySuffix("-" + JProfilerExporter.HOTSPOTS_VIEW + ".html"));
@@ -82,10 +85,9 @@ public class ProfilerSensor implements Sensor {
     return getClass().getSimpleName();
   }
 
-  private static void exportDir(File dir) {
+  private void exportDir(String jProfilerHome, File dir) {
     for (String filename : dir.list(new FilterFilesBySuffix(JProfilerExporter.JPS_EXT))) {
-      // TODO get jprofiler.home from maven properties
-      JProfilerExporter.create("~/applications/jprofiler5", dir, filename)
+      JProfilerExporter.create(jProfilerHome, dir, filename)
           .setExportDir(dir)
           .addHotSpotsView(JProfilerExporter.HTML_FORMAT, "method", "method", false)
           .addAllocationHotSpotsView(JProfilerExporter.HTML_FORMAT, "method", false)
