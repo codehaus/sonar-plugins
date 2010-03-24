@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config version="4.3">
+  <nextId id="100"/>
+  <licenseKey key="@LICENSE@"/>
+  <sessions>
+    <session id="80" name="Samples" startFrozen="false" recordCPUOnStartup="true" vmCannotExit="false" instrumentationType="1"
+             samplingNoFilters="false" lineNumbers="false" samplingFrequency="5" timeType="1" monitorBlockedThreshold="500"
+             monitorWaitingThreshold="100000" disableCPUProfiling="false" recordAllocOnStartup="true" enableTriggersOnStartup="true"
+             allocTreeRecordingType="1" disableMonitorContentions="false" componentDetection="true" urlRetainedParameters=""
+             chronoHeap="true" autoUpdatePeriodLong="5" autoUpdatePeriodShort="2" filteredAnnotations="false" allUrls="false"
+             annotationCap="20" showSystemThreads="false" utilConcurrentHandling="true" libraryDebugParameters="" templateId=""
+             autoUpdateAllocationViews="false" type="1" hidden="false" host="127.0.0.1" port="8849" timeout="20"
+             isExecuteStartCommand="false" startCommand="" isExecuteStopCommand="false" stopCommand="" jvmConfigurationId=""
+             workingDirectory="" isStartupWorkingDirectory="true" openBrowser="false" browserUrl="" vmArguments="" mainClass="" arguments=""
+             consoleBufferSize="1000" nativeConsole="false" consoleSizeWidth="80" consoleSizeHeight="25" configSyncMode="1"
+             configSyncCopyTarget="" configSyncCommand="" appletURL="" jnlpURL="" jwsDir="">
+      <annotations>
+        <annotation type="1" enabled="true"/>
+        <annotation type="2" enabled="true"/>
+        <annotation type="3" enabled="true"/>
+        <annotation type="4" enabled="true"/>
+        <annotation type="5" enabled="false"/>
+      </annotations>
+      <filters>
+        <group type="exclusive" name="Default excludes">
+          <filter type="exclusive" name="$Proxy"/>
+          <filter type="exclusive" name="COM.cloudscape."/>
+          <filter type="exclusive" name="COM.objectspace."/>
+          <filter type="exclusive" name="COM.rsa."/>
+          <filter type="exclusive" name="EDU.oswego."/>
+          <filter type="exclusive" name="__"/>
+          <filter type="exclusive" name="allaire.jrun."/>
+          <filter type="exclusive" name="antlr."/>
+          <filter type="exclusive" name="apple."/>
+          <filter type="exclusive" name="atg."/>
+          <filter type="exclusive" name="bsh."/>
+          <filter type="exclusive" name="c8."/>
+          <filter type="exclusive" name="com.acumenat."/>
+          <filter type="exclusive" name="com.adventnet."/>
+          <filter type="exclusive" name="com.apple."/>
+          <filter type="exclusive" name="com.asn1c."/>
+          <filter type="exclusive" name="com.bea."/>
+          <filter type="exclusive" name="com.beasys."/>
+          <filter type="exclusive" name="com.caucho."/>
+          <filter type="exclusive" name="com.certicom."/>
+          <filter type="exclusive" name="com.ebay."/>
+          <filter type="exclusive" name="com.evermind."/>
+          <filter type="exclusive" name="com.ibm."/>
+          <filter type="exclusive" name="com.incors."/>
+          <filter type="exclusive" name="com.informix."/>
+          <filter type="exclusive" name="com.intellij.rt."/>
+          <filter type="exclusive" name="com.iplanet."/>
+          <filter type="exclusive" name="com.jprofiler.agent."/>
+          <filter type="exclusive" name="com.linar."/>
+          <filter type="exclusive" name="com.livesoftware."/>
+          <filter type="exclusive" name="com.mysql."/>
+          <filter type="exclusive" name="com.netscape.server.http"/>
+          <filter type="exclusive" name="com.octetstring."/>
+          <filter type="exclusive" name="com.orionserver."/>
+          <filter type="exclusive" name="com.phaos."/>
+          <filter type="exclusive" name="com.pointbase."/>
+          <filter type="exclusive" name="com.pramati."/>
+          <filter type="exclusive" name="com.rsa."/>
+          <filter type="exclusive" name="com.saxon."/>
+          <filter type="exclusive" name="com.solarmetric."/>
+          <filter type="exclusive" name="com.sssw."/>
+          <filter type="exclusive" name="com.sun."/>
+          <filter type="exclusive" name="com.swiftmq."/>
+          <filter type="exclusive" name="com.sybase."/>
+          <filter type="exclusive" name="com.tivoli."/>
+          <filter type="exclusive" name="com.unify."/>
+          <filter type="exclusive" name="compressionFilters."/>
+          <filter type="exclusive" name="edu.emory.mathcs.backport."/>
+          <filter type="exclusive" name="filters."/>
+          <filter type="exclusive" name="fr.dyade."/>
+          <filter type="exclusive" name="gnu."/>
+          <filter type="exclusive" name="interceptors."/>
+          <filter type="exclusive" name="java."/>
+          <filter type="exclusive" name="javax."/>
+          <filter type="exclusive" name="javelin."/>
+          <filter type="exclusive" name="javelinx."/>
+          <filter type="exclusive" name="jrockit."/>
+          <filter type="exclusive" name="jrun."/>
+          <filter type="exclusive" name="jrun__"/>
+          <filter type="exclusive" name="jrunx."/>
+          <filter type="exclusive" name="jsp_servlet."/>
+          <filter type="exclusive" name="junit."/>
+          <filter type="exclusive" name="kodo."/>
+          <filter type="exclusive" name="listeners."/>
+          <filter type="exclusive" name="mx4j."/>
+          <filter type="exclusive" name="net.sf.cglib."/>
+          <filter type="exclusive" name="netscape."/>
+          <filter type="exclusive" name="newatlanta.servletexec."/>
+          <filter type="exclusive" name="oracle."/>
+          <filter type="exclusive" name="org.apache."/>
+          <filter type="exclusive" name="org.bouncycastle."/>
+          <filter type="exclusive" name="org.dom4j."/>
+          <filter type="exclusive" name="org.eclipse."/>
+          <filter type="exclusive" name="org.enhydra."/>
+          <filter type="exclusive" name="org.hibernate."/>
+          <filter type="exclusive" name="org.hsql."/>
+          <filter type="exclusive" name="org.ietf."/>
+          <filter type="exclusive" name="org.jboss."/>
+          <filter type="exclusive" name="org.jbossmq."/>
+          <filter type="exclusive" name="org.jdom."/>
+          <filter type="exclusive" name="org.jnp."/>
+          <filter type="exclusive" name="org.mozilla."/>
+          <filter type="exclusive" name="org.netbeans."/>
+          <filter type="exclusive" name="org.objectweb."/>
+          <filter type="exclusive" name="org.objectweb.asm"/>
+          <filter type="exclusive" name="org.omg."/>
+          <filter type="exclusive" name="org.openide."/>
+          <filter type="exclusive" name="org.quartz."/>
+          <filter type="exclusive" name="org.springframework."/>
+          <filter type="exclusive" name="org.w3c."/>
+          <filter type="exclusive" name="org.xml."/>
+          <filter type="exclusive" name="schema.system."/>
+          <filter type="exclusive" name="schemacom_bea."/>
+          <filter type="exclusive" name="serp."/>
+          <filter type="exclusive" name="solid."/>
+          <filter type="exclusive" name="ssa."/>
+          <filter type="exclusive" name="sun."/>
+          <filter type="exclusive" name="sunw."/>
+          <filter type="exclusive" name="weblogic."/>
+          <filter type="exclusive" name="workshop."/>
+          <filter type="exclusive" name="net.sourceforge.cobertura."/>
+        </group>
+      </filters>
+      <triggers logTarget="stdout" logFile="">
+      </triggers>
+    </session>
+  </sessions>
+</config>
+
