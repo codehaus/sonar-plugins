@@ -1,0 +1,75 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.sonar-plugins.profiler.tests</groupId>
+  <artifactId>unit-tests</artifactId>
+  <version>0.1-SNAPSHOT</version>
+
+  <description>This project demonstrates how to enable profiling for unit-tests.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.sonar-plugins.profiler</groupId>
+      <artifactId>sonar-profiler-api</artifactId>
+      <version>0.1-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>jprofiler</id>
+
+      <activation>
+        <!-- Path to JProfiler installation -->
+        <property>
+          <name>jprofiler.home</name>
+        </property>
+      </activation>
+
+      <properties>
+        <!-- VM parameter that loads native profiling agent for Java 1.5+ and activate offline profiling mode -->
+        <jprofiler.agentlib>-agentlib:jprofilerti=offline,id=80,config=${project.build.directory}/profiler/config.xml</jprofiler.agentlib>
+
+        <jprofiler.bootclasspath>-Xbootclasspath/a:${jprofiler.home}/bin/agent.jar</jprofiler.bootclasspath>
+      </properties>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <argLine>${jprofiler.agentlib} ${jprofiler.bootclasspath}</argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
