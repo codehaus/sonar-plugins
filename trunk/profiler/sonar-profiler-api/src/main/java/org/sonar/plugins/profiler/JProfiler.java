@@ -12,8 +12,10 @@ import java.lang.reflect.Method;
 final class JProfiler implements Profiler {
   private Class controllerClass;
   private Method saveSnapshot;
-  private Method stopCPURecording;
   private Method startCPURecording;
+  private Method stopCPURecording;
+  private Method startAllocRecording;
+  private Method stopAllocRecording;
 
   public JProfiler() {
     try {
@@ -21,6 +23,8 @@ final class JProfiler implements Profiler {
       controllerClass = Class.forName("com.jprofiler.api.agent.Controller");
       startCPURecording = getMethod("startCPURecording", boolean.class);
       stopCPURecording = getMethod("stopCPURecording");
+      startAllocRecording = getMethod("startAllocRecording", boolean.class);
+      stopAllocRecording = getMethod("stopAllocRecording");
       saveSnapshot = getMethod("saveSnapshot", File.class);
     } catch (Exception e) {
       // ignore - profiler not present
@@ -46,6 +50,8 @@ final class JProfiler implements Profiler {
     if (controllerClass != null) {
       // Controller.startCPURecording(true);
       invokeStatic(startCPURecording, true);
+      //Controller.startAllocRecording(true);
+      invokeStatic(startAllocRecording, true);
     }
   }
 
@@ -54,6 +60,8 @@ final class JProfiler implements Profiler {
     if (controllerClass != null) {
       // Controller.stopCPURecording();
       invokeStatic(stopCPURecording);
+      // Controller.stopAllocRecording();
+      invokeStatic(stopAllocRecording);
     }
   }
 
