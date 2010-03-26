@@ -592,6 +592,13 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         projectMetrics = readAttributes(xsdProject);
         
         Number internalPackages = projectMetrics.get(INTERNAL_PACKAGES);
+
+        if (internalPackages.intValue() == 0)
+        {
+        	LOG.warn("No classes found in project "+project.getName());
+        	return;
+        }
+
         double acd = projectMetrics.get(ACD).doubleValue();
         double nccd = projectMetrics.get(NCCD).doubleValue();
 
@@ -619,15 +626,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     protected void analyse(SensorContext sensorContext, ReportContext report)
     {
     	this.sensorContext = sensorContext;
-        Map<String,Number> generalMetrics = readAttributes(report.getAttributes());
-        
-        Number internalPackages = generalMetrics.get(INTERNAL_PACKAGES);
-        
-        if (internalPackages.intValue() == 0)
-        {
-        	LOG.warn("No classes found in project "+project.getName());
-        	return;
-        }
         
         XsdProjects projects = report.getProjects();  
         List<XsdAttributeRoot> projectList = projects.getProject();
