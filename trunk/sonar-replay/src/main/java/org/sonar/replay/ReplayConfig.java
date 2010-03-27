@@ -9,12 +9,12 @@
  *
  * Sonar is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ¬†See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Sonar; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA ¬†02
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
 package org.sonar.replay;
@@ -39,49 +39,49 @@ import java.util.regex.Pattern;
 @Data
 public class ReplayConfig {
 
-    public static final DateTime DEFAULT_INTERVAL_START = new DateTime(Long.MIN_VALUE);
+  public static final DateTime DEFAULT_INTERVAL_START = new DateTime(Long.MIN_VALUE);
 
-    public static final DateTime DEFAULT_INTERVAL_END = new DateTime(Long.MAX_VALUE);
+  public static final DateTime DEFAULT_INTERVAL_END = new DateTime(Long.MAX_VALUE);
 
-    /**
-     * Optional sonar connection information since this can also be defined in the
-     * Maven settings.xml.
-     */
-    @Nullable
-    private SonarConfig sonarConfig;
+  /**
+   * Optional sonar connection information since this can also be defined in the
+   * Maven settings.xml.
+   */
+  @Nullable
+  private SonarConfig sonarConfig;
 
-    /**
-     * Perforce connection information.
-     */
-    @Nonnull
-    private PerforceConfig perforceConfig;
+  /**
+   * Perforce connection information.
+   */
+  @Nonnull
+  private PerforceConfig perforceConfig;
 
-    /**
-     * The location of the project in Perforce.  This is a list of file specs as some project locations
-     * are more complex than just one path.
-     */
-    @Nonnull
-    private List<P4JFileSpec> projectFileSpecs;
+  /**
+   * The location of the project in Perforce.  This is a list of file specs as some project locations
+   * are more complex than just one path.
+   */
+  @Nonnull
+  private List<P4JFileSpec> projectFileSpecs;
 
-    /**
-     * An optional regular expression to match label names against.
-     * The default value is '.*' so all labels will be included.
-     */
-    @Nonnull
-    private Pattern labelFilter = Pattern.compile(".*");
+  /**
+   * An optional regular expression to match label names against.
+   * The default value is '.*' so all labels will be included.
+   */
+  @Nonnull
+  private Pattern labelFilter = Pattern.compile(".*");
 
 
-    /**
-     * An optional window of time to limit the replay to.  By default it is unlimited;
-     */
-    @Nonnull
-    private ReadableInterval interval = new Interval(DEFAULT_INTERVAL_START, DEFAULT_INTERVAL_END);
+  /**
+   * An optional window of time to limit the replay to.  By default it is unlimited;
+   */
+  @Nonnull
+  private ReadableInterval interval = new Interval(DEFAULT_INTERVAL_START, DEFAULT_INTERVAL_END);
 
-    /**
-     * A regular expression that extracts the version from the label as group 1.
-     * The default value is '.*-(.*)' which will take everything after the first '-'.
-     * Example: 'example-1.0' will match the pattern and group 1 will contain '1.0'
-     */
-    @Nonnull
-    private Pattern labelVersionFilter = Pattern.compile(".*-(.+)");
+  /**
+   * A regular expression that extracts the version from the label as group 1.
+   * The default value is '.*-(.*)' which will take everything after the first '-'.
+   * Example: 'example-1.0' will match the pattern and group 1 will contain '1.0'
+   */
+  @Nonnull
+  private Pattern labelVersionFilter = Pattern.compile(".*-(.+)");
 }

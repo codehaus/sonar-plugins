@@ -9,12 +9,12 @@
  *
  * Sonar is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ¬†See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Sonar; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA ¬†02
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
 package org.sonar.replay;
@@ -31,7 +31,7 @@ import java.net.URI;
  */
 @Data
 public class PerforceConfig {
-    private URI serverUrl;
-    private String userName;
-    private String password;
+  private URI serverUrl;
+  private String userName;
+  private String password;
 }
