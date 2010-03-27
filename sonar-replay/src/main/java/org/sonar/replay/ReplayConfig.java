@@ -1,12 +1,4 @@
-/*
- *  Revision Information:
- *  $Id$
- *  $Author$
- *  $DateTime$
- *
- * Copyright ©2010 ESPN.com and Disney Interactive Media Group.  All rights reserved.
- */
-package com.jaxzin.sonar.replay;
+package org.sonar.replay;
 
 import com.perforce.p4java.core.file.P4JFileSpec;
 import lombok.Data;
@@ -22,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * TODO: Add documentation for ReplayConfig
  *
- * @author <a href="mailto:Brian.R.Jackson@espn3.com">Brian R. Jackson</a>
+ * @author <a href="mailto:jaxzin@codehaus.org">Brian R. Jackson</a>
  * @version $Change$
  */
 @Data
