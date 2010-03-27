@@ -4,9 +4,48 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jaxzin.sonar</groupId>
+    <parent>
+        <groupId>org.codehaus.sonar-plugins</groupId>
+        <artifactId>parent</artifactId>
+        <version>5</version>
+        <relativePath>../parent</relativePath>
+    </parent>
+
     <artifactId>sonar-replay</artifactId>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
+    <name>Sonar Replay</name>
+    <description>A utility for importing historical code analysis information of a Maven project into Sonar.
+    </description>
+
+
+    <scm>
+        <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonar-replay</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonar-replay</developerConnection>
+        <url>http://svn.sonar-plugins.codehaus.org/browse/sonar-plugins/trunk/sonar-replay</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPL), v.3</name>
+            <url>http://www.gnu.org/licenses/lgpl.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+    <developers>
+        <developer>
+            <id>jaxzin</id>
+            <name>Brian R. Jackson</name>
+            <email>jaxzin@codehaus.org</email>
+            <url>http://jaxzin.com</url>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>

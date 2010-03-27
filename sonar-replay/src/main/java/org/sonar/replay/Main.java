@@ -1,3 +1,21 @@
+/*
+ * Sonar, open source software quality management tool.
+ * Copyright (C) 2009 SonarSource SA
+ * mailto:contact AT sonarsource DOT com
+ *
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * Sonar is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ¬†See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Sonar; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA ¬†02
+ */
 
 package org.sonar.replay;
 
@@ -80,12 +98,12 @@ public class Main {
 
         System.getProperties().putAll(props);
         System.getProperties().put("maven.home", System.getenv("M2_HOME"));
-        if(!System.getProperties().containsKey("mvn.exe")) {
+        if (!System.getProperties().containsKey("mvn.exe")) {
             System.getProperties().put("mvn.exe", "mvn");
         }
 
         // Mild-validation
-        if(!System.getProperties().containsKey("p4.file.specs")) {
+        if (!System.getProperties().containsKey("p4.file.specs")) {
             LOGGER.warn("Not specifying 'p4.file.specs' will default to the entire perforce depot which is probably NOT what you want.");
         }
 
@@ -109,26 +127,26 @@ public class Main {
 
             server.registerCallback(new P4JCommandCallback() {
                 public void issuingServerCommand(int i, String s) {
-                    LOGGER.debug(i + ": Issuing Server Command : "+ s);
+                    LOGGER.debug(i + ": Issuing Server Command : " + s);
                 }
 
                 public void completedServerCommand(int i, long l) {
-                    LOGGER.debug(i + ": Completed Server Command : "+ l);
+                    LOGGER.debug(i + ": Completed Server Command : " + l);
                 }
 
                 public void receivedServerInfoLine(int i, String s) {
-                    LOGGER.debug("-- "+i+": I* Received Server Info : "+ s);
+                    LOGGER.debug("-- " + i + ": I* Received Server Info : " + s);
                 }
 
                 public void receivedServerErrorLine(int i, String s) {
-                    LOGGER.debug("-- "+i+": E* Received Server Error : "+ s);
+                    LOGGER.debug("-- " + i + ": E* Received Server Error : " + s);
                 }
 
                 public void receivedServerMessage(int i, int i1, int i2, String s) {
-                    LOGGER.debug("-- "+i+": Received Server Message : "+ i1 + " : " + i2 + " : " + s);
+                    LOGGER.debug("-- " + i + ": Received Server Message : " + i1 + " : " + i2 + " : " + s);
                 }
             });
-            
+
             server.registerProgressCallback(new DemoProgressCallback());
 
             List<P4JFileSpec> fileSpecs = parseFileSpecs(System.getProperty("p4.file.specs", "//..."));
@@ -175,7 +193,7 @@ public class Main {
             LOGGER.debug("Getting labels.");
             // Get all the labels for the project...
             List<P4JLabel> labels = new ArrayList<P4JLabel>();
-            if(System.getProperties().containsKey("p4.label.name.filters")) {
+            if (System.getProperties().containsKey("p4.label.name.filters")) {
                 for (String nameFilter : System.getProperty("p4.label.name.filters").split(",")) {
                     labels.addAll(server.getLabelList(ALL_USERS, MAX_LABEL_COUNT, nameFilter, fileSpecs));
                 }
@@ -232,18 +250,18 @@ public class Main {
                             ProcessBuilder b =
                                     new ProcessBuilder()
                                             .command(
-                                                System.getenv("M2_HOME") + "/bin/" + System.getProperty("mvn.exe"),
+                                                    System.getenv("M2_HOME") + "/bin/" + System.getProperty("mvn.exe"),
 //                                                "-X",
-                                                "--batch-mode",
-                                                "-e",
-                                                "-Dbuild.number=" + version,
-                                                "-Dsonar.projectDate=" + System.getProperty("sonar.projectDate"),
-                                                "-Dsonar.exclusions=" + System.getProperty("sonar.exclusions", ""),
-                                                "-s",
-                                                System.getProperty("m2.settings", System.getProperty("user.home")+"/.m2/settings.xml"),
-                                                "clean",
-                                                "install",
-                                                "sonar:sonar"
+                                                    "--batch-mode",
+                                                    "-e",
+                                                    "-Dbuild.number=" + version,
+                                                    "-Dsonar.projectDate=" + System.getProperty("sonar.projectDate"),
+                                                    "-Dsonar.exclusions=" + System.getProperty("sonar.exclusions", ""),
+                                                    "-s",
+                                                    System.getProperty("m2.settings", System.getProperty("user.home") + "/.m2/settings.xml"),
+                                                    "clean",
+                                                    "install",
+                                                    "sonar:sonar"
 //                                                "org.codehaus.sonar:sonar-maven-plugin:1.12:sonar"
                                             )
                                             .directory(syncDir);
@@ -403,10 +421,6 @@ public class Main {
         return true;
     }
 
-    private static ReplayConfig buildReplayConfig(String[] args) {
-        return null;
-    }
-
     /**
      * A simple demo P4Java progress callback implementation. Real
      * implementations would probably correlate the key arguments
@@ -416,11 +430,11 @@ public class Main {
     protected static class DemoProgressCallback implements P4JProgressCallback {
 
         public void start(int key) {
-			LOGGER.debug("Starting command " + key);
+            LOGGER.debug("Starting command " + key);
         }
 
         public void stop(int key) {
-			LOGGER.debug("Stopping command " + key);
+            LOGGER.debug("Stopping command " + key);
         }
 
         public boolean tick(int key, String tickMarker) {
@@ -501,9 +515,9 @@ public class Main {
 
     private static class StreamRedirector implements Runnable {
         private InputStream in;
-        private OutputStream out;
         private boolean error;
         private byte[] buffer = new byte[1024];
+
         public StreamRedirector(InputStream in, boolean error) {
             this.in = in;
             this.error = error;
@@ -512,13 +526,12 @@ public class Main {
         public void run() {
             try {
                 int read;
-                while((read = in.read(buffer)) != -1) {
-                    if(error) {
-                        LOGGER.error(new String(buffer,0, read));
+                while ((read = in.read(buffer)) != -1) {
+                    if (error) {
+                        LOGGER.error(new String(buffer, 0, read));
                     } else {
-                        LOGGER.debug(new String(buffer,0, read));
+                        LOGGER.debug(new String(buffer, 0, read));
                     }
-                    //out.write(buffer, 0 , read);
                 }
             } catch (IOException e) {
                 LOGGER.warn(e.getMessage(), e);
