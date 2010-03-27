@@ -65,6 +65,9 @@ public class Main {
   private static final int MAX_LABEL_COUNT = 200;
   private static final String NO_LABEL_FILTER = null;
 
+  private Main() {
+  }
+
   public static void main(String[] args) {
     /*
        Inputs:
@@ -94,7 +97,9 @@ public class Main {
 
     Properties props = new Properties();
 
-    if (!readPropertiesFile(args, props)) System.exit(1);
+    if (!readPropertiesFile(args, props)) {
+      System.exit(1);
+    }
 
     System.getProperties().putAll(props);
     System.getProperties().put("maven.home", System.getenv("M2_HOME"));
@@ -183,9 +188,7 @@ public class Main {
       List<P4JFileSpec> cleared = client.sync(
           P4JFileSpecBuilder.getValidFileSpecs(
               P4JFileSpecBuilder.makeFileSpecList(
-                  new String[]{"#0"}
-              )
-          )
+                  new String[]{"#0"}))
           , false, false, false, false);
       LOGGER.debug("Files cleared: " + cleared.size());
 
@@ -214,7 +217,10 @@ public class Main {
 
       DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
 
-      ReadableInterval interval = new Interval(fmt.parseMillis(System.getProperty("p4.interval.start", "1900-01-01")), fmt.parseMillis(System.getProperty("p4.interval.end", "2100-01-01")));
+      ReadableInterval interval =
+          new Interval(
+              fmt.parseMillis(System.getProperty("p4.interval.start", "1900-01-01")),
+              fmt.parseMillis(System.getProperty("p4.interval.end", "2100-01-01")));
 
       Pattern labelFilter = Pattern.compile(System.getProperty("p4.label.filter", ".*"));
       for (P4JLabel label : labels) {
@@ -237,9 +243,7 @@ public class Main {
             List<P4JFileSpec> synced = client.sync(
                 P4JFileSpecBuilder.getValidFileSpecs(
                     P4JFileSpecBuilder.makeFileSpecList(
-                        new String[]{"@" + label.getName()}
-                    )
-                )
+                        new String[]{"@" + label.getName()}))
                 , false, false, false, false);
 
             LOGGER.debug("Files synced: " + synced.size());
@@ -261,9 +265,7 @@ public class Main {
                           System.getProperty("m2.settings", System.getProperty("user.home") + "/.m2/settings.xml"),
                           "clean",
                           "install",
-                          "sonar:sonar"
-//                                                "org.codehaus.sonar:sonar-maven-plugin:1.12:sonar"
-                      )
+                          "sonar:sonar")
                       .directory(syncDir);
               Process p = b.start();
 //                            Process p = Runtime.getRuntime().exec(
@@ -337,9 +339,7 @@ public class Main {
       List<P4JFileSpec> synced = client.sync(
           P4JFileSpecBuilder.getValidFileSpecs(
               P4JFileSpecBuilder.makeFileSpecList(
-                  new String[]{"#0"}
-              )
-          )
+                  new String[]{"#0"}))
           , false, false, false, false);
       LOGGER.debug("Files cleared: " + synced.size());
 
@@ -374,8 +374,7 @@ public class Main {
     LOGGER.debug("Parsing file spec csv: '" + filesSpecsCSV + "'");
     List<P4JFileSpec> rawSpecs =
         P4JFileSpecBuilder.makeFileSpecList(
-            filesSpecsCSV.split(",")
-        );
+            filesSpecsCSV.split(","));
 //        System.out.println("rawSpecs: " + rawSpecs);
     return P4JFileSpecBuilder.getValidFileSpecs(rawSpecs);
   }
