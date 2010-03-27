@@ -82,7 +82,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.jaxzin.sonar.replay.Main</mainClass>
+                                    <mainClass>org.sonar.replay.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
