@@ -32,6 +32,11 @@ public class ProfilerDecoratorTest {
   }
 
   @Test
+  public void testShouldSaveZeroIfNoChildMeasures() {
+    assertThat(decorator.shouldSaveZeroIfNoChildMeasures(), is(false));
+  }
+
+  @Test
   public void testToString() throws Exception {
     assertThat(decorator.toString(), is("ProfilerDecorator"));
   }

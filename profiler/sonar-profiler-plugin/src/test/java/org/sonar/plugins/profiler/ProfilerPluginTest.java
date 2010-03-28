@@ -22,6 +22,7 @@ public class ProfilerPluginTest {
   public void test() throws Exception {
     assertThat(plugin.getKey(), notNullValue());
     assertThat(plugin.getName(), notNullValue());
+    assertThat(plugin.getDescription(), notNullValue());
     assertThat(plugin.getExtensions().size(), is(7));
   }
 }
