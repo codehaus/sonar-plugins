@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Integration tests" basedir=".">
+  <property environment="env"/>
+  <property name="projects.dir" value="${basedir}/src/it/custom-projects"/>
+
+  <target name="analyze-struts">
+    <mvn
+        args="scm:checkout -DconnectionUrl=scm:svn:http://svn.apache.org/repos/asf/struts/struts1/tags/STRUTS_1_3_9 -DcheckoutDirectory=struts-1.3.9"
+        dir="${projects.dir}"/>
+    <mvn args="clean install -DskipTests" dir="${projects.dir}/struts-1.3.9"/>
+    <profilemvn pom="${projects.dir}/struts-1.3.9/pom.xml" test="struts"/>
+  </target>
+
+  <target name="analyze-helloworld">
+    <mvn args="clean install -DskipTests" dir="${basedir}/projects/helloworld"/>
+    <profilemvn pom="${basedir}/projects/helloworld/pom.xml" test="helloworld"/>
+  </target>
+
+  <macrodef name="mvn">
+    <attribute name="failonerror" default="true"/>
+    <attribute name="args" default=""/>
+    <attribute name="dir"/>
+
+    <sequential>
+      <echo>Executing ${fake-maven}/bin/mvn @{args}</echo>
+      <exec dir="@{dir}" failonerror="@{failonerror}" executable="${fake-maven}/bin/mvn.bat" osfamily="Windows">
+        <arg line="@{args} -B -e"/>
+      </exec>
+      <exec dir="@{dir}" failonerror="@{failonerror}" executable="${fake-maven}/bin/mvn" osfamily="unix">
+        <arg line="@{args} -B -e"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="mvnsonar">
+    <attribute name="failonerror" default="true"/>
+    <attribute name="args" default=""/>
+    <attribute name="opts" default=""/>
+    <attribute name="pom"/>
+
+    <sequential>
+      <echo>Executing ${fake-maven}/bin/mvn @{args}</echo>
+      <exec failonerror="@{failonerror}" executable="${fake-maven}/bin/mvn.bat" osfamily="Windows">
+        <arg line="sonar:sonar @{args} -B -e"/>
+        <arg line="-f @{pom}"/>
+        <arg value='-Dsonar.jdbc.url="${jdbcUrl}"'/>
+        <arg value="-Dsonar.jdbc.driver=${jdbcDriver}"/>
+        <arg value="-Dsonar.jdbc.username=${jdbcUsername}"/>
+        <arg value="-Dsonar.jdbc.password=${jdbcPassword}"/>
+      </exec>
+      <exec failonerror="@{failonerror}" executable="${fake-maven}/bin/mvn" osfamily="unix">
+        <arg line="sonar:sonar @{args} -B -e"/>
+        <arg line="-f @{pom}"/>
+        <arg value='-Dsonar.jdbc.url=${jdbcUrl}'/>
+        <arg value="-Dsonar.jdbc.driver=${jdbcDriver}"/>
+        <arg value="-Dsonar.jdbc.username=${jdbcUsername}"/>
+        <arg value="-Dsonar.jdbc.password=${jdbcPassword}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <!-- Custom part -->
+  <macrodef name="profilemvn">
+    <attribute name="test"/>
+    <attribute name="failonerror" default="true"/>
+    <attribute name="args" default=""/>
+    <attribute name="pom"/>
+
+    <sequential>
+      <echo>Executing ${fake-maven}/bin/mvn @{args}</echo>
+      <exec failonerror="@{failonerror}" executable="${fake-maven}/bin/mvn.bat" osfamily="Windows">
+        <env key="LD_LIBRARY_PATH" value="${jprofiler.home}/bin/windows-x86"/>
+        <env key="MAVEN_OPTS"
+             value="-agentlib:jprofilerti=offline,id=106,config=${jprofiler.workdir}/config.xml -Xbootclasspath/a:${jprofiler.home}/bin/agent.jar"/>
+        <arg line="sonar:sonar @{args} -B -e"/>
+        <arg line="-f @{pom}"/>
+      </exec>
+      <exec failonerror="@{failonerror}" executable="${fake-maven}/bin/mvn" osfamily="unix">
+        <env key="LD_LIBRARY_PATH" value="${jprofiler.home}/bin/linux-x86"/>
+        <env key="MAVEN_OPTS"
+             value="-agentlib:jprofilerti=offline,id=106,config=${jprofiler.workdir}/config.xml -Xbootclasspath/a:${jprofiler.home}/bin/agent.jar"/>
+        <arg line="sonar:sonar @{args} -B -e"/>
+        <arg line="-f @{pom}"/>
+      </exec>
+      <move file="${jprofiler.workdir}/snapshot.jps" tofile="${jprofiler.workdir}/${test}.jps"/>
+    </sequential>
+  </macrodef>
+
+</project>

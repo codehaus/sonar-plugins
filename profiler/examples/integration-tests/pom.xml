@@ -9,12 +9,15 @@
   <description>This project demonstrates how to enable profiling for integration-tests.</description>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
     <maven.version>2.1.0</maven.version>
+    <sonarVersion>2.0.1</sonarVersion>
 
     <maven-version>${maven.version}</maven-version>
     <fake-maven>${project.build.directory}/apache-maven-${maven-version}</fake-maven>
 
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jprofiler.workdir>${project.build.directory}/profiler</jprofiler.workdir>
   </properties>
 
   <dependencies>
@@ -74,12 +77,125 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-jprofiler</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireProperty>
+                  <property>jprofiler.home</property>
+                  <message>You must specify jprofiler.home!</message>
+                </requireProperty>
+                <requireProperty>
+                  <property>jprofiler.license</property>
+                  <message>You must specify jprofiler.license!</message>
+                </requireProperty>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Prepare configuration for JProfiler -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-jprofiler-config</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/profiler</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/it/profiler</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-dev-mojo</artifactId>
+        <configuration>
+          <wait>false</wait>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-server</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-server</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.3</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-nodeps</artifactId>
+            <version>1.7.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-junit</artifactId>
+            <version>1.7.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-trax</artifactId>
+            <version>1.7.1</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>analyze-projects</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <ant dir="${basedir}" inheritRefs="true">
+                  <property name="fake-maven" value="${fake-maven}"/>
+                  <property name="jprofiler.workdir" value="${jprofiler.workdir}"/>
+
+                  <target name="analyze-helloworld"/>
+                </ant>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <excludes>
-            <exclude>**/*$*</exclude>
-            <exclude>**/Abstract*</exclude>
-          </excludes>
+          <skip>true</skip>
         </configuration>
       </plugin>
 
