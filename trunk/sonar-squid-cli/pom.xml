@@ -63,7 +63,7 @@
       </testResource>
     </testResources>
     <plugins>
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <inherited>true</inherited>
@@ -75,7 +75,6 @@
               <tasks>
                 <echo>Test Squid Ant integration (with ${ant.version}</echo>
                 <ant antfile="src/test/ant/squid-ant.xml">
-                  <!--  TODO: Find the appropriate mvn properties -->
                   <property name="squid.classes"   value="${basedir}/target/classes"/>
                   <property name="src"             value="${basedir}/src/test/resources/commons-collections-3.2.1-src/"/>
                   <property name="target"          value="target"/>
@@ -90,7 +89,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
