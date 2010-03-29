@@ -52,6 +52,7 @@
                 <module>clirr</module>
                 <module>codereview</module>
                 <module>sonar-squid-cli</module>
+                <module>sonar-replay</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
             </modules>
