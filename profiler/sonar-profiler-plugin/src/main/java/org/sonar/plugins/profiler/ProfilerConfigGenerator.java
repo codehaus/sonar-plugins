@@ -16,6 +16,7 @@ import java.io.IOException;
  * @author Evgeny Mandrikov
  */
 @Phase(name = Phase.Name.PRE)
+@Deprecated
 public class ProfilerConfigGenerator implements Sensor {
   public void analyse(Project project, SensorContext context) {
     ProjectFileSystem fileSystem = project.getFileSystem();
