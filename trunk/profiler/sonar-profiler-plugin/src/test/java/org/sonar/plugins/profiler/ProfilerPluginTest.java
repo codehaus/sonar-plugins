@@ -23,6 +23,6 @@ public class ProfilerPluginTest {
     assertThat(plugin.getKey(), notNullValue());
     assertThat(plugin.getName(), notNullValue());
     assertThat(plugin.getDescription(), notNullValue());
-    assertThat(plugin.getExtensions().size(), is(7));
+    assertThat(plugin.getExtensions().size(), is(6));
   }
 }
