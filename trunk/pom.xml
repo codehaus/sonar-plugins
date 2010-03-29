@@ -40,6 +40,7 @@
                 <module>security-rules</module>
                 <module>sigmm</module>
                 <module>sonarj</module>
+                <module>sonar-squid-cli</module>
                 <module>sonar-squid-gui</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
@@ -51,7 +52,6 @@
             <modules>
                 <module>clirr</module>
                 <module>codereview</module>
-                <module>sonar-squid-cli</module>
                 <module>sonar-replay</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
