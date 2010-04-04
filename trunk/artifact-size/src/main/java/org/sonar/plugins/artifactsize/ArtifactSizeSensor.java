@@ -81,11 +81,11 @@ public class ArtifactSizeSensor implements Sensor {
 
   private File buildPathFromConfig(ProjectFileSystem fileSystem, String artifactPath) {
     return new File(fileSystem.getBasedir(), artifactPath);
- }
+  }
 
   private File buildPathFromPom(ProjectFileSystem fileSystem, String artifactPath) {
     return new File(fileSystem.getBuildDir(), artifactPath);
- }
+  }
 
   protected double getSize(File file) {
     return ((double) file.length()) / 1024;
