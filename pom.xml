@@ -31,6 +31,7 @@
                 <module>maven-report</module>
                 <module>motion-chart</module>
                 <module>pdf-report</module>
+                <module>php</module>
                 <module>profiler</module>
                 <module>quality-index</module>
                 <module>radiator</module>
@@ -52,7 +53,6 @@
                 <module>clirr</module>
                 <module>codereview</module>
                 <module>dotnet</module>
-                <module>php</module>
                 <module>sonar-replay</module>
                 <module>timeline</module>
                 <module>testability-explorer</module>
