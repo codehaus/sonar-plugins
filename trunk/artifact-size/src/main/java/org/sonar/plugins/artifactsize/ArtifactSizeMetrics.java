@@ -28,7 +28,10 @@ import java.util.List;
 
 public class ArtifactSizeMetrics implements Metrics {
 
-  public final static Metric ARTIFACT_SIZE = new Metric("artifact-size", "Artifact Size (Kb)", "Artifact Size", Metric.ValueType.FLOAT, Metric.DIRECTION_BETTER, false, CoreMetrics.DOMAIN_SIZE);
+  public final static Metric ARTIFACT_SIZE = new Metric(
+      "artifact-size", "Artifact Size (Kb)", "Artifact Size",
+      Metric.ValueType.FLOAT, Metric.DIRECTION_BETTER, false, CoreMetrics.DOMAIN_SIZE
+  );
 
   public List<Metric> getMetrics() {
     return Arrays.asList(ARTIFACT_SIZE);
