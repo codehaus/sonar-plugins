@@ -20,16 +20,16 @@
 package org.sonar.plugins.taglist;
 
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CountDistributionBuilder;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PersistenceMode;
-import org.sonar.api.measures.CountDistributionBuilder;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.rules.*;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.XpathParser;
-import org.sonar.api.rules.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -67,13 +67,13 @@ public class TaglistViolationsXmlParser {
       }
     }
 
-    for (Resource javaFile : violationsCountPerClass.keySet()) {
-      ViolationsCount violations = violationsCountPerClass.get(javaFile);
+    for (Map.Entry<Resource, ViolationsCount> entry : violationsCountPerClass.entrySet()) {
+      Resource javaFile = entry.getKey();
+      ViolationsCount violations = entry.getValue();
       saveMeasure(context, javaFile, TaglistMetrics.TAGS, violations.mandatory + violations.optional);
       saveMeasure(context, javaFile, TaglistMetrics.MANDATORY_TAGS, violations.mandatory);
       saveMeasure(context, javaFile, TaglistMetrics.OPTIONAL_TAGS, violations.optional);
       context.saveMeasure(javaFile, violations.distrib.build().setPersistenceMode(PersistenceMode.MEMORY));
-
     }
   }
 
@@ -83,7 +83,8 @@ public class TaglistViolationsXmlParser {
     }
   }
 
-  private void parseViolationsOnFiles(SensorContext context, Element tag, Rule rule, ActiveRule activeRule, Map<Resource, ViolationsCount> violationsCountPerClass) {
+  private void parseViolationsOnFiles(SensorContext context, Element tag, Rule rule, ActiveRule activeRule, Map
+      <Resource, ViolationsCount> violationsCountPerClass) {
     NodeList files = tag.getElementsByTagName("file");
     for (int i = 0; i < files.getLength(); i++) {
       Element file = (Element) files.item(i);
@@ -124,7 +125,10 @@ public class TaglistViolationsXmlParser {
 
   private void registerViolation(SensorContext context, String violationLineNumber, Rule rule, Resource javaFile) {
     try {
-      context.saveViolation(new Violation(rule, javaFile).setMessage(rule.getDescription()).setLineId((int) ParsingUtils.parseNumber(violationLineNumber)));
+      context.saveViolation(new Violation(rule, javaFile)
+          .setMessage(rule.getDescription())
+          .setLineId((int) ParsingUtils.parseNumber(violationLineNumber))
+      );
 
     } catch (ParseException e) {
       throw new SonarException("Unable to parse number '" + violationLineNumber + "' in taglist.xml file", e);
