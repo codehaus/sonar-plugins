@@ -18,6 +18,7 @@
                 <module>artifact-size</module>
                 <module>build-breaker</module>
                 <module>build-stability</module>
+                <module>clirr</module>
                 <module>cpp</module>
                 <module>crowd</module>
                 <module>emma</module>
@@ -44,17 +45,16 @@
                 <module>sonar-squid-gui</module>
                 <module>taglist</module>
                 <module>technical-debt</module>
+                <module>timeline</module>
                 <module>total-quality</module>
             </modules>
         </profile>
         <profile>
             <id>unstableProjects</id>
             <modules>
-                <module>clirr</module>
                 <module>codereview</module>
                 <module>dotnet</module>
                 <module>sonar-replay</module>
-                <module>timeline</module>
                 <module>testability-explorer</module>
             </modules>
         </profile>
