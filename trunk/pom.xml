@@ -18,7 +18,6 @@
                 <module>artifact-size</module>
                 <module>build-breaker</module>
                 <module>build-stability</module>
-                <module>codereview</module>
                 <module>clirr</module>
                 <module>cpp</module>
                 <module>crowd</module>
@@ -55,6 +54,7 @@
         <profile>
             <id>unstableProjects</id>
             <modules>
+                <module>codereview</module>
                 <module>php</module>
             </modules>
         </profile>
