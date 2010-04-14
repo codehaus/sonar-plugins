@@ -32,6 +32,7 @@
                 <module>maven-report</module>
                 <module>motion-chart</module>
                 <module>pdf-report</module>
+                <module>php</module>
                 <module>profiler</module>
                 <module>quality-index</module>
                 <module>radiator</module>
@@ -57,9 +58,6 @@
 
                 <!-- There are test failures and duplicate dependencies. -->
                 <module>dotnet</module>
-
-                <!-- Missing header license-->
-                <module>php</module>
 
                 <!-- Missing dependency on org.projectlombok:lombok:jar:0.9.2-->
                 <module>sonar-replay</module>
