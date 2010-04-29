@@ -21,6 +21,7 @@ package org.sonar.plugins.jlint;
 
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.batch.maven.MavenUtils;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
@@ -38,15 +39,15 @@ public class JlintMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String getGroupId() {
-    return "com.symcor.jlint.plugin";
+    return MavenUtils.GROUP_ID_CODEHAUS_MOJO;
   }
 
   public String getArtifactId() {
-    return "maven-jlint-plugin";
+    return "jlint-maven-plugin";
   }
 
   public String getVersion() {
-    return "1.2";
+    return "1.0.0-SNAPSHOT";
   }
 
   public boolean isFixedVersion() {
