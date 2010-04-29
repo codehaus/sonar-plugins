@@ -1,20 +1,57 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.codehaus.sonar</groupId>
-    <artifactId>sonar</artifactId>
-    <version>1.10.1</version>
-    <relativePath>../..</relativePath>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>5</version>
+    <relativePath>../../parent</relativePath>
   </parent>
 
-  <artifactId>jlint-sonar-maven-plugins</artifactId>
-  <packaging>pom</packaging>
-  <name>Jlint Sonar Maven Plugins</name>
+  <groupId>org.codehaus.sonar-plugins</groupId>
+  <artifactId>sonar-jlint-plugin</artifactId>
+  <version>1.1</version>
+  <packaging>jar</packaging>
+  <name>Sonar Jlint plugin</name>
 
-  <modules>
-    <!-- Moved to Codehaus mojo sandbox:
-    <module>maven-jlint-plugin</module>
-    -->
-    <module>sonar-plugin-jlint</module>
-  </modules>
+  <properties>
+    <sonar.version>1.10.1</sonar.version>
+    <license.failIfMissing>false</license.failIfMissing>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Plugin-Class>org.sonar.plugins.jlint.JlintPlugin</Plugin-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
