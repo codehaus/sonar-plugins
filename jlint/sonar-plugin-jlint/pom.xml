@@ -3,17 +3,18 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>3</version>
-    <relativePath>../parent</relativePath>
+    <version>5</version>
   </parent>
+
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-jlint-plugin</artifactId>
   <version>1.1</version>
   <packaging>jar</packaging>
-  <name>Sonar jlint plugin</name>
+  <name>Sonar Jlint plugin</name>
 
   <properties>
-	<sonar.version>1.10.1</sonar.version>
+    <sonar.version>1.10.1</sonar.version>
+    <license.failIfMissing>false</license.failIfMissing>
   </properties>
 
   <dependencies>
@@ -30,13 +31,6 @@
       <type>test-jar</type>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-commons</artifactId>
-      <version>1.9.2</version>
-      <scope>test</scope>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
       <version>1.7</version>
@@ -45,14 +39,6 @@
   </dependencies>
 
   <build>
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/main/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-      </testResource>
-    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -63,14 +49,6 @@
               <Plugin-Class>org.sonar.plugins.jlint.JlintPlugin</Plugin-Class>
             </manifestEntries>
           </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
         </configuration>
       </plugin>
     </plugins>

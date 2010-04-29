@@ -12,7 +12,9 @@
   <name>Jlint Sonar Maven Plugins</name>
 
   <modules>
+    <!-- Moved to Codehaus mojo sandbox:
     <module>maven-jlint-plugin</module>
+    -->
     <module>sonar-plugin-jlint</module>
   </modules>
 </project>
