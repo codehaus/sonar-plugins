@@ -1,7 +1,6 @@
 /*
  * Sonar, open source software quality management tool.
  * Copyright (C) 2009 SonarSource SA
- * mailto:contact AT sonarsource DOT com
  *
  * Sonar is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,12 +16,13 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.jlint.xml;
 
-import java.util.List;
+package org.sonar.plugins.jlint.xml;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
+import java.util.List;
 
 @XStreamAlias("Match")
 public class Match {

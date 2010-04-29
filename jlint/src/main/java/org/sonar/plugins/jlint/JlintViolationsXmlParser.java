@@ -1,7 +1,6 @@
 /*
  * Sonar, open source software quality management tool.
  * Copyright (C) 2009 SonarSource SA
- * mailto:contact AT sonarsource DOT com
  *
  * Sonar is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,10 +16,8 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+
 package org.sonar.plugins.jlint;
-
-
-import javax.xml.stream.XMLStreamException;
 
 
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +28,8 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.RulesManager;
+
+import javax.xml.stream.XMLStreamException;
 
 class JlintViolationsXmlParser extends AbstractViolationsStaxParser {
 
@@ -58,12 +57,12 @@ class JlintViolationsXmlParser extends AbstractViolationsStaxParser {
     return resourcesCursor.descendantElementCursor("BugInstance");
   }
 
-    @Override
+  @Override
   protected Resource toResource(SMInputCursor resourceCursor) throws XMLStreamException {
-      String className = resourceCursor.getAttrValue("classname");
-      // inner class data are counted into its parent see http://jira.codehaus.org/browse/SONAR-700
-      className = className.contains("$") ? StringUtils.substringBefore(className, "$") : className;
-      return new JavaFile(className);
+    String className = resourceCursor.getAttrValue("classname");
+    // inner class data are counted into its parent see http://jira.codehaus.org/browse/SONAR-700
+    className = className.contains("$") ? StringUtils.substringBefore(className, "$") : className;
+    return new JavaFile(className);
   }
 
   @Override
