@@ -57,7 +57,6 @@ public class JlintMavenPluginHandler implements MavenPluginHandler {
     return new String[]{"jlint"};
   }
 
-
   public void configure(Project project, MavenPlugin plugin) {
     configureClassesDir(project, plugin);
     try {

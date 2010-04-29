@@ -32,11 +32,14 @@ import java.util.List;
         key = JlintPlugin.PROP_EFFORT_KEY,
         defaultValue = JlintPlugin.PROP_EFFORT_DEFAULTVALUE,
         name = "Effort",
-        description = "Effort of the bug finders. Valid values are Min, Default and Max. Setting 'Max' increases precision but also increases memory consumption.<br/>" +
-            "This parameter can be overriden on projects : set the property <code>" + JlintPlugin.PROP_EFFORT_KEY + "</code> in maven (pom.xml property or mvn argument).",
+        description = "Effort of the bug finders. Valid values are Min, Default and Max." +
+            " Setting 'Max' increases precision but also increases memory consumption.<br/>" +
+            "This parameter can be overriden on projects : set the property <code>" + JlintPlugin.PROP_EFFORT_KEY + "</code>" +
+            " in maven (pom.xml property or mvn argument).",
         project = true,
         module = true,
-        global = true)
+        global = true
+    )
 })
 public class JlintPlugin implements Plugin {
 

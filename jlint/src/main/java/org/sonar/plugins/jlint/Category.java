@@ -48,7 +48,6 @@ public final class Category {
 
   }
 
-
   public static String jlintToSonar(String jlintCategKey) {
     return jlintToSonar.get(jlintCategKey);
   }
