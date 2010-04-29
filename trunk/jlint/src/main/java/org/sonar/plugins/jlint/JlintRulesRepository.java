@@ -1,7 +1,6 @@
 /*
  * Sonar, open source software quality management tool.
  * Copyright (C) 2009 SonarSource SA
- * mailto:contact AT sonarsource DOT com
  *
  * Sonar is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,28 +16,22 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+
 package org.sonar.plugins.jlint;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.rules.*;
-import org.sonar.api.rules.AbstractRulesRepository;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
-import org.sonar.api.rules.ConfigurationExportable;
-import org.sonar.api.rules.ConfigurationImportable;
-import org.sonar.api.rules.RulesRepository;
-import org.sonar.api.rules.StandardRulesXmlParser;
+import org.sonar.api.rules.*;
 import org.sonar.plugins.jlint.xml.JlintFilter;
 
-import java.io.InputStream;
 import java.util.*;
 
-public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRulePriorityMapper> implements org.sonar.api.rules.ConfigurationImportable, org.sonar.api.rules.ConfigurationExportable{
+public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRulePriorityMapper> implements org.sonar.api.rules.ConfigurationImportable, org.sonar.api.rules.ConfigurationExportable {
 
-    public JlintRulesRepository(Java language) {
-        super(language, new JlintRulePriorityMapper());
-      }
+  public JlintRulesRepository(Java language) {
+    super(language, new JlintRulePriorityMapper());
+  }
 
   @Override
   public String getRepositoryResourcesBase() {
@@ -63,7 +56,7 @@ public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRul
 
   public String exportConfiguration(RulesProfile activeProfile) {
     JlintFilter filter = JlintFilter.fromActiveRules(activeProfile.getActiveRulesByPlugin(JlintPlugin.KEY), getRulePriorityMapper());
-	JlintConfiguration jconfig = new JlintConfiguration(filter);
+    JlintConfiguration jconfig = new JlintConfiguration(filter);
 
     String xml = jconfig.toXml();
     return addHeaderToXml(xml);
@@ -77,7 +70,7 @@ public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRul
   public List<ActiveRule> importConfiguration(String xml, List<Rule> rules) {
     //JlintFilter filter = JlintFilter.fromXml(xml);
 
-	JlintFilter filter = new JlintConfiguration().fromXml(xml);
+    JlintFilter filter = new JlintConfiguration().fromXml(xml);
 
     Set<ActiveRule> result = new HashSet<ActiveRule>();
 
@@ -121,6 +114,5 @@ public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRul
       }
     }
   }
-
 
 }

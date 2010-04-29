@@ -1,7 +1,6 @@
 /*
  * Sonar, open source software quality management tool.
  * Copyright (C) 2009 SonarSource SA
- * mailto:contact AT sonarsource DOT com
  *
  * Sonar is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,6 +16,7 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+
 package org.sonar.plugins.jlint;
 
 import org.sonar.api.Extension;
@@ -58,9 +58,9 @@ public class JlintPlugin implements Plugin {
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-      list.add(JlintSensor.class);
-      list.add(JlintMavenPluginHandler.class);
-      list.add(JlintRulesRepository.class);
+    list.add(JlintSensor.class);
+    list.add(JlintMavenPluginHandler.class);
+    list.add(JlintRulesRepository.class);
     return list;
   }
 
