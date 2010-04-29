@@ -27,7 +27,8 @@ import org.sonar.plugins.jlint.xml.JlintFilter;
 
 import java.util.*;
 
-public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRulePriorityMapper> implements org.sonar.api.rules.ConfigurationImportable, org.sonar.api.rules.ConfigurationExportable {
+public class JlintRulesRepository extends AbstractRulesRepository<Java, JlintRulePriorityMapper>
+    implements ConfigurationImportable, ConfigurationExportable {
 
   public JlintRulesRepository(Java language) {
     super(language, new JlintRulePriorityMapper());

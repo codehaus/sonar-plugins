@@ -45,7 +45,6 @@ public class JlintSensor implements Sensor, DependsUponMavenPlugin {
     this.pluginHandler = pluginHandler;
   }
 
-
   public void analyse(Project project, SensorContext context) {
     try {
       AbstractViolationsStaxParser parser = getStaxParser(context);
