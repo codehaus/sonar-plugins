@@ -4,7 +4,7 @@
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
     <version>5</version>
-    <relativePath>../../parent</relativePath>
+    <relativePath>../parent</relativePath>
   </parent>
 
   <groupId>org.codehaus.sonar-plugins</groupId>
@@ -12,6 +12,20 @@
   <version>1.1</version>
   <packaging>jar</packaging>
   <name>Sonar Jlint plugin</name>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jlint</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jlint</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13986</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-JLINT</url>
+  </ciManagement>
 
   <properties>
     <sonar.version>1.10.1</sonar.version>
