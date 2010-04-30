@@ -21,6 +21,7 @@
                 <module>clirr</module>
                 <module>cpp</module>
                 <module>crowd</module>
+                <module>debug</module>
                 <module>emma</module>
                 <module>flex</module>
                 <module>greenpepper</module>
@@ -30,6 +31,7 @@
                 <module>jtest</module>
                 <module>ldap</module>
                 <module>maven-report</module>
+                <module>metrics-help</module>
                 <module>motion-chart</module>
                 <module>pdf-report</module>
                 <module>php</module>
