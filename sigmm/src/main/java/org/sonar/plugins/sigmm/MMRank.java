@@ -32,8 +32,9 @@ public enum MMRank {
     = new HashMap<Double, MMRank>();
 
   static {
-    for (MMRank s : EnumSet.allOf(MMRank.class))
+    for (MMRank s : EnumSet.allOf(MMRank.class)) {
       lookup.put(s.getValue(), s);
+    }
   }
 
 
@@ -42,13 +43,11 @@ public enum MMRank {
   }
 
   public static MMRank[] ascSortedRanks() {
-    MMRank[] mmr = {MINUSMINUS, MINUS, ZERO, PLUS, PLUSPLUS};
-    return mmr;
+    return new MMRank[] {MINUSMINUS, MINUS, ZERO, PLUS, PLUSPLUS};
   }
 
   public static MMRank[] descSortedRanks() {
-    MMRank[] mmr = {PLUSPLUS, PLUS, ZERO, MINUS, MINUSMINUS};
-    return mmr;
+    return new MMRank[] {PLUSPLUS, PLUS, ZERO, MINUS, MINUSMINUS};
   }
 
   public double getValue() {
