@@ -24,5 +24,5 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.plugins.sigmm.MMRank;
 
 public interface MMAxis {
-  public MMRank getRank();
+  MMRank getRank();
 }
