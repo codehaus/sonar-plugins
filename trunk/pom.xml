@@ -22,6 +22,7 @@
                 <module>cpp</module>
                 <module>crowd</module>
                 <module>debug</module>
+                <module>dotnet</module>
                 <module>emma</module>
                 <module>flex</module>
                 <module>greenpepper</module>
@@ -58,9 +59,6 @@
             <modules>
                 <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published-->
                 <module>codereview</module>
-
-                <!-- There are test failures and duplicate dependencies. -->
-                <module>dotnet</module>
             </modules>
         </profile>
     </profiles>
