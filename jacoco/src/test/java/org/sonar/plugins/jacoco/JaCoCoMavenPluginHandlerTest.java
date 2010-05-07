@@ -14,14 +14,15 @@
 package org.sonar.plugins.jacoco;
 
 import org.apache.maven.project.MavenProject;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.resources.Project;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class JaCoCoMavenPluginHandlerTest {
   protected JaCoCoMavenPluginHandler handler;
