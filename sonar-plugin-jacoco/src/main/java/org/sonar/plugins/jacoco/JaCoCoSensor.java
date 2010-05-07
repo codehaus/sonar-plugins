@@ -29,7 +29,6 @@ import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.CoreProperties;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
@@ -92,7 +91,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor,
 
 	private File getReportFromProperty(Project project) {
 		String path = (String) project
-				.getProperty(CoreProperties.JACOCO_REPORT_PATH_PROPERTY);
+				.getProperty(JaCoCoCoreProperties.JACOCO_REPORT_PATH_PROPERTY);
 		if (path != null) {
 			return project.getFileSystem().resolvePath(path);
 		}

@@ -30,7 +30,6 @@ import java.net.URISyntaxException;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.DefaultProjectFileSystem;
@@ -49,7 +48,7 @@ public class JaCoCoSensorTest {
 
 		Project project = mock(Project.class);
 		when(project.getFileSystem()).thenReturn(fileSystem);
-		when(project.getProperty(CoreProperties.JACOCO_REPORT_PATH_PROPERTY))
+		when(project.getProperty(JaCoCoCoreProperties.JACOCO_REPORT_PATH_PROPERTY))
 				.thenReturn("foo");
 
 		File report = new JaCoCoSensor(null, null).getReport(project);

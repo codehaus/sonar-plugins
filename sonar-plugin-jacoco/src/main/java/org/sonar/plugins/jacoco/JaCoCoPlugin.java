@@ -16,7 +16,6 @@ package org.sonar.plugins.jacoco ;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.api.CoreProperties;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
@@ -27,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 @Properties({
     @Property(
-        key = CoreProperties.JACOCO_REPORT_PATH_PROPERTY,
+        key = JaCoCoCoreProperties.JACOCO_REPORT_PATH_PROPERTY,
         name = "Report path",
         description = "Path (absolute or relative) to JaCoCo xml report file.",
         project = true,
@@ -42,7 +41,7 @@ public class JaCoCoPlugin implements Plugin {
 	}
 
 public String getKey() {
-    return CoreProperties.JACOCO_PLUGIN;
+    return JaCoCoCoreProperties.JACOCO_PLUGIN;
   }
 
   public String getName() {
