@@ -11,18 +11,17 @@
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. WITHOUT LIMITING THE FOREGOING, COMPUWARE MAKES NO REPRESENTATIONS OR WARRANTIES CONCERNING THE COMPLETENESS, ACCURACY OR OPERATION OF THE SOFTWARE.  CLIENT SHALL HAVE THE SOLE RESPONSIBILITY FOR ADEQUATE PROTECTION AND BACKUP OF ITS DATA USED IN CONNECTION WITH THE SOFTWARE.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.sonar.plugins.jacoco ;
+package org.sonar.plugins.jacoco;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Properties({
     @Property(
@@ -33,14 +32,13 @@ import org.slf4j.LoggerFactory;
         global = false)
 })
 public class JaCoCoPlugin implements Plugin {
-	Logger logger = LoggerFactory.getLogger(getClass());
-	
+  Logger logger = LoggerFactory.getLogger(getClass());
 
   public JaCoCoPlugin() {
-		super();
-	}
+    super();
+  }
 
-public String getKey() {
+  public String getKey() {
     return JaCoCoCoreProperties.JACOCO_PLUGIN;
   }
 

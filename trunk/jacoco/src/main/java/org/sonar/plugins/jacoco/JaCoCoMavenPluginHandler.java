@@ -19,10 +19,9 @@ import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.batch.maven.MavenUtils;
 import org.sonar.api.resources.Project;
+
 /**
- * 
  * NO MAVEN PLUGIN AVAILABLE FOR JACOCO YET !
- *
  */
 public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
@@ -59,8 +58,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
     for (String pattern : project.getExclusionPatterns()) {
       if (pattern.endsWith(".java")) {
         pattern = StringUtils.substringBeforeLast(pattern, ".") + ".class";
-        
-      } else if (StringUtils.substringAfterLast(pattern, "/").indexOf(".")<0) {
+      } else if (StringUtils.substringAfterLast(pattern, "/").indexOf(".") < 0) {
         pattern = pattern + ".class";
       }
       jacocoPlugin.addParameter("instrumentation/excludes/exclude", pattern);
