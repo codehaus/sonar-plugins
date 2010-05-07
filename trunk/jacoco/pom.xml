@@ -107,12 +107,21 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jacoco</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jacoco</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
 
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14417</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-JACOCO</url>
+  </ciManagement>
+
 </project>
-
-
