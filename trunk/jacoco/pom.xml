@@ -133,9 +133,9 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/MY-PLUGIN
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jacoco
 		</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/MY-PLUGIN
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jacoco
 		</developerConnection>
 		<url>http://svn.sonar-plugins.codehaus.org</url>
 	</scm>
