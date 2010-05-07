@@ -3,14 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.codehaus.sonar</groupId>
-		<artifactId>sonar</artifactId>
-		<version>2.2-SNAPSHOT</version>
-		<relativePath>../..</relativePath>
+		<groupId>org.codehaus.sonar-plugins</groupId>
+		<artifactId>parent</artifactId>
+		<version>5</version>
+		<relativePath>../parent</relativePath>
 	</parent>
-	<groupId>org.codehaus.sonar-plugins</groupId>
 	<artifactId>sonar-plugin-jacoco</artifactId>
-	<packaging>jar</packaging>
+	<version>0.4-SNAPSHOT</version>
 	<name>Sonar :: Plugins :: JaCoCo</name>
 	<dependencies>
 		<dependency>
@@ -21,16 +20,19 @@
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-project</artifactId>
+			<version>2.0.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-plugin-api</artifactId>
+			<version>2.0.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-core</artifactId>
+			<version>2.0.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
