@@ -11,7 +11,7 @@
 
   <artifactId>sonar-jacoco-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <name>Sonar JaCoCo Plugins</name>
+  <name>Sonar JaCoCo Plugin</name>
 
   <properties>
     <sonar.version>2.1</sonar.version>
