@@ -4,9 +4,13 @@ import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
 
 /**
  * Information about Sonar Plugin.
@@ -20,6 +24,7 @@ public class Plugin implements Versioned {
   private String downloadUrl;
   private String requiredSonarVersion;
   private String homepage;
+  private long timestamp;
 
   public Plugin(String pluginClass) {
     this.pluginClass = pluginClass;
@@ -49,6 +54,14 @@ public class Plugin implements Versioned {
 
   public void setVersion(String version) {
     this.version = version;
+  }
+
+  public String getReleaseDate() {
+    return (new SimpleDateFormat("d MMM yyyy")).format(new Date(timestamp));
+  }
+
+  private void setDate(long timestamp) {
+    this.timestamp = timestamp;
   }
 
   /**
@@ -103,6 +116,8 @@ public class Plugin implements Versioned {
 
   public static Plugin extractMetadata(File file) throws IOException {
     JarFile jar = new JarFile(file);
+    ZipEntry entry = jar.getEntry("META-INF/MANIFEST.MF");
+    long timestamp = entry.getTime();
     Manifest manifest = jar.getManifest();
     jar.close();
 
@@ -113,6 +128,7 @@ public class Plugin implements Versioned {
     plugin.setVersion(attributes.getValue("Plugin-Version"));
     plugin.setRequiredSonarVersion(attributes.getValue("Sonar-Version"));
     plugin.setHomepage(attributes.getValue("Plugin-Homepage"));
+    plugin.setDate(timestamp);
     return plugin;
   }
 }

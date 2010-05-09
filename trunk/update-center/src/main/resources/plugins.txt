@@ -1,7 +1,6 @@
 #
 # Open-source plugins
 #
-org.codehaus.sonar-plugins:emma
 org.codehaus.sonar-plugins:pdf-report
 org.codehaus.sonar-plugins:sonar-artifact-size-plugin
 org.codehaus.sonar-plugins:sonar-build-breaker-plugin
@@ -9,6 +8,7 @@ org.codehaus.sonar-plugins:sonar-build-stability-plugin
 org.codehaus.sonar-plugins:sonar-clirr-plugin
 org.codehaus.sonar-plugins:sonar-crowd-plugin
 # Not compatible with Sonar 2.0
+#org.codehaus.sonar-plugins:emma
 #org.codehaus.sonar-plugins:sonar-emma-plugin
 org.codehaus.sonar-plugins:sonar-flex-plugin
 org.codehaus.sonar-plugins:sonar-greenpepper-plugin
