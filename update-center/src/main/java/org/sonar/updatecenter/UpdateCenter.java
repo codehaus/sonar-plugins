@@ -122,21 +122,17 @@ public class UpdateCenter {
       if (outputDirectory != null) {
         String pluginInfoWidget = StringUtils.replaceEach(
             pluginInfoWidgetTemplate,
-            new String[]{"%name%", "%version%", "%date%", "%downloadUrl%", "%sonarVersion%"},
+            new String[]{"%name%", "%version%", "%date%", "%downloadUrl%", "%sonarVersion%", "%issueTracker%", "%sources%", "%license%"},
             new String[]{
                 latest.getName(),
                 latest.getVersion(),
                 latest.getReleaseDate(),
                 latest.getDownloadUrl(),
-                latest.getRequiredSonarVersion()
+                latest.getRequiredSonarVersion(),
+                formatLink(latest.getIssueTracker()),
+                formatLink(latest.getSources()),
+                latest.getLicense() == null ? "unknown" : latest.getLicense()
             }
-        );
-        pluginInfoWidget = StringUtils.replace(pluginInfoWidget, "%license%", latest.getLicense() == null ? "unknown" : latest.getLicense());
-        pluginInfoWidget = StringUtils.replace(pluginInfoWidget, "%sources%",
-            latest.getSources() == null ? "unknown" : "<a href=\"" + latest.getSources() + "\">" + latest.getSources() + "</a>"
-        );
-        pluginInfoWidget = StringUtils.replace(pluginInfoWidget, "%issueTracker%",
-            latest.getSources() == null ? "unknown" : "<a href=\"" + latest.getIssueTracker() + "\">" + latest.getIssueTracker() + "</a>"
         );
         FileUtils.writeStringToFile(new File(outputDirectory, latest.getPluginClass() + ".html"), pluginInfoWidget);
       }
@@ -146,6 +142,10 @@ public class UpdateCenter {
     }
 
     return json;
+  }
+
+  private String formatLink(String url) {
+    return url == null ? "Unknown" : "<a href=\"" + url + "\" target=\"_top\">" + url + "</a>";
   }
 
   private JSONObject resolveSonar() throws Exception {
