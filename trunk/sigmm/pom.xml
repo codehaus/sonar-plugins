@@ -215,4 +215,8 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</developerConnection>
     <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</url>
   </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13990</url>
+  </issueManagement>
 </project>
