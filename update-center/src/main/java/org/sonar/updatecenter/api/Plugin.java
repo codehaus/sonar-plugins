@@ -26,6 +26,10 @@ public class Plugin implements Versioned {
   private String homepage;
   private long timestamp;
 
+  private String issueTracker;
+  private String sources;
+  private String license;
+
   public Plugin(String pluginClass) {
     this.pluginClass = pluginClass;
   }
@@ -97,6 +101,30 @@ public class Plugin implements Versioned {
 
   public void setHomepage(String homepage) {
     this.homepage = homepage;
+  }
+
+  public String getIssueTracker() {
+    return issueTracker;
+  }
+
+  public void setIssueTracker(String url) {
+    this.issueTracker = url;
+  }
+
+  public String getSources() {
+    return sources;
+  }
+
+  public void setSources(String sources) {
+    this.sources = sources;
+  }
+
+  public String getLicense() {
+    return license;
+  }
+
+  public void setLicense(String license) {
+    this.license = license;
   }
 
   public JSONObject toJsonObject() {
