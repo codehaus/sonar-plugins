@@ -19,7 +19,7 @@
     <sonar.version>1.10</sonar.version>
   </properties>
 
-  <developers>                                               
+  <developers>
     <developer>
       <id>ogaudin</id>
       <name>Olivier Gaudin</name>
@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.version}</version>                           
+      <version>${sonar.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -66,4 +66,8 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/rules-meter</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14071</url>
+  </issueManagement>
 </project>
