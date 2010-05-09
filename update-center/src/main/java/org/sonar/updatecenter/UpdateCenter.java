@@ -12,6 +12,7 @@ import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.resolver.ArtifactResolutionRequest;
 import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.codehaus.plexus.ContainerConfiguration;
@@ -204,7 +205,15 @@ public class UpdateCenter {
         // Legacy plugin - set default values
         plugin.setName(project.getName());
         plugin.setVersion(version.toString());
-        plugin.setRequiredSonarVersion("2.0");
+
+        String sonarVersion = "1.10"; // TODO Is it minimal version for all extension points ?
+        for (Dependency dependency : project.getDependencies()) {
+          if ("sonar-plugin-api".equals(dependency.getArtifactId())) { // TODO dirty hack
+            sonarVersion = dependency.getVersion();
+          }
+        }
+
+        plugin.setRequiredSonarVersion(sonarVersion);
         plugin.setHomepage(project.getUrl());
       }
 
@@ -214,7 +223,7 @@ public class UpdateCenter {
         System.out.println("Unknown Issue Management for " + plugin.getName());
       }
       if (project.getScm() != null) {
-        String scmUrl = StringUtils.removeStart(project.getScm().getConnection(), "scm:svn:"); // TODO
+        String scmUrl = StringUtils.removeStart(project.getScm().getConnection(), "scm:svn:"); // TODO dirty hack
         plugin.setSources(scmUrl);
       } else {
         System.out.println("Unknown SCM for " + plugin.getName());
