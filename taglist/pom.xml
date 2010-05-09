@@ -105,4 +105,8 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</developerConnection>
     <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</url>
   </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13744</url>
+  </issueManagement>
 </project>
