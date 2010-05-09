@@ -56,11 +56,11 @@
   </properties>
 
   <dependencies>
-    <dependency>
+    <!--dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-project</artifactId>
       <version>${maven.version}</version>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
@@ -112,7 +112,7 @@
         <artifactId>maven-license-plugin</artifactId>
         <version>1.6.0</version>
         <configuration>
-          <!-- TODO temporary disables -->
+          <!-- TODO temporary disabled -->
           <skip>true</skip>
         </configuration>
       </plugin>
@@ -120,19 +120,24 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <mainClass>org.sonar.updatecenter.UpdateCenter</mainClass>
           <arguments>
-            <argument>-o</argument>
-            <argument>${project.basedir}/target/update-center.json</argument>
+            <argument>-d</argument>
+            <argument>${project.basedir}/target/site</argument>
           </arguments>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>wagon-maven-plugin</artifactId>
+        <version>1.0-beta-3</version>
+        <configuration>
+          <serverId>sonar-plugins</serverId>
+          <fromDir>${project.basedir}/target/site</fromDir>
+          <includes>**</includes>
+          <url>dav:https://dav.codehaus.org/dist/sonar-plugins/update-center</url>
         </configuration>
       </plugin>
     </plugins>

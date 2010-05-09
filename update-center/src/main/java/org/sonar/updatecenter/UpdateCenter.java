@@ -34,9 +34,9 @@ import java.util.List;
  * @author Evgeny Mandrikov
  */
 public class UpdateCenter {
-  @Option(name = "-o", usage = "json file")
-  public File output = null;
-//  public File output = new File("update-center.json");
+  // FIXME value set only for debug purposes 
+  @Option(name = "-d")
+  public File outputDirectory = new File("/tmp/site");
 
   private static final String DEFAULT_ARTIFACT_TYPE = "jar";
 
@@ -87,15 +87,20 @@ public class UpdateCenter {
     obj.put("plugins", resolvePlugins());
     obj.put("sonar", resolveSonar());
 
-    if (output != null) {
-      FileUtils.writeStringToFile(output, obj.toJSONString());
-    } else {
-      System.out.println(obj.toJSONString());
+    if (outputDirectory != null) {
+      FileUtils.writeStringToFile(new File(outputDirectory, "update-center.json"), obj.toJSONString());
     }
   }
 
   private JSONArray resolvePlugins() throws Exception {
     List<String> plugins = FileUtils.readLines(FileUtils.toFile(getClass().getResource("/plugins.txt")));
+
+    String pluginInfoWidgetTemplate = FileUtils.readFileToString(
+        FileUtils.toFile(getClass().getResource("/plugin-info-widget-template.html"))
+    );
+    if (outputDirectory != null) {
+      FileUtils.copyURLToFile(getClass().getResource("/style.css"), new File(outputDirectory, "style.css"));
+    }
 
     JSONArray json = new JSONArray();
     for (String plugin : plugins) {
@@ -107,6 +112,22 @@ public class UpdateCenter {
       json.add(history.latest().toJsonObject());
 
       Plugin latest = history.latest();
+
+      if (outputDirectory != null) {
+        String pluginInfoWidget = StringUtils.replaceEach(
+            pluginInfoWidgetTemplate,
+            new String[]{"%name%", "%version%", "%date%", "%downloadUrl%", "%sonarVersion%"},
+            new String[]{
+                latest.getName(),
+                latest.getVersion(),
+                latest.getReleaseDate(),
+                latest.getDownloadUrl(),
+                latest.getRequiredSonarVersion()
+            }
+        );
+        FileUtils.writeStringToFile(new File(outputDirectory, latest.getPluginClass() + ".html"), pluginInfoWidget);
+      }
+
       // TODO use logger
       System.out.println(latest.getName() + " : " + history.getAllVersions() + ", latest " + latest.getVersion());
     }
@@ -134,6 +155,15 @@ public class UpdateCenter {
     return history.latest().toJsonObject();
   }
 
+  private String getDownloadUrl(String groupId, String artifactId, String version) {
+    // FIXME dirty hack
+    return "http://repository.codehaus.org/"
+        + StringUtils.replace(groupId, ".", "/") + "/"
+        + artifactId + "/"
+        + version + "/"
+        + artifactId + "-" + version + "." + DEFAULT_ARTIFACT_TYPE;
+  }
+
   private History<Plugin> resolvePluginHistory(String id) throws Exception {
     String groupId = StringUtils.substringBefore(id, ":");
     String artifactId = StringUtils.substringAfter(id, ":");
@@ -159,6 +189,7 @@ public class UpdateCenter {
         plugin.setRequiredSonarVersion("2.0");
         // TODO homepage ?
       }
+      plugin.setDownloadUrl(getDownloadUrl(groupId, artifactId, plugin.getVersion()));
       history.addArtifact(version, plugin);
     }
     return history;
