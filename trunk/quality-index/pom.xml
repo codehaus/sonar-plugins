@@ -222,4 +222,8 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</developerConnection>
     <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</url>
   </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14140</url>
+  </issueManagement>
 </project>
