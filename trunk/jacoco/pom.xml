@@ -94,6 +94,8 @@
       </plugin>
     </plugins>
   </build>
+  
+  <url>http://docs.codehaus.org/display/SONAR/JaCoCo+Plugin</url>
 
   <inceptionYear>2010</inceptionYear>
   <organization>
