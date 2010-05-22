@@ -70,6 +70,11 @@
       <version>2.0.7</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>core</artifactId>
+      <version>0.3.3.20100519170459</version>
+    </dependency>
     <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -102,4 +107,19 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <!-- for jacoco -->
+      <id>sonar</id>
+      <name>Sonar</name>
+      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 </project>
