@@ -12,6 +12,33 @@
   <artifactId>sonar-jacoco-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>Sonar JaCoCo Plugin</name>
+  <url>http://docs.codehaus.org/display/SONAR/JaCoCo+Plugin</url>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>Compuware</name>
+    <url>http://www.compuware.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License (LGPL), v.3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jacoco</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jacoco</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14417</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-JACOCO</url>
+  </ciManagement>
 
   <properties>
     <sonar.version>2.1</sonar.version>
@@ -43,29 +70,11 @@
       <version>2.0.7</version>
       <scope>provided</scope>
     </dependency>
+    <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-plugin-api</artifactId>
+      <artifactId>sonar-testing-harness</artifactId>
       <version>${sonar.version}</version>
-      <scope>provided</scope>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>0.9.15</version>
-      <scope>provided</scope>
-    </dependency> 
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>1.7</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-all</artifactId>
-      <version>1.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -93,36 +102,4 @@
       </plugin>
     </plugins>
   </build>
-  
-  <url>http://docs.codehaus.org/display/SONAR/JaCoCo+Plugin</url>
-
-  <inceptionYear>2010</inceptionYear>
-  <organization>
-    <name>Compuware</name>
-    <url>http://www.compuware.com</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jacoco</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jacoco</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
-  </scm>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14417</url>
-  </issueManagement>
-
-  <ciManagement>
-    <system>Bamboo</system>
-    <url>http://ci.codehaus.org/browse/SONAR-JACOCO</url>
-  </ciManagement>
-
 </project>
