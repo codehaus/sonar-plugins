@@ -20,15 +20,18 @@
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
     <version>5</version>
     <relativePath>../parent</relativePath>
-  </parent>  
+  </parent>
+
   <artifactId>sonar-debug-plugin</artifactId>
-  <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
   <name>Sonar Plugins :: Debug</name>
 
   <scm>
@@ -44,7 +47,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <repositories>
     <repository>
       <!-- for gwt-incubator -->
@@ -52,6 +55,7 @@
       <name>Sonar</name>
       <url>http://repository.sonarsource.org/content/repositories/sonar</url>
       <releases>
+        <enabled>true</enabled>
       </releases>
       <snapshots>
         <enabled>false</enabled>
@@ -59,33 +63,41 @@
     </repository>
   </repositories>
 
+  <properties>
+    <sonar.version>2.0</sonar.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>1.13-SNAPSHOT</version>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-gwt-api</artifactId>
-      <version>1.13-SNAPSHOT</version>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-user</artifactId>
       <version>1.7.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-incubator</artifactId>
       <version>july-14-2009</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>1.13-SNAPSHOT</version>
+      <version>${sonar.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
@@ -98,7 +110,6 @@
   </dependencies>
 
   <build>
-
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
