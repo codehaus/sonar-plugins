@@ -10,6 +10,7 @@
   <artifactId>sonar-emma-plugin</artifactId>
   <version>0.4-SNAPSHOT</version>
   <name>Sonar Emma plugin</name>
+  <description>Emma is an alternative to Clover and Cobertura to measure coverage by unit tests.</description>
 
   <properties>
     <sonarVersion>1.12</sonarVersion>
@@ -153,4 +154,8 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/emma</developerConnection>
     <url>http://svn.codehaus.org/sonar-plugins</url>
   </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13740</url>
+  </issueManagement>
 </project>
