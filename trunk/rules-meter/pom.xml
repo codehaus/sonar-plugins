@@ -13,6 +13,7 @@
   <packaging>jar</packaging>
   <version>0.2-SNAPSHOT</version>
   <name>Rules Meter Sonar Plugin</name>
+  <description>This plugin gives information on the activated profile for a project.</description>
 
   <properties>
     <sonar.plugin.class>org.sonar.plugins.ral.RulesActivationPlugin</sonar.plugin.class>
