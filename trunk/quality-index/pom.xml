@@ -11,6 +11,7 @@
   <artifactId>sonar-quality-index-plugin</artifactId>
   <version>1.2-SNAPSHOT</version>
   <name>Sonar Quality Index Plugin</name>
+  <description>Calculate a global Quality Index, based on coding rules, Style, Complexity and Coverage.</description>
 
   <developers>
     <developer>
