@@ -31,6 +31,7 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -38,6 +39,7 @@
       <version>2.0.9</version>
       <scope>provided</scope>
     </dependency>
+    <!-- unit tests -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
