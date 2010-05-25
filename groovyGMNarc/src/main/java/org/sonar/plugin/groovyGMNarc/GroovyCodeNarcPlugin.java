@@ -21,10 +21,10 @@
 
 package org.sonar.plugin.groovyGMNarc;
 
-import com.qualcomm.sonar.groovy_plugin.decorators.ClassesDecorator;
-import com.qualcomm.sonar.groovy_plugin.decorators.CodeAnalyzerDecorator;
+import org.sonar.plugin.groovyGMNarc.decorators.ClassesDecorator;
+import org.sonar.plugin.groovyGMNarc.decorators.CodeAnalyzerDecorator;
 import org.sonar.plugin.groovyGMNarc.decorators.FilesDecorator;
-import com.qualcomm.sonar.groovy_plugin.decorators.GroovyCodeColorizer;
+import org.sonar.plugin.groovyGMNarc.decorators.GroovyCodeColorizer;
 import org.sonar.api.Plugin;
 import org.sonar.api.Extension;
 
