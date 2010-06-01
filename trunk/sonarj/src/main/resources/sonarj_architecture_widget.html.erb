@@ -11,7 +11,7 @@ if measure('sonarj_architecture_violations')
     <tr>
         <td>
             <span class="big">
-              <%= format_measure('sonarj_architecture_violations', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.architecture") -%> <%= tendency_icon(measure('sonarj_architecture_violations')) %> 
+              <%= format_measure('sonarj_architecture_violations', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.architecture") -%> <%= tendency_icon(measure('sonarj_architecture_violations')) %> 
             </span>
         </td>
         <td>
@@ -22,7 +22,7 @@ if measure('sonarj_architecture_violations')
     </tr>
    	<tr>
         <td>
-              <%= format_measure('sonarj_violating_types', :suffix => ' violating types', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.architecture") -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %> <%= format_measure('sonarj_violating_types_percent', :prefix => '(', :suffix => ')') -%>
+              <%= format_measure('sonarj_violating_types', :suffix => ' violating types', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.architecture") -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %> <%= format_measure('sonarj_violating_types_percent', :prefix => '(', :suffix => ')') -%>
         </td>
         <td>
               <%= format_measure('sonarj_ignored_violations', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj_ignored_violations')) %>
@@ -30,7 +30,7 @@ if measure('sonarj_architecture_violations')
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj_threshold_warnings', :suffix => ' threshold violations', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.threshold") -%> <%= tendency_icon(measure('sonarj_threshold_warnings')) %>
+              <%= format_measure('sonarj_threshold_warnings', :suffix => ' threshold violations', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.threshold") -%> <%= tendency_icon(measure('sonarj_threshold_warnings')) %>
         </td>
         <td>
               <%= format_measure('sonarj_ignored_warnings', :suffix => ' ignored/tolerated') -%> <%= tendency_icon(measure('sonarj_ignored_warnings')) %>
@@ -38,10 +38,10 @@ if measure('sonarj_architecture_violations')
     </tr>
    <tr>
         <td>
-              <%= format_measure('sonarj_tasks', :suffix => ' open tasks', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_tasks')) %>
+              <%= format_measure('sonarj_tasks', :suffix => ' open tasks', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_tasks')) %>
         </td>
         <td colspan="2">
-              <%= format_measure('sonarj_task_refs', :suffix => ' open task markers', :url => "/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_task_refs')) %>
+              <%= format_measure('sonarj_task_refs', :suffix => ' open task markers', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= tendency_icon(measure('sonarj_task_refs')) %>
         </td>
     </tr>
       <tr>
