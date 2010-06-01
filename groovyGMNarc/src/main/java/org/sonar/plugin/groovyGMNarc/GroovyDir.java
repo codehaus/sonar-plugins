@@ -1,7 +1,7 @@
-/**
+/*
  * Sonar, open source software quality management tool.
- * Copyright (C) ${year} ${name}
- * mailto:contact AT sonarsource DOT com
+ * Copyright (C) 2010 Scott K.
+ * mailto: skuph_marx@yahoo.com
  *
  * Sonar is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
