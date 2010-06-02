@@ -22,8 +22,6 @@
 package org.sonar.plugin.groovyGMNarc.groovy
 
 import groovy.util.XmlSlurper
-import com.qualcomm.sonar.groovy_plugin.groovy.CodeNarcViolation;
-
 /**
  * Created by IntelliJ IDEA.
  * User: skessler
