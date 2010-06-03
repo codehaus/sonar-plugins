@@ -3,74 +3,70 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>parent</artifactId>
-    <version>5</version>
-    <relativePath>../parent</relativePath>
+    <artifactId>sonar-php</artifactId>
+    <version>0.2</version>
+    <relativePath>../</relativePath>
   </parent>
-  <artifactId>sonar-php</artifactId>
+  <artifactId>sonar-php-plugin</artifactId>
+  <groupId>org.codehaus.sonar-plugins</groupId>
   <version>0.2</version>
-  <packaging>pom</packaging>
-  <name>Sonar PHP</name>
-  <properties>
-    <sonar.version>2.0</sonar.version>
-  </properties>
-  <modules>
-    <module>php</module>
-    <module>php-codesniffer</module>
-    <module>php-depend</module>
-    <module>php-pmd</module>
-    <module>php-unit</module>
-  </modules>
-  <inceptionYear>2010</inceptionYear>
-  <organization>
-    <name>SQLi</name>
-    <url>http://www.sqli.com</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-php-0.2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-php-0.2</developerConnection>
-    <url>http://svn.codehaus.org/sonar-plugins/tags/sonar-php-0.2</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13723</url>
-  </issueManagement>
-  <ciManagement>
-    <system>Bamboo</system>
-    <url>http://ci.codehaus.org/browse/SONAR-PHP</url>
-  </ciManagement>
+  <packaging>jar</packaging>
+  <name>Sonar PHP plugin</name>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.0.9</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.7</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+    </dependency>
+  </dependencies>
   <build>
-    <extensions>
-      <!--  Bug with maven 2.2.1 and Ubuntu. -->
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav-jackrabbit</artifactId>
-        <version>1.0-beta-6</version>
-      </extension>
-    </extensions>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Plugin-Class>org.sonar.plugins.php.core.PhpPlugin
+								</Plugin-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>eclipse</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-eclipse-plugin</artifactId>
-            <version>2.8</version>
-            <configuration>
-              <downloadJavadocs>false</downloadJavadocs>
-              <downloadSources>true</downloadSources>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
