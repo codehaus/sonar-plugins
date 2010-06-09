@@ -22,6 +22,8 @@ package org.sonar.plugins.technicaldebt.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
+
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
@@ -53,18 +55,25 @@ public class CommonsCollectionsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(103775.0));
+
+    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
+    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103775.0), is(104025.0)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(13.9));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(207.6));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=15.06;Complexity=22.55;Design=34.93;Duplication=10.35;Violations=17.08"));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1)));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
+      is("Comments=15.06;Complexity=22.55;Design=34.93;Duplication=10.35;Violations=17.08"),
+      is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04")));
   }
 
   @Test
   public void packagesMetrics() {
-    assertThat(getPackageMeasure("technical_debt").getValue(), is(25715.3));
-    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(12.9));
-    assertThat(getPackageMeasure("technical_debt_days").getValue(), is(51.4));
-    assertThat(getPackageMeasure("technical_debt_repart").getData(), is("Comments=14.14;Complexity=47.15;Coverage=7.25;Duplication=11.18;Violations=20.27"));
+    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
+    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25715.3), is(25840.3)));
+    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(12.9), is(13.0)));
+    assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(51.4), is(51.7)));
+    assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
+      is("Comments=14.14;Complexity=47.15;Coverage=7.25;Duplication=11.18;Violations=20.27"),
+    is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17")));
   }
 
   @Test
