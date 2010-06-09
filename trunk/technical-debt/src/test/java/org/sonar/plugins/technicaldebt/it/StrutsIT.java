@@ -22,6 +22,8 @@ package org.sonar.plugins.technicaldebt.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
+
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
@@ -52,10 +54,14 @@ public class StrutsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(276205.3));
+    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
+    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(276205.3), is(275455.3)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(27.9));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(552.4));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Comments=4.72;Complexity=12.77;Coverage=32.92;Design=3.52;Duplication=29.23;Violations=16.81"));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(552.4), is(550.9)));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
+      is("Comments=4.72;Complexity=12.77;Coverage=32.92;Design=3.52;Duplication=29.23;Violations=16.81"),
+      is("Comments=4.74;Complexity=12.8;Coverage=33.01;Design=3.53;Duplication=29.04;Violations=16.85")
+    ));
   }
 
   @Test
