@@ -22,6 +22,8 @@ package org.sonar.plugins.technicaldebt.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
+
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
@@ -50,18 +52,22 @@ public class CommonsLangModeLightIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), is(39431.3));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(10.2));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(78.9));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), is("Complexity=55.39;Design=6.34;Duplication=10.77;Violations=27.48"));
+    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(39431.3), is(39743.8)));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(10.2), is(10.1)));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(78.9), is(79.5)));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
+      is("Complexity=55.39;Design=6.34;Duplication=10.77;Violations=27.48"),
+      is("Complexity=53.54;Design=6.29;Duplication=12.89;Violations=27.26")));
   }
 
   @Test
   public void packagesMetrics() {
-    assertThat(getPackageMeasure("technical_debt").getValue(), is(11856.3));
-    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(8.6));
-    assertThat(getPackageMeasure("technical_debt_days").getValue(), is(23.7));
-    assertThat(getPackageMeasure("technical_debt_repart").getData(), is("Complexity=68.26;Duplication=9.48;Violations=22.24"));
+    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(11856.3), is(11356.3)));
+    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(8.6), is(8.7)));
+    assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(23.7), is(22.7)));
+    assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
+      is("Complexity=68.26;Duplication=9.48;Violations=22.24"),
+      is("Complexity=71.27;Duplication=5.5;Violations=23.22")));
   }
 
   @Test
