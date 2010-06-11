@@ -59,7 +59,7 @@ public class CommonsCollectionsIT {
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and for after Sonar 2.2
     assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103775.0), is(104025.0), is(101525.0), is(101275.0)));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(13.9), is(13.8)));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(13.9), is(13.8), is(13.5)));
     assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6)));
     assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
       is("Comments=15.06;Complexity=22.55;Design=34.93;Duplication=10.35;Violations=17.08"),
@@ -78,7 +78,7 @@ public class CommonsCollectionsIT {
     assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
       is("Comments=14.14;Complexity=47.15;Coverage=7.25;Duplication=11.18;Violations=20.27"),
     is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17"),
-      is("Comments=14.35;Complexity=47.84;Coverage=7.36;Duplication=9.86;Violations=20.56"),
+
       is("Comments=14.42;Complexity=48.08;Coverage=7.39;Duplication=9.41;Violations=20.67")));
   }
 
