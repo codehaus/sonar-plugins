@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
@@ -40,7 +40,7 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
     @DependedUpon
     public List<Metric> generatesMetrics()
     {
-        return Arrays.asList(SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.CYCLIC_ARTIFACTS,
+        return Arrays.asList(SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.EROSION_INDEX,
                 SonarJMetrics.CYCLIC_PACKAGES, SonarJMetrics.CYCLICITY, SonarJMetrics.EROSION_DAYS, SonarJMetrics.EROSION_COST, 
                 SonarJMetrics.EROSION_REFS, SonarJMetrics.EROSION_TYPES, SonarJMetrics.IGNORED_VIOLATONS, SonarJMetrics.IGNORED_WARNINGS,
                 SonarJMetrics.INSTRUCTIONS, SonarJMetrics.INTERNAL_PACKAGES, SonarJMetrics.INTERNAL_TYPES, SonarJMetrics.JAVA_FILES,

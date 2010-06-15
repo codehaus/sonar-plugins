@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
 
-import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.RubyRailsWidget;
+import org.sonar.api.resources.Project;
 
-public class SonarJDefinitionDashboad extends AbstractRubyTemplate implements RubyRailsWidget
+
+public final class ProjectDelegate implements IProject
 {
+    private final Project project;
 
-    @Override
-    protected String getTemplatePath()
+    public ProjectDelegate(Project project)
     {
-        return "/sonarj_definition_widget.html.erb";
+        this.project = project;
     }
 
-    public String getId()
+    public String getName()
     {
-        return "sonarj.definition_dashboard";
+        return project.getName();
     }
 
-    public String getTitle()
+    public String getArtifactId()
     {
-        return "SonarJ Architecture Definition Dashbox";
+        return project.getArtifactId();
     }
 
+    public String getGroupId()
+    {
+        return project.getGroupId();
+    }
 }

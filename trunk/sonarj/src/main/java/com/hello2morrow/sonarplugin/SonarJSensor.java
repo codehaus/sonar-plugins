@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
@@ -32,6 +32,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.hello2morrow.sonarplugin.xsd.XsdBuildUnits;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -89,11 +90,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private static final String UNASSIGNED_TYPES = "Number of unassigned types";
     private static final String VIOLATING_DEPENDENCIES = "Number of violating type dependencies";
     private static final String VIOLATING_TYPES = "Number of violating types";
-    private static final String CYCLIC_LAYER_GROUPS = "Number of cyclic layer groups";
-    private static final String CYCLIC_LAYERS = "Number of cyclic layers";
-    private static final String CYCLIC_SUBSYSTEMS = "Number of cyclic subsystems";
-    private static final String CYCLIC_VERTICAL_SLICE_GROUPS = "Number of cyclic vertical slice groups";
-    private static final String CYCLIC_VERTICAL_SLICES = "Number of cyclic vertical slices";
     private static final String TYPE_DEPENDENCIES = "Number of type dependencies (all)";
     private static final String JAVA_FILES = "Number of Java source files (non-excluded)";
     private static final String IGNORED_VIOLATIONS = "Number of ignored violations";
@@ -105,17 +101,14 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private static final String EROSION_REFS = "Structural erosion - reference level";
     private static final String EROSION_TYPES = "Structural erosion - type level";
     private static final String INTERNAL_TYPES = "Number of internal types (all)";
-    
+    private static final String STUCTURAL_DEBT_INDEX = "Structural debt (index)";
+
     private final SonarJPluginHandler pluginHandler;
     private Map<String, Number> projectMetrics;
     private SensorContext sensorContext;
     private RulesManager rulesManager;
     private RulesProfile rulesProfile;
     private double developerCostRate = 70.0;
-    private Project project;
-    private int cycleGroupId = 0;
-    private double openTasks = 0;
-    private double taskReferences = 0;
 
     protected static ReportContext readSonarjReport(String fileName, String packaging)
     {
@@ -260,7 +253,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     }
     
     @SuppressWarnings("unchecked")
-    private void analyseCycleGroups(ReportContext report, Number internalPackages, String projectName)
+    private void analyseCycleGroups(ReportContext report, Number internalPackages, String buildUnitName)
     {
         XsdCycleGroups cycleGroups = report.getCycleGroups();
         double cyclicity = 0;
@@ -269,31 +262,15 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         for (XsdCycleGroup group : cycleGroups.getCycleGroup())
         {
-            if (group.getNamedElementGroup().equals("Package") && group.getParent().equals(projectName))
+            if (group.getNamedElementGroup().equals("Physical build unit package") && group.getParent().equals(buildUnitName))
             {
                 int groupSize = group.getCyclePath().size();
                 
-                cycleGroupId++;
                 cyclicPackages += groupSize;
                 cyclicity += groupSize*groupSize;
                 if (groupSize > biggestCycleGroupSize)
                 {
                     biggestCycleGroupSize = groupSize;
-                }
-                for (XsdCyclePath cycleMember : group.getCyclePath())
-                {
-                    String packageName = cycleMember.getParent();
-                    Resource thePackage = sensorContext.getResource(new JavaPackage(packageName));
-                    
-                    if (thePackage != null)
-                    {
-                        sensorContext.saveMeasure(thePackage, SonarJMetrics.CYCLE_GROUP_SIZE, (double) groupSize);
-                        sensorContext.saveMeasure(thePackage, SonarJMetrics.CYCLE_GROUP_ID, (double) cycleGroupId);
-                    }
-                    else
-                    {
-                        LOG.error("Cannot find package resource "+packageName);
-                    }
                 }
             }
         }
@@ -521,18 +498,11 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     
     private void addArchitectureMeasures(ReportContext report, String projectName)
     {
-    	int cyclicArtifacts = 0;
-    	
-    	for (String key : new String[] { CYCLIC_LAYERS, CYCLIC_LAYER_GROUPS, CYCLIC_VERTICAL_SLICES, CYCLIC_VERTICAL_SLICE_GROUPS, CYCLIC_SUBSYSTEMS })
-    	{
-    		cyclicArtifacts += projectMetrics.get(key).intValue();
-    	}
         double types = saveMeasure(INTERNAL_TYPES, SonarJMetrics.INTERNAL_TYPES, 0).getValue();
-    	saveMeasure(SonarJMetrics.CYCLIC_ARTIFACTS, cyclicArtifacts, 0);
     	Measure unassignedTypes = saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 0);
     	Measure violatingTypes = saveMeasure(VIOLATING_TYPES, SonarJMetrics.VIOLATING_TYPES, 0);
     	saveMeasure(VIOLATING_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, 0);
-    	Measure taskCount = saveMeasure(TASKS, SonarJMetrics.TASKS, 0);
+    	saveMeasure(TASKS, SonarJMetrics.TASKS, 0);
     	saveMeasure(THRESHOLD_WARNINGS, SonarJMetrics.THRESHOLD_WARNINGS, 0);
     	saveMeasure(WORKSPACE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS, 0);
     	saveMeasure(IGNORED_VIOLATIONS, SonarJMetrics.IGNORED_VIOLATONS, 0);
@@ -544,28 +514,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0 * violatingTypes.getValue()/types, 1);
     	saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypes.getValue()/types, 1);
 
-    	int consistencyWarnings = 0;
-    	
-    	for (XsdProblemCategory problem : report.getConsistencyProblems().getCategories())
-    	{
-    	    for (XsdElementProblem p : problem.getElementProblems())
-    	    {
-    	        if (p.getScope().equals(projectName))
-    	        {
-    	            consistencyWarnings++;
-    	        }
-    	    }
-    	    for (XsdDependencyProblem p : problem.getDependencyProblems())
-    	    {
-    	        if (p.getFromScope().equals(projectName))
-    	        {
-    	            consistencyWarnings++;
-    	        }
-    	    }
-    	}
-    	
-    	saveMeasure(SonarJMetrics.CONSISTENCY_WARNINGS, consistencyWarnings, 0);
-    	
     	XsdViolations violations = report.getViolations();
     	
     	double violating_refs = 0;
@@ -579,17 +527,18 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	}        
         saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, violating_refs, 0);
         saveMeasure(SonarJMetrics.TASK_REFS, task_refs, 0);
-
-        // Here we add refactoring tasks to the measure that calculates structural erosion.
-        // Otherwise you could get rid of structural erosion by cutting dependencies in SonarJ.
-        taskReferences += task_refs;
-        openTasks += taskCount.getValue();
     }
     
-    private void analyse(XsdAttributeRoot xsdProject, ReportContext report, boolean isMultiModuleProject)
+    private void analyse(IProject project, XsdAttributeRoot xsdBuildUnit, ReportContext report, boolean isMultiModuleProject)
     {
-        String projectName = xsdProject.getName();
-        projectMetrics = readAttributes(xsdProject);
+        String buildUnitName = xsdBuildUnit.getName();
+        int splitPos = buildUnitName.indexOf("::");
+
+        if (splitPos != -1)
+        {
+            buildUnitName = buildUnitName.substring(splitPos+2);
+        }
+        projectMetrics = readAttributes(xsdBuildUnit);
         
         Number internalPackages = projectMetrics.get(INTERNAL_PACKAGES);
 
@@ -607,15 +556,17 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(INSTRUCTIONS, SonarJMetrics.INSTRUCTIONS, 0);
         saveMeasure(JAVA_FILES, SonarJMetrics.JAVA_FILES, 0);
         saveMeasure(TYPE_DEPENDENCIES, SonarJMetrics.TYPE_DEPENDENCIES, 0);
-        taskReferences = saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0).getValue();
-        openTasks = saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0).getValue();
-        analyseCycleGroups(report, internalPackages, projectName);
-        if ((isMultiModuleProject || pluginHandler.isUsingArchitectureDescription()) && projectMetrics.get(CYCLIC_LAYERS) != null)
+        saveMeasure(EROSION_REFS, SonarJMetrics.EROSION_REFS, 0);
+        saveMeasure(EROSION_TYPES, SonarJMetrics.EROSION_TYPES, 0);
+        double index = saveMeasure(STUCTURAL_DEBT_INDEX, SonarJMetrics.EROSION_INDEX, 0).getValue();
+
+        analyseCycleGroups(report, internalPackages, buildUnitName);
+        if ((isMultiModuleProject || pluginHandler.isUsingArchitectureDescription()) && projectMetrics.get(UNASSIGNED_TYPES) != null)
         {
             LOG.info("Adding architecture measures for "+project.getName());
-            addArchitectureMeasures(report, projectName);
+            addArchitectureMeasures(report, buildUnitName);
         }
-        double effortInHours = openTasks + taskReferences/10;
+        double effortInHours = index / 6.0;
         double effortInDays = effortInHours/8.0;
         double cost = effortInHours * developerCostRate;
         saveMeasure(SonarJMetrics.EROSION_DAYS, effortInDays, 1);
@@ -623,31 +574,32 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         AlertDecorator.setAlertLevels(new SensorProjectContext(sensorContext));
     }
     
-    protected void analyse(SensorContext sensorContext, ReportContext report)
+    protected void analyse(IProject project, SensorContext sensorContext, ReportContext report)
     {
     	this.sensorContext = sensorContext;
         
-        XsdProjects projects = report.getProjects();  
-        List<XsdAttributeRoot> projectList = projects.getProject();
+        XsdBuildUnits buildUnits= report.getBuildUnits();
+        List<XsdAttributeRoot> buildUnitList = buildUnits.getBuildUnit();
 
-        if (projectList.size() > 1)
+        if (buildUnitList.size() > 1)
         {
-            for (XsdAttributeRoot sonarjProject : projectList)
+            for (XsdAttributeRoot sonarBuildUnit : buildUnitList)
             {
-                String sonarjName = sonarjProject.getName();
+                String sonarjName = sonarBuildUnit.getName();
                 String longName = project.getArtifactId()+"["+project.getGroupId()+"]";
 
+                sonarjName = sonarjName.substring(sonarjName.indexOf("::")+2);
                 if (sonarjName.equals(project.getArtifactId()) || sonarjName.equals(longName))
                 {
                     LOG.info("Adding measures for "+project.getName());
-                    analyse(sonarjProject, report, true);
+                    analyse(project, sonarBuildUnit, report, true);
                     break;
                 }
             }
         }
         else
         {
-            analyse(projectList.get(0), report, false);
+            analyse(project, buildUnitList.get(0), report, false);
         }
     }
     
@@ -657,8 +609,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         if (report != null)
         {
-            this.project = project;
-        	analyse(sensorContext, report);        	
+        	analyse(new ProjectDelegate(project), sensorContext, report);
         }
     }
 }

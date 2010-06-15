@@ -20,26 +20,11 @@
 
 package com.hello2morrow.sonarplugin;
 
-import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.RubyRailsWidget;
-
-public class SonarJArchitectureDashboard extends AbstractRubyTemplate implements RubyRailsWidget
+public interface IProject
 {
+    String getName();
 
-    @Override
-    protected String getTemplatePath()
-    {
-        return "/sonarj_architecture_widget.html.erb";
-    }
+    String getArtifactId();
 
-    public String getId()
-    {
-        return "sonarj.architecture";
-    }
-
-    public String getTitle()
-    {
-        return "SonarJ Architecture Dashbox";
-    }
-
+    String getGroupId();
 }

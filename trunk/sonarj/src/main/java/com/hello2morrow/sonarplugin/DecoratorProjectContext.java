@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
@@ -24,7 +24,7 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 
-public class DecoratorProjectContext implements ProjectContext
+public class DecoratorProjectContext implements IProjectContext
 {
     private DecoratorContext context;
     

@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *  
  */
 
 package com.hello2morrow.sonarplugin;
@@ -63,14 +63,14 @@ public final class AlertDecorator
     }
 
     private static AlertThreshold thresholds[] = { new AlertThreshold(SonarJMetrics.EROSION_DAYS, 5.0, 20.0),
-            new AlertThreshold(SonarJMetrics.CYCLIC_ARTIFACTS, 2, 5), new AlertThreshold(SonarJMetrics.UNASSIGNED_TYPES, 1.0, 20.0),
+            new AlertThreshold(SonarJMetrics.UNASSIGNED_TYPES, 1.0, 20.0),
             new AlertThreshold(SonarJMetrics.VIOLATING_TYPES, 10.0, 20.0), new AlertThreshold(SonarJMetrics.TASKS, 20.0, 50.0),
             new AlertThreshold(SonarJMetrics.THRESHOLD_WARNINGS, 20.0, 50.0), new AlertThreshold(SonarJMetrics.WORKSPACE_WARNINGS, 1.0, 10.0),
-            new AlertThreshold(SonarJMetrics.CONSISTENCY_WARNINGS, 1.0, 10.0), new AlertThreshold(SonarJMetrics.NCCD, 6.5, 10.0),
+            new AlertThreshold(SonarJMetrics.NCCD, 6.5, 10.0),
             new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 7), new AlertThreshold(SonarJMetrics.CYCLICITY, 25, 50),
             new AlertThreshold(SonarJMetrics.DUPLICATE_WARNINGS, 10, 20) };
 
-    private static void copyAlertLevel(ProjectContext context, Metric from, Metric to)
+    private static void copyAlertLevel(IProjectContext context, Metric from, Metric to)
     {
         Measure fromMeasure = context.getMeasure(from);
 
@@ -84,7 +84,7 @@ public final class AlertDecorator
 
     }
 
-    public static void setAlertLevels(ProjectContext context)
+    public static void setAlertLevels(IProjectContext context)
     {
         for (AlertThreshold threshold : thresholds)
         {

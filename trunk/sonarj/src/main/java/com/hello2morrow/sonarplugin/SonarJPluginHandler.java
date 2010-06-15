@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
@@ -58,7 +58,7 @@ public class SonarJPluginHandler implements MavenPluginHandler
 
     public final String getVersion()
     {
-        return "5.1.2";
+        return "6.0.0";
     }
 
     public final boolean isFixedVersion()

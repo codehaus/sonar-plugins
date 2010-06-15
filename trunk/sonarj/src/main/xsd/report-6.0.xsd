@@ -8,6 +8,7 @@
                 <xs:element type="xsdAttributeRoot" name="general" nillable="false" minOccurs="1" maxOccurs="1"/>
                 <xs:element type="xsdAttributeRoot" name="attributes" nillable="false" minOccurs="1" maxOccurs="1"/>
                 <xs:element type="xsdProjects" name="projects" nillable="false" minOccurs="1" maxOccurs="1"/>
+                <xs:element type="xsdBuildUnits" name="buildUnits" nillable="false" minOccurs="1" maxOccurs="1"/>
                 <xs:element type="xsdConfigurations" name="configurations" nillable="false" minOccurs="1" maxOccurs="1"/>
                 <xs:element type="xsdWorkspaces" name="workspaces" nillable="false" minOccurs="0" maxOccurs="1"/>
                 <xs:element type="xsdViolations" name="violations" nillable="false" minOccurs="1" maxOccurs="1"/>
@@ -26,6 +27,12 @@
     <xs:complexType name="xsdProjects">
         <xs:sequence>
             <xs:element type="xsdAttributeRoot" name="project" nillable="false" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="xsdBuildUnits">
+        <xs:sequence>
+            <xs:element type="xsdAttributeRoot" name="buildUnit" nillable="false" minOccurs="1" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
     
@@ -54,6 +61,7 @@
             <xs:element type="xsdWorkspacePath" name="workspacePath" nillable="false" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="project" type="xs:string" use="required"/>
+        <xs:attribute name="buildUnit" type="xs:string" use="required"/>
     </xs:complexType>
     
     <xs:complexType name="xsdWorkspacePath">
@@ -111,8 +119,8 @@
     </xs:complexType>
 
 	<xs:complexType name="xsdPosition">
-		<xs:attribute name="dir" type="xs:string" use="required"/>
-		<xs:attribute name="file" type="xs:string" use="required"/>
+		<xs:attribute name="dir" type="xs:string"/>
+		<xs:attribute name="file" type="xs:string"/>
 		<xs:attribute name="line" type="xs:string" use="required"/>
 		<xs:attribute name="offset" type="xs:string"/>
 	</xs:complexType>
