@@ -22,6 +22,11 @@ if m && m.value > 0
 		</td>
     </tr>
     <tr>
+        <td>
+        <%= format_measure('sonarj_erosion_index', :suffix => ' structural debt index') -%><%= tendency_icon(measure('sonarj_erosion_index')) %>
+        </td>
+    </tr>
+    <tr>
     	<td>
     	<%= format_measure('sonarj_erosion_types', :suffix => ' type dependencies to cut') -%><%= tendency_icon(measure('sonarj_erosion_types')) %>
     	</td>

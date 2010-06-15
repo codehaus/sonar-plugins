@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
@@ -30,6 +30,7 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 
 import com.hello2morrow.sonarplugin.xsd.ReportContext;
+import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 
 public class ReadTest extends TestCase
@@ -47,7 +48,7 @@ public class ReadTest extends TestCase
         context.checking(new Expectations() {{
             oneOf(config).getString(SonarJSensor.LICENSE_FILE_NAME); will(returnValue(null));
             oneOf(config).getDouble(SonarJSensor.DEVELOPER_COST_PER_HOUR, 70.0); will(returnValue(70.0));
-        }});
+            }});
 
         SonarJSensor sensor = new SonarJSensor(config, null, null);
 
@@ -57,8 +58,18 @@ public class ReadTest extends TestCase
             atLeast(1).of(sensorContext).saveMeasure(with(any(Measure.class)));
             allowing(sensorContext).getResource(with(any(Resource.class))); will(returnValue(null)); 
             allowing(sensorContext).getMeasure(with(any(Metric.class))); will(returnValue(null)); 
-        }});
-        sensor.analyse(sensorContext, report);
+            }});
+
+    
+        final IProject project = context.mock(IProject.class);
+
+        context.checking(new Expectations() {{
+            allowing(project).getArtifactId(); will(returnValue("sonar-plugin-api"));
+            allowing(project).getName(); will(returnValue("sonar-plugin-api"));
+            allowing(project).getGroupId(); will(returnValue("sonar"));
+            }});
+        
+        sensor.analyse(project, sensorContext, report);
         
         context.assertIsSatisfied();
     }

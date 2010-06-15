@@ -1,7 +1,7 @@
 /*
  * Sonar-SonarJ-Plugin
  * Open source plugin for Sonar
- * Copyright (C) 2009 hello2morrow GmbH
+ * Copyright (C) 2009, 2010 hello2morrow GmbH
  * mailto: info AT hello2morrow DOT com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 package com.hello2morrow.sonarplugin;
@@ -55,9 +55,6 @@ public final class SonarJMetrics implements Metrics
   
     public static final Metric CYCLE_GROUP_SIZE = new Metric("sonarj_cycle_group_size", "Cycle Group Size", "Number of Packages in Same Cycle Group", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);
-    
-    public static final Metric CYCLE_GROUP_ID = new Metric("sonarj_cycle_group_id", "Cycle Group Id", "Id of Cycle Group", Metric.ValueType.INT, Metric.DIRECTION_NONE, false,
-            CoreMetrics.DOMAIN_COMPLEXITY);
 
     public static final Metric UNASSIGNED_TYPES = new Metric("sonarj_unassigned_types", "Unassigned Types (SonarJ)", "Number of Types not Assigned to any Architectural Artifacts", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
@@ -77,6 +74,9 @@ public final class SonarJMetrics implements Metrics
     public static final Metric EROSION_DAYS = new Metric("sonarj_erosion_days", "Structural Debt (Man Days)", "Estimated Effort to Repair Structural Erosion in Man Days", Metric.ValueType.FLOAT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);
 
+    public static final Metric EROSION_INDEX = new Metric("sonarj_erosion_index", "Structural Debt (Index)", "Structural Erosion Index", Metric.ValueType.FLOAT, Metric.DIRECTION_WORST, true,
+            CoreMetrics.DOMAIN_COMPLEXITY);
+
     public static final Metric VIOLATING_TYPES = new Metric("sonarj_violating_types", "Violating Types (SonarJ)", "Number of Types with Outgoing Architecture Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
     
@@ -90,9 +90,6 @@ public final class SonarJMetrics implements Metrics
             CoreMetrics.DOMAIN_RULES);
     
     public static final Metric ARCHITECTURE_VIOLATIONS = new Metric("sonarj_architecture_violations", "Architecture Violations (SonarJ)", "Number of Violating References", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
-            CoreMetrics.DOMAIN_RULES);
-
-    public static final Metric CYCLIC_ARTIFACTS = new Metric("sonarj_cyclic_artifacts", "Cyclic Architecture Artifacts (SonarJ)", "Number of Architectural Artifacts Involved in Cyclic Dependencies", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
 
     public static final Metric TYPE_DEPENDENCIES = new Metric("sonarj_type_dependencies", "Type Dependencies (SonarJ)", "Overall Number of Type Dependencies", Metric.ValueType.INT, Metric.DIRECTION_NONE, false,
@@ -115,9 +112,6 @@ public final class SonarJMetrics implements Metrics
 
     public static final Metric WORKSPACE_WARNINGS = new Metric("sonarj_workspace_warnings", "Parser Warnings (SonarJ)", "Number of SonarJ Parser Warnings", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_RULES);
-    
-    public static final Metric CONSISTENCY_WARNINGS = new Metric("sonarj_consistency_warnings", "Architecture Consistency Warnings (SonarJ)", "Number of Architecture Cnsistency Warnings", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
-            CoreMetrics.DOMAIN_RULES);
 
     public static final Metric IGNORED_WARNINGS = new Metric("sonarj_ignored_warnings", "Ignored Warnings (SonarJ)", "Number of Ignord Warnings and Threshold Violations", Metric.ValueType.INT, Metric.DIRECTION_NONE, false,
             CoreMetrics.DOMAIN_RULES);
@@ -128,8 +122,8 @@ public final class SonarJMetrics implements Metrics
     public List<Metric> getMetrics()
     {
         return Arrays.asList(ACD, NCCD, CYCLICITY, BIGGEST_CYCLE_GROUP, CYCLIC_PACKAGES, RELATIVE_CYCLICITY, INTERNAL_PACKAGES, INSTRUCTIONS, CYCLE_GROUP_SIZE,
-        		CYCLE_GROUP_ID, UNASSIGNED_TYPES, VIOLATING_TYPES, VIOLATING_DEPENDENCIES, CYCLIC_ARTIFACTS, TYPE_DEPENDENCIES, JAVA_FILES, TASKS,
-        		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, CONSISTENCY_WARNINGS, EROSION_REFS, 
+        		UNASSIGNED_TYPES, VIOLATING_TYPES, VIOLATING_DEPENDENCIES, TYPE_DEPENDENCIES, JAVA_FILES, TASKS, EROSION_INDEX,
+        		THRESHOLD_WARNINGS, WORKSPACE_WARNINGS, IGNORED_WARNINGS, IGNORED_VIOLATONS, ARCHITECTURE_VIOLATIONS, EROSION_REFS, 
         		EROSION_TYPES, EROSION_COST, EROSION_DAYS, INTERNAL_TYPES, TASK_REFS, UNASSIGNED_TYPES_PERCENT, VIOLATING_TYPES_PERCENT, DUPLICATE_WARNINGS);
     }
 }
