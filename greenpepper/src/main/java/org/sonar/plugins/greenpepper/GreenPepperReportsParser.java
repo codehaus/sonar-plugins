@@ -22,7 +22,9 @@ package org.sonar.plugins.greenpepper;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.Collection;
 
+import org.apache.commons.io.FileUtils;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.XpathParser;
 
@@ -58,15 +60,12 @@ public class GreenPepperReportsParser {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private static File[] getReports(File dir) {
     if (dir == null || !dir.isDirectory() || !dir.exists()) {
       return new File[0];
     }
-    return dir.listFiles(new FilenameFilter() {
-
-      public boolean accept(File dir, String name) {
-        return name.startsWith("GreenPepper") && name.endsWith(".xml");
-      }
-    });
+    Collection<File> files = FileUtils.listFiles(dir, new String[]{"xml"}, true);
+    return files.toArray(new File[files.size()]);
   }
 }
