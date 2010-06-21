@@ -62,7 +62,7 @@ public class GreenPepperSensor implements Sensor {
     MavenPlugin pomConf = MavenPlugin.getPlugin(project.getPom(), GreenPepperMavenPluginHandler.GROUP_ID,
         GreenPepperMavenPluginHandler.ARTIFACT_ID);
     if (pomConf != null) {
-      String path = pomConf.getParameter("reportsDirectory") + "/greenpepper";
+      String path = pomConf.getParameter("reportsDirectory");
       if (path != null) {
         return project.getFileSystem().getFileFromBuildDirectory(path);
       }
@@ -71,7 +71,7 @@ public class GreenPepperSensor implements Sensor {
   }
 
   private File getReportsDirectoryFromDefaultConfiguration(Project pom) {
-    return new File(pom.getFileSystem().getBuildDir(), "greenpepper-reports/greenpepper");
+    return new File(pom.getFileSystem().getBuildDir(), "greenpepper-reports");
   }
 
 }
