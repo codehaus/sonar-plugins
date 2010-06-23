@@ -36,6 +36,7 @@
                 <module>motion-chart</module>
                 <module>pdf-report</module>
                 <module>php</module>
+                <module>piwik</module>
                 <module>profiler</module>
                 <module>quality-index</module>
                 <module>radiator</module>
