@@ -64,7 +64,7 @@ public class ReadTest extends TestCase
         final IProject project = context.mock(IProject.class);
 
         context.checking(new Expectations() {{
-            allowing(project).getArtifactId(); will(returnValue("sonar-plugin-api"));
+            allowing(project).getArtifactId(); will(returnValue("simple-model"));
             allowing(project).getName(); will(returnValue("sonar-plugin-api"));
             allowing(project).getGroupId(); will(returnValue("sonar"));
             }});

@@ -74,7 +74,7 @@ public final class SonarJMetrics implements Metrics
     public static final Metric EROSION_DAYS = new Metric("sonarj_erosion_days", "Structural Debt (Man Days)", "Estimated Effort to Repair Structural Erosion in Man Days", Metric.ValueType.FLOAT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);
 
-    public static final Metric EROSION_INDEX = new Metric("sonarj_erosion_index", "Structural Debt (Index)", "Structural Erosion Index", Metric.ValueType.FLOAT, Metric.DIRECTION_WORST, true,
+    public static final Metric EROSION_INDEX = new Metric("sonarj_erosion_index", "Structural Debt (Index)", "Structural Erosion Index", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,
             CoreMetrics.DOMAIN_COMPLEXITY);
 
     public static final Metric VIOLATING_TYPES = new Metric("sonarj_violating_types", "Violating Types (SonarJ)", "Number of Types with Outgoing Architecture Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true,

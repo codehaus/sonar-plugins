@@ -45,7 +45,7 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
                 SonarJMetrics.EROSION_REFS, SonarJMetrics.EROSION_TYPES, SonarJMetrics.IGNORED_VIOLATONS, SonarJMetrics.IGNORED_WARNINGS,
                 SonarJMetrics.INSTRUCTIONS, SonarJMetrics.INTERNAL_PACKAGES, SonarJMetrics.INTERNAL_TYPES, SonarJMetrics.JAVA_FILES,
                 SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS, SonarJMetrics.THRESHOLD_WARNINGS, SonarJMetrics.TYPE_DEPENDENCIES,
-                SonarJMetrics.VIOLATING_DEPENDENCIES, SonarJMetrics.ARCHITECTURE_VIOLATIONS);
+                SonarJMetrics.VIOLATING_DEPENDENCIES, SonarJMetrics.ARCHITECTURE_VIOLATIONS, SonarJMetrics.UNASSIGNED_TYPES);
     }
 
     @Override
@@ -100,10 +100,18 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
                 
         Measure violatingTypes = context.getMeasure(SonarJMetrics.VIOLATING_TYPES);
         Measure internalTypes = context.getMeasure(SonarJMetrics.INTERNAL_TYPES);
-        
-        if (violatingTypes != null && internalTypes != null)
+        Measure unassignedTypes = context.getMeasure(SonarJMetrics.UNASSIGNED_TYPES);
+
+        if (internalTypes != null && internalTypes.getValue() > 0)
         {
-            context.saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0*violatingTypes.getValue()/internalTypes.getValue());
+            if (violatingTypes != null)
+            {
+                context.saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0*violatingTypes.getValue()/internalTypes.getValue());
+            }
+            if (unassignedTypes != null)
+            {
+                context.saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100*unassignedTypes.getValue()/internalTypes.getValue());
+            }
         }
         AlertDecorator.setAlertLevels(new DecoratorProjectContext(context));
     }

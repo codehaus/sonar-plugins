@@ -100,7 +100,7 @@
 
     <xs:complexType name="xsdTypeRelation">
 		<xs:sequence>
-	        <xs:element type="xsdAttribute" name="attribute" nillable="false" minOccurs="3" maxOccurs="unbounded"/>   
+	        <xs:element type="xsdAttribute" name="attribute" nillable="false" minOccurs="4" maxOccurs="unbounded"/>   
 			<xs:element type="xsdPosition" name="position" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
     </xs:complexType>
