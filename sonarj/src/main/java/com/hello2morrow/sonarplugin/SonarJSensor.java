@@ -131,7 +131,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         {
             if (!packaging.equalsIgnoreCase("pom"))
             {
-                LOG.error("Cannot open "+fileName, e);
+                LOG.warn("Cannot open SonarJ report: "+fileName+". Empty project?");
             }
         }   
         finally
@@ -303,8 +303,26 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
             sensorContext.saveViolation(v);
         }
     }
-    
-    private int handleArchitectureViolations(XsdViolations violations, String projectName)
+
+    private String getBuildUnitName(String buName)
+    {
+        if (buName == null)
+        {
+            buName = "<UNKNOWN>";
+        }
+        else
+        {
+            int colonPos = buName.indexOf(':');
+
+            if (colonPos != -1)
+            {
+                buName = buName.substring(colonPos+2);
+            }
+        }
+        return buName;
+    }
+
+    private int handleArchitectureViolations(XsdViolations violations, String buildUnitName)
     {
         Rule rule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
         ActiveRule activeRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
@@ -312,20 +330,21 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         for (XsdArchitectureViolation violation : violations.getArchitectureViolations())
         {
-            String prjName = getAttribute(violation.getArchitectureViolation().getAttribute(), "From scope");
-            
-            if (prjName.equals(projectName))
+            String toName = getAttribute(violation.getArchitectureViolation().getAttribute(), "To");
+            String toElemType = getAttribute(violation.getArchitectureViolation().getAttribute(), "To element type").toLowerCase();
+            String target = toElemType+' '+toName;
+
+            for (XsdTypeRelation rel : violation.getTypeRelation())
             {
-                String toName = getAttribute(violation.getArchitectureViolation().getAttribute(), "To");
-                String toElemType = getAttribute(violation.getArchitectureViolation().getAttribute(), "To element type").toLowerCase();
-                String target = toElemType+' '+toName;
-                
-                for (XsdTypeRelation rel : violation.getTypeRelation())
+                String toType = getAttribute(rel.getAttribute(), "To");
+                String msg = "Type "+toType+" from "+target+" must not be used from here";
+
+                for (XsdPosition pos : rel.getPosition())
                 {
-                    String toType = getAttribute(rel.getAttribute(), "To");
-                    String msg = "Type "+toType+" from "+target+" must not be used from here";
-                    
-                    for (XsdPosition pos : rel.getPosition())
+                    String bu = getAttribute(rel.getAttribute(), "From build unit");
+
+                    bu = getBuildUnitName(bu);
+                    if (bu.equals(buildUnitName))
                     {
                         if (rule != null && activeRule != null)
                         {
@@ -341,6 +360,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                     }
                 }
             }
+
         }
         if (rule == null)
         {
@@ -353,7 +373,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return count;
     }
 
-    private void handleThresholdViolations(XsdWarnings warnings, String projectName)
+    private void handleThresholdViolations(XsdWarnings warnings, String buildUnitName)
     {
         Rule rule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.THRESHOLD_RULE_KEY);
         ActiveRule activeRule = rulesProfile.getActiveRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.THRESHOLD_RULE_KEY);
@@ -371,19 +391,38 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                         for (XsdWarning warning : warningByAttribute.getWarning())
                         {
                             String msg = attrName + "="+getAttribute(warning.getAttribute(), "Attribute value");
-                            String prj = getAttribute(warning.getAttribute(), "Project");
-                            
-                            if (prj.equals(projectName))
+                            String bu = getAttribute(warning.getAttribute(), "Build unit");
+
+                            bu = getBuildUnitName(bu);
+                            if (bu.equals(buildUnitName))
                             {
-                                for (XsdPosition pos : warning.getPosition())
+                                if (warning.getPosition().size() > 0)
                                 {
-                                    String relFileName = pos.getFile();
-
-                                    if (relFileName != null)
+                                    for (XsdPosition pos : warning.getPosition())
                                     {
-                                        String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
+                                        String relFileName = pos.getFile();
 
-                                        saveViolation(rule, activeRule.getPriority(), fqName, Integer.valueOf(pos.getLine()), msg);
+                                        if (relFileName != null)
+                                        {
+                                            String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
+
+                                            saveViolation(rule, activeRule.getPriority(), fqName, Integer.valueOf(pos.getLine()), msg);
+                                            // TODO: remove
+                                            LOG.info("Saved threshold violation: ", msg);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    String elemType = getAttribute(warning.getAttribute(), "Element type");
+
+                                    if (elemType.equals("Class file") || elemType.equals("Source file"))
+                                    {
+                                        // Attach a violation at line 1
+                                        String fileName = getAttribute(warning.getAttribute(), "Element");
+                                        String fqName = fileName.substring(0, fileName.lastIndexOf('.')).replace('/', '.');
+
+                                        saveViolation(rule, activeRule.getPriority(), fqName, 1, msg);
                                     }
                                 }
                             }
@@ -424,7 +463,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return descr;
     }
     
-    private int handleTasks(XsdTasks tasks, String projectName)
+    private int handleTasks(XsdTasks tasks, String buildUnitName)
     {
         Map<String, RulePriority> priorityMap = new HashMap<String, RulePriority>();
         
@@ -450,16 +489,20 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         
         for (XsdTask task : tasks.getTask())
         {
-            String prjName = getAttribute(task.getAttribute(), "Project");
+            String bu = getAttribute(task.getAttribute(), "Build unit");
 
-            if (prjName.equals(projectName))
+            bu = getBuildUnitName(bu);
+            if (bu.equals(buildUnitName))
             {
                 String priority = getAttribute(task.getAttribute(), "Priority");            
                 String description = getAttribute(task.getAttribute(), "Description");
                 String assignedTo = getAttribute(task.getAttribute(), "Assigned to");
 
-                description = handleDescription(description); // This should not be needed, but the current description suck
-                if (description.indexOf(" package") <= 6)
+                description = handleDescription(description); // This should not be needed, but the current description sucks
+
+                int index = description.indexOf(" package");
+
+                if (index > 0 && index < 8)
                 {
                     // Package refactorings won't get markers - this would create to many non relevant markers
                     count++;
@@ -483,8 +526,14 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                             String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
                             int line = Integer.valueOf(pos.getLine());
 
+                            if (line == 0)
+                            {
+                                line = 1;
+                            }
                             if (activeRule != null)
                             {
+                                // TODO: remove
+                                LOG.info("Saved task: ", description);
                                 saveViolation(rule, priorityMap.get(priority), fqName, line, description);
                             }
                         }
@@ -496,7 +545,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return count;
     }
     
-    private void addArchitectureMeasures(ReportContext report, String projectName)
+    private void addArchitectureMeasures(ReportContext report, String buildUnitName)
     {
         double types = saveMeasure(INTERNAL_TYPES, SonarJMetrics.INTERNAL_TYPES, 0).getValue();
     	Measure unassignedTypes = saveMeasure(UNASSIGNED_TYPES, SonarJMetrics.UNASSIGNED_TYPES, 0);
@@ -521,9 +570,9 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     	
        	if (rulesManager != null && rulesProfile != null)
     	{    
-    	    violating_refs = handleArchitectureViolations(violations, projectName);
-    	    handleThresholdViolations(report.getWarnings(), projectName);
-    	    task_refs = handleTasks(report.getTasks(), projectName);
+    	    violating_refs = handleArchitectureViolations(violations, buildUnitName);
+    	    handleThresholdViolations(report.getWarnings(), buildUnitName);
+    	    task_refs = handleTasks(report.getTasks(), buildUnitName);
     	}        
         saveMeasure(SonarJMetrics.ARCHITECTURE_VIOLATIONS, violating_refs, 0);
         saveMeasure(SonarJMetrics.TASK_REFS, task_refs, 0);
@@ -588,7 +637,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 String sonarjName = sonarBuildUnit.getName();
                 String longName = project.getArtifactId()+"["+project.getGroupId()+"]";
 
-                sonarjName = sonarjName.substring(sonarjName.indexOf("::")+2);
+                sonarjName = getBuildUnitName(sonarjName);
                 if (sonarjName.equals(project.getArtifactId()) || sonarjName.equals(longName))
                 {
                     LOG.info("Adding measures for "+project.getName());
