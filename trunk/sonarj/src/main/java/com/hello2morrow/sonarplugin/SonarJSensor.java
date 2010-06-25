@@ -80,7 +80,8 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 {
     public static final String LICENSE_FILE_NAME = "sonarj.license";
     public static final String DEVELOPER_COST_PER_HOUR = "sonarj.hourly_rate";
-    
+    public static final String ACTIVATION_CODE = "sonarj.activation_code";
+
     private static final Logger LOG = LoggerFactory.getLogger(SonarJSensor.class);
 
     private static final String ACD = "Average component dependency (ACD)";
@@ -156,7 +157,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         String licenseFileName = config.getString(LICENSE_FILE_NAME);
         
         developerCostRate = config.getDouble(DEVELOPER_COST_PER_HOUR, 70.0);
-        pluginHandler = new SonarJPluginHandler(licenseFileName);
+        pluginHandler = new SonarJPluginHandler(licenseFileName, config.getString(ACTIVATION_CODE));
         this.rulesManager = rulesManager;
         this.rulesProfile = rulesProfile;
         if (rulesManager == null)
