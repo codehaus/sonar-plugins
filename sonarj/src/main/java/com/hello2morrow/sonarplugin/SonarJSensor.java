@@ -304,19 +304,22 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
     }
 
-    private String getBuildUnitName(String buName)
+    private String getBuildUnitName(String fqName)
     {
-        if (buName == null)
+        String buName = "<UNKNOWN>";
+
+        if (fqName != null)
         {
-            buName = "<UNKNOWN>";
-        }
-        else
-        {
-            int colonPos = buName.indexOf(':');
+            int colonPos = fqName.indexOf("::");
 
             if (colonPos != -1)
             {
-                buName = buName.substring(colonPos+2);
+                buName = fqName.substring(colonPos+2);
+                if (buName.equals("(Default Build Unit"))
+                {
+                    // Compatibility with old SonarJ versions
+                    buName = fqName.substring(0, colonPos);
+                }
             }
         }
         return buName;
@@ -407,8 +410,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                                             String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
 
                                             saveViolation(rule, activeRule.getPriority(), fqName, Integer.valueOf(pos.getLine()), msg);
-                                            // TODO: remove
-                                            LOG.info("Saved threshold violation: ", msg);
                                         }
                                     }
                                 }
@@ -532,8 +533,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                             }
                             if (activeRule != null)
                             {
-                                // TODO: remove
-                                LOG.info("Saved task: ", description);
                                 saveViolation(rule, priorityMap.get(priority), fqName, line, description);
                             }
                         }
@@ -578,15 +577,10 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(SonarJMetrics.TASK_REFS, task_refs, 0);
     }
     
-    private void analyse(IProject project, XsdAttributeRoot xsdBuildUnit, ReportContext report, boolean isMultiModuleProject)
+    private void analyse(IProject project, XsdAttributeRoot xsdBuildUnit, String buildUnitName, ReportContext report, boolean isMultiModuleProject)
     {
-        String buildUnitName = xsdBuildUnit.getName();
-        int splitPos = buildUnitName.indexOf("::");
+        LOG.info("Adding measures for "+project.getName());
 
-        if (splitPos != -1)
-        {
-            buildUnitName = buildUnitName.substring(splitPos+2);
-        }
         projectMetrics = readAttributes(xsdBuildUnit);
         
         Number internalPackages = projectMetrics.get(INTERNAL_PACKAGES);
@@ -632,23 +626,34 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 
         if (buildUnitList.size() > 1)
         {
+            String longName = project.getArtifactId()+"["+project.getGroupId()+"]";
+            String longName2 = project.getGroupId()+':'+project.getArtifactId();
+
             for (XsdAttributeRoot sonarBuildUnit : buildUnitList)
             {
-                String sonarjName = sonarBuildUnit.getName();
-                String longName = project.getArtifactId()+"["+project.getGroupId()+"]";
+                String buName = sonarBuildUnit.getName();
 
-                sonarjName = getBuildUnitName(sonarjName);
-                if (sonarjName.equals(project.getArtifactId()) || sonarjName.equals(longName))
+                buName = getBuildUnitName(buName);
+                if (buName.equals(project.getArtifactId()) || buName.equals(longName) || buName.equals(longName2))
                 {
-                    LOG.info("Adding measures for "+project.getName());
-                    analyse(project, sonarBuildUnit, report, true);
+                    analyse(project, sonarBuildUnit, buName, report, true);
                     break;
+                }
+                else
+                {
+                    if (buName.startsWith("...") && longName2.endsWith(buName.substring(3)))
+                    {
+                        analyse(project, sonarBuildUnit, buName, report, true);    
+                    }
                 }
             }
         }
         else
         {
-            analyse(project, buildUnitList.get(0), report, false);
+            String buName = buildUnitList.get(0).getName();
+
+            buName = getBuildUnitName(buName);
+            analyse(project, buildUnitList.get(0), buName, report, false);
         }
     }
     
