@@ -315,7 +315,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
             if (colonPos != -1)
             {
                 buName = fqName.substring(colonPos+2);
-                if (buName.equals("(Default Build Unit"))
+                if (buName.equals("(Default Build Unit)"))
                 {
                     // Compatibility with old SonarJ versions
                     buName = fqName.substring(0, colonPos);
@@ -341,13 +341,12 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
             {
                 String toType = getAttribute(rel.getAttribute(), "To");
                 String msg = "Type "+toType+" from "+target+" must not be used from here";
+                String bu = getAttribute(rel.getAttribute(), "From build unit");
 
-                for (XsdPosition pos : rel.getPosition())
+                bu = getBuildUnitName(bu);
+                if (bu.equals(buildUnitName))
                 {
-                    String bu = getAttribute(rel.getAttribute(), "From build unit");
-
-                    bu = getBuildUnitName(bu);
-                    if (bu.equals(buildUnitName))
+                    for (XsdPosition pos : rel.getPosition())
                     {
                         if (rule != null && activeRule != null)
                         {
@@ -641,9 +640,10 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
                 }
                 else
                 {
-                    if (buName.startsWith("...") && longName2.endsWith(buName.substring(3)))
+                    if (buName.startsWith("...") && longName2.endsWith(buName.substring(2)))
                     {
-                        analyse(project, sonarBuildUnit, buName, report, true);    
+                        analyse(project, sonarBuildUnit, buName, report, true);
+                        break;
                     }
                 }
             }
