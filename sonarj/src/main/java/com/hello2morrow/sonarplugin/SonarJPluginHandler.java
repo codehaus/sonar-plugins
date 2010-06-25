@@ -33,12 +33,14 @@ public class SonarJPluginHandler implements MavenPluginHandler
     private static final String GROUP_ID = "com.hello2morrow.sonar";
     
     private String target;
-    private String licenseFileName;
+    private final String licenseFileName;
+    private final String activationCode;
     private boolean usesArchitectureDescription = false;
     
-    protected SonarJPluginHandler(String licenseFileName)
+    protected SonarJPluginHandler(String licenseFileName, String activationCode)
     {
         this.licenseFileName = licenseFileName;
+        this.activationCode = activationCode;
     }
     
     public final String getArtifactId()
@@ -58,7 +60,7 @@ public class SonarJPluginHandler implements MavenPluginHandler
 
     public final String getVersion()
     {
-        return "6.0.0";
+        return "6.0.0-SNAPSHOT";
     }
 
     public final boolean isFixedVersion()
@@ -72,9 +74,14 @@ public class SonarJPluginHandler implements MavenPluginHandler
         plugin.setParameter("sonarReportDir", REPORT_DIR);
         plugin.setParameter("sonarReportName", "sonarj-report");
         plugin.setParameter("context", "Sonar");
+        plugin.setParameter("aggregate", "false", true);
         if (licenseFileName != null && licenseFileName.length() > 0 && plugin.getParameter("license") == null)
         {
             plugin.setParameter("license", licenseFileName);
+        }
+        if (activationCode != null && activationCode.length() > 0 && plugin.getParameter("activationCode") == null)
+        {
+            plugin.setParameter("activationCode", activationCode);
         }
         if (plugin.getParameter("file") != null)
         {
