@@ -1,68 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>all</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
-    <name>All Sonar plugins</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <profiles>
-        <profile>
-            <id>stableProjects</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>artifact-size</module>
-                <module>build-breaker</module>
-                <module>build-stability</module>
-                <module>clirr</module>
-                <module>cpp</module>
-                <module>crowd</module>
-                <module>debug</module>
-                <module>dotnet</module>
-                <module>emma</module>
-                <module>flex</module>
-                <module>greenpepper</module>
-                <module>hammurapi</module>
-                <module>jira</module>
-                <module>jlint</module>
-                <module>jtest</module>
-                <module>ldap</module>
-                <module>maven-report</module>
-                <module>metrics-help</module>
-                <module>motion-chart</module>
-                <module>pdf-report</module>
-                <module>php</module>
-                <module>piwik</module>
-                <module>profiler</module>
-                <module>quality-index</module>
-                <module>radiator</module>
-                <module>rules-meter</module>
-                <module>scm-activity</module>
-                <module>security-rules</module>
-                <module>sigmm</module>
-                <module>jacoco</module>
-                <module>sonarj</module>
-                <module>sonar-replay</module>
-                <module>sonar-squid-cli</module>
-                <module>sonar-squid-gui</module>
-                <module>taglist</module>
-                <module>technical-debt</module>
-                <module>testability-explorer</module>
-                <module>timeline</module>
-                <module>total-quality</module>
-                <module>web</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>unstableProjects</id>
-            <modules>
-                <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-                <module>codereview</module>
-            </modules>
-        </profile>
-    </profiles>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>5</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <groupId>org.codehaus.sonar-plugins</groupId>
+  <artifactId>sonar-piwik-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.1</version>
+  <name>Sonar Piwik Plugin</name>
+  <url>http://docs.codehaus.org/display/SONAR/piwik+plugin</url>
+  <description>Piwik (http://piwik.org/) is an open-source web analytics software that can be 
+  used as an alternative to Google Analytics, in particular for internal websites. The Piwik Plugin 
+  submits individual's browsing activity of the Sonar instance to a Piwik server.</description>
+
+  <properties>
+    <sonar.plugin.class>org.sonar.plugins.piwik.PiwikPlugin</sonar.plugin.class>
+    <sonar.version>2.1</sonar.version>
+  </properties>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14465</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-piwik-plugin-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-piwik-plugin-0.1</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org/browse/sonar-plugins/tags/sonar-piwik-plugin-0.1</url>
+  </scm>
+
+  <ciManagement>
+    <system>bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-PIWIK</url>
+  </ciManagement>
+
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>Intelliware Development Inc.</name>
+    <url>http://intelliware.ca/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL v3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>David Jones</name>
+      <email>david@intelliware.ca</email>
+      <url>http://i-proving.ca/space/David+Jones</url>
+      <organization>Intelliware Development Inc.</organization>
+      <timezone>-5</timezone>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--
+
+      IMPORTANT : only dependencies with test scope can be added to
+      plugins.
+    -->
+
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-dev-mojo</artifactId>
+        <extensions>true</extensions>
+        <version>2.2M1</version>
+        <configuration>
+          <pluginClass>${sonar.plugin.class}</pluginClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
