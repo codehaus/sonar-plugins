@@ -33,22 +33,26 @@ import twitter4j.TwitterFactory;
  * @author Evgeny Mandrikov
  */
 public class TwitterPublisher implements PostJob {
+
   public void executeOn(Project project, SensorContext context) {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     Configuration configuration = project.getConfiguration();
+    String hostUrl = configuration.getString("sonar.host.url", "http://localhost:9000");
     String username = configuration.getString(TwitterPlugin.USERNAME_PROPERTY);
     String password = configuration.getString(TwitterPlugin.PASSWORD_PROPERTY);
 
+    String url = hostUrl + "/project/index/" + project.getKey();
+    String status = project.getName() + " analyzed: " + url;
+    
+    logger.info("Updating Twitter status to: '{}'", status);
     TwitterFactory factory = new TwitterFactory();
     Twitter twitter = factory.getInstance(username, password);
-
-    String key = project.getKey();
-
     try {
-      twitter.updateStatus(key + " analyzed"); // TODO
+      twitter.updateStatus(status);
     } catch (TwitterException e) {
       logger.warn("Exception updating Twitter status", e);
     }
   }
+  
 }
