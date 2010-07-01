@@ -54,6 +54,7 @@
                 <module>testability-explorer</module>
                 <module>timeline</module>
                 <module>total-quality</module>
+                <module>twitter</module>
                 <module>web</module>
             </modules>
         </profile>
