@@ -48,6 +48,8 @@ public class TwitterPlugin implements Plugin {
 
   public static final String USERNAME_PROPERTY = "sonar.twitter.username.secured";
   public static final String PASSWORD_PROPERTY = "sonar.twitter.password.secured";
+  public static final String HOST_PROPERTY = "sonar.host.url";
+  public static final String HOST_DEFAULT_VALUE = "http://localhost:9000";
 
   public String getKey() {
     return "twitter";
