@@ -20,6 +20,7 @@
 package org.sonar.plugins.twitter;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.PostJob;
@@ -35,16 +36,24 @@ import twitter4j.TwitterFactory;
 public class TwitterPublisher implements PostJob {
 
   public void executeOn(Project project, SensorContext context) {
-    Logger logger = LoggerFactory.getLogger(getClass());
-
     Configuration configuration = project.getConfiguration();
     String hostUrl = configuration.getString("sonar.host.url", "http://localhost:9000");
     String username = configuration.getString(TwitterPlugin.USERNAME_PROPERTY);
     String password = configuration.getString(TwitterPlugin.PASSWORD_PROPERTY);
 
+    if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+      return;
+    }
+
     String url = hostUrl + "/project/index/" + project.getKey();
-    String status = project.getName() + " analyzed: " + url;
-    
+
+    String status = String.format("%s analyzed: %s", project.getName(), url);
+
+    updateStatus(username, password, status);
+  }
+
+  public void updateStatus(String username, String password, String status) {
+    Logger logger = LoggerFactory.getLogger(getClass());
     logger.info("Updating Twitter status to: '{}'", status);
     TwitterFactory factory = new TwitterFactory();
     Twitter twitter = factory.getInstance(username, password);
@@ -54,5 +63,5 @@ public class TwitterPublisher implements PostJob {
       logger.warn("Exception updating Twitter status", e);
     }
   }
-  
+
 }

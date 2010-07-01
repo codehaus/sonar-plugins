@@ -42,6 +42,7 @@
   </licenses>
 
   <properties>
+    <sonarVersion>2.2-SNAPSHOT</sonarVersion>
     <sonar.version>2.2-SNAPSHOT</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.twitter.TwitterPlugin</sonar.pluginClass>
   </properties>

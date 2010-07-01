@@ -46,8 +46,8 @@ import java.util.ArrayList;
 })
 public class TwitterPlugin implements Plugin {
 
-  public static final String USERNAME_PROPERTY = "sonar.twitter.username";
-  public static final String PASSWORD_PROPERTY = "sonar.twitter.password";
+  public static final String USERNAME_PROPERTY = "sonar.twitter.username.secured";
+  public static final String PASSWORD_PROPERTY = "sonar.twitter.password.secured";
 
   public String getKey() {
     return "twitter";
