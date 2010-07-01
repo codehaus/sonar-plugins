@@ -66,6 +66,13 @@
       <version>${sonar.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <!-- sonar-testing-harness:2.2-SNAPSHOT provides mockito 1.7.0 -->
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

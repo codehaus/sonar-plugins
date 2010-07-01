@@ -21,13 +21,14 @@
 package org.sonar.plugins.twitter;
 
 import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Evgeny Mandrikov
@@ -40,15 +41,32 @@ public class TwitterPublisherTest {
 
   @Before
   public void setUp() {
-    publisher = new TwitterPublisher();
+    publisher = spy(new TwitterPublisher());
     project = mock(Project.class);
     context = mock(SensorContext.class);
   }
 
   @Test
-  public void testExecuteOn() {
-    when(project.getConfiguration()).thenReturn(new BaseConfiguration());
+  public void updateStatus() {
+    Configuration configuration = new BaseConfiguration();
+    configuration.setProperty(TwitterPlugin.USERNAME_PROPERTY, "user");
+    configuration.setProperty(TwitterPlugin.PASSWORD_PROPERTY, "pass");
+    when(project.getConfiguration()).thenReturn(configuration);
+    when(project.getName()).thenReturn("SimpleProject");
+    doNothing().when(publisher).updateStatus(anyString(), anyString(), anyString());
+
     publisher.executeOn(project, context);
+
+    verify(publisher).updateStatus(eq("user"), eq("pass"), contains("SimpleProject"));
+  }
+
+  @Test
+  public void dontUpdateStatusIfUsernameAndPasswordNotSpecified() {
+    when(project.getConfiguration()).thenReturn(new BaseConfiguration());
+
+    publisher.executeOn(project, context);
+
+    verify(publisher, never()).updateStatus(anyString(), anyString(), anyString());
   }
 
 }

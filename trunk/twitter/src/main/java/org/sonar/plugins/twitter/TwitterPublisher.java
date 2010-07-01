@@ -37,7 +37,7 @@ public class TwitterPublisher implements PostJob {
 
   public void executeOn(Project project, SensorContext context) {
     Configuration configuration = project.getConfiguration();
-    String hostUrl = configuration.getString("sonar.host.url", "http://localhost:9000");
+    String hostUrl = configuration.getString(TwitterPlugin.HOST_PROPERTY, TwitterPlugin.HOST_DEFAULT_VALUE);
     String username = configuration.getString(TwitterPlugin.USERNAME_PROPERTY);
     String password = configuration.getString(TwitterPlugin.PASSWORD_PROPERTY);
 
