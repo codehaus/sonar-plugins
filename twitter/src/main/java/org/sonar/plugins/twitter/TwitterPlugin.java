@@ -60,7 +60,7 @@ public class TwitterPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return ""; // TODO
+    return "Reports about analysis via Twitter.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
