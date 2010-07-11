@@ -12,6 +12,7 @@
   <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
   <name>Sonar Twitter Plugin</name>
+  <description>Reports about analysis via Twitter.</description>
   <url>http://docs.codehaus.org/display/SONAR/Twitter+Plugin</url>
   <inceptionYear>2010</inceptionYear>
 
