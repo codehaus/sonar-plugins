@@ -16,11 +16,11 @@
 
 package org.codehaus.sonar.plugins.testability.measurers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.sonar.api.utils.KeyValueFormat;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViolationCostDetailMarshaller implements CostMarshaller<ViolationCostDetail> {
 
@@ -29,13 +29,13 @@ public class ViolationCostDetailMarshaller implements CostMarshaller<ViolationCo
   private static final String GLOBAL = "global";
   private static final String REASON = "reason";
   private static final String OVERALL = "overall";
-  
+
   public String marshall(ViolationCostDetail detail) {
     HashMap<Object, Object> map = new HashMap<Object, Object>();
     map.put(LOD, detail.getLawOfDemeter());
     map.put(CYCLOMATIC, detail.getCyclomaticComplexity());
     map.put(GLOBAL, detail.getGlobal());
-    map.put(REASON, detail.getReason());    
+    map.put(REASON, detail.getReason());
     map.put(OVERALL, detail.getOverall());
     return KeyValueFormat.format(map);
   }

@@ -41,7 +41,7 @@ public class MethodTestabilityCostData implements CostDetail {
     }
     return this.methodCostsByLine;
   }
-  
+
   public List<ViolationCostDetail> getViolationsOfLine(int line) {
     List<ViolationCostDetail> lineViolations = getViolationsCostsByLine().get(line);
     if (lineViolations == null) {
@@ -50,11 +50,11 @@ public class MethodTestabilityCostData implements CostDetail {
     }
     return lineViolations;
   }
-  
+
   public void addMethodCost(int line, MethodTestabilityCostDetail methodCostDetail) {
     getMethodCostsByLine().put(line, methodCostDetail);
   }
-  
+
   public void addViolationCost(int line, ViolationCostDetail violationCost) {
     List<ViolationCostDetail> lineViolations = getViolationsOfLine(line);
     lineViolations.add(violationCost);
@@ -62,5 +62,5 @@ public class MethodTestabilityCostData implements CostDetail {
 
   public HasCostData getMethodCostOfLine(int lineIndex) {
     return getMethodCostsByLine().get(lineIndex);
-  } 
+  }
 }

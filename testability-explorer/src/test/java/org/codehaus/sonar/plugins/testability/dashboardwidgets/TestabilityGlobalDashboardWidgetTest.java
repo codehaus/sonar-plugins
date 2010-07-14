@@ -14,24 +14,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.codehaus.sonar.plugins.testability.client;
+package org.codehaus.sonar.plugins.testability.dashboardwidgets;
 
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Widget;
-import org.sonar.gwt.ui.Page;
-import org.sonar.wsclient.services.Resource;
+import org.junit.Test;
 
-public class GwtTestabilityDetailsViewer extends Page {
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-  public static final String GWT_ID = "org.codehaus.sonar.plugins.testability.GwtTestabilityDetailsViewer";
-
-  @Override
-  protected Widget doOnResourceLoad(Resource resource) {
-    FlowPanel panel = new FlowPanel();
-    panel.setWidth("100%");
-    panel.add(new GwtTestabilitySourceHeader(resource));
-    panel.add(new GwtTestabilitySourcePanel(resource));
-    return panel;
+/**
+ * @author Evgeny Mandrikov
+ */
+public class TestabilityGlobalDashboardWidgetTest {
+  @Test
+  public void testGetTemplatePath() {
+    String path = new TestabilityGlobalDashboardWidget().getTemplatePath();
+    assertThat(getClass().getResource(path), notNullValue());
   }
-
 }

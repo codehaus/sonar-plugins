@@ -17,9 +17,18 @@
 package org.codehaus.sonar.plugins.testability;
 
 import org.codehaus.sonar.plugins.testability.client.GwtTestabilityDetailsViewer;
-import org.sonar.api.web.ResourceViewer;
+import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
+import org.sonar.api.web.*;
+import org.sonar.wsclient.services.Resource;
 
-public class TestabilityDetailsViewer implements ResourceViewer {
+@ResourceQualifier({Resource.QUALIFIER_CLASS})
+@ResourceScope({Resource.SCOPE_ENTITY})
+@NavigationSection(NavigationSection.RESOURCE_TAB)
+@DefaultTab(metrics = {
+    WSTestabilityMetrics.TESTABILITY_COST,
+    WSTestabilityMetrics.METHOD_DETAILS_COST
+})
+public class TestabilityDetailsViewer extends GwtPage {
 
   public String getTitle() {
     return "Testability Explorer Details";

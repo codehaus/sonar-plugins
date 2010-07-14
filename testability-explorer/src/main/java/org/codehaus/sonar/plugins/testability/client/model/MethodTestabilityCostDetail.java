@@ -22,11 +22,11 @@ public class MethodTestabilityCostDetail implements CostDetail, HasCostData {
   private int global;
   private int lawOfDemeter;
   private int overall;
-  
+
   public MethodTestabilityCostDetail() {
     // default constructor
   }
-  
+
   public MethodTestabilityCostDetail(int cyclomaticComplexity, int global, int lawOfDemeter, int overall) {
     super();
     this.cyclomaticComplexity = cyclomaticComplexity;

@@ -16,18 +16,25 @@
 
 package org.codehaus.sonar.plugins.testability;
 
-public class TestabilityPluginException extends RuntimeException {
+import org.junit.Before;
+import org.junit.Test;
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = -8006363700378163711L;
-  
-  public TestabilityPluginException(String message) {
-    super(message);
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+
+/**
+ * @author Evgeny Mandrikov
+ */
+public class TestabilityPluginTest {
+  private TestabilityPlugin plugin;
+
+  @Before
+  public void setUp() {
+    plugin = new TestabilityPlugin();
   }
-  
-  public TestabilityPluginException(String message, Throwable cause) {
-    super(message, cause);
+
+  @Test
+  public void testGetExtensions() {
+    assertThat(plugin.getExtensions().size(), is(5));
   }
 }

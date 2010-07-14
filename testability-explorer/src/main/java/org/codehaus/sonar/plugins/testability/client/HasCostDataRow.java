@@ -17,9 +17,9 @@
 package org.codehaus.sonar.plugins.testability.client;
 
 import org.codehaus.sonar.plugins.testability.client.model.HasCostData;
-import org.sonar.api.web.gwt.client.widgets.AbstractSourcePanel.Row;
+import org.sonar.gwt.ui.SourcePanel;
 
-public class HasCostDataRow extends Row {
+public class HasCostDataRow extends SourcePanel.Row {
 
   public HasCostDataRow(HasCostData hasCostData, int lineIndex, String source) {
     super(lineIndex, source);

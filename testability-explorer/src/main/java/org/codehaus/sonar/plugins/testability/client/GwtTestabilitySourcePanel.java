@@ -25,48 +25,18 @@ import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCost
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDataDecoderImpl;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
-import org.sonar.api.web.gwt.client.webservices.BaseQueryCallback;
-import org.sonar.api.web.gwt.client.webservices.Measure;
-import org.sonar.api.web.gwt.client.webservices.Resource;
-import org.sonar.api.web.gwt.client.webservices.Resources;
-import org.sonar.api.web.gwt.client.webservices.ResourcesQuery;
-import org.sonar.api.web.gwt.client.widgets.AbstractSourcePanel;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Window;
+import org.sonar.gwt.ui.SourcePanel;
+import org.sonar.wsclient.gwt.AbstractCallback;
+import org.sonar.wsclient.gwt.Sonar;
+import org.sonar.wsclient.services.Resource;
+import org.sonar.wsclient.services.ResourceQuery;
 
-public class GwtTestabilitySourcePanel extends AbstractSourcePanel {
+public class GwtTestabilitySourcePanel extends SourcePanel {
 
   private static final String COMPLEXITY_TITLE = "CC";
   private static final String LOD_TITLE = "Lod";
   private static final String LINE_TITLE = "Line";
-
-  private final class TestabilityQueryCallBack extends BaseQueryCallback<Resources> {
-    private MethodTestabilityCostDataDecoder decoder;
-
-    public void onResponse(Resources response, JavaScriptObject jsonRawResponse) {
-      if (responseHasRightMeasure(response)) {
-        setMethodTestabilityCostData(getDecoder().decode(getMethodCostMeasure(response).getData()));
-      }
-      setStarted();
-    }
-
-    public MethodTestabilityCostDataDecoder getDecoder() {
-      if (this.decoder == null) {
-        this.decoder = new MethodTestabilityCostDataDecoderImpl();
-      }
-
-      return this.decoder;
-    }
-
-    private Measure getMethodCostMeasure(Resources response) {
-      return response.getResources().get(0).getMeasure(WSTestabilityMetrics.METHOD_DETAILS_COST);
-    }
-
-    private boolean responseHasRightMeasure(Resources response) {
-      return response.getResources().size() == 1 && response.getResources().get(0).hasMeasure(WSTestabilityMetrics.METHOD_DETAILS_COST);
-    }
-  }
 
   private MethodTestabilityCostData costData;
 
@@ -79,12 +49,19 @@ public class GwtTestabilitySourcePanel extends AbstractSourcePanel {
 
   public GwtTestabilitySourcePanel(Resource resource) {
     super(resource);
-    loadTestabilityCosts();
+    loadTestabilityCosts(resource);
   }
 
-  private void loadTestabilityCosts() {
-    ResourcesQuery.build(getResource().getKey()).setMetric(WSTestabilityMetrics.METHOD_DETAILS_COST)
-        .execute(new TestabilityQueryCallBack());
+  private void loadTestabilityCosts(final Resource resource) {
+    ResourceQuery query = ResourceQuery.createForResource(resource, WSTestabilityMetrics.METHOD_DETAILS_COST);
+    Sonar.getInstance().find(query, new AbstractCallback<Resource>(){
+      @Override
+      protected void doOnResponse(Resource result) {
+        MethodTestabilityCostDataDecoder decoder = new MethodTestabilityCostDataDecoderImpl();
+        setMethodTestabilityCostData(decoder.decode(resource.getMeasure(WSTestabilityMetrics.METHOD_DETAILS_COST).getData()));
+        setStarted();
+      }
+    });
   }
   
   @Override
