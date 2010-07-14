@@ -4,17 +4,30 @@
   <parent>
     <artifactId>parent</artifactId>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <version>5</version>
+    <version>6-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
+
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-twitter-plugin</artifactId>
-  <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
+  <packaging>sonar-plugin</packaging>
+
   <name>Sonar Twitter Plugin</name>
   <description>Reports about analysis via Twitter.</description>
   <url>http://docs.codehaus.org/display/SONAR/Twitter+Plugin</url>
   <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -34,18 +47,11 @@
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14482</url>
   </issueManagement>
 
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
   <properties>
-    <sonarVersion>2.2-SNAPSHOT</sonarVersion>
-    <sonar.version>2.2-SNAPSHOT</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.twitter.TwitterPlugin</sonar.pluginClass>
+    <sonar.version>2.2RC2</sonar.version>
+
+    <sonarVersion>2.2RC2</sonarVersion>
   </properties>
 
   <dependencies>
@@ -75,18 +81,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-dev-mojo</artifactId>
-        <extensions>true</extensions>
-        <version>2.2M1</version>
-        <configuration>
-          <pluginClass>${sonar.pluginClass}</pluginClass>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
