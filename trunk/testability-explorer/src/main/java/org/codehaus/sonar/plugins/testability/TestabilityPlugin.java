@@ -19,7 +19,6 @@ package org.codehaus.sonar.plugins.testability;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.sonar.plugins.testability.dashboardwidgets.TestabilityGlobalDashboardWidget;
 import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
@@ -66,8 +65,8 @@ public class TestabilityPlugin implements Plugin {
     list.add(TestabilityMavenCollector.class);
     list.add(TestabilityMavenPluginHandler.class);
     list.add(TestabilityMetrics.class);
-    list.add(TestabilityGlobalDashboardWidget.class);
-    list.add(TestabilityDetailsViewer.class);
+    list.add(TestabilityDashboardWidget.class);
+    list.add(TestabilityViewerDefinition.class);
     return list;
   }
 

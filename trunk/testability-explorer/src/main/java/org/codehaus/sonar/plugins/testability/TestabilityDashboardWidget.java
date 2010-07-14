@@ -14,20 +14,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.codehaus.sonar.plugins.testability.dashboardwidgets;
+package org.codehaus.sonar.plugins.testability;
 
-import org.junit.Test;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWidget;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+public class TestabilityDashboardWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-/**
- * @author Evgeny Mandrikov
- */
-public class TestabilityGlobalDashboardWidgetTest {
-  @Test
-  public void testGetTemplatePath() {
-    String path = new TestabilityGlobalDashboardWidget().getTemplatePath();
-    assertThat(getClass().getResource(path), notNullValue());
+  private static final String WIDGET_ID = "testabilityGlobalDashboardWidget";
+  private static final String WIDGET_TITLE = "Testability";
+
+  public String getId() {
+    return WIDGET_ID;
   }
+
+  public String getTitle() {
+    return WIDGET_TITLE;
+  }
+
+  @Override
+  protected String getTemplatePath() {
+    return "/org/codehaus/sonar/plugins/testability/testability_global_metrics.erb";
+  }
+
 }
