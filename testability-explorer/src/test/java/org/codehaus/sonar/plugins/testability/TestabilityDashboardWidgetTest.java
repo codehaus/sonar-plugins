@@ -16,26 +16,18 @@
 
 package org.codehaus.sonar.plugins.testability;
 
-import org.codehaus.sonar.plugins.testability.client.GwtTestabilityDetailsViewer;
-import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
-import org.sonar.api.web.*;
-import org.sonar.wsclient.services.Resource;
+import org.junit.Test;
 
-@ResourceQualifier({Resource.QUALIFIER_CLASS})
-@ResourceScope({Resource.SCOPE_ENTITY})
-@NavigationSection(NavigationSection.RESOURCE_TAB)
-@DefaultTab(metrics = {
-    WSTestabilityMetrics.TESTABILITY_COST,
-    WSTestabilityMetrics.METHOD_DETAILS_COST
-})
-public class TestabilityDetailsViewer extends GwtPage {
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-  public String getTitle() {
-    return "Testability Explorer Details";
+/**
+ * @author Evgeny Mandrikov
+ */
+public class TestabilityDashboardWidgetTest {
+  @Test
+  public void testGetTemplatePath() {
+    String path = new TestabilityDashboardWidget().getTemplatePath();
+    assertThat(getClass().getResource(path), notNullValue());
   }
-
-  public String getGwtId() {
-    return GwtTestabilityDetailsViewer.GWT_ID;
-  }
-
 }

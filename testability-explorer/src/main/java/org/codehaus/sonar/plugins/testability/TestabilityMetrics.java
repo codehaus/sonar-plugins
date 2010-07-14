@@ -16,23 +16,23 @@
 
 package org.codehaus.sonar.plugins.testability;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
 
-public class TestabilityMetrics implements Metrics {
-	
-	private static final String KEY_TESTABILITY_COST = "testability_cost";
-	private static final String KEY_NEEDSWORK_CLASSES = "testability_needswork";
-	private static final String KEY_ACCEPTABLE_CLASSES = "testability_acceptable";
-	private static final String KEY_EXCELLENT_CLASSES = "testability_excellent";
-	private static final String KEY_METHOD_DETAILS = "testability_method_details";
+import java.util.Arrays;
+import java.util.List;
 
-	private static final String DOMAIN_GLOBAL = "testability_global_metrics"; 
-	
-	public static final Metric EXCELLENT_CLASSES = new Metric(
+public class TestabilityMetrics implements Metrics {
+
+  private static final String KEY_TESTABILITY_COST = "testability_cost";
+  private static final String KEY_NEEDSWORK_CLASSES = "testability_needswork";
+  private static final String KEY_ACCEPTABLE_CLASSES = "testability_acceptable";
+  private static final String KEY_EXCELLENT_CLASSES = "testability_excellent";
+  private static final String KEY_METHOD_DETAILS = "testability_method_details";
+
+  private static final String DOMAIN_GLOBAL = "testability_global_metrics";
+
+  public static final Metric EXCELLENT_CLASSES = new Metric(
       KEY_EXCELLENT_CLASSES,
       "Excellent classes",
       "Number of classes qualified as excellent",
@@ -42,7 +42,7 @@ public class TestabilityMetrics implements Metrics {
       DOMAIN_GLOBAL
   );
 
-	public static final Metric ACCEPTABLE_CLASSES = new Metric(
+  public static final Metric ACCEPTABLE_CLASSES = new Metric(
       KEY_ACCEPTABLE_CLASSES,
       "Acceptable classes",
       "Number of classes qualified as acceptable",
@@ -81,15 +81,15 @@ public class TestabilityMetrics implements Metrics {
       false,
       DOMAIN_GLOBAL
   );
-		
-	public List<Metric> getMetrics() {
-		ArrayList<Metric> list = new ArrayList<Metric>();
-		list.add(EXCELLENT_CLASSES);
-		list.add(ACCEPTABLE_CLASSES);
-		list.add(NEEDSWORK_CLASSES);
-		list.add(TESTABILITY_COST);
-		list.add(METHOD_DETAILS_COST);
-		return list;
-	}
+
+  public List<Metric> getMetrics() {
+    return Arrays.asList(
+        EXCELLENT_CLASSES,
+        ACCEPTABLE_CLASSES,
+        NEEDSWORK_CLASSES,
+        TESTABILITY_COST,
+        METHOD_DETAILS_COST
+    );
+  }
 
 }
