@@ -28,7 +28,6 @@ public class TestabilityMavenPluginHandler implements MavenPluginHandler {
 	private static final String VERSION = "1.3.2";
 	private static final String GROUP_ID = "com.google.testability-explorer";
 	private static final String ARTIFACT_ID = "maven-testability-plugin";
-
 	
 	public void configure(Project project, MavenPlugin plugin) {
 		Configuration configuration = project.getConfiguration();

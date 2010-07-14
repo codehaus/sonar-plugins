@@ -16,16 +16,6 @@
 
 package org.codehaus.sonar.plugins.testability.xml;
 
-import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.ACCEPTABLE_CLASSES;
-import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.EXCELLENT_CLASSES;
-import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.NEEDSWORK_CLASSES;
-import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.TESTABILITY_COST;
-
-import java.io.File;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 import org.codehaus.sonar.plugins.testability.measurers.MethodTestabilityCostMeasurer;
@@ -34,10 +24,15 @@ import org.codehaus.staxmate.in.SMEvent;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.XmlParserException;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+
+import static org.codehaus.sonar.plugins.testability.TestabilityMetrics.*;
 
 public class TestabilityStaxParser {
 

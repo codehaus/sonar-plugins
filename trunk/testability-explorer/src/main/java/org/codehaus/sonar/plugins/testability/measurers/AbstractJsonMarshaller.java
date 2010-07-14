@@ -26,12 +26,12 @@ public abstract class AbstractJsonMarshaller<T> implements CostMarshaller<T> {
       builder.append(value);
     }
   }
-  
+
   public void writeMember(StringBuilder builder, String name, int value) {
     writeMember(builder, name, Integer.valueOf(value).toString(), false);
   }
-  
-  
+
+
   public void quoteString(StringBuilder builder, String string) {
     builder.append("\"");
     builder.append(string);

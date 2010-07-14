@@ -16,14 +16,14 @@
 
 package org.codehaus.sonar.plugins.testability.measurers;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostData;
 import org.codehaus.sonar.plugins.testability.client.model.MethodTestabilityCostDetail;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class CostDataMarshaller extends AbstractJsonMarshaller<MethodTestabilityCostData> {
 

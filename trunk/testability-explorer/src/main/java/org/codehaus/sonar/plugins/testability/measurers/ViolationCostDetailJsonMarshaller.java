@@ -16,11 +16,12 @@
 
 package org.codehaus.sonar.plugins.testability.measurers;
 
-import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.*;
 import org.codehaus.sonar.plugins.testability.client.model.ViolationCostDetail;
 
+import static org.codehaus.sonar.plugins.testability.client.model.SerializationConstants.*;
+
 public class ViolationCostDetailJsonMarshaller extends AbstractJsonMarshaller<ViolationCostDetail> {
-  
+
   public String marshall(ViolationCostDetail detail) {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("{");

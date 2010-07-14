@@ -21,20 +21,20 @@ import org.sonar.api.web.RubyRailsWidget;
 
 public class TestabilityGlobalDashboardWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-	private static final String WIDGET_ID = "testabilityGlobalDashboardWidget";
-	private static final String WIDGET_TITLE = "Testability";
+  private static final String WIDGET_ID = "testabilityGlobalDashboardWidget";
+  private static final String WIDGET_TITLE = "Testability";
 
-	@Override
-	protected String getTemplatePath() {
-		return "/org/codehaus/sonar/plugins/testability/testability_global_metrics.erb";
-	}
+  @Override
+  protected String getTemplatePath() {
+    return "/org/codehaus/sonar/plugins/testability/testability_global_metrics.erb";
+  }
 
-	public String getId() {
-		return WIDGET_ID;
-	}
+  public String getId() {
+    return WIDGET_ID;
+  }
 
-	public String getTitle() {
-		return WIDGET_TITLE;
-	}
+  public String getTitle() {
+    return WIDGET_TITLE;
+  }
 
 }

@@ -16,17 +16,17 @@
 
 package org.codehaus.sonar.plugins.testability.xml;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.utils.XmlParserException;
 
+import javax.xml.stream.XMLStreamException;
+
 public final class StaxMateHelper {
-  
+
   private StaxMateHelper() {
     // Utility Class
   }
-  
+
   public static Double getDoubleValue(SMInputCursor cursor, String attributeName) {
     try {
       return Double.valueOf(cursor.getAttrIntValue(cursor.findAttrIndex(null, attributeName)));

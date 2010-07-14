@@ -16,20 +16,17 @@
 
 package org.codehaus.sonar.plugins.testability.client;
 
-import java.util.Arrays;
-
-import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
-import org.sonar.api.web.gwt.client.webservices.Measure;
-import org.sonar.api.web.gwt.client.webservices.Resource;
-import org.sonar.api.web.gwt.client.widgets.AbstractViewerHeader;
-
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import org.codehaus.sonar.plugins.testability.client.webservices.WSTestabilityMetrics;
+import org.sonar.gwt.ui.ViewerHeader;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Resource;
 
-public class GwtTestabilitySourceHeader extends AbstractViewerHeader {
+public class GwtTestabilitySourceHeader extends ViewerHeader {
 
   public GwtTestabilitySourceHeader(Resource resource) {
-    super(resource, Arrays.asList(WSTestabilityMetrics.TESTABILITY_COST));
+    super(resource, new String[]{WSTestabilityMetrics.TESTABILITY_COST});
   }
 
   @Override
