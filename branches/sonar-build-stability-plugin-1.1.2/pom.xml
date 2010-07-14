@@ -13,20 +13,46 @@
   <name>Sonar Build Stability Plugin</name>
   <description>Generates reports based on information about builds from Continuous Integration System.</description>
   <url>http://docs.codehaus.org/display/SONAR/Build+Stability+Plugin</url>
-
   <inceptionYear>2010</inceptionYear>
-
   <organization>
     <name>Evgeny Mandrikov</name>
     <url>http://godin.net.ru/</url>
   </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+      <timezone>+3</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/branches/sonar-build-stability-plugin-1.1.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/branches/sonar-build-stability-plugin-1.1.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/branches/sonar-build-stability-plugin-1.1.2</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14312</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-BUILDSTABILITY</url>
+  </ciManagement>
 
   <properties>
     <sonar.pluginClass>org.sonar.plugins.buildstability.BuildStabilityPlugin</sonar.pluginClass>
-    <sonar.version>2.2RC2</sonar.version>
+    <sonar.version>2.2</sonar.version>
 
-    <sonarVersion>2.2RC2</sonarVersion>
-    <pluginArtifact>${project.build.directory}/${project.build.finalName}-shaded.jar</pluginArtifact>
+    <sonarVersion>2.2</sonarVersion>
   </properties>
 
   <dependencies>
@@ -64,36 +90,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <developers>
-    <developer>
-      <id>godin</id>
-      <name>Evgeny Mandrikov</name>
-      <timezone>+3</timezone>
-    </developer>
-  </developers>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/branches/sonar-build-stability-plugin-1.1.2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/branches/sonar-build-stability-plugin-1.1.2</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/branches/sonar-build-stability-plugin-1.1.2</url>
-  </scm>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14312</url>
-  </issueManagement>
-
-  <ciManagement>
-    <system>Bamboo</system>
-    <url>http://ci.codehaus.org/browse/SONAR-BUILDSTABILITY</url>
-  </ciManagement>
-
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
 </project>
