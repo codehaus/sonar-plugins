@@ -1,69 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>all</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
-    <name>All Sonar plugins</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <profiles>
-        <profile>
-            <id>stableProjects</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>artifact-size</module>
-                <module>build-breaker</module>
-                <module>build-stability</module>
-                <module>clirr</module>
-                <module>cpp</module>
-                <module>crowd</module>
-                <module>debug</module>
-                <module>dotnet</module>
-                <module>emma</module>
-                <module>flex</module>
-                <module>greenpepper</module>
-                <module>hammurapi</module>
-                <module>jira</module>
-                <module>jlint</module>
-                <module>jtest</module>
-                <module>ldap</module>
-                <module>maven-report</module>
-                <module>metrics-help</module>
-                <module>motion-chart</module>
-                <module>pdf-report</module>
-                <module>php</module>
-                <module>piwik</module>
-                <module>profiler</module>
-                <module>quality-index</module>
-                <module>radiator</module>
-                <module>rules-meter</module>
-                <module>scm-activity</module>
-                <module>security-rules</module>
-                <module>sigmm</module>
-                <module>jacoco</module>
-                <module>sonarj</module>
-                <module>sonar-replay</module>
-                <module>sonar-squid-cli</module>
-                <module>sonar-squid-gui</module>
-                <module>taglist</module>
-                <module>technical-debt</module>
-                <module>testability-explorer</module>
-                <module>timeline</module>
-                <module>total-quality</module>
-                <module>twitter</module>
-                <module>web</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>unstableProjects</id>
-            <modules>
-                <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-                <module>codereview</module>
-            </modules>
-        </profile>
-    </profiles>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>5</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>sonar-motion-chart-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>1.1</version>
+  <name>Sonar Motion Chart plugin</name>
+  <description>Display how a set of metrics evolves over time.</description>
+  <inceptionYear>2009</inceptionYear>
+  <url>http://docs.codehaus.org/display/SONAR/Motion+Chart+plugin</url>
+  
+  <licenses>
+    <license>
+      <name>LGPL v.3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13722</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-motion-chart-plugin-1.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-motion-chart-plugin-1.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-motion-chart-plugin-1.1</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>cedric.munger</id>
+      <name>Cedric Munger</name>
+      <email>cedric.munger@gmail.com</email>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <email>simon.brandhof@sonarsource.com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>2.2</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>0.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginKey>motionchart</pluginKey>
+          <pluginName>Motion Chart</pluginName>
+          <pluginClass>org.sonar.plugins.motionchart.MotionChartPlugin</pluginClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
