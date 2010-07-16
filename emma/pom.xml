@@ -13,14 +13,14 @@
   <description>Emma is an alternative to Clover and Cobertura to measure coverage by unit tests.</description>
 
   <properties>
-    <sonarVersion>1.12</sonarVersion>
+    <sonar.version>1.12</sonar.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonarVersion}</version>
+      <version>${sonar.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -45,7 +45,7 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonarVersion}</version>
+      <version>${sonar.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
