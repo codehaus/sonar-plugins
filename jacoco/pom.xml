@@ -42,7 +42,6 @@
 
   <properties>
     <sonar.version>2.1</sonar.version>
-    <sonarVersion>2.1</sonarVersion>
   </properties>
 
   <dependencies>
