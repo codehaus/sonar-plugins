@@ -38,7 +38,6 @@
 
   <properties>
     <sonar.version>1.10.1</sonar.version>
-    <sonarVersion>2.0.1</sonarVersion>
     <sonar.pluginClass>org.sonar.plugins.jlint.JlintPlugin</sonar.pluginClass>
   </properties>
 
