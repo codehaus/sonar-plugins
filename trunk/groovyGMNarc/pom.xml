@@ -7,6 +7,18 @@
   <packaging>jar</packaging>
   <version>0.1-SNAPSHOT</version>
   <name>Groovy GMetrics CodeNarc plugin</name>
+  <url>http://docs.codehaus.org/dispolay/SONAR/Groovy-CN-GM-plugin</url>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/MY-COMPONENT-ID</url>
+  </issueManagement>
+  <scm>
+   <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/groovyGMNarc/</connection>
+   <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/groovyGMNarc/</developerConnection>
+   <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+
+ 
 
     <parent>
       <groupId>org.codehaus.sonar-plugins</groupId>
