@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<GMetrics url='http://www.gmetrics.org' version='GMetrics 0.2'><Report timestamp='May 21, 2010 2:54:22 PM'/>
+<Project title='Test Project'><SourceDirectory>src</SourceDirectory>
+<SourceDirectory>grails-app</SourceDirectory>
+</Project>
+<PackageSummary>
+<MetricResult name='CyclomaticComplexity' total='828' average='3.1'/>
+<MetricResult name='ClassLineCount' total='4383' average='60.9'/>
+<MetricResult name='MethodLineCount' total='2649' average='10.1'/>
+</PackageSummary><Package path='groovy'><MetricResult name='CyclomaticComplexity' total='36' average='3.3'/>
+<MetricResult name='ClassLineCount' total='601' average='60.1'/>
+<MetricResult name='MethodLineCount' total='143' average='13.0'/>
+</Package>
+<Package path='groovy/com'>
+<MetricResult name='CyclomaticComplexity' total='17' average='2.8'/>
+<MetricResult name='ClassLineCount' total='348' average='49.7'/>
+<MetricResult name='MethodLineCount' total='89' average='14.8'/>
+</Package><Package path='groovy/com/test'>
+<MetricResult name='CyclomaticComplexity' total='17' average='2.8'/>
+<MetricResult name='ClassLineCount' total='348' average='49.7'/>
+<MetricResult name='MethodLineCount' total='89' average='14.8'/>
+</Package><Package path='groovy/com/test/app'>
+<MetricResult name='CyclomaticComplexity' total='17' average='2.8'/>
+<MetricResult name='ClassLineCount' total='348' average='49.7'/>
+<MetricResult name='MethodLineCount' total='89' average='14.8'/>
+</Package>
+<Package path='groovy/com/test/app/pack'>
+<MetricResult name='CyclomaticComplexity' total='17' average='2.8'/>
+<MetricResult name='ClassLineCount' total='348' average='49.7'/>
+<MetricResult name='MethodLineCount' total='89' average='14.8'/>
+</Package>
+<Package path='groovy/com/test/app/pack/complex'>
+<MetricResult name='CyclomaticComplexity' total='17' average='2.8'/>
+<MetricResult name='ClassLineCount' total='348' average='49.7'/>
+<MetricResult name='MethodLineCount' total='89' average='14.8'/>
+<Class name='com.test.app.pack.complex.TestResolver'>
+<MetricResult name='CyclomaticComplexity' total='1' average='1.0'/>
+<MetricResult name='ClassLineCount' total='12' average='12'/>
+<MetricResult name='MethodLineCount' total='10' average='10.0'/>
+<Method name='resolveEntity'><MetricResult name='CyclomaticComplexity' total='1' average='1'/>
+<MetricResult name='MethodLineCount' total='10' average='10'/>
+</Method>
+</Class>
+</Package>
+<Metrics>
+<Metric name='ClassLineCount'>
+<Description><![CDATA[Measures the number of lines in each class or interface.]]>
+</Description>
+</Metric>
+<Metric name='CyclomaticComplexity'>
+<Description><![CDATA[Measures the (McCabe) Cyclomatic Complexity of source code. See http://en.wikipedia.org/wiki/Cyclomatic_complexity.]]></Description>
+</Metric>
+<Metric name='MethodLineCount'>
+<Description><![CDATA[Measures the number of lines in each method.]]></Description>
+</Metric>
+</Metrics>
+</GMetrics>
