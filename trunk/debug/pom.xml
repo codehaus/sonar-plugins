@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Sonar, open source software quality management tool.
-  ~ Copyright (C) 2009 SonarSource SA
+  ~ Copyright (C) 2009 SonarSource
   ~ mailto:contact AT sonarsource DOT com
   ~
   ~ Sonar is free software; you can redistribute it and/or
@@ -24,13 +24,13 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
 
   <artifactId>sonar-debug-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>sonar-plugin</packaging>
 
   <name>Sonar Plugins :: Debug</name>
 
@@ -64,7 +64,8 @@
   </repositories>
 
   <properties>
-    <sonar.version>2.0</sonar.version>
+    <sonar.version>2.1</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.debug.DebugPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
@@ -96,15 +97,8 @@
     <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-plugin-api</artifactId>
+      <artifactId>sonar-testing-harness</artifactId>
       <version>${sonar.version}</version>
-      <scope>test</scope>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.7</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -114,7 +108,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>1.2</version>
         <executions>
           <execution>
             <configuration>
@@ -129,19 +122,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <!-- complete META-INF/MANIFEST.MF -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.debug.DebugPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
     </plugins>
   </build>
