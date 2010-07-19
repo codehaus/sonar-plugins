@@ -16,10 +16,8 @@
   <url>http://docs.codehaus.org/display/SONAR/Profiler+Plugin</url>
 
   <properties>
-    <sonar.version>2.2-SNAPSHOT</sonar.version>
+    <sonar.version>2.2</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.profiler.ProfilerPlugin</sonar.pluginClass>
-
-    <sonarVersion>2.2-SNAPSHOT</sonarVersion>
   </properties>
 
   <dependencies>
