@@ -19,9 +19,7 @@
  */
 package org.sonar.plugins.emma;
 
-import org.apache.maven.project.MavenProject;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
@@ -29,6 +27,8 @@ import org.sonar.api.resources.Project;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 public class ProjectCoverageDecoratorTest {
 
@@ -41,7 +41,7 @@ public class ProjectCoverageDecoratorTest {
     );
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getChildren()).thenReturn(children);
-    new ProjectCoverageDecorator(null).decorate(new Project(new MavenProject()), context);
+    new ProjectCoverageDecorator(null).decorate(new Project(null), context);
 
     verify(context).saveMeasure(CoreMetrics.COVERAGE, 80.0);
   }
@@ -54,7 +54,7 @@ public class ProjectCoverageDecoratorTest {
     );
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getChildren()).thenReturn(children);
-    new ProjectCoverageDecorator(null).decorate(new Project(new MavenProject()), context);
+    new ProjectCoverageDecorator(null).decorate(new Project(null), context);
 
     verify(context).saveMeasure(CoreMetrics.COVERAGE, 70.0);
   }
@@ -67,7 +67,7 @@ public class ProjectCoverageDecoratorTest {
     );
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getChildren()).thenReturn(children);
-    new ProjectCoverageDecorator(null).decorate(new Project(new MavenProject()), context);
+    new ProjectCoverageDecorator(null).decorate(new Project(null), context);
 
     verify(context).saveMeasure(CoreMetrics.COVERAGE, 0.0);
   }
@@ -80,7 +80,7 @@ public class ProjectCoverageDecoratorTest {
     );
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getChildren()).thenReturn(children);
-    new ProjectCoverageDecorator(null).decorate(new Project(new MavenProject()), context);
+    new ProjectCoverageDecorator(null).decorate(new Project(null), context);
 
     verify(context).saveMeasure(CoreMetrics.COVERAGE, 0.0);
   }

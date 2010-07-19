@@ -134,7 +134,7 @@ public class EmmaXmlProcessor {
   }
 
   private interface LineRateMeasureHandler {
-    public void handleMeasure(String resourceName, double coverage);
+    void handleMeasure(String resourceName, double coverage);
   }
 
 }
