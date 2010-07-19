@@ -37,15 +37,14 @@ public class MetricsPage extends Page {
   protected Widget doOnModuleLoad() {
     final VerticalPanel panel = new VerticalPanel();
 
-
-    Sonar.getInstance().findAll(MetricQuery.all(), new AbstractListCallback<Metric>(){
+    Sonar.getInstance().findAll(MetricQuery.all(), new AbstractListCallback<Metric>() {
       @Override
       protected void doOnResponse(List<Metric> metrics) {
         Grid grid = new Grid(metrics.size(), 3);
         grid.setStyleName("data");
 
-        for (int i=0 ; i<metrics.size() ; i++) {
-          if (i%2==0) {
+        for (int i = 0; i < metrics.size(); i++) {
+          if (i % 2 == 0) {
             grid.getRowFormatter().setStyleName(i, "even");
           } else {
             grid.getRowFormatter().setStyleName(i, "odd");
@@ -59,11 +58,7 @@ public class MetricsPage extends Page {
       }
     });
 
-
-
-
     return panel;
   }
-
 
 }
