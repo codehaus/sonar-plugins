@@ -23,6 +23,8 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
@@ -32,6 +34,7 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
 
+@Ignore
 public class EmmaSensorTest {
 
   @Test

@@ -34,7 +34,8 @@ import java.util.List;
         description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
         module = true,
         project = true,
-        global = false)
+        global = false
+    )
 })
 public class EmmaPlugin implements Plugin {
 

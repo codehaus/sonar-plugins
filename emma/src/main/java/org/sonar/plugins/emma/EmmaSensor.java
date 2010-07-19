@@ -60,6 +60,9 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
     if (checkReportAvailability(report)) {
       EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(report, context);
       emmaXmlProcessor.process();
+      // TODO: Hack for SONARPLUGINS-52
+      EmmaProcessor processor = new EmmaProcessor(project.getFileSystem().getBuildDir(), context);
+      processor.process();
     }
   }
 
