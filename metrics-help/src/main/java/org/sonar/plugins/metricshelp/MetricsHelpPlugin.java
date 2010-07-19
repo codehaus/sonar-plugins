@@ -21,10 +21,8 @@ package org.sonar.plugins.metricshelp;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
-import org.sonar.plugins.metricshelp.client.MetricsPage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MetricsHelpPlugin implements Plugin {
