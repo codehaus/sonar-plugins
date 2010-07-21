@@ -120,7 +120,7 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
     @Override
     public boolean shouldDecorateResource(Resource resource)
     {
-        return Arrays.asList(Resource.QUALIFIER_PROJECT, Resource.QUALIFIER_MODULE).contains(resource.getQualifier());
+        return Arrays.asList(Resource.QUALIFIER_PROJECT, Resource.QUALIFIER_MODULE, Resource.QUALIFIER_VIEW, Resource.QUALIFIER_SUBVIEW).contains(resource.getQualifier());
     }
 
 }
