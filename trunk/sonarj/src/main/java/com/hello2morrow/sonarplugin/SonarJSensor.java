@@ -76,13 +76,14 @@ import com.hello2morrow.sonarplugin.xsd.XsdWarnings;
 import com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttribute;
 import com.hello2morrow.sonarplugin.xsd.XsdWarningsByAttributeGroup;
 
-public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
+public final class SonarJSensor implements Sensor
 {
-    public static final String LICENSE_FILE_NAME = "sonarj.license";
     public static final String DEVELOPER_COST_PER_HOUR = "sonarj.hourly_rate";
-    public static final String ACTIVATION_CODE = "sonarj.activation_code";
 
     private static final Logger LOG = LoggerFactory.getLogger(SonarJSensor.class);
+
+    private static final String REPORT_DIR = "sonarj-sonar-plugin";
+    private static final String REPORT_NAME= "sonarj-report.xml";
 
     private static final String ACD = "Average component dependency (ACD)";
     private static final String NCCD = "Normalized cumulative component dependency (NCCD)";
@@ -104,7 +105,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     private static final String INTERNAL_TYPES = "Number of internal types (all)";
     private static final String STUCTURAL_DEBT_INDEX = "Structural debt (index)";
 
-    private final SonarJPluginHandler pluginHandler;
     private Map<String, Number> projectMetrics;
     private SensorContext sensorContext;
     private RulesManager rulesManager;
@@ -132,7 +132,10 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         {
             if (!packaging.equalsIgnoreCase("pom"))
             {
-                LOG.warn("Cannot open SonarJ report: "+fileName+". Empty project?");
+                LOG.warn("Cannot open SonarJ report: "+fileName+".");
+                LOG.warn("  Did you run the maven sonarj goal before?");
+                LOG.warn("  Is the project part of the SonarJ architecture description");
+                LOG.warn("  Did you set the 'aggregate' to true? (must be false)");
             }
         }   
         finally
@@ -154,10 +157,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     
     public SonarJSensor(Configuration config, RulesManager rulesManager, RulesProfile rulesProfile)
     {
-        String licenseFileName = config.getString(LICENSE_FILE_NAME);
-        
         developerCostRate = config.getDouble(DEVELOPER_COST_PER_HOUR, 70.0);
-        pluginHandler = new SonarJPluginHandler(licenseFileName, config.getString(ACTIVATION_CODE));
         this.rulesManager = rulesManager;
         this.rulesProfile = rulesProfile;
         if (rulesManager == null)
@@ -170,11 +170,6 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         }
     }
     
-    public MavenPluginHandler getMavenPluginHandler(Project proj)
-    {
-        return pluginHandler;
-    }
-
     public boolean shouldExecuteOnProject(Project project)
     {
         return true; 
@@ -326,6 +321,13 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         return buName;
     }
 
+    private static String relativeFileNameToFqName(String fileName)
+    {
+        int lastDot = fileName.lastIndexOf('.');
+
+        return fileName.substring(0, lastDot).replace('/', '.');
+    }
+
     private int handleArchitectureViolations(XsdViolations violations, String buildUnitName)
     {
         Rule rule = rulesManager.getPluginRule(SonarJPluginBase.PLUGIN_KEY, SonarJPluginBase.ARCH_RULE_KEY);
@@ -355,7 +357,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 
                             if (relFileName != null)
                             {
-                                String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
+                                String fqName = relativeFileNameToFqName(relFileName);
                                 saveViolation(rule, activeRule.getPriority(), fqName, Integer.valueOf(pos.getLine()), msg);
                             }
                         }
@@ -407,7 +409,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 
                                         if (relFileName != null)
                                         {
-                                            String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
+                                            String fqName = relativeFileNameToFqName(relFileName);
 
                                             saveViolation(rule, activeRule.getPriority(), fqName, Integer.valueOf(pos.getLine()), msg);
                                         }
@@ -524,7 +526,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
 
                         if (relFileName != null)
                         {
-                            String fqName = relFileName.substring(0, relFileName.length()-5).replace('/', '.');
+                            String fqName = relativeFileNameToFqName(relFileName);
                             int line = Integer.valueOf(pos.getLine());
 
                             if (line == 0)
@@ -558,9 +560,17 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         saveMeasure(DUPLICATE_WARNINGS, SonarJMetrics.DUPLICATE_WARNINGS, 0);
     	
     	assert types >= 1.0 : "Project must not be empty !";
+    	
+    	double violatingTypesPercent = 1;
+    	double unassignedTypesPercent = 1;
+    	if (types == 0)
+    	{
+            violatingTypesPercent = 100.0 * violatingTypes.getValue()/types;
+            unassignedTypesPercent = 100.0 * unassignedTypes.getValue()/types;
+    	}
+        saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, violatingTypesPercent, 1);
+        saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypesPercent, 1);
 
-    	saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0 * violatingTypes.getValue()/types, 1);
-    	saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypes.getValue()/types, 1);
 
     	XsdViolations violations = report.getViolations();
     	
@@ -604,7 +614,7 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
         double index = saveMeasure(STUCTURAL_DEBT_INDEX, SonarJMetrics.EROSION_INDEX, 0).getValue();
 
         analyseCycleGroups(report, internalPackages, buildUnitName);
-        if ((isMultiModuleProject || pluginHandler.isUsingArchitectureDescription()) && projectMetrics.get(UNASSIGNED_TYPES) != null)
+        if (projectMetrics.get(UNASSIGNED_TYPES) != null)
         {
             LOG.info("Adding architecture measures for "+project.getName());
             addArchitectureMeasures(report, buildUnitName);
@@ -660,11 +670,20 @@ public final class SonarJSensor implements Sensor, DependsUponMavenPlugin
     
     public void analyse(Project project, SensorContext sensorContext)
     {
-        ReportContext report = readSonarjReport(pluginHandler.getReportFileName(), project.getPackaging());
+
+        LOG.info("------------------------------------------------------------------------");
+        LOG.info("Execute sonar-sonarj-plugin for "+project.getName());
+        LOG.info("------------------------------------------------------------------------");
+        ReportContext report = readSonarjReport(getReportFileName(project), project.getPackaging());
         
         if (report != null)
         {
         	analyse(new ProjectDelegate(project), sensorContext, report);
         }
+    }
+    
+    public final String getReportFileName(Project project)
+    {
+        return project.getFileSystem().getBuildDir().getPath()+'/'+REPORT_DIR+'/'+REPORT_NAME;
     }
 }

@@ -35,30 +35,10 @@ import org.sonar.api.Property;
 ({
     @Property
     (
-        key = SonarJSensor.LICENSE_FILE_NAME,
-        defaultValue = "",
-        name = "Path of SonarJ License File",
-        project = false,
-        module = false,
-        global = true
-    ),
-    
-    @Property
-    (
-        key = SonarJSensor.ACTIVATION_CODE,
-        defaultValue = "",
-        name = "Activation Code",
-        project = false,
-        module = false,
-        global = true
-    ),
-        
-    @Property
-    (
         key = SonarJSensor.DEVELOPER_COST_PER_HOUR,
         defaultValue = "70",
         name = "Cost per Developer Hour in US$",
-        project = false,
+        project = true,
         module = false,
         global = true
     )
