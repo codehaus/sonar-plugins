@@ -23,10 +23,17 @@ package org.sonar.plugins.jacoco;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.test.IsMeasure;
+import org.sonar.api.test.IsResource;
 
 import java.io.File;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Evgeny Mandrikov
@@ -48,5 +55,21 @@ public class JaCoCoSensorTest {
     SensorContext context = mock(SensorContext.class);
 
     sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
+
+    verify(context).saveMeasure(
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
+        eq(CoreMetrics.LINES_TO_COVER),
+        anyDouble()
+    );
+    verify(context).saveMeasure(
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
+        eq(CoreMetrics.UNCOVERED_LINES),
+        anyDouble()
+    );
+    verify(context).saveMeasure(
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
+        argThat(new IsMeasure(CoreMetrics.COVERAGE_LINE_HITS_DATA))
+    );
+    verifyNoMoreInteractions(context);
   }
 }

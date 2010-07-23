@@ -51,6 +51,7 @@ import java.io.IOException;
  */
 public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
 
+  private Logger logger = LoggerFactory.getLogger(getClass());
   private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
 
   public JaCoCoSensor(Plugins plugins) {
@@ -58,7 +59,8 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    File jacocoExecutionData = new File(project.getFileSystem().getBuildDir(), "jacoco.exec");
+    String path = project.getConfiguration().getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
+    File jacocoExecutionData = project.getFileSystem().resolvePath(path);
     if (checkReportAvailability(jacocoExecutionData)) {
       try {
         readExecutionData(jacocoExecutionData, project.getFileSystem().getBuildOutputDir(), context);
@@ -69,7 +71,6 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
   }
 
   private boolean checkReportAvailability(File report) {
-    Logger logger = LoggerFactory.getLogger(getClass());
     if (report == null || !report.exists() || !report.isFile()) {
       logger.error("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", report);
       return false;
@@ -98,7 +99,8 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
   }
 
   private void analyzeClass(ClassCoverage classCoverage, SensorContext context) {
-    JavaFile resource = new JavaFile(StringUtils.replaceChars(classCoverage.getName(), '/', '.'));
+    String className = StringUtils.replaceChars(classCoverage.getName(), '/', '.');
+    JavaFile resource = new JavaFile(className);
 
     lineHitsBuilder.clear();
 
@@ -116,14 +118,12 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
         case ILines.NO_CODE:
           continue;
         default:
+          logger.warn("Unknown status for line {} in {}", lineId, className);
           continue;
       }
       lineHitsBuilder.add(lineId, fakeHits);
     }
 
-    double coverage = ParsingUtils.scaleValue(100 * lines.getCoveredRatio());
-    context.saveMeasure(resource, CoreMetrics.COVERAGE, coverage);
-    context.saveMeasure(resource, CoreMetrics.LINE_COVERAGE, coverage);
     context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines.getTotalCount());
     context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines.getMissedCount());
     context.saveMeasure(resource, lineHitsBuilder.build().setPersistenceMode(PersistenceMode.DATABASE));
