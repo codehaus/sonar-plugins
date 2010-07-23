@@ -42,7 +42,7 @@ public class JaCoCoSensorTest {
   @Test
   public void testReadExecutionData() throws Exception {
     File jacocoExecutionData = new File(
-        getClass().getResource("/org/sonar/plugins/jacoco/JaCoCoSensorNewTest/jacoco.exec").getFile()
+        getClass().getResource("/org/sonar/plugins/jacoco/JaCoCoSensorTest/jacoco.exec").getFile()
     );
     File buildOutputDir = jacocoExecutionData.getParentFile();
     SensorContext context = mock(SensorContext.class);
