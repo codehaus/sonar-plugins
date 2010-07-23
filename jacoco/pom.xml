@@ -51,6 +51,11 @@
   </ciManagement>
 
   <properties>
+    <!-- !!! IMPORTANT !!!
+    After changing version - don't forget to change SurefireMavenPluginHandler
+    -->
+    <jacoco.version>0.4.0.20100604151516</jacoco.version>
+
     <sonar.version>2.2</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
   </properties>
@@ -59,7 +64,12 @@
     <dependency>
       <groupId>org.jacoco</groupId>
       <artifactId>core</artifactId>
-      <version>0.3.3.20100519170459</version>
+      <version>${jacoco.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>agent-all</artifactId>
+      <version>${jacoco.version}</version>
     </dependency>
     <dependency>
       <groupId>asm</groupId>

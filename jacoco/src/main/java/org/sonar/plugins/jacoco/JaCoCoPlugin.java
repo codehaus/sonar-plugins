@@ -20,27 +20,26 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
  */
 @Properties({
-  @Property(
-    key = JaCoCoPlugin.REPORT_PATH_PROPERTY,
-    name = "File with execution data",
-    defaultValue = JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE,
-    description = "Path (absolute or relative) to the file with execution data.",
-    module = true,
-    project = true,
-    global = false
-  )
+    @Property(
+        key = JaCoCoPlugin.REPORT_PATH_PROPERTY,
+        name = "File with execution data",
+        defaultValue = JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE,
+        description = "Path (absolute or relative) to the file with execution data.",
+        module = true,
+        project = true,
+        global = false
+    )
 })
 public class JaCoCoPlugin implements Plugin {
 
@@ -60,10 +59,8 @@ public class JaCoCoPlugin implements Plugin {
         " Set the parameter 'Code coverage plugin' to <code>jacoco</code> in the General plugin.";
   }
 
-  public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(JaCoCoSensor.class);
-    return list;
+  public List getExtensions() {
+    return Arrays.asList(SurefireMavenPluginHandler.class, JaCoCoSensor.class);
   }
 
   @Override
