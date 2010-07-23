@@ -5,26 +5,36 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
 
   <artifactId>sonar-jacoco-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
+  <packaging>sonar-plugin</packaging>
+
   <name>Sonar JaCoCo Plugin</name>
+  <description>JaCoCo is an alternative to Clover and Cobertura to measure coverage by unit tests.</description>
   <url>http://docs.codehaus.org/display/SONAR/JaCoCo+Plugin</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
-    <name>Compuware</name>
-    <url>http://www.compuware.com</url>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
   </organization>
   <licenses>
     <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
+      <name>GNU LGPL 3</name>
       <url>http://www.gnu.org/licenses/lgpl.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+    </developer>
+  </developers>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jacoco</connection>
@@ -41,38 +51,27 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.1</sonar.version>
+    <sonar.version>2.2</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>core</artifactId>
+      <version>0.3.3.20100519170459</version>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-all</artifactId>
+      <version>3.2</version>
+    </dependency>
+
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
-      <version>2.0.7</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-plugin-api</artifactId>
-      <version>2.0.7</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-core</artifactId>
-      <version>2.0.7</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jacoco</groupId>
-      <artifactId>core</artifactId>
-      <version>0.3.3.20100519170459</version>
     </dependency>
     <!-- unit tests -->
     <dependency>
@@ -82,30 +81,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/main/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-      </testResource>
-    </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.jacoco.JaCoCoPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
   <repositories>
     <repository>
