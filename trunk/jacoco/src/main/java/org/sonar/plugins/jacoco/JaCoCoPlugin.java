@@ -1,45 +1,38 @@
-/**
- * Copyright (c) 2010 Compuware Corp.
- * Sonar Plugin JaCoCo, open source software Sonar plugin.
- * mailto:anthony.dahanne@compuware.com
+/*
+ * Sonar, open source software quality management tool.
+ * Copyright (C) 2010 SonarSource
+ * mailto:contact AT sonarsource DOT com
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * Sonar is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
  *
- * The above copyright notice, this permission notice and the below disclaimer shall be included in all copies or substantial portions of the Software.
+ * Sonar is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. WITHOUT LIMITING THE FOREGOING, COMPUWARE MAKES NO REPRESENTATIONS OR WARRANTIES CONCERNING THE COMPLETENESS, ACCURACY OR OPERATION OF THE SOFTWARE.  CLIENT SHALL HAVE THE SOLE RESPONSIBILITY FOR ADEQUATE PROTECTION AND BACKUP OF ITS DATA USED IN CONNECTION WITH THE SOFTWARE.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with Sonar; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
 package org.sonar.plugins.jacoco;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
-import org.sonar.api.Properties;
-import org.sonar.api.Property;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Properties({
-    @Property(
-        key = JaCoCoCoreProperties.JACOCO_REPORT_PATH_PROPERTY,
-        name = "Report path",
-        description = "Path (absolute or relative) to JaCoCo xml report file.",
-        project = true,
-        global = false)
-})
+/**
+ * @author Evgeny Mandrikov
+ */
 public class JaCoCoPlugin implements Plugin {
-  Logger logger = LoggerFactory.getLogger(getClass());
-
-  public JaCoCoPlugin() {
-    super();
-  }
 
   public String getKey() {
-    return JaCoCoCoreProperties.JACOCO_PLUGIN;
+    return "jacoco";
   }
 
   public String getName() {
@@ -47,13 +40,13 @@ public class JaCoCoPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return "JaCoCo is a tool that calculates the percentage of code accessed by tests. It can be used to identify which parts of Java program are lacking test coverage. You can find more by going to the <a href='http://www.eclemma.org/jacoco/'>JaCoCo web site</a>.";
+    return "<a href='http://www.eclemma.org/jacoco/'>JaCoCo</a> calculates coverage of unit tests." +
+        " Set the parameter 'Code coverage plugin' to <code>jacoco</code> in the General plugin.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(JaCoCoSensor.class);
-    list.add(JaCoCoMavenPluginHandler.class);
     return list;
   }
 
@@ -61,4 +54,5 @@ public class JaCoCoPlugin implements Plugin {
   public String toString() {
     return getKey();
   }
+
 }
