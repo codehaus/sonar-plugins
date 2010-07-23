@@ -29,8 +29,10 @@ import com.vladium.util.IntObjectMap;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.JavaFile;
+import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.SonarException;
 
 import java.io.File;
@@ -78,18 +80,34 @@ public class EmmaProcessor {
 
     public Object visit(SrcFileItem item, Object o) {
       lineHitsBuilder.clear();
+      int lines = 0;
+      int coveredLines = 0;
 
       IntObjectMap map = item.getLineCoverage();
       for (int lineId : map.keys()) {
         SrcFileItem.LineCoverageData lineCoverageData = (SrcFileItem.LineCoverageData) map.get(lineId);
-        int hits = lineCoverageData.m_coverageStatus == SrcFileItem.LineCoverageData.LINE_COVERAGE_COMPLETE ? 1 : 0;
-        lineHitsBuilder.add(lineId, hits);
+
+        lines++;
+        final int fakeHits;
+        if (lineCoverageData.m_coverageStatus == SrcFileItem.LineCoverageData.LINE_COVERAGE_COMPLETE) {
+          coveredLines++;
+          fakeHits = 1;
+        } else {
+          fakeHits = 0;
+        }
+        lineHitsBuilder.add(lineId, fakeHits);
       }
 
       String packageName = item.getParent().getName();
       String fileName = item.getName();
       JavaFile resource = new JavaFile(packageName, StringUtils.substringBeforeLast(fileName, "."));
-      context.saveMeasure(resource, lineHitsBuilder.build());
+
+      double coverage = calculateCoverage(coveredLines, lines);
+      context.saveMeasure(resource, CoreMetrics.COVERAGE, coverage);
+      context.saveMeasure(resource, CoreMetrics.LINE_COVERAGE, coverage);
+      context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines);
+      context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines - coveredLines);
+      context.saveMeasure(resource, lineHitsBuilder.build().setPersistenceMode(PersistenceMode.DATABASE));
 
       return o;
     }
@@ -101,5 +119,12 @@ public class EmmaProcessor {
         child.accept(this, ctx);
       }
     }
+  }
+
+  private static double calculateCoverage(int coveredElements, int elements) {
+    if (elements > 0) {
+      return ParsingUtils.scaleValue(100.0 * ((double) coveredElements / (double) elements));
+    }
+    return 0.0;
   }
 }

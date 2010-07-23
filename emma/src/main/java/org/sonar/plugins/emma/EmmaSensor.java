@@ -20,21 +20,15 @@
 
 package org.sonar.plugins.emma;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.maven.DependsUponMavenPlugin;
-import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.resources.Project;
 
-import java.io.File;
-
 public class EmmaSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
-  public static final String PROP_REPORT_PATH = "sonar.emma.reportPath";
 
   private EmmaMavenPluginHandler pluginHandler;
 
@@ -57,17 +51,14 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
   }
 
   public void analyse(Project project, SensorContext context) {
-    File report = getReport(project);
-    if (checkReportAvailability(report)) {
-      EmmaXmlProcessor emmaXmlProcessor = new EmmaXmlProcessor(report, context);
-      emmaXmlProcessor.process();
-      // TODO: Hack for SONARPLUGINS-52
-      EmmaProcessor processor = new EmmaProcessor(project.getFileSystem().getBuildDir(), context);
-      processor.process();
-    }
+//    File report = getReport(project);
+//    if (checkReportAvailability(report)) {
+    EmmaProcessor processor = new EmmaProcessor(project.getFileSystem().getBuildDir(), context);
+    processor.process();
+//    }
   }
 
-
+  /*
   private boolean checkReportAvailability(File report) {
     Logger logger = LoggerFactory.getLogger(getClass());
     if (report == null || !report.exists() || !report.isFile()) {
@@ -91,7 +82,7 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
   }
 
   private File getReportFromProperty(Project project) {
-    String path = (String) project.getProperty(PROP_REPORT_PATH);
+    String path = (String) project.getProperty(EmmaPlugin.REPORT_PATH_PROPERTY);
     if (path != null) {
       return project.getFileSystem().resolvePath(path);
     }
@@ -112,5 +103,6 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
   private File getReportFromDefaultPath(Project project) {
     return new File(project.getFileSystem().getReportOutputDir(), "emma/coverage.xml");
   }
+  */
 
 }
