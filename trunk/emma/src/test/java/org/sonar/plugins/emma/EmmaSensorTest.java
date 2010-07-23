@@ -25,17 +25,20 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
+
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.test.IsResource;
 import org.sonar.api.test.MavenTestUtils;
 
-@Ignore
 public class EmmaSensorTest {
 
   @Test
@@ -43,21 +46,7 @@ public class EmmaSensorTest {
     SensorContext context = mock(SensorContext.class);
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromProperty/pom.xml");
     new EmmaSensor(null, null).analyse(project, context);
-    verify(context, atLeastOnce()).saveMeasure(eq(CoreMetrics.COVERAGE), anyDouble());
-  }
-
-  @Test
-  public void shouldNotFailWhenReportNotFound() {
-    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldNotFailWhenReportNotFound/pom.xml");
-    new EmmaSensor(null, null).analyse(project, mock(SensorContext.class));
-  }
-
-  @Test
-  public void shouldGetReportPathFromPom() {
-    SensorContext context = mock(SensorContext.class);
-    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromPom/pom.xml");
-    new EmmaSensor(null, null).analyse(project, context);
-    verify(context, atLeastOnce()).saveMeasure(eq(CoreMetrics.COVERAGE), anyDouble());
+    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.AbstractJavaGeneratingPluginTestCase")), eq(CoreMetrics.LINES_TO_COVER), anyDouble());
   }
 
   @Test

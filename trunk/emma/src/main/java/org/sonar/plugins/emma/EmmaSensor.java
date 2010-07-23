@@ -17,20 +17,25 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.emma;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.maven.DependsUponMavenPlugin;
+import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.resources.Project;
 
-public class EmmaSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
+import java.io.File;
 
+public class EmmaSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
   private EmmaMavenPluginHandler pluginHandler;
+  Logger logger = LoggerFactory.getLogger(getClass());
+
 
   public EmmaSensor(Plugins plugins, EmmaMavenPluginHandler pluginHandler) {
     super(plugins);
@@ -42,41 +47,32 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
     return super.shouldExecuteOnProject(project) && project.getFileSystem().hasJavaSourceFiles();
   }
 
+  public void analyse(Project project, SensorContext context) {
+    File reportsPath = getReport(project);
+    EmmaProcessor processor = new EmmaProcessor(reportsPath, context);
+    processor.process();
+  }
+
   public MavenPluginHandler getMavenPluginHandler(Project project) {
     if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
       return pluginHandler;
     }
-    // do not execute maven plugin if reuseReport mode
     return null;
   }
 
-  public void analyse(Project project, SensorContext context) {
-//    File report = getReport(project);
-//    if (checkReportAvailability(report)) {
-    EmmaProcessor processor = new EmmaProcessor(project.getFileSystem().getBuildDir(), context);
-    processor.process();
-//    }
-  }
 
-  /*
-  private boolean checkReportAvailability(File report) {
-    Logger logger = LoggerFactory.getLogger(getClass());
-    if (report == null || !report.exists() || !report.isFile()) {
-      logger.error("Emma report not found : {}. Project coverage is set to 0%.", report);
-      return false;
-    }
-
-    logger.info("Analysing {}", report.getAbsolutePath());
-    return true;
-  }
-
-  private File getReport(Project project) {
+  protected File getReport(Project project) {
     File report = getReportFromProperty(project);
     if (report == null) {
       report = getReportFromPluginConfiguration(project);
     }
     if (report == null) {
       report = getReportFromDefaultPath(project);
+    }
+
+    if (report == null || !report.exists() || !report.isDirectory()) {
+      logger.warn("Emma report path not found at {}", report);
+      report = null;
     }
     return report;
   }
@@ -90,19 +86,18 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
   }
 
   private File getReportFromPluginConfiguration(Project project) {
-    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
-    if (plugin != null) {
-      String path = plugin.getParameter("outputDirectory");
+    MavenPlugin mavenPlugin = MavenPlugin.getPlugin(project.getPom(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
+    if (mavenPlugin != null) {
+      String path = mavenPlugin.getParameter("outputDirectory");
       if (path != null) {
-        return new File(project.getFileSystem().resolvePath(path), "coverage.xml");
+        return project.getFileSystem().resolvePath(path);
       }
     }
     return null;
   }
 
   private File getReportFromDefaultPath(Project project) {
-    return new File(project.getFileSystem().getReportOutputDir(), "emma/coverage.xml");
+    return project.getFileSystem().getBuildDir();
   }
-  */
 
 }
