@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.maven.MavenPlugin;
@@ -30,7 +29,8 @@ import org.sonar.api.test.MavenTestUtils;
 import org.sonar.api.utils.HttpDownloader;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Evgeny Mandrikov
@@ -48,9 +48,11 @@ public class SurefireMavenPluginHandlerTest {
   public void testConfigurePlugin() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
     MavenPlugin plugin = new MavenPlugin(MavenSurefireUtils.GROUP_ID, MavenSurefireUtils.ARTIFACT_ID, MavenSurefireUtils.VERSION);
+    handler = spy(handler);
+    doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
 
     handler.configure(project, plugin);
 
-    assertThat(plugin.getParameter("argLine"), Matchers.containsString("-javaagent:"));
+    assertThat(plugin.getParameter("argLine"), is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec"));
   }
 }

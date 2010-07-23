@@ -13,6 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
@@ -22,6 +23,7 @@ package org.sonar.plugins.jacoco;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
@@ -40,6 +42,7 @@ import java.net.URISyntaxException;
 public class SurefireMavenPluginHandler implements MavenPluginHandler {
   private static final String ARG_LINE_PARAMETER = "argLine";
 
+  private static String agentPath;
   private HttpDownloader downloader;
 
   public SurefireMavenPluginHandler(HttpDownloader downloader) {
@@ -66,6 +69,13 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     return new String[]{"test"};
   }
 
+  protected String getAgentPath(Project project) {
+    if (agentPath == null) {
+      agentPath = downloadAgent(project);
+    }
+    return agentPath;
+  }
+
   private String downloadAgent(Project project) {
     try {
       String host = project.getConfiguration().getString("sonar.host.url", "http://localhost:9000");
@@ -73,6 +83,7 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
       File agent = File.createTempFile("jacocoagent", ".jar");
       downloader.download(uri, agent);
       FileUtils.forceDeleteOnExit(agent);
+      LoggerFactory.getLogger(getClass()).info("Agent: {}", agent);
       return agent.getAbsolutePath();
     } catch (IOException e) {
       throw new SonarException(e);
@@ -83,10 +94,9 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
 
   public void configure(Project project, MavenPlugin surefirePlugin) {
     String argLine = surefirePlugin.getParameter(ARG_LINE_PARAMETER);
-    String path = JaCoCoSensor.getPath(project);
-    String agentPath = downloadAgent(project);
-    String agent = "-javaagent:" + agentPath + "=destfile=" + path;
+    String agent = "-javaagent:" + getAgentPath(project) + "=destfile=" + JaCoCoSensor.getPath(project);
     argLine = StringUtils.isBlank(argLine) ? agent : agent + " " + argLine;
     surefirePlugin.setParameter(ARG_LINE_PARAMETER, argLine);
   }
+
 }
