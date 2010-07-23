@@ -28,19 +28,22 @@ import org.sonar.api.Property;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Properties({
-//    @Property(
-//        key = EmmaPlugin.REPORT_PATH_PROPERTY,
-//        name = "Report file",
-//        description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
-//        module = true,
-//        project = true,
-//        global = false
-//    )
-//})
+@Properties({
+  @Property(
+    key = EmmaPlugin.REPORT_PATH_PROPERTY,
+    name = "Report file",
+    description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
+    module = true,
+    project = true,
+    global = false
+  )
+})
 public class EmmaPlugin implements Plugin {
 
-//  public static final String REPORT_PATH_PROPERTY = "sonar.emma.reportPath";
+  public static final String REPORT_PATH_PROPERTY = "sonar.emma.reportPath";
+  public static final String META_DATA = "coverage.em";
+  public static final String COVERAGE_DATA = "coverage-0.ec";
+
 
   public String getKey() {
     return "emma";
@@ -52,7 +55,7 @@ public class EmmaPlugin implements Plugin {
 
   public String getDescription() {
     return "<a href='http://emma.sourceforge.net'>Emma</a> calculates coverage of unit tests." +
-        " Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
+      " Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {

@@ -51,8 +51,8 @@ public class EmmaProcessor {
 
   public EmmaProcessor(File buildDir, SensorContext context) {
     try {
-      IMergeable[] mergeableMetadata = DataFactory.load(new File(buildDir, "coverage.em"));
-      IMergeable[] mergeableCoverageData = DataFactory.load(new File(buildDir, "coverage-0.ec"));
+      IMergeable[] mergeableMetadata = DataFactory.load(new File(buildDir, EmmaPlugin.META_DATA));
+      IMergeable[] mergeableCoverageData = DataFactory.load(new File(buildDir, EmmaPlugin.COVERAGE_DATA));
       IMetaData metaData = (IMetaData) mergeableMetadata[DataFactory.TYPE_METADATA];
       ICoverageData coverageData = (ICoverageData) mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA];
       this.model = IReportDataModel.Factory.create(metaData, coverageData);
@@ -102,9 +102,6 @@ public class EmmaProcessor {
       String fileName = item.getName();
       JavaFile resource = new JavaFile(packageName, StringUtils.substringBeforeLast(fileName, "."));
 
-      double coverage = calculateCoverage(coveredLines, lines);
-      context.saveMeasure(resource, CoreMetrics.COVERAGE, coverage);
-      context.saveMeasure(resource, CoreMetrics.LINE_COVERAGE, coverage);
       context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines);
       context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines - coveredLines);
       context.saveMeasure(resource, lineHitsBuilder.build().setPersistenceMode(PersistenceMode.DATABASE));
@@ -119,12 +116,5 @@ public class EmmaProcessor {
         child.accept(this, ctx);
       }
     }
-  }
-
-  private static double calculateCoverage(int coveredElements, int elements) {
-    if (elements > 0) {
-      return ParsingUtils.scaleValue(100.0 * ((double) coveredElements / (double) elements));
-    }
-    return 0.0;
   }
 }
