@@ -43,7 +43,7 @@ public class JaCoCoSensorTest {
 
   @Before
   public void setUp() {
-    sensor = new JaCoCoSensor(null);
+    sensor = new JaCoCoSensor(null, null);
   }
 
   @Test

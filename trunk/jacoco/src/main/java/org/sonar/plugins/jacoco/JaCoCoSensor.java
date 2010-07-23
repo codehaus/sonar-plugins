@@ -34,6 +34,8 @@ import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.batch.maven.DependsUponMavenPlugin;
+import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.PropertiesBuilder;
@@ -48,17 +50,26 @@ import java.io.IOException;
 /**
  * @author Evgeny Mandrikov
  */
-public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
+public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
+  private SurefireMavenPluginHandler handler;
   private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
 
-  public JaCoCoSensor(Plugins plugins) {
+  public JaCoCoSensor(Plugins plugins, SurefireMavenPluginHandler handler) {
     super(plugins);
+    this.handler = handler;
+  }
+
+  public MavenPluginHandler getMavenPluginHandler(Project project) {
+    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
+      return handler;
+    }
+    return null;
   }
 
   public void analyse(Project project, SensorContext context) {
-    String path = project.getConfiguration().getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
+    String path = getPath(project);
     File jacocoExecutionData = project.getFileSystem().resolvePath(path);
     if (checkReportAvailability(jacocoExecutionData)) {
       try {
@@ -67,6 +78,10 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
         throw new SonarException(e);
       }
     }
+  }
+
+  public static String getPath(Project project) {
+    return project.getConfiguration().getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
   }
 
   private boolean checkReportAvailability(File report) {

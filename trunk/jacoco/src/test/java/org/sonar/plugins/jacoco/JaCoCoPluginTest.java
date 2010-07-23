@@ -31,6 +31,6 @@ import static org.junit.Assert.assertThat;
 public class JaCoCoPluginTest {
   @Test
   public void jacocoExtensions() {
-    assertThat(new JaCoCoPlugin().getExtensions().size(), is(1));
+    assertThat(new JaCoCoPlugin().getExtensions().size(), is(2));
   }
 }
