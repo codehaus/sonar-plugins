@@ -51,10 +51,16 @@ public class EmmaProcessor {
 
   public EmmaProcessor(File buildDir, SensorContext context) {
     try {
+      File coverageFile = new File(buildDir, EmmaPlugin.COVERAGE_DATA);
+      final ICoverageData coverageData;
+      if (coverageFile.exists()) {
+        IMergeable[] mergeableCoverageData = DataFactory.load(coverageFile);
+        coverageData = (ICoverageData) mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA];
+      } else {
+        coverageData = DataFactory.newCoverageData();
+      }
       IMergeable[] mergeableMetadata = DataFactory.load(new File(buildDir, EmmaPlugin.META_DATA));
-      IMergeable[] mergeableCoverageData = DataFactory.load(new File(buildDir, EmmaPlugin.COVERAGE_DATA));
       IMetaData metaData = (IMetaData) mergeableMetadata[DataFactory.TYPE_METADATA];
-      ICoverageData coverageData = (ICoverageData) mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA];
       this.model = IReportDataModel.Factory.create(metaData, coverageData);
       this.context = context;
     } catch (IOException e) {

@@ -20,24 +20,22 @@
 
 package org.sonar.plugins.emma;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Test;
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.test.IsResource;
 import org.sonar.api.test.MavenTestUtils;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class EmmaSensorTest {
 
