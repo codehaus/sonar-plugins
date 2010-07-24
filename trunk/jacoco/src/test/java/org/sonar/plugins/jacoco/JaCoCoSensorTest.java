@@ -30,7 +30,7 @@ import org.sonar.api.test.IsResource;
 
 import java.io.File;
 
-import static org.mockito.Matchers.anyDouble;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -59,12 +59,12 @@ public class JaCoCoSensorTest {
     verify(context).saveMeasure(
         argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
         eq(CoreMetrics.LINES_TO_COVER),
-        anyDouble()
+        doubleThat(greaterThan(0d))
     );
     verify(context).saveMeasure(
         argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
         eq(CoreMetrics.UNCOVERED_LINES),
-        anyDouble()
+        doubleThat(greaterThan(0d))
     );
     verify(context).saveMeasure(
         argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),

@@ -21,9 +21,7 @@
 package org.sonar.plugins.jacoco;
 
 import org.apache.commons.lang.StringUtils;
-import org.jacoco.core.analysis.ClassCoverage;
-import org.jacoco.core.analysis.CoverageBuilder;
-import org.jacoco.core.analysis.ILines;
+import org.jacoco.core.analysis.*;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
@@ -107,18 +105,19 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
     Analyzer analyzer = new Analyzer(coverageBuilder);
     analyzer.analyzeAll(buildOutputDir);
 
-    for (ClassCoverage classCoverage : coverageBuilder.getClasses()) {
-      analyzeClass(classCoverage, context);
+    for (SourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
+      String fileName = StringUtils.substringBeforeLast(coverage.getName(), ".");
+      String resourceName = StringUtils.replaceChars(coverage.getPackageName() + "/" + fileName, '/', '.');
+
+      JavaFile resource = new JavaFile(resourceName);
+      analyzeClass(resource, coverage, context);
     }
   }
 
-  private void analyzeClass(ClassCoverage classCoverage, SensorContext context) {
-    String className = StringUtils.replaceChars(classCoverage.getName(), '/', '.');
-    JavaFile resource = new JavaFile(className);
-
+  private void analyzeClass(JavaFile resource, ICoverageNode coverage, SensorContext context) {
     lineHitsBuilder.clear();
 
-    final ILines lines = classCoverage.getLines();
+    final ILines lines = coverage.getLines();
     for (int lineId = lines.getFirstLine(); lineId <= lines.getLastLine(); lineId++) {
       final int fakeHits;
       switch (lines.getStatus(lineId)) {
@@ -132,7 +131,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
         case ILines.NO_CODE:
           continue;
         default:
-          logger.warn("Unknown status for line {} in {}", lineId, className);
+          logger.warn("Unknown status for line {} in {}", lineId, resource);
           continue;
       }
       lineHitsBuilder.add(lineId, fakeHits);
