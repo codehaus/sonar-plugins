@@ -45,14 +45,35 @@ public class SurefireMavenPluginHandlerTest {
   }
 
   @Test
-  public void testConfigurePlugin() {
-    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
-    MavenPlugin plugin = new MavenPlugin(MavenSurefireUtils.GROUP_ID, MavenSurefireUtils.ARTIFACT_ID, MavenSurefireUtils.VERSION);
+  public void testMavenPluginDefinition() {
+    assertThat(handler.getGroupId(), is(MavenSurefireUtils.GROUP_ID));
+    assertThat(handler.getArtifactId(), is(MavenSurefireUtils.ARTIFACT_ID));
+    assertThat(handler.getVersion(), is(MavenSurefireUtils.VERSION));
+    assertThat(handler.getGoals(), is(new String[]{"test"}));
+    assertThat(handler.isFixedVersion(), is(false));
+  }
+
+  @Test
+  public void testConfigureMavenPlugin() {
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom2.xml");
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), MavenSurefireUtils.GROUP_ID, MavenSurefireUtils.ARTIFACT_ID);
     handler = spy(handler);
     doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
 
     handler.configure(project, plugin);
 
     assertThat(plugin.getParameter("argLine"), is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec"));
+  }
+
+  @Test
+  public void testReconfigureMavenPlugin() {
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom2.xml");
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), MavenSurefireUtils.GROUP_ID, MavenSurefireUtils.ARTIFACT_ID);
+    handler = spy(handler);
+    doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
+
+    handler.configure(project, plugin);
+
+    assertThat(plugin.getParameter("argLine"), is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec -esa"));
   }
 }

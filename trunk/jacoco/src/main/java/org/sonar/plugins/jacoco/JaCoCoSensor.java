@@ -84,7 +84,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
 
   private boolean checkReportAvailability(File report) {
     if (report == null || !report.exists() || !report.isFile()) {
-      logger.error("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", report);
+      logger.warn("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", report);
       return false;
     }
     logger.info("Analysing {}", report.getAbsolutePath());
