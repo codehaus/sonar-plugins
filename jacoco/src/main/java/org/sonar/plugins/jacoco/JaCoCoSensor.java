@@ -21,7 +21,10 @@
 package org.sonar.plugins.jacoco;
 
 import org.apache.commons.lang.StringUtils;
-import org.jacoco.core.analysis.*;
+import org.jacoco.core.analysis.CoverageBuilder;
+import org.jacoco.core.analysis.ICoverageNode;
+import org.jacoco.core.analysis.ILines;
+import org.jacoco.core.analysis.SourceFileCoverage;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
@@ -67,14 +70,17 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
   }
 
   public void analyse(Project project, SensorContext context) {
+    File buildOutputDir = project.getFileSystem().getBuildOutputDir();
+    if (!buildOutputDir.exists()) {
+      logger.info("Can't find build output directory: {}. Skipping JaCoCo analysis.", buildOutputDir);
+      return;
+    }
     String path = getPath(project);
     File jacocoExecutionData = project.getFileSystem().resolvePath(path);
-    if (checkReportAvailability(jacocoExecutionData)) {
-      try {
-        readExecutionData(jacocoExecutionData, project.getFileSystem().getBuildOutputDir(), context);
-      } catch (IOException e) {
-        throw new SonarException(e);
-      }
+    try {
+      readExecutionData(jacocoExecutionData, buildOutputDir, context);
+    } catch (IOException e) {
+      throw new SonarException(e);
     }
   }
 
@@ -82,23 +88,19 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
     return project.getConfiguration().getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
   }
 
-  private boolean checkReportAvailability(File report) {
-    if (report == null || !report.exists() || !report.isFile()) {
-      logger.warn("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", report);
-      return false;
-    }
-    logger.info("Analysing {}", report.getAbsolutePath());
-    return true;
-  }
-
   protected void readExecutionData(File jacocoExecutionData, File buildOutputDir, SensorContext context) throws IOException {
     SessionInfoStore sessionInfoStore = new SessionInfoStore();
     ExecutionDataStore executionDataStore = new ExecutionDataStore();
 
-    ExecutionDataReader reader = new ExecutionDataReader(new FileInputStream(jacocoExecutionData));
-    reader.setSessionInfoVisitor(sessionInfoStore);
-    reader.setExecutionDataVisitor(executionDataStore);
-    reader.read();
+    if (jacocoExecutionData == null || !jacocoExecutionData.exists() || !jacocoExecutionData.isFile()) {
+      logger.info("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", jacocoExecutionData);
+    } else {
+      logger.info("Analysing {}", jacocoExecutionData);
+      ExecutionDataReader reader = new ExecutionDataReader(new FileInputStream(jacocoExecutionData));
+      reader.setSessionInfoVisitor(sessionInfoStore);
+      reader.setExecutionDataVisitor(executionDataStore);
+      reader.read();
+    }
 
     CoverageBuilder coverageBuilder = new CoverageBuilder(executionDataStore);
 
