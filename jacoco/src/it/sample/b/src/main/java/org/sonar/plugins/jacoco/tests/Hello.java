@@ -8,12 +8,22 @@ public class Hello {
   }
 
   public String say() {
-    return hello;
+    return new InnerClass().called(hello);
   }
 
   protected int notCalled() {
     int i=0;
     i++;
     return i+3;
+  }
+
+  class InnerClass {
+    protected int notCalled() {
+      return 0;
+    }
+
+    protected String called(String value) {
+      return value;
+    }
   }
 }
