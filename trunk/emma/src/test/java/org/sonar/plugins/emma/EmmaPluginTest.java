@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -35,6 +36,14 @@ public class EmmaPluginTest {
   @Before
   public void setUp() throws Exception {
     plugin = new EmmaPlugin();
+  }
+
+  @Test
+  public void testPluginDefinition() {
+    assertThat(plugin.getKey(), is("emma"));
+    assertThat(plugin.getName(), notNullValue());
+    assertThat(plugin.getDescription(), notNullValue());
+    assertThat(plugin.toString(), is("emma"));
   }
 
   @Test

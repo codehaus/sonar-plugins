@@ -21,16 +21,17 @@
 package org.sonar.plugins.emma;
 
 import org.apache.maven.project.MavenProject;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class EmmaMavenPluginHandlerTest {
 
@@ -39,6 +40,15 @@ public class EmmaMavenPluginHandlerTest {
   @Before
   public void before() {
     handler = new EmmaMavenPluginHandler();
+  }
+
+  @Test
+  public void testMavenPluginDefinition() {
+    assertThat(handler.getGroupId(), is("org.codehaus.mojo"));
+    assertThat(handler.getArtifactId(), is("emma-maven-plugin"));
+    assertThat(handler.getVersion(), is("1.0-alpha-2"));
+    assertThat(handler.isFixedVersion(), is(false));
+    assertThat(handler.getGoals(), is(new String[]{"emma"}));
   }
 
   @Test

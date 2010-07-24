@@ -20,23 +20,22 @@
 
 package org.sonar.plugins.emma;
 
-import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-  @Property(
-    key = EmmaPlugin.REPORT_PATH_PROPERTY,
-    name = "Report file",
-    description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
-    module = true,
-    project = true,
-    global = false
-  )
+    @Property(
+        key = EmmaPlugin.REPORT_PATH_PROPERTY,
+        name = "Report file",
+        description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
+        module = true,
+        project = true,
+        global = false
+    )
 })
 public class EmmaPlugin implements Plugin {
 
@@ -55,14 +54,14 @@ public class EmmaPlugin implements Plugin {
 
   public String getDescription() {
     return "<a href='http://emma.sourceforge.net'>Emma</a> calculates coverage of unit tests." +
-      " Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
+        " Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
   }
 
-  public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(EmmaSensor.class);
-    list.add(EmmaMavenPluginHandler.class);
-    return list;
+  public List getExtensions() {
+    return Arrays.asList(
+        EmmaSensor.class,
+        EmmaMavenPluginHandler.class
+    );
   }
 
   @Override
