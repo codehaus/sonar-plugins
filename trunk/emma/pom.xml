@@ -123,6 +123,7 @@
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <wait>false</wait>
+                  <configBackup>${basedir}/sonar-backup.xml</configBackup>
                   <analyzeProjects>true</analyzeProjects>
                   <mavenProjectsDir>${project.build.directory}/it/maven-projects</mavenProjectsDir>
                 </configuration>
