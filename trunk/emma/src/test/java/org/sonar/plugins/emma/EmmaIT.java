@@ -30,9 +30,6 @@ import static junit.framework.Assert.assertNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-/**
- * Integration test, executed when the maven profile -Pit is activated.
- */
 public class EmmaIT {
 
   private static Sonar sonar;
