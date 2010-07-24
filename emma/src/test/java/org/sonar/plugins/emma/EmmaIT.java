@@ -20,15 +20,109 @@
 
 package org.sonar.plugins.emma;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.ResourceQuery;
+
+import static junit.framework.Assert.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 /**
  * Integration test, executed when the maven profile -Pit is activated.
  */
 public class EmmaIT {
 
+  private static Sonar sonar;
+  private static final String PROJECT_STRUTS = "org.apache.struts:struts-parent";
+  private static final String MODULE_CORE = "org.apache.struts:struts-core";
+  private static final String MODULE_EL = "org.apache.struts:struts-el";
+  private static final String FILE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action.Action";
+  private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action";
+
+  @BeforeClass
+  public static void buildServer() {
+    sonar = Sonar.create("http://localhost:9000");
+  }
+
   @Test
-  public void todo() {
-    System.out.println("******** TO DO : INTEGRATION TEST *********");
+  public void strutsIsAnalyzed() {
+    assertThat(sonar.find(new ResourceQuery(PROJECT_STRUTS)).getName(), is("Struts"));
+    assertThat(sonar.find(new ResourceQuery(PROJECT_STRUTS)).getVersion(), is("1.3.9"));
+    assertThat(sonar.find(new ResourceQuery(MODULE_CORE)).getName(), is("Struts Core"));
+    assertThat(sonar.find(new ResourceQuery(MODULE_EL)).getName(), is("Struts EL"));
+    assertThat(sonar.find(new ResourceQuery(PACKAGE_ACTION)).getName(), is("org.apache.struts.action"));
+  }
+
+  @Test
+  public void projectsMetrics() {
+    assertThat(getProjectMeasure("coverage").getValue(), is(14.8));
+    assertThat(getProjectMeasure("line_coverage").getValue(), is(14.8));
+    assertThat(getProjectMeasure("lines_to_cover").getValue(), is(26124.0));
+    assertThat(getProjectMeasure("uncovered_lines").getValue(), is(22264.0));
+    assertThat(getProjectMeasure("tests").getValue(), is(323.0));
+    assertThat(getProjectMeasure("test_success_density").getValue(), is(100.0));
+  }
+
+  @Test
+  public void CoremoduleMetrics() {
+    assertThat(getCoreModuleMeasure("coverage").getValue(), is(38.1));
+    assertThat(getCoreModuleMeasure("line_coverage").getValue(), is(38.1));
+    assertThat(getCoreModuleMeasure("lines_to_cover").getValue(), is(7447.0));
+    assertThat(getCoreModuleMeasure("uncovered_lines").getValue(), is(4606.0));
+    assertThat(getCoreModuleMeasure("tests").getValue(), is(195.0));
+    assertThat(getCoreModuleMeasure("test_success_density").getValue(), is(100.0));
+  }
+
+  @Test
+  public void ElModuleMetrics() {
+    assertThat(getElModuleMeasure("coverage").getValue(), is(0.0));
+    assertThat(getElModuleMeasure("line_coverage").getValue(), is(0.0));
+    assertThat(getElModuleMeasure("lines_to_cover").getValue(), is(8064.0));
+    assertThat(getElModuleMeasure("uncovered_lines").getValue(), is(8064.0));
+    assertThat(getElModuleMeasure("tests").getValue(), is(0.0));
+    assertNull(getElModuleMeasure("test_success_density"));
+  }
+
+  @Test
+  public void packagesMetrics() {
+    assertThat(getPackageMeasure("coverage").getValue(), is(32.1));
+    assertThat(getPackageMeasure("line_coverage").getValue(), is(32.1));
+    assertThat(getPackageMeasure("lines_to_cover").getValue(), is(1569.0));
+    assertThat(getPackageMeasure("uncovered_lines").getValue(), is(1065.0));
+    assertThat(getPackageMeasure("tests").getValue(), is(105.0));
+    assertThat(getPackageMeasure("test_success_density").getValue(), is(100.0));
+  }
+
+  @Test
+  public void filesMetrics() {
+    assertThat(getFileMeasure("coverage").getValue(), is(0.0));
+    assertThat(getFileMeasure("line_coverage").getValue(), is(0.0));
+    assertThat(getFileMeasure("lines_to_cover").getValue(), is(78.0));
+    assertThat(getFileMeasure("uncovered_lines").getValue(), is(78.0));
+    assertNull(getFileMeasure("tests"));
+    assertNull(getFileMeasure("test_success_density"));
+  }
+
+  private Measure getFileMeasure(String metricKey) {
+    return sonar.find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey)).getMeasure(metricKey);
+  }
+
+  private Measure getPackageMeasure(String metricKey) {
+    return sonar.find(ResourceQuery.createForMetrics(PACKAGE_ACTION, metricKey)).getMeasure(metricKey);
+  }
+
+  private Measure getCoreModuleMeasure(String metricKey) {
+    return sonar.find(ResourceQuery.createForMetrics(MODULE_CORE, metricKey)).getMeasure(metricKey);
+  }
+
+  private Measure getElModuleMeasure(String metricKey) {
+    return sonar.find(ResourceQuery.createForMetrics(MODULE_EL, metricKey)).getMeasure(metricKey);
+  }
+
+  private Measure getProjectMeasure(String metricKey) {
+    return sonar.find(ResourceQuery.createForMetrics(PROJECT_STRUTS, metricKey)).getMeasure(metricKey);
   }
 }
