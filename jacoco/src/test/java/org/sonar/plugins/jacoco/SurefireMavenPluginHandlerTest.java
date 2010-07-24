@@ -55,8 +55,8 @@ public class SurefireMavenPluginHandlerTest {
 
   @Test
   public void testConfigureMavenPlugin() {
-    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom2.xml");
-    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), MavenSurefireUtils.GROUP_ID, MavenSurefireUtils.ARTIFACT_ID);
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
+    MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
     handler = spy(handler);
     doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
 
@@ -68,7 +68,7 @@ public class SurefireMavenPluginHandlerTest {
   @Test
   public void testReconfigureMavenPlugin() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom2.xml");
-    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), MavenSurefireUtils.GROUP_ID, MavenSurefireUtils.ARTIFACT_ID);
+    MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), handler.getGroupId(), handler.getArtifactId());
     handler = spy(handler);
     doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
 
