@@ -49,8 +49,10 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
 
   public void analyse(Project project, SensorContext context) {
     File reportsPath = getReport(project);
-    EmmaProcessor processor = new EmmaProcessor(reportsPath, context);
-    processor.process();
+    if (reportsPath != null) {
+      EmmaProcessor processor = new EmmaProcessor(reportsPath, context);
+      processor.process();
+    }
   }
 
   public MavenPluginHandler getMavenPluginHandler(Project project) {
@@ -71,9 +73,10 @@ public class EmmaSensor extends AbstractCoverageExtension implements Sensor, Dep
     }
 
     if (report == null || !report.exists() || !report.isDirectory()) {
-      logger.warn("Emma report path not found at {}", report);
+      logger.warn("Emma reports not found in {}", report);
       report = null;
     }
+
     return report;
   }
 
