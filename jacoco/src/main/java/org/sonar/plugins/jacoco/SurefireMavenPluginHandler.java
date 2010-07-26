@@ -76,10 +76,15 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     return agentPath;
   }
 
+  protected String getDownloadUrl(Project project) {
+    String host = project.getConfiguration().getString("sonar.host.url", "http://localhost:9000");
+    host = StringUtils.chomp(host, "/");
+    return host + "/deploy/plugins/sonar-jacoco-plugin/agent-all-0.4.0.20100604151516.jar";
+  }
+
   private String downloadAgent(Project project) {
     try {
-      String host = project.getConfiguration().getString("sonar.host.url", "http://localhost:9000");
-      URI uri = new URI(host + "/deploy/plugins/sonar-jacoco-plugin/agent-all-0.4.0.20100604151516.jar");
+      URI uri = new URI(getDownloadUrl(project));
       File agent = File.createTempFile("jacocoagent", ".jar");
       downloader.download(uri, agent);
       FileUtils.forceDeleteOnExit(agent);

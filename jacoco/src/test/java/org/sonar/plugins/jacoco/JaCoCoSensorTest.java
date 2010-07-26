@@ -22,16 +22,17 @@ package org.sonar.plugins.jacoco;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.Plugins;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.test.IsMeasure;
 import org.sonar.api.test.IsResource;
 
 import java.io.File;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
@@ -45,12 +46,23 @@ public class JaCoCoSensorTest {
 
   @Before
   public void setUp() {
-    sensor = new JaCoCoSensor(null, null);
+    sensor = new JaCoCoSensor(mock(Plugins.class), mock(SurefireMavenPluginHandler.class));
   }
 
   @Test
   public void testSensorDefinition() {
     assertThat(sensor.toString(), is("JaCoCoSensor"));
+  }
+
+  @Test
+  public void testGetMavenPluginHandler() {
+    Project project = mock(Project.class);
+    when(project.getAnalysisType())
+        .thenReturn(Project.AnalysisType.REUSE_REPORTS)
+        .thenReturn(Project.AnalysisType.DYNAMIC);
+
+    assertThat(sensor.getMavenPluginHandler(project), nullValue());
+    assertThat(sensor.getMavenPluginHandler(project), instanceOf(SurefireMavenPluginHandler.class));
   }
 
   @Test
