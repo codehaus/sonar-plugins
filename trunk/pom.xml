@@ -27,6 +27,7 @@
                 <module>flex</module>
                 <module>greenpepper</module>
                 <module>hammurapi</module>
+                <module>jacoco</module>
                 <module>jira</module>
                 <module>jlint</module>
                 <module>jtest</module>
@@ -44,7 +45,6 @@
                 <module>scm-activity</module>
                 <module>security-rules</module>
                 <module>sigmm</module>
-                <module>jacoco</module>
                 <module>sonarj</module>
                 <module>sonar-replay</module>
                 <module>sonar-squid-cli</module>
