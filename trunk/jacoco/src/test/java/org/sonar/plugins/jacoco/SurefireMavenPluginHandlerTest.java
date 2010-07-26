@@ -20,6 +20,9 @@
 
 package org.sonar.plugins.jacoco;
 
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.maven.MavenPlugin;
@@ -30,6 +33,7 @@ import org.sonar.api.utils.HttpDownloader;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.Mockito.*;
 
 /**
@@ -51,6 +55,19 @@ public class SurefireMavenPluginHandlerTest {
     assertThat(handler.getVersion(), is(MavenSurefireUtils.VERSION));
     assertThat(handler.getGoals(), is(new String[]{"test"}));
     assertThat(handler.isFixedVersion(), is(false));
+  }
+
+  @Test
+  public void testGetDownloadUrl() {
+    Project project = mock(Project.class);
+    Configuration configuration = new BaseConfiguration();
+    when(project.getConfiguration()).thenReturn(configuration);
+
+    configuration.setProperty("sonar.host.url", "http://localhost:9000");
+    assertThat(handler.getDownloadUrl(project), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
+
+    configuration.setProperty("sonar.host.url", "http://localhost:9000/");
+    assertThat(handler.getDownloadUrl(project), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
   }
 
   @Test
