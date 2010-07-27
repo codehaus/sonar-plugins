@@ -26,6 +26,7 @@
                 <module>emma</module>
                 <module>flex</module>
                 <module>greenpepper</module>
+                <module>groovy</module>
                 <module>hammurapi</module>
                 <module>jacoco</module>
                 <module>jira</module>
