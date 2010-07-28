@@ -36,15 +36,37 @@ import java.util.List;
         name = "File with execution data",
         defaultValue = JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE,
         description = "Path (absolute or relative) to the file with execution data.",
+        global = false,
         module = true,
+        project = true
+    ),
+    @Property(
+        key = JaCoCoPlugin.INCLUDES_PROPERTY,
+        name = "Includes",
+        description = "A list of class names that should be included in execution analysis." +
+            " The list entries are separated by a vertical bar (|) and may use wildcard characters (* and ?)." +
+            " Except for performance optimization or technical corner cases this option is normally not required.",
+        global = false,
         project = true,
-        global = false
+        module = true
+    ),
+    @Property(
+        key = JaCoCoPlugin.EXCLUDES_PROPERTY,
+        name = "Excludes",
+        description = "A list of class names that should be excluded from execution analysis." +
+            " The list entries are separated by a vertical bar (|) and may use wildcard characters (* and ?)." +
+            " Except for performance optimization or technical corner cases this option is normally not required.",
+        global = false,
+        project = true,
+        module = true
     )
 })
 public class JaCoCoPlugin implements Plugin {
 
   public static final String REPORT_PATH_PROPERTY = "sonar.jacoco.reportPath";
   public static final String REPORT_PATH_DEFAULT_VALUE = "target/jacoco.exec";
+  public static final String INCLUDES_PROPERTY = "sonar.jacoco.includes";
+  public static final String EXCLUDES_PROPERTY = "sonar.jacoco.excludes";
 
   public String getKey() {
     return "jacoco";

@@ -30,6 +30,8 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
 import org.sonar.api.utils.HttpDownloader;
 
+import java.io.File;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
@@ -74,7 +76,7 @@ public class SurefireMavenPluginHandlerTest {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
     MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
     handler = spy(handler);
-    doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
+    doReturn(new File("/tmp/jacocoagent.jar")).when(handler).getAgentJarFile((Project) any());
 
     handler.configure(project, plugin);
 
@@ -86,10 +88,28 @@ public class SurefireMavenPluginHandlerTest {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom2.xml");
     MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), handler.getGroupId(), handler.getArtifactId());
     handler = spy(handler);
-    doReturn("/tmp/jacocoagent.jar").when(handler).getAgentPath((Project) any());
+    doReturn(new File("/tmp/jacocoagent.jar")).when(handler).getAgentJarFile((Project) any());
 
     handler.configure(project, plugin);
 
     assertThat(plugin.getParameter("argLine"), is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec -esa"));
+  }
+
+  @Test
+  public void testIncludesExcludes() {
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
+    Configuration configuration = project.getConfiguration();
+    configuration.setProperty(JaCoCoPlugin.INCLUDES_PROPERTY, "org.sonar.*");
+    configuration.setProperty(JaCoCoPlugin.EXCLUDES_PROPERTY, "org.sonar.api.*");
+    MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
+    handler = spy(handler);
+    doReturn(new File("/tmp/jacocoagent.jar")).when(handler).getAgentJarFile((Project) any());
+
+    handler.configure(project, plugin);
+
+    assertThat(
+        plugin.getParameter("argLine"),
+        is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*")
+    );
   }
 }

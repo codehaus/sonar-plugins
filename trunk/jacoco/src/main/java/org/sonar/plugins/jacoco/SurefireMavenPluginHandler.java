@@ -21,8 +21,10 @@
 
 package org.sonar.plugins.jacoco;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.jacoco.core.runtime.AgentOptions;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
@@ -42,7 +44,7 @@ import java.net.URISyntaxException;
 public class SurefireMavenPluginHandler implements MavenPluginHandler {
   private static final String ARG_LINE_PARAMETER = "argLine";
 
-  private static String agentPath;
+  private static File agentJarFile;
   private HttpDownloader downloader;
 
   public SurefireMavenPluginHandler(HttpDownloader downloader) {
@@ -69,11 +71,11 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     return new String[]{"test"};
   }
 
-  protected String getAgentPath(Project project) {
-    if (agentPath == null) {
-      agentPath = downloadAgent(project);
+  protected File getAgentJarFile(Project project) {
+    if (agentJarFile == null) {
+      agentJarFile = downloadAgent(project);
     }
-    return agentPath;
+    return agentJarFile;
   }
 
   protected String getDownloadUrl(Project project) {
@@ -82,14 +84,14 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     return host + "/deploy/plugins/sonar-jacoco-plugin/agent-all-0.4.0.20100604151516.jar";
   }
 
-  private String downloadAgent(Project project) {
+  private File downloadAgent(Project project) {
     try {
       URI uri = new URI(getDownloadUrl(project));
       File agent = File.createTempFile("jacocoagent", ".jar");
       downloader.download(uri, agent);
       FileUtils.forceDeleteOnExit(agent);
       LoggerFactory.getLogger(getClass()).info("Agent: {}", agent);
-      return agent.getAbsolutePath();
+      return agent;
     } catch (IOException e) {
       throw new SonarException(e);
     } catch (URISyntaxException e) {
@@ -99,8 +101,22 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
 
   public void configure(Project project, MavenPlugin surefirePlugin) {
     String argLine = surefirePlugin.getParameter(ARG_LINE_PARAMETER);
-    String agent = "-javaagent:" + getAgentPath(project) + "=destfile=" + JaCoCoSensor.getPath(project);
-    argLine = StringUtils.isBlank(argLine) ? agent : agent + " " + argLine;
+
+    Configuration configuration = project.getConfiguration();
+    AgentOptions options = new AgentOptions();
+    options.setDestfile(JaCoCoSensor.getPath(project));
+    String includes = configuration.getString(JaCoCoPlugin.INCLUDES_PROPERTY);
+    if (StringUtils.isNotBlank(includes)) {
+      options.setIncludes(includes);
+    }
+    String excludes = configuration.getString(JaCoCoPlugin.EXCLUDES_PROPERTY);
+    if (StringUtils.isNotBlank(excludes)) {
+      options.setExcludes(excludes);
+    }
+
+    String argument = options.getVMArgument(getAgentJarFile(project));
+    argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
+    LoggerFactory.getLogger(getClass()).info("JVM options: {}", argLine);
     surefirePlugin.setParameter(ARG_LINE_PARAMETER, argLine);
   }
 
