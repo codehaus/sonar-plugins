@@ -22,25 +22,29 @@ package org.sonar.plugins.jacoco;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.resources.Project;
+
+import java.io.File;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class JaCoCoAgentDownloaderTest {
 
+  private Configuration configuration;
+
+  @Before
+  public void setUp() {
+    configuration = new BaseConfiguration();
+  }
+
   @Test
   public void testGetDownloadUrl() {
-    Project project = mock(Project.class);
-    Configuration configuration = new BaseConfiguration();
-    when(project.getConfiguration()).thenReturn(configuration);
-
     JaCoCoAgentDownloader downloader = new JaCoCoAgentDownloader(configuration);
 
     configuration.setProperty("sonar.host.url", "http://localhost:9000");
@@ -48,6 +52,17 @@ public class JaCoCoAgentDownloaderTest {
 
     configuration.setProperty("sonar.host.url", "http://localhost:9000/");
     assertThat(downloader.getDownloadUrl(), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
+  }
+
+  @Test
+  public void downloadAgentOnlyOnce() {
+    JaCoCoAgentDownloader downloader = spy(new JaCoCoAgentDownloader(configuration));
+    doReturn(new File("/tmp/jacocoagent.jar")).when(downloader).downloadAgent();
+
+    downloader.getAgentJarFile();
+    downloader.getAgentJarFile();
+
+    verify(downloader).downloadAgent();
   }
 
 }

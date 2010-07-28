@@ -56,7 +56,7 @@ public class JaCoCoAgentDownloader extends HttpDownloader implements BatchExtens
     return agentJarFile;
   }
 
-  private File downloadAgent() {
+  protected File downloadAgent() {
     try {
       URI uri = new URI(getDownloadUrl());
       File agent = File.createTempFile("jacocoagent", ".jar");
