@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,6 +48,6 @@ public class JaCoCoPluginTest {
 
   @Test
   public void testExtensions() {
-    assertThat(plugin.getExtensions().size(), is(2));
+    assertThat(plugin.getExtensions().size(), is(3));
   }
 }

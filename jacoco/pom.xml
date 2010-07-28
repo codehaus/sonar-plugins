@@ -51,7 +51,7 @@
 
   <properties>
     <!-- !!! IMPORTANT !!!
-    After changing version - don't forget to change SurefireMavenPluginHandler
+    After changing version - don't forget to change JaCoCoAgentDownloader
     -->
     <jacoco.version>0.4.0.20100604151516</jacoco.version>
 
