@@ -37,16 +37,16 @@ import static org.mockito.Mockito.*;
 public class JaCoCoAgentDownloaderTest {
 
   private Configuration configuration;
+  private JaCoCoAgentDownloader downloader;
 
   @Before
   public void setUp() {
     configuration = new BaseConfiguration();
+    downloader = spy(new JaCoCoAgentDownloader(configuration));
   }
 
   @Test
   public void testGetDownloadUrl() {
-    JaCoCoAgentDownloader downloader = new JaCoCoAgentDownloader(configuration);
-
     configuration.setProperty("sonar.host.url", "http://localhost:9000");
     assertThat(downloader.getDownloadUrl(), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
 
@@ -56,7 +56,6 @@ public class JaCoCoAgentDownloaderTest {
 
   @Test
   public void downloadAgentOnlyOnce() {
-    JaCoCoAgentDownloader downloader = spy(new JaCoCoAgentDownloader(configuration));
     doReturn(new File("/tmp/jacocoagent.jar")).when(downloader).downloadAgent();
 
     downloader.getAgentJarFile();
