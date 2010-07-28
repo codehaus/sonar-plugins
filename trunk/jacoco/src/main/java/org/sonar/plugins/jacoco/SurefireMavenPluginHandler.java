@@ -25,6 +25,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jacoco.core.runtime.AgentOptions;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
@@ -100,11 +101,19 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
   }
 
   public void configure(Project project, MavenPlugin surefirePlugin) {
-    String argLine = surefirePlugin.getParameter(ARG_LINE_PARAMETER);
+    Logger logger = LoggerFactory.getLogger(getClass());
+
+    // See SONARPLUGINS-600
+    String destfilePath = JaCoCoSensor.getPath(project);
+    File destfile = project.getFileSystem().resolvePath(destfilePath);
+    if (destfile.exists() && destfile.isFile()) {
+      logger.info("Deleting {}", destfile);
+      destfile.delete();
+    }
 
     Configuration configuration = project.getConfiguration();
     AgentOptions options = new AgentOptions();
-    options.setDestfile(JaCoCoSensor.getPath(project));
+    options.setDestfile(destfilePath);
     String includes = configuration.getString(JaCoCoPlugin.INCLUDES_PROPERTY);
     if (StringUtils.isNotBlank(includes)) {
       options.setIncludes(includes);
@@ -113,10 +122,11 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     if (StringUtils.isNotBlank(excludes)) {
       options.setExcludes(excludes);
     }
-
     String argument = options.getVMArgument(getAgentJarFile(project));
+
+    String argLine = surefirePlugin.getParameter(ARG_LINE_PARAMETER);
     argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
-    LoggerFactory.getLogger(getClass()).info("JVM options: {}", argLine);
+    logger.info("JVM options: {}", argLine);
     surefirePlugin.setParameter(ARG_LINE_PARAMETER, argLine);
   }
 
