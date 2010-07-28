@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,14 +27,13 @@ import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
-import org.sonar.api.utils.HttpDownloader;
 
 import java.io.File;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Evgeny Mandrikov
@@ -45,7 +43,8 @@ public class SurefireMavenPluginHandlerTest {
 
   @Before
   public void setUp() throws Exception {
-    HttpDownloader downloader = mock(HttpDownloader.class);
+    JaCoCoAgentDownloader downloader = mock(JaCoCoAgentDownloader.class);
+    when(downloader.getAgentJarFile()).thenReturn(new File("/tmp/jacocoagent.jar"));
     handler = new SurefireMavenPluginHandler(downloader);
   }
 
@@ -59,24 +58,9 @@ public class SurefireMavenPluginHandlerTest {
   }
 
   @Test
-  public void testGetDownloadUrl() {
-    Project project = mock(Project.class);
-    Configuration configuration = new BaseConfiguration();
-    when(project.getConfiguration()).thenReturn(configuration);
-
-    configuration.setProperty("sonar.host.url", "http://localhost:9000");
-    assertThat(handler.getDownloadUrl(project), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
-
-    configuration.setProperty("sonar.host.url", "http://localhost:9000/");
-    assertThat(handler.getDownloadUrl(project), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
-  }
-
-  @Test
   public void testConfigureMavenPlugin() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
     MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
-    handler = spy(handler);
-    doReturn(new File("/tmp/jacocoagent.jar")).when(handler).getAgentJarFile((Project) any());
 
     handler.configure(project, plugin);
 
@@ -87,8 +71,6 @@ public class SurefireMavenPluginHandlerTest {
   public void testReconfigureMavenPlugin() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom2.xml");
     MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), handler.getGroupId(), handler.getArtifactId());
-    handler = spy(handler);
-    doReturn(new File("/tmp/jacocoagent.jar")).when(handler).getAgentJarFile((Project) any());
 
     handler.configure(project, plugin);
 
@@ -102,8 +84,6 @@ public class SurefireMavenPluginHandlerTest {
     configuration.setProperty(JaCoCoPlugin.INCLUDES_PROPERTY, "org.sonar.*");
     configuration.setProperty(JaCoCoPlugin.EXCLUDES_PROPERTY, "org.sonar.api.*");
     MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
-    handler = spy(handler);
-    doReturn(new File("/tmp/jacocoagent.jar")).when(handler).getAgentJarFile((Project) any());
 
     handler.configure(project, plugin);
 

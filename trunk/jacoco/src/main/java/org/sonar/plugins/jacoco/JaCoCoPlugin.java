@@ -82,7 +82,11 @@ public class JaCoCoPlugin implements Plugin {
   }
 
   public List getExtensions() {
-    return Arrays.asList(SurefireMavenPluginHandler.class, JaCoCoSensor.class);
+    return Arrays.asList(
+        JaCoCoAgentDownloader.class,
+        SurefireMavenPluginHandler.class,
+        JaCoCoSensor.class
+    );
   }
 
   @Override

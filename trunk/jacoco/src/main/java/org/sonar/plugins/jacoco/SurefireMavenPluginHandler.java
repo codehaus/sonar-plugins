@@ -22,7 +22,6 @@
 package org.sonar.plugins.jacoco;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jacoco.core.runtime.AgentOptions;
 import org.slf4j.Logger;
@@ -31,13 +30,8 @@ import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.resources.Project;
-import org.sonar.api.utils.HttpDownloader;
-import org.sonar.api.utils.SonarException;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * @author Evgeny Mandrikov
@@ -45,10 +39,9 @@ import java.net.URISyntaxException;
 public class SurefireMavenPluginHandler implements MavenPluginHandler {
   private static final String ARG_LINE_PARAMETER = "argLine";
 
-  private static File agentJarFile;
-  private HttpDownloader downloader;
+  private JaCoCoAgentDownloader downloader;
 
-  public SurefireMavenPluginHandler(HttpDownloader downloader) {
+  public SurefireMavenPluginHandler(JaCoCoAgentDownloader downloader) {
     this.downloader = downloader;
   }
 
@@ -70,34 +63,6 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
 
   public String[] getGoals() {
     return new String[]{"test"};
-  }
-
-  protected File getAgentJarFile(Project project) {
-    if (agentJarFile == null) {
-      agentJarFile = downloadAgent(project);
-    }
-    return agentJarFile;
-  }
-
-  protected String getDownloadUrl(Project project) {
-    String host = project.getConfiguration().getString("sonar.host.url", "http://localhost:9000");
-    host = StringUtils.chomp(host, "/");
-    return host + "/deploy/plugins/sonar-jacoco-plugin/agent-all-0.4.0.20100604151516.jar";
-  }
-
-  private File downloadAgent(Project project) {
-    try {
-      URI uri = new URI(getDownloadUrl(project));
-      File agent = File.createTempFile("jacocoagent", ".jar");
-      downloader.download(uri, agent);
-      FileUtils.forceDeleteOnExit(agent);
-      LoggerFactory.getLogger(getClass()).info("Agent: {}", agent);
-      return agent;
-    } catch (IOException e) {
-      throw new SonarException(e);
-    } catch (URISyntaxException e) {
-      throw new SonarException(e);
-    }
   }
 
   public void configure(Project project, MavenPlugin surefirePlugin) {
@@ -122,7 +87,7 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     if (StringUtils.isNotBlank(excludes)) {
       options.setExcludes(excludes);
     }
-    String argument = options.getVMArgument(getAgentJarFile(project));
+    String argument = options.getVMArgument(downloader.getAgentJarFile());
 
     String argLine = surefirePlugin.getParameter(ARG_LINE_PARAMETER);
     argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
