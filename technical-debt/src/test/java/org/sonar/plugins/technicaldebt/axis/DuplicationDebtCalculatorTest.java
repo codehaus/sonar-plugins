@@ -20,21 +20,18 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
+import org.apache.commons.configuration.Configuration;
+import org.junit.Before;
+import org.junit.Test;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
-import static org.mockito.Mockito.mock;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.anyDouble;
-import static org.mockito.Mockito.when;
-import org.apache.commons.configuration.Configuration;
-import static org.hamcrest.Matchers.is;
-
+import static org.mockito.Mockito.*;
 
 public class DuplicationDebtCalculatorTest {
   private DecoratorContext context;
@@ -44,7 +41,7 @@ public class DuplicationDebtCalculatorTest {
   public void setUp() throws Exception {
     Configuration configuration = mock(Configuration.class);
     when(configuration.getString(anyString(), anyString())).
-      thenReturn(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT);
+        thenReturn(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT);
     calculator = new DuplicationDebtCalculator(configuration);
     context = mock(DecoratorContext.class);
   }
@@ -52,49 +49,49 @@ public class DuplicationDebtCalculatorTest {
   @Test
   public void testCalculateAbsoluteDebt() {
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-      thenReturn(null);
+        thenReturn(null);
     assertEquals(0d, calculator.calculateAbsoluteDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 0.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 0.0));
     assertEquals(0d, calculator.calculateAbsoluteDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 32.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 32.0));
     assertEquals(8d, calculator.calculateAbsoluteDebt(context), 0);
   }
 
   @Test
   public void testCalculateTotalDebtWhenNoDebt() {
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
-          thenReturn(null);
+        thenReturn(null);
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-          thenReturn(null);
+        thenReturn(null);
     assertEquals(0d, calculator.calculateTotalPossibleDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 0.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 0.0));
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 4.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 4.0));
     when(context.getMeasure(CoreMetrics.LINES)).
-          thenReturn(new Measure(CoreMetrics.LINES, 500.0));
+        thenReturn(new Measure(CoreMetrics.LINES, 500.0));
     assertEquals(2.5d, calculator.calculateTotalPossibleDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 50.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 50.0));
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 0.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 0.0));
     when(context.getMeasure(CoreMetrics.LINES)).
-          thenReturn(new Measure(CoreMetrics.LINES, 500.0));
+        thenReturn(new Measure(CoreMetrics.LINES, 500.0));
     assertEquals(2.5d, calculator.calculateTotalPossibleDebt(context), 0);
   }
 
   @Test
   public void testCalculateTotalDebt() {
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES_DENSITY)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 40.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES_DENSITY, 40.0));
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 32.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 32.0));
     assertEquals(20d, calculator.calculateTotalPossibleDebt(context), 0);
   }
 
