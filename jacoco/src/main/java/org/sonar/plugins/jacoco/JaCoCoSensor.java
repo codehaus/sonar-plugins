@@ -29,8 +29,6 @@ import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.instr.Analyzer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
@@ -53,7 +51,6 @@ import java.io.IOException;
  */
 public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
 
-  private Logger logger = LoggerFactory.getLogger(getClass());
   private JaCoCoMavenPluginHandler handler;
   private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
 
@@ -79,7 +76,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
     }
 
     if (!buildOutputDir.exists()) {
-      logger.info("Can't find build output directory: {}. Skipping JaCoCo analysis.", buildOutputDir);
+      JaCoCoUtils.LOG.info("Can't find build output directory: {}. Skipping JaCoCo analysis.", buildOutputDir);
       return;
     }
     String path = getPath(project);
@@ -100,9 +97,9 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
     ExecutionDataStore executionDataStore = new ExecutionDataStore();
 
     if (jacocoExecutionData == null || !jacocoExecutionData.exists() || !jacocoExecutionData.isFile()) {
-      logger.info("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", jacocoExecutionData);
+      JaCoCoUtils.LOG.info("Can't find JaCoCo execution data : {}. Project coverage is set to 0%.", jacocoExecutionData);
     } else {
-      logger.info("Analysing {}", jacocoExecutionData);
+      JaCoCoUtils.LOG.info("Analysing {}", jacocoExecutionData);
       ExecutionDataReader reader = new ExecutionDataReader(new FileInputStream(jacocoExecutionData));
       reader.setSessionInfoVisitor(sessionInfoStore);
       reader.setExecutionDataVisitor(executionDataStore);
@@ -140,7 +137,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
         case ILines.NO_CODE:
           continue;
         default:
-          logger.warn("Unknown status for line {} in {}", lineId, resource);
+          JaCoCoUtils.LOG.warn("Unknown status for line {} in {}", lineId, resource);
           continue;
       }
       lineHitsBuilder.add(lineId, fakeHits);

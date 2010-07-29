@@ -45,7 +45,7 @@ public class JaCoCoMavenPluginHandlerTest {
   @Before
   public void setUp() throws Exception {
     JaCoCoAgentDownloader downloader = mock(JaCoCoAgentDownloader.class);
-    when(downloader.getAgentJarFile()).thenReturn(new File("/tmp/jacocoagent.jar"));
+    when(downloader.getAgentJarFile()).thenReturn(new File("jacocoagent.jar"));
     Project project = mock(Project.class);
     when(project.getConfiguration()).thenReturn(new BaseConfiguration());
     handler = new JaCoCoMavenPluginHandler(downloader, project);
@@ -67,7 +67,7 @@ public class JaCoCoMavenPluginHandlerTest {
 
     handler.configure(project, plugin);
 
-    assertThat(plugin.getParameter("argLine"), is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec"));
+    assertThat(plugin.getParameter("argLine"), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec"));
   }
 
   @Test
@@ -77,7 +77,7 @@ public class JaCoCoMavenPluginHandlerTest {
 
     handler.configure(project, plugin);
 
-    assertThat(plugin.getParameter("argLine"), is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec -esa"));
+    assertThat(plugin.getParameter("argLine"), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec -esa"));
   }
 
   @Test
@@ -92,7 +92,7 @@ public class JaCoCoMavenPluginHandlerTest {
 
     assertThat(
         plugin.getParameter("argLine"),
-        is("-javaagent:/tmp/jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*")
+        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*")
     );
   }
 }
