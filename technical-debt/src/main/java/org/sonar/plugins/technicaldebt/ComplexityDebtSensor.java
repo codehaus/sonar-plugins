@@ -20,24 +20,24 @@
 
 package org.sonar.plugins.technicaldebt;
 
+import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.*;
-import org.sonar.api.resources.Project;
+import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.JavaFile;
-import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.resources.Project;
 import org.sonar.api.utils.KeyValueFormat;
-import org.sonar.squid.api.SourceCode;
-import org.sonar.squid.api.SourceMethod;
-import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.api.SourceClass;
-import org.sonar.squid.indexer.QueryByType;
-import org.sonar.squid.indexer.QueryByParent;
+import org.sonar.squid.api.SourceCode;
+import org.sonar.squid.api.SourceFile;
+import org.sonar.squid.api.SourceMethod;
 import org.sonar.squid.indexer.QueryByMeasure;
-import org.apache.commons.configuration.Configuration;
+import org.sonar.squid.indexer.QueryByParent;
+import org.sonar.squid.indexer.QueryByType;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class ComplexityDebtSensor implements Sensor {
@@ -74,12 +74,12 @@ public class ComplexityDebtSensor implements Sensor {
       PropertiesBuilder<String, Integer> builder = new PropertiesBuilder<String, Integer>(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
 
       Collection<SourceCode> classes = squid.search(new QueryByParent(file), new QueryByType(SourceClass.class),
-        new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN_EQUALS, classComplexityLimits));
+          new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN_EQUALS, classComplexityLimits));
 
       builder.add("CLASS", classes.size());
 
       Collection<SourceCode> methods = squid.search(new QueryByParent(file), new QueryByType(SourceMethod.class),
-        new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN_EQUALS, methodComplexityLimits));
+          new QueryByMeasure(org.sonar.squid.measures.Metric.COMPLEXITY, QueryByMeasure.Operator.GREATER_THAN_EQUALS, methodComplexityLimits));
 
       builder.add("METHOD", methods.size());
 

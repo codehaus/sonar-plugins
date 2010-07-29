@@ -22,17 +22,17 @@ package org.sonar.plugins.technicaldebt;
 
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.resources.Resource;
-import org.sonar.api.resources.Project;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.CountDistributionBuilder;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Arrays;
 
-public class ComplexityDebtDecorator implements Decorator{
+public class ComplexityDebtDecorator implements Decorator {
 
   public List<Metric> dependedUpon() {
     return Arrays.asList(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
@@ -42,8 +42,7 @@ public class ComplexityDebtDecorator implements Decorator{
     Collection<Measure> measures = context.getChildrenMeasures(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
     if (measures == null || measures.isEmpty()) {
       return;
-    }
-    else {
+    } else {
       CountDistributionBuilder distribution = new CountDistributionBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
       for (Measure measure : measures) {
         distribution.add(measure);

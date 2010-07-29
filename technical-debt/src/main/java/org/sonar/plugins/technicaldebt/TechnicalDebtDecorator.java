@@ -21,13 +21,14 @@
 package org.sonar.plugins.technicaldebt;
 
 import org.apache.commons.configuration.Configuration;
-
-import org.sonar.api.batch.*;
+import org.sonar.api.batch.Decorator;
+import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.batch.DependedUpon;
+import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PropertiesBuilder;
-import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
-
+import org.sonar.api.resources.Resource;
 import org.sonar.plugins.technicaldebt.axis.*;
 
 import java.util.ArrayList;
@@ -46,15 +47,14 @@ public final class TechnicalDebtDecorator implements Decorator {
    * {@inheritDoc}
    */
   public TechnicalDebtDecorator(Configuration configuration) {
-
     this.configuration = configuration;
     axisList = Arrays.asList(
-      new CommentDebtCalculator(configuration),
-      new ComplexityDebtCalculator(configuration),
-      new CoverageDebtCalculator(configuration),
-      new DuplicationDebtCalculator(configuration),
-      new ViolationsDebtCalculator(configuration),
-      new DesignDebtCalculator(configuration)
+        new CommentDebtCalculator(configuration),
+        new ComplexityDebtCalculator(configuration),
+        new CoverageDebtCalculator(configuration),
+        new DuplicationDebtCalculator(configuration),
+        new ViolationsDebtCalculator(configuration),
+        new DesignDebtCalculator(configuration)
     );
   }
 
@@ -77,10 +77,10 @@ public final class TechnicalDebtDecorator implements Decorator {
   @DependedUpon
   public List<Metric> generatesMetrics() {
     return Arrays.asList(
-      TechnicalDebtMetrics.TECHNICAL_DEBT,
-      TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS,
-      TechnicalDebtMetrics.TECHNICAL_DEBT_RATIO,
-      TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
+        TechnicalDebtMetrics.TECHNICAL_DEBT,
+        TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS,
+        TechnicalDebtMetrics.TECHNICAL_DEBT_RATIO,
+        TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
   }
 
   /**

@@ -21,10 +21,9 @@
 package org.sonar.plugins.technicaldebt;
 
 
-
-import org.sonar.api.measures.Metrics;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Metrics;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,17 +33,66 @@ import java.util.List;
  */
 public final class TechnicalDebtMetrics implements Metrics {
 
-  public static final  Metric TECHNICAL_DEBT = new Metric("technical_debt", "Technical Debt ($)", "Technical debt ($)", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TECHNICAL_DEBT_RATIO = new Metric("technical_debt_ratio", "Technical Debt ratio", "This is the debt ratio", Metric.ValueType.PERCENT, -1, true, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TECHNICAL_DEBT_DAYS = new Metric("technical_debt_days", "Technical Debt in days", "This is the technical debt of the component in man days", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TECHNICAL_DEBT_REPARTITION = new Metric("technical_debt_repart", "Technical debt repartition", "This is the detail of the technical debt", Metric.ValueType.DISTRIB, 0, false, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric("technical_debt_complexity", "Technical debt complexity", "This is the number of methods and classes above max complexity", Metric.ValueType.DISTRIB, 0, false, CoreMetrics.DOMAIN_GENERAL)
-    .setHidden(true);
+  public static final Metric TECHNICAL_DEBT = new Metric(
+      "technical_debt",
+      "Technical Debt ($)",
+      "Technical debt ($)",
+      Metric.ValueType.INT,
+      Metric.DIRECTION_WORST,
+      false,
+      CoreMetrics.DOMAIN_GENERAL
+  );
+
+  public static final Metric TECHNICAL_DEBT_RATIO = new Metric(
+      "technical_debt_ratio",
+      "Technical Debt ratio",
+      "This is the debt ratio",
+      Metric.ValueType.PERCENT,
+      Metric.DIRECTION_WORST,
+      true,
+      CoreMetrics.DOMAIN_GENERAL
+  );
+
+  public static final Metric TECHNICAL_DEBT_DAYS = new Metric(
+      "technical_debt_days",
+      "Technical Debt in days",
+      "This is the technical debt of the component in man days",
+      Metric.ValueType.INT,
+      Metric.DIRECTION_WORST,
+      false,
+      CoreMetrics.DOMAIN_GENERAL
+  );
+
+  public static final Metric TECHNICAL_DEBT_REPARTITION = new Metric(
+      "technical_debt_repart",
+      "Technical debt repartition",
+      "This is the detail of the technical debt",
+      Metric.ValueType.DISTRIB,
+      Metric.DIRECTION_NONE,
+      false,
+      CoreMetrics.DOMAIN_GENERAL
+  );
+
+  public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric(
+      "technical_debt_complexity",
+      "Technical debt complexity",
+      "This is the number of methods and classes above max complexity",
+      Metric.ValueType.DISTRIB,
+      Metric.DIRECTION_NONE,
+      false,
+      CoreMetrics.DOMAIN_GENERAL
+  ).setHidden(true);
 
   /**
    * {@inheritDoc}
    */
   public List<Metric> getMetrics() {
-    return Arrays.asList(TECHNICAL_DEBT, TECHNICAL_DEBT_DAYS, TECHNICAL_DEBT_REPARTITION, TECHNICAL_DEBT_RATIO, TECHNICAL_DEBT_COMPLEXITY);
+    return Arrays.asList(
+        TECHNICAL_DEBT,
+        TECHNICAL_DEBT_DAYS,
+        TECHNICAL_DEBT_REPARTITION,
+        TECHNICAL_DEBT_RATIO,
+        TECHNICAL_DEBT_COMPLEXITY
+    );
   }
 }

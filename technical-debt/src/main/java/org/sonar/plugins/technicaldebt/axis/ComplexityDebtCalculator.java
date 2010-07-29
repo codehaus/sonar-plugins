@@ -22,17 +22,17 @@ package org.sonar.plugins.technicaldebt.axis;
 
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.utils.KeyValueFormat;
-import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
-import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
+import org.sonar.api.utils.KeyValueFormat;
 import org.sonar.plugins.technicaldebt.TechnicalDebtMetrics;
+import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
-import java.util.Map;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@inheritDoc}
@@ -48,9 +48,9 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
    */
   public double calculateAbsoluteDebt(DecoratorContext context) {
     Measure complexity = context.getMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
-     if (!MeasureUtils.hasData(complexity)) {
-       return 0.0;
-     }
+    if (!MeasureUtils.hasData(complexity)) {
+      return 0.0;
+    }
     Map<String, Double> complexityDistribution = KeyValueFormat.parse(complexity.getData(), new KeyValueFormat.StringNumberPairTransformer());
     int nbClassToSplit = complexityDistribution.get("CLASS").intValue();
     int nbMethodsToSplit = complexityDistribution.get("METHOD").intValue();

@@ -20,9 +20,9 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
+import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.Metric;
-import org.apache.commons.configuration.Configuration;
 
 import java.util.List;
 
