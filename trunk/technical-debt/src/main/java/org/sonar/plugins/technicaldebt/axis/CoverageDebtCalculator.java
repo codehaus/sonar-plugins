@@ -22,15 +22,14 @@ package org.sonar.plugins.technicaldebt.axis;
 
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 /**
  * {@inheritDoc}
@@ -58,7 +57,7 @@ public final class CoverageDebtCalculator extends AxisDebtCalculator {
     }
 
     // It is not reasonable to have an objective at 100%, so target is 80% for coverage
-    double gap = (COVERAGE_TARGET - coverage.getValue()/100) * complexity.getValue();
+    double gap = (COVERAGE_TARGET - coverage.getValue() / 100) * complexity.getValue();
 
     // technicaldebt is calculate in man days
     return (gap > 0.0 ? gap : 0.0) * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;

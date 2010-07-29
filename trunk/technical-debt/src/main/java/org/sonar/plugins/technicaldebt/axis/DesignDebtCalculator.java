@@ -22,15 +22,14 @@ package org.sonar.plugins.technicaldebt.axis;
 
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
-
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public final class DesignDebtCalculator extends AxisDebtCalculator {
 

@@ -50,6 +50,10 @@
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13850</url>
   </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-TECHNICALDEBT</url>
+  </ciManagement>
 
   <properties>
     <sonar.pluginClass>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</sonar.pluginClass>

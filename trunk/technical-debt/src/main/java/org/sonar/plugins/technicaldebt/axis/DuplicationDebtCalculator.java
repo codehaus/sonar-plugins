@@ -22,15 +22,14 @@ package org.sonar.plugins.technicaldebt.axis;
 
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
-
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * {@inheritDoc}
@@ -64,10 +63,9 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
     double duplicationDensity = getValue(context, CoreMetrics.DUPLICATED_LINES_DENSITY);
     double absoluteDebt = calculateAbsoluteDebt(context);
 
-    if (duplicationDensity == 0 && absoluteDebt == 0){
+    if (duplicationDensity == 0 && absoluteDebt == 0) {
       return 0;
-    }
-    else if (duplicationDensity == 0 || absoluteDebt == 0)    {
+    } else if (duplicationDensity == 0 || absoluteDebt == 0) {
       return getValue(context, CoreMetrics.LINES) / NUMBER_OF_LINES_PER_BLOCK * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
     }
 

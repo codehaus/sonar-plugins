@@ -22,14 +22,14 @@ package org.sonar.plugins.technicaldebt.axis;
 
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * {@inheritDoc}
@@ -50,7 +50,7 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
     Measure mInfoViolations = context.getMeasure(CoreMetrics.INFO_VIOLATIONS);
 
     double violations = (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
-      - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
+        - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
 
     // technicaldebt is calculate in man days
     return violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
