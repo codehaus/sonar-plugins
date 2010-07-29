@@ -11,13 +11,13 @@
 
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-sonarj-plugin</artifactId>
-  <packaging>jar</packaging>
-  <version>2.1.2</version>
+  <packaging>sonar-plugin</packaging>
+  <version>2.2</version>
   <name>Sonar SonarJ Plugin</name>
 
   <properties>
     <sonar.plugin.class>com.hello2morrow.sonarplugin.SonarJPlugin</sonar.plugin.class>
-    <sonar.version>2.1.2</sonar.version>
+    <sonar.version>2.2</sonar.version>
   </properties>
 
   <dependencies>
@@ -78,73 +78,17 @@
   <build>
     <plugins>
       <plugin>
-        <!-- complete META-INF/MANIFEST.MF -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.2</version>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <version>0.1</version>
         <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>${sonar.plugin.class}</Plugin-Class>
-            </manifestEntries>
-          </archive>
+          <pluginKey>SonarJ</pluginKey>
+          <pluginName>SonarJ</pluginName>
+          <pluginClass>${sonar.plugin.class}</pluginClass>
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>1.3</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>org.codehaus.sonar-plugins:sonar-sonarj-plugin</include>
-                  <include>javax.xml.bind:jaxb-api</include>
-                  <include>javax.xml.bind:jsr173_api</include>
-                  <include>javax.activation:activation</include>
-                  <include>com.sun.xml.bind:jaxb-impl</include>
-                </includes>
-              </artifactSet>
-              <relocations>
-                <!-- <relocation>
-                  <pattern>com.sun.istack</pattern>
-                  <shadedPattern>com.hello2morrow.com.sun.istack</shadedPattern>
-                </relocation>
-               <relocation>
-                  <pattern>com.sun.activation</pattern>
-                  <shadedPattern>com.hello2morrow.com.sun.activation</shadedPattern>
-                </relocation>
-               <relocation>
-                  <pattern>com.sun.xml.bind</pattern>
-                  <shadedPattern>com.hello2morrow.com.sun.xml.bind</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.sun.xml.txw2</pattern>
-                  <shadedPattern>com.hello2morrow.com.sun.xml.txw2</shadedPattern>
-                </relocation>-->
-                <relocation>
-                  <pattern>javax.activation</pattern>
-                  <shadedPattern>shade.javax.activation</shadedPattern>
-                </relocation>
-                <!--<relocation>
-                  <pattern>javax.xml.stream</pattern>
-                  <shadedPattern>com.hello2morrow.javax.xml.stream</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>javax.xml.bind</patt"target/sonarj-sonar/spacer.gif"ern>
-                  <shadedPattern>com.hello2morrow.javax.xml.bind</shadedPattern>
-                </relocation>-->
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
