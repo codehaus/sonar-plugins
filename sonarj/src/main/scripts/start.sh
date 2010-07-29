@@ -1,4 +1,4 @@
-sonardir=/opt/sonar-2.1.2
+sonardir=/opt/sonar-2.2
 arch=macosx-universal-64
 mvn clean install
 rm $sonardir/extensions/plugins/sonar-sonarj-plugin*
