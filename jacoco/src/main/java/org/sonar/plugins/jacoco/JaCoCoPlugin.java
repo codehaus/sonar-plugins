@@ -84,7 +84,8 @@ public class JaCoCoPlugin implements Plugin {
   public List getExtensions() {
     return Arrays.asList(
         JaCoCoAgentDownloader.class,
-        SurefireMavenPluginHandler.class,
+        JaCoCoMavenPluginHandler.class,
+        TychoSourceImporter.class,
         JaCoCoSensor.class
     );
   }

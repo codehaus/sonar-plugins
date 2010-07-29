@@ -13,7 +13,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
@@ -36,25 +35,43 @@ import java.io.File;
 /**
  * @author Evgeny Mandrikov
  */
-public class SurefireMavenPluginHandler implements MavenPluginHandler {
+public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
+
+  public static final String TYCHO_GROUP_ID = "org.sonatype.tycho";
+  public static final String TYCHO_ARTIFACT_ID = "maven-osgi-test-plugin";
+  public static final String TYCHO_VERSION = "0.9.0";
+
   private static final String ARG_LINE_PARAMETER = "argLine";
 
   private JaCoCoAgentDownloader downloader;
 
-  public SurefireMavenPluginHandler(JaCoCoAgentDownloader downloader) {
+  private final String groupId;
+  private final String artifactId;
+  private final String version;
+
+  public JaCoCoMavenPluginHandler(JaCoCoAgentDownloader downloader, Project project) {
     this.downloader = downloader;
+    if (StringUtils.isNotBlank(TychoSourceImporter.getModulePath(project))) {
+      groupId = TYCHO_GROUP_ID;
+      artifactId = TYCHO_ARTIFACT_ID;
+      version = TYCHO_VERSION;
+    } else {
+      groupId = MavenSurefireUtils.GROUP_ID;
+      artifactId = MavenSurefireUtils.ARTIFACT_ID;
+      version = MavenSurefireUtils.VERSION;
+    }
   }
 
   public String getGroupId() {
-    return MavenSurefireUtils.GROUP_ID;
+    return groupId;
   }
 
   public String getArtifactId() {
-    return MavenSurefireUtils.ARTIFACT_ID;
+    return artifactId;
   }
 
   public String getVersion() {
-    return MavenSurefireUtils.VERSION;
+    return version;
   }
 
   public boolean isFixedVersion() {
@@ -65,7 +82,7 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     return new String[]{"test"};
   }
 
-  public void configure(Project project, MavenPlugin surefirePlugin) {
+  public void configure(Project project, MavenPlugin plugin) {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     // See SONARPLUGINS-600
@@ -89,10 +106,10 @@ public class SurefireMavenPluginHandler implements MavenPluginHandler {
     }
     String argument = options.getVMArgument(downloader.getAgentJarFile());
 
-    String argLine = surefirePlugin.getParameter(ARG_LINE_PARAMETER);
+    String argLine = plugin.getParameter(ARG_LINE_PARAMETER);
     argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
     logger.info("JVM options: {}", argLine);
-    surefirePlugin.setParameter(ARG_LINE_PARAMETER, argLine);
+    plugin.setParameter(ARG_LINE_PARAMETER, argLine);
   }
 
 }
