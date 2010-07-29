@@ -20,20 +20,18 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
+import org.apache.commons.configuration.Configuration;
+import org.junit.Before;
+import org.junit.Test;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
-import static org.mockito.Mockito.mock;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.when;
-import org.apache.commons.configuration.Configuration;
-import static org.hamcrest.Matchers.is;
-
+import static org.mockito.Mockito.*;
 
 public class CommentDebtCalculatorTest {
   private DecoratorContext context;
@@ -43,7 +41,7 @@ public class CommentDebtCalculatorTest {
   public void setUp() throws Exception {
     Configuration configuration = mock(Configuration.class);
     when(configuration.getString(anyString(), anyString())).
-      thenReturn(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT);
+        thenReturn(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT);
     calculator = new CommentDebtCalculator(configuration);
     context = mock(DecoratorContext.class);
   }
@@ -51,29 +49,29 @@ public class CommentDebtCalculatorTest {
   @Test
   public void testCalculateWhenNoComment() {
     when(context.getMeasure(CoreMetrics.PUBLIC_UNDOCUMENTED_API)).
-      thenReturn(null);
+        thenReturn(null);
     when(context.getMeasure(CoreMetrics.PUBLIC_API)).
-      thenReturn(null);
+        thenReturn(null);
     assertEquals(0d, calculator.calculateAbsoluteDebt(context), 0);
     assertEquals(0d, calculator.calculateTotalPossibleDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.PUBLIC_UNDOCUMENTED_API)).
-      thenReturn(new Measure(CoreMetrics.PUBLIC_UNDOCUMENTED_API, 0.0));
+        thenReturn(new Measure(CoreMetrics.PUBLIC_UNDOCUMENTED_API, 0.0));
     assertEquals(0d, calculator.calculateAbsoluteDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.PUBLIC_API)).
-      thenReturn(new Measure(CoreMetrics.PUBLIC_API, 0.0));
+        thenReturn(new Measure(CoreMetrics.PUBLIC_API, 0.0));
     assertEquals(0d, calculator.calculateTotalPossibleDebt(context), 0);
   }
 
   @Test
   public void testCalculateDebt() {
     when(context.getMeasure(CoreMetrics.PUBLIC_UNDOCUMENTED_API)).
-      thenReturn(new Measure(CoreMetrics.PUBLIC_UNDOCUMENTED_API, 400.0));
+        thenReturn(new Measure(CoreMetrics.PUBLIC_UNDOCUMENTED_API, 400.0));
     assertEquals(10, calculator.calculateAbsoluteDebt(context), 0);
 
     when(context.getMeasure(CoreMetrics.PUBLIC_API)).
-      thenReturn(new Measure(CoreMetrics.PUBLIC_API, 400.0));
+        thenReturn(new Measure(CoreMetrics.PUBLIC_API, 400.0));
     assertEquals(10, calculator.calculateTotalPossibleDebt(context), 0);
   }
 
