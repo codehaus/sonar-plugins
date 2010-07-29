@@ -17,6 +17,7 @@
 package org.codehaus.sonar.plugins.testability;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.sonar.api.Extension;
@@ -54,6 +55,13 @@ public class TestabilityPlugin implements Plugin {
   public static final String MAX_EXCELLENT_COST_DEFAULT = "50";
   public static final String WORST_OFFENDER_COUNT_DEFAULT = "20";
 
+  public String getKey() {
+    return KEY;
+  }
+
+  public String getName() {
+    return "Testability Explorer Plugin";
+  }
 
   public String getDescription() {
     return "Testability-explorer is a tool which analyzes Java bytecode and computes how difficult it will be" +
@@ -61,21 +69,13 @@ public class TestabilityPlugin implements Plugin {
   }
 
   public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(TestabilityMavenCollector.class);
-    list.add(TestabilityMavenPluginHandler.class);
-    list.add(TestabilityMetrics.class);
-    list.add(TestabilityDashboardWidget.class);
-    list.add(TestabilityViewerDefinition.class);
-    return list;
-  }
-
-  public String getKey() {
-    return KEY;
-  }
-
-  public String getName() {
-    return "Testability Explorer Plugin";
+    return Arrays.asList(
+        TestabilityMavenCollector.class,
+        TestabilityMavenPluginHandler.class,
+        TestabilityMetrics.class,
+        TestabilityDashboardWidget.class,
+        TestabilityViewerDefinition.class
+    );
   }
 
 }
