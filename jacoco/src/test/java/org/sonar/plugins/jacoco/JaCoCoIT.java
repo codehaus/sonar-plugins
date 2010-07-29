@@ -59,7 +59,7 @@ public class JaCoCoIT {
     assertThat(getProjectMeasure("coverage").getValue(), is(15.4));
     assertThat(getProjectMeasure("line_coverage").getValue(), is(15.4));
     assertThat(getProjectMeasure("lines_to_cover").getValue(), anyOf(is(26126.0), is(27124.0)));
-    assertThat(getProjectMeasure("uncovered_lines").getValue(), is(22108.0));
+    assertThat(getProjectMeasure("uncovered_lines").getValue(), anyOf(is(22110.0), is(22108.0)));
     assertThat(getProjectMeasure("tests").getValue(), is(323.0));
     assertThat(getProjectMeasure("test_success_density").getValue(), is(100.0));
   }
