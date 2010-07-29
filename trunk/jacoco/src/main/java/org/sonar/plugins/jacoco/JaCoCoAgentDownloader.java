@@ -23,7 +23,6 @@ package org.sonar.plugins.jacoco;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.HttpDownloader;
 import org.sonar.api.utils.SonarException;
@@ -62,7 +61,7 @@ public class JaCoCoAgentDownloader extends HttpDownloader implements BatchExtens
       File agent = File.createTempFile("jacocoagent", ".jar");
       download(uri, agent);
       FileUtils.forceDeleteOnExit(agent);
-      LoggerFactory.getLogger(getClass()).info("JaCoCo agent downloaded: {}", agent);
+      JaCoCoUtils.LOG.info("JaCoCo agent downloaded: {}", agent);
       return agent;
     } catch (IOException e) {
       throw new SonarException(e);

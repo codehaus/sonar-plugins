@@ -23,8 +23,6 @@ package org.sonar.plugins.jacoco;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.jacoco.core.runtime.AgentOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
@@ -83,13 +81,11 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
   }
 
   public void configure(Project project, MavenPlugin plugin) {
-    Logger logger = LoggerFactory.getLogger(getClass());
-
     // See SONARPLUGINS-600
     String destfilePath = JaCoCoSensor.getPath(project);
     File destfile = project.getFileSystem().resolvePath(destfilePath);
     if (destfile.exists() && destfile.isFile()) {
-      logger.info("Deleting {}", destfile);
+      JaCoCoUtils.LOG.info("Deleting {}", destfile);
       destfile.delete();
     }
 
@@ -108,7 +104,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
     String argLine = plugin.getParameter(ARG_LINE_PARAMETER);
     argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
-    logger.info("JVM options: {}", argLine);
+    JaCoCoUtils.LOG.info("JVM options: {}", argLine);
     plugin.setParameter(ARG_LINE_PARAMETER, argLine);
   }
 
