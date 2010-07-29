@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.jacoco;
 
+import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,14 +39,16 @@ import static org.mockito.Mockito.when;
 /**
  * @author Evgeny Mandrikov
  */
-public class SurefireMavenPluginHandlerTest {
-  private SurefireMavenPluginHandler handler;
+public class JaCoCoMavenPluginHandlerTest {
+  private JaCoCoMavenPluginHandler handler;
 
   @Before
   public void setUp() throws Exception {
     JaCoCoAgentDownloader downloader = mock(JaCoCoAgentDownloader.class);
     when(downloader.getAgentJarFile()).thenReturn(new File("/tmp/jacocoagent.jar"));
-    handler = new SurefireMavenPluginHandler(downloader);
+    Project project = mock(Project.class);
+    when(project.getConfiguration()).thenReturn(new BaseConfiguration());
+    handler = new JaCoCoMavenPluginHandler(downloader, project);
   }
 
   @Test

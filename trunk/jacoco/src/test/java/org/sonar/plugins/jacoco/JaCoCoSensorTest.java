@@ -46,7 +46,7 @@ public class JaCoCoSensorTest {
 
   @Before
   public void setUp() {
-    sensor = new JaCoCoSensor(mock(Plugins.class), mock(SurefireMavenPluginHandler.class));
+    sensor = new JaCoCoSensor(mock(Plugins.class), mock(JaCoCoMavenPluginHandler.class));
   }
 
   @Test
@@ -62,7 +62,7 @@ public class JaCoCoSensorTest {
         .thenReturn(Project.AnalysisType.DYNAMIC);
 
     assertThat(sensor.getMavenPluginHandler(project), nullValue());
-    assertThat(sensor.getMavenPluginHandler(project), instanceOf(SurefireMavenPluginHandler.class));
+    assertThat(sensor.getMavenPluginHandler(project), instanceOf(JaCoCoMavenPluginHandler.class));
   }
 
   @Test
