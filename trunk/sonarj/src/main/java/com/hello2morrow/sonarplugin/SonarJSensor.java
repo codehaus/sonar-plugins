@@ -561,16 +561,11 @@ public final class SonarJSensor implements Sensor
     	
     	assert types >= 1.0 : "Project must not be empty !";
     	
-    	double violatingTypesPercent = 1;
-    	double unassignedTypesPercent = 1;
-    	if (types == 0)
-    	{
-            violatingTypesPercent = 100.0 * violatingTypes.getValue()/types;
-            unassignedTypesPercent = 100.0 * unassignedTypes.getValue()/types;
-    	}
-        saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, violatingTypesPercent, 1);
-        saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100.0 * unassignedTypesPercent, 1);
+        double violatingTypesPercent = 100.0 * violatingTypes.getValue()/types;
+        double unassignedTypesPercent = 100.0 * unassignedTypes.getValue()/types;
 
+        saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, violatingTypesPercent, 1);
+        saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, unassignedTypesPercent, 1);
 
     	XsdViolations violations = report.getViolations();
     	

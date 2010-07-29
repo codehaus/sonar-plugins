@@ -22,7 +22,7 @@ if measure('sonarj_architecture_violations')
     </tr>
    	<tr>
         <td>
-              <%= format_measure('sonarj_violating_types', :suffix => ' violating types', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.architecture") -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %> <%= format_measure('sonarj_violating_types_percent', :prefix => '(', :suffix => ')') -%>
+              <%= format_measure('sonarj_violating_types', :suffix => ' violating types', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.architecture") -%> <%= tendency_icon(measure('sonarj_violating_types')) %> <%= format_measure('sonarj_violating_types_percent', :prefix => '(', :suffix => ')') -%>
         </td>
     </tr>
     <tr>
