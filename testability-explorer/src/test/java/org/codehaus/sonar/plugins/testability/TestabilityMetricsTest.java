@@ -16,8 +16,6 @@
 
 package org.codehaus.sonar.plugins.testability;
 
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

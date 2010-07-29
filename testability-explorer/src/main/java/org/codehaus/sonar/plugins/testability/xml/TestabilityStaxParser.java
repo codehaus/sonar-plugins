@@ -70,7 +70,7 @@ public class TestabilityStaxParser {
 
   private void parseClasses(SMInputCursor cursor, SensorContext context) throws XMLStreamException {
     SMInputCursor classCursor = cursor.descendantElementCursor(CLASS_TAG);
-    SMEvent event = null;
+    SMEvent event;
     while ((event = classCursor.getNext()) != null) {
       if (event.compareTo(SMEvent.START_ELEMENT) == 0) {
         Resource<?> resource = new JavaFile(StaxMateHelper.getStringValue(classCursor, CLASS_TAG));
@@ -84,7 +84,7 @@ public class TestabilityStaxParser {
 
   private void parseMethods(SMInputCursor cursor, MethodTestabilityCostMeasurer measurer) throws XMLStreamException {
     SMInputCursor methodCursor = cursor.descendantElementCursor(METHOD_TAG);
-    SMEvent event = null;
+    SMEvent event;
     while ((event = methodCursor.getNext()) != null) {
       if (event.compareTo(SMEvent.START_ELEMENT) == 0) {
         addMethodCostToMeasurer(methodCursor, measurer);
@@ -104,7 +104,7 @@ public class TestabilityStaxParser {
 
   private void parseViolations(SMInputCursor cursor, MethodTestabilityCostMeasurer measurer) throws XMLStreamException {
     SMInputCursor violationCursor = cursor.descendantElementCursor(COST_TAG);
-    SMEvent event = null;
+    SMEvent event;
     while ((event = violationCursor.getNext()) != null) {
       if (event.compareTo(SMEvent.START_ELEMENT) == 0) {
         addViolationCostToMeasurer(violationCursor, measurer);
