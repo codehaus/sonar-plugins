@@ -115,9 +115,11 @@ public final class SonarJSensor implements Sensor
     {
         ReportContext result = null;
         InputStream input = null;
-        
+        ClassLoader defaultClassLoader = Thread.currentThread().getContextClassLoader();
+
         try
         {
+            Thread.currentThread().setContextClassLoader(SonarJSensor.class.getClassLoader());
             JAXBContext context = JAXBContext.newInstance("com.hello2morrow.sonarplugin.xsd");
             Unmarshaller u = context.createUnmarshaller();
             
@@ -140,6 +142,7 @@ public final class SonarJSensor implements Sensor
         }   
         finally
         {
+            Thread.currentThread().setContextClassLoader(defaultClassLoader);
             if (input != null)
             {
                 try
