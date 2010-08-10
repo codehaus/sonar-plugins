@@ -48,7 +48,7 @@ public class JaCoCoAgentDownloader extends HttpDownloader implements BatchExtens
     return host + "/deploy/plugins/sonar-jacoco-plugin/agent-all-0.4.0.20100604151516.jar";
   }
 
-  protected File getAgentJarFile() {
+  protected synchronized File getAgentJarFile() {
     if (agentJarFile == null) {
       agentJarFile = downloadAgent();
     }
