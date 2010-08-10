@@ -27,6 +27,7 @@ import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.resources.Project;
+import org.sonar.api.utils.SonarException;
 
 import java.io.File;
 
@@ -86,7 +87,9 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
     File destfile = project.getFileSystem().resolvePath(destfilePath);
     if (destfile.exists() && destfile.isFile()) {
       JaCoCoUtils.LOG.info("Deleting {}", destfile);
-      destfile.delete();
+      if (!destfile.delete()) {
+        throw new SonarException("Unable to delete " + destfile);
+      }
     }
 
     Configuration configuration = project.getConfiguration();

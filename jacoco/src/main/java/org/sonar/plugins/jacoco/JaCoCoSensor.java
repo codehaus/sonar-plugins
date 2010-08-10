@@ -52,7 +52,9 @@ import java.io.IOException;
 public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
 
   private JaCoCoMavenPluginHandler handler;
-  private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
+  private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(
+    CoreMetrics.COVERAGE_LINE_HITS_DATA
+  );
 
   public JaCoCoSensor(Plugins plugins, JaCoCoMavenPluginHandler handler) {
     super(plugins);
