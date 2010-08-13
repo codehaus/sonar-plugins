@@ -12,7 +12,7 @@
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-sonarj-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>2.2.1</version>
+  <version>2.2.2-SNAPSHOT</version>
   
   <name>Sonar SonarJ Plugin</name>
   <description>Provides architecture governance features accompanied by metrics about cyclic dependencies and other structural aspects.</description>
