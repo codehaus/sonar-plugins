@@ -25,6 +25,9 @@ public final class SonarJPluginBase
     public final static String PLUGIN_KEY = "SonarJ";
     public final static String ARCH_RULE_KEY = "sonarj.architecture";
     public final static String THRESHOLD_RULE_KEY = "sonarj.threshold";
+    public final static String DUPLICATE_RULE_KEY = "sonarj.duplicate";
+    public final static String CYCLE_GROUP_RULE_KEY = "sonarj.cyclegroup";
+    public final static String WORKSPACE_RULE_KEY = "sonarj.workspace";
     public final static String TASK_RULE_KEY = "sonarj.open_task";
     
     private SonarJPluginBase()

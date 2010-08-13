@@ -40,12 +40,13 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
     @DependedUpon
     public List<Metric> generatesMetrics()
     {
-        return Arrays.asList(SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.EROSION_INDEX,
-                SonarJMetrics.CYCLIC_PACKAGES, SonarJMetrics.CYCLICITY, SonarJMetrics.EROSION_DAYS, SonarJMetrics.EROSION_COST, 
-                SonarJMetrics.EROSION_REFS, SonarJMetrics.EROSION_TYPES, SonarJMetrics.IGNORED_VIOLATONS, SonarJMetrics.IGNORED_WARNINGS,
-                SonarJMetrics.INSTRUCTIONS, SonarJMetrics.INTERNAL_PACKAGES, SonarJMetrics.INTERNAL_TYPES, SonarJMetrics.JAVA_FILES,
-                SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS, SonarJMetrics.THRESHOLD_WARNINGS, SonarJMetrics.TYPE_DEPENDENCIES,
-                SonarJMetrics.VIOLATING_DEPENDENCIES, SonarJMetrics.ARCHITECTURE_VIOLATIONS, SonarJMetrics.UNASSIGNED_TYPES);
+        return Arrays.asList(SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.EROSION_INDEX, SonarJMetrics.CYCLIC_PACKAGES, SonarJMetrics.CYCLICITY,
+                SonarJMetrics.EROSION_COST, SonarJMetrics.EROSION_REFS, SonarJMetrics.EROSION_TYPES, SonarJMetrics.IGNORED_VIOLATONS,
+                SonarJMetrics.IGNORED_WARNINGS, SonarJMetrics.INSTRUCTIONS, SonarJMetrics.INTERNAL_PACKAGES, SonarJMetrics.INTERNAL_TYPES,
+                SonarJMetrics.JAVA_FILES, SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS, SonarJMetrics.THRESHOLD_WARNINGS,
+                SonarJMetrics.DUPLICATE_WARNINGS, SonarJMetrics.ALL_WARNINGS, SonarJMetrics.CYCLE_WARNINGS, SonarJMetrics.WORKSPACE_WARNINGS,
+                SonarJMetrics.TYPE_DEPENDENCIES, SonarJMetrics.VIOLATING_DEPENDENCIES, SonarJMetrics.ARCHITECTURE_VIOLATIONS,
+                SonarJMetrics.UNASSIGNED_TYPES);
     }
 
     @Override
@@ -67,37 +68,74 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
             return;
         }
         super.decorate(resource, context);
-       
+
         double biggestCycleGroupSize = -1.0;
-   
+        double highestACD = -1.0;
+        double highestNCCD = -1.0;
+
         for (DecoratorContext childContext : context.getChildren())
         {
-            Measure m = childContext.getMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP);
-           
-            if (m != null && m.getValue() > biggestCycleGroupSize)
+            Measure cycleGroup = childContext.getMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP);
+            Measure acd = childContext.getMeasure(SonarJMetrics.ACD);
+            Measure nccd = childContext.getMeasure(SonarJMetrics.NCCD);
+            Measure localHighestACD = childContext.getMeasure(SonarJMetrics.HIGHEST_ACD);
+            Measure localHighestNCCD = childContext.getMeasure(SonarJMetrics.HIGHEST_NCCD);
+
+            if (cycleGroup != null && cycleGroup.getValue() > biggestCycleGroupSize)
             {
-                biggestCycleGroupSize = m.getValue();
+                biggestCycleGroupSize = cycleGroup.getValue();
+            }
+
+            if (acd != null && acd.getValue() > highestACD)
+            {
+                highestACD = acd.getValue();
+            }
+            else if (localHighestACD != null && localHighestACD.getValue() > highestACD)
+            {
+                highestACD = localHighestACD.getValue();
+            }
+
+            if (nccd != null && nccd.getValue() > highestNCCD)
+            {
+                highestNCCD = nccd.getValue();
+            }
+            else if (localHighestNCCD != null && localHighestNCCD.getValue() > highestNCCD)
+            {
+                highestNCCD = localHighestNCCD.getValue();
             }
         }
         if (biggestCycleGroupSize >= 0.0 && context.getMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP) == null)
         {
             context.saveMeasure(SonarJMetrics.BIGGEST_CYCLE_GROUP, biggestCycleGroupSize);
         }
-        
+
+        if (highestACD >= 0.0 && context.getMeasure(SonarJMetrics.HIGHEST_ACD) == null)
+        {
+            context.saveMeasure(SonarJMetrics.HIGHEST_ACD, highestACD);
+        }
+
+        if (highestNCCD >= 0.0 && context.getMeasure(SonarJMetrics.HIGHEST_NCCD) == null)
+        {
+            context.saveMeasure(SonarJMetrics.HIGHEST_NCCD, highestNCCD);
+        }
+
         Measure cyclicity = context.getMeasure(SonarJMetrics.CYCLICITY);
         Measure packages = context.getMeasure(SonarJMetrics.INTERNAL_PACKAGES);
-        
-        if (cyclicity == null || packages == null)
+        Measure cyclicPackages = context.getMeasure(SonarJMetrics.CYCLIC_PACKAGES);
+
+        if (cyclicity == null || packages == null || cyclicPackages == null)
         {
-            LOG.error("Problem in aggregator on project: "+context.getProject().getKey());
+            LOG.error("Problem in aggregator on project: " + context.getProject().getKey());
         }
         else
         {
             double relCyclicity = 100.0 * Math.sqrt(cyclicity.getValue()) / packages.getValue();
-            
-            context.saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relCyclicity);            
+            double relCyclicPackages = 100.0 * cyclicPackages.getValue() / packages.getValue();
+
+            context.saveMeasure(SonarJMetrics.RELATIVE_CYCLICITY, relCyclicity);
+            context.saveMeasure(SonarJMetrics.CYCLIC_PACKAGES_PERCENT, relCyclicPackages);
         }
-                
+
         Measure violatingTypes = context.getMeasure(SonarJMetrics.VIOLATING_TYPES);
         Measure internalTypes = context.getMeasure(SonarJMetrics.INTERNAL_TYPES);
         Measure unassignedTypes = context.getMeasure(SonarJMetrics.UNASSIGNED_TYPES);
@@ -106,11 +144,11 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
         {
             if (violatingTypes != null)
             {
-                context.saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0*violatingTypes.getValue()/internalTypes.getValue());
+                context.saveMeasure(SonarJMetrics.VIOLATING_TYPES_PERCENT, 100.0 * violatingTypes.getValue() / internalTypes.getValue());
             }
             if (unassignedTypes != null)
             {
-                context.saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100*unassignedTypes.getValue()/internalTypes.getValue());
+                context.saveMeasure(SonarJMetrics.UNASSIGNED_TYPES_PERCENT, 100 * unassignedTypes.getValue() / internalTypes.getValue());
             }
         }
         AlertDecorator.setAlertLevels(new DecoratorProjectContext(context));
@@ -120,7 +158,8 @@ public final class SonarJMetricAggregator extends AbstractSumChildrenDecorator
     @Override
     public boolean shouldDecorateResource(Resource resource)
     {
-        return Arrays.asList(Resource.QUALIFIER_PROJECT, Resource.QUALIFIER_MODULE, Resource.QUALIFIER_VIEW, Resource.QUALIFIER_SUBVIEW).contains(resource.getQualifier());
+        return Arrays.asList(Resource.QUALIFIER_PROJECT, Resource.QUALIFIER_MODULE, Resource.QUALIFIER_VIEW, Resource.QUALIFIER_SUBVIEW).contains(
+                resource.getQualifier());
     }
 
 }

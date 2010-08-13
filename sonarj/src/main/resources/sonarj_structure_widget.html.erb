@@ -30,19 +30,21 @@ if measure('sonarj_acd')
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj_cyclic_packages', :suffix => ' cyclic packages') -%> <%= tendency_icon(measure('sonarj_cyclic_packages')) %>
-        </td>
-        <td>
-              <%= format_measure('sonarj_packages', :suffix => ' packages') -%> <%= tendency_icon(measure('sonarj_packages')) %>
+              <%= format_measure('sonarj_cyclic_packages', :suffix => ' cyclic packages') -%> <%= format_measure('sonarj_cyclic_packages_percent', :prefix => '(', :suffix => ')') -%> <%= tendency_icon(measure('sonarj_cyclic_packages')) %>
         </td>
     </tr>
-   <tr>
-        <td>
-              <%= format_measure('sonarj_cyclicity', :suffix => ' package cyclicity') -%> <%= tendency_icon(measure('sonarj_cyclicity')) %>
-        </td>
-        <td>
+    <tr>
+    	<td>
+    	<%= format_measure('sonarj_erosion_types', :suffix => ' type dependencies to cut') -%><%= tendency_icon(measure('sonarj_erosion_types')) %>
+    	</td>
+    	<td>
               <%= format_measure('sonarj_instructions', :suffix => ' byte code instr.') -%> <%= tendency_icon(measure('sonarj_instructions')) %>
         </td>
+    </tr>
+    <tr>
+    	<td>
+    	<%= format_measure('sonarj_erosion_ref', :suffix => ' references to remove') -%><%= tendency_icon(measure('sonarj_erosion_ref')) %>
+    	</td>
     </tr>
   </table>
 </div>
@@ -53,7 +55,7 @@ elsif measure('sonarj_biggest_cycle_group')
   <table>
     <tr>
         <td width="190px"><h3>Relative Package Cyclicity</h3></td>
-        <td width="160px"><h3>Biggest Cycle Group</h3></td>
+        <td width="160px"><h3>Highest ACD</h3></td>
         <td align="right"><a href="http://www.hello2morrow.com/products/sonarj/sonar" target="_blank"><%= image_tag 'help.png', :class => 'png' -%></a></td>
     </tr>
     <tr>
@@ -64,25 +66,35 @@ elsif measure('sonarj_biggest_cycle_group')
         </td>
         <td>
             <span class="big">
-              <%= format_measure('sonarj_biggest_cycle_group') -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %>
+              <%= format_measure('sonarj_highest_acd') -%> <%= tendency_icon(measure('sonarj_highest_acd')) %> 
             </span>
+        </td>
+    </tr>
+   	<tr>
+        <td>
+              <%= format_measure('sonarj_biggest_cycle_group', :suffix => ' biggest cycle group size') -%> <%= tendency_icon(measure('sonarj_biggest_cycle_group')) %>
+        </td>
+        <td>
+              <%= format_measure('sonarj_highest_nccd', :suffix => ' Highest NCCD') -%> <%= tendency_icon(measure('sonarj_highest_nccd')) %>
         </td>
     </tr>
     <tr>
         <td>
-              <%= format_measure('sonarj_cyclic_packages', :suffix => ' cyclic packages') -%> <%= tendency_icon(measure('sonarj_cyclic_packages')) %>
-        </td>
-        <td>
-              <%= format_measure('sonarj_packages', :suffix => ' packages') -%> <%= tendency_icon(measure('sonarj_packages')) %>
+              <%= format_measure('sonarj_cyclic_packages', :suffix => ' cyclic packages') -%> <%= format_measure('sonarj_cyclic_packages_percent', :prefix => '(', :suffix => ')') -%> <%= tendency_icon(measure('sonarj_cyclic_packages')) %>
         </td>
     </tr>
-   <tr>
-        <td>
-              <%= format_measure('sonarj_cyclicity', :suffix => ' package cyclicity') -%> <%= tendency_icon(measure('sonarj_cyclicity')) %>
-        </td>
-        <td>
+    <tr>
+    	<td>
+    	<%= format_measure('sonarj_erosion_types', :suffix => ' type dependencies to cut') -%><%= tendency_icon(measure('sonarj_erosion_types')) %>
+    	</td>
+    	<td>
               <%= format_measure('sonarj_instructions', :suffix => ' byte code instr.') -%> <%= tendency_icon(measure('sonarj_instructions')) %>
         </td>
+    </tr>
+    <tr>
+    	<td>
+    	<%= format_measure('sonarj_erosion_ref', :suffix => ' references to remove') -%><%= tendency_icon(measure('sonarj_erosion_ref')) %>
+    	</td>
     </tr>
   </table>
 </div>
