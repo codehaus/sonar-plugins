@@ -46,7 +46,7 @@ import org.sonar.api.Property;
     @Property
     (
         key = SonarJSensor.COST_PER_INDEX_POINT,
-        defaultValue = "7",
+        defaultValue = "12",
         name = "Cost per metric point of 'Structural debt index' (0 means not displayed)",
         project = false,
         module = false,
