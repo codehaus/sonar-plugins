@@ -62,13 +62,14 @@ public final class AlertDecorator
 
     }
 
-    private static AlertThreshold thresholds[] = { new AlertThreshold(SonarJMetrics.EROSION_DAYS, 5.0, 20.0),
-            new AlertThreshold(SonarJMetrics.UNASSIGNED_TYPES, 1.0, 20.0),
-            new AlertThreshold(SonarJMetrics.VIOLATING_TYPES, 10.0, 20.0), new AlertThreshold(SonarJMetrics.TASKS, 20.0, 50.0),
-            new AlertThreshold(SonarJMetrics.THRESHOLD_WARNINGS, 20.0, 50.0), new AlertThreshold(SonarJMetrics.WORKSPACE_WARNINGS, 1.0, 10.0),
-            new AlertThreshold(SonarJMetrics.NCCD, 6.5, 10.0),
-            new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 7), new AlertThreshold(SonarJMetrics.CYCLICITY, 25, 50),
-            new AlertThreshold(SonarJMetrics.DUPLICATE_WARNINGS, 10, 20) };
+    private static AlertThreshold thresholds[] = { new AlertThreshold(SonarJMetrics.EROSION_INDEX, 400, 1600),
+            new AlertThreshold(SonarJMetrics.UNASSIGNED_TYPES, 1.0, 20.0), new AlertThreshold(SonarJMetrics.VIOLATING_TYPES, 10.0, 20.0),
+            new AlertThreshold(SonarJMetrics.TASKS, 20.0, 50.0), new AlertThreshold(SonarJMetrics.THRESHOLD_WARNINGS, 20.0, 50.0),
+            new AlertThreshold(SonarJMetrics.WORKSPACE_WARNINGS, 1.0, 10.0), new AlertThreshold(SonarJMetrics.NCCD, 6.5, 10.0),
+            new AlertThreshold(SonarJMetrics.HIGHEST_NCCD, 6.5, 10.0), new AlertThreshold(SonarJMetrics.BIGGEST_CYCLE_GROUP, 4, 8),
+            new AlertThreshold(SonarJMetrics.RELATIVE_CYCLICITY, 25, 50), new AlertThreshold(SonarJMetrics.DUPLICATE_WARNINGS, 10, 20),
+            new AlertThreshold(SonarJMetrics.CYCLE_WARNINGS, 1, 10), new AlertThreshold(SonarJMetrics.WORKSPACE_WARNINGS, 1, 10),
+            new AlertThreshold(SonarJMetrics.ALL_WARNINGS, 10, 20) };
 
     private static void copyAlertLevel(IProjectContext context, Metric from, Metric to)
     {
@@ -78,8 +79,11 @@ public final class AlertDecorator
         {
             Measure toMeasure = context.getMeasure(to);
 
-            toMeasure.setAlertStatus(fromMeasure.getAlertStatus());
-            context.saveMeasure(toMeasure);
+            if (toMeasure != null)
+            {
+                toMeasure.setAlertStatus(fromMeasure.getAlertStatus());
+                context.saveMeasure(toMeasure);
+            }
         }
 
     }
@@ -97,10 +101,11 @@ public final class AlertDecorator
             }
         }
         copyAlertLevel(context, SonarJMetrics.NCCD, SonarJMetrics.ACD);
-        copyAlertLevel(context, SonarJMetrics.EROSION_DAYS, SonarJMetrics.EROSION_COST);
+        copyAlertLevel(context, SonarJMetrics.HIGHEST_NCCD, SonarJMetrics.HIGHEST_ACD);
+        copyAlertLevel(context, SonarJMetrics.EROSION_INDEX, SonarJMetrics.EROSION_COST);
         copyAlertLevel(context, SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.ARCHITECTURE_VIOLATIONS);
+        copyAlertLevel(context, SonarJMetrics.VIOLATING_TYPES, SonarJMetrics.VIOLATING_DEPENDENCIES);
         copyAlertLevel(context, SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS);
-        copyAlertLevel(context, SonarJMetrics.TASKS, SonarJMetrics.TASK_REFS);
-        copyAlertLevel(context, SonarJMetrics.CYCLICITY, SonarJMetrics.RELATIVE_CYCLICITY);
+        copyAlertLevel(context, SonarJMetrics.RELATIVE_CYCLICITY, SonarJMetrics.CYCLICITY);
     }
 }

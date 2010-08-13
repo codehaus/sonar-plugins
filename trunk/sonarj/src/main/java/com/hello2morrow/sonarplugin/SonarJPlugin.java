@@ -35,10 +35,20 @@ import org.sonar.api.Property;
 ({
     @Property
     (
-        key = SonarJSensor.DEVELOPER_COST_PER_HOUR,
-        defaultValue = "70",
-        name = "Cost per Developer Hour in US$",
-        project = true,
+        key = "sonarj.currency",
+        defaultValue = "USD",
+        name = "Currency",
+        project = false,
+        module = false,
+        global = true
+    ),
+
+    @Property
+    (
+        key = SonarJSensor.COST_PER_INDEX_POINT,
+        defaultValue = "7",
+        name = "Cost per metric point of 'Structural debt index' (0 means not displayed)",
+        project = false,
         module = false,
         global = true
     )

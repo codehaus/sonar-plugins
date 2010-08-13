@@ -13,7 +13,38 @@
   <artifactId>sonar-sonarj-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>2.2.1</version>
+  
   <name>Sonar SonarJ Plugin</name>
+  <description>Provides architecture governance features accompanied by metrics about cyclic dependencies and other structural aspects.</description>
+  <url>http://docs.codehaus.org/display/SONAR/SonarJ+Plugin</url>
+  
+  <inceptionYear>2009</inceptionYear>
+  <organization>
+    <name>hello2morrow</name>
+    <url>http://www.hello2morrow.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <id>hello2morrow</id>
+      <name>Alexander von Zitzewitz</name>
+    </developer>
+    <developer>
+      <id>nwe_h2m</id>
+      <name>Norman Wenzel</name>
+    </developer>
+  </developers>
+  
+  <issueManagement>
+  	<system>JIRA</system>
+  	<url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14211</url>
+  </issueManagement>
 
   <properties>
     <sonar.plugin.class>com.hello2morrow.sonarplugin.SonarJPlugin</sonar.plugin.class>

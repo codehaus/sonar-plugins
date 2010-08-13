@@ -1,43 +1,62 @@
 <%
 m = measure('sonarj_erosion_cost') 
-if m && m.value > 0 
+if m && m.value > 0
 %>
 <div class="dashbox">
   <table>
     <tr>
-        <td width="190px"><h3>Cost of Structural Debt</h3></td>
-        <td width="160px"><h3>Cost in Man Days</h3></td>
+    	<td width="200px"><h3>Structural Debt Index</h3></td>
+        <td width="150px"><h3>Cost of Structural Debt</h3></td>
         <td align="right"><a href="http://www.hello2morrow.com/products/sonarj/sonar#debt" target="_blank"><%= image_tag 'help.png', :class => 'png' -%></a></td>
     </tr>
     <tr>
 		<td>
         <span class="big">
-    		<%= format_measure('sonarj_erosion_cost', :prefix => '$ ') -%><%= tendency_icon(measure('sonarj_erosion_cost')) %>
+    		<%= format_measure('sonarj_erosion_index') -%> <%= tendency_icon(measure('sonarj_erosion_index')) %>
     	</span>
 		</td>
 		<td>
         <span class="big">
-    		<%= format_measure('sonarj_erosion_days') -%><%= tendency_icon(measure('sonarj_erosion_days')) %>
+    		<%= format_measure('sonarj_erosion_cost', :suffix => ' ') -%> <%= configuration('sonarj.currency', 'USD') %> <%= tendency_icon(measure('sonarj_erosion_cost')) %>
     	</span>
 		</td>
     </tr>
-    <tr>
+       <tr>
         <td>
-        <%= format_measure('sonarj_erosion_index', :suffix => ' structural debt index') -%><%= tendency_icon(measure('sonarj_erosion_index')) %>
+              <%= format_measure('sonarj_tasks', :suffix => ' open tasks', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%>
         </td>
     </tr>
     <tr>
-    	<td>
-    	<%= format_measure('sonarj_erosion_types', :suffix => ' type dependencies to cut') -%><%= tendency_icon(measure('sonarj_erosion_types')) %>
-    	</td>
-    </tr>
-    <tr>
-    	<td>
-    	<%= format_measure('sonarj_erosion_ref', :suffix => ' references to remove') -%><%= tendency_icon(measure('sonarj_erosion_ref')) %>
-    	</td>
+        <td>
+              <%= format_measure('sonarj_task_refs', :prefix => ' (with ', :suffix => ' references in code)') -%> <%= tendency_icon(measure('sonarj_tasks')) %>
+        </td>
     </tr>
   </table>
 </div>
-<%
+<% 
+elsif measure('sonarj_erosion_index')
+%>  
+<div class="dashbox">
+  <table>
+    <tr>
+        <td width="350px"><h3>Structural Debt Index</h3></td>
+        <td align="right"><a href="http://www.hello2morrow.com/products/sonarj/sonar#debt" target="_blank"><%= image_tag 'help.png', :class => 'png' -%></a></td>
+    </tr>
+    <tr>
+		<td>
+        <span class="big">
+    		<%= format_measure('sonarj_erosion_index') -%><%= tendency_icon(measure('sonarj_erosion_index')) %>
+    	</span>
+		</td>
+    </tr>
+    </tr>
+    <tr>
+        <td>
+              <%= format_measure('sonarj_tasks', :suffix => ' open tasks', :url => "#{ApplicationController.root_context}/drilldown/violations/#{@project.id}?filter=category&rule=SonarJ%3Asonarj.open_task") -%> <%= format_measure('sonarj_task_refs', :prefix => ' (with ', :suffix => ' references in code)') -%> <%= tendency_icon(measure('sonarj_tasks')) %>
+        </td>
+    </tr>
+  </table>
+</div>
+<% 
 end
 %>  
