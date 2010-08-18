@@ -1,0 +1,85 @@
+<%
+
+ # Copyright (c) 2010 Thales Optronics Ltd
+ #
+ # Permission is hereby granted, free of charge, to any person obtaining a copy
+ # of this software and associated documentation files (the "Software"), to deal
+ # in the Software without restriction, including without limitation the rights
+ # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ # copies of the Software, and to permit persons to whom the Software is
+ # furnished to do so, subject to the following conditions:
+
+ # The above copyright notice and this permission notice shall be included in
+ # all copies or substantial portions of the Software.
+
+ # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ # AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ # THE SOFTWARE.
+ 
+	issues_measure = measure('issues')
+	component = ""
+	# .data is the distribution data - if it is blank the project hasn't 
+	# has its Trac instance analysed.
+	if issues_measure && issues_measure.data != ""
+		if measure('ticket_component')
+			component = measure('ticket_component').formatted_value
+		end	
+			
+%>
+  <div class="yui-g">
+    <div class="yui-u first">
+      <div class="dashbox">
+        <p class="title">Issue Tracker</p>
+        <span class="big">
+          <p><%= format_measure(issues_measure, { :url => issues_measure.url + "/report"} ) -%></p>
+        </span>
+<% if component != "" -%>
+		<span class="small">
+			<p><%=h component -%></p>
+		</span>
+<% end -%>
+      </div>
+      
+      <div class="small">
+      	<p><%= link_to "New Ticket", (issues_measure.url + "/newticket?component=" + component ) -%></p>
+      </div>
+    </div>
+    <div class="yui-u">
+      <div class="dashbox">
+        <p class="title">By Priority</p>
+        <table>          
+          <% issues_measure.text_value.split(";").each do |priority_with_size| priority_with_size_array = priority_with_size.split("=") %>
+          <tr>
+            <td align="left">
+<%
+	# We don't want closed tickets in our queries.
+	query_url = "#{issues_measure.url}/query?priority=#{priority_with_size_array[0]}&amp;status=!closed"		
+		
+	if component != ""
+		query_url = "#{query_url}&amp;component=#{component}"		
+	end
+%>
+            	<%= link_to priority_with_size_array[0], query_url -%>              
+            </td>
+           
+            <td align="right" style="padding-left: 10px;">
+              <%= priority_with_size_array[1] -%>
+            </td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="dashbox">
+  	<%= piechart(issues_measure) -%>
+  </div class="dashbox">
+  
+<%
+	end
+%>
