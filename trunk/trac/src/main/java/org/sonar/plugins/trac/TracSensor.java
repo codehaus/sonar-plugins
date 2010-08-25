@@ -148,9 +148,20 @@ public class TracSensor implements Sensor {
       LOGGER.info("Trac: Connecting to " + tracURL);
       try {
         XmlRpcClientConfigImpl conf = new XmlRpcClientConfigImpl();
-        conf.setBasicUserName(tracUsername);
-        conf.setBasicPassword(tracPassword);
-        conf.setServerURL(new URL(tracURL + "/login/xmlrpc"));
+				String xmlRPCURL = "/xmlrpc";
+
+				if (null != tracUsername) {
+					tracURL = tracURL + "/login" + xmlRPCURL;
+					conf.setBasicUserName(tracUsername);
+					conf.setBasicPassword(tracPassword);
+				}
+				else
+				{
+					tracURL = tracURL + xmlRPCURL;
+				}
+
+				LOGGER.info("Trac: XML-RPC URL is " + tracURL);
+				conf.setServerURL(new URL(tracURL));
 
         XmlRpcClient client = new XmlRpcClient();
         client.setConfig(conf);
