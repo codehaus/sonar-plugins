@@ -144,6 +144,8 @@ public class TracSensor implements Sensor {
       String tracUsername = project.getConfiguration().getString(TracPlugin.TRAC_USERNAME_KEY);
       String tracPassword = project.getConfiguration().getString(TracPlugin.TRAC_PASSWORD_KEY);
       String tracTicketComponent = project.getConfiguration().getString(TracPlugin.TRAC_TICKET_COMPONENT_KEY);
+      
+      String fullTracUrl = tracURL;
 
       LOGGER.info("Trac: Connecting to " + tracURL);
       try {
@@ -151,17 +153,17 @@ public class TracSensor implements Sensor {
 				String xmlRPCURL = "/xmlrpc";
 
 				if (null != tracUsername) {
-					tracURL = tracURL + "/login" + xmlRPCURL;
+					fullTracUrl = fullTracUrl + "/login" + xmlRPCURL;
 					conf.setBasicUserName(tracUsername);
 					conf.setBasicPassword(tracPassword);
 				}
 				else
 				{
-					tracURL = tracURL + xmlRPCURL;
+					fullTracUrl = fullTracUrl + xmlRPCURL;
 				}
 
-				LOGGER.info("Trac: XML-RPC URL is " + tracURL);
-				conf.setServerURL(new URL(tracURL));
+				LOGGER.info("Trac: XML-RPC URL is " + fullTracUrl);
+				conf.setServerURL(new URL(fullTracUrl));
 
         XmlRpcClient client = new XmlRpcClient();
         client.setConfig(conf);
