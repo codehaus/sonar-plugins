@@ -1,0 +1,63 @@
+<div>
+    <div class="dashbox" id="widget_lines" >
+  
+    <h3>Lines of code</h3>
+    <p><span class="big">
+       
+    <table>
+      <tr>
+          <td valign="top" nowrap>CSS</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('css_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>DRL</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('drl_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>DSL</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('dsl_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>HTML</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('html_lines', :suffix => '') %></td>
+      </tr>  
+      <tr>
+          <td valign="top" nowrap>JavaScript&nbsp;</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('javascript_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>Java</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('java_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>Java (gen)&nbsp;</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('generated_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>SQL</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('sql_lines', :suffix => '') %></td>
+      </tr>  
+      <tr>
+          <td valign="top" nowrap>XHTML</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('xhtml_lines', :suffix => '') %></td>
+      </tr>  
+      <tr>
+          <td valign="top" nowrap>XML</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('xml_lines', :suffix => '') %></td>
+      </tr>   
+      <tr>
+          <td valign="top" nowrap>XSD</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('xsd_lines', :suffix => '') %></td>
+      </tr>
+      <tr>
+          <td valign="top" nowrap>Total</td>
+          <td style="padding-left: 10px;" align="right"><%= format_measure('total_lines', :suffix => '') %></td>
+      </tr>
+
+   </table>
+   </div>
+   
+  <div>
+      <%= piechart(measure('code_distribution'), { :size => "240x180"}) -%>
+  </div>
+</div>
