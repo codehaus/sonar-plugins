@@ -30,13 +30,39 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
 @Properties({
-    @Property(key = TracPlugin.TRAC_URL_KEY, defaultValue = TracPlugin.TRAC_URL_DEFVALUE, name = "Trac Instance URL", description = "URL of project's Trac instance.", global = false, project = true),
-    @Property(key = TracPlugin.TRAC_USERNAME_KEY, defaultValue = TracPlugin.TRAC_USERNAME_DEFVALUE, name = "Trac Instance Username", description = "Username (to access) project's Trac instance.", global = false, project = true),
-    @Property(key = TracPlugin.TRAC_PASSWORD_KEY, defaultValue = TracPlugin.TRAC_PASSWORD_DEFVALUE, name = "Trac Instance Password", description = "Password (to access) project's Trac instance.", global = false, project = true),
-    @Property(
+  @Property(
+    key = TracPlugin.TRAC_URL_KEY,
+    defaultValue = TracPlugin.TRAC_URL_DEFVALUE,
+    name = "Trac Instance URL",
+    description = "URL of project's Trac instance.",
+    global = false,
+   project = true
+  ),
+  @Property(
+    key = TracPlugin.TRAC_USERNAME_KEY,
+    defaultValue = TracPlugin.TRAC_USERNAME_DEFVALUE,
+    name = "Trac Instance Username",
+    description = "Username (to access) project's Trac instance.",
+    global = false,
+    project = true
+  ),
+  @Property(
+    key = TracPlugin.TRAC_PASSWORD_KEY,
+    defaultValue = TracPlugin.TRAC_PASSWORD_DEFVALUE,
+    name = "Trac Instance Password",
+    description = "Password (to access) project's Trac instance.",
+    global = false,
+    project = true
+  ),
+  @Property(
     // No default value for this field - makes it null.
-    key = TracPlugin.TRAC_TICKET_COMPONENT_KEY, name = "Project Component Name", description = "If your project is broken up into components, specify the "
-        + "component name here (must be a valid component name or queries will not work).", global = false, project = true) })
+    key = TracPlugin.TRAC_TICKET_COMPONENT_KEY,
+    name = "Project Component Name", description = "If your project is broken up into components, specify the "
+      + "component name here (must be a valid component name or queries will not work).",
+    global = false,
+    project = true
+  )
+})
 /**
  * This class is the container for all others extensions
  */
