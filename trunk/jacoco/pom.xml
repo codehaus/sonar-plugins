@@ -57,6 +57,8 @@
 
     <sonar.version>2.2</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
+
+    <sonar.runtimeVersion>${sonarVersion}</sonar.runtimeVersion>
   </properties>
 
   <dependencies>
