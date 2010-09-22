@@ -65,7 +65,7 @@ public class CommonsCollectionsIT {
         is("Comments=15.06;Complexity=22.54;Design=34.91;Duplication=10.35;Violations=17.11"),
         is("Comments=15.02;Complexity=22.49;Design=34.83;Duplication=10.57;Violations=17.07"),
         is("Comments=15.4;Complexity=23.05;Design=35.7;Duplication=8.37;Violations=17.46"),
-        is("Comments=15.44;Complexity=23.11;Design=35.79;Duplication=8.14;Violations=17.5")));
+        is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04")));
   }
 
   @Test
@@ -79,7 +79,7 @@ public class CommonsCollectionsIT {
         is("Comments=14.13;Complexity=47.1;Coverage=7.24;Duplication=11.16;Violations=20.34"),
         is("Comments=14.06;Complexity=46.87;Coverage=7.21;Duplication=11.59;Violations=20.24"),
 
-        is("Comments=14.42;Complexity=48.08;Coverage=7.39;Duplication=9.41;Violations=20.67")));
+        is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17")));
   }
 
   @Test
