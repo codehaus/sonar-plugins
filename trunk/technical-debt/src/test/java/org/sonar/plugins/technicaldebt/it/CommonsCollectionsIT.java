@@ -58,7 +58,7 @@ public class CommonsCollectionsIT {
 
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and for after Sonar 2.2
-    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103812.5), is(104062.5), is(101525.0), is(101275.0)));
+    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103812.5), is(104062.5), is(104025.0), is(101275.0)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(13.9), is(13.8), is(13.5)));
     assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6)));
     assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
@@ -72,7 +72,7 @@ public class CommonsCollectionsIT {
   public void packagesMetrics() {
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and 2 for after Sonar 2.2
-    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25740.3), is(25865.3), is(25340.3), is(25215.3)));
+    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25740.3), is(25865.3), is(25840.3), is(25215.3)));
     assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(12.9), is(13.0)));
     assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(51.5), is(51.7), is(50.7), is(50.4)));
     assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
