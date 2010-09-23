@@ -73,7 +73,7 @@ public class CommonsCollectionIT {
   public void packagesMetrics() {
     assertThat(getPackageMeasure("qi-quality-index").getValue(), is(8.9));
     assertThat(getPackageMeasure("qi-coding-violations").getValue(), is(0.4));
-    assertThat(getPackageMeasure("qi-coding-weighted-violations").getIntValue(), anyOf(is(627), is(615));
+    assertThat(getPackageMeasure("qi-coding-weighted-violations").getIntValue(), anyOf(is(627), is(615)));
     assertThat(getPackageMeasure("qi-style-violations").getValue(), is(0.0));
     assertThat(getPackageMeasure("qi-style-weighted-violations").getIntValue(), is(631));
     assertThat(getPackageMeasure("qi-test-coverage").getValue(), is(0.5));
