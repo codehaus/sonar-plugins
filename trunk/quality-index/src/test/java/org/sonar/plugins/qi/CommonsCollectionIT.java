@@ -22,6 +22,8 @@ package org.sonar.plugins.qi;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
+
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
@@ -55,7 +57,9 @@ public class CommonsCollectionIT {
   public void projectsMetrics() {
     assertThat(getProjectMeasure("qi-quality-index").getValue(), is(9.1));
     assertThat(getProjectMeasure("qi-coding-violations").getValue(), is(0.3));
-    assertThat(getProjectMeasure("qi-coding-weighted-violations").getIntValue(), is(1295));
+
+    // DUe to new rule added
+    assertThat(getProjectMeasure("qi-coding-weighted-violations").getIntValue(), anyOf(is(1295), is(1277)));
     assertThat(getProjectMeasure("qi-style-violations").getValue(), is(0.0));
     assertThat(getProjectMeasure("qi-style-weighted-violations").getIntValue(), is(2431));
     assertThat(getProjectMeasure("qi-test-coverage").getValue(), is(0.4));
@@ -69,7 +73,7 @@ public class CommonsCollectionIT {
   public void packagesMetrics() {
     assertThat(getPackageMeasure("qi-quality-index").getValue(), is(8.9));
     assertThat(getPackageMeasure("qi-coding-violations").getValue(), is(0.4));
-    assertThat(getPackageMeasure("qi-coding-weighted-violations").getIntValue(), is(627));
+    assertThat(getPackageMeasure("qi-coding-weighted-violations").getIntValue(), anyOf(is(627), is(615));
     assertThat(getPackageMeasure("qi-style-violations").getValue(), is(0.0));
     assertThat(getPackageMeasure("qi-style-weighted-violations").getIntValue(), is(631));
     assertThat(getPackageMeasure("qi-test-coverage").getValue(), is(0.5));
