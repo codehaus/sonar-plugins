@@ -119,20 +119,8 @@ public class RulesActivationDecorator implements Decorator {
     map.put(RulePriority.MAJOR, 0);
     map.put(RulePriority.MINOR, 0);
     map.put(RulePriority.INFO, 0);
-
     return map;
   }
-
-
-  private boolean isActive(String ruleKey, String pluginKey) {
-    // As the rule do not contain the plugin key, I must use the getActiveRule(xx,xx) method
-    ActiveRule activeRule = rulesProfile.getActiveRule(pluginKey, ruleKey);
-    if (activeRule == null) {
-      return false;
-    }
-    return true;
-  }
-
 
   private Map<RulePriority, Integer> getPriorityWeights() {
     // The key must be hard-coded since the WeightedViolationsDecorator is not accessible through the API
