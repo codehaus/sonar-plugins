@@ -1,6 +1,6 @@
 /*
  * Sonar, open source software quality management tool.
- * Copyright (C) 2009 SonarSource SA
+ * Copyright (C) 2009 SonarSource
  * mailto:contact AT sonarsource DOT com
  *
  * Sonar is free software; you can redistribute it and/or
@@ -19,37 +19,40 @@
  */
 package org.sonar.plugins.ral;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.SetMultimap;
+import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
-import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.*;
-import org.sonar.api.utils.KeyValueFormat;
 import org.sonar.api.utils.KeyValue;
-import org.sonar.api.Plugins;
-import org.sonar.api.Plugin;
-import org.apache.commons.configuration.Configuration;
+import org.sonar.api.utils.KeyValueFormat;
 
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 public class RulesActivationDecorator implements Decorator {
-  private RulesManager rulesManager;
+  private SetMultimap<String, String> repositoryKeyByLanguage = HashMultimap.create();
   private RulesProfile rulesProfile;
   private Configuration configuration;
-  private Plugins plugins;
+  private RuleFinder ruleFinder;
 
-  public RulesActivationDecorator(RulesManager rulesManager, RulesProfile rulesProfile, Configuration configuration, Plugins plugins) {
-    this.rulesManager = rulesManager;
+  public RulesActivationDecorator(RuleRepository[] repositories, RulesProfile rulesProfile, Configuration configuration, RuleFinder ruleFinder) {
     this.rulesProfile = rulesProfile;
     this.configuration = configuration;
-    this.plugins = plugins;
+    this.ruleFinder = ruleFinder;
+    for (RuleRepository repository : repositories) {
+      repositoryKeyByLanguage.put(repository.getLanguage(), repository.getKey());
+    }
   }
 
   public boolean shouldExecuteOnProject(Project project) {
@@ -70,42 +73,47 @@ public class RulesActivationDecorator implements Decorator {
 
   private void computeActivationLevel(DecoratorContext context) {
     Map<RulePriority, Integer> weights = getPriorityWeights();
-    List<RulesRepository<?>> repositories = rulesManager.getRulesRepositories(context.getProject().getLanguage());
 
-    HashMap<RulePriority, Integer> activateDistribution = initPriorityMap();
-    HashMap<RulePriority, Integer> totalDistribution = initPriorityMap();
+    List<Rule> rules = getRules(context.getProject().getLanguageKey());
+    Map<RulePriority, Integer> activateDistribution = initPriorityMap();
+    Map<RulePriority, Integer> totalDistribution = initPriorityMap();
 
     PropertiesBuilder distribution = new PropertiesBuilder(RulesActivationMetrics.RULES_ACTIVATION_LEVEL_DISTRIBUTION);
 
     double activatedWeight = 0;
     double totalWeight = 0;
 
-    for (RulesRepository repository : repositories) {
-      Plugin plugin = plugins.getPluginByExtension(repository);
-      List<Rule> rules = repository.getInitialReferential();
-      for (Rule rule : rules) {
-        RulePriority totalPriority = getRulePriority(rule, plugin.getKey());
-        RulePriority activePriority = getActiveRulePriority(rule, plugin.getKey());
-        if (activePriority != null) {
-          activateDistribution.put(activePriority, activateDistribution.get(activePriority) + 1);
-          activatedWeight += weights.get(activePriority);
-        }
-        totalDistribution.put(totalPriority, totalDistribution.get(totalPriority) + 1);
-        totalWeight += weights.get(totalPriority);
+    for (Rule rule : rules) {
+      ActiveRule activeRule = rulesProfile.getActiveRule(rule.getRepositoryKey(), rule.getKey());
+      RulePriority totalPriority = (activeRule != null ? activeRule.getPriority() : rule.getPriority());
+      RulePriority activePriority = (activeRule != null ? activeRule.getPriority() : null);
+      if (activePriority != null) {
+        activateDistribution.put(activePriority, activateDistribution.get(activePriority) + 1);
+        activatedWeight += weights.get(activePriority);
       }
-    }
-    HashMap<RulePriority, Integer> ref = initPriorityMap();
-    for (RulePriority priority : ref.keySet()) {
-      distribution.add(priority,activateDistribution.get(priority) +" / "+ totalDistribution.get(priority));
+      totalDistribution.put(totalPriority, totalDistribution.get(totalPriority) + 1);
+      totalWeight += weights.get(totalPriority);
     }
 
+    Map<RulePriority, Integer> ref = initPriorityMap();
+    for (RulePriority priority : ref.keySet()) {
+      distribution.add(priority, activateDistribution.get(priority) + " / " + totalDistribution.get(priority));
+    }
 
     context.saveMeasure(RulesActivationMetrics.RULES_ACTIVATION_LEVEL, activatedWeight / totalWeight * 100);
     context.saveMeasure(distribution.build());
   }
 
-  private HashMap<RulePriority,Integer> initPriorityMap(){
-    HashMap<RulePriority, Integer> map = new HashMap<RulePriority, Integer>();
+  private List<Rule> getRules(String languageKey) {
+    List<Rule> rules = Lists.newArrayList();
+    for (String repositoryKey : repositoryKeyByLanguage.get(languageKey)) {
+      rules.addAll(ruleFinder.findAll(RuleQuery.create().withRepositoryKey(repositoryKey)));
+    }
+    return rules;
+  }
+
+  private Map<RulePriority, Integer> initPriorityMap() {
+    Map<RulePriority, Integer> map = Maps.newHashMap();
     map.put(RulePriority.BLOCKER, 0);
     map.put(RulePriority.CRITICAL, 0);
     map.put(RulePriority.MAJOR, 0);
@@ -115,21 +123,6 @@ public class RulesActivationDecorator implements Decorator {
     return map;
   }
 
-
-  private RulePriority getActiveRulePriority(Rule rule, String pluginKey) {
-    if (isActive(rule.getKey(), pluginKey)) {
-      return getRulePriority(rule, pluginKey);
-    }
-    return null;
-  }
-
-  private RulePriority getRulePriority(Rule rule, String pluginKey) {
-    if (isActive(rule.getKey(), pluginKey)) {
-      ActiveRule activeRule = rulesProfile.getActiveRule(pluginKey, rule.getKey());
-      return activeRule.getPriority();
-    }
-    return rule.getPriority();
-  }
 
   private boolean isActive(String ruleKey, String pluginKey) {
     // As the rule do not contain the plugin key, I must use the getActiveRule(xx,xx) method
