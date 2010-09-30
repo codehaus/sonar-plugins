@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
 
   <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-rulesmeter-plugin</artifactId>
-  <packaging>jar</packaging>
+  <packaging>sonar-plugin</packaging>
   <version>0.2-SNAPSHOT</version>
   <name>Rules Meter Sonar Plugin</name>
   <description>This plugin gives information on the activated profile for a project.</description>
+  <inceptionYear>2009</inceptionYear>
 
   <properties>
-    <sonar.pluginClass>org.sonar.plugins.ral.RulesActivationPlugin</sonar.pluginClass>
-    <sonar.version>1.10</sonar.version>
+    <sonar.version>2.3-SNAPSHOT</sonar.version>
   </properties>
 
   <developers>
@@ -29,6 +30,19 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
+
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>LGPL v3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <dependencies>
     <dependency>
@@ -42,22 +56,27 @@
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
       <scope>test</scope>
-     <type>test-jar</type>
+      <type>test-jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <!-- complete META-INF/MANIFEST.MF -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <version>0.2</version>
         <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>${sonar.pluginClass}</Plugin-Class>
-            </manifestEntries>
-          </archive>
+          <pluginName>Sonar PHP Plugin</pluginName>
+          <pluginClass>org.sonar.plugins.ral.RulesActivationPlugin</pluginClass>
         </configuration>
       </plugin>
     </plugins>
