@@ -19,10 +19,9 @@
  */
 package org.sonar.plugins.ral;
 
-import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RulesActivationPlugin implements Plugin {
@@ -39,15 +38,8 @@ public class RulesActivationPlugin implements Plugin {
     return "Rules Activation Level";
   }
 
-  public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
-
-    extensions.add(RulesActivationMetrics.class);
-    extensions.add(RulesActivationWidget.class);
-    extensions.add(RulesActivationDecorator.class);
-    extensions.add(GaugeChart.class);
-
-    return extensions;
+  public List getExtensions() {
+    return Arrays.asList(RulesActivationMetrics.class, RulesActivationWidget.class, RulesActivationDecorator.class, GaugeChart.class);
   }
 
   public String toString() {
