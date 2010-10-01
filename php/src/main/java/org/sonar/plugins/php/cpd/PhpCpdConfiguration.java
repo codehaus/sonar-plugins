@@ -26,7 +26,7 @@ package org.sonar.plugins.php.cpd;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration;
+import org.sonar.plugins.php.core.PhpPluginAbstractConfiguration;
 
 /***
  * @author akram
@@ -65,7 +65,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getCommandLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getCommandLine()
    */
   @Override
   protected String getCommandLine() {
@@ -82,7 +82,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getArgumentLineKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getArgumentLineKey()
    */
   @Override
   protected String getArgumentLineKey() {
@@ -90,7 +90,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getDefaultArgumentLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getDefaultArgumentLine()
    */
   @Override
   protected String getDefaultArgumentLine() {
@@ -98,7 +98,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getDefaultReportFileName()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getDefaultReportFileName()
    */
   @Override
   protected String getDefaultReportFileName() {
@@ -106,7 +106,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getShouldRunKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getShouldRunKey()
    */
   @Override
   protected String getShouldRunKey() {
@@ -114,7 +114,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#shouldAnalyzeOnlyDefault()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#shouldAnalyzeOnlyDefault()
    */
   @Override
   protected boolean shouldAnalyzeOnlyDefault() {
@@ -123,7 +123,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#shouldRunDefault()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#shouldRunDefault()
    */
   @Override
   protected boolean shouldRunDefault() {
@@ -136,7 +136,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getReportFileRelativePathKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getReportFileRelativePathKey()
    */
   @Override
   protected String getReportFileRelativePathKey() {
@@ -144,7 +144,7 @@ public class PhpCpdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getReportFileNameKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getReportFileNameKey()
    */
   @Override
   protected String getReportFileNameKey() {

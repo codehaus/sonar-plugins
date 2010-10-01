@@ -26,8 +26,7 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.executor.PhpPluginExecutionException;
-import org.sonar.plugins.php.phpdepend.configuration.PhpDependConfiguration;
+import org.sonar.plugins.php.core.PhpPluginExecutionException;
 
 /**
  * This class is in charge of knowing wether or not it has to be launched depending on a given project. In case it has to be launched, the

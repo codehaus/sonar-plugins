@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration;
+import org.sonar.plugins.php.core.PhpPluginAbstractConfiguration;
 
 /**
  * The Class PhpCheckstyleConfiguration.
@@ -118,7 +118,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the default report file name.
    * 
    * @return the default report file name
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getDefaultReportFileName()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getDefaultReportFileName()
    */
   @Override
   protected String getDefaultReportFileName() {
@@ -129,7 +129,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the default report file path.
    * 
    * @return the default report file path
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getDefaultReportFilePath()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getDefaultReportFilePath()
    */
   @Override
   protected String getDefaultReportFilePath() {
@@ -140,7 +140,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the report file name key.
    * 
    * @return the report file name key
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getReportFileNameKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getReportFileNameKey()
    */
   @Override
   protected String getReportFileNameKey() {
@@ -151,7 +151,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the report file relative path key.
    * 
    * @return the report file relative path key
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getReportFileRelativePathKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getReportFileRelativePathKey()
    */
   @Override
   protected String getReportFileRelativePathKey() {
@@ -162,7 +162,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the should analyse only key.
    * 
    * @return the should analyse only key
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getShouldAnalyzeOnlyKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getShouldAnalyzeOnlyKey()
    */
   @Override
   protected String getShouldAnalyzeOnlyKey() {
@@ -173,7 +173,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the should run key.
    * 
    * @return the should run key
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getShouldRunKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getShouldRunKey()
    */
   @Override
   protected String getShouldRunKey() {
@@ -184,7 +184,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Should analyze only default.
    * 
    * @return true, if should analyze only default
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#shouldAnalyseOnlyDefault()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#shouldAnalyseOnlyDefault()
    */
   @Override
   protected boolean shouldAnalyzeOnlyDefault() {
@@ -195,7 +195,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Should run default.
    * 
    * @return true, if should run default
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#shouldRunDefault()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#shouldRunDefault()
    */
   @Override
   protected boolean shouldRunDefault() {
@@ -206,7 +206,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the argument line key.
    * 
    * @return the argument line key
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getArgumentLineKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getArgumentLineKey()
    */
   @Override
   protected String getArgumentLineKey() {
@@ -217,7 +217,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the default argument line value.
    * 
    * @return the default argument line
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getDefaultArgumentLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getDefaultArgumentLine()
    */
   @Override
   protected String getDefaultArgumentLine() {
@@ -228,7 +228,7 @@ public class PhpCodesnifferConfiguration extends PhpPluginAbstractConfiguration 
    * Gets the external tool command line
    * 
    * @return the external tool command line
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getCommandLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getCommandLine()
    */
   @Override
   protected String getCommandLine() {

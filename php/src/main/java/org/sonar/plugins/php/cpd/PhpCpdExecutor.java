@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
+import org.sonar.plugins.php.core.PhpPluginAbstractExecutor;
 
 /**
  * The Class PhpDependExecutor.
@@ -51,7 +51,7 @@ public class PhpCpdExecutor extends PhpPluginAbstractExecutor {
   /**
    * Return the command line depending configuration and arguments.
    * 
-   * @see org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor#getCommandLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractExecutor#getCommandLine()
    */
   @Override
   protected List<String> getCommandLine() {

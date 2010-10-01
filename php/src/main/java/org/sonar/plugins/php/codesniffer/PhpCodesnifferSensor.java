@@ -35,7 +35,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.utils.XmlParserException;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.executor.PhpPluginExecutionException;
+import org.sonar.plugins.php.core.PhpPluginExecutionException;
 
 /**
  * The Class PhpCodesnifferPluginSensor.

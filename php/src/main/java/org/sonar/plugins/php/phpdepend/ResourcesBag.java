@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.sonar.api.measures.Metric;
-import org.sonar.plugins.php.core.resources.PhpFile;
+import org.sonar.plugins.php.core.PhpFile;
 
 /**
  * The Class ResourcesBag.

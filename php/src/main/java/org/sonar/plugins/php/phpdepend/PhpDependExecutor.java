@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
-import org.sonar.plugins.php.phpdepend.configuration.PhpDependConfiguration;
+import org.sonar.plugins.php.core.PhpPluginAbstractExecutor;
 
 /**
  * The Class PhpDependExecutor.

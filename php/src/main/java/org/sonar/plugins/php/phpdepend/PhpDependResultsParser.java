@@ -40,7 +40,7 @@ import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.php.core.resources.PhpFile;
+import org.sonar.plugins.php.core.PhpFile;
 import org.sonar.plugins.php.phpdepend.xml.ClassNode;
 import org.sonar.plugins.php.phpdepend.xml.FileNode;
 import org.sonar.plugins.php.phpdepend.xml.FunctionNode;

@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 
 import org.apache.commons.configuration.Configuration;
 import org.junit.Test;
-import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.core.PhpPlugin;
 
 /**

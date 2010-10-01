@@ -50,10 +50,9 @@ import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.test.IsViolation;
-import org.sonar.plugins.php.codesniffer.PhpCheckStyleViolationsXmlParser;
 import org.sonar.plugins.php.core.Php;
+import org.sonar.plugins.php.core.PhpFile;
 import org.sonar.plugins.php.core.PhpPlugin;
-import org.sonar.plugins.php.core.resources.PhpFile;
 
 /**
  * The Class PhpCodesnifferViolationsXmlParserTest.

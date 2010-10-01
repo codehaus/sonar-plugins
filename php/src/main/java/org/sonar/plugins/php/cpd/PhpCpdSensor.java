@@ -31,7 +31,7 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration;
+import org.sonar.plugins.php.core.PhpPluginAbstractConfiguration;
 
 /**
  * PhpCpd sensor that rely on "phpcpd" tool to perform copy paste detection.

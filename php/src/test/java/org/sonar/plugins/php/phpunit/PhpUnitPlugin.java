@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
-import org.sonar.plugins.php.phpunit.sensor.PhpUnitSensor;
 
 /**
  * The PhpUnitPlugin handles files and metrics provided by punit tool.

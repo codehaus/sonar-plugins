@@ -32,8 +32,6 @@ import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.phpdepend.PhpDependSensor;
-import org.sonar.plugins.php.phpdepend.configuration.PhpDependConfiguration;
 
 public class PhpDependSensorTest {
 

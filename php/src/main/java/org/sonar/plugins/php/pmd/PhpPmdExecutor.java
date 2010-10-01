@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
+import org.sonar.plugins.php.core.PhpPluginAbstractExecutor;
 
 /**
  * The Class PhpCheckstyleExecutor.
@@ -51,7 +51,7 @@ public class PhpPmdExecutor extends PhpPluginAbstractExecutor {
    * 
    * @return the command line
    * 
-   * @see org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor#getCommandLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractExecutor#getCommandLine()
    */
   @Override
   protected List<String> getCommandLine() {
@@ -84,7 +84,7 @@ public class PhpPmdExecutor extends PhpPluginAbstractExecutor {
    * 
    * @return the executed tool
    * 
-   * @see org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor#getExecutedTool()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractExecutor#getExecutedTool()
    */
   @Override
   protected String getExecutedTool() {

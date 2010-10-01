@@ -28,7 +28,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.sonar.plugins.checkstyle.xml.Module;
+import org.sonar.plugins.php.checkstyle.xml.Module;
 
 /**
  * The Class ModuleTest.

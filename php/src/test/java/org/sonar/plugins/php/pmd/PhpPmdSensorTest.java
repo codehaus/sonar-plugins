@@ -40,8 +40,6 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.pmd.PhpPmdConfiguration;
-import org.sonar.plugins.php.pmd.PhpmdSensor;
 
 /**
  * The Class PhpPmdSensorTest.
