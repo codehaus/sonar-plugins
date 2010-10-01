@@ -4,7 +4,7 @@ SONAR_PHP_PLUGIN_VERSION=0.3-SNAPSHOT
 
 mvn -DskipTests=true package
 
-cp target/sonar-php-plugin-$SONAR_PHP_PLUGIN_VERSION.jar $SONAR_PLUGINS_HOME
+cp php/target/sonar-php-plugin-$SONAR_PHP_PLUGIN_VERSION.jar $SONAR_PLUGINS_HOME
 #cp php-codesniffer/target/sonar-php-codesniffer-plugin-$SONAR_PHP_PLUGIN_VERSION.jar $SONAR_PLUGINS_HOME
 #cp php-depend/target/sonar-php-depend-plugin-$SONAR_PHP_PLUGIN_VERSION.jar $SONAR_PLUGINS_HOME
 #cp php-pmd/target/sonar-php-pmd-plugin-$SONAR_PHP_PLUGIN_VERSION.jar $SONAR_PLUGINS_HOME
