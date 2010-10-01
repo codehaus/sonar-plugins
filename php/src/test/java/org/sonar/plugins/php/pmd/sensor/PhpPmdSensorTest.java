@@ -53,7 +53,7 @@ public class PhpPmdSensorTest {
   @Test
   public void shouldNotLaunchOnNonPhpProject() {
     Project project = getMockProject(Java.INSTANCE);
-    PhpPmdSensor sensor = new PhpPmdSensor();
+    PhpmdSensor sensor = new PhpmdSensor();
     assertEquals(false, sensor.shouldExecuteOnProject(project));
   }
 
@@ -63,7 +63,7 @@ public class PhpPmdSensorTest {
   @Test
   public void shouldLaunchOnPhpProject() {
     Project project = getMockProject(Php.INSTANCE);
-    PhpPmdSensor sensor = new PhpPmdSensor();
+    PhpmdSensor sensor = new PhpmdSensor();
     assertEquals(false, sensor.shouldExecuteOnProject(project));
   }
 
@@ -88,7 +88,7 @@ public class PhpPmdSensorTest {
     when(configuration.getBoolean(PhpPmdConfiguration.ANALYZE_ONLY_KEY, false)).thenReturn(true);
     when(project.getConfiguration()).thenReturn(configuration);
     when(project.getLanguage()).thenReturn(Php.INSTANCE);
-    PhpPmdSensor sensor = new PhpPmdSensor();
+    PhpmdSensor sensor = new PhpmdSensor();
     SensorContext context = mock(SensorContext.class);
     sensor.analyse(project, context);
     verify(context, never()).saveViolation(any(Violation.class));
