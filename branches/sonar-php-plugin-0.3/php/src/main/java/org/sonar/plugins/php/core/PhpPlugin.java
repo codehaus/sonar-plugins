@@ -29,22 +29,22 @@ import org.sonar.api.Property;
 import org.sonar.plugins.php.codesniffer.PhpCodeSnifferProfile;
 import org.sonar.plugins.php.codesniffer.PhpCodeSnifferRuleRepository;
 import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
-import org.sonar.plugins.php.codesniffer.sensor.PhpCodesnifferSensor;
+import org.sonar.plugins.php.codesniffer.PhpCodesnifferSensor;
 import org.sonar.plugins.php.core.decorators.PhpDirectoryDecorator;
 import org.sonar.plugins.php.core.decorators.PhpFilesDecorator;
 import org.sonar.plugins.php.core.sensors.PhpSourceImporter;
 import org.sonar.plugins.php.cpd.PhpCpdMapping;
-import org.sonar.plugins.php.cpd.sensor.PhpCpdSensor;
+import org.sonar.plugins.php.cpd.PhpCpdSensor;
+import org.sonar.plugins.php.phpdepend.PhpDependSensor;
 import org.sonar.plugins.php.phpdepend.configuration.PhpDependConfiguration;
-import org.sonar.plugins.php.phpdepend.sensor.PhpDependSensor;
 import org.sonar.plugins.php.phpunit.configuration.PhpUnitConfiguration;
 import org.sonar.plugins.php.phpunit.sensor.PhpUnitSensor;
+import org.sonar.plugins.php.pmd.PhpPmdConfiguration;
 import org.sonar.plugins.php.pmd.PhpmdProfile;
 import org.sonar.plugins.php.pmd.PhpmdProfileImporter;
 import org.sonar.plugins.php.pmd.PhpmdRuleRepository;
+import org.sonar.plugins.php.pmd.PhpmdSensor;
 import org.sonar.plugins.php.pmd.PhpmdUnusedCodeProfile;
-import org.sonar.plugins.php.pmd.configuration.PhpPmdConfiguration;
-import org.sonar.plugins.php.pmd.sensor.PhpmdSensor;
 
 /**
  * This class is the sonar entry point of this plugin. It declares all the extension that can be launched with this plugin

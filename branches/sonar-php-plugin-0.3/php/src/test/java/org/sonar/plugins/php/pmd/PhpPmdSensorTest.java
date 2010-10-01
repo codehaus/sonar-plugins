@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.pmd.sensor;
+package org.sonar.plugins.php.pmd;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -40,7 +40,8 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.pmd.configuration.PhpPmdConfiguration;
+import org.sonar.plugins.php.pmd.PhpPmdConfiguration;
+import org.sonar.plugins.php.pmd.PhpmdSensor;
 
 /**
  * The Class PhpPmdSensorTest.

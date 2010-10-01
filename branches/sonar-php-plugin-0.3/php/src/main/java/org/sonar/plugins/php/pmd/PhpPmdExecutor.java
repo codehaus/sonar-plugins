@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.pmd.executor;
+package org.sonar.plugins.php.pmd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
-import org.sonar.plugins.php.pmd.configuration.PhpPmdConfiguration;
 
 /**
  * The Class PhpCheckstyleExecutor.

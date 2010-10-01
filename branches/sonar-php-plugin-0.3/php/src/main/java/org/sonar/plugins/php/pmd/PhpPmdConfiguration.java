@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.pmd.configuration;
+package org.sonar.plugins.php.pmd;
 
 import java.io.File;
 import java.util.List;

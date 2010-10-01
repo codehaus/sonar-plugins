@@ -26,7 +26,6 @@ import java.util.List;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.plugins.php.core.PhpPlugin;
-import org.sonar.plugins.php.pmd.sensor.PhpmdSensor;
 
 /**
  * The Class PhpPmdPlugin class declares all extensions to be run for a project to be analyzed by the PHPMD tool.

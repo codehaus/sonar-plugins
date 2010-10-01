@@ -18,14 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.codesniffer.executor;
+package org.sonar.plugins.php.codesniffer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
 

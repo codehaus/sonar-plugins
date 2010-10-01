@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.pmd.sensor;
+package org.sonar.plugins.php.pmd;
 
 import java.io.File;
 
@@ -35,8 +35,6 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.pmd.configuration.PhpPmdConfiguration;
-import org.sonar.plugins.php.pmd.executor.PhpPmdExecutor;
 
 /**
  * The plugin entry point.

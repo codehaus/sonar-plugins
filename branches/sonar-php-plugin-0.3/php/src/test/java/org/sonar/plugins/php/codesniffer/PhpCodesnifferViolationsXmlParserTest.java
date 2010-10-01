@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.codesniffer.sensor;
+package org.sonar.plugins.php.codesniffer;
 
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -50,6 +50,7 @@ import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.test.IsViolation;
+import org.sonar.plugins.php.codesniffer.PhpCheckStyleViolationsXmlParser;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.PhpPlugin;
 import org.sonar.plugins.php.core.resources.PhpFile;
