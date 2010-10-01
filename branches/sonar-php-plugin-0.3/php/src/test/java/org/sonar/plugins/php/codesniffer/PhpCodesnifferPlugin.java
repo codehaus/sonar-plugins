@@ -27,7 +27,6 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.php.codesniffer.configuration.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.codesniffer.sensor.PhpCodesnifferSensor;
 import org.sonar.plugins.php.core.PhpPlugin;
 

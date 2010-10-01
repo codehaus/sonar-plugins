@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.php.codesniffer.configuration.PhpCodesnifferConfiguration;
+import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
 
