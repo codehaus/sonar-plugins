@@ -44,7 +44,6 @@ import org.sonar.plugins.php.pmd.xml.PropertiesNode;
 import org.sonar.plugins.php.pmd.xml.PropertyNode;
 import org.sonar.plugins.php.pmd.xml.RuleNode;
 import org.sonar.plugins.php.pmd.xml.RulesetNode;
-import org.sonar.plugins.pmd.PmdRulePriorityMapper;
 
 import com.thoughtworks.xstream.XStream;
 

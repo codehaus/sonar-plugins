@@ -34,8 +34,8 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.RulesManager;
-import org.sonar.plugins.php.core.resources.PhpFile;
-import org.sonar.plugins.php.core.resources.PhpPackage;
+import org.sonar.plugins.php.core.PhpFile;
+import org.sonar.plugins.php.core.PhpPackage;
 
 /**
  * The PmdViolationsXmlParser reads the pmd result files and creates violations depending on the repository.

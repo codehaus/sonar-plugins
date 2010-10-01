@@ -28,7 +28,7 @@ import net.sourceforge.pmd.cpd.Tokenizer;
 import org.sonar.api.batch.AbstractCpdMapping;
 import org.sonar.api.resources.Language;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.resources.PhpFile;
+import org.sonar.plugins.php.core.PhpFile;
 
 /**
  * The Class PhpCpdMapping.

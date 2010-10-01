@@ -35,7 +35,7 @@ import org.sonar.plugins.php.pmd.PmdRulePriorityMapper;
 public class PmdRulePriorityMapperTest {
 
   /**
-   * Test method for {@link org.sonar.plugins.checkstyle.CheckstyleRulePriorityMapper#from(java.lang.String)}.
+   * Test method for {@link org.sonar.plugins.php.checkstyle.CheckstyleRulePriorityMapper#from(java.lang.String)}.
    */
   @Test
   public void testFrom() {
@@ -50,7 +50,7 @@ public class PmdRulePriorityMapperTest {
   }
 
   /**
-   * Test method for {@link org.sonar.plugins.checkstyle.CheckstyleRulePriorityMapper#to(org.sonar.api.rules.RulePriority)}.
+   * Test method for {@link org.sonar.plugins.php.checkstyle.CheckstyleRulePriorityMapper#to(org.sonar.api.rules.RulePriority)}.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testTo() {

@@ -41,9 +41,8 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.php.core.Php;
+import org.sonar.plugins.php.core.PhpFile;
 import org.sonar.plugins.php.core.PhpPlugin;
-import org.sonar.plugins.php.core.resources.PhpFile;
-import org.sonar.plugins.php.phpdepend.PhpDependResultsParser;
 
 /**
  * The Class PhpDependResultsParserTest.

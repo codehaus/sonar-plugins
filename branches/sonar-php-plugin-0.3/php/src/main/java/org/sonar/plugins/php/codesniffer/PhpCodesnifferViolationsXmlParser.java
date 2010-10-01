@@ -33,7 +33,7 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.RulesManager;
-import org.sonar.plugins.php.core.resources.PhpFile;
+import org.sonar.plugins.php.core.PhpFile;
 
 /**
  * The Class PmdViolationsXmlParser.

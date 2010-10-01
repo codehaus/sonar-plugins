@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration;
+import org.sonar.plugins.php.core.PhpPluginAbstractConfiguration;
 
 /**
  * The PhpPmd configuration class. It handles report file path and name with default options
@@ -131,7 +131,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getArgumentLineKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getArgumentLineKey()
    */
   @Override
   protected String getArgumentLineKey() {
@@ -139,7 +139,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration#getCommandLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration#getCommandLine()
    */
   @Override
   protected String getCommandLine() {
@@ -147,7 +147,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getDefaultArgumentLine()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getDefaultArgumentLine()
    */
   @Override
   protected String getDefaultArgumentLine() {
@@ -155,7 +155,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getDefaultReportFileName()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getDefaultReportFileName()
    */
   @Override
   protected String getDefaultReportFileName() {
@@ -163,7 +163,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getDefaultReportFilePath()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getDefaultReportFilePath()
    */
   @Override
   protected String getDefaultReportFilePath() {
@@ -171,7 +171,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getReportFileNameKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getReportFileNameKey()
    */
   @Override
   protected String getReportFileNameKey() {
@@ -179,7 +179,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getReportFileRelativePathKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getReportFileRelativePathKey()
    */
   @Override
   protected String getReportFileRelativePathKey() {
@@ -187,7 +187,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getShouldAnalyzeOnlyKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getShouldAnalyzeOnlyKey()
    */
   @Override
   protected String getShouldAnalyzeOnlyKey() {
@@ -195,7 +195,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #getShouldRunKey()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #getShouldRunKey()
    */
   @Override
   protected String getShouldRunKey() {
@@ -203,7 +203,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #shouldAnalyzeOnlyDefault()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #shouldAnalyzeOnlyDefault()
    */
   @Override
   protected boolean shouldAnalyzeOnlyDefault() {
@@ -211,7 +211,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   }
 
   /**
-   * @see org.sonar.plugins.php.core.configuration.PhpPluginAbstractConfiguration #shouldRunDefault()
+   * @see org.sonar.plugins.php.core.PhpPluginAbstractConfiguration #shouldRunDefault()
    */
   @Override
   protected boolean shouldRunDefault() {
