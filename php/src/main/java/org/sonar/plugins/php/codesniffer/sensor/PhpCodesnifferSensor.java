@@ -34,7 +34,7 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RulesManager;
 import org.sonar.api.utils.XmlParserException;
-import org.sonar.plugins.php.codesniffer.configuration.PhpCodesnifferConfiguration;
+import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.codesniffer.executor.PhpCodesnifferExecutor;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.executor.PhpPluginExecutionException;

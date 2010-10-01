@@ -32,7 +32,7 @@ import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.php.codesniffer.configuration.PhpCodesnifferConfiguration;
+import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.core.Php;
 
 /**

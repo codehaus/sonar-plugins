@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.codesniffer.configuration;
+package org.sonar.plugins.php.codesniffer;
 
 import java.util.Arrays;
 import java.util.List;
