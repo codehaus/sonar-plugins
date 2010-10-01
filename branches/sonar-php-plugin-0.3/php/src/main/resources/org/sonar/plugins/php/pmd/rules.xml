@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rules>
+  <rule key="PHPMD/Generic/RC_DYNAMIC_ERROR" priority="MAJOR">
+    <category name="Maintainability" />
+    <name>Phpmd: Faire les trucs bien</name>
+    <configKey>rulesets/RC_DYNAMIC_ERROR</configKey>
+    <description>:message</description>
+  </rule>
+  <rule key="PHPMD/Generic/Comments" priority="MINOR">
+    <category name="Maintainability" />
+    <name>Phpmd: Mettre des commentaires</name>
+    <configKey>rulesets/RC_DYNAMIC_WARNING</configKey>
+    <description>:message</description>
+  </rule>
+</rules>

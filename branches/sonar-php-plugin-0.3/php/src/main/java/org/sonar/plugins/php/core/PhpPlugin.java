@@ -23,11 +23,11 @@ package org.sonar.plugins.php.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.php.codesniffer.PhpCodesnifferRulesRepository;
+import org.sonar.plugins.php.codesniffer.PhpCodeSnifferProfile;
+import org.sonar.plugins.php.codesniffer.PhpCodeSnifferRuleRepository;
 import org.sonar.plugins.php.codesniffer.configuration.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.codesniffer.sensor.PhpCodesnifferSensor;
 import org.sonar.plugins.php.core.decorators.PhpDirectoryDecorator;
@@ -39,7 +39,12 @@ import org.sonar.plugins.php.phpdepend.configuration.PhpDependConfiguration;
 import org.sonar.plugins.php.phpdepend.sensor.PhpDependSensor;
 import org.sonar.plugins.php.phpunit.configuration.PhpUnitConfiguration;
 import org.sonar.plugins.php.phpunit.sensor.PhpUnitSensor;
+import org.sonar.plugins.php.pmd.PhpmdProfile;
+import org.sonar.plugins.php.pmd.PhpmdProfileImporter;
+import org.sonar.plugins.php.pmd.PhpmdRuleRepository;
+import org.sonar.plugins.php.pmd.PhpmdUnusedCodeProfile;
 import org.sonar.plugins.php.pmd.configuration.PhpPmdConfiguration;
+import org.sonar.plugins.php.pmd.sensor.PhpmdSensor;
 
 /**
  * This class is the sonar entry point of this plugin. It declares all the extension that can be launched with this plugin
@@ -163,6 +168,8 @@ public class PhpPlugin implements Plugin {
   /** The CodeSniffer plugin KEY. */
   public static final String CODESNIFFER_PLUGIN_KEY = "PHP_CodeSniffer";
 
+  private static final String PLUGIN_NAME = "PHP";
+
   /**
    * Gets the description.
    * 
@@ -179,8 +186,9 @@ public class PhpPlugin implements Plugin {
    * @return the extensions
    * @see org.sonar.api.Plugin#getExtensions()
    */
-  public final List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
+  @SuppressWarnings({ "rawtypes", "unchecked" })
+  public final List getExtensions() {
+    List extensions = new ArrayList();
     // Adds the language
     extensions.add(Php.class);
 
@@ -197,16 +205,21 @@ public class PhpPlugin implements Plugin {
     extensions.add(PhpUnitSensor.class);
 
     // Code sniffer
-    extensions.add(PhpCodesnifferRulesRepository.class);
+    // extensions.add(PhpCodesnifferRulesRepository.class);
+    extensions.add(PhpCodeSnifferRuleRepository.class);
     extensions.add(PhpCodesnifferSensor.class);
+    extensions.add(PhpCodeSnifferProfile.class);
 
     // PhpDepend
     extensions.add(PhpDependSensor.class);
 
     // Phpmd
     // FIXME Commented for the moment, because of duplicate rules repositories
-    // extensions.add(PhpPmdSensor.class);
-    // extensions.add(PhpPmdRulesRepository.class);
+    extensions.add(PhpmdSensor.class);
+    extensions.add(PhpmdRuleRepository.class);
+    extensions.add(PhpmdProfile.class);
+    extensions.add(PhpmdProfileImporter.class);
+    extensions.add(PhpmdUnusedCodeProfile.class);
 
     // Php Source Code Colorizer
     extensions.add(PhpSourceCodeColorizer.class);
@@ -232,7 +245,7 @@ public class PhpPlugin implements Plugin {
    * @see org.sonar.api.Plugin#getName()
    */
   public final String getName() {
-    return "Sonar PHP Plugin";
+    return PLUGIN_NAME;
   }
 
   /**
