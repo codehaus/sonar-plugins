@@ -40,7 +40,6 @@ import org.sonar.api.rules.RulesCategory;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.PhpPlugin;
-import org.sonar.plugins.php.pmd.sensor.PhpPmdSensor;
 import org.sonar.plugins.php.pmd.xml.PropertiesNode;
 import org.sonar.plugins.php.pmd.xml.PropertyNode;
 import org.sonar.plugins.php.pmd.xml.RuleNode;

@@ -18,26 +18,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.phpdepend.executor;
+package org.sonar.plugins.php.cpd;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor;
-import org.sonar.plugins.php.phpdepend.configuration.PhpDependConfiguration;
 
 /**
  * The Class PhpDependExecutor.
  */
-public class PhpDependExecutor extends PhpPluginAbstractExecutor {
+public class PhpCpdExecutor extends PhpPluginAbstractExecutor {
 
   /**
    * 
    */
-  private static final String PHPDEPEND_DIRECTORY_SEPARATOR = ",";
+
   /** The configuration. */
-  private PhpDependConfiguration config;
+  private PhpCpdConfiguration config;
 
   /**
    * Instantiates a new php depend executor.
@@ -45,38 +44,37 @@ public class PhpDependExecutor extends PhpPluginAbstractExecutor {
    * @param configuration
    *          the configuration
    */
-  public PhpDependExecutor(PhpDependConfiguration configuration) {
+  public PhpCpdExecutor(PhpCpdConfiguration configuration) {
     this.config = configuration;
   }
 
+  /**
+   * Return the command line depending configuration and arguments.
+   * 
+   * @see org.sonar.plugins.php.core.executor.PhpPluginAbstractExecutor#getCommandLine()
+   */
   @Override
   protected List<String> getCommandLine() {
     List<String> result = new ArrayList<String>();
     result.add(config.getOsDependentToolScriptName());
-    result.add(config.getReportFileCommandOption());
-    result.add(config.getSuffixesCommandOption());
-    if (config.isStringPropertySet(PhpDependConfiguration.EXCLUDE_PACKAGE_KEY)) {
-      result.add(PhpDependConfiguration.EXCLUDE_OPTION + config.getExcludePackeges());
+    result.add(PhpCpdConfiguration.REPORT_FILE_OPTION);
+    result.add(config.getReportFile().getAbsolutePath());
+
+    String suffixes = config.getSuffixesCommandOption();
+    if (StringUtils.isNotBlank(suffixes)) {
+      result.add(PhpCpdConfiguration.SUFFIXES);
+      result.add(suffixes);
     }
-    if (config.isStringPropertySet(PhpDependConfiguration.IGNORE_KEY)) {
-      result.add(PhpDependConfiguration.IGNORE_OPTION + config.getIgnoreDirs());
+
+    if (config.isStringPropertySet(PhpCpdConfiguration.EXCLUDE_PACKAGE_KEY)) {
+      result.add(PhpCpdConfiguration.EXCLUDE_OPTION + config.getExcludePackages());
     }
-    if (config.isBadDocumentation()) {
-      result.add(PhpDependConfiguration.BAD_DOCUMENTATION_OPTION);
-    }
-    if (config.isWithoutAnnotation()) {
-      result.add(PhpDependConfiguration.WITHOUT_ANNOTATION_OPTION);
-    }
-    if (config.isStringPropertySet(PhpDependConfiguration.ARGUMENT_LINE_KEY)) {
-      result.add(config.getArgumentLine());
-    }
-    // SONARPLUGINS-547 PhpDependExecutor: wrong dirs params
-    result.add(StringUtils.join(config.getSourceDirectories(), PHPDEPEND_DIRECTORY_SEPARATOR));
+    result.add(StringUtils.join(config.getSourceDirectories(), PhpCpdConfiguration.DIRECTORY_SEPARATOR));
     return result;
   }
 
   @Override
   protected String getExecutedTool() {
-    return PhpDependConfiguration.COMMAND_LINE;
+    return PhpCpdConfiguration.COMMAND_LINE;
   }
 }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.phpdepend.sensor;
+package org.sonar.plugins.php.phpdepend;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +41,6 @@ import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.php.core.resources.PhpFile;
-import org.sonar.plugins.php.phpdepend.ResourcesBag;
 import org.sonar.plugins.php.phpdepend.xml.ClassNode;
 import org.sonar.plugins.php.phpdepend.xml.FileNode;
 import org.sonar.plugins.php.phpdepend.xml.FunctionNode;

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.codesniffer.executor;
+package org.sonar.plugins.php.codesniffer;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,7 +35,7 @@ import org.sonar.plugins.php.core.PhpPlugin;
 public class PhpCodesnifferExecutorTest {
 
   /**
-   * Test method for {@link org.sonar.plugins.php.codesniffer.executor.PhpCodesnifferExecutor#getCommandLine()}.
+   * Test method for {@link org.sonar.plugins.php.codesniffer.PhpCodesnifferExecutor#getCommandLine()}.
    */
   @Test
   public void testGetCommandLine() {

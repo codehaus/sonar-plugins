@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.codesniffer.sensor;
+package org.sonar.plugins.php.pmd;
 
 import java.io.File;
 
@@ -33,49 +33,46 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RulesManager;
-import org.sonar.api.utils.XmlParserException;
-import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
-import org.sonar.plugins.php.codesniffer.executor.PhpCodesnifferExecutor;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.executor.PhpPluginExecutionException;
 
 /**
- * The Class PhpCodesnifferPluginSensor.
+ * The plugin entry point.
  */
-public class PhpCodesnifferSensor implements Sensor, GeneratesViolations {
+public class PhpmdSensor implements Sensor, GeneratesViolations {
 
   /** The logger. */
-  private static final Logger LOG = LoggerFactory.getLogger(PhpCodesnifferSensor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PhpmdSensor.class);
+
+  /** The profile. */
+  private RulesProfile profile;
 
   /** The rules manager. */
   private RulesManager rulesManager;
 
   /** The plugin configuration. */
-  private PhpCodesnifferConfiguration config;
-  /**
-   * 
-   */
-  private RulesProfile profile;
-
+  private PhpPmdConfiguration config;
   /**
    * The associated language.
    */
   private Php php;
 
   /**
-   * Default constructor used for tests only.
+   * Constructor used for tests.
    */
-  PhpCodesnifferSensor() {
+  PhpmdSensor() {
     super();
   }
 
   /**
-   * Instantiates a new php codesniffer sensor.
+   * Instantiates a new php pmd sensor.
    * 
+   * @param profile
+   *          the profile
    * @param rulesManager
    *          the rules manager
    */
-  public PhpCodesnifferSensor(RulesProfile profile, RulesManager rulesManager, Php php) {
+  public PhpmdSensor(RulesProfile profile, RulesManager rulesManager, Php php) {
     super();
     this.rulesManager = rulesManager;
     this.php = php;
@@ -83,87 +80,83 @@ public class PhpCodesnifferSensor implements Sensor, GeneratesViolations {
   }
 
   /**
-   * Launches the external tool (if configured so) and analyze result file.
+   * If configured so runs the PHPMD tool and analyze the results.
    * 
    * @param project
    *          the project
    * @param context
    *          the context
-   * 
    * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
    */
   public void analyse(Project project, SensorContext context) {
     try {
+      getConfiguration(project);
       // If configured so, execute the tool
-      if ( !getConfiguration(project).isAnalyseOnly()) {
-        PhpCodesnifferExecutor executor = new PhpCodesnifferExecutor(config);
+      if ( !config.isAnalyseOnly()) {
+        PhpPmdExecutor executor = new PhpPmdExecutor(config);
         executor.execute();
       }
-      AbstractViolationsStaxParser parser = getStaxParser(project, context);
-      File report = getConfiguration(project).getReportFile();
-      LOG.info("Analysing project with file:" + report.getAbsolutePath());
-      parser.parse(report);
-
+      // Gets report file
+      File report = config.getReportFile();
+      if (report == null || !report.exists() || !report.isFile()) {
+        LOG.error("Report file can't be found" + (report != null ? " : " + report.getAbsolutePath() : ""));
+        LOG.error("Plugin will stop.");
+      }
+      // If reports can't be found plugin stop without errors
+      if (report != null) {
+        AbstractViolationsStaxParser parser = getStaxParser(project, context);
+        parser.parse(report);
+      }
     } catch (XMLStreamException e) {
-      LOG.error("Error occured while reading report file", e);
-      throw new XmlParserException(e);
-    } catch (PhpPluginExecutionException e) {
-      LOG.error("Error occured while launching Php CodeSniffer", e);
+      LOG.error("PMD report is invalid data will not be imported", e);
+      throw new SonarException(e);
     }
   }
 
   /**
-   * Gets the violation stax result parser.
+   * Gets the violation parser.
    * 
    * @param project
-   *          the project
+   *          the analyzed project
    * @param context
-   *          the context
-   * 
-   * @return the violation stax result parser.
+   *          the execution context
+   * @return the violation parser.
    */
   private AbstractViolationsStaxParser getStaxParser(Project project, SensorContext context) {
-    return new PhpCheckStyleViolationsXmlParser(project, context, rulesManager, profile);
+    return new PhpPmdViolationsXmlParser(project, context, rulesManager, profile);
   }
 
   /**
-   * Gets the configuration.
+   * Should execute on project.
    * 
    * @param project
    *          the project
-   * 
-   * @return the configuration
-   */
-  private PhpCodesnifferConfiguration getConfiguration(Project project) {
-    if (config == null) {
-      config = new PhpCodesnifferConfiguration(project);
-    }
-    return config;
-  }
-
-  /**
-   * Returns <code>true</code> if the given project language is PHP and the project configuration is set to allow plugin to run.
-   * 
-   * @param project
-   *          the project
-   * 
    * @return true, if should execute on project
-   * 
    * @see org.sonar.api.batch.CheckProject#shouldExecuteOnProject(org.sonar.api .resources.Project)
    */
   public boolean shouldExecuteOnProject(Project project) {
     return getConfiguration(project).isShouldRun() && project.getLanguage().equals(php);
   }
 
-  /**
-   * To string.
-   * 
-   * @return the string
-   * 
+  /***
    * @see java.lang.Object#toString()
    */
   @Override
   public String toString() {
     return getClass().getSimpleName();
+  }
+
+  /**
+   * Gets the configuration. If config field is null initialize it, other way only returns it.
+   * 
+   * @param project
+   *          the project
+   * @return the configuration
+   */
+  private PhpPmdConfiguration getConfiguration(Project project) {
+    if (config == null) {
+      config = new PhpPmdConfiguration(project);
+    }
+    return config;
   }
 }

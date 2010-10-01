@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.phpdepend.sensor;
+package org.sonar.plugins.php.phpdepend;
 
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.eq;
@@ -43,6 +43,7 @@ import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.PhpPlugin;
 import org.sonar.plugins.php.core.resources.PhpFile;
+import org.sonar.plugins.php.phpdepend.PhpDependResultsParser;
 
 /**
  * The Class PhpDependResultsParserTest.

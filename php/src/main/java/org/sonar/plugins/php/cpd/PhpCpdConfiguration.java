@@ -21,7 +21,7 @@
 /***
 
  */
-package org.sonar.plugins.php.cpd.configuration;
+package org.sonar.plugins.php.cpd;
 
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.resources.Project;

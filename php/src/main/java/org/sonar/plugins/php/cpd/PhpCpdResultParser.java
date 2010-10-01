@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.cpd.sensor;
+package org.sonar.plugins.php.cpd;
 
 import java.io.File;
 import java.io.FileInputStream;

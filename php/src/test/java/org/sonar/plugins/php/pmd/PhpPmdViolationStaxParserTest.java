@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.php.pmd.sensor;
+package org.sonar.plugins.php.pmd;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.argThat;
@@ -52,6 +52,7 @@ import org.sonar.api.test.IsViolation;
 import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.core.PhpPlugin;
 import org.sonar.plugins.php.core.resources.PhpFile;
+import org.sonar.plugins.php.pmd.PhpPmdViolationsXmlParser;
 
 /**
  * The Class PhpPmdViolationStaxParserTest.
