@@ -38,7 +38,7 @@ import org.sonar.plugins.php.core.PhpFile;
 /**
  * The Class PmdViolationsXmlParser.
  */
-class PhpCheckStyleViolationsXmlParser extends AbstractViolationsStaxParser {
+public class PhpCodesnifferViolationsXmlParser extends AbstractViolationsStaxParser {
 
   private static final String FILE_NAME_ATTRIBUTE_NAME = "name";
 
@@ -55,7 +55,7 @@ class PhpCheckStyleViolationsXmlParser extends AbstractViolationsStaxParser {
   /** The plugin KEY. */
   public static final String KEY = "PHP_CodeSniffer";
 
-  private static final Logger LOG = LoggerFactory.getLogger(PhpCheckStyleViolationsXmlParser.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PhpCodesnifferViolationsXmlParser.class);
 
   /** The project. */
   private Project project;
@@ -67,7 +67,7 @@ class PhpCheckStyleViolationsXmlParser extends AbstractViolationsStaxParser {
    * @param context
    * @param rulesManager
    */
-  public PhpCheckStyleViolationsXmlParser(Project project, SensorContext context, RulesManager rulesManager, RulesProfile profile) {
+  public PhpCodesnifferViolationsXmlParser(Project project, SensorContext context, RulesManager rulesManager, RulesProfile profile) {
     super(context, rulesManager, profile);
     this.project = project;
   }

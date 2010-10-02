@@ -121,7 +121,7 @@ public class PhpCodesnifferSensor implements Sensor, GeneratesViolations {
    * @return the violation stax result parser.
    */
   private AbstractViolationsStaxParser getStaxParser(Project project, SensorContext context) {
-    return new PhpCheckStyleViolationsXmlParser(project, context, rulesManager, profile);
+    return new PhpCodesnifferViolationsXmlParser(project, context, rulesManager, profile);
   }
 
   /**
