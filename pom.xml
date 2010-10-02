@@ -54,9 +54,9 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.4-SNAPSHOT</sonar.version>
+    <sonar.version>2.3-RC1</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.php.core.PhpPlugin</sonar.pluginClass>
-    <sonar.runtimeVersion>2.3-SNAPSHOT</sonar.runtimeVersion>
+    <sonar.runtimeVersion>2.3-RC1</sonar.runtimeVersion>
   </properties>
 
   <dependencies>
