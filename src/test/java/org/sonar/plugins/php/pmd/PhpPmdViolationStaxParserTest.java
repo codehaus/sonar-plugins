@@ -88,7 +88,7 @@ public class PhpPmdViolationStaxParserTest {
     });
     RulesProfile profile = mock(RulesProfile.class);
     when(profile.getActiveRule(anyString(), anyString())).thenReturn(new ActiveRule(null, null, RulePriority.MINOR));
-    PhpPmdViolationsXmlParser parser = new PhpPmdViolationsXmlParser(project, context, manager, profile);
+    PhpmdViolationsXmlParser parser = new PhpmdViolationsXmlParser(project, context, manager, profile);
 
     File xmlFile = new File(getClass().getResource(xmlPath).toURI());
     parser.parse(xmlFile);

@@ -32,7 +32,7 @@ import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.php.pmd.PhpPmdConfiguration;
+import org.sonar.plugins.php.pmd.PhpmdConfiguration;
 
 /**
  * The Class PhpDependConfigurationTest.
@@ -53,12 +53,12 @@ public class PhpPmdConfigurationTest {
     when(fs.getSourceDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\sources\\main")));
     when(fs.getTestDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\Sources\\test")));
     when(fs.getBuildDir()).thenReturn(new File("C:\\projets\\PHP\\Monkey\\target"));
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME))
-        .thenReturn(PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME);
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH))
-        .thenReturn(PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH);
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME))
+        .thenReturn(PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME);
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH))
+        .thenReturn(PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH);
     when(project.getConfiguration()).thenReturn(configuration);
-    PhpPmdConfiguration config = new PhpPmdConfiguration(project);
+    PhpmdConfiguration config = new PhpmdConfiguration(project);
     assertEquals(config.getReportFile().getPath().replace('/', '\\'), "C:\\projets\\PHP\\Monkey\\target\\logs\\pmd.xml");
   }
 
@@ -76,12 +76,12 @@ public class PhpPmdConfigurationTest {
     when(fs.getSourceDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\sources\\main")));
     when(fs.getTestDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\Sources\\test")));
     when(fs.getBuildDir()).thenReturn(new File("C:\\projets\\PHP\\Monkey\\target"));
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME))
-        .thenReturn(PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME);
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH))
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME))
+        .thenReturn(PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME);
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH))
         .thenReturn("reports");
     when(project.getConfiguration()).thenReturn(configuration);
-    PhpPmdConfiguration config = new PhpPmdConfiguration(project);
+    PhpmdConfiguration config = new PhpmdConfiguration(project);
     assertEquals(config.getReportFile().getPath().replace('/', '\\'), "C:\\projets\\PHP\\Monkey\\target\\reports\\pmd.xml");
   }
 
@@ -99,12 +99,12 @@ public class PhpPmdConfigurationTest {
     when(fs.getSourceDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\sources\\main")));
     when(fs.getTestDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\Sources\\test")));
     when(fs.getBuildDir()).thenReturn(new File("C:\\projets\\PHP\\Monkey\\target"));
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME))
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME))
         .thenReturn("pmd-summary.xml");
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH))
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH))
         .thenReturn("reports");
     when(project.getConfiguration()).thenReturn(configuration);
-    PhpPmdConfiguration config = new PhpPmdConfiguration(project);
+    PhpmdConfiguration config = new PhpmdConfiguration(project);
     assertEquals(config.getReportFile().getPath().replace('/', '\\'), "C:\\projets\\PHP\\Monkey\\target\\reports\\pmd-summary.xml");
   }
 }
