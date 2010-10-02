@@ -248,7 +248,7 @@ public class PhpUnitCoverageResultParser {
    *          the line
    * @param lineHits
    *          the line hits
-   * @param className
+   * @param fileName
    *          the class name
    */
   private void saveLineMeasure(LineNode line, PropertiesBuilder<Integer, Integer> lineHits) {

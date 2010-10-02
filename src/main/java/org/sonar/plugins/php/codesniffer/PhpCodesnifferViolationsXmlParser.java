@@ -31,7 +31,6 @@ import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.XmlParserException;
 
@@ -43,21 +42,14 @@ public class PhpCodesnifferViolationsXmlParser {
   private static final String FILE_NODE_NAME = "file";
   private static final String FILE_NAME_ATTRIBUTE_NAME = "name";
 
-  private static final String VIOLATION_NODE_NAME = "error";
   private static final String LINE_NUMBER_ATTRIBUTE_NAME = "line";
   private static final String COLUMN_NUMBER_ATTRIBUTE_NAME = "column";
   private static final String PRIORITY_ATTRIBUTE_NAME = "severity";
-  private static final String RULE_KEY_ATTRIBUTE_NAME = "code";
-  private static final String RULE_NAME_ATTRIBUTE_NAME = "source";
+  private static final String RULE_NAME_ATTRIBUTE_NAME = "code";
+  private static final String RULE_KEY_ATTRIBUTE_NAME = "source";
   private static final String MESSAGE_ATTRIBUTE_NAME = "message";
 
-  /** The plugin KEY. */
-  public static final String KEY = "PHP_CodeSniffer";
-
   private static final Logger LOG = LoggerFactory.getLogger(PhpCodesnifferViolationsXmlParser.class);
-
-  /** The project. */
-  private Project project;
 
   private final File reportFile;
   private final String reportPath;
@@ -71,6 +63,7 @@ public class PhpCodesnifferViolationsXmlParser {
    */
   public PhpCodesnifferViolationsXmlParser(File reportFile) {
     this.reportFile = reportFile;
+    LOG.debug("Report file for PHP_CodeSniffer is " + reportFile);
     reportPath = reportFile.getAbsolutePath();
     if ( !reportFile.exists()) {
       throw new SonarException("The XML report can't be found at '" + reportPath + "'");
@@ -81,6 +74,7 @@ public class PhpCodesnifferViolationsXmlParser {
    * @return
    */
   public List<PhpCodeSnifferViolation> getViolations() {
+    LOG.debug("Getting violations form report file");
     List<PhpCodeSnifferViolation> violations = new ArrayList<PhpCodeSnifferViolation>();
     try {
       SMInputFactory inputFactory = new SMInputFactory(XMLInputFactory.newInstance());
@@ -89,16 +83,19 @@ public class PhpCodesnifferViolationsXmlParser {
       // <file>
       SMInputCursor fileNodeCursor = rootNodeCursor.childElementCursor(FILE_NODE_NAME).advance();
       while (fileNodeCursor.asEvent() != null) {
-        String className = fileNodeCursor.getAttrValue(FILE_NAME_ATTRIBUTE_NAME);
+        String fileName = fileNodeCursor.getAttrValue(FILE_NAME_ATTRIBUTE_NAME);
         // <error>
         SMInputCursor violationNodeCursor = fileNodeCursor.childElementCursor().advance();
         while (violationNodeCursor.asEvent() != null) {
           PhpCodeSnifferViolation violation = new PhpCodeSnifferViolation();
+          violation.setRuleKey(violationNodeCursor.getAttrValue(RULE_KEY_ATTRIBUTE_NAME));
+          violation.setRuleName(violationNodeCursor.getAttrValue(RULE_NAME_ATTRIBUTE_NAME));
           violation.setType(violationNodeCursor.getAttrValue(PRIORITY_ATTRIBUTE_NAME));
           violation.setLongMessage(violationNodeCursor.getAttrValue(MESSAGE_ATTRIBUTE_NAME));
           violation.setLine(Integer.parseInt(violationNodeCursor.getAttrValue(LINE_NUMBER_ATTRIBUTE_NAME)));
-          violation.setClassName(className);
-          violation.setSourcePath(className);
+          violation.setComlumn(Integer.parseInt(violationNodeCursor.getAttrValue(COLUMN_NUMBER_ATTRIBUTE_NAME)));
+          violation.setFileName(fileName);
+          violation.setSourcePath(fileName);
           violations.add(violation);
           violationNodeCursor.advance();
         }

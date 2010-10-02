@@ -7,6 +7,16 @@ package org.sonar.plugins.php.codesniffer;
 public class PhpCodeSnifferViolation {
 
   /**
+   * The ruleKey of the violated rule.
+   */
+  private String ruleKey;
+
+  /**
+   * The ruleKey of the violated rule.
+   */
+  private String ruleName;
+
+  /**
      * 
      */
   private String type;
@@ -15,19 +25,26 @@ public class PhpCodeSnifferViolation {
      */
   private String longMessage;
   /**
-     * 
-     */
+    * 
+    */
   private Integer line;
-
+  /**
+   * 
+   */
+  private Integer comlumn;
   /**
      * 
      */
-  protected String className;
+  protected String fileName;
   /**
-     * 
-     */
+   * 
+   * 
+   */
   protected String sourcePath;
 
+  /**
+   * @return
+   */
   public String getType() {
     return type;
   }
@@ -40,27 +57,42 @@ public class PhpCodeSnifferViolation {
     }
   }
 
+  /**
+   * @return
+   */
   public String getLongMessage() {
     return longMessage;
   }
 
-  public Integer getStart() {
+  /**
+   * @return
+   */
+  public Integer getLine() {
     return line;
   }
 
-  public String getClassName() {
-    return className;
+  /**
+   * @return
+   */
+  public String getFileName() {
+    return fileName;
   }
 
+  /**
+   * @return
+   */
   public String getSourcePath() {
     return sourcePath;
   }
 
+  /**
+   * @return
+   */
   public String getSonarJavaFileKey() {
-    if (className.indexOf('$') > -1) {
-      return className.substring(0, className.indexOf('$'));
+    if (fileName.indexOf('$') > -1) {
+      return fileName.substring(0, fileName.indexOf('$'));
     }
-    return className;
+    return fileName;
   }
 
   /**
@@ -88,11 +120,11 @@ public class PhpCodeSnifferViolation {
   }
 
   /**
-   * @param className
-   *          the className to set
+   * @param fileName
+   *          the fileName to set
    */
-  public void setClassName(String className) {
-    this.className = className;
+  public void setFileName(String className) {
+    this.fileName = className;
   }
 
   /**
@@ -101,6 +133,51 @@ public class PhpCodeSnifferViolation {
    */
   public void setSourcePath(String sourcePath) {
     this.sourcePath = sourcePath;
+  }
+
+  /**
+   * @return the ruleKey
+   */
+  public String getRuleKey() {
+    return ruleKey;
+  }
+
+  /**
+   * @param ruleKey
+   *          the ruleKey to set
+   */
+  public void setRuleKey(String key) {
+    this.ruleKey = key;
+  }
+
+  /**
+   * @return the ruleName
+   */
+  public String getRuleName() {
+    return ruleName;
+  }
+
+  /**
+   * @param ruleName
+   *          the ruleName to set
+   */
+  public void setRuleName(String sourceKey) {
+    this.ruleName = sourceKey;
+  }
+
+  /**
+   * @return the comlumn
+   */
+  public Integer getComlumn() {
+    return comlumn;
+  }
+
+  /**
+   * @param comlumn
+   *          the comlumn to set
+   */
+  public void setComlumn(Integer comlumn) {
+    this.comlumn = comlumn;
   }
 
 }

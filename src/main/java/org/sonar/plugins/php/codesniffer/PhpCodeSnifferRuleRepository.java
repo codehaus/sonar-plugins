@@ -29,6 +29,10 @@ import org.sonar.api.rules.RuleRepository;
 import org.sonar.api.rules.XMLRuleParser;
 import org.sonar.plugins.php.core.Php;
 
+/**
+ * @author Akram Ben Aissi
+ * 
+ */
 public final class PhpCodeSnifferRuleRepository extends RuleRepository {
 
   public static final String REPOSITORY_KEY = "php_codesniffer_rules";
@@ -42,6 +46,9 @@ public final class PhpCodeSnifferRuleRepository extends RuleRepository {
     this.fileSystem = fileSystem;
   }
 
+  /**
+   * @see org.sonar.api.rules.RuleRepository#createRules()
+   */
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();

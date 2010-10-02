@@ -21,6 +21,7 @@
 package org.sonar.plugins.php.codesniffer;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -92,13 +93,15 @@ public class PhpCodesnifferSensor implements Sensor {
     LOG.info("Findbugs output report: " + report.getAbsolutePath());
     PhpCodesnifferViolationsXmlParser reportParser = new PhpCodesnifferViolationsXmlParser(report);
     List<PhpCodeSnifferViolation> violations = reportParser.getViolations();
+    List<Violation> contextViolations = new ArrayList<Violation>();
     for (PhpCodeSnifferViolation violation : violations) {
-      Rule rule = ruleFinder.findByKey(PhpCodeSnifferRuleRepository.REPOSITORY_KEY, violation.getType());
-      PhpFile resource = new PhpFile(violation.getSonarJavaFileKey());
+      Rule rule = ruleFinder.findByKey(PhpCodeSnifferRuleRepository.REPOSITORY_KEY, violation.getRuleKey());
+      PhpFile resource = (PhpFile) context.getResource(PhpFile.fromAbsolutePath(violation.getFileName(), project));
       if (context.getResource(resource) != null) {
-        Violation v = Violation.create(rule, resource).setLineId(violation.getStart()).setMessage(violation.getLongMessage());
-        context.saveViolation(v);
+        Violation v = Violation.create(rule, resource).setLineId(violation.getLine()).setMessage(violation.getLongMessage());
+        contextViolations.add(v);
       }
+      context.saveViolations(contextViolations);
     }
 
   }
@@ -130,6 +133,8 @@ public class PhpCodesnifferSensor implements Sensor {
    */
   public boolean shouldExecuteOnProject(Project project) {
     return getConfiguration(project).isShouldRun() && project.getLanguage().equals(php);
+    // && ( !profile.getActiveRulesByRepository(PhpCodeSnifferRuleRepository.REPOSITORY_KEY).isEmpty() || project
+    // .getReuseExistingRulesConfig()) && project.getPom() != null;
   }
 
   /**

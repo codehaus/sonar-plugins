@@ -170,7 +170,7 @@ public class PhpFile extends Resource<PhpPackage> {
    * 
    * @param packageName
    *          the package name
-   * @param className
+   * @param fileName
    *          the class name
    */
   public PhpFile(String packageName, String className) {
@@ -180,7 +180,7 @@ public class PhpFile extends Resource<PhpPackage> {
   /**
    * The default constructor. aPackageName
    * 
-   * @param className
+   * @param fileName
    *          String representing the class name
    * @param isUnitTest
    *          String representing the unit test
@@ -188,7 +188,7 @@ public class PhpFile extends Resource<PhpPackage> {
    *          the a package name
    */
   public PhpFile(String packageKey, String className, String extension, boolean isUnitTest) {
-    LOG.debug("aPackageName=[" + packageKey + "], className=[" + className + "], unitTest=[" + isUnitTest + "]");
+    LOG.debug("aPackageName=[" + packageKey + "], fileName=[" + className + "], unitTest=[" + isUnitTest + "]");
     if (className == null) {
       throw new IllegalArgumentException("Php filename can not be null");
     }

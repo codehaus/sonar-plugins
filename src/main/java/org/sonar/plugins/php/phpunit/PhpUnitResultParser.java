@@ -93,7 +93,7 @@ public class PhpUnitResultParser {
       XStream xstream = new XStream();
       // Sonar 2.2 migration
       xstream.setClassLoader(getClass().getClassLoader());
-      xstream.aliasSystemAttribute("className", "class");
+      xstream.aliasSystemAttribute("fileName", "class");
       xstream.processAnnotations(TestSuites.class);
       xstream.processAnnotations(TestSuite.class);
       xstream.processAnnotations(TestCase.class);
