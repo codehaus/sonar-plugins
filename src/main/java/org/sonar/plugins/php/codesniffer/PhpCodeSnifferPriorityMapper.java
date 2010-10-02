@@ -1,6 +1,6 @@
 /*
  * Sonar, open source software quality management tool.
- * Copyright (C) 2010 SQLi
+ * Copyright (C) 2009 SonarSource SA
  * mailto:contact AT sonarsource DOT com
  *
  * Sonar is free software; you can redistribute it and/or
@@ -17,47 +17,47 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
-package org.sonar.plugins.php.checkstyle;
+package org.sonar.plugins.php.codesniffer;
 
 import org.sonar.api.rules.RulePriority;
 
-/**
- * The Class CheckstyleRulePriorityMapper.
- */
-public class CheckstyleRulePriorityMapper {
+public class PhpCodeSnifferPriorityMapper {
+
+  private static final String INFO_PRIORITY = "info";
+  private static final String WARNING_PRIORITY = "warning";
+  private static final String ERROR_PRIORITY = "error";
 
   /**
-   * @see org.sonar.api.rules.RulePriorityMapper#from(java.lang.Object)
+   * @param priority
+   * @return
    */
   public RulePriority from(String priority) {
-    if ("error".equalsIgnoreCase(priority)) {
+    if (ERROR_PRIORITY.equalsIgnoreCase(priority)) {
       return RulePriority.BLOCKER;
     }
-    if ("warning".equalsIgnoreCase(priority)) {
+    if (WARNING_PRIORITY.equalsIgnoreCase(priority)) {
       return RulePriority.MAJOR;
     }
-    if ("info".equalsIgnoreCase(priority)) {
+    if (INFO_PRIORITY.equalsIgnoreCase(priority)) {
       return RulePriority.INFO;
-    }
-    // ignore level returns null
-    return null;
-  }
-
-  /**
-   * @see org.sonar.api.rules.RulePriorityMapper#to(org.sonar.api.rules.RulePriority )
-   */
-  public String to(RulePriority priority) {
-    if (RulePriority.BLOCKER.equals(priority) || RulePriority.CRITICAL.equals(priority)) {
-      return "error";
-    }
-    if (RulePriority.MAJOR.equals(priority)) {
-      return "warning";
-    }
-    if (RulePriority.MINOR.equals(priority) || RulePriority.INFO.equals(priority)) {
-      return "info";
     }
     throw new IllegalArgumentException("Priority not supported: " + priority);
   }
 
+  /**
+   * @param priority
+   * @return
+   */
+  public String to(RulePriority priority) {
+    if (RulePriority.BLOCKER.equals(priority) || RulePriority.CRITICAL.equals(priority)) {
+      return ERROR_PRIORITY;
+    }
+    if (RulePriority.MAJOR.equals(priority)) {
+      return WARNING_PRIORITY;
+    }
+    if (RulePriority.MINOR.equals(priority) || RulePriority.INFO.equals(priority)) {
+      return INFO_PRIORITY;
+    }
+    throw new IllegalArgumentException("Priority not supported: " + priority);
+  }
 }
