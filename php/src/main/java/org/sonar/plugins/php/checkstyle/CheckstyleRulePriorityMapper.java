@@ -21,16 +21,13 @@
 package org.sonar.plugins.php.checkstyle;
 
 import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.RulePriorityMapper;
 
 /**
  * The Class CheckstyleRulePriorityMapper.
  */
-public class CheckstyleRulePriorityMapper implements RulePriorityMapper<String, String> {
+public class CheckstyleRulePriorityMapper {
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see org.sonar.api.rules.RulePriorityMapper#from(java.lang.Object)
    */
   public RulePriority from(String priority) {
@@ -47,9 +44,7 @@ public class CheckstyleRulePriorityMapper implements RulePriorityMapper<String, 
     return null;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
+  /**
    * @see org.sonar.api.rules.RulePriorityMapper#to(org.sonar.api.rules.RulePriority )
    */
   public String to(RulePriority priority) {
