@@ -21,35 +21,34 @@
 package org.sonar.plugins.php.codesniffer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 
+import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.AbstractViolationsStaxParser;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
-import org.sonar.api.rules.RulesManager;
-import org.sonar.plugins.php.core.PhpFile;
+import org.sonar.api.utils.SonarException;
+import org.sonar.api.utils.XmlParserException;
 
 /**
  * The Class PmdViolationsXmlParser.
  */
-public class PhpCodesnifferViolationsXmlParser extends AbstractViolationsStaxParser {
-
-  private static final String FILE_NAME_ATTRIBUTE_NAME = "name";
-
-  private static final String RULE_NAME_ATTRIBUTE_NAME = "source";
-
-  private static final String LINE_NUMBER_ATTRIBUTE_NAME = "line";
-
-  private static final String VIOLATION_NODE_NAME = "error";
+public class PhpCodesnifferViolationsXmlParser {
 
   private static final String FILE_NODE_NAME = "file";
+  private static final String FILE_NAME_ATTRIBUTE_NAME = "name";
 
+  private static final String VIOLATION_NODE_NAME = "error";
+  private static final String LINE_NUMBER_ATTRIBUTE_NAME = "line";
+  private static final String COLUMN_NUMBER_ATTRIBUTE_NAME = "column";
+  private static final String PRIORITY_ATTRIBUTE_NAME = "severity";
+  private static final String RULE_KEY_ATTRIBUTE_NAME = "code";
+  private static final String RULE_NAME_ATTRIBUTE_NAME = "source";
   private static final String MESSAGE_ATTRIBUTE_NAME = "message";
 
   /** The plugin KEY. */
@@ -60,6 +59,9 @@ public class PhpCodesnifferViolationsXmlParser extends AbstractViolationsStaxPar
   /** The project. */
   private Project project;
 
+  private final File reportFile;
+  private final String reportPath;
+
   /**
    * Instantiates a new checkstyle violations xml parser.
    * 
@@ -67,71 +69,45 @@ public class PhpCodesnifferViolationsXmlParser extends AbstractViolationsStaxPar
    * @param context
    * @param rulesManager
    */
-  public PhpCodesnifferViolationsXmlParser(Project project, SensorContext context, RulesManager rulesManager, RulesProfile profile) {
-    super(context, rulesManager, profile);
-    this.project = project;
-  }
-
-  /**
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#keyForPlugin()
-   */
-  @Override
-  protected String keyForPlugin() {
-    return KEY;
-  }
-
-  /**
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#cursorForResources(org .codehaus.staxmate.in.SMInputCursor)
-   */
-  @Override
-  protected SMInputCursor cursorForResources(SMInputCursor rootCursor) throws XMLStreamException {
-    return rootCursor.descendantElementCursor(FILE_NODE_NAME);
-  }
-
-  /**
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#cursorForViolations(org.codehaus.staxmate.in.SMInputCursor)
-   */
-  @Override
-  protected SMInputCursor cursorForViolations(SMInputCursor resourcesCursor) throws XMLStreamException {
-    return resourcesCursor.descendantElementCursor(VIOLATION_NODE_NAME);
-  }
-
-  /**
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#lineNumberForViolation (org.codehaus.staxmate.in.SMInputCursor)
-   */
-  @Override
-  protected String lineNumberForViolation(SMInputCursor violationCursor) throws XMLStreamException {
-    return violationCursor.getAttrValue(LINE_NUMBER_ATTRIBUTE_NAME);
-  }
-
-  /**
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#messageFor(org.codehaus .staxmate.in.SMInputCursor)
-   */
-  @Override
-  protected String messageFor(SMInputCursor violationCursor) throws XMLStreamException {
-    return violationCursor.getAttrValue(MESSAGE_ATTRIBUTE_NAME);
-  }
-
-  /**
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#ruleKey(org.codehaus .staxmate.in.SMInputCursor)
-   */
-  @Override
-  protected String ruleKey(SMInputCursor violationCursor) throws XMLStreamException {
-    return violationCursor.getAttrValue(RULE_NAME_ATTRIBUTE_NAME);
-  }
-
-  /**
-   * Returns the php file corresponding to the given violation
-   * 
-   * @see org.sonar.api.batch.AbstractViolationsStaxParser#toResource(org.codehaus.staxmate.in.SMInputCursor)
-   */
-  @SuppressWarnings("rawtypes")
-  @Override
-  protected Resource toResource(SMInputCursor resourcesCursor) throws XMLStreamException {
-    String fileName = resourcesCursor.getAttrValue(FILE_NAME_ATTRIBUTE_NAME);
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Loading " + fileName + " to be associated with rule violation");
+  public PhpCodesnifferViolationsXmlParser(File reportFile) {
+    this.reportFile = reportFile;
+    reportPath = reportFile.getAbsolutePath();
+    if ( !reportFile.exists()) {
+      throw new SonarException("The XML report can't be found at '" + reportPath + "'");
     }
-    return PhpFile.fromIOFile(new File(fileName), project.getFileSystem().getSourceDirs(), false);
+  }
+
+  /**
+   * @return
+   */
+  public List<PhpCodeSnifferViolation> getViolations() {
+    List<PhpCodeSnifferViolation> violations = new ArrayList<PhpCodeSnifferViolation>();
+    try {
+      SMInputFactory inputFactory = new SMInputFactory(XMLInputFactory.newInstance());
+      // <checkstyle>
+      SMInputCursor rootNodeCursor = inputFactory.rootElementCursor(reportFile).advance();
+      // <file>
+      SMInputCursor fileNodeCursor = rootNodeCursor.childElementCursor(FILE_NODE_NAME).advance();
+      while (fileNodeCursor.asEvent() != null) {
+        String className = fileNodeCursor.getAttrValue(FILE_NAME_ATTRIBUTE_NAME);
+        // <error>
+        SMInputCursor violationNodeCursor = fileNodeCursor.childElementCursor().advance();
+        while (violationNodeCursor.asEvent() != null) {
+          PhpCodeSnifferViolation violation = new PhpCodeSnifferViolation();
+          violation.setType(violationNodeCursor.getAttrValue(PRIORITY_ATTRIBUTE_NAME));
+          violation.setLongMessage(violationNodeCursor.getAttrValue(MESSAGE_ATTRIBUTE_NAME));
+          violation.setLine(Integer.parseInt(violationNodeCursor.getAttrValue(LINE_NUMBER_ATTRIBUTE_NAME)));
+          violation.setClassName(className);
+          violation.setSourcePath(className);
+          violations.add(violation);
+          violationNodeCursor.advance();
+        }
+        fileNodeCursor.advance();
+      }
+      rootNodeCursor.getStreamReader().closeCompletely();
+    } catch (XMLStreamException e) {
+      throw new XmlParserException("Unable to parse the  XML Report '" + reportPath + "'", e);
+    }
+    return violations;
   }
 }

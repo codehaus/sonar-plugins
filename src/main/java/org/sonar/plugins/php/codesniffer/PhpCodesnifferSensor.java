@@ -21,39 +21,36 @@
 package org.sonar.plugins.php.codesniffer;
 
 import java.io.File;
-
-import javax.xml.stream.XMLStreamException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.AbstractViolationsStaxParser;
-import org.sonar.api.batch.GeneratesViolations;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
-import org.sonar.api.rules.RulesManager;
-import org.sonar.api.utils.XmlParserException;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RuleFinder;
+import org.sonar.api.rules.Violation;
 import org.sonar.plugins.php.core.Php;
-import org.sonar.plugins.php.core.PhpPluginExecutionException;
+import org.sonar.plugins.php.core.PhpFile;
 
 /**
  * The Class PhpCodesnifferPluginSensor.
  */
-public class PhpCodesnifferSensor implements Sensor, GeneratesViolations {
+public class PhpCodesnifferSensor implements Sensor {
 
   /** The logger. */
   private static final Logger LOG = LoggerFactory.getLogger(PhpCodesnifferSensor.class);
 
-  /** The rules manager. */
-  private RulesManager rulesManager;
+  /** The rules profile. */
+  private RulesProfile profile;
+
+  /** The rules finder. */
+  private RuleFinder ruleFinder;
 
   /** The plugin configuration. */
   private PhpCodesnifferConfiguration config;
-  /**
-   * 
-   */
-  private RulesProfile profile;
 
   /**
    * The associated language.
@@ -73,9 +70,9 @@ public class PhpCodesnifferSensor implements Sensor, GeneratesViolations {
    * @param rulesManager
    *          the rules manager
    */
-  public PhpCodesnifferSensor(RulesProfile profile, RulesManager rulesManager, Php php) {
+  public PhpCodesnifferSensor(RulesProfile profile, RuleFinder ruleFinder, Php php) {
     super();
-    this.rulesManager = rulesManager;
+    this.ruleFinder = ruleFinder;
     this.php = php;
     this.profile = profile;
   }
@@ -91,37 +88,19 @@ public class PhpCodesnifferSensor implements Sensor, GeneratesViolations {
    * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
    */
   public void analyse(Project project, SensorContext context) {
-    try {
-      // If configured so, execute the tool
-      if ( !getConfiguration(project).isAnalyseOnly()) {
-        PhpCodesnifferExecutor executor = new PhpCodesnifferExecutor(config);
-        executor.execute();
+    File report = config.getReportFile();
+    LOG.info("Findbugs output report: " + report.getAbsolutePath());
+    PhpCodesnifferViolationsXmlParser reportParser = new PhpCodesnifferViolationsXmlParser(report);
+    List<PhpCodeSnifferViolation> violations = reportParser.getViolations();
+    for (PhpCodeSnifferViolation violation : violations) {
+      Rule rule = ruleFinder.findByKey(PhpCodeSnifferRuleRepository.REPOSITORY_KEY, violation.getType());
+      PhpFile resource = new PhpFile(violation.getSonarJavaFileKey());
+      if (context.getResource(resource) != null) {
+        Violation v = Violation.create(rule, resource).setLineId(violation.getStart()).setMessage(violation.getLongMessage());
+        context.saveViolation(v);
       }
-      AbstractViolationsStaxParser parser = getStaxParser(project, context);
-      File report = getConfiguration(project).getReportFile();
-      LOG.info("Analysing project with file:" + report.getAbsolutePath());
-      parser.parse(report);
-
-    } catch (XMLStreamException e) {
-      LOG.error("Error occured while reading report file", e);
-      throw new XmlParserException(e);
-    } catch (PhpPluginExecutionException e) {
-      LOG.error("Error occured while launching Php CodeSniffer", e);
     }
-  }
 
-  /**
-   * Gets the violation stax result parser.
-   * 
-   * @param project
-   *          the project
-   * @param context
-   *          the context
-   * 
-   * @return the violation stax result parser.
-   */
-  private AbstractViolationsStaxParser getStaxParser(Project project, SensorContext context) {
-    return new PhpCodesnifferViolationsXmlParser(project, context, rulesManager, profile);
   }
 
   /**
