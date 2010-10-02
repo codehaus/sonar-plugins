@@ -30,15 +30,13 @@ import org.apache.commons.lang.CharEncoding;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.ActiveRuleParam;
-import org.sonar.api.rules.ConfigurationExportable;
-import org.sonar.api.rules.ConfigurationImportable;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleParam;
 import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.RulesRepository;
+import org.sonar.api.rules.RuleRepository;
 import org.sonar.api.rules.StandardRulesXmlParser;
+import org.sonar.api.rules.XMLRuleParser;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.php.checkstyle.CheckstyleRulePriorityMapper;
 import org.sonar.plugins.php.checkstyle.xml.Module;
 import org.sonar.plugins.php.checkstyle.xml.Property;
 import org.sonar.plugins.php.core.Php;
@@ -47,39 +45,32 @@ import org.sonar.plugins.php.core.PhpPlugin;
 /**
  * The Class PhpCheckstyleRulesRepository.
  */
-public final class PhpCodesnifferRulesRepository implements RulesRepository<Php>, ConfigurationExportable, ConfigurationImportable {
+public final class PhpCodesnifferRulesRepository extends RuleRepository {
+
+  protected PhpCodesnifferRulesRepository(String key, String language) {
+    super(key, language);
+  }
 
   /** The ruleset file name */
   private static final String RULESET_FILE_NAME = "rules.xml";
 
   /** The priority mapper. */
-  private CheckstyleRulePriorityMapper priorityMapper = new CheckstyleRulePriorityMapper();
+  private PhpCodeSnifferPriorityMapper priorityMapper = new PhpCodeSnifferPriorityMapper();
+
+  /**
+   * @see org.sonar.api.rules.RuleRepository#createRules()
+   */
+  @Override
+  public List<Rule> createRules() {
+    List<Rule> rules = new ArrayList<Rule>();
+    rules.addAll(XMLRuleParser.parseXML(getClass().getResourceAsStream("/org/sonar/plugins/php/codesniffer/rules.xml")));
+    return rules;
+  }
 
   /**
    * Php Language instance.
    */
   private Php php;
-
-  /**
-   * Instantiates a new php CodeSniffer rules repository.
-   * 
-   * @param language
-   *          the language
-   */
-  public PhpCodesnifferRulesRepository(Php php) {
-    super();
-    this.php = php;
-  }
-
-  /**
-   * Returns an instance of PHP language.
-   * 
-   * @see org.sonar.api.rules.RulesRepository#getLanguage()
-   * @return a PHP instance
-   */
-  public Php getLanguage() {
-    return php;
-  }
 
   /**
    * Returns the list of PHP_CodeSniffer rules declared by the ruleset

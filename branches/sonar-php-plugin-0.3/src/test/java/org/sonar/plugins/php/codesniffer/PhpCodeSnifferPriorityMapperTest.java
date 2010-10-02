@@ -21,7 +21,7 @@
 /**
  * 
  */
-package org.sonar.plugins.php.checkstyle;
+package org.sonar.plugins.php.codesniffer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,28 +32,43 @@ import org.sonar.api.rules.RulePriority;
  * @author akram
  * 
  */
-public class CheckstyleRulePriorityMapperTest {
+public class PhpCodeSnifferPriorityMapperTest {
 
   /**
-   * Test method for {@link org.sonar.plugins.php.checkstyle.CheckstyleRulePriorityMapper#from(java.lang.String)}.
+   * Test method for {@link org.sonar.plugins.php.checkstyle.PhpCodeSnifferPriorityMapper#from(java.lang.String)}.
    */
   @Test
-  public void testFrom() {
-    CheckstyleRulePriorityMapper mapper = new CheckstyleRulePriorityMapper();
+  public void testFromWithRegularValues() {
+    PhpCodeSnifferPriorityMapper mapper = new PhpCodeSnifferPriorityMapper();
     assertEquals(RulePriority.BLOCKER, mapper.from("error"));
     assertEquals(RulePriority.MAJOR, mapper.from("warning"));
     assertEquals(RulePriority.INFO, mapper.from("info"));
-    assertEquals(null, mapper.from(null));
-    assertEquals(null, mapper.from("RANDOM"));
-
   }
 
   /**
-   * Test method for {@link org.sonar.plugins.php.checkstyle.CheckstyleRulePriorityMapper#to(org.sonar.api.rules.RulePriority)}.
+   * Test method for {@link org.sonar.plugins.php.checkstyle.PhpCodeSnifferPriorityMapper#from(java.lang.String)}.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testFromWithUnknownInput() {
+    PhpCodeSnifferPriorityMapper mapper = new PhpCodeSnifferPriorityMapper();
+    mapper.from("RANDOM");
+  }
+
+  /**
+   * Test method for {@link org.sonar.plugins.php.checkstyle.PhpCodeSnifferPriorityMapper#from(java.lang.String)}.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testFromWithNullValue() {
+    PhpCodeSnifferPriorityMapper mapper = new PhpCodeSnifferPriorityMapper();
+    mapper.from(null);
+  }
+
+  /**
+   * Test method for {@link org.sonar.plugins.php.checkstyle.PhpCodeSnifferPriorityMapper#to(org.sonar.api.rules.RulePriority)}.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testTo() {
-    CheckstyleRulePriorityMapper mapper = new CheckstyleRulePriorityMapper();
+    PhpCodeSnifferPriorityMapper mapper = new PhpCodeSnifferPriorityMapper();
     assertEquals("info", mapper.to(RulePriority.INFO));
     assertEquals("info", mapper.to(RulePriority.MINOR));
     assertEquals("warning", mapper.to(RulePriority.MAJOR));
