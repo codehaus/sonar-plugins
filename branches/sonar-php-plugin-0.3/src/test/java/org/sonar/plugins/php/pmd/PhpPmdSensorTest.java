@@ -80,11 +80,11 @@ public class PhpPmdSensorTest {
     when(fs.getSourceDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\sources\\main")));
     when(fs.getTestDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\Sources\\test")));
     when(fs.getBuildDir()).thenReturn(new File("C:\\projets\\PHP\\Monkey\\target"));
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME))
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME))
         .thenReturn("tot.xml");
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH))
-        .thenReturn(PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH);
-    when(configuration.getBoolean(PhpPmdConfiguration.ANALYZE_ONLY_KEY, false)).thenReturn(true);
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH))
+        .thenReturn(PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH);
+    when(configuration.getBoolean(PhpmdConfiguration.ANALYZE_ONLY_KEY, false)).thenReturn(true);
     when(project.getConfiguration()).thenReturn(configuration);
     when(project.getLanguage()).thenReturn(Php.INSTANCE);
     PhpmdSensor sensor = new PhpmdSensor();
@@ -106,10 +106,10 @@ public class PhpPmdSensorTest {
     when(fs.getSourceDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\sources\\main")));
     when(fs.getTestDirs()).thenReturn(Arrays.asList(new File("C:\\projets\\PHP\\Monkey\\Sources\\test")));
     when(fs.getBuildDir()).thenReturn(new File("C:\\projets\\PHP\\Monkey\\target"));
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME))
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME))
         .thenReturn("tot.xml");
-    when(configuration.getString(PhpPmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH))
-        .thenReturn(PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH);
+    when(configuration.getString(PhpmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY, PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH))
+        .thenReturn(PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH);
     when(project.getConfiguration()).thenReturn(configuration);
     return project;
   }
