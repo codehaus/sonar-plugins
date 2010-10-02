@@ -35,7 +35,7 @@ import org.sonar.plugins.php.phpdepend.PhpDependConfiguration;
 import org.sonar.plugins.php.phpdepend.PhpDependSensor;
 import org.sonar.plugins.php.phpunit.PhpUnitConfiguration;
 import org.sonar.plugins.php.phpunit.PhpUnitSensor;
-import org.sonar.plugins.php.pmd.PhpPmdConfiguration;
+import org.sonar.plugins.php.pmd.PhpmdConfiguration;
 import org.sonar.plugins.php.pmd.PhpmdProfile;
 import org.sonar.plugins.php.pmd.PhpmdProfileImporter;
 import org.sonar.plugins.php.pmd.PhpmdRuleRepository;
@@ -128,23 +128,23 @@ import org.sonar.plugins.php.pmd.PhpmdUnusedCodeProfile;
     @Property(key = PhpDependConfiguration.SHOULD_RUN_PROPERTY_KEY, defaultValue = PhpDependConfiguration.DEFAULT_SHOULD_RUN,
         name = "Should run the plugin", description = PhpDependConfiguration.DEFAULT_SHOULD_RUN_DESCRIPTION, project = true),
 
-    @Property(key = PhpPmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY,
-        defaultValue = PhpPmdConfiguration.DEFAULT_REPORT_FILE_PATH, name = "PhpDepend log directory",
+    @Property(key = PhpmdConfiguration.REPORT_FILE_RELATIVE_PATH_PROPERTY_KEY,
+        defaultValue = PhpmdConfiguration.DEFAULT_REPORT_FILE_PATH, name = "PhpDepend log directory",
         description = "The relative path to the PHPMD log directory.", project = true),
-    @Property(key = PhpPmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_REPORT_FILE_NAME,
+    @Property(key = PhpmdConfiguration.REPORT_FILE_NAME_PROPERTY_KEY, defaultValue = PhpmdConfiguration.DEFAULT_REPORT_FILE_NAME,
         name = "PhpDepend log file name", description = "The PHPMD log file name.", project = true),
-    @Property(key = PhpPmdConfiguration.RULESETS_ARGUMENT_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_RULESET_ARGUMENT,
+    @Property(key = PhpmdConfiguration.RULESETS_ARGUMENT_KEY, defaultValue = PhpmdConfiguration.DEFAULT_RULESET_ARGUMENT,
         name = "The phpmd ruleset argument line", description = "PHPMD will use given ruleset", project = true),
-    @Property(key = PhpPmdConfiguration.LEVEL_ARGUMENT_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_LEVEL_ARGUMENT,
-        name = "The phpmd level argument line", description = PhpPmdConfiguration.DEFAULT_LEVEL_DESCRIPTION, project = true),
-    @Property(key = PhpPmdConfiguration.IGNORE_ARGUMENT_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_IGNORE_ARGUMENT,
+    @Property(key = PhpmdConfiguration.LEVEL_ARGUMENT_KEY, defaultValue = PhpmdConfiguration.DEFAULT_LEVEL_ARGUMENT,
+        name = "The phpmd level argument line", description = PhpmdConfiguration.DEFAULT_LEVEL_DESCRIPTION, project = true),
+    @Property(key = PhpmdConfiguration.IGNORE_ARGUMENT_KEY, defaultValue = PhpmdConfiguration.DEFAULT_IGNORE_ARGUMENT,
         name = "The phpmd ignore argument line", description = "PHPMD will ignore the given folders (comma separated folder names)",
         project = true),
-    @Property(key = PhpPmdConfiguration.ARGUMENT_LINE_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_ARGUMENT_LINE,
+    @Property(key = PhpmdConfiguration.ARGUMENT_LINE_KEY, defaultValue = PhpmdConfiguration.DEFAULT_ARGUMENT_LINE,
         name = "The phpmd other arguments line", description = "Given arguments will be used as other arguments for PHPMD", project = true),
-    @Property(key = PhpPmdConfiguration.ANALYZE_ONLY_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_ANALYZE_ONLY,
-        name = "Should the plugin only parse analysis report.", description = PhpPmdConfiguration.ANALYZE_ONLY_DESCRIPTION, project = true),
-    @Property(key = PhpPmdConfiguration.SHOULD_RUN_KEY, defaultValue = PhpPmdConfiguration.DEFAULT_SHOULD_RUN,
+    @Property(key = PhpmdConfiguration.ANALYZE_ONLY_KEY, defaultValue = PhpmdConfiguration.DEFAULT_ANALYZE_ONLY,
+        name = "Should the plugin only parse analysis report.", description = PhpmdConfiguration.ANALYZE_ONLY_DESCRIPTION, project = true),
+    @Property(key = PhpmdConfiguration.SHOULD_RUN_KEY, defaultValue = PhpmdConfiguration.DEFAULT_SHOULD_RUN,
         name = "Should the plugin run on this project.",
         description = "If set to false, the plugin will not execute itself for this project.", project = true)
 

@@ -51,7 +51,7 @@ public class PhpmdSensor implements Sensor, GeneratesViolations {
   private RulesManager rulesManager;
 
   /** The plugin configuration. */
-  private PhpPmdConfiguration config;
+  private PhpmdConfiguration config;
   /**
    * The associated language.
    */
@@ -93,7 +93,7 @@ public class PhpmdSensor implements Sensor, GeneratesViolations {
       getConfiguration(project);
       // If configured so, execute the tool
       if ( !config.isAnalyseOnly()) {
-        PhpPmdExecutor executor = new PhpPmdExecutor(config);
+        PhpmdExecutor executor = new PhpmdExecutor(config);
         executor.execute();
       }
       // Gets report file
@@ -123,7 +123,7 @@ public class PhpmdSensor implements Sensor, GeneratesViolations {
    * @return the violation parser.
    */
   private AbstractViolationsStaxParser getStaxParser(Project project, SensorContext context) {
-    return new PhpPmdViolationsXmlParser(project, context, rulesManager, profile);
+    return new PhpmdViolationsXmlParser(project, context, rulesManager, profile);
   }
 
   /**
@@ -153,9 +153,9 @@ public class PhpmdSensor implements Sensor, GeneratesViolations {
    *          the project
    * @return the configuration
    */
-  private PhpPmdConfiguration getConfiguration(Project project) {
+  private PhpmdConfiguration getConfiguration(Project project) {
     if (config == null) {
-      config = new PhpPmdConfiguration(project);
+      config = new PhpmdConfiguration(project);
     }
     return config;
   }
