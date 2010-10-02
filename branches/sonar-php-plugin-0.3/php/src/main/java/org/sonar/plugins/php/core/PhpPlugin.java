@@ -30,7 +30,6 @@ import org.sonar.plugins.php.codesniffer.PhpCodeSnifferProfile;
 import org.sonar.plugins.php.codesniffer.PhpCodeSnifferRuleRepository;
 import org.sonar.plugins.php.codesniffer.PhpCodesnifferConfiguration;
 import org.sonar.plugins.php.codesniffer.PhpCodesnifferSensor;
-import org.sonar.plugins.php.cpd.PhpCpdMapping;
 import org.sonar.plugins.php.cpd.PhpCpdSensor;
 import org.sonar.plugins.php.phpdepend.PhpDependConfiguration;
 import org.sonar.plugins.php.phpdepend.PhpDependSensor;
@@ -191,8 +190,6 @@ public class PhpPlugin implements Plugin {
 
     // Source importer
     extensions.add(PhpSourceImporter.class);
-
-    extensions.add(PhpCpdMapping.class);
 
     // Php resource decorators
     extensions.add(PhpDirectoryDecorator.class);
