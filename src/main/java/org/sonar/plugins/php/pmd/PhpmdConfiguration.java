@@ -30,7 +30,7 @@ import org.sonar.plugins.php.core.PhpPluginAbstractConfiguration;
 /**
  * The PhpPmd configuration class. It handles report file path and name with default options
  */
-public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
+public class PhpmdConfiguration extends PhpPluginAbstractConfiguration {
 
   /** The Constant COMMAND_LINE. */
   private static final String COMMAND_LINE = "phpmd";
@@ -108,7 +108,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
   /**
    * Instantiates a new php pmd configuration.
    */
-  protected PhpPmdConfiguration() {
+  protected PhpmdConfiguration() {
   }
 
   /**
@@ -117,7 +117,7 @@ public class PhpPmdConfiguration extends PhpPluginAbstractConfiguration {
    * @param project
    *          the project
    */
-  public PhpPmdConfiguration(Project project) {
+  public PhpmdConfiguration(Project project) {
     super.init(project);
   }
 

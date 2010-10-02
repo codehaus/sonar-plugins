@@ -30,11 +30,11 @@ import org.sonar.plugins.php.core.PhpPluginAbstractExecutor;
 /**
  * The Class PhpCheckstyleExecutor.
  */
-public class PhpPmdExecutor extends PhpPluginAbstractExecutor {
+public class PhpmdExecutor extends PhpPluginAbstractExecutor {
 
   private static final String PHPMD_PATH_SEPARATOR = ",";
   /** The config. */
-  private PhpPmdConfiguration config;
+  private PhpmdConfiguration config;
 
   /**
    * Instantiates a new php checkstyle executor.
@@ -42,7 +42,7 @@ public class PhpPmdExecutor extends PhpPluginAbstractExecutor {
    * @param configuration
    *          the configuration
    */
-  public PhpPmdExecutor(PhpPmdConfiguration configuration) {
+  public PhpmdExecutor(PhpmdConfiguration configuration) {
     this.config = configuration;
   }
 
@@ -58,22 +58,22 @@ public class PhpPmdExecutor extends PhpPluginAbstractExecutor {
     List<String> result = new ArrayList<String>();
     result.add(config.getOsDependentToolScriptName());
 
-    // SONARPLUGINS-546 PhpPmdExecutor: wrong dirs params
+    // SONARPLUGINS-546 PhpmdExecutor: wrong dirs params
     result.add(StringUtils.join(config.getSourceDirectories(), PHPMD_PATH_SEPARATOR));
 
-    result.add(PhpPmdConfiguration.REPORT_FORMAT);
+    result.add(PhpmdConfiguration.REPORT_FORMAT);
     result.add(config.getRulesets());
-    result.add(PhpPmdConfiguration.REPORT_FILE_OPTION);
+    result.add(PhpmdConfiguration.REPORT_FILE_OPTION);
     result.add(config.getReportFile().getAbsolutePath());
-    // result.add(PhpPmdConfiguration.LEVEL_OPTION);
+    // result.add(PhpmdConfiguration.LEVEL_OPTION);
     // result.add(config.getLevel());
-    if (config.isStringPropertySet(PhpPmdConfiguration.IGNORE_ARGUMENT_KEY)) {
-      result.add(PhpPmdConfiguration.IGNORE_OPTION);
+    if (config.isStringPropertySet(PhpmdConfiguration.IGNORE_ARGUMENT_KEY)) {
+      result.add(PhpmdConfiguration.IGNORE_OPTION);
       result.add(config.getIgnoreList());
     }
-    result.add(PhpPmdConfiguration.EXTENSIONS_OPTION);
+    result.add(PhpmdConfiguration.EXTENSIONS_OPTION);
     result.add(StringUtils.join(Php.INSTANCE.getFileSuffixes(), ","));
-    if (config.isStringPropertySet(PhpPmdConfiguration.ARGUMENT_LINE_KEY)) {
+    if (config.isStringPropertySet(PhpmdConfiguration.ARGUMENT_LINE_KEY)) {
       result.add(config.getArgumentLine());
     }
     return result;

@@ -40,7 +40,7 @@ import org.sonar.plugins.php.core.PhpPackage;
 /**
  * The PmdViolationsXmlParser reads the pmd result files and creates violations depending on the repository.
  */
-class PhpPmdViolationsXmlParser extends AbstractViolationsStaxParser {
+class PhpmdViolationsXmlParser extends AbstractViolationsStaxParser {
 
   /** The Constant FILE_NAME_ATTRIBUTE_NAME. */
   private static final String FILE_NAME_ATTRIBUTE_NAME = "name";
@@ -58,7 +58,7 @@ class PhpPmdViolationsXmlParser extends AbstractViolationsStaxParser {
   private static final String FILE_NODE_NAME = "file";
 
   /** The logger. */
-  private static final Logger LOG = LoggerFactory.getLogger(PhpPmdViolationsXmlParser.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PhpmdViolationsXmlParser.class);
 
   /** The analyzed project. */
   private Project project;
@@ -77,7 +77,7 @@ class PhpPmdViolationsXmlParser extends AbstractViolationsStaxParser {
    * @param profile
    *          the profile
    */
-  public PhpPmdViolationsXmlParser(Project project, SensorContext context, RulesManager rulesManager, RulesProfile profile) {
+  public PhpmdViolationsXmlParser(Project project, SensorContext context, RulesManager rulesManager, RulesProfile profile) {
     super(context, rulesManager, profile);
     this.project = project;
   }
