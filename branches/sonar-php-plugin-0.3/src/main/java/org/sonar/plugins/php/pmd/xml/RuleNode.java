@@ -136,7 +136,7 @@ public class RuleNode implements Comparable<String> {
   /**
    * Sets the class name.
    * 
-   * @param className
+   * @param fileName
    *          the new class name
    */
   public final void setClassName(String className) {

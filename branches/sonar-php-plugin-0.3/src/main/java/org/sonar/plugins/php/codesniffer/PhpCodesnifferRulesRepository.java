@@ -44,6 +44,8 @@ import org.sonar.plugins.php.core.PhpPlugin;
 
 /**
  * The Class PhpCheckstyleRulesRepository.
+ * 
+ * @deprecated use code inside this class to build Importer and Exporter
  */
 public final class PhpCodesnifferRulesRepository extends RuleRepository {
 

@@ -83,7 +83,7 @@ public class PhpTestSuiteReader {
       for (TestCase testCase : testCases) {
         String testClassName = testCase.getClassName();
         // FIXME bug in phpunit for test cases with @dataProvider. Format is incorrect,
-        // we get the className in the enclosing testSuite in the name attribute before string "::"
+        // we get the fileName in the enclosing testSuite in the name attribute before string "::"
         if (testClassName == null) {
           String name = testSuite.getName();
           testClassName = name.substring(0, name.indexOf(TESTSUITE_CLASS_NAME_SEPARATOR));
