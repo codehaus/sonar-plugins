@@ -60,7 +60,7 @@ public class TwitterPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return "Reports about analysis via Twitter.";
+    return "Reports about analysis via <a href='http://twitter.com/'>Twitter</a>.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
