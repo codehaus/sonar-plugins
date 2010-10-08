@@ -36,10 +36,6 @@ import java.io.File;
  */
 public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
-  public static final String TYCHO_GROUP_ID = "org.sonatype.tycho";
-  public static final String TYCHO_ARTIFACT_ID = "maven-osgi-test-plugin";
-  public static final String TYCHO_VERSION = "0.9.0";
-
   private static final String ARG_LINE_PARAMETER = "argLine";
 
   private JaCoCoAgentDownloader downloader;
@@ -50,15 +46,9 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
   public JaCoCoMavenPluginHandler(JaCoCoAgentDownloader downloader, Project project) {
     this.downloader = downloader;
-    if (StringUtils.isNotBlank(TychoSourceImporter.getModulePath(project))) {
-      groupId = TYCHO_GROUP_ID;
-      artifactId = TYCHO_ARTIFACT_ID;
-      version = TYCHO_VERSION;
-    } else {
-      groupId = MavenSurefireUtils.GROUP_ID;
-      artifactId = MavenSurefireUtils.ARTIFACT_ID;
-      version = MavenSurefireUtils.VERSION;
-    }
+    groupId = MavenSurefireUtils.GROUP_ID;
+    artifactId = MavenSurefireUtils.ARTIFACT_ID;
+    version = MavenSurefireUtils.VERSION;
   }
 
   public String getGroupId() {
@@ -78,7 +68,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String[] getGoals() {
-    return new String[]{"test"};
+    return new String[] { "test" };
   }
 
   public void configure(Project project, MavenPlugin plugin) {
@@ -87,7 +77,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
     File destfile = project.getFileSystem().resolvePath(destfilePath);
     if (destfile.exists() && destfile.isFile()) {
       JaCoCoUtils.LOG.info("Deleting {}", destfile);
-      if (!destfile.delete()) {
+      if ( !destfile.delete()) {
         throw new SonarException("Unable to delete " + destfile);
       }
     }

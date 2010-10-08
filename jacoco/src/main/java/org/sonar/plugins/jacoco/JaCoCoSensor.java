@@ -53,8 +53,8 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
 
   private JaCoCoMavenPluginHandler handler;
   private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(
-    CoreMetrics.COVERAGE_LINE_HITS_DATA
-  );
+      CoreMetrics.COVERAGE_LINE_HITS_DATA
+      );
 
   public JaCoCoSensor(Plugins plugins, JaCoCoMavenPluginHandler handler) {
     super(plugins);
@@ -69,15 +69,9 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
   }
 
   public void analyse(Project project, SensorContext context) {
-    final File buildOutputDir;
-    String modulePath = TychoSourceImporter.getModulePath(project);
-    if (StringUtils.isBlank(modulePath)) {
-      buildOutputDir = project.getFileSystem().getBuildOutputDir();
-    } else {
-      buildOutputDir = project.getFileSystem().resolvePath(modulePath + "/target/classes");
-    }
+    final File buildOutputDir = project.getFileSystem().getBuildOutputDir();
 
-    if (!buildOutputDir.exists()) {
+    if ( !buildOutputDir.exists()) {
       JaCoCoUtils.LOG.info("Can't find build output directory: {}. Skipping JaCoCo analysis.", buildOutputDir);
       return;
     }
