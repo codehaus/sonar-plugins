@@ -20,34 +20,26 @@
 
 package org.sonar.plugins.jacoco;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.NavigationSection;
+import org.sonar.api.web.RubyRailsWidget;
+import org.sonar.api.web.UserRole;
 
-import org.junit.Before;
-import org.junit.Test;
+@NavigationSection(NavigationSection.RESOURCE)
+@UserRole(UserRole.USER)
+public class ItCoverageWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-/**
- * @author Evgeny Mandrikov
- */
-public class JaCoCoPluginTest {
-  private JaCoCoPlugin plugin = new JaCoCoPlugin();
-
-  @Before
-  public void setUp() {
-    plugin = new JaCoCoPlugin();
+  @Override
+  protected String getTemplatePath() {
+    return "/coverage.html.erb";
   }
 
-  @Test
-  public void testPluginDefition() {
-    assertThat(plugin.getKey(), is("jacoco"));
-    assertThat(plugin.getName(), notNullValue());
-    assertThat(plugin.getDescription(), notNullValue());
-    assertThat(plugin.toString(), is("jacoco"));
+  public String getId() {
+    return "it-coverage";
   }
 
-  @Test
-  public void testExtensions() {
-    assertThat(plugin.getExtensions().size(), is(6));
+  public String getTitle() {
+    return "IT Coverage widget";
   }
+
 }
