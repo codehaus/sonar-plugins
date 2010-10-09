@@ -40,27 +40,22 @@ public class ItCoverageDecorator extends AbstractCoverageDecorator {
 
   @DependsUpon
   public List<Metric> dependsUponMetrics() {
-    return Arrays.asList(JaCoCoItMetrics.IT_LINES_TO_COVER, JaCoCoItMetrics.IT_UNCOVERED_LINES
-            // JaCoCoItMetrics.IT_CONDITIONS_TO_COVER, JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS
-    );
+    return Arrays.asList(JaCoCoItMetrics.IT_LINES_TO_COVER, JaCoCoItMetrics.IT_UNCOVERED_LINES, JaCoCoItMetrics.IT_CONDITIONS_TO_COVER, JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS);
   }
 
   @Override
   protected Double countCoveredElements(DecoratorContext context) {
     double uncoveredLines = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_UNCOVERED_LINES), 0.0);
     double lines = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_LINES_TO_COVER), 0.0);
-    // double uncoveredConditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS), 0.0);
-    // double conditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), 0.0);
-    double uncoveredConditions = 0.0;
-    double conditions = 0.0;
+    double uncoveredConditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS), 0.0);
+    double conditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), 0.0);
     return lines + conditions - uncoveredConditions - uncoveredLines;
   }
 
   @Override
   protected Double countElements(DecoratorContext context) {
     double lines = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_LINES_TO_COVER), 0.0);
-    // double conditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), 0.0);
-    double conditions = 0.0;
+    double conditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), 0.0);
     return lines + conditions;
   }
 
