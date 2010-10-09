@@ -95,16 +95,17 @@ public class JaCoCoPlugin implements Plugin {
 
   public List getExtensions() {
     return Arrays.asList(
+        // Unit tests
+        JaCoCoAgentDownloader.class,
+        JaCoCoMavenPluginHandler.class,
+        JaCoCoSensor.class,
+        // Integration tests
         JaCoCoItMetrics.class,
         JaCoCoItSensor.class,
         ItCoverageWidget.class,
         ItCoverageDecorator.class,
         ItLineCoverageDecorator.class,
-        CoverageViewerDefinition.class,
-        
-        JaCoCoAgentDownloader.class,
-        JaCoCoMavenPluginHandler.class,
-        JaCoCoSensor.class
+        CoverageViewerDefinition.class
     );
   }
 

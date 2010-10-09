@@ -1,9 +1,6 @@
 <%
 it_coverage_measure=measure('it_coverage')
 if it_coverage_measure %>
-<div class="widget">
-<div class="yui-g">
-<div class="yui-u first">
 <div class="dashbox">
   <p class="title">IT Code coverage</p>
   <p><span class="big"><%= format_measure(it_coverage_measure, :suffix => '', :url => url_for_drilldown('it_coverage'), :default => '-') %> <%= tendency_icon(it_coverage_measure) %></span></p>
@@ -15,8 +12,5 @@ if it_coverage_measure %>
     if it_branch_coverage %>
     <p><%= format_measure(it_branch_coverage, :suffix => ' branch coverage', :url => url_for_drilldown('it_uncovered_conditions', :highlight => 'it_branch_coverage')) %> <%= tendency_icon(it_branch_coverage) %></p>
   <% end %>
-</div>
-</div>
-</div>
 </div>
 <% end %>
