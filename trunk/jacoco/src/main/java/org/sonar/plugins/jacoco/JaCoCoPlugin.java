@@ -97,6 +97,8 @@ public class JaCoCoPlugin implements Plugin {
         JaCoCoItMetrics.class,
         JaCoCoItSensor.class,
         ItCoverageWidget.class,
+        ItCoverageDecorator.class,
+        ItLineCoverageDecorator.class,
         
         JaCoCoAgentDownloader.class,
         JaCoCoMavenPluginHandler.class,

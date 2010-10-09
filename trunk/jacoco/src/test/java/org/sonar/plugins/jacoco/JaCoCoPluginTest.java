@@ -48,6 +48,6 @@ public class JaCoCoPluginTest {
 
   @Test
   public void testExtensions() {
-    assertThat(plugin.getExtensions().size(), is(6));
+    assertThat(plugin.getExtensions().size(), is(8));
   }
 }

@@ -34,9 +34,12 @@ public class JaCoCoItMetrics implements Metrics {
 
   public static final String DOMAIN_IT_TESTS = "IT Tests";
 
+  public static final String IT_COVERAGE_KEY = "it_coverage";
+  public static final Metric IT_COVERAGE = new Metric(IT_COVERAGE_KEY, "Coverage", "Coverage by unit tests", Metric.ValueType.PERCENT,
+      Metric.DIRECTION_BETTER, true, DOMAIN_IT_TESTS).setWorstValue(0.0).setBestValue(100.0);
+
   public static final String IT_LINES_TO_COVER_KEY = "it_lines_to_cover";
-  public static final Metric IT_LINES_TO_COVER = new Metric(
-      IT_LINES_TO_COVER_KEY, "Lines to cover", "Lines to cover", Metric.ValueType.INT,
+  public static final Metric IT_LINES_TO_COVER = new Metric(IT_LINES_TO_COVER_KEY, "Lines to cover", "Lines to cover", Metric.ValueType.INT,
       Metric.DIRECTION_BETTER, false, DOMAIN_IT_TESTS).setFormula(new SumChildValuesFormula(false)).setHidden(true);
 
   public static final String IT_UNCOVERED_LINES_KEY = "it_uncovered_lines";
@@ -52,7 +55,7 @@ public class JaCoCoItMetrics implements Metrics {
       Metric.DIRECTION_NONE, false, DOMAIN_IT_TESTS);
 
   public List<Metric> getMetrics() {
-    return Arrays.asList(IT_LINES_TO_COVER, IT_UNCOVERED_LINES, IT_LINE_COVERAGE, IT_COVERAGE_LINE_HITS_DATA);
+    return Arrays.asList(IT_COVERAGE, IT_LINES_TO_COVER, IT_UNCOVERED_LINES, IT_LINE_COVERAGE, IT_COVERAGE_LINE_HITS_DATA);
   }
 
 }
