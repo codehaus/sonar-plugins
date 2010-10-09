@@ -178,7 +178,7 @@
                 <configuration>
                   <background>true</background>
                   <clean>true</clean>
-                  <configBackup>${basedir}/sonar-backup.xml</configBackup>
+                  <configBackup>${basedir}/src/it/sonar-backup.xml</configBackup>
                 </configuration>
                 <goals>
                   <goal>start-war</goal>
