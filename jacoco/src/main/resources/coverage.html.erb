@@ -1,12 +1,16 @@
 <%
-it_uncovered_lines=measure('it_uncovered_lines')
-if it_uncovered_lines %>
+it_coverage_measure=measure('it_coverage')
+if it_coverage_measure %>
 <div class="widget">
 <div class="yui-g">
 <div class="yui-u first">
 <div class="dashbox">
   <p class="title">IT Code coverage</p>
-  <p><span class="big"><%= format_measure(it_uncovered_lines, :suffix => '', :default => '-') %></span></p>
+  <p><span class="big"><%= format_measure(it_coverage_measure, :suffix => '', :default => '-') %></span></p>
+  <% line_coverage=measure('it_line_coverage')
+    if line_coverage %>
+    <p><%= format_measure(line_coverage, :suffix => ' line coverage') %></p>
+  <% end %>
 </div>
 </div>
 </div>

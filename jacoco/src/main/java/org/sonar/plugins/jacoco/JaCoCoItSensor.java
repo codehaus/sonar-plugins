@@ -39,6 +39,11 @@ public class JaCoCoItSensor extends AbstractJaCoCoSensor implements Sensor {
   }
 
   @Override
+  public boolean shouldExecuteOnProject(Project project) {
+    return super.shouldExecuteOnProject(project); // TODO
+  }
+
+  @Override
   protected String getReportPath(Project project) {
     return project.getConfiguration().getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY, JaCoCoPlugin.IT_REPORT_PATH_DEFAULT_VALUE);
   }
