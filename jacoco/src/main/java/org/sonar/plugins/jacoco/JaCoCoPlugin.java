@@ -23,6 +23,7 @@ package org.sonar.plugins.jacoco;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.plugins.jacoco.itcoverageviewer.CoverageViewerDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,6 +100,7 @@ public class JaCoCoPlugin implements Plugin {
         ItCoverageWidget.class,
         ItCoverageDecorator.class,
         ItLineCoverageDecorator.class,
+        CoverageViewerDefinition.class,
         
         JaCoCoAgentDownloader.class,
         JaCoCoMavenPluginHandler.class,

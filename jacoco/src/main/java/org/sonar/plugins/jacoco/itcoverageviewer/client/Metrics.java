@@ -18,36 +18,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.jacoco;
-
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
+package org.sonar.plugins.jacoco.itcoverageviewer.client;
 
 /**
- * @author Evgeny Mandrikov
+ * Should be in {@link org.sonar.gwt.Metrics}
  */
-public class JaCoCoPluginTest {
-  private JaCoCoPlugin plugin = new JaCoCoPlugin();
-
-  @Before
-  public void setUp() {
-    plugin = new JaCoCoPlugin();
-  }
-
-  @Test
-  public void testPluginDefition() {
-    assertThat(plugin.getKey(), is("jacoco"));
-    assertThat(plugin.getName(), notNullValue());
-    assertThat(plugin.getDescription(), notNullValue());
-    assertThat(plugin.toString(), is("jacoco"));
-  }
-
-  @Test
-  public void testExtensions() {
-    assertThat(plugin.getExtensions().size(), is(9));
-  }
+public interface Metrics {
+  String IT_COVERAGE = "coverage";
+  String IT_LINES_TO_COVER = "it_lines_to_cover";
+  String IT_UNCOVERED_LINES = "it_uncovered_lines";
+  String IT_LINE_COVERAGE = "it_line_coverage";
+  String IT_COVERAGE_LINE_HITS_DATA = "it_coverage_line_hits_data";
+  String IT_CONDITIONS_TO_COVER = "it_conditions_to_cover";
+  String IT_UNCOVERED_CONDITIONS = "it_uncovered_conditions";
+  String IT_BRANCH_COVERAGE = "it_branch_coverage";
+  String IT_BRANCH_COVERAGE_HITS_DATA = "it_branch_coverage_hits_data";
 }

@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Should be in {@link org.sonar.api.measures.CoreMetrics}
+ * 
  * @author Evgeny Mandrikov
  */
 public class JaCoCoItMetrics implements Metrics {
@@ -54,8 +56,24 @@ public class JaCoCoItMetrics implements Metrics {
   public static final Metric IT_COVERAGE_LINE_HITS_DATA = new Metric(IT_COVERAGE_LINE_HITS_DATA_KEY, "Coverage hits data", "Code coverage line hits data", Metric.ValueType.DATA,
       Metric.DIRECTION_NONE, false, DOMAIN_IT_TESTS);
 
+  public static final String IT_CONDITIONS_TO_COVER_KEY = "it_conditions_to_cover";
+  public static final Metric IT_CONDITIONS_TO_COVER = new Metric(IT_CONDITIONS_TO_COVER_KEY, "Conditions to cover", "Conditions to cover",
+      Metric.ValueType.INT, Metric.DIRECTION_BETTER, false, DOMAIN_IT_TESTS).setFormula(new SumChildValuesFormula(false)).setHidden(true);
+
+  public static final String IT_UNCOVERED_CONDITIONS_KEY = "it_uncovered_conditions";
+  public static final Metric IT_UNCOVERED_CONDITIONS = new Metric(IT_UNCOVERED_CONDITIONS_KEY, "Uncovered conditions", "Uncovered conditions",
+      Metric.ValueType.INT, Metric.DIRECTION_WORST, false, DOMAIN_IT_TESTS).setFormula(new SumChildValuesFormula(false));
+
+  public static final String IT_BRANCH_COVERAGE_KEY = "it_branch_coverage";
+  public static final Metric IT_BRANCH_COVERAGE = new Metric(IT_BRANCH_COVERAGE_KEY, "Branch coverage", "Branch coverage",
+      Metric.ValueType.PERCENT, Metric.DIRECTION_BETTER, true, DOMAIN_IT_TESTS).setWorstValue(0.0).setBestValue(100.0);
+
+  public static final String IT_BRANCH_COVERAGE_HITS_DATA_KEY = "it_branch_coverage_hits_data";
+  public static final Metric IT_BRANCH_COVERAGE_HITS_DATA = new Metric(IT_BRANCH_COVERAGE_HITS_DATA_KEY, "Branch coverage hits",
+      "Branch coverage hits", Metric.ValueType.DATA, Metric.DIRECTION_NONE, false, DOMAIN_IT_TESTS);
+
   public List<Metric> getMetrics() {
-    return Arrays.asList(IT_COVERAGE, IT_LINES_TO_COVER, IT_UNCOVERED_LINES, IT_LINE_COVERAGE, IT_COVERAGE_LINE_HITS_DATA);
+    return Arrays.asList(IT_COVERAGE, IT_LINES_TO_COVER, IT_UNCOVERED_LINES, IT_LINE_COVERAGE, IT_COVERAGE_LINE_HITS_DATA, IT_CONDITIONS_TO_COVER, IT_UNCOVERED_CONDITIONS, IT_BRANCH_COVERAGE, IT_BRANCH_COVERAGE_HITS_DATA);
   }
 
 }
