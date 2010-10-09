@@ -24,9 +24,6 @@ import org.jacoco.core.analysis.ILines;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.maven.DependsUponMavenPlugin;
-import org.sonar.api.batch.maven.MavenPluginHandler;
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.resources.JavaFile;
@@ -35,36 +32,22 @@ import org.sonar.api.resources.Project;
 /**
  * @author Evgeny Mandrikov
  */
-public class JaCoCoSensor extends AbstractJaCoCoSensor implements Sensor, DependsUponMavenPlugin {
+public class JaCoCoItSensor extends AbstractJaCoCoSensor implements Sensor {
 
-  private JaCoCoMavenPluginHandler handler;
-
-  public JaCoCoSensor(Plugins plugins, JaCoCoMavenPluginHandler handler) {
+  public JaCoCoItSensor(Plugins plugins) {
     super(plugins);
-    this.handler = handler;
-  }
-
-  public MavenPluginHandler getMavenPluginHandler(Project project) {
-    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
-      return handler;
-    }
-    return null;
   }
 
   @Override
   protected String getReportPath(Project project) {
-    return getPath(project);
-  }
-
-  public static String getPath(Project project) {
-    return project.getConfiguration().getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
+    return project.getConfiguration().getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY, JaCoCoPlugin.IT_REPORT_PATH_DEFAULT_VALUE);
   }
 
   @Override
   protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData) {
-    context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines.getTotalCount());
-    context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines.getMissedCount());
-    Measure lineHits = new Measure(CoreMetrics.COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
+    context.saveMeasure(resource, JaCoCoItMetrics.IT_LINES_TO_COVER, (double) lines.getTotalCount());
+    context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_LINES, (double) lines.getMissedCount());
+    Measure lineHits = new Measure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
     context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
   }
 

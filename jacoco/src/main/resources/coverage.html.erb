@@ -1,0 +1,14 @@
+<%
+it_uncovered_lines=measure('it_uncovered_lines')
+if it_uncovered_lines %>
+<div class="widget">
+<div class="yui-g">
+<div class="yui-u first">
+<div class="dashbox">
+  <p class="title">IT Code coverage</p>
+  <p><span class="big"><%= format_measure(it_uncovered_lines, :suffix => '', :default => '-') %></span></p>
+</div>
+</div>
+</div>
+</div>
+<% end %>
