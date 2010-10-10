@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * The Class Property.
  */
 @XStreamAlias("property")
-public class Property {
+public final class Property {
 
   /** The name. */
   @XStreamAsAttribute

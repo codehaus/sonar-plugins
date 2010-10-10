@@ -29,7 +29,7 @@ import org.sonar.api.utils.WildcardPattern;
  * Defines a php package
  */
 @SuppressWarnings("rawtypes")
-public class PhpPackage extends Resource {
+public final class PhpPackage extends Resource {
 
   /** The Constant DEFAULT_PACKAGE_NAME. */
   public static final String DEFAULT_PACKAGE_NAME = "(default)";

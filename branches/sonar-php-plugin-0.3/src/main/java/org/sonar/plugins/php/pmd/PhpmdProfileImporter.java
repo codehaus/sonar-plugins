@@ -30,12 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.profiles.ProfileImporter;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.resources.Java;
 import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.plugins.php.core.Php;
 import org.sonar.plugins.php.pmd.xml.PmdProperty;
 import org.sonar.plugins.php.pmd.xml.PmdRule;
 import org.sonar.plugins.php.pmd.xml.PmdRuleset;
@@ -44,11 +44,11 @@ public class PhpmdProfileImporter extends ProfileImporter {
 
   public static final String XPATH_CLASS = "net.sourceforge.pmd.rules.XPathRule";
   private final RuleFinder ruleFinder;
-  private static Logger LOG = LoggerFactory.getLogger(PhpmdProfileImporter.class);
+  private final static Logger LOG = LoggerFactory.getLogger(PhpmdProfileImporter.class);
 
   public PhpmdProfileImporter(RuleFinder ruleFinder) {
     super(PhpmdRuleRepository.REPOSITORY_KEY, PhpmdRuleRepository.REPOSITORY_NAME);
-    setSupportedLanguages(Java.KEY);
+    setSupportedLanguages(Php.KEY);
     this.ruleFinder = ruleFinder;
   }
 
@@ -71,8 +71,7 @@ public class PhpmdProfileImporter extends ProfileImporter {
         messages.addWarningText("A PMD rule without 'ref' attribute can't be imported. see '" + pmdRule.getClazz() + "'");
         continue;
       }
-      Rule rule = ruleFinder
-          .find(RuleQuery.create().withRepositoryKey(PhpmdRuleRepository.REPOSITORY_KEY).withConfigKey(pmdRule.getRef()));
+      Rule rule = ruleFinder.find(RuleQuery.create().withRepositoryKey(PhpmdRuleRepository.REPOSITORY_KEY).withConfigKey(pmdRule.getRef()));
       if (rule != null) {
         PmdRulePriorityMapper mapper = new PmdRulePriorityMapper();
         ActiveRule activeRule = profile.activateRule(rule, mapper.from(pmdRule.getPriority()));
