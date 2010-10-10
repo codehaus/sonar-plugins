@@ -26,7 +26,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 /**
  * The Class MetricsNode.
  */
-public class MetricsNode {
+public final class MetricsNode {
 
   /** The The number of covered elements. */
   @XStreamAsAttribute

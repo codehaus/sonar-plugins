@@ -27,7 +27,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
  * The Class Metadata.
  */
 @XStreamAlias("metadata")
-public class Metadata {
+public final class Metadata {
 
   /** The name. */
   @XStreamAsAttribute

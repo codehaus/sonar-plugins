@@ -21,7 +21,7 @@ package org.sonar.plugins.php.codesniffer;
 
 import org.sonar.api.rules.RulePriority;
 
-public class PhpCodeSnifferPriorityMapper {
+public final class PhpCodeSnifferPriorityMapper {
 
   private static final String INFO_PRIORITY = "info";
   private static final String WARNING_PRIORITY = "warning";

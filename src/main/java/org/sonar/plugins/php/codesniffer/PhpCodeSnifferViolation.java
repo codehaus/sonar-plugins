@@ -4,7 +4,7 @@ package org.sonar.plugins.php.codesniffer;
  * @author Akram Ben Aissi
  * 
  */
-public class PhpCodeSnifferViolation {
+public final class PhpCodeSnifferViolation {
 
   /**
    * The ruleKey of the violated rule.
@@ -49,14 +49,6 @@ public class PhpCodeSnifferViolation {
     return type;
   }
 
-  public void parseStart(String attrValue) {
-    try {
-      line = Integer.parseInt(attrValue);
-    } catch (NumberFormatException e) {
-      line = null;
-    }
-  }
-
   /**
    * @return
    */
@@ -83,16 +75,6 @@ public class PhpCodeSnifferViolation {
    */
   public String getSourcePath() {
     return sourcePath;
-  }
-
-  /**
-   * @return
-   */
-  public String getSonarJavaFileKey() {
-    if (fileName.indexOf('$') > -1) {
-      return fileName.substring(0, fileName.indexOf('$'));
-    }
-    return fileName;
   }
 
   /**

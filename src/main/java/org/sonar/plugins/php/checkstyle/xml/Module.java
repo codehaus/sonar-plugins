@@ -41,7 +41,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * The Class Module.
  */
 @XStreamAlias("module")
-public class Module implements Comparable<String> {
+public final class Module implements Comparable<String> {
 
   /** The Constant MODULE_SEPARATOR. */
   public static final String MODULE_SEPARATOR = "/";
@@ -262,7 +262,7 @@ public class Module implements Comparable<String> {
    */
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(1, 31).append(children).append(metadata).append(name).append(properties).hashCode();
+    return new HashCodeBuilder().append(children).append(metadata).append(name).append(properties).hashCode();
   }
 
   /*

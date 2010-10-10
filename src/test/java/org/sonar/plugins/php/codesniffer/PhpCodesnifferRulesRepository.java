@@ -44,8 +44,6 @@ import org.sonar.plugins.php.core.PhpPlugin;
 
 /**
  * The Class PhpCheckstyleRulesRepository.
- * 
- * @deprecated use code inside this class to build Importer and Exporter
  */
 public final class PhpCodesnifferRulesRepository extends RuleRepository {
 
@@ -68,11 +66,6 @@ public final class PhpCodesnifferRulesRepository extends RuleRepository {
     rules.addAll(XMLRuleParser.parseXML(getClass().getResourceAsStream("/org/sonar/plugins/php/codesniffer/rules.xml")));
     return rules;
   }
-
-  /**
-   * Php Language instance.
-   */
-  private Php php;
 
   /**
    * Returns the list of PHP_CodeSniffer rules declared by the ruleset
