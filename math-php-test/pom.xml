@@ -6,7 +6,7 @@
   <name>PHP Mathematics</name>
   <version>1.0</version>
   <!-- For the moment, specify pom as packaging for php projects -->
-  <packaging>php</packaging>
+  <packaging>pom</packaging>
   <build>
     <!-- You cannot omit this one, because maven will implicitely add src/main/java 
       to it -->
