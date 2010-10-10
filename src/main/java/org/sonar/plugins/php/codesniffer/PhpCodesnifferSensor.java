@@ -89,21 +89,28 @@ public class PhpCodesnifferSensor implements Sensor {
    * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
    */
   public void analyse(Project project, SensorContext context) {
+    // If configured so, execute the tool
+    if ( !getConfiguration(project).isAnalyseOnly()) {
+      PhpCodesnifferExecutor executor = new PhpCodesnifferExecutor(config);
+      executor.execute();
+    }
     File report = config.getReportFile();
-    LOG.info("Findbugs output report: " + report.getAbsolutePath());
+    LOG.info("PhpCodeSniffer  report file: " + report.getAbsolutePath());
     PhpCodesnifferViolationsXmlParser reportParser = new PhpCodesnifferViolationsXmlParser(report);
     List<PhpCodeSnifferViolation> violations = reportParser.getViolations();
     List<Violation> contextViolations = new ArrayList<Violation>();
     for (PhpCodeSnifferViolation violation : violations) {
       Rule rule = ruleFinder.findByKey(PhpCodeSnifferRuleRepository.REPOSITORY_KEY, violation.getRuleKey());
-      PhpFile resource = (PhpFile) context.getResource(PhpFile.fromAbsolutePath(violation.getFileName(), project));
-      if (context.getResource(resource) != null) {
-        Violation v = Violation.create(rule, resource).setLineId(violation.getLine()).setMessage(violation.getLongMessage());
-        contextViolations.add(v);
+      if (rule != null) {
+        PhpFile resource = (PhpFile) context.getResource(PhpFile.fromAbsolutePath(violation.getFileName(), project));
+        if (context.getResource(resource) != null) {
+          Violation v = Violation.create(rule, resource).setLineId(violation.getLine()).setMessage(violation.getLongMessage());
+          contextViolations.add(v);
+          LOG.debug("Violation found: " + v);
+        }
       }
-      context.saveViolations(contextViolations);
     }
-
+    context.saveViolations(contextViolations);
   }
 
   /**

@@ -31,6 +31,7 @@ import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.XmlParserException;
 
@@ -50,6 +51,9 @@ public class PhpCodesnifferViolationsXmlParser {
   private static final String MESSAGE_ATTRIBUTE_NAME = "message";
 
   private static final Logger LOG = LoggerFactory.getLogger(PhpCodesnifferViolationsXmlParser.class);
+
+  /** The project. */
+  private Project project;
 
   private final File reportFile;
   private final String reportPath;
