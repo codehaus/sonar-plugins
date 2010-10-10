@@ -761,14 +761,10 @@
       <category name="Reliability" />
       <name>NAME_NOT_VALID_NEWNAME_VALID_CLASS</name>
       <configKey>rulesets/NAME_NOT_VALID_NEWNAME_VALID_CLASS</configKey>
-      <description>:name n'est pas un nom de classe correct; considerez :newName plut�t
-      </description>
+      <description>:name n'est pas un nom de classe correct; considerez :newName plutot</description>
     </rule>
     <rule priority="MAJOR">
-      <key>
-        GN/NamingConventions/ValidFunctionNameSniff/SCOPE_METHOD_NAME_NOT_CAMEL_VALID_FUNCTION
-      </key>
-
+      <key>GN/NamingConventions/ValidFunctionNameSniff/SCOPE_METHOD_NAME_NOT_CAMEL_VALID_FUNCTION</key>
       <repositoryKey>php_codesniffer_rules</repositoryKey>
       <category name="Usability" />
       <name>Method's scope not in camel case</name>
@@ -776,8 +772,7 @@
       <description>Method :scope should be named in camel case.</description>
     </rule>
     <rule priority="MAJOR">
-      <key>
-        GN/NamingConventions/ValidFunctionNameSniff/METHOD_NAME_NOT_CAMEL_VALID_FUNCTION</key>
+      <key>GN/NamingConventions/ValidFunctionNameSniff/METHOD_NAME_NOT_CAMEL_VALID_FUNCTION</key>
 
       <repositoryKey>php_codesniffer_rules</repositoryKey>
       <category name="Usability" />
@@ -863,9 +858,7 @@
       </description>
     </rule>
     <rule priority="MAJOR">
-      <key>
-        GN/NamingConventions/ValidVairableNameSniff/NOT_VALID_CAMEL_VALID_VARIABLE</key>
-
+      <key>GN/NamingConventions/ValidVairableNameSniff/NOT_VALID_CAMEL_VALID_VARIABLE</key>
       <repositoryKey>php_codesniffer_rules</repositoryKey>
       <category name="Usability" />
       <name>NOT_VALID_CAMEL_VALID_VARIABLE</name>
@@ -873,15 +866,12 @@
       <description>CNM_NOM_VAR : la variable :varname n'est pas au format camelCase</description>
     </rule>
     <rule priority="MAJOR">
-      <key>
-        GN/NamingConventions/ValidVairableNameSniff/ATTR_NOT_VALID_CAMEL_VALID_VARIABLE</key>
-
+      <key>GN/NamingConventions/ValidVairableNameSniff/ATTR_NOT_VALID_CAMEL_VALID_VARIABLE</key>
       <repositoryKey>php_codesniffer_rules</repositoryKey>
       <category name="Usability" />
       <name>ATTR_NOT_VALID_CAMEL_VALID_VARIABLE</name>
       <configKey>rulesets/ATTR_NOT_VALID_CAMEL_VALID_VARIABLE</configKey>
-      <description>Le nom d'attribut d'instance :varname n'est pas au format camelCase
-        </description>
+      <description>Le nom d'attribut d'instance :varname n'est pas au format camelCase</description>
     </rule>
     <rule priority="MINOR">
       <key>GN/NamingConventions/ValidVairableNameSniff/CONTAINS_NUMBER_VALID_VARIABLE</key>
