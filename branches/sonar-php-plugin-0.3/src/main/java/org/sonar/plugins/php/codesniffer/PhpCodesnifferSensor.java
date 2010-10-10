@@ -139,9 +139,12 @@ public class PhpCodesnifferSensor implements Sensor {
    * @see org.sonar.api.batch.CheckProject#shouldExecuteOnProject(org.sonar.api .resources.Project)
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return getConfiguration(project).isShouldRun() && project.getLanguage().equals(php);
-    // && ( !profile.getActiveRulesByRepository(PhpCodeSnifferRuleRepository.REPOSITORY_KEY).isEmpty() || project
-    // .getReuseExistingRulesConfig()) && project.getPom() != null;
+    boolean sensorShouldRun = getConfiguration(project).isShouldRun();
+    boolean projectIsPhp = project.getLanguage().equals(php);
+    boolean profileContainsActiveRules = !profile.getActiveRulesByRepository(PhpCodeSnifferRuleRepository.REPOSITORY_KEY).isEmpty();
+    boolean reuseRules = project.getReuseExistingRulesConfig();
+    boolean pomNotNull = project.getPom() != null;
+    return sensorShouldRun && projectIsPhp && (profileContainsActiveRules || reuseRules) && pomNotNull;
   }
 
   /**

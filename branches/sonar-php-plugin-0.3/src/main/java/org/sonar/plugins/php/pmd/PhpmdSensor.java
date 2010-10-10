@@ -98,14 +98,17 @@ public class PhpmdSensor implements Sensor, GeneratesViolations {
       }
       // Gets report file
       File report = config.getReportFile();
-      if (report == null || !report.exists() || !report.isFile()) {
-        LOG.error("Report file can't be found" + (report != null ? " : " + report.getAbsolutePath() : ""));
-        LOG.error("Plugin will stop.");
-      }
-      // If reports can't be found plugin stop without errors
-      if (report != null) {
-        AbstractViolationsStaxParser parser = getStaxParser(project, context);
-        parser.parse(report);
+      if (report == null) {
+        LOG.error("Report file can't be found: report is null");
+      } else {
+        if ( !report.exists() || !report.isFile()) {
+          LOG.error("Report file can't be found: " + report.getAbsolutePath());
+          LOG.error("Plugin will stop.");
+        } else {
+          // If reports can't be found plugin stop without errors
+          AbstractViolationsStaxParser parser = getStaxParser(project, context);
+          parser.parse(report);
+        }
       }
     } catch (XMLStreamException e) {
       LOG.error("PMD report is invalid data will not be imported", e);
