@@ -123,7 +123,7 @@
           <execution>
             <configuration>
               <modules>
-                <module>org.sonar.plugins.jacoco.itcoverageviewer.CoverageViewer</module>
+                <module>org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewer</module>
               </modules>
               <skip>${skipGwt}</skip>
               <webappDirectory>${project.build.directory}/classes</webappDirectory>

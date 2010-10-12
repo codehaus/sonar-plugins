@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.jacoco.itcoverageviewer.client;
+package org.sonar.plugins.jacoco.itcoverage.viewer.client;
 
 import org.sonar.gwt.ui.Page;
 import org.sonar.gwt.ui.ViewerHeader;

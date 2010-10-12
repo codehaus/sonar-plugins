@@ -23,7 +23,8 @@ package org.sonar.plugins.jacoco;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.jacoco.itcoverageviewer.CoverageViewerDefinition;
+import org.sonar.plugins.jacoco.itcoverage.*;
+import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -106,7 +107,7 @@ public class JaCoCoPlugin implements Plugin {
         ItCoverageDecorator.class,
         ItLineCoverageDecorator.class,
         CoverageViewerDefinition.class
-    );
+      );
   }
 
   @Override

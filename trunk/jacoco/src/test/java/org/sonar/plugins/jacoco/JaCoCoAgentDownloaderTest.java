@@ -29,7 +29,9 @@ import java.io.File;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Evgeny Mandrikov
@@ -48,10 +50,10 @@ public class JaCoCoAgentDownloaderTest {
   @Test
   public void testGetDownloadUrl() {
     configuration.setProperty("sonar.host.url", "http://localhost:9000");
-    assertThat(downloader.getDownloadUrl(), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
+    assertThat(downloader.getDownloadUrl(), startsWith("http://localhost:9000/deploy/plugins/jacoco/agent-all"));
 
     configuration.setProperty("sonar.host.url", "http://localhost:9000/");
-    assertThat(downloader.getDownloadUrl(), startsWith("http://localhost:9000/deploy/plugins/sonar-jacoco-plugin/agent-all"));
+    assertThat(downloader.getDownloadUrl(), startsWith("http://localhost:9000/deploy/plugins/jacoco/agent-all"));
   }
 
   @Test

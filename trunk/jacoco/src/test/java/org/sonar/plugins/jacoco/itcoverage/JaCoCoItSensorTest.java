@@ -18,17 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.jacoco;
-
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.doubleThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+package org.sonar.plugins.jacoco.itcoverage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +29,16 @@ import org.sonar.api.test.IsMeasure;
 import org.sonar.api.test.IsResource;
 
 import java.io.File;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.doubleThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class JaCoCoItSensorTest {
   private JaCoCoItSensor sensor;
@@ -52,12 +52,12 @@ public class JaCoCoItSensorTest {
   public void testSensorDefinition() {
     assertThat(sensor.toString(), is("JaCoCoItSensor"));
   }
-  
+
   @Test
   public void testReadExecutionData() throws Exception {
     File jacocoExecutionData = new File(
         getClass().getResource("/org/sonar/plugins/jacoco/JaCoCoSensorTest/jacoco.exec").getFile()
-    );
+        );
     File buildOutputDir = jacocoExecutionData.getParentFile();
     SensorContext context = mock(SensorContext.class);
 
@@ -67,16 +67,16 @@ public class JaCoCoItSensorTest {
         argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
         eq(JaCoCoItMetrics.IT_LINES_TO_COVER),
         doubleThat(greaterThan(0d))
-    );
+      );
     verify(context).saveMeasure(
         argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
         eq(JaCoCoItMetrics.IT_UNCOVERED_LINES),
         doubleThat(greaterThan(0d))
-    );
+      );
     verify(context).saveMeasure(
         argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
         argThat(new IsMeasure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA))
-    );
+      );
     verifyNoMoreInteractions(context);
   }
 
