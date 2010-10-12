@@ -1,71 +1,97 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>all</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
-    <name>All Sonar plugins</name>
+    <artifactId>parent</artifactId>
+    <version>6</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-    <profiles>
-        <profile>
-            <id>stableProjects</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>artifact-size</module>
-                <module>build-breaker</module>
-                <module>build-stability</module>
-                <module>clirr</module>
-                <module>cpp</module>
-                <module>crowd</module>
-                <module>debug</module>
-                <module>dotnet</module>
-                <module>emma</module>
-                <module>flex</module>
-                <module>greenpepper</module>
-                <module>groovy</module>
-                <module>hammurapi</module>
-                <module>jacoco</module>
-                <module>jira</module>
-                <module>jlint</module>
-                <module>jtest</module>
-                <module>ldap</module>
-                <module>maven-report</module>
-                <module>metrics-help</module>
-                <module>motion-chart</module>
-                <module>pdf-report</module>
-                <module>php</module>
-                <module>piwik</module>
-                <module>profiler</module>
-                <module>quality-index</module>
-                <module>radiator</module>
-                <module>rules-meter</module>
-                <module>scm-activity</module>
-                <module>security-rules</module>
-                <module>sigmm</module>
-                <module>sonarj</module>
-                <module>sonar-replay</module>
-                <module>sonar-squid-cli</module>
-                <module>sonar-squid-gui</module>
-                <module>taglist</module>
-                <module>technical-debt</module>
-                <module>testability-explorer</module>
-                <module>timeline</module>
-                <module>total-quality</module>
-                <module>trac</module>
-                <module>twitter</module>
-                <module>web</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>unstableProjects</id>
-            <modules>
-                <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-                <module>codereview</module>
-            </modules>
-        </profile>
-    </profiles>
+  <artifactId>sonar-crowd-plugin</artifactId>
+  <version>0.2</version>
+  <packaging>sonar-plugin</packaging>
+
+  <name>Sonar Crowd Plugin</name>
+  <description>Enables the delegation of Sonar authentication to Atlassian Crowd.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Crowd+Plugin</url>
+  <inceptionYear>2009</inceptionYear>
+  <organization>
+    <name>Evgeny Mandrikov</name>
+    <url>http://godin.net.ru/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+      <timezone>+3</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-crowd-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-crowd-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-crowd-plugin-0.2</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14294</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-CROWD</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>2.3</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.crowd.CrowdPlugin</sonar.pluginClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.atlassian.crowd</groupId>
+      <artifactId>crowd-integration-api</artifactId>
+      <version>2.0.2</version>
+      <exclusions>
+        <!-- Provided by Sonar -->
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>atlassian</id>
+      <url>https://maven.atlassian.com/content/repositories/public</url>
+    </repository>
+  </repositories>
 </project>
