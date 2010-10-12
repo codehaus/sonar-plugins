@@ -18,27 +18,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.jacoco.itcoverageviewer;
+package org.sonar.plugins.jacoco.itcoverage;
 
-import org.sonar.api.resources.Resource;
-import org.sonar.api.web.DefaultTab;
-import org.sonar.api.web.GwtPage;
+import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.NavigationSection;
-import org.sonar.api.web.ResourceQualifier;
+import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
-import org.sonar.plugins.jacoco.JaCoCoItMetrics;
 
-@ResourceQualifier(Resource.QUALIFIER_CLASS)
-@NavigationSection(NavigationSection.RESOURCE_TAB)
-@DefaultTab(metrics = { JaCoCoItMetrics.IT_COVERAGE_KEY, JaCoCoItMetrics.IT_LINES_TO_COVER_KEY, JaCoCoItMetrics.IT_UNCOVERED_LINES_KEY, JaCoCoItMetrics.IT_LINE_COVERAGE_KEY, JaCoCoItMetrics.IT_CONDITIONS_TO_COVER_KEY, JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS_KEY, JaCoCoItMetrics.IT_BRANCH_COVERAGE_KEY })
-@UserRole(UserRole.CODEVIEWER)
-public class CoverageViewerDefinition extends GwtPage {
+@NavigationSection(NavigationSection.RESOURCE)
+@UserRole(UserRole.USER)
+public class ItCoverageWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+
+  @Override
+  protected String getTemplatePath() {
+    return "/org/sonar/plugins/jacoco/itcoverage/widget.html.erb";
+  }
+
+  public String getId() {
+    return "it-coverage";
+  }
 
   public String getTitle() {
-    return "IT Coverage";
+    return "IT Coverage widget";
   }
 
-  public String getGwtId() {
-    return "org.sonar.plugins.jacoco.itcoverageviewer.CoverageViewer";
-  }
 }

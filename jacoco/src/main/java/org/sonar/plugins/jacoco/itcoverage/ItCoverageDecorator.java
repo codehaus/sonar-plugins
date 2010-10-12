@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.jacoco;
+package org.sonar.plugins.jacoco.itcoverage;
 
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependsUpon;
@@ -29,28 +29,34 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Copied from org.sonar.plugins.core.sensors.LineCoverageDecorator
+ * Copied from org.sonar.plugins.core.sensors.CoverageDecorator
  */
-public class ItLineCoverageDecorator extends AbstractCoverageDecorator {
+public class ItCoverageDecorator extends AbstractCoverageDecorator {
+
   @Override
   protected Metric getTargetMetric() {
-    return JaCoCoItMetrics.IT_LINE_COVERAGE;
+    return JaCoCoItMetrics.IT_COVERAGE;
   }
 
   @DependsUpon
   public List<Metric> dependsUponMetrics() {
-    return Arrays.asList(JaCoCoItMetrics.IT_UNCOVERED_LINES, JaCoCoItMetrics.IT_LINES_TO_COVER);
+    return Arrays.asList(JaCoCoItMetrics.IT_LINES_TO_COVER, JaCoCoItMetrics.IT_UNCOVERED_LINES, JaCoCoItMetrics.IT_CONDITIONS_TO_COVER, JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS);
   }
 
   @Override
   protected Double countCoveredElements(DecoratorContext context) {
     double uncoveredLines = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_UNCOVERED_LINES), 0.0);
     double lines = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_LINES_TO_COVER), 0.0);
-    return lines - uncoveredLines;
+    double uncoveredConditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS), 0.0);
+    double conditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), 0.0);
+    return lines + conditions - uncoveredConditions - uncoveredLines;
   }
 
   @Override
   protected Double countElements(DecoratorContext context) {
-    return MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_LINES_TO_COVER), 0.0);
+    double lines = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_LINES_TO_COVER), 0.0);
+    double conditions = MeasureUtils.getValue(context.getMeasure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), 0.0);
+    return lines + conditions;
   }
+
 }

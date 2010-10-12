@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.jacoco;
+package org.sonar.plugins.jacoco.itcoverage;
 
 import org.jacoco.core.analysis.ILines;
 import org.sonar.api.Plugins;
@@ -28,6 +28,8 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.jacoco.AbstractJaCoCoSensor;
+import org.sonar.plugins.jacoco.JaCoCoPlugin;
 
 /**
  * @author Evgeny Mandrikov

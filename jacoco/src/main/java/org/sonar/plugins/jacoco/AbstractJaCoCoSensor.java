@@ -67,7 +67,7 @@ public abstract class AbstractJaCoCoSensor extends AbstractCoverageExtension imp
     }
   }
 
-  protected void readExecutionData(File jacocoExecutionData, File buildOutputDir, SensorContext context) throws IOException {
+  public void readExecutionData(File jacocoExecutionData, File buildOutputDir, SensorContext context) throws IOException {
     SessionInfoStore sessionInfoStore = new SessionInfoStore();
     ExecutionDataStore executionDataStore = new ExecutionDataStore();
 
