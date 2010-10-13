@@ -19,21 +19,23 @@
     <sonar.plugin.class>org.sonar.c.checks.CCheckPlugin</sonar.plugin.class>
   </properties>
 
-  <!-- TODO: fill the following properties once the plugin is deployed on Codehaus -->
-  <!--
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/c-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/c-plugin</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/c-rules</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/c-rules</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
   <licenses>
     <license>
-      <name>XXXXX</name>
-      <url>XXXXX</url>
-      <distribution>XXXXX</distribution>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
     </license>
   </licenses>
-  -->
   
   <dependencies>
     <dependency>
