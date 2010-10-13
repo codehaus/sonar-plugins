@@ -21,6 +21,7 @@
                 <module>clirr</module>
                 <module>cpp</module>
                 <module>crowd</module>
+                <module>c-rules</module>
                 <module>debug</module>
                 <module>dotnet</module>
                 <module>emma</module>
