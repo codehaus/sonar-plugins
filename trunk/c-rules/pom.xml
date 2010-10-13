@@ -6,7 +6,7 @@
     <artifactId>parent</artifactId>
     <version>6</version>
   </parent>
-  <artifactId>c-checks</artifactId>
+  <artifactId>c-rules</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>SonarSource :: C :: Checks</name>
   
@@ -14,8 +14,8 @@
   <!--packaging>sonar-plugin</packaging-->
 
   <properties>
-    <sonar.version>2.4-SNAPSHOT</sonar.version>
-    <c-plugin.version>0.1-SNAPSHOT</c-plugin.version>   
+    <sonar.version>2.3</sonar.version>
+    <c-plugin.version>1.0</c-plugin.version>   
     <sonar.plugin.class>org.sonar.c.checks.CCheckPlugin</sonar.plugin.class>
   </properties>
 
