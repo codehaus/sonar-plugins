@@ -8,7 +8,7 @@
   </parent>
   <artifactId>c-rules</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <name>SonarSource :: C :: Checks</name>
+  <name>SonarSource :: C :: Rules</name>
   
   <!-- Uncomment this later when it is possible to groupe plugin classloaders -->
   <!--packaging>sonar-plugin</packaging-->
