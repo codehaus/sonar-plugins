@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>6</version>
+  </parent>
+  <artifactId>c-checks</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <name>SonarSource :: C :: Checks</name>
+  
+  <!-- Uncomment this later when it is possible to groupe plugin classloaders -->
+  <!--packaging>sonar-plugin</packaging-->
+
+  <properties>
+    <sonar.version>2.4-SNAPSHOT</sonar.version>
+    <c-plugin.version>0.1-SNAPSHOT</c-plugin.version>   
+    <sonar.plugin.class>org.sonar.c.checks.CCheckPlugin</sonar.plugin.class>
+  </properties>
+
+  <!-- TODO: fill the following properties once the plugin is deployed on Codehaus -->
+  <!--
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/c-plugin</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/c-plugin</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <licenses>
+    <license>
+      <name>XXXXX</name>
+      <url>XXXXX</url>
+      <distribution>XXXXX</distribution>
+    </license>
+  </licenses>
+  -->
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.sonarsource.c</groupId>
+      <artifactId>sonar-c-plugin</artifactId>
+      <version>${c-plugin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.15</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>
+  	<plugins>
+  	  <!-- Remove this later when it is possible to groupe plugin classloaders -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+			<archive>
+				<manifestEntries>
+					<C-CheckRepository-Class>org.sonar.c.checks.CheckRepository</C-CheckRepository-Class>
+				</manifestEntries>
+			</archive>
+        </configuration>
+      </plugin>
+      <!-- Uncomment this later when it is possible to groupe plugin classloaders -->
+      <!--plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>0.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginKey>ccheck</pluginKey>
+          <pluginName>CCheck</pluginName>
+          <pluginClass>${sonar.plugin.class}</pluginClass>
+          <pluginTermsConditionsUrl>http://dist.sonarsource.com/SonarSource_Terms_And_Conditions.pdf</pluginTermsConditionsUrl>
+        </configuration>
+      </plugin-->
+    </plugins>
+  </build>
+  
+</project>
