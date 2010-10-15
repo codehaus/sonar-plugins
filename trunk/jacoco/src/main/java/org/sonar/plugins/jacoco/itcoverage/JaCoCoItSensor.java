@@ -58,7 +58,7 @@ public class JaCoCoItSensor implements Sensor {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getAnalysisType().isDynamic(true);
+    return StringUtils.isNotBlank(project.getConfiguration().getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY)) && project.getAnalysisType().isDynamic(true);
   }
 
   public void analyse(Project project, SensorContext context) {
