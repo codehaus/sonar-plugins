@@ -77,7 +77,7 @@ public class JaCoCoPlugin implements Plugin {
   public static final String REPORT_PATH_PROPERTY = "sonar.jacoco.reportPath";
   public static final String REPORT_PATH_DEFAULT_VALUE = "target/jacoco.exec";
   public static final String IT_REPORT_PATH_PROPERTY = "sonar.jacoco.itReportPath";
-  public static final String IT_REPORT_PATH_DEFAULT_VALUE = "target/it-jacoco.exec";
+  public static final String IT_REPORT_PATH_DEFAULT_VALUE = "";
   public static final String INCLUDES_PROPERTY = "sonar.jacoco.includes";
   public static final String EXCLUDES_PROPERTY = "sonar.jacoco.excludes";
 

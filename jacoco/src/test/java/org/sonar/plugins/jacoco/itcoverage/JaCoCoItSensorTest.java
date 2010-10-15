@@ -28,19 +28,22 @@ import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.doubleThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project.AnalysisType;
 import org.sonar.api.test.IsMeasure;
+import org.sonar.plugins.jacoco.JaCoCoPlugin;
 
 import java.io.File;
 
@@ -58,9 +61,23 @@ public class JaCoCoItSensorTest {
   }
 
   @Test
+  public void doNotExecuteWhenReportPathNotSpecified() {
+    Project project = mock(Project.class);
+    Configuration configuration = mock(Configuration.class);
+    when(project.getConfiguration()).thenReturn(configuration);
+    when(configuration.getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY)).thenReturn("");
+    assertThat(sensor.shouldExecuteOnProject(project), is(false));
+  }
+
+  @Test
   public void shouldExecuteOnProject() {
     Project project = mock(Project.class);
-    Mockito.when(project.getAnalysisType()).thenReturn(AnalysisType.DYNAMIC).thenReturn(AnalysisType.REUSE_REPORTS);
+    Configuration configuration = mock(Configuration.class);
+    when(project.getConfiguration()).thenReturn(configuration);
+    when(configuration.getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY)).thenReturn("target/it-jacoco.exec");
+    when(project.getAnalysisType())
+        .thenReturn(AnalysisType.DYNAMIC)
+        .thenReturn(AnalysisType.REUSE_REPORTS);
     assertThat(sensor.shouldExecuteOnProject(project), is(true));
     assertThat(sensor.shouldExecuteOnProject(project), is(true));
   }
@@ -83,4 +100,15 @@ public class JaCoCoItSensorTest {
     verifyNoMoreInteractions(context);
   }
 
+  @Test
+  public void doNotSaveMeasureOnResourceWhichDoesntExistInTheContext() throws Exception {
+    File jacocoExecutionData = new File(getClass().getResource("/org/sonar/plugins/jacoco/JaCoCoSensorTest/jacoco.exec").getFile());
+    File buildOutputDir = jacocoExecutionData.getParentFile();
+    SensorContext context = mock(SensorContext.class);
+    when(context.getResource(any(Resource.class))).thenReturn(null);
+
+    sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
+
+    verify(context, never()).saveMeasure(any(Resource.class), any(Measure.class));
+  }
 }
