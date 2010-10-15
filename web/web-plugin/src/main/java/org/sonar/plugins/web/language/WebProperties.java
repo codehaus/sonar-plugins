@@ -29,4 +29,5 @@ public final class WebProperties {
 
   public static final String FILE_EXTENSIONS = "sonar.web.fileExtensions";
   public static final String SOURCE_DIRECTORY = "sonar.web.sourceDirectory";
+  public static final String EXCLUDE_VIOLATIONS = "sonar.web.excludeviolations";
 }
