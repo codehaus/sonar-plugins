@@ -5,11 +5,12 @@
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
     <version>6</version>
+    <relativePath>../parent</relativePath>
   </parent>
   <artifactId>c-rules</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>SonarSource :: C :: Rules</name>
-  
+
   <!-- Uncomment this later when it is possible to groupe plugin classloaders -->
   <!--packaging>sonar-plugin</packaging-->
 
@@ -36,7 +37,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <dependencies>
     <dependency>
       <groupId>com.sonarsource.c</groupId>
@@ -68,19 +69,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <build>
-  	<plugins>
-  	  <!-- Remove this later when it is possible to groupe plugin classloaders -->
+    <plugins>
+      <!-- Remove this later when it is possible to groupe plugin classloaders -->
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.3.1</version>
         <configuration>
-			<archive>
-				<manifestEntries>
-					<C-CheckRepository-Class>org.sonar.c.checks.CheckRepository</C-CheckRepository-Class>
-				</manifestEntries>
-			</archive>
+          <archive>
+            <manifestEntries>
+              <C-CheckRepository-Class>org.sonar.c.checks.CheckRepository</C-CheckRepository-Class>
+            </manifestEntries>
+          </archive>
         </configuration>
       </plugin>
       <!-- Uncomment this later when it is possible to groupe plugin classloaders -->
