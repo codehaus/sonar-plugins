@@ -17,6 +17,7 @@
 package org.sonar.plugins.web;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ import org.sonar.api.rules.Violation;
 import org.sonar.plugins.web.html.FileSet;
 import org.sonar.plugins.web.language.Web;
 import org.sonar.plugins.web.language.WebFile;
+import org.sonar.plugins.web.language.WebProperties;
 import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 import org.sonar.plugins.web.markupvalidation.MarkupReport;
 import org.sonar.plugins.web.rules.markup.MarkupRuleRepository;
@@ -61,16 +63,22 @@ public final class HtmlSensor implements Sensor {
     File htmlDir = new File(project.getFileSystem().getBasedir() + "/" + projectConfiguration.getSourceDir());
     LOG.info("HTML Dir:" + projectConfiguration.getSourceDir());
 
+    MessageFilter messageFilter = new MessageFilter((List<String>) project.getProperty(WebProperties.EXCLUDE_VIOLATIONS));
+
     for (File reportFile : FileSet.getReportFiles(htmlDir, MarkupReport.REPORT_SUFFIX)) {
       MarkupReport report = MarkupReport.fromXml(reportFile);
       File file = new File(StringUtils.substringBefore(report.getPath(), MarkupReport.REPORT_SUFFIX));
       WebFile resource = WebFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
 
       for (MarkupMessage error : report.getErrors()) {
-        addViolation(sensorContext, resource, error, true);
+        if (messageFilter.accept(error)) {
+          addViolation(sensorContext, resource, error, true);
+        }
       }
       for (MarkupMessage warning : report.getWarnings()) {
-        addViolation(sensorContext, resource, warning, false);
+        if (messageFilter.accept(warning)) {
+          addViolation(sensorContext, resource, warning, false);
+        }
       }
     }
   }
@@ -80,9 +88,9 @@ public final class HtmlSensor implements Sensor {
     Rule rule = ruleFinder.findByKey(MarkupRuleRepository.REPOSITORY_KEY, ruleKey);
     if (rule != null) {
       Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
-      violation.setMessage((error ? "" : "Warning: ") +  message.getMessage());
+      violation.setMessage((error ? "" : "Warning: ") + message.getMessage());
       sensorContext.saveViolation(violation);
-      LOG.info("Added error " + message.getMessageId() + " for " + resource);
+      LOG.info(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
     } else {
       LOG.warn("Could not find Markup Rule " + ruleKey);
     }
