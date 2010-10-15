@@ -135,10 +135,12 @@ public class JaCoCoItSensor implements Sensor {
   }
 
   protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData) {
-    context.saveMeasure(resource, JaCoCoItMetrics.IT_LINES_TO_COVER, (double) lines.getTotalCount());
-    context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_LINES, (double) lines.getMissedCount());
-    Measure lineHits = new Measure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
-    context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
+    if (context.getResource(resource) != null) {
+      context.saveMeasure(resource, JaCoCoItMetrics.IT_LINES_TO_COVER, (double) lines.getTotalCount());
+      context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_LINES, (double) lines.getMissedCount());
+      Measure lineHits = new Measure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
+      context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
+    }
   }
 
   @Override

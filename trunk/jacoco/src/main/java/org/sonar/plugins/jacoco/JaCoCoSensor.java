@@ -145,10 +145,12 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
   }
 
   protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData) {
-    context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines.getTotalCount());
-    context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines.getMissedCount());
-    Measure lineHits = new Measure(CoreMetrics.COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
-    context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
+    if (context.getResource(resource) != null) {
+      context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines.getTotalCount());
+      context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines.getMissedCount());
+      Measure lineHits = new Measure(CoreMetrics.COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
+      context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
+    }
   }
 
   @Override

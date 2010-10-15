@@ -23,22 +23,24 @@ package org.sonar.plugins.jacoco.itcoverage;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.doubleThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project.AnalysisType;
 import org.sonar.api.test.IsMeasure;
-import org.sonar.api.test.IsResource;
 
 import java.io.File;
 
@@ -65,28 +67,19 @@ public class JaCoCoItSensorTest {
 
   @Test
   public void testReadExecutionData() throws Exception {
-    File jacocoExecutionData = new File(
-        getClass().getResource("/org/sonar/plugins/jacoco/JaCoCoSensorTest/jacoco.exec").getFile()
-        );
+    File jacocoExecutionData = new File(getClass().getResource("/org/sonar/plugins/jacoco/JaCoCoSensorTest/jacoco.exec").getFile());
     File buildOutputDir = jacocoExecutionData.getParentFile();
     SensorContext context = mock(SensorContext.class);
 
+    final JavaFile resource = new JavaFile("org.sonar.plugins.jacoco.tests.Hello");
+    when(context.getResource(any(Resource.class))).thenReturn(resource);
+
     sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
 
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
-        eq(JaCoCoItMetrics.IT_LINES_TO_COVER),
-        doubleThat(greaterThan(0d))
-        );
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
-        eq(JaCoCoItMetrics.IT_UNCOVERED_LINES),
-        doubleThat(greaterThan(0d))
-        );
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.sonar.plugins.jacoco.tests.Hello")),
-        argThat(new IsMeasure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA))
-        );
+    verify(context).getResource(eq(resource));
+    verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_LINES_TO_COVER), doubleThat(greaterThan(0d)));
+    verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_UNCOVERED_LINES), doubleThat(greaterThan(0d)));
+    verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA)));
     verifyNoMoreInteractions(context);
   }
 
