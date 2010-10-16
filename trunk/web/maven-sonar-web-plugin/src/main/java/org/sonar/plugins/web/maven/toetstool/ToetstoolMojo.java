@@ -41,12 +41,23 @@ public class ToetstoolMojo extends AbstractValidationMojo {
    */
   private String toetsToolUrl;
 
+  /**
+   * Directory containing css files.
+   *
+   * @parameter
+   * @required
+   */
+  private String cssDir;
+
   @Override
   protected void configureSettings() {
     super.configureSettings();
 
     getLog().info("toetsToolUrl = " + toetsToolUrl);
+    getLog().info("cssDir = " + cssDir);
+
     Configuration.setToetstoolURL(toetsToolUrl);
+    Configuration.setCssPath(cssDir);
   }
 
   public void execute() throws MojoExecutionException {
