@@ -42,20 +42,20 @@ public abstract class AbstractValidationMojo extends AbstractMojo {
   private Settings settings;
 
   /**
+   * Base directory of the project.
+   * @parameter expression="${basedir}"
+   * @required
+   * @readonly
+   */
+  private File baseDirectory;
+
+  /**
    * HTML directory with location of HTML files.
    *
    * @parameter
    * @required
    */
   private String htmlDir;
-
-  /**
-   * Directory containing css files.
-   *
-   * @parameter
-   * @required
-   */
-  private String cssDir;
 
   /**
    * Number of samples.
@@ -79,11 +79,10 @@ public abstract class AbstractValidationMojo extends AbstractMojo {
       getLog().info((String) getPluginContext().get(key));
     }
     getLog().info("HTMLDir = " + htmlDir);
-    getLog().info("cssDir = " + cssDir);
+
     getLog().info("nrOfSamples = " + nrOfSamples);
 
-    Configuration.setHTMLDir(htmlDir);
-    Configuration.setCssPath(cssDir);
+    Configuration.setHTMLDir(baseDirectory + "/" + htmlDir);
     if (nrOfSamples != null && nrOfSamples > 0) {
       Configuration.setNrOfSamples(nrOfSamples);
     }
@@ -102,10 +101,6 @@ public abstract class AbstractValidationMojo extends AbstractMojo {
 
   public void setHtmlDir(String htmlDir) {
     this.htmlDir = htmlDir;
-  }
-
-  public void setCssDir(String cssDir) {
-    this.cssDir = cssDir;
   }
 
   public void setNrOfSamples(Integer nrOfSamples) {

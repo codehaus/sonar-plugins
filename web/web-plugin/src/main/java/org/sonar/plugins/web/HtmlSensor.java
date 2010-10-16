@@ -17,7 +17,6 @@
 package org.sonar.plugins.web;
 
 import java.io.File;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -63,7 +62,7 @@ public final class HtmlSensor implements Sensor {
     File htmlDir = new File(project.getFileSystem().getBasedir() + "/" + projectConfiguration.getSourceDir());
     LOG.info("HTML Dir:" + projectConfiguration.getSourceDir());
 
-    MessageFilter messageFilter = new MessageFilter((List<String>) project.getProperty(WebProperties.EXCLUDE_VIOLATIONS));
+    MessageFilter messageFilter = new MessageFilter(project.getProperty(WebProperties.EXCLUDE_VIOLATIONS));
 
     for (File reportFile : FileSet.getReportFiles(htmlDir, MarkupReport.REPORT_SUFFIX)) {
       MarkupReport report = MarkupReport.fromXml(reportFile);
@@ -90,7 +89,7 @@ public final class HtmlSensor implements Sensor {
       Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
       violation.setMessage((error ? "" : "Warning: ") + message.getMessage());
       sensorContext.saveViolation(violation);
-      LOG.info(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
+      LOG.debug(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
     } else {
       LOG.warn("Could not find Markup Rule " + ruleKey);
     }

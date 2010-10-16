@@ -98,6 +98,12 @@ final class MarkupValidator extends HtmlValidator {
       StringPart outputFormat = new StringPart(OUTPUT, SOAP12);
       parts.add(outputFormat);
 
+      // specify default doctype
+//      StringPart doctype = new StringPart("doctype", "XHTML 1.0 Strict");
+//      parts.add(doctype);
+//      StringPart fbd = new StringPart("fbd", "1");
+//      parts.add(fbd);
+
       MultipartRequestEntity multiPartRequestEntity = new MultipartRequestEntity(parts.toArray(new PartBase[parts.size()]),
           post.getParams());
       post.setRequestEntity(multiPartRequestEntity);

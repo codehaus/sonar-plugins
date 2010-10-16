@@ -23,10 +23,11 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.sonar.plugins.web.html.AbstractReportBuilder;
-import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 import org.sonar.plugins.web.markupvalidation.MarkupErrorCatalog;
 import org.sonar.plugins.web.markupvalidation.MarkupErrorCatalog.ErrorDefinition;
+import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 import org.sonar.plugins.web.markupvalidation.MarkupReport;
 
 /**
@@ -36,6 +37,8 @@ import org.sonar.plugins.web.markupvalidation.MarkupReport;
  * @since 0.2
  */
 final class MarkupReportBuilder extends AbstractReportBuilder {
+
+  private static final Logger LOG = Logger.getLogger(MarkupReportBuilder.class);
 
   private static final class Violation {
 
@@ -95,8 +98,11 @@ final class MarkupReportBuilder extends AbstractReportBuilder {
     for (Violation violation : violations) {
       ErrorDefinition errorDefinition = errorCatalog.findErrorDefinition(violation.messageId);
 
+      if (errorDefinition == null) {
+        LOG.warn("Unknown error found:" + violation.messageId);
+      }
       startRow();
-      addCells(violation.messageId, errorDefinition.getRemark(), violation.count);
+      addCells(violation.messageId, errorDefinition == null ? "?" : errorDefinition.getRemark(), violation.count);
       endRow();
 
       if (showDetails) {

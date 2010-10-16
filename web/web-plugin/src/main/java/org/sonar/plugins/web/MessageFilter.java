@@ -16,6 +16,8 @@
 
 package org.sonar.plugins.web;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -29,11 +31,19 @@ public class MessageFilter {
 
   private final Pattern[] patterns;
 
-  MessageFilter(List<String> excludeViolations) {
+  MessageFilter(Object property) {
 
-    // String[] expressions = Utils.trimSplitCommaSeparatedList(excludeViolations);
+    final List<String> excludeViolations = new ArrayList<String>();
+
+    if (property != null) {
+      if (property instanceof String) {
+        excludeViolations.add((String) property);
+      } else if (Collection.class.isAssignableFrom(property.getClass())) {
+        excludeViolations.addAll((Collection<String>) property);
+      }
+    }
+
     patterns = new Pattern[excludeViolations.size()];
-
     for (int i = 0; i < excludeViolations.size(); i++) {
       LOG.info("Pattern:" + excludeViolations.get(i));
       patterns[i] = Pattern.compile(excludeViolations.get(i));
@@ -41,10 +51,10 @@ public class MessageFilter {
   }
 
   public boolean accept(MarkupMessage message) {
-    String text = message.getMessageId() + ":" + message.getMessage();
+    String text = String.format("%03d:%s",message.getMessageId(), message.getMessage());
     for (Pattern pattern : patterns) {
       if (pattern.matcher(text).lookingAt()) {
-        LOG.info("Ignore: " + text);
+        LOG.debug("Ignore: " + text);
         return false;
       }
     }

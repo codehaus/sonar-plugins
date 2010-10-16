@@ -24,12 +24,12 @@ import java.util.List;
 import org.junit.Test;
 import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 
-
 public class MessageFilterTest {
 
   @Test
   public void checkPatterns() {
-    List<String> expressions = Arrays.asList("127:.*required attribute \"rows\" not specified");
+    List<String> expressions = Arrays.asList("127:.*required attribute \"rows\" not specified",
+        "065:.*document type does not allow element \"input\" here");
     MessageFilter messageFilter = new MessageFilter(expressions);
     MarkupMessage message = new MarkupMessage();
 
@@ -40,5 +40,10 @@ public class MessageFilterTest {
     message.setMessageId(128);
     message.setMessage("required attribute \"rows\" not specified");
     assertTrue(messageFilter.accept(message));
+
+    message.setMessageId(65);
+    message.setMessage("document type does not allow element \"input\" here; missing one of \"p\", \"h1\", \"h2\", \"h3\", \"h4\", \"h5\", \"h6\", \"div\", \"pre\", \"address\", \"fieldset\", \"ins\", \"del\" start-tag");
+    assertFalse(messageFilter.accept(message));
+
   }
 }
