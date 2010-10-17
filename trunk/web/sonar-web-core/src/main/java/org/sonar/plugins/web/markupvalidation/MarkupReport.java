@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
@@ -38,12 +40,17 @@ import org.xml.sax.SAXException;
  */
 public final class MarkupReport {
 
+
+  public boolean isValid() {
+    return valid;
+  }
+
   private static final Logger LOG = Logger.getLogger(MarkupReport.class);
 
   public static final String REPORT_SUFFIX = ".mur";
 
   /**
-   * Create a report from soap message that was saved in a file.
+   * Create a report from W3C Markup Validation Soap message.
    */
   public static MarkupReport fromXml(File reportFile) {
     MarkupReport markupReport = new MarkupReport();
@@ -56,6 +63,8 @@ public final class MarkupReport {
   private File reportFile;
 
   private final List<MarkupMessage> warnings = new ArrayList<MarkupMessage>();
+
+  private boolean valid;
 
   private MarkupMessage createMessage(Element element) {
     MarkupMessage message = new MarkupMessage();
@@ -75,21 +84,15 @@ public final class MarkupReport {
   private Integer getInteger(Element element, String elementName) {
     NodeList nodeList = element.getElementsByTagName(elementName);
     if (nodeList.getLength() > 0) {
-      try {
-        return Integer.parseInt(nodeList.item(0).getTextContent());
-      } catch (NumberFormatException ne) {
-        LOG.error("Could not parse as Integer:" + nodeList.item(0).getTextContent());
-        return -1;
-      }
+      return NumberUtils.toInt(nodeList.item(0).getTextContent(), -1);
     } else {
       return -1;
     }
   }
 
-  public String getPath() {
-    return reportFile.getPath();
-  }
-
+  /**
+   * Get report file.
+   */
   public File getReportFile() {
     return reportFile;
   }
@@ -103,10 +106,16 @@ public final class MarkupReport {
     }
   }
 
+  /**
+   * Get warnings.
+   */
   public List<MarkupMessage> getWarnings() {
     return warnings;
   }
 
+  /**
+   * Parse report, read errors and warnings.
+   */
   private void parse(File reportFile) {
     this.reportFile = reportFile;
     if ( !reportFile.exists()) {
@@ -114,7 +123,12 @@ public final class MarkupReport {
     }
     Document document = parseSoapMessage(reportFile);
     if (document != null) {
-      NodeList nodeList = document.getElementsByTagName("m:error");
+      NodeList nodeList = document.getElementsByTagName("m:validity");
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        valid = BooleanUtils.toBoolean(nodeList.item(i).getTextContent());
+      }
+
+      nodeList = document.getElementsByTagName("m:error");
       for (int i = 0; i < nodeList.getLength(); i++) {
         Element element = (Element) nodeList.item(i);
         errors.add(createMessage(element));

@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.web;
+package org.sonar.plugins.web.html;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -30,7 +31,8 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
-import org.sonar.plugins.web.html.FileSet;
+import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.web.ProjectConfiguration;
 import org.sonar.plugins.web.language.Web;
 import org.sonar.plugins.web.language.WebFile;
 import org.sonar.plugins.web.language.WebProperties;
@@ -55,31 +57,53 @@ public final class HtmlSensor implements Sensor {
     this.ruleFinder = ruleFinder;
   }
 
+  /**
+   * Find W3C Validation Markup reports in the source tree and save violations to Sonar.
+   * The Markup reports have file extension .mur.
+   */
   public void analyse(Project project, SensorContext sensorContext) {
 
     ProjectConfiguration projectConfiguration = new ProjectConfiguration(project);
     projectConfiguration.addSourceDir();
     File htmlDir = new File(project.getFileSystem().getBasedir() + "/" + projectConfiguration.getSourceDir());
-    LOG.info("HTML Dir:" + projectConfiguration.getSourceDir());
+    if (!htmlDir.exists()) {
+      throw new SonarException("Missing HTML directory: " + htmlDir.getPath());
+    }
 
+    LOG.info("HTML Dir:" + htmlDir);
     MessageFilter messageFilter = new MessageFilter(project.getProperty(WebProperties.EXCLUDE_VIOLATIONS));
 
-    for (File reportFile : FileSet.getReportFiles(htmlDir, MarkupReport.REPORT_SUFFIX)) {
+    int numValid = 0;
+
+    Collection<File> files = FileSet.getReportFiles(htmlDir, MarkupReport.REPORT_SUFFIX);
+
+    for (File reportFile : files) {
       MarkupReport report = MarkupReport.fromXml(reportFile);
-      File file = new File(StringUtils.substringBefore(report.getPath(), MarkupReport.REPORT_SUFFIX));
+
+      if (report.isValid()) {
+        numValid++;
+      }
+
+      // derive name of resource from name of report
+      File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), MarkupReport.REPORT_SUFFIX));
       WebFile resource = WebFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
 
+      // save errors
       for (MarkupMessage error : report.getErrors()) {
         if (messageFilter.accept(error)) {
           addViolation(sensorContext, resource, error, true);
         }
       }
+      // save warnings
       for (MarkupMessage warning : report.getWarnings()) {
         if (messageFilter.accept(warning)) {
           addViolation(sensorContext, resource, warning, false);
         }
       }
     }
+
+    double percentageValid = files.size() > 0 ? (double) numValid / files.size() : 100;
+    sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
   }
 
   private void addViolation(SensorContext sensorContext, WebFile resource, MarkupMessage message, boolean error) {
@@ -91,12 +115,12 @@ public final class HtmlSensor implements Sensor {
       sensorContext.saveViolation(violation);
       LOG.debug(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
     } else {
-      LOG.warn("Could not find Markup Rule " + ruleKey);
+      LOG.warn("Could not find Markup Rule " + message.getMessageId() + ", Message = " + message.getMessage());
     }
   }
 
   /**
-   * This sensor executes on Html profiles.
+   * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
     return isEnabled(project) && Web.INSTANCE.equals(project.getLanguage()) && hasMarkupRules();
