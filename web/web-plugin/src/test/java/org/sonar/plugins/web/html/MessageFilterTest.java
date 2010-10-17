@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.web;
+package org.sonar.plugins.web.html;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+import org.sonar.plugins.web.html.MessageFilter;
 import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 
 public class MessageFilterTest {

@@ -24,6 +24,9 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.web.duplications.WebCpdMapping;
+import org.sonar.plugins.web.html.HtmlMetrics;
+import org.sonar.plugins.web.html.HtmlSensor;
+import org.sonar.plugins.web.html.HtmlWidget;
 import org.sonar.plugins.web.language.Web;
 import org.sonar.plugins.web.rules.markup.DefaultMarkupProfile;
 import org.sonar.plugins.web.rules.markup.MarkupProfileExporter;
@@ -80,6 +83,8 @@ public final class WebPlugin implements Plugin {
     list.add(MarkupProfileExporter.class);
     list.add(MarkupProfileImporter.class);
     list.add(DefaultMarkupProfile.class);
+    list.add(HtmlMetrics.class);
+    list.add(HtmlWidget.class);
 
     // html sensor
     list.add(HtmlSensor.class);

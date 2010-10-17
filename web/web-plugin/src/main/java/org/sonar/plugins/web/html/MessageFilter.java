@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.web;
+package org.sonar.plugins.web.html;
 
 import java.util.ArrayList;
 import java.util.Collection;

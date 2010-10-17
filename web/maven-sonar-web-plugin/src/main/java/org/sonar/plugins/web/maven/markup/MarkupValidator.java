@@ -99,10 +99,10 @@ final class MarkupValidator extends HtmlValidator {
       parts.add(outputFormat);
 
       // specify default doctype
-//      StringPart doctype = new StringPart("doctype", "XHTML 1.0 Strict");
-//      parts.add(doctype);
-//      StringPart fbd = new StringPart("fbd", "1");
-//      parts.add(fbd);
+      // StringPart doctype = new StringPart("doctype", "XHTML 1.0 Strict");
+      // parts.add(doctype);
+      // StringPart fbd = new StringPart("fbd", "1");
+      // parts.add(fbd);
 
       MultipartRequestEntity multiPartRequestEntity = new MultipartRequestEntity(parts.toArray(new PartBase[parts.size()]),
           post.getParams());
