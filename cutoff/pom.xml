@@ -17,20 +17,20 @@
     cutoff date is excluded. This can be useful when you want to analyze the work done on an existing code base and measure the quality of
     new code/changes only. This way previous phases of the project will not impact the analysis.</description>
   
-  <!--<url></url>-->
+  <url>http://docs.codehaus.org/display/SONAR/Cutoff+Plugin</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com/</url>
   </organization>
   
-  <!--<licenses>
+  <licenses>
     <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
       <distribution>repo</distribution>
     </license>
-  </licenses>-->
+  </licenses>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/cutoff</connection>
@@ -38,16 +38,14 @@
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
   
-  <!--
   <issueManagement>
     <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14294</url>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14549</url>
   </issueManagement>
   <ciManagement>
     <system>Bamboo</system>
-    <url>http://ci.codehaus.org/browse/SONAR-CROWD</url>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-CUTOFF</url>
   </ciManagement>
-  -->
   
   <properties>
     <sonar.version>2.3</sonar.version>
