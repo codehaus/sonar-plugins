@@ -102,7 +102,7 @@ public final class HtmlSensor implements Sensor {
       }
     }
 
-    double percentageValid = files.size() > 0 ? (double) numValid / files.size() : 100;
+    double percentageValid = files.size() > 0 ? (double) (files.size() - numValid) / files.size() : 100;
     sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
   }
 
