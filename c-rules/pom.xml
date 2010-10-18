@@ -7,7 +7,7 @@
     <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>c-rules</artifactId>
+  <artifactId>sonar-c-rules-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
   <name>SonarSource :: C :: Rules</name>
 
