@@ -3,32 +3,58 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.sonarsource.parent</groupId>
+    <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
+    <relativePath>../parent</relativePath>
   </parent>
-  <groupId>com.sonarsource.dbcleaner</groupId>
   <artifactId>sonar-dbcleaner-plugin</artifactId>
-  <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>SonarSource :: Database Cleaner</name>
+  <packaging>sonar-plugin</packaging>
+
+  <name>Sonar DBCleaner Plugin</name>
   <description>The database cleaner optimizes the Sonar DB performances by removing old and useless quality snapshots.</description>
+
+
+
+
   
   <properties>
     <sonar.version>2.3</sonar.version>
+    <sonar.pluginClass>com.sonarsource.dbcleaner.DbCleanerPlugin</sonar.pluginClass>
+    <sonar.pluginKey>dbcleaner</sonar.pluginKey>
   </properties>
-  
-  <licenses>
-    <license>
-      <name>Commercial</name>
-    </license>
-  </licenses>
-  
+
+  <url>http://docs.codehaus.org/display/SONAR/DBCleaner+Plugin</url>
+  <inceptionYear>2010</inceptionYear>
   <organization>
     <name>SonarSource</name>
-    <url>http://www.sonarsource.com</url>
+    <url>http://www.sonarsource.com/</url>
   </organization>
 
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/dbcleaner</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/dbcleaner</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14551</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-DBCLEANER</url>
+  </ciManagement>
+  
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
