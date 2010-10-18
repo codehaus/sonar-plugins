@@ -19,6 +19,7 @@ package org.sonar.plugins.web.maven.webharvest;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.settings.Settings;
@@ -61,19 +62,20 @@ public class WebHarvestMojo extends AbstractMojo {
    */
   private String webHarvestConfigFile;
 
+
+  /**
+   * Start of the site visiting.
+   *
+   * @parameter
+   */
+  private String seedingUrl;
+
   private void configureProxy(Scraper scraper) {
     if (settings.getActiveProxy() != null) {
       getLog().info("proxy = " + settings.getActiveProxy().getHost() + ":" + settings.getActiveProxy().getPort());
 
       scraper.getHttpClientManager().setHttpProxy(settings.getActiveProxy().getHost(), settings.getActiveProxy().getPort());
     }
-  }
-
-  private void configureSettings() {
-    for (Object key : getPluginContext().keySet()) {
-      getLog().info((String) getPluginContext().get(key));
-    }
-    getLog().info("WebHarvest Configfile = " + webHarvestConfigFile);
   }
 
   private Scraper createScraper(ScraperConfiguration config) {
@@ -84,8 +86,6 @@ public class WebHarvestMojo extends AbstractMojo {
 
   public void execute() throws MojoExecutionException {
 
-    configureSettings();
-
     ScraperConfiguration config;
     try {
       config = new ScraperConfiguration(webHarvestConfigFile);
@@ -94,6 +94,14 @@ public class WebHarvestMojo extends AbstractMojo {
     }
     Scraper scraper = createScraper(config);
     configureProxy(scraper);
+
+    // set seeding Url
+    if (seedingUrl != null) {
+      if (seedingUrl.endsWith("/")) {
+        seedingUrl = StringUtils.substringBeforeLast(seedingUrl, "/");
+      }
+      scraper.addVariableToContext("home", seedingUrl);
+    }
 
     try {
       scraper.execute();
