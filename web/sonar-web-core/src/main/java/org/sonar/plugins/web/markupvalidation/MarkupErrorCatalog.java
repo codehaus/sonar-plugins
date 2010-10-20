@@ -28,6 +28,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
@@ -46,17 +47,17 @@ import org.xml.sax.SAXException;
  */
 public class MarkupErrorCatalog {
 
-  public class ErrorDefinition {
+  public class MessageDefinition {
 
     private String explanation;
-    private Integer id;
+    private String id;
     private String remark;
 
     public String getExplanation() {
       return explanation;
     }
 
-    public Integer getId() {
+    public String getId() {
       return id;
     }
 
@@ -71,12 +72,15 @@ public class MarkupErrorCatalog {
     new MarkupErrorCatalog().createRulesCatalog();
   }
 
-  private final List<ErrorDefinition> errors;
+  private final List<MessageDefinition> errors;
+  private final List<MessageDefinition> warnings;
 
   public MarkupErrorCatalog() {
-    errors = new ArrayList<ErrorDefinition>();
-
+    errors = new ArrayList<MessageDefinition>();
     readErrorCatalog();
+
+    warnings = new ArrayList<MessageDefinition>();
+    readWarningCatalog();
   }
 
   /**
@@ -88,11 +92,19 @@ public class MarkupErrorCatalog {
     try {
       writer = new FileWriter("markup-errors.xml");
       writer.write("<rules>");
-      for (ErrorDefinition error : errors) {
+      for (MessageDefinition error : errors) {
         String remark = StringEscapeUtils.escapeXml(StringUtils.substringAfter(error.remark, ":"));
-        writer.write(String.format("<rule><key>%d</key><remark>%03d:%s</remark><explanation>%s</explanation></rule>\n", error.id,
-            error.id, remark, StringEscapeUtils.escapeXml(error.explanation)));
-        // System.out.printf("%s: %s\n%s", error.id, error.remark, error.explanation == null ? "" : error.explanation);
+        String id = makeIdentifier(error.id);
+        String explanation = StringEscapeUtils.escapeXml(error.explanation);
+        writer.write(String.format("<rule><key>%s</key><remark>%s:%s</remark><priority>MAJOR</priority>"
+            + "<explanation>%s</explanation></rule>\n", id, id, remark, explanation == null ? "" : explanation));
+      }
+      for (MessageDefinition warning : warnings) {
+        String remark = StringEscapeUtils.escapeXml(warning.remark);
+        String id = makeIdentifier(warning.id);
+        String explanation = StringEscapeUtils.escapeXml(warning.explanation);
+        writer.write(String.format("<rule><key>%s</key><remark>%s:%s</remark><priority>MINOR</priority>"
+            + "<explanation>%s</explanation></rule>\n", id, id, remark, explanation == null ? "" : explanation));
       }
       writer.write("</rules>");
       writer.close();
@@ -100,6 +112,15 @@ public class MarkupErrorCatalog {
       throw new RuntimeException(e);
     } finally {
       IOUtils.closeQuietly(writer);
+    }
+  }
+
+  private String makeIdentifier(String idString) {
+    int id = NumberUtils.toInt(idString, -1);
+    if (id >= 0) {
+      return String.format("%03d", id);
+    } else {
+      return idString;
     }
   }
 
@@ -112,8 +133,8 @@ public class MarkupErrorCatalog {
     return null;
   }
 
-  public ErrorDefinition findErrorDefinition(Integer messageId) {
-    for (ErrorDefinition error : errors) {
+  public MessageDefinition findErrorDefinition(String messageId) {
+    for (MessageDefinition error : errors) {
       if (error.id.equals(messageId)) {
         return error;
       }
@@ -121,37 +142,46 @@ public class MarkupErrorCatalog {
     return null;
   }
 
-  private Map<Integer, String> findExplanations(Document document) {
+  private Map<String, String> findExplanations(Document document) {
     NodeList explanationNodeList = document.getElementsByTagName("dd");
-    Map<Integer, String> explanations = new HashMap<Integer, String>();
+    Map<String, String> explanations = new HashMap<String, String>();
     for (int i = 0; i < explanationNodeList.getLength(); i++) {
       Element element = (Element) explanationNodeList.item(i);
 
       Element div = findDiv(element);
       String clazz = div.getAttribute("class");
-      Integer id = Integer.parseInt(StringUtils.substringAfterLast(clazz, "-"));
+      String id = StringUtils.substringAfterLast(clazz, "-");
 
       explanations.put(id, div.getTextContent());
     }
     return explanations;
   }
 
-  private String getPContents(Element element) {
+  private String getGrandChildContent(Element element, String nodeName) {
     for (int i = 0; i < element.getChildNodes().getLength(); i++) {
-      if ("p".equals(element.getChildNodes().item(i).getNodeName())) {
+      if (nodeName.equals(element.getChildNodes().item(i).getNodeName())) {
         return element.getChildNodes().item(i).getChildNodes().item(0).getNodeValue();
       }
     }
     return "?";
   }
 
-  private Document parseErrorPage() {
+  private String getChildContent(Element element, String nodeName) {
+    for (int i = 0; i < element.getChildNodes().getLength(); i++) {
+      if (nodeName.equals(element.getChildNodes().item(i).getNodeName())) {
+        return element.getChildNodes().item(i).getTextContent();
+      }
+    }
+    return "?";
+  }
+
+  private Document parseMessageCatalog(String fileName) {
     DOMParser parser = new DOMParser();
 
     try {
       parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
       parser.parse(new InputSource(MarkupErrorCatalog.class.getClassLoader().getResourceAsStream(
-          "org/sonar/plugins/web/markupvalidation/markup-errors.html")));
+          "org/sonar/plugins/web/markupvalidation/" + fileName)));
     } catch (SAXException se) {
       throw new RuntimeException(se);
     } catch (IOException ioe) {
@@ -162,7 +192,7 @@ public class MarkupErrorCatalog {
 
   private void readErrorCatalog() {
 
-    Document document = parseErrorPage();
+    Document document = parseMessageCatalog("markup-errors.html");
 
     NodeList nodeList = document.getElementsByTagName("dt");
 
@@ -170,17 +200,17 @@ public class MarkupErrorCatalog {
     for (int i = 0; i < nodeList.getLength(); i++) {
       Element element = (Element) nodeList.item(i);
       if (element.hasAttribute("id")) {
-        ErrorDefinition error = new ErrorDefinition();
+        MessageDefinition error = new MessageDefinition();
         String id = element.getAttribute("id");
-        error.id = Integer.parseInt(StringUtils.substringAfterLast(id, "-"));
+        error.id = StringUtils.substringAfterLast(id, "-");
         error.remark = element.getChildNodes().item(0).getNodeValue().trim();
         errors.add(error);
       }
     }
 
     // find explanation for the first group of errors
-    Map<Integer, String> explanations = findExplanations(document);
-    for (ErrorDefinition error : errors) {
+    Map<String, String> explanations = findExplanations(document);
+    for (MessageDefinition error : errors) {
       error.explanation = explanations.get(error.id);
       if (error.explanation == null) {
         LOG.error("Could not find explanation for " + error.id);
@@ -193,19 +223,34 @@ public class MarkupErrorCatalog {
       Element element = (Element) nodeList.item(i);
 
       if (element.hasAttribute("id")) {
-        ErrorDefinition error = new ErrorDefinition();
+        MessageDefinition error = new MessageDefinition();
         String id = element.getAttribute("id");
-        error.id = Integer.parseInt(StringUtils.substringAfterLast(id, "-"));
-        error.remark = getPContents(element).trim();
+        error.id = StringUtils.substringAfterLast(id, "-");
+        error.remark = getGrandChildContent(element, "p").trim();
         errors.add(error);
       }
     }
+  }
+
+  private void readWarningCatalog() {
+
+    Document document = parseMessageCatalog("markup-warnings.xml");
+    NodeList nodeList = document.getElementsByTagName("rule");
+
+    // find warnings with explanation
+    for (int i = 0; i < nodeList.getLength(); i++) {
+      Element element = (Element) nodeList.item(i);
+      MessageDefinition message = new MessageDefinition();
+      message.id = getChildContent(element, "key");
+      message.remark = getChildContent(element, "remark");
+      warnings.add(message);
+    }
 
     // sort the errors on id
-    Collections.sort(errors, new Comparator<ErrorDefinition>() {
+    Collections.sort(warnings, new Comparator<MessageDefinition>() {
 
       @Override
-      public int compare(ErrorDefinition e1, ErrorDefinition e2) {
+      public int compare(MessageDefinition e1, MessageDefinition e2) {
         return e1.id.compareTo(e2.id);
       }
     });

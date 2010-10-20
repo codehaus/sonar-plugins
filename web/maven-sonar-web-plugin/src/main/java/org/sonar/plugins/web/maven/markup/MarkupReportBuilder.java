@@ -26,7 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.web.html.AbstractReportBuilder;
 import org.sonar.plugins.web.markupvalidation.MarkupErrorCatalog;
-import org.sonar.plugins.web.markupvalidation.MarkupErrorCatalog.ErrorDefinition;
+import org.sonar.plugins.web.markupvalidation.MarkupErrorCatalog.MessageDefinition;
 import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 import org.sonar.plugins.web.markupvalidation.MarkupReport;
 
@@ -43,7 +43,7 @@ final class MarkupReportBuilder extends AbstractReportBuilder {
   private static final class Violation {
 
     public int count;
-    public Integer messageId;
+    public String messageId;
   }
 
   public void buildReports(File folder) {
@@ -57,7 +57,7 @@ final class MarkupReportBuilder extends AbstractReportBuilder {
     createHtmlReport(new File("target/markup-report-details.html"), reports, true);
   }
 
-  private Violation findViolation(List<Violation> violations, Integer messageId) {
+  private Violation findViolation(List<Violation> violations, String messageId) {
     for (Violation violation : violations) {
       if (violation.messageId.equals(messageId)) {
         return violation;
@@ -96,13 +96,13 @@ final class MarkupReportBuilder extends AbstractReportBuilder {
     MarkupErrorCatalog errorCatalog = new MarkupErrorCatalog();
 
     for (Violation violation : violations) {
-      ErrorDefinition errorDefinition = errorCatalog.findErrorDefinition(violation.messageId);
+      MessageDefinition messageDefinition = errorCatalog.findErrorDefinition(violation.messageId);
 
-      if (errorDefinition == null) {
+      if (messageDefinition == null) {
         LOG.warn("Unknown error found:" + violation.messageId);
       }
       startRow();
-      addCells(violation.messageId, errorDefinition == null ? "?" : errorDefinition.getRemark(), violation.count);
+      addCells(violation.messageId, messageDefinition == null ? "?" : messageDefinition.getRemark(), violation.count);
       endRow();
 
       if (showDetails) {

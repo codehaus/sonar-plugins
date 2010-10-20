@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
 import org.sonar.plugins.web.AbstractWebPluginTester;
 import org.sonar.plugins.web.rules.markup.MarkupRuleRepository;
 
@@ -38,10 +39,15 @@ public class MarkupRulesRepositoryTest extends AbstractWebPluginTester {
     MarkupRuleRepository repository = new MarkupRuleRepository();
 
     List<Rule> rules = repository.createRules();
+    assertTrue(rules.size() > 400);
 
     for (Rule rule : rules) {
       assertNotNull(rule.getRulesCategory());
+      if (rule.getName().startsWith("W")) {
+        assertTrue(rule.getPriority().equals(RulePriority.MINOR));
+      } else {
+        assertTrue(rule.getPriority().equals(RulePriority.MAJOR));
+      }
     }
-    assertTrue(repository.createRules().size() > 400);
   }
 }

@@ -26,6 +26,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.apache.log4j.Logger;
 import org.sonar.plugins.web.Configuration;
 import org.sonar.plugins.web.html.FileSet;
 import org.sonar.plugins.web.html.FileSet.HtmlFile;
@@ -39,6 +40,8 @@ import org.sonar.plugins.web.ssl.EasySSLProtocolSocketFactory;
  *
  */
 public abstract class HtmlValidator {
+
+  private static final Logger LOG = Logger.getLogger(HtmlValidator.class);
 
   static {
     Protocol.registerProtocol("https", new Protocol("https", (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
@@ -59,19 +62,29 @@ public abstract class HtmlValidator {
 
   protected void executePostMethod(PostMethod post) {
 
-    try {
-      getClient().executeMethod(post);
-    } catch (UnknownHostException e) {
-      if (Configuration.useProxy()) {
-        getClient().getHostConfiguration().setProxyHost(null);
-        try {
-          getClient().executeMethod(post);
-        } catch (IOException e2) {
-          throw new RuntimeException(e2);
+    int retries = 3;
+
+    for (int i = 0; i < retries; i++) {
+      try {
+        getClient().executeMethod(post);
+        if (post.getStatusCode() == 200) {
+          return;
+        } else {
+          LOG.warn("Bad http response: " + post.getStatusCode() + ", retrying after 1 second...");
+          sleep(1000L);
         }
+      } catch (UnknownHostException e) {
+        if (Configuration.useProxy()) {
+          getClient().getHostConfiguration().setProxyHost(null);
+          try {
+            getClient().executeMethod(post);
+          } catch (IOException e2) {
+            throw new RuntimeException(e2);
+          }
+        }
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 

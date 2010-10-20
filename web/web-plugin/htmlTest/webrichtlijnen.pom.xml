@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>nl.ictu</groupId>
+    <artifactId>webrichtlijnen</artifactId>
+    <version>1.0</version>
+
+    <name>webrichtlijnen</name>
+    <packaging>pom</packaging>
+    
+    <parent>
+        <groupId>html</groupId>
+        <artifactId>markup-validator-parent</artifactId>
+        <version>1.0</version>
+    </parent>
+    
+    <properties>
+        <htmlDir>target/spider/www.webrichtlijnen.nl</htmlDir>
+        <sonar.web.sourceDirectory>${htmlDir}</sonar.web.sourceDirectory>
+    </properties>
+  
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.sonar-plugins</groupId>
+                <artifactId>maven-sonar-web-plugin</artifactId>
+                <version>0.2-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <!--  <goal>webharvest-crawler</goal> -->
+                            <goal>validate-w3c-markup</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <htmlDir>${htmlDir}</htmlDir>
+                    <webHarvestConfigFile>${basedir}/webharvest.xml</webHarvestConfigFile>
+                    <seedingUrl>http://www.webrichtlijnen.nl</seedingUrl>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

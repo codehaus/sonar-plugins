@@ -81,6 +81,14 @@ public class WebHarvestMojo extends AbstractMojo {
   private Scraper createScraper(ScraperConfiguration config) {
     Scraper scraper = new Scraper(config, baseDirectory.getAbsolutePath() + "/target");
     scraper.setDebug(true);
+
+    // set seeding Url
+    if (seedingUrl != null) {
+      if (seedingUrl.endsWith("/")) {
+        seedingUrl = StringUtils.substringBeforeLast(seedingUrl, "/");
+      }
+      scraper.addVariableToContext("home", seedingUrl);
+    }
     return scraper;
   }
 
@@ -95,19 +103,12 @@ public class WebHarvestMojo extends AbstractMojo {
     Scraper scraper = createScraper(config);
     configureProxy(scraper);
 
-    // set seeding Url
-    if (seedingUrl != null) {
-      if (seedingUrl.endsWith("/")) {
-        seedingUrl = StringUtils.substringBeforeLast(seedingUrl, "/");
-      }
-      scraper.addVariableToContext("home", seedingUrl);
-    }
-
     try {
       scraper.execute();
     } catch (HttpException he) {
       // it may have failed because a proxy was configured: try again without the proxy
       if (settings.getActiveProxy() != null) {
+        getLog().info("Disabling proxy...");
         scraper = createScraper(config);
         scraper.execute();
       } else {

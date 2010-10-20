@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleRepository;
 import org.sonar.api.rules.RulesCategory;
 import org.sonar.check.IsoCategory;
@@ -33,42 +34,24 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 public final class MarkupRuleRepository extends RuleRepository {
 
-  private static final int RULENAME_MAX_LENGTH = 192;
-
-  private static final String ALL_RULES = "org/sonar/plugins/web/rules/markup/rules.xml";
-
-  public static final String REPOSITORY_NAME = "W3C Markup Validation";
-  public static final String REPOSITORY_KEY = "W3CMarkupValidation";
-
-  public MarkupRuleRepository() {
-    super(MarkupRuleRepository.REPOSITORY_KEY, Web.KEY);
-    setName(MarkupRuleRepository.REPOSITORY_NAME);
-  }
-
-  @XStreamAlias("rules")
-  public class HtmlMarkupRules {
-
-    @XStreamImplicit(itemFieldName = "rule")
-    public List<HtmlMarkupRule> rules;
-  }
-
   @XStreamAlias("rule")
   public class HtmlMarkupRule {
 
-    private String key;
-    private String remark;
     private String explanation;
+    private String key;
+    private RulePriority priority;
+    private String remark;
 
-    public void setKey(String key) {
-      this.key = key;
+    public String getExplanation() {
+      return explanation;
     }
 
     public String getKey() {
       return key;
     }
 
-    public void setRemark(String remark) {
-      this.remark = remark;
+    public RulePriority getPriority() {
+      return priority;
     }
 
     public String getRemark() {
@@ -79,9 +62,32 @@ public final class MarkupRuleRepository extends RuleRepository {
       this.explanation = explanation;
     }
 
-    public String getExplanation() {
-      return explanation;
+    public void setKey(String key) {
+      this.key = key;
     }
+
+    public void setRemark(String remark) {
+      this.remark = remark;
+    }
+  }
+
+  @XStreamAlias("rules")
+  public class HtmlMarkupRules {
+
+    @XStreamImplicit(itemFieldName = "rule")
+    public List<HtmlMarkupRule> rules;
+  }
+
+  private static final String ALL_RULES = "org/sonar/plugins/web/rules/markup/rules.xml";
+  public static final String REPOSITORY_KEY = "W3CMarkupValidation";
+
+  public static final String REPOSITORY_NAME = "W3C Markup Validation";
+
+  private static final int RULENAME_MAX_LENGTH = 192;
+
+  public MarkupRuleRepository() {
+    super(MarkupRuleRepository.REPOSITORY_KEY, Web.KEY);
+    setName(MarkupRuleRepository.REPOSITORY_NAME);
   }
 
   @Override
@@ -98,6 +104,7 @@ public final class MarkupRuleRepository extends RuleRepository {
       if (htmlMarkupRule.getExplanation() != null) {
         rule.setDescription(StringEscapeUtils.escapeHtml(htmlMarkupRule.getExplanation()));
       }
+      rule.setPriority(htmlMarkupRule.getPriority());
       rule.setRulesCategory(RulesCategory.fromIsoCategory(IsoCategory.Usability));
       rules.add(rule);
     }

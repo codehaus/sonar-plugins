@@ -21,13 +21,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 
-public class MessageFilter {
+public final class MessageFilter {
 
   private static final Logger LOG = LoggerFactory.getLogger(HtmlSensor.class);
+
+  private static String makeMessageIdentifier(String idString) {
+    int id = NumberUtils.toInt(idString, -1);
+    if (id >= 0) {
+      return String.format("%03d", id);
+    } else {
+      return idString;
+    }
+  }
 
   private final Pattern[] patterns;
 
@@ -51,7 +61,7 @@ public class MessageFilter {
   }
 
   public boolean accept(MarkupMessage message) {
-    String text = String.format("%03d:%s",message.getMessageId(), message.getMessage());
+    String text = String.format("%s:%s", makeMessageIdentifier(message.getMessageId()), message.getMessage());
     for (Pattern pattern : patterns) {
       if (pattern.matcher(text).lookingAt()) {
         LOG.debug("Ignore: " + text);
