@@ -40,7 +40,6 @@ import org.xml.sax.SAXException;
  */
 public final class MarkupReport {
 
-
   public boolean isValid() {
     return valid;
   }
@@ -69,7 +68,7 @@ public final class MarkupReport {
   private MarkupMessage createMessage(Element element) {
     MarkupMessage message = new MarkupMessage();
     message.setLine(getInteger(element, "m:line"));
-    message.setMessageId(getInteger(element, "m:messageid"));
+    message.setMessageId(getString(element, "m:messageid"));
     message.setMessage(getString(element, "m:message"));
     return message;
   }

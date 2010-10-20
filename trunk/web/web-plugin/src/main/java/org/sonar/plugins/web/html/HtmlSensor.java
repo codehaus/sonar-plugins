@@ -107,7 +107,7 @@ public final class HtmlSensor implements Sensor {
   }
 
   private void addViolation(SensorContext sensorContext, WebFile resource, MarkupMessage message, boolean error) {
-    String ruleKey = Integer.toString(message.getMessageId());
+    String ruleKey = message.getMessageId();
     Rule rule = ruleFinder.findByKey(MarkupRuleRepository.REPOSITORY_KEY, ruleKey);
     if (rule != null) {
       Violation violation = Violation.create(rule, resource).setLineId(message.getLine());

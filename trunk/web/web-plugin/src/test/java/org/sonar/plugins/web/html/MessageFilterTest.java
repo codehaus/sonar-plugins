@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.sonar.plugins.web.html.MessageFilter;
 import org.sonar.plugins.web.markupvalidation.MarkupMessage;
 
 public class MessageFilterTest {
@@ -34,17 +33,16 @@ public class MessageFilterTest {
     MessageFilter messageFilter = new MessageFilter(expressions);
     MarkupMessage message = new MarkupMessage();
 
-    message.setMessageId(127);
+    message.setMessageId("127");
     message.setMessage("required attribute \"rows\" not specified");
     assertFalse(messageFilter.accept(message));
 
-    message.setMessageId(128);
+    message.setMessageId("128");
     message.setMessage("required attribute \"rows\" not specified");
     assertTrue(messageFilter.accept(message));
 
-    message.setMessageId(65);
+    message.setMessageId("65");
     message.setMessage("document type does not allow element \"input\" here; missing one of \"p\", \"h1\", \"h2\", \"h3\", \"h4\", \"h5\", \"h6\", \"div\", \"pre\", \"address\", \"fieldset\", \"ins\", \"del\" start-tag");
     assertFalse(messageFilter.accept(message));
-
   }
 }

@@ -28,7 +28,7 @@ public class MarkupMessage {
   private Integer line;
   private String message;
 
-  private Integer messageId;
+  private String messageId;
 
   public Integer getLine() {
     return line;
@@ -38,7 +38,7 @@ public class MarkupMessage {
     return message;
   }
 
-  public Integer getMessageId() {
+  public String getMessageId() {
     return messageId;
   }
 
@@ -50,8 +50,7 @@ public class MarkupMessage {
     this.message = message;
   }
 
-  public void setMessageId(Integer messageId) {
+  public void setMessageId(String messageId) {
     this.messageId = messageId;
   }
-
 }
