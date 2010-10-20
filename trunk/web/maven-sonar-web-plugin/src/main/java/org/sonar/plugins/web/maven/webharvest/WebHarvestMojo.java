@@ -38,6 +38,21 @@ import org.webharvest.runtime.Scraper;
 public class WebHarvestMojo extends AbstractMojo {
 
   /**
+   * Base directory of the project.
+   * @parameter expression="${basedir}"
+   * @required
+   * @readonly
+   */
+  private File baseDirectory;
+
+  /**
+   * Start of the site visiting.
+   *
+   * @parameter
+   */
+  private String seedingUrl;
+
+  /**
    * The Maven Settings.
    *
    * @parameter default-value="${settings}"
@@ -47,28 +62,12 @@ public class WebHarvestMojo extends AbstractMojo {
   private Settings settings;
 
   /**
-   * Base directory of the project.
-   * @parameter expression="${basedir}"
-   * @required
-   * @readonly
-   */
-  private File baseDirectory;
-
-  /**
    * WebHarvest configuration file.
    *
    * @parameter
    * @required
    */
   private String webHarvestConfigFile;
-
-
-  /**
-   * Start of the site visiting.
-   *
-   * @parameter
-   */
-  private String seedingUrl;
 
   private void configureProxy(Scraper scraper) {
     if (settings.getActiveProxy() != null) {
@@ -115,5 +114,21 @@ public class WebHarvestMojo extends AbstractMojo {
         throw he;
       }
     }
+  }
+
+  public void setBaseDirectory(File baseDirectory) {
+    this.baseDirectory = baseDirectory;
+  }
+
+  public void setSeedingUrl(String seedingUrl) {
+    this.seedingUrl = seedingUrl;
+  }
+
+  public void setSettings(Settings settings) {
+    this.settings = settings;
+  }
+
+  public void setWebHarvestConfigFile(String webHarvestConfigFile) {
+    this.webHarvestConfigFile = webHarvestConfigFile;
   }
 }

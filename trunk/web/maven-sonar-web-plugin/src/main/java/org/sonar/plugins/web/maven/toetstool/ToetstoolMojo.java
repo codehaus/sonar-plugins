@@ -34,20 +34,20 @@ import org.sonar.plugins.web.maven.HtmlValidator;
 public class ToetstoolMojo extends AbstractValidationMojo {
 
   /**
-   * Toetstool URL.
-   *
-   * @parameter
-   * @required
-   */
-  private String toetsToolUrl;
-
-  /**
    * Directory containing css files.
    *
    * @parameter
    * @required
    */
   private String cssDir;
+
+  /**
+   * Toetstool URL.
+   *
+   * @parameter
+   * @required
+   */
+  private String toetsToolUrl;
 
   @Override
   protected void configureSettings() {
@@ -75,6 +75,10 @@ public class ToetstoolMojo extends AbstractValidationMojo {
     // build report
     ToetsToolReportBuilder reportBuilder = new ToetsToolReportBuilder();
     reportBuilder.buildReports(htmlFolder);
+  }
+
+  public void setCssDir(String cssDir) {
+    this.cssDir = cssDir;
   }
 
   public void setToetsToolUrl(String toetsToolUrl) {

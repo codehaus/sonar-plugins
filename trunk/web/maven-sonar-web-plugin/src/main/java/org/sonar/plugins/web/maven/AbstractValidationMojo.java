@@ -33,15 +33,6 @@ import org.sonar.plugins.web.html.HtmlScanner;
 public abstract class AbstractValidationMojo extends AbstractMojo {
 
   /**
-   * The Maven Settings.
-   *
-   * @parameter default-value="${settings}"
-   * @required
-   * @readonly
-   */
-  private Settings settings;
-
-  /**
    * Base directory of the project.
    * @parameter expression="${basedir}"
    * @required
@@ -64,15 +55,14 @@ public abstract class AbstractValidationMojo extends AbstractMojo {
    */
   private Integer nrOfSamples;
 
-  protected void prepareHtml() {
-
-    File htmlFolder = new File(Configuration.getHtmlDir());
-    if (htmlFolder.exists()) {
-
-      HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(Configuration.getHtmlDir());
-    }
-  }
+  /**
+   * The Maven Settings.
+   *
+   * @parameter default-value="${settings}"
+   * @required
+   * @readonly
+   */
+  private Settings settings;
 
   protected void configureSettings() {
     for (Object key : getPluginContext().keySet()){
@@ -95,8 +85,18 @@ public abstract class AbstractValidationMojo extends AbstractMojo {
     }
   }
 
-  public void setSettings(Settings settings) {
-    this.settings = settings;
+  protected void prepareHtml() {
+
+    File htmlFolder = new File(Configuration.getHtmlDir());
+    if (htmlFolder.exists()) {
+
+      HtmlScanner htmlScanner = new HtmlScanner();
+      htmlScanner.prepare(Configuration.getHtmlDir());
+    }
+  }
+
+  public void setBaseDirectory(File baseDirectory) {
+    this.baseDirectory = baseDirectory;
   }
 
   public void setHtmlDir(String htmlDir) {
@@ -105,5 +105,9 @@ public abstract class AbstractValidationMojo extends AbstractMojo {
 
   public void setNrOfSamples(Integer nrOfSamples) {
     this.nrOfSamples = nrOfSamples;
+  }
+
+  public void setSettings(Settings settings) {
+    this.settings = settings;
   }
 }

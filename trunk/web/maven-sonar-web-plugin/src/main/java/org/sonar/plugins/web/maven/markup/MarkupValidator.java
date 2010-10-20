@@ -150,12 +150,14 @@ final class MarkupValidator extends HtmlValidator {
       reportFile = reportFile(file);
     }
 
+    Writer writer = null;
     try {
-      Writer writer = new FileWriter(reportFile);
+      writer = new FileWriter(reportFile);
       IOUtils.copy(post.getResponseBodyAsStream(), writer);
-      writer.close();
     } catch (IOException e) {
       throw new RuntimeException(e);
+    } finally {
+      IOUtils.closeQuietly(writer);
     }
   }
 }

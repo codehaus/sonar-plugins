@@ -80,7 +80,7 @@ import org.apache.commons.logging.LogFactory;
  *         </p>
  */
 
-public class EasySSLProtocolSocketFactory implements SecureProtocolSocketFactory {
+public final class EasySSLProtocolSocketFactory implements SecureProtocolSocketFactory {
 
   /** Log object for this class. */
   private static final Log LOG = LogFactory.getLog(EasySSLProtocolSocketFactory.class);

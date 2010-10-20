@@ -36,7 +36,7 @@ public class Guideline {
   @XStreamAsAttribute
   private String reflink;
 
-  private String remark;;
+  private String remark;
 
   @XStreamAsAttribute
   private ValidationType type;
@@ -51,9 +51,25 @@ public class Guideline {
 
   public String getRemark() {
     return remark;
-  }
+  };
 
   public ValidationType getType() {
     return type;
+  }
+
+  public void setRef(String ref) {
+    this.ref = ref;
+  }
+
+  public void setReflink(String reflink) {
+    this.reflink = reflink;
+  }
+
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
+
+  public void setType(ValidationType type) {
+    this.type = type;
   }
 }
