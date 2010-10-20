@@ -45,6 +45,7 @@ public class Report {
   @XStreamAsAttribute
   private String date;
 
+
   @XStreamAsAttribute
   private Guidelines guidelines;
 
@@ -72,5 +73,25 @@ public class Report {
 
   public String getUrl() {
     return url;
+  }
+
+  public void setCounters(Counters counters) {
+    this.counters = counters;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
+  }
+
+  public void setGuidelines(Guidelines guidelines) {
+    this.guidelines = guidelines;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 }

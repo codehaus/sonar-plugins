@@ -37,17 +37,17 @@ import org.apache.commons.logging.LogFactory;
  * This trust manager SHOULD NOT be used for productive systems due to security reasons, unless it is a concious decision and you are
  * perfectly aware of security implications of accepting self-signed certificates
  * </p>
- * 
+ *
  * @author <a href="mailto:adrian.sutton@ephox.com">Adrian Sutton</a>
  * @author <a href="mailto:oleg@ural.ru">Oleg Kalnichevski</a>
- * 
+ *
  *         <p>
  *         DISCLAIMER: HttpClient developers DO NOT actively support this component. The component is provided as a reference material,
  *         which may be inappropriate for use without additional customization.
  *         </p>
  */
 
-public class EasyX509TrustManager implements X509TrustManager {
+public final class EasyX509TrustManager implements X509TrustManager {
 
   /** Log object for this class. */
   private static final Log LOG = LogFactory.getLog(EasyX509TrustManager.class);
