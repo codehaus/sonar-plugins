@@ -17,27 +17,23 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
-
-import java.util.List;
-import java.util.ListIterator;
+package org.sonar.plugins.dbcleaner;
 
 import org.sonar.api.database.model.Snapshot;
 
-abstract class DbCleanerFilter {
+class KeepSnapshotWithNewVersion extends DbCleanerFilter {
 
-  final int filter(List<Snapshot> snapshots) {
-    int before = snapshots.size();
-    ListIterator<Snapshot> iterator = snapshots.listIterator();
-    while (iterator.hasNext()) {
-      Snapshot snapshot = iterator.next();
-      if(filter(snapshot)){
-        iterator.remove();
-      }
+  private String lastSnapshotVersion = null;
+
+  @Override
+  boolean filter(Snapshot snapshot) {
+    boolean result = false;
+    String snapshotVersion = (snapshot.getVersion() != null ? snapshot.getVersion() : "");
+    if ( !snapshotVersion.equals(lastSnapshotVersion)) {
+      result = true;
     }
-    int after = snapshots.size();
-    return before - after;
+    lastSnapshotVersion = snapshotVersion;
+    return result;
   }
 
-  abstract boolean filter(Snapshot snapshot);
 }

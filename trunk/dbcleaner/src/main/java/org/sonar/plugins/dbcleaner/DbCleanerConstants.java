@@ -17,27 +17,16 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
-import java.util.Date;
+interface DbCleanerConstants {
 
-import org.sonar.api.database.model.Snapshot;
-
-
-public class KeepSnapshotsBetweenTwoDates extends DbCleanerFilter {
-  
-  private Date before;
-  private Date after;
-  
-  public KeepSnapshotsBetweenTwoDates(Date before, Date after){
-    this.before = before;
-    this.after = after;
-  }
-
-  @Override
-  boolean filter(Snapshot snapshot) {
-    Date createdAt = snapshot.getCreatedAt();
-    return createdAt.before(before) && createdAt.after(after);
-  }
-
+  String PLUGIN_KEY = "dbcleaner";
+  String PLUGIN_NAME = "DbCleaner";
+  String MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_WEEK = "sonar.dbcleaner.monthsBeforeKeepingOnlyOneSnapshotByWeek";
+  String MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_MONTH = "sonar.dbcleaner.monthsBeforeKeepingOnlyOneSnapshotByMonth";
+  String MONTHS_BEFORE_DELETING_ALL_SNAPSHOTS = "sonar.dbcleaner.monthsBeforeDeletingAllSnapshots";
+  String _1_MONTH = "1";
+  String _12_MONTH = "12";
+  String _36_MONTH = "36";
 }

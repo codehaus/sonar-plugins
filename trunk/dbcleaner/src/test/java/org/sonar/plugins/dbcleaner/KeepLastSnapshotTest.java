@@ -17,17 +17,18 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
-import static com.sonarsource.dbcleaner.Utils.createSnapshot;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.sonar.plugins.dbcleaner.Utils.createSnapshot;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 import org.sonar.api.database.model.Snapshot;
+import org.sonar.plugins.dbcleaner.KeepLastSnapshot;
 
 public class KeepLastSnapshotTest {
 

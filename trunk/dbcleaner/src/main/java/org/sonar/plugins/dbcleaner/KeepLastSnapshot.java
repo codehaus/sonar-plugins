@@ -17,23 +17,14 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
 import org.sonar.api.database.model.Snapshot;
 
-public class KeepSnapshotWithNewVersion extends DbCleanerFilter {
-
-  private String lastSnapshotVersion = null;
+class KeepLastSnapshot extends DbCleanerFilter {
 
   @Override
   boolean filter(Snapshot snapshot) {
-    boolean result = false;
-    String snapshotVersion = (snapshot.getVersion() != null ? snapshot.getVersion() : "");
-    if ( !snapshotVersion.equals(lastSnapshotVersion)) {
-      result = true;
-    }
-    lastSnapshotVersion = snapshotVersion;
-    return result;
+    return snapshot.getLast();
   }
-
 }
