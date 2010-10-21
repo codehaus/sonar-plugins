@@ -17,16 +17,20 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
 import org.sonar.api.database.model.Snapshot;
 
+class KeepSnapshotsWithoutChildren extends DbCleanerFilter {
 
-public class KeepLastSnapshot extends DbCleanerFilter {
-  
-  @Override
-  boolean filter(Snapshot snapshot) {
-    return snapshot.getLast();
+  private DbCleanerSqlRequests sql;
+
+  KeepSnapshotsWithoutChildren(DbCleanerSqlRequests sql) {
+    this.sql = sql;
   }
 
+  @Override
+  boolean filter(Snapshot snapshot) {
+    return !sql.hasChildren(snapshot);
+  }
 }

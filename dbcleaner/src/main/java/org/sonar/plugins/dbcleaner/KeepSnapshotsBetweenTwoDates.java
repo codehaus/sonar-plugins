@@ -17,34 +17,26 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
-
-import org.apache.commons.configuration.Configuration;
-import org.junit.Test;
+package org.sonar.plugins.dbcleaner;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.sonar.api.database.model.Snapshot;
 
-public class DbCleanerPurgeTest {
+class KeepSnapshotsBetweenTwoDates extends DbCleanerFilter {
 
-  DbCleanerPurge purge = new DbCleanerPurge(null, null);
+  private Date before;
+  private Date after;
 
-  @Test
-  public void getDateShouldReturnCurrentTimeMinusDesiredMonths() {
-    Configuration conf = mock(Configuration.class);
-    when(conf.getInt("KEY", 2)).thenReturn(2);
-
-    Date date = purge.getDate(conf, "KEY", "2");
-
-    GregorianCalendar calendar = new GregorianCalendar();
-    calendar.add(GregorianCalendar.MONTH, -2);
-    Date expectedDate = calendar.getTime();
-
-    assertThat(date.getMonth(), is(expectedDate.getMonth()));
+  KeepSnapshotsBetweenTwoDates(Date before, Date after) {
+    this.before = before;
+    this.after = after;
   }
+
+  @Override
+  boolean filter(Snapshot snapshot) {
+    Date createdAt = snapshot.getCreatedAt();
+    return createdAt.before(before) && createdAt.after(after);
+  }
+
 }

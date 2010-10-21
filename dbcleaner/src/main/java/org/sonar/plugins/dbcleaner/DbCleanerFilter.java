@@ -17,16 +17,27 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
-public interface DbCleanerConstants {
-  
-  String PLUGIN_KEY = "dbcleaner";
-  String PLUGIN_NAME = "DbCleaner";
-  String MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_WEEK = "sonar.dbcleaner.monthsBeforeKeepingOnlyOneSnapshotByWeek";
-  String MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_MONTH = "sonar.dbcleaner.monthsBeforeKeepingOnlyOneSnapshotByMonth";
-  String MONTHS_BEFORE_DELETING_ALL_SNAPSHOTS = "sonar.dbcleaner.monthsBeforeDeletingAllSnapshots";
-  String _1_MONTH = "1";
-  String _12_MONTH = "12";
-  String _36_MONTH = "36";
+import java.util.List;
+import java.util.ListIterator;
+
+import org.sonar.api.database.model.Snapshot;
+
+abstract class DbCleanerFilter {
+
+  final int filter(List<Snapshot> snapshots) {
+    int before = snapshots.size();
+    ListIterator<Snapshot> iterator = snapshots.listIterator();
+    while (iterator.hasNext()) {
+      Snapshot snapshot = iterator.next();
+      if(filter(snapshot)){
+        iterator.remove();
+      }
+    }
+    int after = snapshots.size();
+    return before - after;
+  }
+
+  abstract boolean filter(Snapshot snapshot);
 }

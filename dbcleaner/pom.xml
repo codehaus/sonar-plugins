@@ -21,7 +21,7 @@
   
   <properties>
     <sonar.version>2.3</sonar.version>
-    <sonar.pluginClass>com.sonarsource.dbcleaner.DbCleanerPlugin</sonar.pluginClass>
+    <sonar.pluginClass>org.sonar.plugins.dbcleaner.DbCleanerPlugin</sonar.pluginClass>
     <sonar.pluginKey>dbcleaner</sonar.pluginKey>
   </properties>
 
@@ -110,7 +110,7 @@
         <configuration>
           <pluginKey>dbcleaner</pluginKey>
           <pluginName>DbCleaner</pluginName>
-          <pluginClass>com.sonarsource.dbcleaner.DbCleanerPlugin</pluginClass>
+          <pluginClass>${sonar.pluginClass}</pluginClass>
         </configuration>
       </plugin>
     </plugins>

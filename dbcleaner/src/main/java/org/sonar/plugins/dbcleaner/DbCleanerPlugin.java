@@ -17,7 +17,7 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
@@ -41,7 +41,7 @@ import java.util.List;
 public final class DbCleanerPlugin implements Plugin {
 
   public List getExtensions() {
-    return Arrays.asList(DbCleanerPurge.class);
+    return Arrays.asList(DbCleanerRunner.class);
   }
 
   @Override

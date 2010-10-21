@@ -17,39 +17,40 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.sonar.api.database.model.Snapshot;
 
-
-public class KeepOneSnapshotByPeriodBetweenTwoDates extends DbCleanerFilter {
+public class Utils {
   
-  private final Date before;
-  private final Date after;
-  private GregorianCalendar calendar = new GregorianCalendar();
-  private int lastFieldValue = -1;
-  private final int dateField;
-  
-  public KeepOneSnapshotByPeriodBetweenTwoDates(int dateField, Date before, Date after){
-    this.before = before;
-    this.after = after;
-    this.dateField = dateField;
+  public static Snapshot createSnapshot(int id, String version) {
+    Snapshot snapshot = new Snapshot();
+    snapshot.setId(id);
+    snapshot.setVersion(version);
+    return snapshot;
   }
 
-  @Override
-  boolean filter(Snapshot snapshot) {
-    boolean result = false;
-    Date createdAt = snapshot.getCreatedAt();
-    calendar.setTime(createdAt);
-    int currentFieldValue = calendar.get(dateField);
-    if (lastFieldValue != currentFieldValue && snapshot.getCreatedAt().after(after) && snapshot.getCreatedAt().before(before)) {
-      result = true;
-    }
-    lastFieldValue = currentFieldValue;
-    return result;
+  public static  Snapshot createSnapshot(int id, Date createdAt) {
+    Snapshot snapshot = new Snapshot();
+    snapshot.setId(id);
+    snapshot.setCreatedAt(createdAt);
+    return snapshot;
+  }
+
+  public static  Date day(int delta) {
+    GregorianCalendar calendar = new GregorianCalendar();
+    calendar.add(GregorianCalendar.DAY_OF_YEAR, delta);
+    return calendar.getTime();
+  }
+
+  public static  Date week(int delta, int dayOfWeek) {
+    GregorianCalendar calendar = new GregorianCalendar();
+    calendar.add(GregorianCalendar.WEEK_OF_YEAR, delta);
+    calendar.set(GregorianCalendar.DAY_OF_WEEK, dayOfWeek);
+    return calendar.getTime();
   }
 
 }

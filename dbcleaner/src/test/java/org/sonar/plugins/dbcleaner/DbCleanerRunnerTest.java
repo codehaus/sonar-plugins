@@ -17,32 +17,35 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonarsource.dbcleaner;
+package org.sonar.plugins.dbcleaner;
 
-import static com.sonarsource.dbcleaner.Utils.createSnapshot;
+import org.apache.commons.configuration.Configuration;
+import org.junit.Test;
+import org.sonar.plugins.dbcleaner.DbCleanerRunner;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import java.util.LinkedList;
-import java.util.List;
+public class DbCleanerRunnerTest {
 
-import org.junit.Test;
-import org.sonar.api.database.model.Snapshot;
-
-public class KeepSnapshotWithNewVersionTest {
+  DbCleanerRunner purge = new DbCleanerRunner(null, null);
 
   @Test
-  public void testFilter() {
-    List<Snapshot> snapshots = new LinkedList<Snapshot>();
-    snapshots.add(createSnapshot(1, "0.1"));
-    snapshots.add(createSnapshot(2, "0.1"));
-    snapshots.add(createSnapshot(3, "0.2"));
-    snapshots.add(createSnapshot(4, "0.2"));
-    snapshots.add(createSnapshot(5, "0.3"));
+  public void getDateShouldReturnCurrentTimeMinusDesiredMonths() {
+    Configuration conf = mock(Configuration.class);
+    when(conf.getInt("KEY", 2)).thenReturn(2);
 
-    assertThat(new KeepSnapshotWithNewVersion().filter(snapshots), is(3));
-    assertThat(snapshots.size(), is(2));
-    assertThat(snapshots.get(0).getId(), is(2));
-    assertThat(snapshots.get(1).getId(), is(4));
+    Date date = purge.getDate(conf, "KEY", "2");
+
+    GregorianCalendar calendar = new GregorianCalendar();
+    calendar.add(GregorianCalendar.MONTH, -2);
+    Date expectedDate = calendar.getTime();
+
+    assertThat(date.getMonth(), is(expectedDate.getMonth()));
   }
 }
