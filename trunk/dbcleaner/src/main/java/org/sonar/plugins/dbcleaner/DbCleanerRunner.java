@@ -106,7 +106,7 @@ public class DbCleanerRunner extends AbstractPurge {
         DbCleanerConstants.MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_MONTH, DbCleanerConstants._12_MONTH);
     LOG.debug("Keep only one snapshot by month after : " + dateFormat.format(dateToStartKeepingOneSnapshotByMonth));
     dateToStartDeletingAllSnapshots = getDate(project.getConfiguration(),
-        DbCleanerConstants.MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_MONTH, DbCleanerConstants._36_MONTH);
+        DbCleanerConstants.MONTHS_BEFORE_DELETING_ALL_SNAPSHOTS, DbCleanerConstants._36_MONTH);
     LOG.debug("Delete all snapshots after : " + dateFormat.format(dateToStartDeletingAllSnapshots));
   }
 
