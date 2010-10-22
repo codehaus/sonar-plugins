@@ -1,73 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>all</artifactId>
-    <packaging>pom</packaging>
-    <version>0.1-SNAPSHOT</version>
-    <name>All Sonar plugins</name>
+    <artifactId>parent</artifactId>
+    <version>6</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-    <profiles>
-        <profile>
-            <id>stableProjects</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>artifact-size</module>
-                <module>build-breaker</module>
-                <module>build-stability</module>
-                <module>clirr</module>
-                <module>cpp</module>
-                <module>crowd</module>
-                <module>c-rules</module>
-                <module>dbcleaner</module>
-                <module>debug</module>
-                <module>dotnet</module>
-                <module>emma</module>
-                <module>flex</module>
-                <module>greenpepper</module>
-                <module>groovy</module>
-                <module>hammurapi</module>
-                <module>jacoco</module>
-                <module>jira</module>
-                <module>jlint</module>
-                <module>jtest</module>
-                <module>ldap</module>
-                <module>maven-report</module>
-                <module>metrics-help</module>
-                <module>motion-chart</module>
-                <module>pdf-report</module>
-                <module>php</module>
-                <module>piwik</module>
-                <module>profiler</module>
-                <module>quality-index</module>
-                <module>radiator</module>
-                <module>rules-meter</module>
-                <module>scm-activity</module>
-                <module>security-rules</module>
-                <module>sigmm</module>
-                <module>sonarj</module>
-                <module>sonar-replay</module>
-                <module>sonar-squid-cli</module>
-                <module>sonar-squid-gui</module>
-                <module>taglist</module>
-                <module>technical-debt</module>
-                <module>testability-explorer</module>
-                <module>timeline</module>
-                <module>total-quality</module>
-                <module>trac</module>
-                <module>twitter</module>
-                <module>web</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>unstableProjects</id>
-            <modules>
-                <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-                <module>codereview</module>
-            </modules>
-        </profile>
-    </profiles>
+  <artifactId>sonar-cutoff-plugin</artifactId>
+  <version>0.1</version>
+  <packaging>sonar-plugin</packaging>
+
+  <name>Sonar Cutoff Plugin</name>
+  <description>Exclude files from analysis based on a cutoff date threshold. Any source file that was last modified prior to the configured
+    cutoff date is excluded. This can be useful when you want to analyze the work done on an existing code base and measure the quality of
+    new code/changes only. This way previous phases of the project will not impact the analysis.</description>
+  
+  <url>http://docs.codehaus.org/display/SONAR/Cutoff+Plugin</url>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com/</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-cutoff-plugin-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-cutoff-plugin-0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-cutoff-plugin-0.1</url>
+  </scm>
+  
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14549</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-CUTOFF</url>
+  </ciManagement>
+  
+  <properties>
+    <sonar.version>2.3</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.cutoff.CutoffPlugin</sonar.pluginClass>
+    <sonar.pluginKey>cutoff</sonar.pluginKey>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
