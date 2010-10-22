@@ -26,5 +26,5 @@ public final class CChecksConstants {
 
   public final static String PLUGIN_NAME = "CCheck";
 
-  public final static String SONAR_C_WAY_PROFILE_KEY = "Sonar Way";
+  public final static String SONAR_C_WAY_PROFILE_KEY = "Sonar C Way";
 }
