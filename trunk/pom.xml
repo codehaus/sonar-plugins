@@ -60,6 +60,7 @@
                 <module>total-quality</module>
                 <module>trac</module>
                 <module>twitter</module>
+                <module>useless-code-tracker</module>
                 <module>web</module>
             </modules>
         </profile>
