@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.CoreProperties;
@@ -106,8 +107,17 @@ public final class HtmlSensor implements Sensor {
     sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
   }
 
+  private String makeIdentifier(String idString) {
+    int id = NumberUtils.toInt(idString, -1);
+    if (id >= 0) {
+      return String.format("%03d", id);
+    } else {
+      return idString;
+    }
+  }
+
   private void addViolation(SensorContext sensorContext, WebFile resource, MarkupMessage message, boolean error) {
-    String ruleKey = message.getMessageId();
+    String ruleKey = makeIdentifier(message.getMessageId());
     Rule rule = ruleFinder.findByKey(MarkupRuleRepository.REPOSITORY_KEY, ruleKey);
     if (rule != null) {
       Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
