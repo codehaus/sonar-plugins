@@ -141,7 +141,11 @@ class JMeter {
 
         try {
           URL url = new URL(sample.getLb());
-          File file = new File(Configuration.getHtmlDir() + "/" + url.getPath());
+          String path = url.getPath();
+          if (!path.contains(".")) {
+            path += ".html";
+          }
+          File file = new File(Configuration.getHtmlDir() + "/" + path);
           if (writeFile(sample, file)) {
             HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(Configuration.getHtmlDir()));
             htmlFile.url = sample.getLb();
