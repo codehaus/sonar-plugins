@@ -18,7 +18,6 @@ package org.sonar.plugins.web.rules.markup;
 
 import java.io.Writer;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.profiles.ProfileExporter;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.profiles.XMLProfileSerializer;
@@ -26,7 +25,7 @@ import org.sonar.plugins.web.language.Web;
 
 public class MarkupProfileExporter extends ProfileExporter {
 
-  public MarkupProfileExporter(Configuration conf) {
+  public MarkupProfileExporter() {
     super(MarkupRuleRepository.REPOSITORY_KEY, MarkupRuleRepository.REPOSITORY_NAME);
     setSupportedLanguages(Web.KEY);
     setMimeType("application/xml");

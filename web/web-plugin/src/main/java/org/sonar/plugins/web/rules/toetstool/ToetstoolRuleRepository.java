@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.web.rules.markup;
+package org.sonar.plugins.web.rules.toetstool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +32,10 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
-public final class MarkupRuleRepository extends RuleRepository {
+public final class ToetstoolRuleRepository extends RuleRepository {
 
   @XStreamAlias("rule")
-  public static class HtmlMarkupRule {
+  public class ToetstoolRule {
 
     private String explanation;
     private String key;
@@ -66,32 +66,28 @@ public final class MarkupRuleRepository extends RuleRepository {
       this.key = key;
     }
 
-    public void setPriority(RulePriority priority) {
-      this.priority = priority;
-    }
-
     public void setRemark(String remark) {
       this.remark = remark;
     }
   }
 
   @XStreamAlias("rules")
-  public static class HtmlMarkupRules {
+  public class ToetstoolRules {
 
     @XStreamImplicit(itemFieldName = "rule")
-    public List<HtmlMarkupRule> rules;
+    public List<ToetstoolRule> rules;
   }
 
-  private static final String ALL_RULES = "org/sonar/plugins/web/rules/markup/rules.xml";
-  public static final String REPOSITORY_KEY = "W3CMarkupValidation";
+  private static final String ALL_RULES = "org/sonar/plugins/web/rules/toetstool/rules.xml";
+  public static final String REPOSITORY_KEY = "ToetstoolValidation";
 
-  public static final String REPOSITORY_NAME = "W3C Markup Validation";
+  public static final String REPOSITORY_NAME = "Toetstool Validation";
 
   private static final int RULENAME_MAX_LENGTH = 192;
 
-  public MarkupRuleRepository() {
-    super(MarkupRuleRepository.REPOSITORY_KEY, Web.KEY);
-    setName(MarkupRuleRepository.REPOSITORY_NAME);
+  public ToetstoolRuleRepository() {
+    super(ToetstoolRuleRepository.REPOSITORY_KEY, Web.KEY);
+    setName(ToetstoolRuleRepository.REPOSITORY_NAME);
   }
 
   @Override
@@ -100,15 +96,15 @@ public final class MarkupRuleRepository extends RuleRepository {
 
     XStream xstream = new XStream();
     xstream.setClassLoader(getClass().getClassLoader());
-    xstream.processAnnotations(HtmlMarkupRules.class);
-    HtmlMarkupRules markupRules = (HtmlMarkupRules) xstream.fromXML(getClass().getClassLoader().getResourceAsStream(ALL_RULES));
-    for (HtmlMarkupRule htmlMarkupRule : markupRules.rules) {
-      Rule rule = Rule.create(REPOSITORY_KEY, htmlMarkupRule.getKey(),
-          StringUtils.abbreviate(htmlMarkupRule.getRemark(), RULENAME_MAX_LENGTH));
-      if (htmlMarkupRule.getExplanation() != null) {
-        rule.setDescription(StringEscapeUtils.escapeHtml(htmlMarkupRule.getExplanation()));
+    xstream.processAnnotations(ToetstoolRules.class);
+    ToetstoolRules toetstoolRules = (ToetstoolRules) xstream.fromXML(getClass().getClassLoader().getResourceAsStream(ALL_RULES));
+    for (ToetstoolRule toetstoolRule : toetstoolRules.rules) {
+      Rule rule = Rule.create(REPOSITORY_KEY, toetstoolRule.getKey(),
+          StringUtils.abbreviate(toetstoolRule.getRemark(), RULENAME_MAX_LENGTH));
+      if (toetstoolRule.getExplanation() != null) {
+        rule.setDescription(StringEscapeUtils.escapeHtml(toetstoolRule.getExplanation()));
       }
-      rule.setPriority(htmlMarkupRule.getPriority());
+      rule.setPriority(toetstoolRule.getPriority());
       rule.setRulesCategory(RulesCategory.fromIsoCategory(IsoCategory.Usability));
       rules.add(rule);
     }

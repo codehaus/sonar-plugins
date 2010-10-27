@@ -29,10 +29,14 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class Report {
 
   @XStreamAlias("guideline")
-  private class Guidelines {
+  public static class Guidelines {
 
     @XStreamImplicit(itemFieldName = "guideline")
     private List<Guideline> guidelines;
+
+    public void setGuidelines(List<Guideline> guidelines) {
+      this.guidelines = guidelines;
+    }
 
     public List<Guideline> getGuidelines() {
       return guidelines;

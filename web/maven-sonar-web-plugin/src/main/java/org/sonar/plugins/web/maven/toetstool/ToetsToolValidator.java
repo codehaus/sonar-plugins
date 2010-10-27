@@ -152,7 +152,9 @@ final class ToetsToolValidator extends HtmlValidator {
       StringPart header = new StringPart("header_yes", "0");
       parts.add(header);
 
-      if ( !url.startsWith("http")) {
+      if (url == null) {
+        url = "http://localhost";
+      } else if ( !url.startsWith("http")) {
         if ( !url.startsWith("/")) {
           url = "/" + url;
         }

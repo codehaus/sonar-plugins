@@ -18,7 +18,6 @@ package org.sonar.plugins.web.rules.web;
 
 import java.io.Writer;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.profiles.ProfileExporter;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.profiles.XMLProfileSerializer;
@@ -26,7 +25,7 @@ import org.sonar.plugins.web.language.Web;
 
 public class WebProfileExporter extends ProfileExporter {
 
-  public WebProfileExporter(Configuration conf) {
+  public WebProfileExporter() {
     super(WebRulesRepository.REPOSITORY_KEY, WebRulesRepository.REPOSITORY_NAME);
     setSupportedLanguages(Web.KEY);
     setMimeType("application/xml");
