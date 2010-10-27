@@ -39,12 +39,23 @@ public final class HtmlMetrics implements Metrics {
       CoreMetrics.DOMAIN_RULES
   );
 
+  public static final Metric TOETSTOOL_VALIDITY = new Metric(
+      "toetstool_validity",
+      "Toetstool Validity",
+      "Toetstool Validity",
+      Metric.ValueType.PERCENT,
+      Metric.DIRECTION_BETTER,
+      true,
+      CoreMetrics.DOMAIN_RULES
+  );
+
   /**
    * {@inheritDoc}
    */
   public List<Metric> getMetrics() {
     return Arrays.asList(
-        W3C_MARKUP_VALIDITY
+        W3C_MARKUP_VALIDITY,
+        TOETSTOOL_VALIDITY
     );
   }
 }

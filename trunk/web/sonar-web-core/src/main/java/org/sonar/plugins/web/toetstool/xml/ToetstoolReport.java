@@ -38,7 +38,7 @@ public class ToetstoolReport {
     try {
       FileInputStream input = new FileInputStream(file);
       ToetstoolReport report = (ToetstoolReport) getXstream().fromXML(input);
-      report.file = file;
+      report.reportFile = file;
       return report;
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
@@ -55,12 +55,20 @@ public class ToetstoolReport {
     return xstream;
   }
 
-  private File file;
+  private File reportFile;
 
   private Report report;
 
+  /**
+   * Get report file.
+   */
+  public File getReportFile() {
+    return reportFile;
+  }
+
   @XStreamAsAttribute
   private String reportNumber;
+
   @XStreamAsAttribute
   private String status;
 
@@ -80,7 +88,7 @@ public class ToetstoolReport {
 
   public void save() {
     try {
-      FileOutputStream out = new FileOutputStream(file);
+      FileOutputStream out = new FileOutputStream(reportFile);
       toXml(out);
       out.close();
     } catch (FileNotFoundException e) {

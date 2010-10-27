@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.web.html;
+package org.sonar.plugins.web.toetstool;
 
 import java.io.File;
 import java.util.Collection;
@@ -32,33 +32,35 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.web.ProjectConfiguration;
+import org.sonar.plugins.web.html.FileSet;
+import org.sonar.plugins.web.html.HtmlMetrics;
 import org.sonar.plugins.web.language.Web;
 import org.sonar.plugins.web.language.WebFile;
-import org.sonar.plugins.web.language.WebProperties;
-import org.sonar.plugins.web.markupvalidation.MarkupMessage;
-import org.sonar.plugins.web.markupvalidation.MarkupReport;
-import org.sonar.plugins.web.rules.markup.MarkupRuleRepository;
+import org.sonar.plugins.web.rules.toetstool.ToetstoolRuleRepository;
+import org.sonar.plugins.web.toetstool.xml.Guideline;
+import org.sonar.plugins.web.toetstool.xml.Guideline.ValidationType;
+import org.sonar.plugins.web.toetstool.xml.ToetstoolReport;
 
 /**
  * @author Matthijs Galesloot
  * @since 0.2
  */
-public final class HtmlSensor implements Sensor {
+public final class ToetstoolSensor implements Sensor {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HtmlSensor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ToetstoolSensor.class);
 
   private final RulesProfile profile;
   private final RuleFinder ruleFinder;
 
-  public HtmlSensor(RulesProfile profile, RuleFinder ruleFinder) {
+  public ToetstoolSensor(RulesProfile profile, RuleFinder ruleFinder) {
     LOG.info("Profile: " + profile.getName());
     this.profile = profile;
     this.ruleFinder = ruleFinder;
   }
 
   /**
-   * Find W3C Validation Markup reports in the source tree and save violations to Sonar.
-   * The Markup reports have file extension .mur.
+   * Find Toetstool Validation reports in the source tree and save violations to Sonar.
+   * The Toetstool reports have file extension .ttr.
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
@@ -71,33 +73,32 @@ public final class HtmlSensor implements Sensor {
     }
 
     LOG.info("HTML Dir:" + htmlDir);
-    MessageFilter messageFilter = new MessageFilter(project.getProperty(WebProperties.EXCLUDE_VIOLATIONS));
 
     int numValid = 0;
 
-    Collection<File> files = FileSet.getReportFiles(htmlDir, MarkupReport.REPORT_SUFFIX);
+    Collection<File> files = FileSet.getReportFiles(htmlDir, ToetstoolReport.REPORT_SUFFIX);
 
     for (File reportFile : files) {
-      MarkupReport report = MarkupReport.fromXml(reportFile);
+      ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
 
-      if (report.isValid()) {
+      if (report.getReport().getCounters().getError() == 0) {
         numValid++;
       }
 
       // derive name of resource from name of report
-      File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), MarkupReport.REPORT_SUFFIX));
+      File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), ToetstoolReport.REPORT_SUFFIX));
       WebFile resource = WebFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
 
       // save errors
-      for (MarkupMessage error : report.getErrors()) {
-        if (messageFilter.accept(error)) {
-          addViolation(sensorContext, resource, error, true);
+      for (Guideline guideline : report.getReport().getGuidelines()) {
+        if (guideline.getType() == ValidationType.error ) {
+          addViolation(sensorContext, resource, guideline, true);
         }
       }
       // save warnings
-      for (MarkupMessage warning : report.getWarnings()) {
-        if (messageFilter.accept(warning)) {
-          addViolation(sensorContext, resource, warning, false);
+      for (Guideline guideline : report.getReport().getGuidelines()) {
+        if (guideline.getType() == ValidationType.warning) {
+          addViolation(sensorContext, resource, guideline, false);
         }
       }
     }
@@ -106,16 +107,16 @@ public final class HtmlSensor implements Sensor {
     sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
   }
 
-  private void addViolation(SensorContext sensorContext, WebFile resource, MarkupMessage message, boolean error) {
-    String ruleKey = message.getMessageId();
-    Rule rule = ruleFinder.findByKey(MarkupRuleRepository.REPOSITORY_KEY, ruleKey);
+  private void addViolation(SensorContext sensorContext, WebFile resource, Guideline guideline, boolean error) {
+    String ruleKey = guideline.getRef();
+    Rule rule = ruleFinder.findByKey(ToetstoolRuleRepository.REPOSITORY_KEY, ruleKey);
     if (rule != null) {
-      Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
-      violation.setMessage((error ? "" : "Warning: ") + message.getMessage());
+      Violation violation = Violation.create(rule, resource);
+      violation.setMessage((error ? "" : "Warning: ") + guideline.getRemark());
       sensorContext.saveViolation(violation);
-      LOG.debug(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
+      LOG.debug(resource.getName() + ": " + guideline.getRef() + ":" + guideline.getRemark());
     } else {
-      LOG.warn("Could not find Markup Rule " + message.getMessageId() + ", Message = " + message.getMessage());
+      LOG.warn("Could not find Toetstool Rule " + guideline.getRef() + ", Message = " + guideline.getRemark());
     }
   }
 
@@ -123,12 +124,12 @@ public final class HtmlSensor implements Sensor {
    * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return isEnabled(project) && Web.INSTANCE.equals(project.getLanguage()) && hasMarkupRules();
+    return isEnabled(project) && Web.INSTANCE.equals(project.getLanguage()) && hasToetstoolRules();
   }
 
-  private boolean hasMarkupRules() {
+  private boolean hasToetstoolRules() {
     for (ActiveRule activeRule : profile.getActiveRules()) {
-      if (MarkupRuleRepository.REPOSITORY_KEY.equals(activeRule.getRepositoryKey())) {
+      if (ToetstoolRuleRepository.REPOSITORY_KEY.equals(activeRule.getRepositoryKey())) {
         return true;
       }
     }

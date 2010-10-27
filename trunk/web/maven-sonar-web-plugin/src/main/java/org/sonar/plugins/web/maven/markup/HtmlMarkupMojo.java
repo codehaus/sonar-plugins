@@ -49,9 +49,4 @@ public class HtmlMarkupMojo extends AbstractValidationMojo {
     MarkupReportBuilder reportBuilder = new MarkupReportBuilder();
     reportBuilder.buildReports(htmlFolder);
   }
-
-  @Override
-  protected void configureSettings() {
-    super.configureSettings();
-  }
 }

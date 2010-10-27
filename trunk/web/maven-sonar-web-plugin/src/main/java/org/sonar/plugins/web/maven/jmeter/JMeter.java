@@ -93,7 +93,7 @@ class JMeter {
         if (reportFile != null) {
           JMeterReport report = JMeterReport.fromXml(new FileInputStream(reportFile));
 
-          writeHttpSamples(fileSet, testNames, report.getHttpSamples(), false);
+          writeHttpSamples(fileSet, testNames, report.getHttpSamples());
         } else {
           LOG.error("Could not find report file for JMeter script " + scriptFile.getName());
         }
@@ -134,7 +134,7 @@ class JMeter {
     return false;
   }
 
-  private void writeHttpSamples(FileSet fileSet, Map<String, String> testNames, List<HttpSample> httpSamples, Boolean nested) {
+  private void writeHttpSamples(FileSet fileSet, Map<String, String> testNames, List<HttpSample> httpSamples) {
     for (HttpSample sample : httpSamples) {
 
       if ( sample.hasResponse()) {
@@ -157,7 +157,7 @@ class JMeter {
       }
 
       if (sample.getHttpSamples() != null) {
-        writeHttpSamples(fileSet, testNames, sample.getHttpSamples(), true);
+        writeHttpSamples(fileSet, testNames, sample.getHttpSamples());
       }
     }
   }

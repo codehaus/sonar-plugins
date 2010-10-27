@@ -57,8 +57,7 @@ public class FileSet {
   public static FileSet fromXml(File file) {
     try {
       FileInputStream input = new FileInputStream(file);
-      FileSet fileSet = (FileSet) getXstream().fromXML(input);
-      return fileSet;
+      return (FileSet) getXstream().fromXML(input);
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);
     }

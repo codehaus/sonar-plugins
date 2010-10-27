@@ -47,7 +47,7 @@ import org.xml.sax.SAXException;
  */
 public class MarkupErrorCatalog {
 
-  public class MessageDefinition {
+  public static class MessageDefinition {
 
     private String explanation;
     private String id;
