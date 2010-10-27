@@ -67,7 +67,7 @@ public abstract class HtmlValidator {
     for (int i = 0; i < retries; i++) {
       try {
         getClient().executeMethod(post);
-        if (post.getStatusCode() == 200) {
+        if (post.getStatusCode() == 200 || post.getStatusCode() == 302) {
           return;
         } else {
           LOG.warn("Bad http response: " + post.getStatusCode() + ", retrying after 1 second...");

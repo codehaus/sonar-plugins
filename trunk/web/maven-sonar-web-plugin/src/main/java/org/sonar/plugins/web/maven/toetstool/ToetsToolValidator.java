@@ -50,7 +50,7 @@ final class ToetsToolValidator extends HtmlValidator {
 
   private static final int RETRIES = 10;
 
-  private static final long SHORT_SLEEP_INTERVAL = 5000L;
+  private static final long SLEEP_INTERVAL = 5000L;
 
   public static String getHtmlReportUrl(String reportNumber) {
     return String.format("%sreport/%s/%s/", Configuration.getToetstoolURL(), reportNumber, reportNumber);
@@ -113,7 +113,7 @@ final class ToetsToolValidator extends HtmlValidator {
     for (int i = 0; i < RETRIES; i++) {
 
       // before requesting a report, wait for a few seconds
-      sleep(SHORT_SLEEP_INTERVAL);
+      sleep(SLEEP_INTERVAL);
 
       // get the report url
       GetMethod httpget = new GetMethod(reportUrl);

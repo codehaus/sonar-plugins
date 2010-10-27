@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
@@ -79,6 +80,7 @@ final class MarkupValidator extends HtmlValidator {
    */
   private void postHtmlContents(File file, String url) {
     PostMethod post = new PostMethod(validatorUrl);
+    post.addRequestHeader(new Header("User-Agent", "sonar-web-plugin/0.2"));
 
     try {
 
