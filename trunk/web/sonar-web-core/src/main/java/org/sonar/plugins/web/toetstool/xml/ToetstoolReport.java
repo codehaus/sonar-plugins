@@ -51,6 +51,7 @@ public class ToetstoolReport {
 
   private static XStream getXstream() {
     XStream xstream = new XStream();
+    xstream.setClassLoader(ToetstoolReport.class.getClassLoader());
     xstream.processAnnotations(new Class[] { ToetstoolReport.class });
     return xstream;
   }
