@@ -24,16 +24,7 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.web.duplications.WebCpdMapping;
-import org.sonar.plugins.web.html.HtmlMetrics;
-import org.sonar.plugins.web.html.HtmlSensor;
-import org.sonar.plugins.web.html.HtmlWidget;
 import org.sonar.plugins.web.language.Web;
-import org.sonar.plugins.web.rules.markup.DefaultMarkupProfile;
-import org.sonar.plugins.web.rules.markup.MarkupProfileExporter;
-import org.sonar.plugins.web.rules.markup.MarkupProfileImporter;
-import org.sonar.plugins.web.rules.markup.MarkupRuleRepository;
-import org.sonar.plugins.web.rules.toetstool.DefaultToetstoolProfile;
-import org.sonar.plugins.web.rules.toetstool.ToetstoolRuleRepository;
 import org.sonar.plugins.web.rules.web.DefaultWebProfile;
 import org.sonar.plugins.web.rules.web.JSFProfile;
 import org.sonar.plugins.web.rules.web.JSPProfile;
@@ -79,21 +70,6 @@ public final class WebPlugin implements Plugin {
 
     // web sensor
     list.add(WebSensor.class);
-
-    // markup rules
-    list.add(MarkupRuleRepository.class);
-    list.add(MarkupProfileExporter.class);
-    list.add(MarkupProfileImporter.class);
-    list.add(DefaultMarkupProfile.class);
-    list.add(HtmlMetrics.class);
-    list.add(HtmlWidget.class);
-
-    // toetstool rules
-    list.add(ToetstoolRuleRepository.class);
-    list.add(DefaultToetstoolProfile.class);
-
-    // html sensor
-    list.add(HtmlSensor.class);
 
     // Code Colorizer
     list.add(WebCodeColorizerFormat.class);
