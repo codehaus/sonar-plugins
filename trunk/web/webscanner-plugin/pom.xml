@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>sonar-webscanner-plugin</artifactId>
+    <packaging>sonar-plugin</packaging>
+    <version>0.2-SNAPSHOT</version>
+    <name>Sonar WebScanner Plugin</name>
+    
+    <parent>
+        <groupId>org.codehaus.sonar-plugins</groupId>
+        <artifactId>sonar-web</artifactId>
+        <version>0.2-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+   
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-plugin-api</artifactId>
+        </dependency>
+    
+        <dependency>
+          <groupId>org.codehaus.sonar-plugins</groupId>
+          <artifactId>sonar-web-plugin</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+          <groupId>org.codehaus.sonar-plugins</groupId>
+          <artifactId>sonar-web-core</artifactId>
+          <version>${project.version}</version>
+          <exclusions>
+            <exclusion>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+
+        <!-- unit tests -->
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-testing-harness</artifactId>
+            <version>${sonar.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.sonar</groupId>
+                    <artifactId>sonar-packaging-maven-plugin</artifactId>
+                    <extensions>true</extensions>
+                    <version>0.2</version>
+                    <configuration>
+                        <pluginKey>${artifactId}</pluginKey>
+                        <pluginName>WebScanner</pluginName>
+                        <pluginClass>org.sonar.plugins.webscanner.WebScannerPlugin</pluginClass>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
