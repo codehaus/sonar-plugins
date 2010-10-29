@@ -19,6 +19,7 @@
     <modules>
         <module>sonar-web-core</module>
         <module>web-plugin</module>
+        <module>webscanner-plugin</module>
         <module>maven-sonar-web-plugin</module>
     </modules>
 
