@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 import org.sonar.plugins.webscanner.html.HtmlMetrics;
 import org.sonar.plugins.webscanner.html.HtmlSensor;
 import org.sonar.plugins.webscanner.html.HtmlWidget;
@@ -35,6 +37,11 @@ import org.sonar.plugins.webscanner.toetstool.ToetstoolSensor;
 /**
  * @author Matthijs Galesloot
  */
+@Properties({
+  @Property(key = "sonar.web.fileExtensions",
+    name = "html",
+    description = "File extensions.",
+    global = true, project = true)})
 public final class WebScannerPlugin implements Plugin {
 
   private static final String KEY = "sonar-webscanner-plugin";
@@ -43,9 +50,8 @@ public final class WebScannerPlugin implements Plugin {
     return KEY;
   }
 
-  //TODO
   public String getDescription() {
-    return getName() + " collects metrics on web code, such as lines of code, violations, documentation level...";
+    return getName() + " collects metrics on live web sites, such as markup validation, wcag compliancy, ...";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
@@ -73,7 +79,7 @@ public final class WebScannerPlugin implements Plugin {
   }
 
   public String getName() {
-    return "Web plugin";
+    return "Web Scanner plugin";
   }
 
   @Override
