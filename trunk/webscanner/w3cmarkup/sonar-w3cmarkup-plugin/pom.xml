@@ -44,11 +44,6 @@
             <version>1.0.4</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.sonar-plugins</groupId>
-            <artifactId>w3cmarkup-commons</artifactId>
-            <version>${project.version}</version>
-        </dependency>
 
         <!-- unit tests -->
         <dependency>
