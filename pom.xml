@@ -62,6 +62,7 @@
                 <module>twitter</module>
                 <module>useless-code-tracker</module>
                 <module>web</module>
+                <module>webscanner</module>
             </modules>
         </profile>
         <profile>
