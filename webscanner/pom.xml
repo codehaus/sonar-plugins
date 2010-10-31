@@ -84,20 +84,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <distributionManagement>
-        <repository>
-            <id>codehaus.org</id>
-            <name>Sonar plugins repository</name>
-            <url>dav:https://dav.codehaus.org/repository/sonar-plugins/webscanner</url>
-        </repository>
-        <snapshotRepository>
-            <id>codehaus.org</id>
-            <name>Sonar plugins snapshot repository</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/sonar-plugins/webscanner</url>
-        </snapshotRepository>
-    </distributionManagement>
     
     <profiles>
         <!-- local profile for sonar:sonar -->

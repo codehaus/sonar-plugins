@@ -15,6 +15,20 @@
         <version>2.3</version>
     </parent>
 
+    <distributionManagement>
+        <repository>
+            <id>codehaus.org</id>
+            <name>Sonar plugins repository</name>
+            <url>dav:https://dav.codehaus.org/repository/sonar-plugins</url>
+        </repository>
+        <snapshotRepository>
+            <id>codehaus.org</id>
+            <name>Sonar plugins snapshot repository</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/sonar-plugins</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>commons-lang</groupId>
