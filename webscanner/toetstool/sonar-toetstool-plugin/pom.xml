@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>sonar-toetstool-plugin</artifactId>
+    <packaging>sonar-plugin</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>Sonar Toetstool Plugin</name>
+
+    <parent>
+        <groupId>org.codehaus.sonar-plugins</groupId>
+        <artifactId>sonar-webscanner</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-plugin-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.sonar-plugins</groupId>
+            <artifactId>sonar-webscanner-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.sonar-plugins</groupId>
+            <artifactId>maven-toetstool-plugin</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- unit tests -->
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-testing-harness</artifactId>
+            <version>${sonar.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.sonar</groupId>
+                    <artifactId>sonar-packaging-maven-plugin</artifactId>
+                    <extensions>true</extensions>
+                    <version>0.1</version>
+                    <configuration>
+                        <pluginKey>${artifactId}</pluginKey>
+                        <pluginName>Toetstool</pluginName>
+                        <pluginClass>org.sonar.plugins.webscanner.toetstool.ToetstoolPlugin</pluginClass>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
