@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>sonar-webscanner</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>Website quality projects</name>
+
+    <parent>
+        <groupId>org.codehaus.sonar-plugins</groupId>
+        <artifactId>parent</artifactId>
+        <version>6</version>
+        <relativePath>../parent</relativePath>
+    </parent>
+
+    <modules>
+        <!-- shared code -->
+        <module>webscanner-commons</module>
+        <!-- webscanner plugin -->
+        <module>sonar-webscanner-plugin</module>
+
+        <!-- crawler services -->
+        <module>crawler</module>
+
+        <!-- validation plugins -->
+        <module>w3cmarkup</module>
+        <module>toetstool</module>
+    </modules>
+
+    <properties>
+        <sonar.version>2.3</sonar.version>
+    </properties>
+
+    <url>http://docs.codehaus.org/display/SONAR/Webscanner+Plugins</url>
+    <issueManagement>
+        <system>JIRA</system>
+        <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/?????</url>
+    </issueManagement>
+    <ciManagement>
+        <system>BAMBOO</system>
+        <url>http://ci.codehaus.org/browse/SONAR-WEBSCANNER</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/webscanner</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/webscanner</developerConnection>
+        <url>http://svn.codehaus.org/sonar-plugins/ </url>
+    </scm>
+
+    <inceptionYear>2010</inceptionYear>
+    <organization>
+        <name>Matthijs Galesloot</name>
+    </organization>
+    <developers>
+        <developer>
+            <id>mgalesloot</id>
+            <name>Matthijs Galesloot</name>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.codehaus.sonar</groupId>
+                <artifactId>sonar-plugin-api</artifactId>
+                <version>${sonar.version}</version>
+                <!-- dependencies of sonar-plugin-api (pmd) should not get older version of junit -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>codehaus.org</id>
+            <name>Sonar plugins repository</name>
+            <url>dav:https://dav.codehaus.org/repository/sonar-plugins/webscanner</url>
+        </repository>
+        <snapshotRepository>
+            <id>codehaus.org</id>
+            <name>Sonar plugins snapshot repository</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/sonar-plugins/webscanner</url>
+        </snapshotRepository>
+    </distributionManagement>
+    
+    <profiles>
+        <!-- local profile for sonar:sonar -->
+        <profile>
+            <id>local</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-enforcer-plugin</artifactId>
+                            <configuration>
+                                <fail>false</fail>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+</project>
