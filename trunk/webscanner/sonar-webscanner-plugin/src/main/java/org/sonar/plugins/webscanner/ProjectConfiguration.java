@@ -17,30 +17,33 @@
 package org.sonar.plugins.webscanner;
 
 import java.io.File;
+import java.util.List;
 
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.webscanner.language.HtmlProperties;
 
-
 public class ProjectConfiguration {
 
   private final Project project;
+
   public ProjectConfiguration(Project project) {
     this.project = project;
   }
   public void addSourceDir() {
-    if (project.getProperty(HtmlProperties.SOURCE_DIRECTORY) != null) {
-      File file = new File(project.getFileSystem().getBasedir() + "/" + project.getProperty(HtmlProperties.SOURCE_DIRECTORY).toString());
-      for (File sourceDir : project.getFileSystem().getSourceDirs()) {
-        if (sourceDir.equals(file)) {
-          return;
-        }
-      }
+    String sourceDir = getSourceDir();
+    if (sourceDir != null) {
+      File file = new File(project.getFileSystem().getBasedir() + "/" + sourceDir);
+
+      project.getPom().getCompileSourceRoots().clear();
       project.getFileSystem().addSourceDir(file);
     }
   }
 
-  public String getSourceDir() {
+  public List<File> getSourceDirs() {
+    return project.getFileSystem().getSourceDirs();
+  }
+
+  private String getSourceDir() {
     return (String) project.getConfiguration().getProperty(HtmlProperties.SOURCE_DIRECTORY);
   }
 }

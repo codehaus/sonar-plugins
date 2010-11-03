@@ -52,12 +52,6 @@ public final class MarkupReportBuilder {
     sb.append("</th>\n");
   }
 
-  private void addRow(Object... values) {
-    startRow();
-    addCells(values);
-    endRow();
-  }
-
   private void endRow() {
     sb.append("</tr>");
   }

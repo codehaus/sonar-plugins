@@ -100,7 +100,7 @@ public final class ToetstoolMojo extends AbstractMojo {
     prepareHtml();
 
     // execute validation
-    File htmlFolder = new File(Configuration.getHtmlDir());
+    File htmlFolder = new File(htmlDir);
     HtmlValidator toetstool = new ToetsToolValidator();
     toetstool.validateFiles(htmlFolder);
 
@@ -111,11 +111,11 @@ public final class ToetstoolMojo extends AbstractMojo {
 
   protected void prepareHtml() {
 
-    File htmlFolder = new File(Configuration.getHtmlDir());
+    File htmlFolder = new File(htmlDir);
     if (htmlFolder.exists()) {
 
       HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(Configuration.getHtmlDir());
+      htmlScanner.prepare(htmlDir);
     }
   }
   protected void configureSettings() {
@@ -130,7 +130,6 @@ public final class ToetstoolMojo extends AbstractMojo {
 
     Configuration.setToetstoolURL(toetsToolUrl);
     Configuration.setCssPath(cssDir);
-    Configuration.setHTMLDir(baseDirectory + "/" + htmlDir);
     if (nrOfSamples != null && nrOfSamples > 0) {
       Configuration.setNrOfSamples(nrOfSamples);
     }

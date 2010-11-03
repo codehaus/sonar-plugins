@@ -29,7 +29,6 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.Configuration;
 import org.sonar.plugins.webscanner.html.FileSet;
 import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
 import org.sonar.plugins.webscanner.maven.jmeter.xml.HttpSample;
@@ -50,12 +49,14 @@ class JMeter {
 
   private static final Logger LOG = Logger.getLogger(JMeter.class);
 
-  private String htmlDir;
-  private String jMeterScriptDir;
-  private String jMeterReportDir;
+  private final String htmlDir;
+  private final String jMeterScriptDir;
+  private final String jMeterReportDir;
 
-  public JMeter(String htmlDir, String jMeterScriptDir, String jMeterScriptDir2) {
-
+  public JMeter(String htmlDir, String jMeterScriptDir, String jMeterReportDir) {
+    this.htmlDir = htmlDir;
+    this.jMeterScriptDir = jMeterScriptDir;
+    this.jMeterReportDir = jMeterReportDir;
   }
 
   /**
@@ -112,6 +113,7 @@ class JMeter {
       }
     }
 
+    // save fileset
     fileSet.toXml(FileSet.getPath(htmlFolder));
   }
 
@@ -157,14 +159,14 @@ class JMeter {
           }
           File file = new File(htmlDir + "/" + path);
           if (writeFile(sample, file)) {
-            HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(Configuration.getHtmlDir()));
+            HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(htmlDir));
             htmlFile.url = sample.getLb();
           }
         } catch (MalformedURLException e) {
-          File file = new File(Configuration.getHtmlDir() + "/" + sample.getLb() + ".html");
+          File file = new File(htmlDir + "/" + sample.getLb() + ".html");
           if (writeFile(sample, file)) {
             String url = testNames.get(sample.getLb());
-            HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(Configuration.getHtmlDir()));
+            HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(htmlDir));
             htmlFile.url = url != null ? url : "http://localhost/";
           }
         }

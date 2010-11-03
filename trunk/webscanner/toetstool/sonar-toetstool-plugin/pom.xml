@@ -26,7 +26,6 @@
             <groupId>org.codehaus.sonar-plugins</groupId>
             <artifactId>sonar-webscanner-plugin</artifactId>
             <version>${project.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

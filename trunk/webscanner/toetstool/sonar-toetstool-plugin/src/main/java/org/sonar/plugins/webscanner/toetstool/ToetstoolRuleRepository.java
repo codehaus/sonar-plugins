@@ -38,8 +38,11 @@ public final class ToetstoolRuleRepository extends RuleRepository {
   public class ToetstoolRule {
 
     private String explanation;
+
     private String key;
+
     private RulePriority priority;
+
     private String remark;
 
     public String getExplanation() {
@@ -66,6 +69,10 @@ public final class ToetstoolRuleRepository extends RuleRepository {
       this.key = key;
     }
 
+    public void setPriority(RulePriority priority) {
+      this.priority = priority;
+    }
+
     public void setRemark(String remark) {
       this.remark = remark;
     }
@@ -85,19 +92,28 @@ public final class ToetstoolRuleRepository extends RuleRepository {
 
   private static final int RULENAME_MAX_LENGTH = 192;
 
+  /**
+   * Instantiate a ToetstoolRuleRepository.
+   */
   public ToetstoolRuleRepository() {
     super(ToetstoolRuleRepository.REPOSITORY_KEY, Html.KEY);
     setName(ToetstoolRuleRepository.REPOSITORY_NAME);
   }
 
+  /*
+   * (non-Javadoc)
+   * @see org.sonar.api.rules.RuleRepository#createRules()
+   */
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
 
+    // load the toetstool rules from resourcefile
     XStream xstream = new XStream();
     xstream.setClassLoader(getClass().getClassLoader());
     xstream.processAnnotations(ToetstoolRules.class);
     ToetstoolRules toetstoolRules = (ToetstoolRules) xstream.fromXML(getClass().getClassLoader().getResourceAsStream(ALL_RULES));
+
     for (ToetstoolRule toetstoolRule : toetstoolRules.rules) {
       Rule rule = Rule.create(REPOSITORY_KEY, toetstoolRule.getKey(),
           StringUtils.abbreviate(toetstoolRule.getRemark(), RULENAME_MAX_LENGTH));

@@ -69,12 +69,14 @@ public class FileSet {
 
   private static XStream getXstream() {
     XStream xstream = new XStream();
+    xstream.setClassLoader(FileSet.class.getClassLoader());
     xstream.processAnnotations(new Class[] { FileSet.class });
     return xstream;
   }
 
   public void toXml(File file) {
     try {
+      file.getParentFile().mkdirs();
       getXstream().toXML(this, new FileOutputStream(file));
     } catch (FileNotFoundException e) {
       throw new RuntimeException(e);

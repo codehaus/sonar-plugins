@@ -67,6 +67,7 @@ public abstract class HtmlValidator {
         }
       } catch (UnknownHostException e) {
         if (Configuration.useProxy()) {
+          LOG.warn("Unknown host, retry without proxy...");
           getClient().getHostConfiguration().setProxyHost(null);
           try {
             getClient().executeMethod(post);

@@ -57,51 +57,54 @@ public final class ToetstoolSensor implements Sensor {
   }
 
   /**
-   * Find Toetstool Validation reports in the source tree and save violations to Sonar.
-   * The Toetstool reports have file extension .ttr.
+   * Find Toetstool Validation reports in the source tree and save violations to Sonar. The Toetstool reports have file extension .ttr.
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
     ProjectConfiguration projectConfiguration = new ProjectConfiguration(project);
     projectConfiguration.addSourceDir();
-    File htmlDir = new File(project.getFileSystem().getBasedir() + "/" + projectConfiguration.getSourceDir());
-    if (!htmlDir.exists()) {
-      return;
-      // throw new SonarException("Missing HTML directory: " + htmlDir.getPath());
-    }
-
-    LOG.info("HTML Dir:" + htmlDir);
 
     int numValid = 0;
+    int numFiles = 0;
 
-    Collection<File> files = FileSet.getReportFiles(htmlDir, ToetstoolReport.REPORT_SUFFIX);
-
-    for (File reportFile : files) {
-      ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
-
-      if (report.getReport().getCounters().getError() == 0) {
-        numValid++;
+    for (File sourceDir : projectConfiguration.getSourceDirs()) {
+      if ( !sourceDir.exists()) {
+        LOG.error("Missing HTML directory: " + sourceDir.getPath());
+        continue;
       }
 
-      // derive name of resource from name of report
-      File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), ToetstoolReport.REPORT_SUFFIX));
-      HtmlFile resource = HtmlFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
+      LOG.info("HTML Dir:" + sourceDir);
 
-      // save errors
-      for (Guideline guideline : report.getReport().getGuidelines()) {
-        if (guideline.getType() == ValidationType.error ) {
-          addViolation(sensorContext, resource, guideline, true);
+      Collection<File> files = FileSet.getReportFiles(sourceDir, ToetstoolReport.REPORT_SUFFIX);
+      for (File reportFile : files) {
+        ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
+
+        numFiles++;
+        if (report.getReport().getCounters().getError() == 0) {
+          numValid++;
+        }
+
+        // derive name of resource from name of report
+        File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), ToetstoolReport.REPORT_SUFFIX));
+        HtmlFile resource = HtmlFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
+
+        // save errors
+        for (Guideline guideline : report.getReport().getGuidelines()) {
+          if (guideline.getType() == ValidationType.error) {
+            addViolation(sensorContext, resource, guideline, true);
+          }
+        }
+        // save warnings
+        for (Guideline guideline : report.getReport().getGuidelines()) {
+          if (guideline.getType() == ValidationType.warning) {
+            addViolation(sensorContext, resource, guideline, false);
+          }
         }
       }
-      // save warnings
-      for (Guideline guideline : report.getReport().getGuidelines()) {
-        if (guideline.getType() == ValidationType.warning) {
-          addViolation(sensorContext, resource, guideline, false);
-        }
-      }
+
     }
 
-    double percentageValid = files.size() > 0 ? (double) (files.size() - numValid) / files.size() : 100;
+    double percentageValid = numFiles > 0 ? (double) (numFiles - numValid) / numFiles : 100;
     sensorContext.saveMeasure(ToetstoolMetrics.TOETSTOOL_VALIDITY, percentageValid);
   }
 

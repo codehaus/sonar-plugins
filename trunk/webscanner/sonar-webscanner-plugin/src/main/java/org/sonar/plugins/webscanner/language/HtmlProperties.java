@@ -27,7 +27,7 @@ public final class HtmlProperties {
     // utility class
   }
 
-  public static final String FILE_EXTENSIONS = "sonar.web.fileExtensions";
-  public static final String SOURCE_DIRECTORY = "sonar.web.sourceDirectory";
-  public static final String EXCLUDE_VIOLATIONS = "sonar.web.excludeviolations";
+  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
+  public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
+  public static final String EXCLUDE_VIOLATIONS = "sonar.html.excludeviolations";
 }

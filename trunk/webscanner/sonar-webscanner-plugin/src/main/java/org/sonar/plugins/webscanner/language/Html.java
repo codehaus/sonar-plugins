@@ -17,7 +17,6 @@
 package org.sonar.plugins.webscanner.language;
 
 import org.sonar.api.resources.AbstractLanguage;
-import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Project;
 
 /**
@@ -32,7 +31,7 @@ public class Html extends AbstractLanguage {
   public static final String KEY = "html";
 
   /** All the valid html files suffixes. */
-  private static final String[] SUFFIXES = { "html" };
+  private static final String[] DEFAULT_SUFFIXES = { "html" };
 
   /** The html language name */
   private static final String HTML_LANGUAGE_NAME = "Html";
@@ -71,23 +70,6 @@ public class Html extends AbstractLanguage {
    * @see org.sonar.api.resources.Language#getFileSuffixes()
    */
   public String[] getFileSuffixes() {
-    return fileSuffixes == null ?  SUFFIXES : fileSuffixes;
-  }
-
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == this) {
-      return true;
-    }
-    if (o instanceof Language) {
-      Language language = (Language) o;
-      return getKey().equals(language.getKey());
-    }
-    return false;
+    return fileSuffixes == null ?  DEFAULT_SUFFIXES : fileSuffixes;
   }
 }
