@@ -3,17 +3,28 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-security-rules-plugin</artifactId>
-  <name>Security Rules Plugin</name>
-  <version>0.2-SNAPSHOT</version>
-  <description>A plugin to manage security rules</description>
 
-  <properties>
-    <sonar.version>1.10</sonar.version>
-  </properties>
+  <artifactId>sonar-security-rules-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.2-SNAPSHOT</version>
+
+  <name>Security Rules Plugin</name>
+  <description>A plugin to manage security rules</description>
+  <url>http://docs.codehaus.org/display/SONAR/Security+Rules+Plugin</url>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -23,21 +34,23 @@
     </developer>
   </developers>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.secrules.SecurityRulesPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/security-rules</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/security-rules</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14110</url>
+  </issueManagement>
+
+  <properties>
+    <sonar.version>1.10</sonar.version>
+    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
+    <sonar.pluginKey>securityrules</sonar.pluginKey>
+    <sonar.pluginName>Security Rules</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.secrules.SecurityRulesPlugin</sonar.pluginClass>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -65,22 +78,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/security-rules</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/security-rules</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14110</url>
-  </issueManagement>
 </project>
