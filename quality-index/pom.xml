@@ -9,9 +9,23 @@
   </parent>
 
   <artifactId>sonar-quality-index-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
   <version>1.2-SNAPSHOT</version>
+
   <name>Sonar Quality Index Plugin</name>
   <description>Calculate a global Quality Index, based on coding rules, Style, Complexity and Coverage.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Quality+Index+Plugin</url>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -21,9 +35,22 @@
     </developer>
   </developers>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/quality-index</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14140</url>
+  </issueManagement>
+
   <properties>
-    <sonar.plugin.class>org.sonar.plugins.qi.QIPlugin</sonar.plugin.class>
     <sonar.version>2.0.1</sonar.version>
+    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
+    <sonar.pluginKey>qualityindex</sonar.pluginKey>
+    <sonar.pluginName>Quality Index</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.qi.QIPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
@@ -31,6 +58,7 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- unit tests -->
@@ -57,11 +85,13 @@
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
       <version>1.1</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
       <version>3.1</version>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -73,21 +103,25 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.5.6</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>1.5.6</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>0.9.15</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>0.9.15</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -102,23 +136,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <!-- complete META-INF/MANIFEST.MF -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>${sonar.plugin.class}</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
   <profiles>
     <profile>
@@ -225,13 +242,4 @@
       </repositories>
     </profile>
   </profiles>
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/quality-index</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14140</url>
-  </issueManagement>
 </project>
