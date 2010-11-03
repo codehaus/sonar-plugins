@@ -13,7 +13,7 @@
 
   <name>Sonar Artifact Size plugin</name>
   <description>Measure the size of the project artifact</description>
-  <url></url>
+  <url>http://docs.codehaus.org/display/SONAR/Artifact+Size+Plugin</url>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com</url>
