@@ -50,9 +50,6 @@
   </ciManagement>
 
   <properties>
-    <!-- !!! IMPORTANT !!!
-    After changing version - don't forget to change JaCoCoAgentDownloader
-    -->
     <jacoco.version>0.4.0.20100604151516</jacoco.version>
 
     <sonar.version>2.2</sonar.version>
@@ -67,16 +64,10 @@
       <version>${jacoco.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.jacoco</groupId>
-      <artifactId>agent-all</artifactId>
-      <version>${jacoco.version}</version>
-    </dependency>
-    <dependency>
       <groupId>asm</groupId>
       <artifactId>asm-all</artifactId>
       <version>3.2</version>
     </dependency>
-
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
@@ -114,8 +105,49 @@
       </exclusions>
     </dependency>
   </dependencies>
+
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <testResources>
+      <testResource>
+        <directory>${basedir}/src/main/resources</directory>
+      </testResource>
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
+  
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.jacoco</groupId>
+                  <artifactId>agent-all</artifactId>
+                  <version>${jacoco.version}</version>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${project.build.outputDirectory}/org/sonar/plugins/jacoco/</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
@@ -139,6 +171,7 @@
       </plugin>
     </plugins>
   </build>
+
   <profiles>
     <profile>
       <id>integration-tests</id>
