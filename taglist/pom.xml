@@ -3,17 +3,28 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId> 
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-taglist-plugin</artifactId>
-  <name>Sonar Taglist Plugin</name>
-  <version>0.8-SNAPSHOT</version>
-  <description>Analyze various tags found in the code, like @todo or //TODO.</description>
 
-  <properties>
-    <sonar.version>2.0</sonar.version>
-  </properties>
+  <artifactId>sonar-taglist-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.8-SNAPSHOT</version>
+
+  <name>Sonar Taglist Plugin</name>
+  <description>Analyze various tags found in the code, like @todo or //TODO.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Taglist+Plugin</url>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -52,21 +63,24 @@
     </contributor>
   </contributors>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.taglist.TaglistPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/taglist</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13744</url>
+  </issueManagement>
+
+  <properties>
+    <sonar.version>2.0</sonar.version>
+    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
+    <sonar.pluginKey>taglist</sonar.pluginKey>
+    <sonar.pluginName>Taglist</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.taglist.TaglistPlugin</sonar.pluginClass>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -101,14 +115,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/taglist</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/taglist</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13744</url>
-  </issueManagement>
 </project>
