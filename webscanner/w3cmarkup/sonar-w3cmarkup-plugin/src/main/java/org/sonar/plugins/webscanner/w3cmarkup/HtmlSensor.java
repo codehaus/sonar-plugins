@@ -21,6 +21,8 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.settings.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.CoreProperties;
@@ -32,13 +34,16 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
+import org.sonar.plugins.webscanner.Configuration;
 import org.sonar.plugins.webscanner.ProjectConfiguration;
 import org.sonar.plugins.webscanner.html.FileSet;
+import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlFile;
 import org.sonar.plugins.webscanner.language.HtmlProperties;
 import org.sonar.plugins.webscanner.markup.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.MarkupReport;
+import org.sonar.plugins.webscanner.markup.MarkupValidator;
 
 /**
  * @author Matthijs Galesloot
@@ -50,61 +55,88 @@ public final class HtmlSensor implements Sensor {
 
   private final RulesProfile profile;
   private final RuleFinder ruleFinder;
+  private final MavenSession session;
 
-  public HtmlSensor(RulesProfile profile, RuleFinder ruleFinder) {
+  public HtmlSensor(MavenSession session, RulesProfile profile, RuleFinder ruleFinder) {
     LOG.info("Profile: " + profile.getName());
+    this.session = session;
     this.profile = profile;
     this.ruleFinder = ruleFinder;
   }
 
+  private void prepareHtml(File htmlDir) {
+    HtmlScanner htmlScanner = new HtmlScanner();
+    htmlScanner.prepare(htmlDir);
+  }
+
   /**
-   * Find W3C Validation Markup reports in the source tree and save violations to Sonar.
-   * The Markup reports have file extension .mur.
+   * Find W3C Validation Markup reports in the source tree and save violations to Sonar. The Markup reports have file extension .mur.
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
+    configureProxy();
+
     ProjectConfiguration projectConfiguration = new ProjectConfiguration(project);
     projectConfiguration.addSourceDir();
-    File htmlDir = new File(project.getFileSystem().getBasedir() + "/" + projectConfiguration.getSourceDir());
-    if (!htmlDir.exists()) {
-      return;
-      // throw new SonarException("Missing HTML directory: " + htmlDir.getPath());
-    }
-
-    LOG.info("HTML Dir:" + htmlDir);
-    MessageFilter messageFilter = new MessageFilter(project.getProperty(HtmlProperties.EXCLUDE_VIOLATIONS));
 
     int numValid = 0;
+    int numFiles = 0;
 
-    Collection<File> files = FileSet.getReportFiles(htmlDir, MarkupReport.REPORT_SUFFIX);
+    MessageFilter messageFilter = new MessageFilter(project.getProperty(HtmlProperties.EXCLUDE_VIOLATIONS));
 
-    for (File reportFile : files) {
-      MarkupReport report = MarkupReport.fromXml(reportFile);
-
-      if (report.isValid()) {
-        numValid++;
+    for (File sourceDir : projectConfiguration.getSourceDirs()) {
+      if ( !sourceDir.exists()) {
+        LOG.error("Missing HTML directory: " + sourceDir.getPath());
+        continue;
       }
 
-      // derive name of resource from name of report
-      File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), MarkupReport.REPORT_SUFFIX));
-      HtmlFile resource = HtmlFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
+      LOG.info("HTML Dir:" + sourceDir);
 
-      // save errors
-      for (MarkupMessage error : report.getErrors()) {
-        if (messageFilter.accept(error)) {
-          addViolation(sensorContext, resource, error, true);
+      prepareHtml(sourceDir);
+
+      MarkupValidator markupValidator = new MarkupValidator();
+      markupValidator.validateFiles(sourceDir);
+
+      Collection<File> files = FileSet.getReportFiles(sourceDir, MarkupReport.REPORT_SUFFIX);
+
+      for (File reportFile : files) {
+        MarkupReport report = MarkupReport.fromXml(reportFile);
+
+        numFiles++;
+        if (report.isValid()) {
+          numValid++;
         }
-      }
-      // save warnings
-      for (MarkupMessage warning : report.getWarnings()) {
-        if (messageFilter.accept(warning)) {
-          addViolation(sensorContext, resource, warning, false);
+
+        // derive name of resource from name of report
+        File file = new File(StringUtils.substringBefore(report.getReportFile().getPath(), MarkupReport.REPORT_SUFFIX));
+        HtmlFile resource = HtmlFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
+
+        // save errors
+        for (MarkupMessage error : report.getErrors()) {
+          if (messageFilter.accept(error)) {
+            addViolation(sensorContext, resource, error, true);
+          }
+        }
+        // save warnings
+        for (MarkupMessage warning : report.getWarnings()) {
+          if (messageFilter.accept(warning)) {
+            addViolation(sensorContext, resource, warning, false);
+          }
         }
       }
     }
 
-    double percentageValid = files.size() > 0 ? (double) (files.size() - numValid) / files.size() : 100;
+    double percentageValid = numFiles > 0 ? (double) (numFiles - numValid) / numFiles : 100;
     sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
+  }
+
+  private void configureProxy() {
+    Settings settings = session.getSettings();
+    if (settings.getActiveProxy() != null) {
+      LOG.info("configure proxy...");
+      Configuration.setProxyHost(settings.getActiveProxy().getHost());
+      Configuration.setProxyPort(settings.getActiveProxy().getPort());
+    }
   }
 
   private String makeIdentifier(String idString) {

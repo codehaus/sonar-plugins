@@ -33,7 +33,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.Configuration;
 import org.sonar.plugins.webscanner.html.FileSet;
-import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.html.HtmlValidator;
 import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
 
@@ -232,16 +231,6 @@ public final class ToetsToolValidator extends HtmlValidator {
   @Override
   public File reportFile(File file) {
     return new File(file.getParentFile().getPath() + "/" + file.getName() + ToetstoolReport.REPORT_SUFFIX);
-  }
-
-  protected void prepareHtml() {
-
-    File htmlFolder = new File(Configuration.getHtmlDir());
-    if (htmlFolder.exists()) {
-
-      HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(Configuration.getHtmlDir());
-    }
   }
 
   @Override

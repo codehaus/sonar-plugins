@@ -74,7 +74,7 @@ public final class HtmlMarkupMojo extends AbstractMojo {
     prepareHtml();
 
     // execute validation
-    File htmlFolder = new File(Configuration.getHtmlDir());
+    File htmlFolder = new File(htmlDir);
     HtmlValidator validator = new MarkupValidator();
     validator.validateFiles(htmlFolder);
 
@@ -91,7 +91,6 @@ public final class HtmlMarkupMojo extends AbstractMojo {
 
     getLog().info("nrOfSamples = " + nrOfSamples);
 
-    Configuration.setHTMLDir(baseDirectory + "/" + htmlDir);
     if (nrOfSamples != null && nrOfSamples > 0) {
       Configuration.setNrOfSamples(nrOfSamples);
     }
@@ -106,11 +105,11 @@ public final class HtmlMarkupMojo extends AbstractMojo {
 
   private void prepareHtml() {
 
-    File htmlFolder = new File(Configuration.getHtmlDir());
+    File htmlFolder = new File(htmlDir);
     if (htmlFolder.exists()) {
 
       HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(Configuration.getHtmlDir());
+      htmlScanner.prepare(htmlDir);
     }
   }
 

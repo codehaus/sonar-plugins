@@ -39,14 +39,7 @@ public class HtmlScanner {
    * @param path
    *          Path to folder with HTML files.
    */
-  public void prepare(String path) {
-
-    // the provided path must exist
-    File htmlFolder = new File(path);
-    if ( !htmlFolder.exists()) {
-      throw new RuntimeException(path + " does not exist");
-    }
-
+  public void prepare(File htmlFolder) {
     // open existing fileset or create a new fileset
     final FileSet fileSet;
     if (FileSet.getPath(htmlFolder).exists()) {
@@ -60,6 +53,23 @@ public class HtmlScanner {
 
     markDuplicates(fileSet);
     fileSet.toXml(FileSet.getPath(htmlFolder));
+  }
+
+  /**
+   * Prepare Html files for analysis.
+   *
+   * @param path
+   *          Path to folder with HTML files.
+   */
+  public void prepare(String path) {
+
+    // the provided path must exist
+    File htmlFolder = new File(path);
+    if ( !htmlFolder.exists()) {
+      throw new RuntimeException(path + " does not exist");
+    }
+
+    prepare(htmlFolder);
   }
 
   private void collectFiles(FileSet fileSet, File htmlFolder) {

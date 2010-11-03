@@ -16,14 +16,7 @@
 
 package org.sonar.plugins.webscanner;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * Configuration settings for Web modules.
@@ -34,8 +27,6 @@ import org.apache.commons.io.IOUtils;
 public final class Configuration {
 
   private static final String CSS_PATH = "css.path";
-
-  private static final String HTML_PATH = "html.path";
 
   private static final String JMETER_REPORT_PATH = "jmeter.report.path";
 
@@ -51,20 +42,10 @@ public final class Configuration {
 
   private static final String PROXY_USE = "proxy.use";
 
-  private static final String SETTINGS_FILE_NAME = "settings.properties";
-
   private static final String TOETS_TOOL_URL = "toetstool.url";
-
-  static {
-    loadProperties(SETTINGS_FILE_NAME);
-  }
 
   public static String getCssPath() {
     return getProperties().getProperty(CSS_PATH);
-  }
-
-  public static String getHtmlDir() {
-    return getProperties().getProperty(HTML_PATH);
   }
 
   public static String getJMeterReportDir() {
@@ -122,29 +103,8 @@ public final class Configuration {
     }
   }
 
-  /**
-   * Read properties from file.
-   */
-  private static void loadProperties(final String fileName) {
-    try {
-      if (new File(fileName).exists()) {
-        InputStream in = new FileInputStream(fileName);
-        properties.load(in);
-        IOUtils.closeQuietly(in);
-      }
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException("Cannot find the settings file '" + fileName + "'.", e);
-    } catch (IOException e) {
-      throw new RuntimeException("Problem loading the settings file '" + fileName + "'.", e);
-    }
-  }
-
   public static void setCssPath(String path) {
     getProperties().setProperty(CSS_PATH, path);
-  }
-
-  public static void setHTMLDir(String htmlDir) {
-    getProperties().setProperty(HTML_PATH, htmlDir);
   }
 
   public static void setJMeterReportDir(String dir) {

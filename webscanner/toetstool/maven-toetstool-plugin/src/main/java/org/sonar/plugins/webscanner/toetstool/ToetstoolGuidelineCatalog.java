@@ -73,9 +73,8 @@ final class ToetstoolGuidelineCatalog {
       for (MessageDefinition error : errors) {
         String remark = StringEscapeUtils.escapeXml(error.remark);
         String id = error.id;
-        String explanation = null;
         writer.write(String.format("<rule><key>%s</key><remark>%s:%s</remark><priority>MAJOR</priority>"
-            + "<explanation>%s</explanation></rule>\n", id, id, remark, explanation == null ? "" : explanation));
+            + "<explanation></explanation></rule>\n", id, id, remark));
       }
       writer.write("</rules>");
       writer.close();
@@ -90,19 +89,25 @@ final class ToetstoolGuidelineCatalog {
 
     InputStream in = ToetstoolGuidelineCatalog.class.getClassLoader().getResourceAsStream("org/sonar/plugins/web/toetstool/toetstool.txt");
 
-    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    BufferedReader reader = null;
 
-    Properties properties = new Properties();
-    properties.load(ToetstoolGuidelineCatalog.class.getClassLoader().getResourceAsStream("org/sonar/plugins/web/toetstool/guidelines.txt"));
+    try {
+      reader = new BufferedReader(new InputStreamReader(in));
+      Properties properties = new Properties();
+      properties.load(ToetstoolGuidelineCatalog.class.getClassLoader()
+          .getResourceAsStream("org/sonar/plugins/web/toetstool/guidelines.txt"));
 
-    // find errors with explanation
-    String key;
-    while ((key = reader.readLine()) != null) {
+      // find errors with explanation
+      String key;
+      while ((key = reader.readLine()) != null) {
 
-      MessageDefinition error = new MessageDefinition();
-      error.id = key;
-      error.remark = properties.getProperty(key);
-      errors.add(error);
+        MessageDefinition error = new MessageDefinition();
+        error.id = key;
+        error.remark = properties.getProperty(key);
+        errors.add(error);
+      }
+    } finally {
+      IOUtils.closeQuietly(reader);
     }
   }
 }
