@@ -5,29 +5,24 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
 
   <artifactId>sonar-radiator-plugin</artifactId>
-  <packaging>jar</packaging>
+  <packaging>sonar-plugin</packaging>
   <version>1.1-SNAPSHOT</version>
+
   <name>Sonar Radiator plugin</name>
   <description>Display measures in a big treemap.</description>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/radiator</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/radiator</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14067</url>
-  </issueManagement>
-
+  <url>http://docs.codehaus.org/display/SONAR/Radiator+Plugin</url>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
   <licenses>
     <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
+      <name>GNU LGPL 3</name>
       <url>http://www.gnu.org/licenses/lgpl.txt</url>
       <distribution>repo</distribution>
     </license>
@@ -50,28 +45,30 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
+ 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/radiator</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/radiator</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14067</url>
+  </issueManagement>
+
+  <properties>
+    <sonar.version>1.12</sonar.version>
+    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
+    <sonar.pluginKey>radiator</sonar.pluginKey>
+    <sonar.pluginName>Radiator</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.radiator.RadiatorPlugin</sonar.pluginClass>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>1.12</version>
+      <version>${sonar.version}</version>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.radiator.RadiatorPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
