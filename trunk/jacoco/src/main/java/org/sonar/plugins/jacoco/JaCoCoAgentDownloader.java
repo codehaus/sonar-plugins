@@ -20,54 +20,48 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.io.IOUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.HttpDownloader;
 import org.sonar.api.utils.SonarException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class JaCoCoAgentDownloader extends HttpDownloader implements BatchExtension {
 
+  /**
+   * Dirty hack, but it allows to extract agent only once during Sonar analyzes for multi-module project.
+   */
   private static File agentJarFile;
-  private String host;
 
-  public JaCoCoAgentDownloader(Configuration configuration) {
-    host = StringUtils.chomp(configuration.getString("sonar.host.url", "http://localhost:9000"), "/");
+  public JaCoCoAgentDownloader() {
   }
 
-  protected String getDownloadUrl() {
-    return host + "/deploy/plugins/jacoco/agent-all-0.4.0.20100604151516.jar";
-  }
-
-  protected synchronized File getAgentJarFile() {
+  public File getAgentJarFile() {
     if (agentJarFile == null) {
-      agentJarFile = downloadAgent();
+      agentJarFile = extractAgent();
     }
     return agentJarFile;
   }
 
-  protected File downloadAgent() {
+  private File extractAgent() {
     try {
-      URI uri = new URI(getDownloadUrl());
+      InputStream is = getClass().getResourceAsStream("/org/sonar/plugins/jacoco/agent-all-" + JaCoCoVersion.getVersion() + ".jar");
       File agent = File.createTempFile("jacocoagent", ".jar");
-      download(uri, agent);
       FileUtils.forceDeleteOnExit(agent);
-      JaCoCoUtils.LOG.info("JaCoCo agent downloaded: {}", agent);
+      OutputStream os = FileUtils.openOutputStream(agent);
+      IOUtils.copy(is, os);
+      JaCoCoUtils.LOG.info("JaCoCo agent extracted: {}", agent);
       return agent;
     } catch (IOException e) {
       throw new SonarException(e);
-    } catch (URISyntaxException e) {
-      throw new SonarException(e);
     }
   }
-
 }
