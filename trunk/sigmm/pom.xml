@@ -6,14 +6,25 @@
     <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-sigmm-plugin</artifactId>
-  <name>SIG MM Sonar plugin</name>
-  <version>0.4-SNAPSHOT</version>
-  <description>Implementation of the SIG Maintainability Model</description>
 
-  <properties>
-    <sonar.version>2.0.1</sonar.version>
-  </properties>
+  <artifactId>sonar-sigmm-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.4-SNAPSHOT</version>
+
+  <name>SIG MM Sonar plugin</name>
+  <description>Implementation of the SIG Maintainability Model</description>
+  <url>http://docs.codehaus.org/display/SONAR/SIG+Maintainability+Model</url>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -24,21 +35,25 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.sigmm.MMPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13990</url>
+  </issueManagement>
+
+  <properties>
+    <sonar.version>2.0.1</sonar.version>
+    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
+    <sonar.pluginKey>sigmm</sonar.pluginKey>
+    <sonar.pluginName>SIG Maintainability Model</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.sigmm.MMPlugin</sonar.pluginClass>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -78,6 +93,7 @@
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
       <version>3.1</version>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -89,21 +105,25 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.5.6</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>1.5.6</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>0.9.15</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>0.9.15</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -112,6 +132,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <profiles>
     <profile>
       <id>integration-tests</id>
@@ -217,13 +238,4 @@
       </repositories>
     </profile>
   </profiles>
-  <scm>
-    <connection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sigmm/</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13990</url>
-  </issueManagement>
 </project>
