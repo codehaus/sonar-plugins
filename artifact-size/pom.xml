@@ -3,17 +3,28 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <artifactId>sonar-artifact-size-plugin</artifactId>
-  <name>Sonar Artifact Size plugin</name>
-  <version>0.2-SNAPSHOT</version>
-  <description>Measure the size of the project artifact</description>
 
-  <properties>
-    <sonar.version>1.10</sonar.version>
-  </properties>
+  <artifactId>sonar-artifact-size-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.2-SNAPSHOT</version>
+
+  <name>Sonar Artifact Size plugin</name>
+  <description>Measure the size of the project artifact</description>
+  <url></url>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -24,29 +35,23 @@
     </developer>
   </developers>
 
-  <licenses>
-    <license>
-      <name>GNU Lesser General Public License (LGPL), v.3</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/artifact-size</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/artifact-size</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14112</url>
+  </issueManagement>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.artifactsize.ArtifactSizePlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <properties>
+    <sonar.version>1.10</sonar.version>
+    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
+    <sonar.pluginKey>artifactsize</sonar.pluginKey>
+    <sonar.pluginName>Artifact Size</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.artifactsize.ArtifactSizePlugin</sonar.pluginClass>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -75,14 +80,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/artifact-size</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/artifact-size</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
-  </scm>
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14112</url>
-  </issueManagement>
 </project>
