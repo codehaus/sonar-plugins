@@ -13,7 +13,7 @@
         <groupId>org.codehaus.sonar-plugins</groupId>
         <artifactId>sonar-webscanner</artifactId>
         <version>0.1-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../..</relativePath>
     </parent>
 
     <dependencies>
