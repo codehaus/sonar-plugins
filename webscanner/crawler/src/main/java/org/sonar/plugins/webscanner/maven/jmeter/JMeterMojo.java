@@ -66,7 +66,7 @@ public class JMeterMojo extends AbstractMojo {
 
     configureSettings();
 
-    JMeter jmeter = new JMeter(htmlDir, jMeterScriptDir, jMeterScriptDir);
+    JMeter jmeter = new JMeter(htmlDir, jMeterScriptDir, jMeterReportDir);
     jmeter.extractResponses();
   }
 

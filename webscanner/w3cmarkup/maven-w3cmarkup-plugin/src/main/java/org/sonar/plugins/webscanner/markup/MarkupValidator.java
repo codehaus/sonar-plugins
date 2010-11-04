@@ -32,9 +32,11 @@ import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.PartBase;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.html.FileSet;
-import org.sonar.plugins.webscanner.html.HtmlValidator;
+import org.sonar.plugins.webscanner.html.HtmlFileVisitor;
+import org.sonar.plugins.webscanner.html.HtmlValidationHttpClient;
 
 
 /**
@@ -46,27 +48,33 @@ import org.sonar.plugins.webscanner.html.HtmlValidator;
  * @since 0.1
  *
  */
-public final class MarkupValidator extends HtmlValidator {
+public final class MarkupValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
+
+  /** the URL for the online validation service */
+  private static final String DEFAULT_URL = "http://validator.w3.org/check";
+
+  private static final String ERROR_XML = ".mur.error";
 
   private static final Logger LOG = Logger.getLogger(MarkupValidator.class);
 
   private static final String OUTPUT = "output";
-
   private static final String SOAP12 = "soap12";
 
   private static final String TEXT_HTML_CONTENT_TYPE = "text/html";
+
   private static final String UPLOADED_FILE = "uploaded_file";
-
-  /** the URL for the online validation service */
-  private static final String validatorUrl = "http://validator.w3.org/check";
-
-  private static final String ERROR_XML = ".mur.error";
 
   /**
    * Get all report files
    */
   public static Collection<File> getReportFiles(File folder) {
     return FileSet.getReportFiles(folder, MarkupReport.REPORT_SUFFIX);
+  }
+
+  private final String validationUrl;
+
+  public MarkupValidator(String validationUrl) {
+    this.validationUrl = StringUtils.isEmpty(validationUrl) ? DEFAULT_URL : validationUrl;
   }
 
   private File errorFile(File file) {
@@ -78,8 +86,8 @@ public final class MarkupValidator extends HtmlValidator {
    *
    * Documentation of interface: http://validator.w3.org/docs/api.html
    */
-  private void postHtmlContents(File file, String url) {
-    PostMethod post = new PostMethod(validatorUrl);
+  private void postHtmlContents(File file) {
+    PostMethod post = new PostMethod(validationUrl);
     post.addRequestHeader(new Header("User-Agent", "sonar-web-plugin/0.1"));
 
     try {
@@ -124,7 +132,6 @@ public final class MarkupValidator extends HtmlValidator {
   /**
    * Create the path to the report file.
    */
-  @Override
   public File reportFile(File file) {
     return new File(file.getParentFile().getPath() + "/" + file.getName() + MarkupReport.REPORT_SUFFIX);
   }
@@ -132,14 +139,11 @@ public final class MarkupValidator extends HtmlValidator {
   /**
    * Validate a file with the W3C Markup service.
    */
-  @Override
-  public void validateFile(File file, String url) {
-
-    postHtmlContents(file, url);
+  public void validateFile(File file) {
+    postHtmlContents(file);
   }
 
-  @Override
-  protected void waitBetweenValidationRequests() {
+  public void waitBetweenValidationRequests() {
     sleep(1000L);
   }
 

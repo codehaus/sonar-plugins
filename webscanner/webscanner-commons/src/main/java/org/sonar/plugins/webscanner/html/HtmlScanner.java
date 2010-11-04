@@ -33,6 +33,32 @@ public class HtmlScanner {
 
   private static final Logger LOG = Logger.getLogger(HtmlScanner.class);
 
+  private void collectFiles(FileSet fileSet, File htmlFolder) {
+    Collection<File> htmlFiles = FileUtils.listFiles(htmlFolder, new String[] { "html", "htm", "xhtml" }, true);
+
+    for (File file : htmlFiles) {
+      fileSet.addReplaceFile(file, htmlFolder);
+    }
+  }
+
+  private void markDuplicates(FileSet fileSet) {
+    int duplicates = 0;
+    for (int i = 0; i < fileSet.files.size(); i++) {
+
+      HtmlFile htmlFile = fileSet.files.get(i);
+      if (htmlFile.duplicateFile == null) {
+        for (int j = i + 1; j < fileSet.files.size(); j++) {
+          if (fileSet.files.get(j).checksum == htmlFile.checksum) {
+            fileSet.files.get(j).duplicateFile = htmlFile.path;
+            duplicates++;
+          }
+        }
+      }
+    }
+
+    LOG.info(fileSet.files.size() + " files, " + duplicates + " duplicates");
+  }
+
   /**
    * Prepare Html files for analysis.
    *
@@ -70,31 +96,5 @@ public class HtmlScanner {
     }
 
     prepare(htmlFolder);
-  }
-
-  private void collectFiles(FileSet fileSet, File htmlFolder) {
-    Collection<File> htmlFiles = FileUtils.listFiles(htmlFolder, new String[] { "html", "htm", "xhtml" }, true);
-
-    for (File file : htmlFiles) {
-      fileSet.addReplaceFile(file, htmlFolder);
-    }
-  }
-
-  private void markDuplicates(FileSet fileSet) {
-    int duplicates = 0;
-    for (int i = 0; i < fileSet.files.size(); i++) {
-
-      HtmlFile htmlFile = fileSet.files.get(i);
-      if (htmlFile.duplicateFile == null) {
-        for (int j = i + 1; j < fileSet.files.size(); j++) {
-          if (fileSet.files.get(j).checksum == htmlFile.checksum) {
-            fileSet.files.get(j).duplicateFile = htmlFile.path;
-            duplicates++;
-          }
-        }
-      }
-    }
-
-    LOG.info(fileSet.files.size() + " files, " + duplicates + " duplicates");
   }
 }

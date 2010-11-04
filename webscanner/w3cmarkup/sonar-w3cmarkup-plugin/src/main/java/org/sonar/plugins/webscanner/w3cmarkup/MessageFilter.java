@@ -28,7 +28,7 @@ import org.sonar.plugins.webscanner.markup.MarkupMessage;
 
 public final class MessageFilter {
 
-  private static final Logger LOG = LoggerFactory.getLogger(HtmlSensor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(W3CMarkupSensor.class);
 
   private static String makeMessageIdentifier(String idString) {
     int id = NumberUtils.toInt(idString, -1);

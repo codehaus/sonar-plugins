@@ -55,6 +55,8 @@ public final class WebScannerPlugin implements Plugin {
 
     // html language
     list.add(Html.class);
+    list.add(LineCountSensor.class);
+
     // html files importer
     list.add(HtmlSourceImporter.class);
 

@@ -21,9 +21,7 @@ import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.settings.Settings;
-import org.sonar.plugins.webscanner.Configuration;
-import org.sonar.plugins.webscanner.html.HtmlScanner;
-import org.sonar.plugins.webscanner.html.HtmlValidator;
+import org.sonar.plugins.webscanner.html.HtmlFileScanner;
 import org.sonar.plugins.webscanner.markup.MarkupReportBuilder;
 import org.sonar.plugins.webscanner.markup.MarkupValidator;
 
@@ -44,6 +42,7 @@ public final class HtmlMarkupMojo extends AbstractMojo {
    * @readonly
    */
   private File baseDirectory;
+
   /**
    * HTML directory with location of HTML files.
    *
@@ -51,12 +50,22 @@ public final class HtmlMarkupMojo extends AbstractMojo {
    * @required
    */
   private String htmlDir;
+
   /**
    * Number of samples.
    *
    * @parameter
    */
   private Integer nrOfSamples;
+
+  /**
+   * Validation URL.
+   *
+   * @parameter
+   * @required
+   */
+  private String validationUrl;
+
   /**
    * The Maven Settings.
    *
@@ -68,49 +77,22 @@ public final class HtmlMarkupMojo extends AbstractMojo {
 
   public void execute() throws MojoExecutionException {
 
-    configureSettings();
+    File htmlFolder = new File(baseDirectory + "/" + htmlDir);
 
-    // prepare HTML
-    prepareHtml();
+    // markup validator
+    MarkupValidator validator = new MarkupValidator(validationUrl);
+    if (settings.getActiveProxy() != null) {
+      validator.setProxyHost(settings.getActiveProxy().getHost());
+      validator.setProxyPort(settings.getActiveProxy().getPort());
+    }
 
-    // execute validation
-    File htmlFolder = new File(htmlDir);
-    HtmlValidator validator = new MarkupValidator();
-    validator.validateFiles(htmlFolder);
+    // start the html scanner
+    HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
+    htmlFileScanner.validateFiles(htmlFolder, nrOfSamples);
 
     // build report
     MarkupReportBuilder reportBuilder = new MarkupReportBuilder();
     reportBuilder.buildReports(htmlFolder);
-  }
-
-  private void configureSettings() {
-    for (Object key : getPluginContext().keySet()){
-      getLog().info((String) getPluginContext().get(key));
-    }
-    getLog().info("HTMLDir = " + htmlDir);
-
-    getLog().info("nrOfSamples = " + nrOfSamples);
-
-    if (nrOfSamples != null && nrOfSamples > 0) {
-      Configuration.setNrOfSamples(nrOfSamples);
-    }
-
-    // configure proxy
-    if (settings.getActiveProxy() != null) {
-      getLog().info("proxy = " + settings.getActiveProxy().getHost() + ":" + settings.getActiveProxy().getPort() );
-      Configuration.setProxyHost(settings.getActiveProxy().getHost());
-      Configuration.setProxyPort(settings.getActiveProxy().getPort());
-    }
-  }
-
-  private void prepareHtml() {
-
-    File htmlFolder = new File(htmlDir);
-    if (htmlFolder.exists()) {
-
-      HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(htmlDir);
-    }
   }
 
   public void setBaseDirectory(File baseDirectory) {

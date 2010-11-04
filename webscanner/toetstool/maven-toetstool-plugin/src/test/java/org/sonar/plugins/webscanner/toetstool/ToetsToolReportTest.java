@@ -21,19 +21,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.sonar.plugins.webscanner.Configuration;
 import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
 
 public class ToetsToolReportTest {
 
   private static final String packagePath = "src/test/resources/org/sonar/plugins/webscanner/maven/toetstool/";
-
-  @Before
-  public void setToetstoolUrl() {
-    Configuration.setToetstoolURL("http://xyz");
-  }
 
   @Test
   public void parseReport() {

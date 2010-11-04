@@ -28,11 +28,16 @@ import org.sonar.api.Property;
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = "sonar.web.fileExtensions",
-    name = "File extensions",
-    description = "List of file extensions that will be scanned.",
-    defaultValue="html",
-    global = true, project = true)})
+    @Property(key = "sonar.web.fileExtensions",
+        name = "File extensions",
+        description = "List of file extensions that will be scanned.",
+        defaultValue = "html",
+        global = true, project = true),
+    @Property(key = "sonar.toetstool.url",
+        name = "Toetstool API",
+        description = "Toetstool Validation API",
+        defaultValue = "https://api.toetstool.nl/",
+        global = true, project = true) })
 public final class ToetstoolPlugin implements Plugin {
 
   private static final String KEY = "sonar-toetstool-plugin";
@@ -42,7 +47,9 @@ public final class ToetstoolPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return getName() + " collects metrics on live web sites, such as markup validation, wcag compliancy, ...";
+    return getName() + " collects metrics on live web sites, " +
+    		"such as webrichtlijnen compliancy & markup validation. " +
+    		"Consult in advance for large batch jobs at info@toetstool.nl.";
   }
 
   public List<Class<? extends Extension>> getExtensions() {

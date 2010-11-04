@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.toetstool;
+package org.sonar.plugins.webscanner.w3cmarkup;
 
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.maven.execution.MavenSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,55 +38,59 @@ import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlFile;
 import org.sonar.plugins.webscanner.language.HtmlProperties;
-import org.sonar.plugins.webscanner.toetstool.xml.Guideline;
-import org.sonar.plugins.webscanner.toetstool.xml.Guideline.ValidationType;
-import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
+import org.sonar.plugins.webscanner.markup.MarkupMessage;
+import org.sonar.plugins.webscanner.markup.MarkupReport;
+import org.sonar.plugins.webscanner.markup.MarkupValidator;
 
 /**
  * @author Matthijs Galesloot
  * @since 0.1
  */
-public final class ToetstoolSensor implements Sensor {
+public final class W3CMarkupSensor implements Sensor {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ToetstoolSensor.class);
+  private static final String EXCLUDE_VIOLATIONS = "sonar.html.excludeviolations";
+  private static final Logger LOG = LoggerFactory.getLogger(W3CMarkupSensor.class);
 
+  public static final String VALIDATION_URL = "sonar.w3cmarkup.url";
+  private MessageFilter messageFilter;
   private final RulesProfile profile;
   private final RuleFinder ruleFinder;
+
   private final MavenSession session;
 
-  public ToetstoolSensor(MavenSession session, RulesProfile profile, RuleFinder ruleFinder) {
+  public W3CMarkupSensor(MavenSession session, RulesProfile profile, RuleFinder ruleFinder) {
     LOG.info("Profile: " + profile.getName());
     this.session = session;
     this.profile = profile;
     this.ruleFinder = ruleFinder;
   }
 
-  private void addViolation(SensorContext sensorContext, HtmlFile resource, Guideline guideline, boolean error) {
-    String ruleKey = guideline.getRef();
-    Rule rule = ruleFinder.findByKey(ToetstoolRuleRepository.REPOSITORY_KEY, ruleKey);
+  private void addViolation(SensorContext sensorContext, HtmlFile resource, MarkupMessage message, boolean error) {
+    String ruleKey = makeIdentifier(message.getMessageId());
+    Rule rule = ruleFinder.findByKey(MarkupRuleRepository.REPOSITORY_KEY, ruleKey);
     if (rule != null) {
-      Violation violation = Violation.create(rule, resource);
-      violation.setMessage((error ? "" : "Warning: ") + guideline.getRemark());
+      Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
+      violation.setMessage((error ? "" : "Warning: ") + message.getMessage());
       sensorContext.saveViolation(violation);
-      LOG.debug(resource.getName() + ": " + guideline.getRef() + ":" + guideline.getRemark());
+      LOG.debug(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
     } else {
-      LOG.warn("Could not find Toetstool Rule " + guideline.getRef() + ", Message = " + guideline.getRemark());
+      LOG.warn("Could not find Markup Rule " + message.getMessageId() + ", Message = " + message.getMessage());
     }
   }
 
   /**
-   * Find Toetstool Validation reports in the source tree and save violations to Sonar. The Toetstool reports have file extension .ttr.
+   * Find W3C Validation Markup reports in the source tree and save violations to Sonar. The Markup reports have file extension .mur.
    */
   public void analyse(Project project, SensorContext sensorContext) {
+
+    messageFilter = new MessageFilter(project.getProperty(EXCLUDE_VIOLATIONS));
 
     prepareScanning(project);
 
     List<File> files = project.getFileSystem().getSourceFiles(new Html(project));
 
     // create validator
-    ToetsToolValidator validator = new ToetsToolValidator(
-         (String) project.getProperty("sonar.toetstool.url"),
-         project.getFileSystem().getBasedir() + "/" + (String) project.getProperty("sonar.toetstool.cssDir"));
+    MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL));
 
     // configure proxy
     if (session.getSettings().getActiveProxy() != null) {
@@ -101,9 +106,9 @@ public final class ToetstoolSensor implements Sensor {
     saveResults(project, sensorContext, validator, files);
   }
 
-  private boolean hasToetstoolRules() {
+  private boolean hasMarkupRules() {
     for (ActiveRule activeRule : profile.getActiveRules()) {
-      if (ToetstoolRuleRepository.REPOSITORY_KEY.equals(activeRule.getRepositoryKey())) {
+      if (MarkupRuleRepository.REPOSITORY_KEY.equals(activeRule.getRepositoryKey())) {
         return true;
       }
     }
@@ -113,6 +118,15 @@ public final class ToetstoolSensor implements Sensor {
   private boolean isEnabled(Project project) {
     return project.getConfiguration().getBoolean(CoreProperties.CORE_IMPORT_SOURCES_PROPERTY,
         CoreProperties.CORE_IMPORT_SOURCES_DEFAULT_VALUE);
+  }
+
+  private String makeIdentifier(String idString) {
+    int id = NumberUtils.toInt(idString, -1);
+    if (id >= 0) {
+      return String.format("%03d", id);
+    } else {
+      return idString;
+    }
   }
 
   private void prepareScanning(Project project) {
@@ -135,29 +149,26 @@ public final class ToetstoolSensor implements Sensor {
 
   private boolean readValidationReport(SensorContext sensorContext, File reportFile, HtmlFile htmlFile) {
 
-    ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
+    MarkupReport report = MarkupReport.fromXml(reportFile);
 
     // save errors
-    for (Guideline guideline : report.getReport().getGuidelines()) {
-      if (guideline.getType() == ValidationType.error) {
-        addViolation(sensorContext, htmlFile, guideline, true);
-      }
-    }
-    // save warnings
-    for (Guideline guideline : report.getReport().getGuidelines()) {
-      if (guideline.getType() == ValidationType.warning) {
-        addViolation(sensorContext, htmlFile, guideline, false);
+    for (MarkupMessage error : report.getErrors()) {
+      if (messageFilter.accept(error)) {
+        addViolation(sensorContext, htmlFile, error, true);
       }
     }
 
-    return report.getReport().getCounters().getError() == 0;
+    // save warnings
+    for (MarkupMessage warning : report.getWarnings()) {
+      if (messageFilter.accept(warning)) {
+        addViolation(sensorContext, htmlFile, warning, false);
+      }
+    }
+
+    return report.isValid();
   }
 
-  /**
-   * scan all files and find corresponding report file, created by the validator.
-   */
-  private void saveResults(Project project, SensorContext sensorContext, ToetsToolValidator validator, List<File> files) {
-
+  private void saveResults(Project project, SensorContext sensorContext, MarkupValidator validator, List<File> files) {
     int numValid = 0;
     int numFiles = 0;
 
@@ -177,14 +188,14 @@ public final class ToetstoolSensor implements Sensor {
     }
 
     double percentageValid = numFiles > 0 ? (double) (numFiles - numValid) / numFiles : 100;
-    sensorContext.saveMeasure(ToetstoolMetrics.TOETSTOOL_VALIDITY, percentageValid);
+    sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
   }
 
   /**
-   * This sensor only executes on Web projects with Toetstool rules.
+   * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return isEnabled(project) && Html.KEY.equals(project.getLanguage().getKey()) && hasToetstoolRules();
+    return isEnabled(project) && Html.KEY.equals(project.getLanguage().getKey()) && hasMarkupRules();
   }
 
   @Override
