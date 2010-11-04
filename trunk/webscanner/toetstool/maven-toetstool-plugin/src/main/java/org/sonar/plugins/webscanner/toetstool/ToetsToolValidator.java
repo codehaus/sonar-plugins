@@ -31,20 +31,21 @@ import org.apache.commons.httpclient.methods.multipart.PartBase;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.Configuration;
 import org.sonar.plugins.webscanner.html.FileSet;
-import org.sonar.plugins.webscanner.html.HtmlValidator;
+import org.sonar.plugins.webscanner.html.HtmlFileVisitor;
+import org.sonar.plugins.webscanner.html.HtmlValidationHttpClient;
 import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
 
 import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 /**
- * Validate HTML and CSS using toetstool.nl.
+ * Validate HTML and CSS using api.toetstool.nl.
  *
  * @author Matthijs Galesloot
  * @since 0.1
+ *
  */
-public final class ToetsToolValidator extends HtmlValidator {
+public final class ToetsToolValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
 
   private static final Logger LOG = Logger.getLogger(ToetsToolValidator.class);
 
@@ -52,19 +53,35 @@ public final class ToetsToolValidator extends HtmlValidator {
 
   private static final long SLEEP_INTERVAL = 5000L;
 
-  public static String getHtmlReportUrl(String reportNumber) {
-    return String.format("%sreport/%s/%s/", Configuration.getToetstoolURL(), reportNumber, reportNumber);
+  private final String toetstoolURL;
+
+  private final String cssPath;
+
+  public ToetsToolValidator(String toetstoolURL, String cssPath) {
+    if ( !toetstoolURL.endsWith("/")) {
+      this.toetstoolURL = toetstoolURL + '/';
+    } else {
+      this.toetstoolURL = toetstoolURL;
+    }
+    this.cssPath = cssPath;
+    if (!new File(cssPath).exists()) {
+      throw new RuntimeException("Cannot find css folder " + cssPath);
+    }
   }
 
-  private static String getToetsToolUploadUrl() {
-    return Configuration.getToetstoolURL() + "insert/";
+  public String getHtmlReportUrl(String reportNumber) {
+    return String.format("%sreport/%s/%s/", toetstoolURL, reportNumber, reportNumber);
+  }
+
+  private String getToetsToolUploadUrl() {
+    return toetstoolURL + "insert/";
   }
 
   private void addCssContent(File file, List<PartBase> parts) throws IOException {
     CssFinder cssFinder = new CssFinder();
     cssFinder.parseWebFile(file);
-    File[] cssFiles = cssFinder.findCssFiles();
-    File[] cssImports = cssFinder.findCssImports();
+    File[] cssFiles = cssFinder.findCssFiles(cssPath);
+    File[] cssImports = cssFinder.findCssImports(cssPath);
 
     // if (cssFiles.length > 0) {
     // PartBase cv = new StringPart("cv", "0");
@@ -106,7 +123,7 @@ public final class ToetsToolValidator extends HtmlValidator {
   private ToetstoolReport fetchReport(String reportNumber) {
 
     // Compose report URL, e.g. http://dev.toetstool.nl/report/2927/2927/?xmlout=1
-    String reportUrl = String.format("%s/report/%s/%s/?xmlout=1", Configuration.getToetstoolURL(), reportNumber, reportNumber);
+    String reportUrl = String.format("%s/report/%s/%s/?xmlout=1", toetstoolURL, reportNumber, reportNumber);
     LOG.info(reportUrl);
     int failedAttempts = 0;
 
@@ -199,12 +216,11 @@ public final class ToetsToolValidator extends HtmlValidator {
   /**
    * Validate a file with the Toetstool service.
    */
-  @Override
-  public void validateFile(File file, String url) {
+  public void validateFile(File file) {
 
     try {
       // post html contents, in return we get a redirect location
-      String redirectLocation = postHtmlContents(file, url);
+      String redirectLocation = postHtmlContents(file, getUrl(file));
 
       if (redirectLocation != null) {
         // get the report number from the redirect location
@@ -224,17 +240,28 @@ public final class ToetsToolValidator extends HtmlValidator {
     }
   }
 
+  private String getUrl(File file) {
+    File reportFile = reportFile(file);
+    String url = null;
+    if (reportFile.exists()) {
+      ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
+      url = report.getReport().getUrl();
+    }
+    if (StringUtils.isEmpty(url)) {
+      url = "http://localhost";
+    }
+    return url;
+  }
+
   public static Collection<File> getReportFiles(File htmlFolder) {
     return FileSet.getReportFiles(htmlFolder, ToetstoolReport.REPORT_SUFFIX);
   }
 
-  @Override
   public File reportFile(File file) {
     return new File(file.getParentFile().getPath() + "/" + file.getName() + ToetstoolReport.REPORT_SUFFIX);
   }
 
-  @Override
-  protected void waitBetweenValidationRequests() {
+  public void waitBetweenValidationRequests() {
 
   }
 }

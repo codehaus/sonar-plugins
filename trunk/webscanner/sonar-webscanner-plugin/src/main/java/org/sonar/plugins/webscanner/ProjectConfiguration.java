@@ -29,6 +29,7 @@ public class ProjectConfiguration {
   public ProjectConfiguration(Project project) {
     this.project = project;
   }
+
   public void addSourceDir() {
     String sourceDir = getSourceDir();
     if (sourceDir != null) {
@@ -44,6 +45,6 @@ public class ProjectConfiguration {
   }
 
   private String getSourceDir() {
-    return (String) project.getConfiguration().getProperty(HtmlProperties.SOURCE_DIRECTORY);
+    return (String) project.getProperty(HtmlProperties.SOURCE_DIRECTORY);
   }
 }

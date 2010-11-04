@@ -16,40 +16,41 @@
 
 package org.sonar.plugins.webscanner.html;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.protocol.Protocol;
+import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.Configuration;
-import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
+import org.sonar.plugins.webscanner.ssl.EasySSLProtocolSocketFactory;
 
 /**
- * Abstract superclass for all Validation services.
+ * Client
  *
- * @author Matthijs Galesloot
- * @since 0.1
+ * @author A130564
  *
  */
-public abstract class HtmlValidator {
+public class HtmlValidationHttpClient {
 
-  private static final Logger LOG = Logger.getLogger(HtmlValidator.class);
+  private static final Logger LOG = Logger.getLogger(HtmlValidationHttpClient.class);
+
+  static {
+    Protocol.registerProtocol("https", new Protocol("https", (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
+  }
 
   private final HttpClient client;
 
-  public HtmlValidator() {
-    client = new HttpClient();
-    if (Configuration.useProxy()) {
-      client.getHostConfiguration().setProxy(Configuration.getProxyHost(), Configuration.getProxyPort());
-    }
-  }
+  private String proxyHost;
 
-  protected HttpClient getClient() {
-    return client;
+  private int proxyPort;
+
+  public HtmlValidationHttpClient() {
+    this.client = new HttpClient();
+    if (useProxy()) {
+      client.getHostConfiguration().setProxy(getProxyHost(), getProxyPort());
+    }
   }
 
   protected void executePostMethod(PostMethod post) {
@@ -66,7 +67,7 @@ public abstract class HtmlValidator {
           sleep(1000L);
         }
       } catch (UnknownHostException e) {
-        if (Configuration.useProxy()) {
+        if (useProxy()) {
           LOG.warn("Unknown host, retry without proxy...");
           getClient().getHostConfiguration().setProxyHost(null);
           try {
@@ -81,15 +82,35 @@ public abstract class HtmlValidator {
     }
   }
 
-  protected List<HtmlFile> randomSubset(List<HtmlFile> htmlFiles, Integer amount) {
-    List<HtmlFile> newCollection = new ArrayList<HtmlFile>();
-    for (int i = 0; i < amount && i < htmlFiles.size(); i++) {
-      newCollection.add(htmlFiles.get(i));
-    }
-    return newCollection;
+  protected HttpClient getClient() {
+    return client;
   }
 
-  public abstract File reportFile(File file);
+  /**
+   * Returns the proxy host.
+   *
+   * @return proxy host
+   */
+  public String getProxyHost() {
+    return proxyHost;
+  }
+
+  /**
+   * Returns the proxy port.
+   *
+   * @return proxy port
+   */
+  public int getProxyPort() {
+    return proxyPort;
+  }
+
+  public void setProxyHost(String proxyHost) {
+    this.proxyHost = proxyHost;
+  }
+
+  public void setProxyPort(int proxyPort) {
+    this.proxyPort = proxyPort;
+  }
 
   protected void sleep(long sleepInterval) {
     try {
@@ -99,37 +120,13 @@ public abstract class HtmlValidator {
     }
   }
 
-  public abstract void validateFile(File file, String url);
-
   /**
-   * Validate a set of files using the service.
+   * Returns whether or not to use a proxy.
+   *
+   * @return true/false
    */
-  public void validateFiles(File folder) {
-    FileSet fileSet = FileSet.fromXml(FileSet.getPath(folder));
-    List<HtmlFile> files = removeDuplicates(fileSet.files);
-
-    if (Configuration.getNrOfSamples() != null) {
-      files = randomSubset(files, Configuration.getNrOfSamples());
-    }
-
-    int n = 0;
-    for (HtmlFile file : files) {
-      if (n++ > 0) {
-        waitBetweenValidationRequests();
-      }
-      validateFile(new File(folder.getPath() + "/" + file.path), file.url);
-    }
+  public boolean useProxy() {
+    return proxyHost != null && proxyPort > 0;
   }
 
-  private List<HtmlFile> removeDuplicates(List<HtmlFile> list) {
-    final List<HtmlFile> files = new ArrayList<HtmlFile>();
-    for (HtmlFile file : list) {
-      if (file.duplicateFile == null) {
-        files.add(file);
-      }
-    }
-    return files;
-  }
-
-  protected abstract void waitBetweenValidationRequests();
 }

@@ -193,7 +193,7 @@ public final class ToetsToolReportBuilder {
       sb.append("<tr>");
 
       // URL to toetstool report
-      String reportUrl = ToetsToolValidator.getHtmlReportUrl(report.getReportNumber());
+      String reportUrl = new ToetsToolValidator("http://TODO/", "/").getHtmlReportUrl(report.getReportNumber());
       String anchor = String.format("<a href=\"%s\">%s</a>", reportUrl, report.getReportNumber());
       addCells(anchor);
 

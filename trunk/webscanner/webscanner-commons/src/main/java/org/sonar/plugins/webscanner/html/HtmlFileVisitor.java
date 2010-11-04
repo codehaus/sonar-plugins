@@ -13,28 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.webscanner.language;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.sonar.api.resources.Project;
+package org.sonar.plugins.webscanner.html;
+
+import java.io.File;
 
 /**
- * Constants for web properties.
+ * Visitor of HTML file
  *
  * @author Matthijs Galesloot
- * @since 1.0
+ * @since 0.1
  */
-public final class HtmlProperties {
+public interface HtmlFileVisitor {
 
-  private HtmlProperties() {
-    // utility class
-  }
+  File reportFile(File file);
 
-  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
-  public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
-  public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
+  void validateFile(File file);
 
-  public static Integer getNrOfSamples(Project project) {
-    return NumberUtils.toInt((String) project.getProperty(NR_OF_SAMPLES));
-  }
+  void waitBetweenValidationRequests();
 }

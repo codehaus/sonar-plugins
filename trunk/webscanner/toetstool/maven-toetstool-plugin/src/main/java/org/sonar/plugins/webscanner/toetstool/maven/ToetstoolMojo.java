@@ -18,15 +18,10 @@ package org.sonar.plugins.webscanner.toetstool.maven;
 
 import java.io.File;
 
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.settings.Settings;
-import org.sonar.plugins.webscanner.Configuration;
-import org.sonar.plugins.webscanner.html.HtmlScanner;
-import org.sonar.plugins.webscanner.html.HtmlValidator;
-import org.sonar.plugins.webscanner.ssl.EasySSLProtocolSocketFactory;
+import org.sonar.plugins.webscanner.html.HtmlFileScanner;
 import org.sonar.plugins.webscanner.toetstool.ToetsToolReportBuilder;
 import org.sonar.plugins.webscanner.toetstool.ToetsToolValidator;
 
@@ -39,10 +34,6 @@ import org.sonar.plugins.webscanner.toetstool.ToetsToolValidator;
  * @since 0.1
  */
 public final class ToetstoolMojo extends AbstractMojo {
-
-  static {
-    Protocol.registerProtocol("https", new Protocol("https", (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
-  }
 
   /**
    * Directory containing css files.
@@ -94,52 +85,22 @@ public final class ToetstoolMojo extends AbstractMojo {
 
   public void execute() throws MojoExecutionException {
 
-    configureSettings();
+    File htmlFolder = new File(baseDirectory + "/" + htmlDir);
 
-    // prepare HTML
-    prepareHtml();
+    // toetstool validator
+    ToetsToolValidator validator = new ToetsToolValidator(toetsToolUrl, baseDirectory + "/" + cssDir);
+    if (settings.getActiveProxy() != null) {
+      validator.setProxyHost(settings.getActiveProxy().getHost());
+      validator.setProxyPort(settings.getActiveProxy().getPort());
+    }
 
-    // execute validation
-    File htmlFolder = new File(htmlDir);
-    HtmlValidator toetstool = new ToetsToolValidator();
-    toetstool.validateFiles(htmlFolder);
+    // start the html scanner
+    HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
+    htmlFileScanner.validateFiles(htmlFolder, nrOfSamples);
 
     // build report
     ToetsToolReportBuilder reportBuilder = new ToetsToolReportBuilder();
     reportBuilder.buildReports(htmlFolder);
-  }
-
-  protected void prepareHtml() {
-
-    File htmlFolder = new File(htmlDir);
-    if (htmlFolder.exists()) {
-
-      HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(htmlDir);
-    }
-  }
-  protected void configureSettings() {
-
-    for (Object key : getPluginContext().keySet()){
-      getLog().info((String) getPluginContext().get(key));
-    }
-    getLog().info("toetsToolUrl = " + toetsToolUrl);
-    getLog().info("cssDir = " + cssDir);
-    getLog().info("HTMLDir = " + htmlDir);
-    getLog().info("nrOfSamples = " + nrOfSamples);
-
-    Configuration.setToetstoolURL(toetsToolUrl);
-    Configuration.setCssPath(cssDir);
-    if (nrOfSamples != null && nrOfSamples > 0) {
-      Configuration.setNrOfSamples(nrOfSamples);
-    }
-
-    // configure proxy
-    if (settings.getActiveProxy() != null) {
-      getLog().info("proxy = " + settings.getActiveProxy().getHost() + ":" + settings.getActiveProxy().getPort() );
-      Configuration.setProxyHost(settings.getActiveProxy().getHost());
-      Configuration.setProxyPort(settings.getActiveProxy().getPort());
-    }
   }
 
   public void setCssDir(String cssDir) {

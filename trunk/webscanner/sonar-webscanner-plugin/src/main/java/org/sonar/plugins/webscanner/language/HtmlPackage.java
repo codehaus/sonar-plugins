@@ -27,7 +27,7 @@ import org.sonar.api.utils.WildcardPattern;
  */
 public class HtmlPackage extends Resource {
 
-  public static final String DEFAULT_PACKAGE_NAME = "/";
+  public static final String DEFAULT_PACKAGE_NAME = "[default]";
 
   public HtmlPackage(String key) {
     super();

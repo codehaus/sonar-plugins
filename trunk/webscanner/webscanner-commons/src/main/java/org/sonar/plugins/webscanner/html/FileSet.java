@@ -46,13 +46,11 @@ public class FileSet {
   @XStreamAlias("file")
   public static class HtmlFile {
 
-    public String path;
-    public String url;
     public long checksum;
     public String duplicateFile;
+    public String path;
+    public String url;
   }
-
-  public final List<HtmlFile> files = new ArrayList<HtmlFile>();
 
   public static FileSet fromXml(File file) {
     try {
@@ -67,6 +65,35 @@ public class FileSet {
     return (FileSet) getXstream().fromXML(input);
   }
 
+  public static File getPath(File htmlFolder) {
+    return new File(htmlFolder.getPath() + "/fileset.xml");
+  }
+
+  public static Collection<File> getReportFiles(File htmlFolder, final String reportXml) {
+    @SuppressWarnings("unchecked")
+    Collection<File> reportFiles = FileUtils.listFiles(htmlFolder, new IOFileFilter() {
+
+      public boolean accept(File file) {
+        return file.getName().endsWith(reportXml);
+      }
+
+      public boolean accept(File dir, String name) {
+        return name.endsWith(reportXml);
+      }
+    }, new IOFileFilter() {
+
+      public boolean accept(File file) {
+        return true;
+      }
+
+      public boolean accept(File dir, String name) {
+        return true;
+      }
+    });
+
+    return reportFiles;
+  }
+
   private static XStream getXstream() {
     XStream xstream = new XStream();
     xstream.setClassLoader(FileSet.class.getClassLoader());
@@ -74,41 +101,7 @@ public class FileSet {
     return xstream;
   }
 
-  public void toXml(File file) {
-    try {
-      file.getParentFile().mkdirs();
-      getXstream().toXML(this, new FileOutputStream(file));
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public static File getPath(File htmlFolder) {
-    return new File(htmlFolder.getPath() + "/fileset.xml");
-  }
-
-  /**
-   * getRelativePath("c:/foo/src/my/package/Hello.java", ["c:/bar", "c:/foo/src"]) is "my/package/Hello.java".
-   * <p/>
-   * <p>
-   * Relative path is composed of slashes. Windows backslaches are replaced by /
-   * </p>
-   *
-   * @return null if file is not in dir (including recursive subdirectories)
-   */
-  public String getRelativePath(File file, File dir) {
-    List<String> stack = new ArrayList<String>();
-    String path = FilenameUtils.normalize(file.getAbsolutePath());
-    File cursor = new File(path);
-    while (cursor != null) {
-      if (FilenameUtils.equalsNormalizedOnSystem(dir.getAbsolutePath(), cursor.getAbsolutePath())) {
-        return StringUtils.join(stack, "/");
-      }
-      stack.add(0, cursor.getName());
-      cursor = cursor.getParentFile();
-    }
-    return null;
-  }
+  public final List<HtmlFile> files = new ArrayList<HtmlFile>();
 
   /**
    * Add/Replace a file to the fileset.
@@ -136,29 +129,36 @@ public class FileSet {
     return htmlFile;
   }
 
-  public static Collection<File> getReportFiles(File htmlFolder, final String reportXml) {
-    @SuppressWarnings("unchecked")
-    Collection<File> reportFiles = FileUtils.listFiles(htmlFolder, new IOFileFilter() {
-
-      public boolean accept(File file) {
-        return file.getName().endsWith(reportXml);
+  /**
+   * getRelativePath("c:/foo/src/my/package/Hello.java", ["c:/bar", "c:/foo/src"]) is "my/package/Hello.java".
+   * <p/>
+   * <p>
+   * Relative path is composed of slashes. Windows backslaches are replaced by /
+   * </p>
+   *
+   * @return null if file is not in dir (including recursive subdirectories)
+   */
+  public String getRelativePath(File file, File dir) {
+    List<String> stack = new ArrayList<String>();
+    String path = FilenameUtils.normalize(file.getAbsolutePath());
+    File cursor = new File(path);
+    while (cursor != null) {
+      if (FilenameUtils.equalsNormalizedOnSystem(dir.getAbsolutePath(), cursor.getAbsolutePath())) {
+        return StringUtils.join(stack, "/");
       }
+      stack.add(0, cursor.getName());
+      cursor = cursor.getParentFile();
+    }
+    return null;
+  }
 
-      public boolean accept(File dir, String name) {
-        return name.endsWith(reportXml);
-      }
-    }, new IOFileFilter() {
-
-      public boolean accept(File file) {
-        return true;
-      }
-
-      public boolean accept(File dir, String name) {
-        return true;
-      }
-    });
-
-    return reportFiles;
+  public void toXml(File file) {
+    try {
+      file.getParentFile().mkdirs();
+      getXstream().toXML(this, new FileOutputStream(file));
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    }
   }
 
 }

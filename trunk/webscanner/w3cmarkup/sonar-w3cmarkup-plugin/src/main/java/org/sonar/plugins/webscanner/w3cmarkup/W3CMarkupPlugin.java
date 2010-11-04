@@ -23,16 +23,22 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.plugins.webscanner.language.HtmlProperties;
 
 /**
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = "sonar.web.fileExtensions",
+  @Property(key = HtmlProperties.FILE_EXTENSIONS,
     name = "File extensions",
     description = "List of file extensions that will be scanned.",
     defaultValue="html",
-    global = true, project = true)})
+    global = true, project = true),
+@Property(key = W3CMarkupSensor.VALIDATION_URL,
+    name = "W3CMarkup API",
+    description = "W3CMarkup Validation API",
+    defaultValue = "http://validator.w3.org/check",
+    global = true, project = true) })
 public final class W3CMarkupPlugin implements Plugin {
 
   private static final String KEY = "sonar-w3cmarkup-plugin";
@@ -42,7 +48,7 @@ public final class W3CMarkupPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return getName() + " validates HTML with help of the W3C Markup Validator";
+    return getName() + " validates HTML markup with help of the online W3C Markup Validator";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
@@ -54,8 +60,12 @@ public final class W3CMarkupPlugin implements Plugin {
     list.add(MarkupProfileImporter.class);
     list.add(DefaultMarkupProfile.class);
     list.add(HtmlMetrics.class);
+
+    // widget for dashboard
     list.add(HtmlWidget.class);
-    list.add(HtmlSensor.class);
+
+    // sensor
+    list.add(W3CMarkupSensor.class);
 
     return list;
   }

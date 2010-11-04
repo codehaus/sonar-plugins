@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.Configuration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -46,9 +45,9 @@ final class CssFinder {
 
   private final List<String> styleSheets = new ArrayList<String>();
 
-  public File[] findCssFiles() {
+  public File[] findCssFiles(String cssPath) {
     List<File> cssFiles = new ArrayList<File>();
-    File folder = new File(Configuration.getCssPath());
+    File folder = new File(cssPath);
     for (File file : folder.listFiles()) {
       for (String styleSheet : styleSheets) {
         if (file.getName().contains(styleSheet)) {
@@ -61,9 +60,9 @@ final class CssFinder {
     return cssFiles.toArray(new File[cssFiles.size()]);
   }
 
-  public File[] findCssImports() {
+  public File[] findCssImports(String cssPath) {
     List<File> imports = new ArrayList<File>();
-    for (File file : findCssFiles()) {
+    for (File file : findCssFiles(cssPath)) {
 
       BufferedReader reader = null;
       try {
@@ -73,7 +72,7 @@ final class CssFinder {
           // @import url(type.css);
           if (line.contains("@import")) {
             String fileName = StringUtils.substringBeforeLast(StringUtils.substringAfterLast(line, "("), ")");
-            File importFile = new File(Configuration.getCssPath() + "/" + fileName);
+            File importFile = new File(cssPath + "/" + fileName);
             if (importFile.exists()) {
               LOG.debug("Import file " + fileName);
               imports.add(importFile);
