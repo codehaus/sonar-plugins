@@ -19,19 +19,20 @@
  */
 package org.sonar.plugins.dbcleaner;
 
-import org.apache.commons.configuration.Configuration;
-import org.junit.Test;
-import org.sonar.plugins.dbcleaner.DbCleanerRunner;
-
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DbCleanerRunnerTest {
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import org.apache.commons.configuration.Configuration;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.sonar.jpa.test.AbstractDbUnitTestCase;
+
+public class DbCleanerRunnerTest extends AbstractDbUnitTestCase {
 
   DbCleanerRunner purge = new DbCleanerRunner(null, null);
 
@@ -47,5 +48,16 @@ public class DbCleanerRunnerTest {
     Date expectedDate = calendar.getTime();
 
     assertThat(date.getMonth(), is(expectedDate.getMonth()));
+  }
+
+  @Test
+  @Ignore
+  public void realLife() {
+    DbCleanerRunner purge = new DbCleanerRunner(getSession(), null);
+    setupData("sharedFixture", "dbCleaner");
+
+    purge.purge(null);
+
+    checkTables("dbCleaner", "snapshots", "project_measures", "measure_data", "rule_failures", "snapshot_sources");
   }
 }
