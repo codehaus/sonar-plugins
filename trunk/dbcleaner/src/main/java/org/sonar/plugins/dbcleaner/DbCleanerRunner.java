@@ -113,7 +113,6 @@ public class DbCleanerRunner extends AbstractPurge {
   private List<DbCleanerFilter> initDbCleanerFilters() {
     List<DbCleanerFilter> filters = Lists.newArrayList();
     filters.add(new KeepSnapshotsBetweenTwoDates(new Date(), dateToStartKeepingOneSnapshotByWeek));
-    filters.add(new KeepSnapshotsWithoutChildren(sql));
     filters.add(new KeepSnapshotWithNewVersion());
     filters.add(new KeepOneSnapshotByPeriodBetweenTwoDates(GregorianCalendar.WEEK_OF_YEAR, dateToStartKeepingOneSnapshotByWeek,
         dateToStartKeepingOneSnapshotByMonth));
