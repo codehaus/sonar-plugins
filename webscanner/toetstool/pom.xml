@@ -10,7 +10,7 @@
   <description>Toetstool: validation of webrichtlijnen</description>
 
    <modules>
-        <module>sonar-toetstool-plugin</module>
+        <!--  <module>sonar-toetstool-plugin</module> -->
         <module>maven-toetstool-plugin</module>
    </modules>
     
