@@ -44,36 +44,40 @@ public class DbCleanerRunner extends AbstractPurge {
   private final Project project;
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat();
 
-  private Date dateToStartKeepingOneSnapshotByWeek;
-  private Date dateToStartKeepingOneSnapshotByMonth;
-  private Date dateToStartDeletingAllSnapshots;
+  Date dateToStartKeepingOneSnapshotByWeek;
+  Date dateToStartKeepingOneSnapshotByMonth;
+  Date dateToStartDeletingAllSnapshots;
 
   public DbCleanerRunner(DatabaseSession session, Project project) {
     super(session);
     this.sql = new DbCleanerSqlRequests(session);
     this.project = project;
+    initMilestones();
   }
 
   public void purge(PurgeContext context) {
+    purge(context.getLastSnapshotId());
+  }
+
+  public void purge(int snapshotId) {
     TimeProfiler profiler = new TimeProfiler().start("DbCleaner");
 
-    initMilestones();
     List<DbCleanerFilter> filters = initDbCleanerFilters();
-    List<Snapshot> snapshotHistory = getAllProjectSnapshots(context);
+    List<Snapshot> snapshotHistory = getAllProjectSnapshots(snapshotId);
     applyFilters(snapshotHistory, filters);
     deleteSnapshotsAndAllRelatedData(snapshotHistory);
 
     profiler.stop();
   }
 
-  private List<Snapshot> getAllProjectSnapshots(PurgeContext context) {
-    List<Snapshot> snapshotHistory = Lists.newLinkedList(sql.getProjectSnapshotsOrderedByCreatedAt(context.getLastSnapshotId()));
+  private List<Snapshot> getAllProjectSnapshots(int snapshotId) {
+    List<Snapshot> snapshotHistory = Lists.newLinkedList(sql.getProjectSnapshotsOrderedByCreatedAt(snapshotId));
     LOG.info("The project '" + project.getName() + "' has " + snapshotHistory.size() + " snapshots.");
     return snapshotHistory;
   }
 
   private void deleteSnapshotsAndAllRelatedData(List<Snapshot> snapshotHistory) {
-    if(snapshotHistory.isEmpty()){
+    if (snapshotHistory.isEmpty()) {
       LOG.info("There isn't any snapshots to purge");
       return;
     }
@@ -105,15 +109,16 @@ public class DbCleanerRunner extends AbstractPurge {
     dateToStartKeepingOneSnapshotByMonth = getDate(project.getConfiguration(),
         DbCleanerConstants.MONTHS_BEFORE_KEEPING_ONLY_ONE_SNAPSHOT_BY_MONTH, DbCleanerConstants._12_MONTH);
     LOG.debug("Keep only one snapshot by month after : " + dateFormat.format(dateToStartKeepingOneSnapshotByMonth));
-    dateToStartDeletingAllSnapshots = getDate(project.getConfiguration(),
-        DbCleanerConstants.MONTHS_BEFORE_DELETING_ALL_SNAPSHOTS, DbCleanerConstants._36_MONTH);
+    dateToStartDeletingAllSnapshots = getDate(project.getConfiguration(), DbCleanerConstants.MONTHS_BEFORE_DELETING_ALL_SNAPSHOTS,
+        DbCleanerConstants._36_MONTH);
     LOG.debug("Delete all snapshots after : " + dateFormat.format(dateToStartDeletingAllSnapshots));
   }
 
   private List<DbCleanerFilter> initDbCleanerFilters() {
     List<DbCleanerFilter> filters = Lists.newArrayList();
+    filters.add(new KeepLibrarySnapshot());
     filters.add(new KeepSnapshotsBetweenTwoDates(new Date(), dateToStartKeepingOneSnapshotByWeek));
-    filters.add(new KeepSnapshotWithNewVersion());
+    filters.add(new KeepSnapshotWithNewVersion(dateToStartDeletingAllSnapshots));
     filters.add(new KeepOneSnapshotByPeriodBetweenTwoDates(GregorianCalendar.WEEK_OF_YEAR, dateToStartKeepingOneSnapshotByWeek,
         dateToStartKeepingOneSnapshotByMonth));
     filters.add(new KeepOneSnapshotByPeriodBetweenTwoDates(GregorianCalendar.MONTH, dateToStartKeepingOneSnapshotByMonth,
