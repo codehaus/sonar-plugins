@@ -30,6 +30,7 @@ public class Utils {
     Snapshot snapshot = new Snapshot();
     snapshot.setId(id);
     snapshot.setVersion(version);
+    snapshot.setCreatedAt(new GregorianCalendar().getTime());
     return snapshot;
   }
 

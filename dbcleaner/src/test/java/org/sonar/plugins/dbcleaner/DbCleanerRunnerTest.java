@@ -21,25 +21,24 @@ package org.sonar.plugins.dbcleaner;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.apache.commons.configuration.Configuration;
-import org.junit.Ignore;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
-import org.sonar.jpa.test.AbstractDbUnitTestCase;
+import org.sonar.api.resources.Project;
 
-public class DbCleanerRunnerTest extends AbstractDbUnitTestCase {
-
-  DbCleanerRunner purge = new DbCleanerRunner(null, null);
+public class DbCleanerRunnerTest {
 
   @Test
   public void getDateShouldReturnCurrentTimeMinusDesiredMonths() {
-    Configuration conf = mock(Configuration.class);
-    when(conf.getInt("KEY", 2)).thenReturn(2);
+    Project project = new Project("myproject");
+    PropertiesConfiguration conf = new PropertiesConfiguration();
+    conf.setProperty("KEY", "2");
+    project.setConfiguration(conf);
+
+    DbCleanerRunner purge = new DbCleanerRunner(null, project);
 
     Date date = purge.getDate(conf, "KEY", "2");
 
@@ -48,16 +47,5 @@ public class DbCleanerRunnerTest extends AbstractDbUnitTestCase {
     Date expectedDate = calendar.getTime();
 
     assertThat(date.getMonth(), is(expectedDate.getMonth()));
-  }
-
-  @Test
-  @Ignore
-  public void realLife() {
-    DbCleanerRunner purge = new DbCleanerRunner(getSession(), null);
-    setupData("sharedFixture", "dbCleaner");
-
-    purge.purge(null);
-
-    checkTables("dbCleaner", "snapshots", "project_measures", "measure_data", "rule_failures", "snapshot_sources");
   }
 }

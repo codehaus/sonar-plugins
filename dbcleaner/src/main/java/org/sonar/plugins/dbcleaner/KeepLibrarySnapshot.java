@@ -19,28 +19,12 @@
  */
 package org.sonar.plugins.dbcleaner;
 
-import java.util.Date;
-
 import org.sonar.api.database.model.Snapshot;
 
-class KeepSnapshotWithNewVersion extends DbCleanerFilter {
-
-  private String lastSnapshotVersion = null;
-  private Date dateToStartDeletingAllSnapshots;
-
-  public KeepSnapshotWithNewVersion(Date dateToStartDeletingAllSnapshots) {
-    this.dateToStartDeletingAllSnapshots = dateToStartDeletingAllSnapshots;
-  }
+class KeepLibrarySnapshot extends DbCleanerFilter {
 
   @Override
   boolean filter(Snapshot snapshot) {
-    boolean result = false;
-    String snapshotVersion = (snapshot.getVersion() != null ? snapshot.getVersion() : "");
-    if ( !snapshotVersion.equals(lastSnapshotVersion) && snapshot.getCreatedAt().after(dateToStartDeletingAllSnapshots)) {
-      result = true;
-    }
-    lastSnapshotVersion = snapshotVersion;
-    return result;
+    return snapshot.getQualifier().equals("LIB");
   }
-
 }

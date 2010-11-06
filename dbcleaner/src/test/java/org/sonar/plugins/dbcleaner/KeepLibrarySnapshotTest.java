@@ -23,28 +23,27 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.sonar.plugins.dbcleaner.Utils.createSnapshot;
 
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 import org.sonar.api.database.model.Snapshot;
-import org.sonar.plugins.dbcleaner.KeepSnapshotWithNewVersion;
+import org.sonar.plugins.dbcleaner.KeepLastSnapshot;
 
-public class KeepSnapshotWithNewVersionTest {
+public class KeepLibrarySnapshotTest {
 
   @Test
   public void testFilter() {
     List<Snapshot> snapshots = new LinkedList<Snapshot>();
-    snapshots.add(createSnapshot(1, "0.1"));
-    snapshots.add(createSnapshot(2, "0.1"));
-    snapshots.add(createSnapshot(3, "0.2"));
-    snapshots.add(createSnapshot(4, "0.2"));
-    snapshots.add(createSnapshot(5, "0.3"));
+    Snapshot snapshot = createSnapshot(2, "0.1");
+    snapshots.add(snapshot);
+    snapshot.setQualifier("TRK");
+    snapshot = createSnapshot(2, "0.1");
+    snapshot.setQualifier("LIB");
+    snapshots.add(snapshot);
 
-    assertThat(new KeepSnapshotWithNewVersion(new GregorianCalendar(2000, 10, 1).getTime()).filter(snapshots), is(3));
-    assertThat(snapshots.size(), is(2));
+    assertThat(new KeepLibrarySnapshot().filter(snapshots), is(1));
+    assertThat(snapshots.size(), is(1));
     assertThat(snapshots.get(0).getId(), is(2));
-    assertThat(snapshots.get(1).getId(), is(4));
   }
 }
