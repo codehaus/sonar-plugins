@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>sonarsource</groupId>
+    <artifactId>web</artifactId>
+    <version>0.1</version>
+
+    <name>sonarsource</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Sonar properties -->
+        <sonar.language>html</sonar.language>
+        <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+
+        <!-- webscanner -->
+        <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
+        <sonar.html.sourceDirectory>src/html</sonar.html.sourceDirectory>
+
+        <!-- w3cmarkup -->
+        <sonar.html.excludeviolations>
+            127:.*required attribute "rows" not specified,
+            025:.*general entity "organisatie" not defined and no default entity,
+            141:.*ID "javax.faces.ViewState" already defined,
+            108:.*there is no attribute "name",
+            108:.*there is no attribute "target",
+            065:.*document type does not allow element "input" here
+        </sonar.html.excludeviolations>
+
+        <!-- toetstool -->
+        <sonar.toetstool.cssDir>src/html</sonar.toetstool.cssDir>
+        <sonar.toetstool.url>https://api.toetstool.nl/</sonar.toetstool.url>
+
+        <sonar.html.nrOfSamples></sonar.html.nrOfSamples>
+    </properties>
+
+    <build>
+        <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.sonar</groupId>
+                            <artifactId>sonar-maven-plugin</artifactId>
+                            <version>2.3</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+    </build>
+
+    <!-- plugin repository for maven-sonar-web-plugin -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>codehaus</id>
+            <name>codehaus</name>
+            <url>http://repository.codehaus.org</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <checksumPolicy>ignore</checksumPolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    
+</project>
