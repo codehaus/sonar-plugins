@@ -36,7 +36,6 @@ import org.sonar.plugins.webscanner.html.HtmlFileScanner;
 import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlFile;
-import org.sonar.plugins.webscanner.language.HtmlProperties;
 import org.sonar.plugins.webscanner.markup.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.MarkupReport;
 import org.sonar.plugins.webscanner.markup.MarkupValidator;
@@ -95,7 +94,7 @@ public final class W3CMarkupSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(files, HtmlProperties.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(files, ProjectConfiguration.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, files);
