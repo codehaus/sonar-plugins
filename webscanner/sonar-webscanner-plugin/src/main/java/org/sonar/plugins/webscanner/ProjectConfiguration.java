@@ -18,10 +18,24 @@ package org.sonar.plugins.webscanner;
 
 import java.io.File;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.webscanner.language.HtmlProperties;
 
+/**
+ * Utilities and constants for the project configuration.
+ *
+ * @author Matthijs Galesloot
+ *
+ */
 public class ProjectConfiguration {
+
+  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
+  public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
+  public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
+
+  private ProjectConfiguration() {
+    // cannot instantiate
+  }
 
   public static void configureSourceDir(Project project) {
     String sourceDir = getSourceDir(project);
@@ -34,6 +48,10 @@ public class ProjectConfiguration {
   }
 
   private static String getSourceDir(Project project) {
-    return (String) project.getProperty(HtmlProperties.SOURCE_DIRECTORY);
+    return (String) project.getProperty(ProjectConfiguration.SOURCE_DIRECTORY);
+  }
+
+  public static Integer getNrOfSamples(Project project) {
+    return NumberUtils.toInt((String) project.getProperty(NR_OF_SAMPLES));
   }
 }

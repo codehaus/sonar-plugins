@@ -37,7 +37,6 @@ import org.sonar.plugins.webscanner.html.HtmlFileScanner;
 import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlFile;
-import org.sonar.plugins.webscanner.language.HtmlProperties;
 import org.sonar.plugins.webscanner.toetstool.xml.Guideline;
 import org.sonar.plugins.webscanner.toetstool.xml.Guideline.ValidationType;
 import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
@@ -98,7 +97,7 @@ public final class ToetstoolSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(files, HtmlProperties.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(files, ProjectConfiguration.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, files);
