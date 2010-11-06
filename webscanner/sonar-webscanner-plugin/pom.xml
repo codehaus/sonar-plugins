@@ -20,12 +20,6 @@
             <groupId>org.codehaus.sonar-plugins</groupId>
             <artifactId>webscanner-commons</artifactId>
             <version>${project.version}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-              </exclusion>
-            </exclusions>
         </dependency>
          <dependency>
             <groupId>org.codehaus.sonar-plugins</groupId>

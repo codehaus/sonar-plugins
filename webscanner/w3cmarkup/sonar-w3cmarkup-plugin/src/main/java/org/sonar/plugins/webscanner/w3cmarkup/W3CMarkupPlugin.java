@@ -23,13 +23,13 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.webscanner.language.HtmlProperties;
+import org.sonar.plugins.webscanner.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = HtmlProperties.FILE_EXTENSIONS,
+  @Property(key = ProjectConfiguration.FILE_EXTENSIONS,
     name = "File extensions",
     description = "List of file extensions that will be scanned.",
     defaultValue="html",
