@@ -54,18 +54,6 @@ public final class W3CMarkupPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
-    // W3C markup rules
-    list.add(MarkupRuleRepository.class);
-    list.add(MarkupProfileExporter.class);
-    list.add(MarkupProfileImporter.class);
-    list.add(DefaultMarkupProfile.class);
-    list.add(HtmlMetrics.class);
-
-    // widget for dashboard
-    list.add(HtmlWidget.class);
-
-    // sensor
-    list.add(W3CMarkupSensor.class);
 
     return list;
   }
