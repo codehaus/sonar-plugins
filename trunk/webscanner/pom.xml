@@ -7,7 +7,7 @@
     <artifactId>sonar-webscanner</artifactId>
     <packaging>pom</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>Website quality projects</name>
+    <name>HTML quality projects</name>
 
     <parent>
         <groupId>org.codehaus.sonar-plugins</groupId>

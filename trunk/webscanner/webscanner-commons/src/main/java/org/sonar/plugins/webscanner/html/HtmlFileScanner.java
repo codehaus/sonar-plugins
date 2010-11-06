@@ -112,13 +112,13 @@ public final class HtmlFileScanner {
 
     int n = 0;
     for (File file : files) {
-      if (n++ > 0) {
-        visitor.waitBetweenValidationRequests();
-      }
-
       // skip analysis if the report already exists
       File reportFile = visitor.reportFile(file);
       if (!reportFile.exists()) {
+        if (n++ > 0) {
+          visitor.waitBetweenValidationRequests();
+        }
+        LOG.debug("Validating " + file.getPath() + "...");
         visitor.validateFile(file);
       }
     }

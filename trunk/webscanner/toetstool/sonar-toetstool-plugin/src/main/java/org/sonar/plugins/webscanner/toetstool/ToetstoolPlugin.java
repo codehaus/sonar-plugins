@@ -49,16 +49,16 @@ public final class ToetstoolPlugin implements Plugin {
   public String getDescription() {
     return getName() + " collects metrics on live web sites, " +
     		"such as webrichtlijnen compliancy & markup validation. " +
-    		"Consult in advance for large batch jobs at info@toetstool.nl.";
+    		"<p>Consult in advance for large batch jobs at info@toetstool.nl.</p>";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
-    // toetstool rules
-    list.add(ToetstoolRuleRepository.class);
-    list.add(DefaultToetstoolProfile.class);
-    list.add(ToetstoolSensor.class);
+  // toetstool rules
+  //  list.add(ToetstoolRuleRepository.class);
+  //  list.add(DefaultToetstoolProfile.class);
+  //  list.add(ToetstoolSensor.class);
 
     return list;
   }
