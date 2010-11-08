@@ -19,12 +19,11 @@
  */
 package org.sonar.plugins.dbcleaner;
 
-import java.util.List;
-
-import javax.persistence.Query;
-
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.model.Snapshot;
+
+import javax.persistence.Query;
+import java.util.List;
 
 final class DbCleanerSqlRequests {
 
@@ -47,13 +46,5 @@ final class DbCleanerSqlRequests {
         + " sp WHERE sp.rootId  = :rootId or id = :rootId");
     query.setParameter("rootId", parentSnapshot.getId());
     return query.getResultList();
-  }
-
-  boolean hasChildren(Snapshot snapshot) {
-    Query query = session.createQuery("select count(*) FROM " + Snapshot.class.getSimpleName()
-        + " sp WHERE sp.rootId  = :rootId");
-    query.setParameter("rootId", snapshot.getId());
-    long numberOfChildren = (Long) query.getSingleResult();
-    return numberOfChildren > 0;
   }
 }

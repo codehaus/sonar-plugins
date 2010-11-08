@@ -19,12 +19,7 @@
  */
 package org.sonar.plugins.dbcleaner;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +30,11 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.utils.TimeProfiler;
 import org.sonar.core.purge.AbstractPurge;
 
-import com.google.common.collect.Lists;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class DbCleanerRunner extends AbstractPurge {
 
@@ -78,7 +77,7 @@ public class DbCleanerRunner extends AbstractPurge {
 
   private void deleteSnapshotsAndAllRelatedData(List<Snapshot> snapshotHistory) {
     if (snapshotHistory.isEmpty()) {
-      LOG.info("There isn't any snapshots to purge");
+      LOG.info("There are no snapshots to purge");
       return;
     }
     List<Integer> ids = Lists.newArrayList();
