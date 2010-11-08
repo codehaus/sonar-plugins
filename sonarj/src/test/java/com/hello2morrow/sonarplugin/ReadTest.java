@@ -46,7 +46,7 @@ public class ReadTest extends TestCase
         final Configuration config = context.mock(Configuration.class);
         
         context.checking(new Expectations() {{
-            oneOf(config).getDouble(SonarJSensor.COST_PER_INDEX_POINT, 7.0); will(returnValue(7.0));
+            oneOf(config).getDouble(SonarJSensor.COST_PER_INDEX_POINT, 12.0); will(returnValue(12.0));
             }});
 
         SonarJSensor sensor = new SonarJSensor(config, null, null);
