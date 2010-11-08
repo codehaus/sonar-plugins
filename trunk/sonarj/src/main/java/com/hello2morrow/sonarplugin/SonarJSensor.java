@@ -111,7 +111,7 @@ public final class SonarJSensor implements Sensor
     private SensorContext sensorContext;
     private RulesManager rulesManager;
     private RulesProfile rulesProfile;
-    private double indexCost = 7.0;
+    private double indexCost = 12.0;
 
     protected static ReportContext readSonarjReport(String fileName, String packaging)
     {
@@ -163,7 +163,7 @@ public final class SonarJSensor implements Sensor
 
     public SonarJSensor(Configuration config, RulesManager rulesManager, RulesProfile rulesProfile)
     {
-        indexCost = config.getDouble(COST_PER_INDEX_POINT, 7.0);
+        indexCost = config.getDouble(COST_PER_INDEX_POINT, 12.0);
         this.rulesManager = rulesManager;
         this.rulesProfile = rulesProfile;
         if (rulesManager == null)
