@@ -15,11 +15,8 @@
 	<name>Sonar DBCleaner Plugin</name>
 	<description>The database cleaner optimizes the Sonar DB performances by removing old and useless quality snapshots.</description>
 
-
-
-
-
 	<properties>
+    <!-- TODO upgrade to 2.4 because of SONAR-1850 -->
 		<sonar.version>2.3</sonar.version>
 		<sonar.pluginClass>org.sonar.plugins.dbcleaner.DbCleanerPlugin</sonar.pluginClass>
 		<sonar.pluginKey>dbcleaner</sonar.pluginKey>
@@ -108,12 +105,10 @@
 				<version>0.2</version>
 				<extensions>true</extensions>
 				<configuration>
-					<pluginKey>dbcleaner</pluginKey>
 					<pluginName>DbCleaner</pluginName>
 					<pluginClass>${sonar.pluginClass}</pluginClass>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
