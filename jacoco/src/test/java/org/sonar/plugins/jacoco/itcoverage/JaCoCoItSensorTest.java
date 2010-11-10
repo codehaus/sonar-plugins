@@ -33,6 +33,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+
 import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,12 +42,10 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project.AnalysisType;
+import org.sonar.api.resources.Resource;
 import org.sonar.api.test.IsMeasure;
 import org.sonar.plugins.jacoco.JaCoCoPlugin;
-
-import java.io.File;
 
 public class JaCoCoItSensorTest {
   private JaCoCoItSensor sensor;
@@ -75,9 +75,7 @@ public class JaCoCoItSensorTest {
     Configuration configuration = mock(Configuration.class);
     when(project.getConfiguration()).thenReturn(configuration);
     when(configuration.getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY)).thenReturn("target/it-jacoco.exec");
-    when(project.getAnalysisType())
-        .thenReturn(AnalysisType.DYNAMIC)
-        .thenReturn(AnalysisType.REUSE_REPORTS);
+    when(project.getAnalysisType()).thenReturn(AnalysisType.DYNAMIC).thenReturn(AnalysisType.REUSE_REPORTS);
     assertThat(sensor.shouldExecuteOnProject(project), is(true));
     assertThat(sensor.shouldExecuteOnProject(project), is(true));
   }
@@ -91,7 +89,7 @@ public class JaCoCoItSensorTest {
     final JavaFile resource = new JavaFile("org.sonar.plugins.jacoco.tests.Hello");
     when(context.getResource(any(Resource.class))).thenReturn(resource);
 
-    sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
+    new JaCoCoItSensor.Analyzer().readExecutionData(jacocoExecutionData, buildOutputDir, context);
 
     verify(context).getResource(eq(resource));
     verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_LINES_TO_COVER), doubleThat(greaterThan(0d)));
@@ -107,7 +105,7 @@ public class JaCoCoItSensorTest {
     SensorContext context = mock(SensorContext.class);
     when(context.getResource(any(Resource.class))).thenReturn(null);
 
-    sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
+    new JaCoCoItSensor.Analyzer().readExecutionData(jacocoExecutionData, buildOutputDir, context);
 
     verify(context, never()).saveMeasure(any(Resource.class), any(Measure.class));
   }
