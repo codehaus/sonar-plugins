@@ -20,21 +20,20 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.sonar.api.BatchExtension;
-import org.sonar.api.utils.HttpDownloader;
-import org.sonar.api.utils.SonarException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.sonar.api.BatchExtension;
+import org.sonar.api.utils.SonarException;
+
 /**
  * @author Evgeny Mandrikov
  */
-public class JaCoCoAgentDownloader extends HttpDownloader implements BatchExtension {
+public class JaCoCoAgentDownloader implements BatchExtension {
 
   /**
    * Dirty hack, but it allows to extract agent only once during Sonar analyzes for multi-module project.
