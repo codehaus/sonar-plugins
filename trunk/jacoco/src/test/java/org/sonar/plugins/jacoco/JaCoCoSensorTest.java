@@ -35,6 +35,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.Plugins;
@@ -45,8 +47,6 @@ import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.test.IsMeasure;
-
-import java.io.File;
 
 /**
  * @author Evgeny Mandrikov
@@ -67,9 +67,7 @@ public class JaCoCoSensorTest {
   @Test
   public void testGetMavenPluginHandler() {
     Project project = mock(Project.class);
-    when(project.getAnalysisType())
-        .thenReturn(Project.AnalysisType.REUSE_REPORTS)
-        .thenReturn(Project.AnalysisType.DYNAMIC);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS).thenReturn(Project.AnalysisType.DYNAMIC);
 
     assertThat(sensor.getMavenPluginHandler(project), nullValue());
     assertThat(sensor.getMavenPluginHandler(project), instanceOf(JaCoCoMavenPluginHandler.class));
@@ -84,7 +82,7 @@ public class JaCoCoSensorTest {
     final JavaFile resource = new JavaFile("org.sonar.plugins.jacoco.tests.Hello");
     when(context.getResource(any(Resource.class))).thenReturn(resource);
 
-    sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
+    new JaCoCoSensor.Analyzer().readExecutionData(jacocoExecutionData, buildOutputDir, context);
 
     verify(context).getResource(eq(resource));
     verify(context).saveMeasure(eq(resource), eq(CoreMetrics.LINES_TO_COVER), doubleThat(greaterThan(0d)));
@@ -100,7 +98,7 @@ public class JaCoCoSensorTest {
     SensorContext context = mock(SensorContext.class);
     when(context.getResource(any(Resource.class))).thenReturn(null);
 
-    sensor.readExecutionData(jacocoExecutionData, buildOutputDir, context);
+    new JaCoCoSensor.Analyzer().readExecutionData(jacocoExecutionData, buildOutputDir, context);
 
     verify(context, never()).saveMeasure(any(Resource.class), any(Measure.class));
   }
