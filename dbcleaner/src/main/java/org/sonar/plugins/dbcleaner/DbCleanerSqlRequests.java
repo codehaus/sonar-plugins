@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.dbcleaner;
 
+import org.sonar.api.batch.Event;
 import org.sonar.api.database.DatabaseSession;
 import org.sonar.api.database.model.Snapshot;
 
@@ -36,7 +37,7 @@ final class DbCleanerSqlRequests {
   List<Snapshot> getProjectSnapshotsOrderedByCreatedAt(int oneProjectSnapshotId) {
     Query query = session.createQuery("FROM " + Snapshot.class.getSimpleName()
         + " sp1 WHERE sp1.resourceId  = (select sp2.resourceId FROM " + Snapshot.class.getSimpleName()
-        + " sp2 WHERE sp2.id = :id) and sp1.rootId= null order by sp1.createdAt");
+        + " sp2 WHERE sp2.id = :id) and sp1.rootId= null and not exists (from " + Event.class.getSimpleName() + " e where e.snapshot=sp1) order by sp1.createdAt");
     query.setParameter("id", oneProjectSnapshotId);
     return query.getResultList();
   }
