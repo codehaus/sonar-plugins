@@ -3,13 +3,41 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>5</version>
+    <version>7</version>
     <relativePath>../parent</relativePath>
   </parent>
-  <groupId>org.codehaus.sonar-plugins</groupId>
+
   <artifactId>sonar-greenpepper-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
   <version>0.2-SNAPSHOT</version>
-  <name>Sonar GreenPepper plugin</name>
+
+  <name>Sonar GreenPepper Plugin</name>
+  <description>Collects test reports provided by GreenPepper Maven plugin to feed Sonar.</description>
+  <url>http://docs.codehaus.org/display/SONAR/GreenPepper+Plugin</url>
+  <inceptionYear>2009</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>freddy.mallet</id>
+      <name>Freddy Mallet</name>
+      <email>freddy.mallet@sonarsource.com</email>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <name>François Dénommée</name>
+    </developer>
+  </developers>
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/greenpepper</connection>
@@ -23,7 +51,9 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>1.10</sonar.version>
+    <sonar.version>2.2</sonar.version>
+    <sonar.pluginName>GreenPepper</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.greenpepper.GreenPepperPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
@@ -41,32 +71,10 @@
     </dependency>
     <!-- unit tests -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.4</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>1.5</version>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Plugin-Class>org.sonar.plugins.greenpepper.GreenPepperPlugin</Plugin-Class>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
