@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>7</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -15,7 +15,7 @@
   <packaging>sonar-plugin</packaging>
 
   <name>Technical Debt Sonar plugin</name>
-  <description>Calculate the technical debt</description>
+  <description>Calculates in US Dollars the work required to fix all quality issues in source code.</description>
   <url>http://docs.codehaus.org/display/SONAR/Technical+Debt+Plugin</url>
 
   <inceptionYear>2009</inceptionYear>
@@ -57,9 +57,9 @@
 
   <properties>
     <sonar.pluginClass>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</sonar.pluginClass>
-    <sonar.version>2.2</sonar.version>
+    <sonar.version>2.1</sonar.version>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -170,24 +170,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>verify</id>
-                <goals>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
       <repositories>
@@ -205,5 +187,5 @@
       </repositories>
     </profile>
   </profiles>
-  
+
 </project>
