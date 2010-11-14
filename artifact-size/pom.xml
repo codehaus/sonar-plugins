@@ -12,7 +12,7 @@
   <version>0.2-SNAPSHOT</version>
 
   <name>Sonar Artifact Size plugin</name>
-  <description>Measure the size of the project artifact</description>
+  <description>Measure the size of the project artifact.</description>
   <url>http://docs.codehaus.org/display/SONAR/Artifact+Size+Plugin</url>
   <organization>
     <name>SonarSource</name>
