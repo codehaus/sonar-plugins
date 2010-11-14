@@ -9,7 +9,7 @@
 
   <artifactId>sonar-greenpepper-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>0.2</version>
+  <version>0.3-SNAPSHOT</version>
 
   <name>Sonar GreenPepper Plugin</name>
   <description>Collects test reports provided by GreenPepper Maven plugin to feed Sonar.</description>
@@ -40,9 +40,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-greenpepper-plugin-0.2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-greenpepper-plugin-0.2</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-greenpepper-plugin-0.2</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/greenpepper</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/greenpepper</developerConnection>
+    <url>http://svn.codehaus.org/sonar-plugins</url>
   </scm>
 
   <issueManagement>
