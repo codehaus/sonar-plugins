@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>7</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -14,7 +14,7 @@
   <name>Sonar Emma plugin</name>
   <description>Emma is an alternative to Clover and Cobertura to measure coverage by unit tests.</description>
   <url>http://docs.codehaus.org/display/SONAR/Sonar+Emma+Plugin</url>
-
+  <inceptionYear>2009</inceptionYear>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com</url>
@@ -43,6 +43,7 @@
 
   <properties>
     <sonar.version>2.2</sonar.version>
+    <sonar.pluginName>Emma</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.emma.EmmaPlugin</sonar.pluginClass>
   </properties>
 
@@ -124,7 +125,7 @@
                 <configuration>
                   <background>true</background>
                   <clean>true</clean>
-                  <configBackup>${basedir}/sonar-backup.xml</configBackup>
+                  <configBackup>${basedir}/src/it/sonar-backup.xml</configBackup>
                 </configuration>
                 <goals>
                   <goal>start-war</goal>
@@ -145,24 +146,6 @@
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop-war</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>verify</id>
-                <goals>
-                  <goal>verify</goal>
                 </goals>
               </execution>
             </executions>
