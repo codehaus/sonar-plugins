@@ -46,7 +46,7 @@
         <artifactId>maven-license-plugin</artifactId>
         <!-- Override the header location defined in parent pom -->
         <configuration>
-          <header>src/main/resources/org/sonar/plugins/licenseheaders/Sonar.txt</header>
+          <header>src/main/resources/org/sonar/plugins/licenseheaders/SonarSource.txt</header>
         </configuration>
       </plugin>
     </plugins>
