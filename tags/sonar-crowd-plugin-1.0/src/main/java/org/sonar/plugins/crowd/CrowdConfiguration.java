@@ -1,0 +1,83 @@
+/*
+ * Sonar Crowd Plugin
+ * Copyright (C) 2009 SonarSource
+ * dev@sonar.codehaus.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ */
+
+package org.sonar.plugins.crowd;
+
+import org.apache.commons.configuration.Configuration;
+import org.sonar.api.ServerExtension;
+
+import java.util.Properties;
+
+/**
+ * @author Evgeny Mandrikov
+ */
+public class CrowdConfiguration implements ServerExtension {
+  private final Configuration configuration;
+  private Properties clientProperties;
+
+  /**
+   * Creates new instance of CrowdConfiguration.
+   *
+   * @param configuration configuration
+   */
+  public CrowdConfiguration(Configuration configuration) {
+    this.configuration = configuration;
+  }
+
+  /**
+   * Returns Crowd client properties.
+   *
+   * @return Crowd client properties
+   */
+  public Properties getClientProperties() {
+    if (clientProperties == null) {
+      clientProperties = newInstance();
+    }
+    return clientProperties;
+  }
+
+  private Properties newInstance() {
+    final String crowdUrl = configuration.getString("crowd.url", null);
+    final String applicationName = configuration.getString("crowd.application", "sonar");
+    final String applicationPassword = configuration.getString("crowd.password", null);
+
+    if (crowdUrl == null) {
+      throw new IllegalArgumentException("Crowd URL is not set");
+    }
+    if (applicationName == null) {
+      throw new IllegalArgumentException("Crowd Application Name is not set");
+    }
+    if (applicationPassword == null) {
+      throw new IllegalArgumentException("Crowd Application Password is not set");
+    }
+
+    if (CrowdHelper.LOG.isInfoEnabled()) {
+      CrowdHelper.LOG.info("URL: " + crowdUrl);
+      CrowdHelper.LOG.info("Application Name: " + applicationName);
+    }
+
+    Properties properties = new Properties();
+    properties.setProperty("crowd.server.url", crowdUrl);
+    properties.setProperty("application.name", applicationName);
+    properties.setProperty("application.password", applicationPassword);
+    properties.setProperty("session.validationinterval", "5");
+    return properties;
+  }
+}
