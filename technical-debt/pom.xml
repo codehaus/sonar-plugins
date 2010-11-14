@@ -56,8 +56,9 @@
   </ciManagement>
 
   <properties>
-    <sonar.pluginClass>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</sonar.pluginClass>
     <sonar.version>2.1</sonar.version>
+    <sonar.pluginName>Technical Debt</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
