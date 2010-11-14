@@ -10,7 +10,7 @@
 
   <artifactId>sonar-quality-index-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.1.2</version>
+  <version>1.1.3-SNAPSHOT</version>
 
   <name>Sonar Quality Index Plugin</name>
   <description>Calculate a global Quality Index, based on coding rules, Style, Complexity and Coverage.</description>
@@ -36,9 +36,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1.2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1.2</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-quality-index-plugin-1.1.2</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/quality-index</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/quality-index</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
