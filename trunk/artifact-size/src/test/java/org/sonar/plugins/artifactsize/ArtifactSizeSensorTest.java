@@ -51,9 +51,10 @@ public class ArtifactSizeSensorTest {
   @Test
   public void testSearchArtifactFileFromConfiguration() {
     Configuration configuration = mock(Configuration.class);
-    Project project = new Project(null, configuration);
+    Project project = mock(Project.class);
+    when(project.getConfiguration()).thenReturn(configuration);
 
-    when(project.getConfiguration().getString(ArtifactSizePlugin.ARTIFACT_PATH)).
+    when(configuration.getString(ArtifactSizePlugin.ARTIFACT_PATH)).
       thenReturn("foo/bar");
 
     ArtifactSizeSensor sensor = new ArtifactSizeSensor();

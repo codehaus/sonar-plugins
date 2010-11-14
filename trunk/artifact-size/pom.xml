@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>7</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -46,9 +46,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>1.10</sonar.version>
-    <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
-    <sonar.pluginKey>artifactsize</sonar.pluginKey>
+    <sonar.version>1.12</sonar.version>
     <sonar.pluginName>Artifact Size</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.artifactsize.ArtifactSizePlugin</sonar.pluginClass>
   </properties>
