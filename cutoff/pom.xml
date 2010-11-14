@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>7</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -15,14 +15,13 @@
   <description>Exclude files from analysis based on a cutoff date threshold. Any source file that was last modified prior to the configured
     cutoff date is excluded. This can be useful when you want to analyze the work done on an existing code base and measure the quality of
     new code/changes only. This way previous phases of the project will not impact the analysis.</description>
-  
+
   <url>http://docs.codehaus.org/display/SONAR/Cutoff+Plugin</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com/</url>
   </organization>
-  
   <licenses>
     <license>
       <name>GNU LGPL 3</name>
@@ -36,7 +35,7 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/cutoff</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
-  
+
   <issueManagement>
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14549</url>
@@ -45,11 +44,11 @@
     <system>Bamboo</system>
     <url>http://bamboo.ci.codehaus.org/browse/SONAR-CUTOFF</url>
   </ciManagement>
-  
+
   <properties>
     <sonar.version>2.3</sonar.version>
+    <sonar.pluginName>Cutoff</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.cutoff.CutoffPlugin</sonar.pluginClass>
-    <sonar.pluginKey>cutoff</sonar.pluginKey>
   </properties>
 
   <dependencies>
