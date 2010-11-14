@@ -20,13 +20,10 @@
 
 package org.sonar.plugins.taglist;
 
-
-
-import org.sonar.api.Plugin;
-import org.sonar.api.Extension;
-
 import java.util.Arrays;
 import java.util.List;
+
+import org.sonar.api.Plugin;
 
 public class TaglistPlugin implements Plugin {
 
@@ -36,10 +33,10 @@ public class TaglistPlugin implements Plugin {
     return "Collects Tag-Information from sources.";
   }
 
-  public List<Class<? extends Extension>> getExtensions() {
-    return Arrays.asList(TaglistSensor.class, TaglistRulesRepository.class,
-        TaglistMetrics.class, TaglistDecorator.class, TaglistWidget.class,
-      TaglistDistributionDecorator.class, TaglistMavenPluginHandler.class);
+  @SuppressWarnings("rawtypes")
+  public List getExtensions() {
+    return Arrays.asList((Class) TaglistMetrics.class, ViolationsDecorator.class, TaglistDecorator.class,
+        TaglistDistributionDecorator.class, TaglistWidget.class);
   }
 
   public String getKey() {

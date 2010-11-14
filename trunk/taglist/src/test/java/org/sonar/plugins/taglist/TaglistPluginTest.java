@@ -20,30 +20,16 @@
 
 package org.sonar.plugins.taglist;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
 
-import org.sonar.api.batch.AbstractSumChildrenDecorator;
-import org.sonar.api.batch.DependedUpon;
-import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.Project;
+import org.junit.Test;
 
-public class TaglistDecorator extends AbstractSumChildrenDecorator {
+public class TaglistPluginTest {
 
-  @DependedUpon
-  public List<Metric> generatesMetrics() {
-    return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean shouldExecuteOnProject(Project project) {
-    return true;
-  }
-
-  protected boolean shouldSaveZeroIfNoChildMeasures() {
-    return false;
+  @Test
+  public void testPluginDefinition() {
+    assertThat(new TaglistPlugin().getExtensions().size(), greaterThan(0));
   }
 
 }

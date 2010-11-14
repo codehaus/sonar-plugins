@@ -20,29 +20,20 @@
 
 package org.sonar.plugins.taglist;
 
+import java.util.Arrays;
+import java.util.List;
 
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
-import org.sonar.api.measures.*;
-import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.measures.CountDistributionBuilder;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
-import org.sonar.api.rules.RulesManager;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class TaglistDistributionDecorator implements Decorator {
-
-  private RulesManager rulesManager;
-  private RulesProfile rulesProfile;
-
-  public TaglistDistributionDecorator() {
-    this.rulesManager = rulesManager;
-    this.rulesProfile = rulesProfile;
-  }
 
   @DependedUpon
   public List<Metric> generatesMetrics() {
@@ -60,7 +51,6 @@ public class TaglistDistributionDecorator implements Decorator {
    * {@inheritDoc}
    */
   public void decorate(Resource resource, DecoratorContext context) {
-
     // Calculate distribution on classes, but keep it in memory, not in DB
     if (ResourceUtils.isFile(resource)) {
       return;
@@ -73,9 +63,10 @@ public class TaglistDistributionDecorator implements Decorator {
         builder.add(childMeasure);
       }
 
-      if (!builder.isEmpty()) {
+      if ( !builder.isEmpty()) {
         context.saveMeasure(builder.build());
       }
     }
   }
+
 }
