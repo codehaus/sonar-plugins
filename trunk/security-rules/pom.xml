@@ -12,7 +12,7 @@
   <version>0.2-SNAPSHOT</version>
 
   <name>Security Rules Plugin</name>
-  <description>A plugin to manage security rules.</description>
+  <description>Enables to monitor closely a defined set of security rules.</description>
   <url>http://docs.codehaus.org/display/SONAR/Security+Rules+Plugin</url>
   <organization>
     <name>SonarSource</name>
