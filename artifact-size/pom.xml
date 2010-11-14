@@ -9,7 +9,7 @@
 
   <artifactId>sonar-artifact-size-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
 
   <name>Sonar Artifact Size plugin</name>
   <description>Measure the size of the project artifact.</description>
@@ -36,9 +36,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/artifact-size</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/artifact-size</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-artifact-size-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-artifact-size-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-artifact-size-plugin-0.2</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
