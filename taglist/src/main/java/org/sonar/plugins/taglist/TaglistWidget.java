@@ -20,19 +20,18 @@
 
 package org.sonar.plugins.taglist;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWidget;
 
-public class TaglistWidget extends AbstractDashboardWidget {
+public class TaglistWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-  // For tests purposes
-   /*public String getTemplate() {
-      try {
-          return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/Windows/Temp/toto.erb"), "UTF-8");
+  public String getId() {
+    return "taglist";
+  }
 
-      } catch (java.io.IOException e) {
-          throw new RuntimeException("Can not load the file");
-      }
-  }*/
+  public String getTitle() {
+    return "Tag List";
+  }
 
   @Override
   protected String getTemplatePath() {

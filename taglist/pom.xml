@@ -74,7 +74,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.0</sonar.version>
+    <sonar.version>2.4-RC1</sonar.version>
     <!-- TODO sonar-packaging-maven-plugin because of SONAR-1879 -->
     <sonar.pluginKey>taglist</sonar.pluginKey>
     <sonar.pluginName>Taglist</sonar.pluginName>
@@ -94,13 +94,18 @@
       <version>${sonar.version}</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-deprecated</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-plugin-api</artifactId>
+      <artifactId>sonar-testing-harness</artifactId>
       <version>${sonar.version}</version>
       <scope>test</scope>
-      <type>test-jar</type>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
