@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>8-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -53,7 +53,7 @@
     <jacoco.version>0.4.0.20100604151516</jacoco.version>
 
     <sonar.version>2.2</sonar.version>
-    <sonar.pluginKey>jacoco</sonar.pluginKey>
+    <sonar.pluginName>JaCoCo</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
   </properties>
 
@@ -122,7 +122,7 @@
         <directory>${basedir}/src/test/resources</directory>
       </testResource>
     </testResources>
-  
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -147,7 +147,7 @@
           </execution>
         </executions>
       </plugin>
-    
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
@@ -204,7 +204,6 @@
           <plugin>
             <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-dev-maven-plugin</artifactId>
-            <version>0.7</version>
             <executions>
               <execution>
                 <id>start-server</id>
@@ -233,24 +232,6 @@
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop-war</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>verify</id>
-                <goals>
-                  <goal>verify</goal>
                 </goals>
               </execution>
             </executions>
