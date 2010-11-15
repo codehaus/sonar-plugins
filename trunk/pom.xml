@@ -39,6 +39,7 @@
                 <module>maven-report</module>
                 <module>metrics-help</module>
                 <module>motion-chart</module>
+                <module>parent</module>
                 <module>pdf-report</module>
                 <module>php</module>
                 <module>piwik</module>
