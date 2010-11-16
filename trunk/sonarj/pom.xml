@@ -115,7 +115,6 @@
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
         <extensions>true</extensions>
-        <version>0.1</version>
         <configuration>
           <pluginKey>SonarJ</pluginKey>
           <pluginName>SonarJ</pluginName>
@@ -136,15 +135,6 @@
         </executions>
         <configuration>
           <packageName>com.hello2morrow.sonarplugin.xsd</packageName> 
-        </configuration>
-      </plugin>
-      <plugin>
-        <!-- Java 5 -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
         </configuration>
       </plugin>
     </plugins>
