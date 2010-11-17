@@ -20,16 +20,35 @@
 
 package org.sonar.plugins.taglist;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertThat;
-
+import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class TaglistPluginTest {
 
+  private TaglistPlugin plugin;
+
+  @Before
+  public void setUp() {
+    plugin = new TaglistPlugin();
+  }
+
   @Test
   public void testPluginDefinition() {
-    assertThat(new TaglistPlugin().getExtensions().size(), greaterThan(0));
+    assertThat(plugin.getExtensions().size(), greaterThan(0));
+  }
+
+  /**
+   * see SONAR-1898
+   */
+  @Test
+  public void testDeprecatedMethods() {
+    assertThat(plugin.getKey(), notNullValue());
+    assertThat(plugin.getName(), notNullValue());
+    assertThat(plugin.getDescription(), notNullValue());
   }
 
 }

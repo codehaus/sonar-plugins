@@ -20,35 +20,28 @@
 
 package org.sonar.plugins.taglist;
 
-import org.sonar.api.measures.Metrics;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Metrics;
 
 import java.util.Arrays;
 import java.util.List;
-
-
 
 public class TaglistMetrics implements Metrics {
 
   public final static Metric TAGS = new Metric(
       "tags", "Tags", "Number of tags in the source code",
-      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES
-  );
+      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
   public final static Metric MANDATORY_TAGS = new Metric(
       "mandatory_tags", "Mandatory tags", "Number of mandatory tags in the source code",
-      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES
-  );
+      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
   public final static Metric OPTIONAL_TAGS = new Metric(
       "optional_tags", "Optional tags", "Number of optional tags in the source code",
-      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES
-  );
+      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
   public final static Metric TAGS_DISTRIBUTION = new Metric(
       "tags_distribution", "Tags distribution", "Distribution of tags in the source code",
-      Metric.ValueType.DISTRIB, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_RULES
-  );
+      Metric.ValueType.DISTRIB, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_RULES);
 
-  
   public List<Metric> getMetrics() {
     return Arrays.asList(TAGS, MANDATORY_TAGS, OPTIONAL_TAGS, TAGS_DISTRIBUTION);
   }
