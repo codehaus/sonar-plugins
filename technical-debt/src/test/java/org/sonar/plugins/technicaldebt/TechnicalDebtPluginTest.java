@@ -20,17 +20,35 @@
 
 package org.sonar.plugins.technicaldebt;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-
 
 public class TechnicalDebtPluginTest {
 
+  private TechnicalDebtPlugin plugin;
+
+  @Before
+  public void setUp() {
+    plugin = new TechnicalDebtPlugin();
+  }
+
   @Test
-  public void defineMetrics() {
-    assertThat(new TechnicalDebtPlugin().getExtensions().size(), is(5));
+  public void defineExtensions() {
+    assertThat(plugin.getExtensions().size(), is(5));
+  }
+
+  /**
+   * see SONAR-1898
+   */
+  @Test
+  public void testDeprecatedMethods() {
+    assertThat(plugin.getKey(), notNullValue());
+    assertThat(plugin.getName(), notNullValue());
+    assertThat(plugin.getDescription(), notNullValue());
   }
 
 }

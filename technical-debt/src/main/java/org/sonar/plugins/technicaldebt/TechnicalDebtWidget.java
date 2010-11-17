@@ -20,13 +20,19 @@
 
 package org.sonar.plugins.technicaldebt;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWidget;
 
-/**
- * {@inheritDoc}
- */
-public final class TechnicalDebtWidget extends AbstractDashboardWidget {
+public final class TechnicalDebtWidget extends AbstractRubyTemplate implements RubyRailsWidget {
   protected String getTemplatePath() {
     return "/org/sonar/plugins/technicaldebt/dashboard_widget.erb";
+  }
+
+  public String getId() {
+    return getClass().toString();
+  }
+
+  public String getTitle() {
+    return getClass().toString();
   }
 }
