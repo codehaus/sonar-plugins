@@ -20,18 +20,6 @@
 
 package org.sonar.plugins.taglist;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.resources.*;
-import org.sonar.api.rules.*;
-import org.sonar.api.test.IsMeasure;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
@@ -39,7 +27,33 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.doubleThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.JavaFile;
+import org.sonar.api.resources.Language;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RuleFinder;
+import org.sonar.api.rules.RulePriority;
+import org.sonar.api.rules.RuleQuery;
+import org.sonar.api.rules.Violation;
+import org.sonar.api.test.IsMeasure;
 
 public class ViolationsDecoratorTest {
 
@@ -55,11 +69,12 @@ public class ViolationsDecoratorTest {
     rulesProfile = RulesProfile.create();
     rule1 = createCheckstyleRule().setKey("key1");
     rule2 = createCheckstyleRule().setKey("key2");
+    Rule inactiveRule = createCheckstyleRule().setKey("key3");
     rulesProfile.activateRule(rule1, RulePriority.BLOCKER).setParameter("format", "FIXME");
     rulesProfile.activateRule(rule2, RulePriority.MAJOR).setParameter("format", "TODO");
 
     ruleFinder = mock(RuleFinder.class);
-    when(ruleFinder.findAll(argThat(any(RuleQuery.class)))).thenReturn(Arrays.asList(rule1, rule2));
+    when(ruleFinder.findAll(argThat(any(RuleQuery.class)))).thenReturn(Arrays.asList(rule1, rule2, inactiveRule));
 
     context = mock(DecoratorContext.class);
     javaFile = new JavaFile("org.example", "HelloWorld");
@@ -117,6 +132,15 @@ public class ViolationsDecoratorTest {
 
     verify(context, atLeastOnce()).getViolations();
     verifyNoMoreInteractions(context);
+  }
+
+  @Test
+  public void ruleRriorities() {
+    assertThat(ViolationsDecorator.isMandatory(RulePriority.BLOCKER), is(true));
+    assertThat(ViolationsDecorator.isMandatory(RulePriority.CRITICAL), is(true));
+    assertThat(ViolationsDecorator.isMandatory(RulePriority.MAJOR), is(false));
+    assertThat(ViolationsDecorator.isMandatory(RulePriority.MINOR), is(false));
+    assertThat(ViolationsDecorator.isMandatory(RulePriority.INFO), is(false));
   }
 
   private Rule createCheckstyleRule() {

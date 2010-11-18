@@ -83,8 +83,7 @@ public class ViolationsDecorator implements Decorator {
       if (activeRule != null) {
         for (Violation violation : context.getViolations()) {
           if (violation.getRule().equals(rule)) {
-            RulePriority priority = activeRule.getPriority();
-            if (priority.equals(RulePriority.BLOCKER) || priority.equals(RulePriority.CRITICAL)) {
+            if (isMandatory(activeRule.getPriority())) {
               mandatory++;
             } else {
               optional++;
@@ -100,6 +99,10 @@ public class ViolationsDecorator implements Decorator {
     if ( !distrib.isEmpty()) {
       context.saveMeasure(distrib.build().setPersistenceMode(PersistenceMode.MEMORY));
     }
+  }
+
+  protected static boolean isMandatory(RulePriority priority) {
+    return priority.equals(RulePriority.BLOCKER) || priority.equals(RulePriority.CRITICAL);
   }
 
   private String getTagName(ActiveRule rule) {
