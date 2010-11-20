@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>8-SNAPSHOT</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+  
+  <artifactId>basic-cocomo</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>Sonar Basic-COCOMO Plugin</name>
+  <description>Estimates project cost using the basic COCOMO algorithm.</description>
+  
+  <properties>
+    <sonar.version>2.4</sonar.version>
+    <sonar.pluginName>Basic COCOMO</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.cocomo.BasicCOCOMOPlugin</sonar.pluginClass>
+  </properties>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/basic-cocomo</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/basic-cocomo</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org/browse/sonar-plugins/trunk/basic-cocomo</url>
+  </scm>
+
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>Xup BV.</name>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>misl</id>
+      <name>Minto 'missile' van der Sluis</name>
+      <email>minto@xup.nl</email>
+      <organization>Xup BV</organization>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

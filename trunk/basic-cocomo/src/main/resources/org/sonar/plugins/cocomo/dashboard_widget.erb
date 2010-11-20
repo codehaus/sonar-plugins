@@ -1,0 +1,33 @@
+<%
+      if measure('cocomo_cost')
+%>
+
+<div class="yui-g">
+  <table>
+    <tr>
+      <td><h3>Basic COCOMO</h3></td>
+      <td style="padding-left:2px;">
+        <a href="http://en.wikipedia.org/wiki/Cocomo" target="WikiPedia">
+          <%= image_tag 'help.png', :class => 'png' -%>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <div class="yui-u first">
+    <div class="dashbox">
+      <p><span>Estimated cost:</span></p>
+      <p><span class="big"><%= format_measure('cocomo_cost', :prefix => configuration( 'cocomo.currency.symbol' ) + ' ', :suffix => '', :url => url_for_drilldown('cocomo_cost'), :default => '-')%></span></p>
+    </div>
+  </div>
+  <div class="yui-u">
+    <div class="dashbox">
+      <p><span"><%= format_measure('cocomo_effort_applied', :suffix => ' man months', :url => url_for_drilldown('cocomo_effort_applied'), :default => '-') %></span></p>
+      <p><span"><%= format_measure('cocomo_development_time', :suffix => ' months', :url => url_for_drilldown('cocomo_development_time'), :default => '-') %></span></p>
+      <p><span"><%= format_measure('cocomo_people_required', :suffix => ' people required', :url => url_for_drilldown('cocomo_people_required'), :default => '-') %></span></p>
+    </div>
+  </div>
+</div>
+<%
+      end
+%>
+
