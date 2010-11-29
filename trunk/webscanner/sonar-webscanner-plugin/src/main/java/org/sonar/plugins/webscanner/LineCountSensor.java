@@ -1,5 +1,7 @@
 /*
+ * Sonar Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +31,8 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.webscanner.language.Html;
-import org.sonar.plugins.webscanner.language.HtmlFile;
+import org.sonar.plugins.webscanner.api.language.Html;
+import org.sonar.plugins.webscanner.api.language.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot
@@ -49,12 +51,12 @@ public final class LineCountSensor implements Sensor {
     ProjectConfiguration.configureSourceDir(project);
 
     for (File file : project.getFileSystem().getSourceFiles(new Html(project))) {
-      HtmlFile htmlFile = HtmlFile.fromIOFile(file, project.getFileSystem().getSourceDirs());
+      org.sonar.api.resources.File htmlFile = org.sonar.api.resources.File.fromIOFile(file, project.getFileSystem().getSourceDirs());
       addMeasures(sensorContext, file, htmlFile);
     }
   }
 
-  private void addMeasures(SensorContext sensorContext, File file, HtmlFile htmlFile) {
+  private void addMeasures(SensorContext sensorContext, File file, org.sonar.api.resources.File htmlFile) {
 
     LineIterator iterator = null;
     int numLines = 0;
@@ -86,7 +88,7 @@ public final class LineCountSensor implements Sensor {
    * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return isEnabled(project) && Html.KEY.equals(project.getLanguage().getKey());
+    return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
   }
 
   private boolean isEnabled(Project project) {

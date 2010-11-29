@@ -1,5 +1,7 @@
 /*
+ * Sonar Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +28,8 @@ import org.sonar.api.batch.ResourceCreationLock;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
-import org.sonar.plugins.webscanner.language.Html;
-import org.sonar.plugins.webscanner.language.HtmlFile;
+import org.sonar.plugins.webscanner.api.language.Html;
+import org.sonar.plugins.webscanner.api.language.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot
@@ -57,7 +59,7 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
   @Override
   protected Resource<?> createResource(File file, List<File> sourceDirs, boolean unitTest) {
     LOG.debug("HtmlSourceImporter:" + file.getPath());
-    return HtmlFile.fromIOFile(file, sourceDirs);
+    return org.sonar.api.resources.File.fromIOFile(file, sourceDirs);
   }
 
   @Override

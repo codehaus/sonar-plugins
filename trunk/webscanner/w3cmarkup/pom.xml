@@ -17,7 +17,7 @@
   
   <modules>
     <module>maven-w3cmarkup-plugin</module>
-    <!-- <module>sonar-w3cmarkup-plugin</module> -->
+    <module>sonar-w3cmarkup-plugin</module>
   </modules>
   
 </project>

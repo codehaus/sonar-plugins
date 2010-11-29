@@ -1,5 +1,7 @@
 /*
+ * Sonar Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.sonar.plugins.webscanner;
 
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ import java.util.List;
 import org.sonar.api.web.CodeColorizerFormat;
 import org.sonar.colorizer.RegexpTokenizer;
 import org.sonar.colorizer.Tokenizer;
-import org.sonar.plugins.webscanner.language.Html;
+import org.sonar.plugins.webscanner.api.language.Html;
 
 public class HtmlCodeColorizerFormat extends CodeColorizerFormat {
 

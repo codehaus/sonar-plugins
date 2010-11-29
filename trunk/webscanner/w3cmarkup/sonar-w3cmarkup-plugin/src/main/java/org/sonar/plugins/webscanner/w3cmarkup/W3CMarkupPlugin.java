@@ -1,5 +1,7 @@
 /*
+ * Sonar W3CMarkup Plugin
  * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,22 +25,16 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.webscanner.ProjectConfiguration;
+import org.sonar.plugins.webscanner.api.language.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = ProjectConfiguration.FILE_EXTENSIONS,
-    name = "File extensions",
-    description = "List of file extensions that will be scanned.",
-    defaultValue="html",
-    global = true, project = true),
-@Property(key = W3CMarkupSensor.VALIDATION_URL,
-    name = "W3CMarkup API",
-    description = "W3CMarkup Validation API",
-    defaultValue = "http://validator.w3.org/check",
-    global = true, project = true) })
+    @Property(key = ProjectConfiguration.FILE_EXTENSIONS, name = "File extensions",
+        description = "List of file extensions that will be scanned.", defaultValue = "html", global = true, project = true),
+    @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API", description = "W3CMarkup Validation API",
+        defaultValue = "http://validator.w3.org/check", global = true, project = true) })
 public final class W3CMarkupPlugin implements Plugin {
 
   private static final String KEY = "sonar-w3cmarkup-plugin";
@@ -54,6 +50,14 @@ public final class W3CMarkupPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
+    // W3C markup rules
+    list.add(MarkupRuleRepository.class);
+    list.add(MarkupProfileExporter.class);
+    list.add(MarkupProfileImporter.class);
+    list.add(DefaultMarkupProfile.class);
+    list.add(HtmlMetrics.class);
+    list.add(HtmlViolationFilter.class);
+    list.add(W3CMarkupSensor.class);
 
     return list;
   }
