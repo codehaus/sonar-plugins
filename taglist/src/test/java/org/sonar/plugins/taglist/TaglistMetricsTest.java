@@ -28,7 +28,7 @@ public class TaglistMetricsTest {
 
   @Test
   public void testMetricsDefinition() {
-    assertEquals(new TaglistMetrics().getMetrics().size(), 4);
+    assertEquals(new TaglistMetrics().getMetrics().size(), 5);
   }
 
 }

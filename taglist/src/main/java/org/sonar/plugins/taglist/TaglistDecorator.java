@@ -20,18 +20,18 @@
 
 package org.sonar.plugins.taglist;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.sonar.api.batch.AbstractSumChildrenDecorator;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.Metric;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class TaglistDecorator extends AbstractSumChildrenDecorator {
 
   @DependedUpon
   public List<Metric> generatesMetrics() {
-    return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS);
+    return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS, TaglistMetrics.NOSONAR_TAGS);
   }
 
   protected boolean shouldSaveZeroIfNoChildMeasures() {

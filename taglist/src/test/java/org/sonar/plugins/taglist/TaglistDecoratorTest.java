@@ -20,7 +20,7 @@
 
 package org.sonar.plugins.taglist;
 
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,9 +31,10 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.resources.Resource;
-import org.sonar.api.resources.Project;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.test.IsMeasure;
 
 public class TaglistDecoratorTest {
 
@@ -51,16 +52,19 @@ public class TaglistDecoratorTest {
   @Test
   public void testExecute() {
 
-    when(decoratorContext.getChildrenMeasures(TaglistMetrics.TAGS)).
-      thenReturn((Collection) Arrays.asList(new Measure(TaglistMetrics.TAGS, 1.0), new Measure(TaglistMetrics.TAGS, 3.0)));
-    when(decoratorContext.getChildrenMeasures(TaglistMetrics.MANDATORY_TAGS)).
-      thenReturn((Collection) Arrays.asList(new Measure(TaglistMetrics.MANDATORY_TAGS, 8.0), new Measure(TaglistMetrics.MANDATORY_TAGS, 3.0)));
-    when(decoratorContext.getChildrenMeasures(TaglistMetrics.OPTIONAL_TAGS)).
-      thenReturn((Collection) Arrays.asList(new Measure(TaglistMetrics.OPTIONAL_TAGS, 1.0), new Measure(TaglistMetrics.OPTIONAL_TAGS, 5.0)));
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.TAGS)).thenReturn(
+        (Collection) Arrays.asList(new Measure(TaglistMetrics.TAGS, 1.0), new Measure(TaglistMetrics.TAGS, 3.0)));
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.MANDATORY_TAGS)).thenReturn(
+        (Collection) Arrays.asList(new Measure(TaglistMetrics.MANDATORY_TAGS, 8.0), new Measure(TaglistMetrics.MANDATORY_TAGS, 3.0)));
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.OPTIONAL_TAGS)).thenReturn(
+        (Collection) Arrays.asList(new Measure(TaglistMetrics.OPTIONAL_TAGS, 1.0), new Measure(TaglistMetrics.OPTIONAL_TAGS, 5.0)));
+    when(decoratorContext.getChildrenMeasures(TaglistMetrics.NOSONAR_TAGS)).thenReturn(
+        (Collection) Arrays.asList(new Measure(TaglistMetrics.NOSONAR_TAGS, 3.0), new Measure(TaglistMetrics.NOSONAR_TAGS, 7.0)));
 
     decorator.decorate(resource, decoratorContext);
-    verify(decoratorContext).saveMeasure(eq(new Measure(TaglistMetrics.TAGS ,4.0)));
-    verify(decoratorContext).saveMeasure(eq(new Measure(TaglistMetrics.MANDATORY_TAGS ,11.0)));
-    verify(decoratorContext).saveMeasure(eq(new Measure(TaglistMetrics.OPTIONAL_TAGS ,6.0)));
+    verify(decoratorContext).saveMeasure(argThat(new IsMeasure(TaglistMetrics.TAGS, 4.0)));
+    verify(decoratorContext).saveMeasure(argThat(new IsMeasure(TaglistMetrics.MANDATORY_TAGS, 11.0)));
+    verify(decoratorContext).saveMeasure(argThat(new IsMeasure(TaglistMetrics.OPTIONAL_TAGS, 6.0)));
+    verify(decoratorContext).saveMeasure(argThat(new IsMeasure(TaglistMetrics.NOSONAR_TAGS, 10.0)));
   }
 }

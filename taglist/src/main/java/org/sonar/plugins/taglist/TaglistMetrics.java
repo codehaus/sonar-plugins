@@ -20,12 +20,12 @@
 
 package org.sonar.plugins.taglist;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class TaglistMetrics implements Metrics {
 
@@ -42,7 +42,11 @@ public class TaglistMetrics implements Metrics {
       "tags_distribution", "Tags distribution", "Distribution of tags in the source code",
       Metric.ValueType.DISTRIB, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_RULES);
 
+  public static final Metric NOSONAR_TAGS = new Metric(
+      "nosonar_tags", "NOSONAR tags", "Number of NOSONAR tags in the source code",
+      Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES);
+
   public List<Metric> getMetrics() {
-    return Arrays.asList(TAGS, MANDATORY_TAGS, OPTIONAL_TAGS, TAGS_DISTRIBUTION);
+    return Arrays.asList(TAGS, MANDATORY_TAGS, OPTIONAL_TAGS, NOSONAR_TAGS, TAGS_DISTRIBUTION);
   }
 }

@@ -41,6 +41,7 @@ import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
@@ -59,7 +60,7 @@ public class ViolationsDecoratorTest {
 
   private ViolationsDecorator decorator;
   private RulesProfile rulesProfile = RulesProfile.create();
-  private Rule rule1, rule2;
+  private Rule rule1, rule2, rule3;
   private RuleFinder ruleFinder;
   private DecoratorContext context;
   private JavaFile javaFile;
@@ -69,12 +70,14 @@ public class ViolationsDecoratorTest {
     rulesProfile = RulesProfile.create();
     rule1 = createCheckstyleRule().setKey("key1");
     rule2 = createCheckstyleRule().setKey("key2");
+    rule3 = createSquidRule();
     Rule inactiveRule = createCheckstyleRule().setKey("key3");
     rulesProfile.activateRule(rule1, RulePriority.BLOCKER).setParameter("format", "FIXME");
     rulesProfile.activateRule(rule2, RulePriority.MAJOR).setParameter("format", "TODO");
+    rulesProfile.activateRule(rule3, RulePriority.INFO);
 
     ruleFinder = mock(RuleFinder.class);
-    when(ruleFinder.findAll(argThat(any(RuleQuery.class)))).thenReturn(Arrays.asList(rule1, rule2, inactiveRule));
+    when(ruleFinder.findAll(argThat(any(RuleQuery.class)))).thenReturn(Arrays.asList(rule1, rule2, inactiveRule, rule3));
 
     context = mock(DecoratorContext.class);
     javaFile = new JavaFile("org.example", "HelloWorld");
@@ -84,7 +87,7 @@ public class ViolationsDecoratorTest {
 
   @Test
   public void dependedUpon() {
-    assertThat(decorator.dependedUpon().size(), is(4));
+    assertThat(decorator.dependedUpon().size(), is(5));
   }
 
   @Test
@@ -112,15 +115,17 @@ public class ViolationsDecoratorTest {
   public void shouldSaveMetrics() {
     Violation mandatory = Violation.create(rule1, null);
     Violation optional = Violation.create(rule2, null);
-    when(context.getViolations()).thenReturn(Arrays.asList(mandatory, optional));
+    Violation info = Violation.create(rule3, null);
+    when(context.getViolations()).thenReturn(Arrays.asList(mandatory, optional, info));
 
     decorator.decorate(javaFile, context);
 
     verify(context, atLeastOnce()).getViolations();
-    verify(context).saveMeasure(eq(TaglistMetrics.TAGS), doubleThat(equalTo(2.0)));
+    verify(context).saveMeasure(eq(TaglistMetrics.TAGS), doubleThat(equalTo(3.0)));
     verify(context).saveMeasure(eq(TaglistMetrics.MANDATORY_TAGS), doubleThat(equalTo(1.0)));
-    verify(context).saveMeasure(eq(TaglistMetrics.OPTIONAL_TAGS), doubleThat(equalTo(1.0)));
-    verify(context).saveMeasure(argThat(new IsMeasure(TaglistMetrics.TAGS_DISTRIBUTION, "FIXME=1;TODO=1")));
+    verify(context).saveMeasure(eq(TaglistMetrics.OPTIONAL_TAGS), doubleThat(equalTo(2.0)));
+    verify(context).saveMeasure(eq(TaglistMetrics.NOSONAR_TAGS), doubleThat(equalTo(1.0)));
+    verify(context).saveMeasure(argThat(new IsMeasure(TaglistMetrics.TAGS_DISTRIBUTION, "FIXME=1;NOSONAR=1;TODO=1")));
     verifyNoMoreInteractions(context);
   }
 
@@ -143,8 +148,15 @@ public class ViolationsDecoratorTest {
     assertThat(ViolationsDecorator.isMandatory(RulePriority.INFO), is(false));
   }
 
+  private Rule createSquidRule() {
+    Rule rule = Rule.create();
+    rule.setRepositoryKey(CoreProperties.SQUID_PLUGIN);
+    return rule;
+  }
+
   private Rule createCheckstyleRule() {
     Rule rule = Rule.create();
+    rule.setRepositoryKey(CoreProperties.CHECKSTYLE_PLUGIN);
     rule.createParameter("format").setDefaultValue("TODO:");
     return rule;
   }

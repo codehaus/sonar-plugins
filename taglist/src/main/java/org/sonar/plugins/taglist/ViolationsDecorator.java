@@ -22,6 +22,7 @@ package org.sonar.plugins.taglist;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import org.sonar.api.CoreProperties;
@@ -43,10 +44,12 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.rules.Violation;
+import org.sonar.api.utils.SonarException;
 
 @DependsUpon(DecoratorBarriers.END_OF_VIOLATIONS_GENERATION)
 public class ViolationsDecorator implements Decorator {
-  private static final String RULE_CONFIG_KEY = "Checker/TreeWalker/TodoComment";
+  private static final String CHECKSTYLE_RULE_CONFIG_KEY = "Checker/TreeWalker/TodoComment";
+  private static final String NOSONAR_RULE_CONFIG_KEY = "NoSonarCheck";
 
   private RulesProfile rulesProfile;
   private RuleFinder ruleFinder;
@@ -58,8 +61,8 @@ public class ViolationsDecorator implements Decorator {
 
   @DependedUpon
   public List<Metric> dependedUpon() {
-    return Arrays
-        .asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS, TaglistMetrics.TAGS_DISTRIBUTION);
+    return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS, TaglistMetrics.NOSONAR_TAGS,
+            TaglistMetrics.TAGS_DISTRIBUTION);
   }
 
   public boolean shouldExecuteOnProject(Project project) {
@@ -68,8 +71,14 @@ public class ViolationsDecorator implements Decorator {
 
   public void decorate(Resource resource, DecoratorContext context) {
     if (Resource.QUALIFIER_CLASS.equals(resource.getQualifier())) {
-      RuleQuery ruleQuery = RuleQuery.create().withRepositoryKey(CoreProperties.CHECKSTYLE_PLUGIN).withConfigKey(RULE_CONFIG_KEY);
-      Collection<Rule> rules = ruleFinder.findAll(ruleQuery);
+      Collection<Rule> rules = new HashSet<Rule>();
+
+      RuleQuery ruleQuery = RuleQuery.create().withRepositoryKey(CoreProperties.CHECKSTYLE_PLUGIN)
+          .withConfigKey(CHECKSTYLE_RULE_CONFIG_KEY);
+      rules.addAll(ruleFinder.findAll(ruleQuery));
+      ruleQuery = RuleQuery.create().withRepositoryKey(CoreProperties.SQUID_PLUGIN).withConfigKey(NOSONAR_RULE_CONFIG_KEY);
+      rules.addAll(ruleFinder.findAll(ruleQuery));
+
       saveFileMeasures(context, rules);
     }
   }
@@ -78,6 +87,7 @@ public class ViolationsDecorator implements Decorator {
     CountDistributionBuilder distrib = new CountDistributionBuilder(TaglistMetrics.TAGS_DISTRIBUTION);
     int mandatory = 0;
     int optional = 0;
+    int noSonarTags = 0;
     for (Rule rule : rules) {
       ActiveRule activeRule = rulesProfile.getActiveRule(rule);
       if (activeRule != null) {
@@ -88,6 +98,9 @@ public class ViolationsDecorator implements Decorator {
             } else {
               optional++;
             }
+            if (CoreProperties.SQUID_PLUGIN.equals(rule.getRepositoryKey())) {
+              noSonarTags++;
+            }
             distrib.add(getTagName(activeRule));
           }
         }
@@ -96,6 +109,7 @@ public class ViolationsDecorator implements Decorator {
     saveMeasure(context, TaglistMetrics.TAGS, mandatory + optional);
     saveMeasure(context, TaglistMetrics.MANDATORY_TAGS, mandatory);
     saveMeasure(context, TaglistMetrics.OPTIONAL_TAGS, optional);
+    saveMeasure(context, TaglistMetrics.NOSONAR_TAGS, noSonarTags);
     if ( !distrib.isEmpty()) {
       context.saveMeasure(distrib.build().setPersistenceMode(PersistenceMode.MEMORY));
     }
@@ -106,7 +120,12 @@ public class ViolationsDecorator implements Decorator {
   }
 
   private String getTagName(ActiveRule rule) {
-    return rule.getParameter("format");
+    if (CoreProperties.CHECKSTYLE_PLUGIN.equals(rule.getRepositoryKey())) {
+      return rule.getParameter("format");
+    } else if (CoreProperties.SQUID_PLUGIN.equals(rule.getRepositoryKey())) {
+      return "NOSONAR";
+    }
+    throw new SonarException("Taglist plugin doesn't work with rule: " + rule);
   }
 
   private void saveMeasure(DecoratorContext context, Metric metric, int value) {

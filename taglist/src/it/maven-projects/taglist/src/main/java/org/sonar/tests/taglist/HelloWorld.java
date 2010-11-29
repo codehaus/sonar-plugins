@@ -1,9 +1,10 @@
-package org.sonar.tests.reference;
+package org.sonar.tests.taglist;
 
 public class HelloWorld {
 
   public void hello() {
     // TODO implement
+    System.out.println("Hello"); // NOSONAR
   }
 
   public Object clone() {
