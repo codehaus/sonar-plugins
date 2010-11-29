@@ -20,17 +20,8 @@
 
 package org.sonar.plugins.taglist;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
 import org.sonar.api.CoreProperties;
-import org.sonar.api.batch.Decorator;
-import org.sonar.api.batch.DecoratorBarriers;
-import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependedUpon;
-import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.batch.*;
 import org.sonar.api.measures.CountDistributionBuilder;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PersistenceMode;
@@ -38,18 +29,18 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
-import org.sonar.api.rules.ActiveRule;
-import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RuleFinder;
-import org.sonar.api.rules.RulePriority;
-import org.sonar.api.rules.RuleQuery;
-import org.sonar.api.rules.Violation;
+import org.sonar.api.rules.*;
 import org.sonar.api.utils.SonarException;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 @DependsUpon(DecoratorBarriers.END_OF_VIOLATIONS_GENERATION)
 public class ViolationsDecorator implements Decorator {
   private static final String CHECKSTYLE_RULE_CONFIG_KEY = "Checker/TreeWalker/TodoComment";
-  private static final String NOSONAR_RULE_CONFIG_KEY = "NoSonarCheck";
+  private static final String NOSONAR_RULE_CONFIG_KEY = "NoSonar";
 
   private RulesProfile rulesProfile;
   private RuleFinder ruleFinder;
@@ -110,7 +101,7 @@ public class ViolationsDecorator implements Decorator {
     saveMeasure(context, TaglistMetrics.MANDATORY_TAGS, mandatory);
     saveMeasure(context, TaglistMetrics.OPTIONAL_TAGS, optional);
     saveMeasure(context, TaglistMetrics.NOSONAR_TAGS, noSonarTags);
-    if ( !distrib.isEmpty()) {
+    if (!distrib.isEmpty()) {
       context.saveMeasure(distrib.build().setPersistenceMode(PersistenceMode.MEMORY));
     }
   }
