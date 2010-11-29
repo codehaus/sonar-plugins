@@ -19,7 +19,6 @@
                 <module>build-breaker</module>
                 <module>build-stability</module>
                 <module>clirr</module>
-                <module>cpp</module>
                 <module>crowd</module>
                 <module>c-rules</module>
                 <module>cutoff</module>
