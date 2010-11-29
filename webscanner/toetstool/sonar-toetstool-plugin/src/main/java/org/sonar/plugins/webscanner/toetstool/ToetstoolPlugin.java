@@ -1,5 +1,7 @@
 /*
+ * Sonar Toetstool Plugin
  * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,16 +30,10 @@ import org.sonar.api.Property;
  * @author Matthijs Galesloot
  */
 @Properties({
-    @Property(key = "sonar.web.fileExtensions",
-        name = "File extensions",
-        description = "List of file extensions that will be scanned.",
-        defaultValue = "html",
-        global = true, project = true),
-    @Property(key = "sonar.toetstool.url",
-        name = "Toetstool API",
-        description = "Toetstool Validation API",
-        defaultValue = "https://api.toetstool.nl/",
-        global = true, project = true) })
+    @Property(key = "sonar.web.fileExtensions", name = "File extensions", description = "List of file extensions that will be scanned.",
+        defaultValue = "html", global = true, project = true),
+    @Property(key = "sonar.toetstool.url", name = "Toetstool API", description = "Toetstool Validation API",
+        defaultValue = "https://api.toetstool.nl/", global = true, project = true) })
 public final class ToetstoolPlugin implements Plugin {
 
   private static final String KEY = "sonar-toetstool-plugin";
@@ -47,18 +43,17 @@ public final class ToetstoolPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return getName() + " collects metrics on live web sites, " +
-    		"such as webrichtlijnen compliancy & markup validation. " +
-    		"<p>Consult in advance for large batch jobs at info@toetstool.nl.</p>";
+    return getName() + " collects metrics on live web sites, " + "such as webrichtlijnen compliancy & markup validation. "
+        + "<p>Consult in advance for large batch jobs at info@toetstool.nl.</p>";
   }
 
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
-  // toetstool rules
-  //  list.add(ToetstoolRuleRepository.class);
-  //  list.add(DefaultToetstoolProfile.class);
-  //  list.add(ToetstoolSensor.class);
+    // toetstool rules
+    list.add(ToetstoolRuleRepository.class);
+    list.add(DefaultToetstoolProfile.class);
+    list.add(ToetstoolSensor.class);
 
     return list;
   }

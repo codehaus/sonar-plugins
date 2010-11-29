@@ -40,18 +40,11 @@ public class HtmlValidationHttpClient {
     Protocol.registerProtocol("https", new Protocol("https", (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
   }
 
-  private final HttpClient client;
+  private HttpClient client;
 
   private String proxyHost;
 
   private int proxyPort;
-
-  public HtmlValidationHttpClient() {
-    this.client = new HttpClient();
-    if (useProxy()) {
-      client.getHostConfiguration().setProxy(getProxyHost(), getProxyPort());
-    }
-  }
 
   protected void executePostMethod(PostMethod post) {
 
@@ -83,6 +76,13 @@ public class HtmlValidationHttpClient {
   }
 
   protected HttpClient getClient() {
+    if (client == null) {
+      client = new HttpClient();
+      if (useProxy()) {
+        LOG.debug("Proxy " + getProxyHost() + ":" + getProxyPort());
+        client.getHostConfiguration().setProxy(getProxyHost(), getProxyPort());
+      }
+    }
     return client;
   }
 

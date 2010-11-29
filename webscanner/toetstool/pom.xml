@@ -9,11 +9,11 @@
   <version>0.1-SNAPSHOT</version>
   <description>Toetstool: validation of webrichtlijnen</description>
 
-   <modules>
-        <!--  <module>sonar-toetstool-plugin</module> -->
-        <module>maven-toetstool-plugin</module>
-   </modules>
-    
+  <modules>
+    <module>sonar-toetstool-plugin</module>
+    <module>maven-toetstool-plugin</module>
+  </modules>
+
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>sonar-webscanner</artifactId>
