@@ -6,6 +6,7 @@
         <p><span class="big"><%= format_measure('tags', :url => url_for_drilldown('tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0')%><%= tendency_icon('tags') %></span></p>
         <p><span"><%= format_measure('mandatory_tags', :suffix => ' mandatory', :url => url_for_drilldown('mandatory_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 mandatory') %><%= tendency_icon('mandatory_tags') %></span></p>
         <p><span"><%= format_measure('optional_tags', :suffix => ' optional', :url => url_for_drilldown('optional_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 optional') %><%= tendency_icon('optional_tags') %></span></p>
+        <p><span"><%= format_measure('nosonar_tags', :suffix => ' nosonar', :url => url_for_drilldown('nosonar_tags', {:viewer_plugin_key => 'org.sonar.plugins.core.violationsviewer.ViolationsViewer'}), :default => '0 nosonar') %><%= tendency_icon('nosonar_tags') %></span></p>
       </div>
     </div>
     <div class="yui-u">

@@ -1,4 +1,4 @@
-package org.sonar.tests.reference;
+package org.sonar.tests.taglist;
 
 public interface HelloSwiss {
 
