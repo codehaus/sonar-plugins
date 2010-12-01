@@ -49,6 +49,13 @@ import org.xml.sax.SAXException;
  */
 public class MarkupErrorCatalog {
 
+  private static final class MessageDefinitionComparator implements Comparator<MessageDefinition> {
+
+    public int compare(MessageDefinition e1, MessageDefinition e2) {
+      return e1.id.compareTo(e2.id);
+    }
+  }
+
   public static class MessageDefinition {
 
     private String explanation;
@@ -249,11 +256,6 @@ public class MarkupErrorCatalog {
     }
 
     // sort the errors on id
-    Collections.sort(warnings, new Comparator<MessageDefinition>() {
-
-      public int compare(MessageDefinition e1, MessageDefinition e2) {
-        return e1.id.compareTo(e2.id);
-      }
-    });
+    Collections.sort(warnings, new MessageDefinitionComparator());
   }
 }

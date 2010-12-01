@@ -61,14 +61,6 @@ public final class HtmlMarkupMojo extends AbstractMojo {
   private Integer nrOfSamples;
 
   /**
-   * Validation URL.
-   *
-   * @parameter
-   * @required
-   */
-  private String validationUrl;
-
-  /**
    * The Maven Settings.
    *
    * @parameter default-value="${settings}"
@@ -76,6 +68,14 @@ public final class HtmlMarkupMojo extends AbstractMojo {
    * @readonly
    */
   private Settings settings;
+
+  /**
+   * Validation URL.
+   *
+   * @parameter
+   * @required
+   */
+  private String validationUrl;
 
   public void execute() throws MojoExecutionException {
 
@@ -111,5 +111,9 @@ public final class HtmlMarkupMojo extends AbstractMojo {
 
   public void setSettings(Settings settings) {
     this.settings = settings;
+  }
+
+  public void setValidationUrl(String validationUrl) {
+    this.validationUrl = validationUrl;
   }
 }
