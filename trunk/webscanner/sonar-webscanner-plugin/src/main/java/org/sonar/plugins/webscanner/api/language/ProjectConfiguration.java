@@ -29,7 +29,7 @@ import org.sonar.api.resources.Project;
  * @author Matthijs Galesloot
  *
  */
-public class ProjectConfiguration {
+public final class ProjectConfiguration {
 
   public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
   public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
