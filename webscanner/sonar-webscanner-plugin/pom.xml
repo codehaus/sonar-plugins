@@ -16,8 +16,6 @@
   </parent>
 
   <properties>
-    <sonar.version>2.4</sonar.version>
-    <license.name>AL2</license.name>
     <sonar.pluginName>WebScanner</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.webscanner.WebScannerPlugin</sonar.pluginClass>
   </properties>
@@ -26,11 +24,13 @@
     <dependency>
       <groupId>org.codehaus.sonar-plugins</groupId>
       <artifactId>webscanner-commons</artifactId>
+      <scope>compile</scope>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Test dependencies -->

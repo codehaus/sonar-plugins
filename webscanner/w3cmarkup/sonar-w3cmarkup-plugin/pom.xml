@@ -17,8 +17,6 @@
   </parent>
 
   <properties>
-    <sonar.version>2.4</sonar.version>
-    <license.name>AL2</license.name>
     <sonar.pluginName>W3CMarkup</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.webscanner.w3cmarkup.W3CMarkupPlugin</sonar.pluginClass>
   </properties>
