@@ -12,23 +12,9 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
-  
-  <modules>
-    <!-- shared code -->
-    <module>webscanner-commons</module>
-    <!-- webscanner plugin -->
-    <module>sonar-webscanner-plugin</module>
-
-    <!-- crawler services -->
-    <module>crawler</module>
-
-    <!-- validation plugins -->
-    <module>w3cmarkup</module>
-    <module>toetstool</module>
-  </modules>
 
   <properties>
     <license.name>AL2</license.name>
@@ -38,7 +24,7 @@
   <url>http://docs.codehaus.org/display/SONAR/Webscanner+Plugins</url>
   <issueManagement>
     <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/?????</url>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14597</url>
   </issueManagement>
   <ciManagement>
     <system>BAMBOO</system>
@@ -47,7 +33,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/webscanner</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/webscanner</developerConnection>
-    <url>http://svn.codehaus.org/sonar-plugins/ </url>
+    <url>http://svn.codehaus.org/sonar-plugins/</url>
   </scm>
 
   <inceptionYear>2010</inceptionYear>
@@ -74,6 +60,7 @@
       <dependency>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-plugin-api</artifactId>
+        <scope>provided</scope>
         <version>${sonar.version}</version>
         <!-- dependencies of sonar-plugin-api (pmd) should not get older version of junit -->
         <exclusions>
@@ -104,23 +91,4 @@
     </dependencies>
   </dependencyManagement>
 
-  <profiles>
-    <!-- local profile for sonar:sonar -->
-    <profile>
-      <id>local</id>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-enforcer-plugin</artifactId>
-              <configuration>
-                <fail>false</fail>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-    </profile>
-  </profiles>
 </project>
