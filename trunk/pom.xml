@@ -22,7 +22,6 @@
                 <module>crowd</module>
                 <module>c-rules</module>
                 <module>cutoff</module>
-                <module>dbcleaner</module>
                 <module>debug</module>
                 <module>dotnet</module>
                 <module>emma</module>
