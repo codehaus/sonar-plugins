@@ -43,7 +43,7 @@ import org.sonar.plugins.webscanner.markup.MarkupValidator;
 
 /**
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public final class W3CMarkupSensor implements Sensor {
 
