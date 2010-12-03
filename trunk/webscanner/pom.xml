@@ -16,6 +16,20 @@
     <relativePath>../parent</relativePath>
   </parent>
 
+  <modules>
+    <!-- shared code between sonar and maven plugins -->
+    <module>webscanner-commons</module>
+    <!-- webscanner plugin -->
+    <module>sonar-webscanner-plugin</module>
+
+    <!-- crawler services -->
+    <module>crawler</module>
+
+    <!-- validation plugins -->
+    <module>w3cmarkup</module>
+    <module>toetstool</module>
+  </modules>
+
   <properties>
     <license.name>AL2</license.name>
     <sonar.version>2.4</sonar.version>
@@ -44,6 +58,7 @@
     <developer>
       <id>mgalesloot</id>
       <name>Matthijs Galesloot</name>
+      <email>matthijs@codehaus.org</email>
     </developer>
   </developers>
 
@@ -87,6 +102,14 @@
         <artifactId>plexus-interpolation</artifactId>
         <version>1.11</version>
         <scope>provided</scope>
+      </dependency>
+
+      <!-- Unit test -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.8.2</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

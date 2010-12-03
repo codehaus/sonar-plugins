@@ -42,10 +42,6 @@ public final class LineCountSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCountSensor.class);
 
-  public LineCountSensor() {
-
-  }
-
   public void analyse(Project project, SensorContext sensorContext) {
 
     ProjectConfiguration.configureSourceDir(project);
