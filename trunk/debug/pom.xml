@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>7</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -33,13 +33,13 @@
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Plugins :: Debug</name>
+  <description></description>
+  <url></url>
 
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/debug</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/debug</developerConnection>
-    <url>http://svn.codehaus.org/sonar-plugins</url>
-  </scm>
-
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
   <licenses>
     <license>
       <name>GNU LGPL 3</name>
@@ -47,6 +47,12 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/debug</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/debug</developerConnection>
+    <url>http://svn.codehaus.org/sonar-plugins</url>
+  </scm>
 
   <repositories>
     <repository>
