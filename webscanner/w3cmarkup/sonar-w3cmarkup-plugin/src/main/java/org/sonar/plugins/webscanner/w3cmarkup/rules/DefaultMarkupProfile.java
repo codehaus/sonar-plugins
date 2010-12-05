@@ -16,31 +16,28 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.w3cmarkup;
+package org.sonar.plugins.webscanner.w3cmarkup.rules;
 
-import java.io.Reader;
+import java.util.List;
 
-import org.sonar.api.profiles.ProfileImporter;
+import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.profiles.XMLProfileParser;
-import org.sonar.api.rules.RuleFinder;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.RulePriority;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.webscanner.api.language.Html;
 
-public class MarkupProfileImporter extends ProfileImporter {
-
-  private final RuleFinder ruleFinder;
-
-  public MarkupProfileImporter(RuleFinder ruleFinder) {
-    super(MarkupRuleRepository.REPOSITORY_KEY, MarkupRuleRepository.REPOSITORY_NAME);
-    setSupportedLanguages(Html.KEY);
-    this.ruleFinder = ruleFinder;
-  }
+public final class DefaultMarkupProfile extends ProfileDefinition {
 
   @Override
-  public RulesProfile importProfile(Reader reader, ValidationMessages messages) {
-
-    XMLProfileParser profileParser = new XMLProfileParser(ruleFinder);
-    return profileParser.parse(reader, messages);
+  public RulesProfile createProfile(ValidationMessages validation) {
+    MarkupRuleRepository repository = new MarkupRuleRepository();
+    List<Rule> rules = repository.createRules();
+    RulesProfile rulesProfile = RulesProfile.create(MarkupRuleRepository.REPOSITORY_NAME, Html.KEY);
+    for (Rule rule : rules) {
+      rulesProfile.activateRule(rule, RulePriority.MAJOR);
+    }
+    rulesProfile.setDefaultProfile(false);
+    return rulesProfile;
   }
 }

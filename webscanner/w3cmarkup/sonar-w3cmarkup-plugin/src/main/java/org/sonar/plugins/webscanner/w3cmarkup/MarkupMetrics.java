@@ -18,25 +18,35 @@
 
 package org.sonar.plugins.webscanner.w3cmarkup;
 
-import java.io.Writer;
 
-import org.sonar.api.profiles.ProfileExporter;
-import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.profiles.XMLProfileSerializer;
-import org.sonar.plugins.webscanner.api.language.Html;
+import java.util.Arrays;
+import java.util.List;
 
-public class MarkupProfileExporter extends ProfileExporter {
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Metrics;
 
-  public MarkupProfileExporter() {
-    super(MarkupRuleRepository.REPOSITORY_KEY, MarkupRuleRepository.REPOSITORY_NAME);
-    setSupportedLanguages(Html.KEY);
-    setMimeType("application/xml");
-  }
+/**
+ * {@inheritDoc}
+ */
+public final class MarkupMetrics implements Metrics {
 
-  @Override
-  public void exportProfile(RulesProfile profile, Writer writer) {
+  public static final Metric W3C_MARKUP_VALIDITY = new Metric(
+      "w3c_markup_validity",
+      "W3C Markup Validity",
+      "W3C Markup Validity",
+      Metric.ValueType.PERCENT,
+      Metric.DIRECTION_BETTER,
+      true,
+      CoreMetrics.DOMAIN_RULES
+  );
 
-    XMLProfileSerializer serializer = new XMLProfileSerializer();
-    serializer.write(profile, writer);
+  /**
+   * {@inheritDoc}
+   */
+  public List<Metric> getMetrics() {
+    return Arrays.asList(
+        W3C_MARKUP_VALIDITY
+    );
   }
 }

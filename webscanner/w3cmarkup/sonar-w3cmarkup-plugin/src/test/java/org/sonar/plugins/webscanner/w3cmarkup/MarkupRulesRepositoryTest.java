@@ -26,7 +26,7 @@ import java.util.List;
 import org.junit.Test;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
-import org.sonar.plugins.webscanner.w3cmarkup.MarkupRuleRepository;
+import org.sonar.plugins.webscanner.w3cmarkup.rules.MarkupRuleRepository;
 
 
 
