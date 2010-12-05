@@ -1,5 +1,7 @@
 /*
+ * Sonar Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.html;
+package org.sonar.plugins.webscanner.api.html;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
+import org.sonar.plugins.webscanner.api.html.FileSet.HtmlFile;
 
 /**
  * Scanner for html files.
