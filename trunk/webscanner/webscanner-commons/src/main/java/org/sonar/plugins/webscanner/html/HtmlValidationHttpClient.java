@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.api.html;
+package org.sonar.plugins.webscanner.html;
 
 import java.io.IOException;
 import java.net.UnknownHostException;

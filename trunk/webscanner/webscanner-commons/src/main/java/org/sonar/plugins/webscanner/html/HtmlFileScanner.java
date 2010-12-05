@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.api.html;
+package org.sonar.plugins.webscanner.html;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.api.html.FileSet.HtmlFile;
+import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
 
 /**
  * Scanner for html files.

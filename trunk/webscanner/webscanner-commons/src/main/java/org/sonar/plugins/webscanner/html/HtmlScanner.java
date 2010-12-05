@@ -16,14 +16,14 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.api.html;
+package org.sonar.plugins.webscanner.html;
 
 import java.io.File;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.api.html.FileSet.HtmlFile;
+import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
 
 /**
  * Scans HTML files and builds a list of files in FileSet.xml. Checks for duplicate content.
