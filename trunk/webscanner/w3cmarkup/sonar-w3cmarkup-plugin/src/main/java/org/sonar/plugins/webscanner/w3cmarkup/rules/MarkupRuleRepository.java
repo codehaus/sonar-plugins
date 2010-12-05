@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.w3cmarkup;
+package org.sonar.plugins.webscanner.w3cmarkup.rules;
 
 import java.util.ArrayList;
 import java.util.List;

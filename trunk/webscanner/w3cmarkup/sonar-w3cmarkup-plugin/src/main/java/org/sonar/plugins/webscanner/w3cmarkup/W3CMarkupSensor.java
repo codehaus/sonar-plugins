@@ -40,6 +40,7 @@ import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.markup.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.MarkupReport;
 import org.sonar.plugins.webscanner.markup.MarkupValidator;
+import org.sonar.plugins.webscanner.w3cmarkup.rules.MarkupRuleRepository;
 
 /**
  * @author Matthijs Galesloot

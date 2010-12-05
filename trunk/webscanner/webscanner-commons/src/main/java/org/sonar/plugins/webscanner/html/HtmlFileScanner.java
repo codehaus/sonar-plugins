@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
 
@@ -98,7 +99,7 @@ public final class HtmlFileScanner {
 
       // skip analysis if the report already exists
       File reportFile = visitor.reportFile(file);
-      if (!reportFile.exists()) {
+      if (!reportFile.exists() || FileUtils.isFileNewer(file, reportFile)) {
         visitor.validateFile(file);
       }
     }

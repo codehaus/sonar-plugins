@@ -26,6 +26,10 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.webscanner.api.language.ProjectConfiguration;
+import org.sonar.plugins.webscanner.w3cmarkup.rules.DefaultMarkupProfile;
+import org.sonar.plugins.webscanner.w3cmarkup.rules.MarkupProfileExporter;
+import org.sonar.plugins.webscanner.w3cmarkup.rules.MarkupProfileImporter;
+import org.sonar.plugins.webscanner.w3cmarkup.rules.MarkupRuleRepository;
 
 /**
  * @author Matthijs Galesloot
