@@ -18,7 +18,7 @@
   <inceptionYear>2009</inceptionYear>
 
   <properties>
-    <sonar.version>2.3-SNAPSHOT</sonar.version>
+    <sonar.version>2.3</sonar.version>
   </properties>
 
   <developers>
