@@ -53,45 +53,31 @@ public class TaglistIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("tags").getValue(), is(1.0));
-    assertThat(getProjectMeasure("mandatory_tags"), nullValue());
-    assertThat(getProjectMeasure("optional_tags").getValue(), is(1.0));
+    assertThat(getProjectMeasure("tags").getValue(), is(4.0));
+    assertThat(getProjectMeasure("mandatory_tags").getValue(), is(1.0));
+    assertThat(getProjectMeasure("optional_tags").getValue(), is(3.0));
+    assertThat(getProjectMeasure("nosonar_tags").getValue(), is(1.0));
     assertThat(getProjectMeasure("tags_distribution"), notNullValue());
-    assertThat(getProjectMeasure("tags_distribution").getData(), is("TODO=1"));
-    // TODO change code above on following when SONAR-1987 would be resolved
-    // assertThat(getProjectMeasure("tags").getValue(), is(3.0));
-    // assertThat(getProjectMeasure("mandatory_tags").getValue(), is(1.0));
-    // assertThat(getProjectMeasure("optional_tags").getValue(), is(2.0));
-    // assertThat(getProjectMeasure("tags_distribution"), notNullValue());
-    // assertThat(getProjectMeasure("tags_distribution").getData(), is("@deprecated=1;FIXME=1;TODO=1"));
+    assertThat(getProjectMeasure("tags_distribution").getData(), is("@deprecated=1;FIXME=1;NOSONAR=1;TODO=1"));
   }
 
   @Test
   public void packageMetrics() {
-    assertThat(getPackageMeasure("tags").getValue(), is(1.0));
-    assertThat(getProjectMeasure("mandatory_tags"), nullValue());
-    assertThat(getPackageMeasure("optional_tags").getValue(), is(1.0));
+    assertThat(getPackageMeasure("tags").getValue(), is(4.0));
+    assertThat(getPackageMeasure("mandatory_tags").getValue(), is(1.0));
+    assertThat(getPackageMeasure("optional_tags").getValue(), is(3.0));
+    assertThat(getPackageMeasure("nosonar_tags").getValue(), is(1.0));
     assertThat(getProjectMeasure("tags_distribution"), notNullValue());
-    assertThat(getPackageMeasure("tags_distribution").getData(), is("TODO=1"));
-    // TODO change code above on following when SONAR-1987 would be resolved
-    // assertThat(getPackageMeasure("tags").getValue(), is(3.0));
-    // assertThat(getPackageMeasure("mandatory_tags").getValue(), is(1.0));
-    // assertThat(getPackageMeasure("optional_tags").getValue(), is(2.0));
-    // assertThat(getProjectMeasure("tags_distribution"), notNullValue());
-    // assertThat(getPackageMeasure("tags_distribution").getData(), is("@deprecated=1;FIXME=1;TODO=1"));
+    assertThat(getPackageMeasure("tags_distribution").getData(), is("@deprecated=1;FIXME=1;NOSONAR=1;TODO=1"));
   }
 
   @Test
   public void fileMetrics() {
-    assertThat(getFileMeasure("tags").getValue(), is(1.0));
-    assertThat(getProjectMeasure("mandatory_tags"), nullValue());
-    assertThat(getFileMeasure("optional_tags").getValue(), is(1.0));
+    assertThat(getFileMeasure("tags").getValue(), is(3.0));
+    assertThat(getFileMeasure("mandatory_tags").getValue(), is(1.0));
+    assertThat(getFileMeasure("optional_tags").getValue(), is(2.0));
+    assertThat(getFileMeasure("nosonar_tags").getValue(), is(1.0));
     assertThat(getFileMeasure("tags_distribution"), nullValue());
-    // TODO change code above on following when SONAR-1987 would be resolved
-    // assertThat(getFileMeasure("tags").getValue(), is(2.0));
-    // assertThat(getFileMeasure("mandatory_tags").getValue(), is(1.0));
-    // assertThat(getFileMeasure("optional_tags").getValue(), is(1.0));
-    // assertThat(getFileMeasure("tags_distribution"), nullValue());
   }
 
   private Measure getFileMeasure(String metricKey) {

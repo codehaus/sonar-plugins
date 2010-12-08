@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sonar-config>
-  <version><![CDATA[152]]></version>
-  <date><![CDATA[2010-11-17]]></date>
+  <version><![CDATA[167]]></version>
+  <date><![CDATA[2010-12-09]]></date>
   <metrics/>
   <properties>
     <property>
       <key><![CDATA[sonar.core.id]]></key>
-      <value><![CDATA[20101117144022]]></value>
+      <value><![CDATA[20101209005020]]></value>
     </property>
     <property>
       <key><![CDATA[sonar.core.version]]></key>
@@ -14,7 +14,7 @@
     </property>
     <property>
       <key><![CDATA[sonar.core.startTime]]></key>
-      <value><![CDATA[2010-11-17T14:40:22+0300]]></value>
+      <value><![CDATA[2010-12-09T00:50:20+0300]]></value>
     </property>
   </properties>
   <profiles>
@@ -140,12 +140,12 @@
           <level><![CDATA[CRITICAL]]></level>
         </active-rule>
         <active-rule>
-          <key><![CDATA[IJU_TEARDOWN_NO_SUPER]]></key>
+          <key><![CDATA[RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE]]></key>
           <plugin><![CDATA[findbugs]]></plugin>
           <level><![CDATA[CRITICAL]]></level>
         </active-rule>
         <active-rule>
-          <key><![CDATA[RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE]]></key>
+          <key><![CDATA[IJU_TEARDOWN_NO_SUPER]]></key>
           <plugin><![CDATA[findbugs]]></plugin>
           <level><![CDATA[CRITICAL]]></level>
         </active-rule>
@@ -260,14 +260,14 @@
           <level><![CDATA[MAJOR]]></level>
         </active-rule>
         <active-rule>
-          <key><![CDATA[NP_BOOLEAN_RETURN_NULL]]></key>
-          <plugin><![CDATA[findbugs]]></plugin>
-          <level><![CDATA[MAJOR]]></level>
-        </active-rule>
-        <active-rule>
           <key><![CDATA[DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE]]></key>
           <plugin><![CDATA[findbugs]]></plugin>
           <level><![CDATA[CRITICAL]]></level>
+        </active-rule>
+        <active-rule>
+          <key><![CDATA[NP_BOOLEAN_RETURN_NULL]]></key>
+          <plugin><![CDATA[findbugs]]></plugin>
+          <level><![CDATA[MAJOR]]></level>
         </active-rule>
         <active-rule>
           <key><![CDATA[TQ_MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK]]></key>
@@ -500,14 +500,14 @@
           <level><![CDATA[MAJOR]]></level>
         </active-rule>
         <active-rule>
-          <key><![CDATA[EQ_SELF_USE_OBJECT]]></key>
-          <plugin><![CDATA[findbugs]]></plugin>
-          <level><![CDATA[MAJOR]]></level>
-        </active-rule>
-        <active-rule>
           <key><![CDATA[JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS]]></key>
           <plugin><![CDATA[findbugs]]></plugin>
           <level><![CDATA[MINOR]]></level>
+        </active-rule>
+        <active-rule>
+          <key><![CDATA[EQ_SELF_USE_OBJECT]]></key>
+          <plugin><![CDATA[findbugs]]></plugin>
+          <level><![CDATA[MAJOR]]></level>
         </active-rule>
         <active-rule>
           <key><![CDATA[NM_CLASS_NOT_EXCEPTION]]></key>
@@ -1425,6 +1425,11 @@
           <level><![CDATA[CRITICAL]]></level>
         </active-rule>
         <active-rule>
+          <key><![CDATA[SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW]]></key>
+          <plugin><![CDATA[findbugs]]></plugin>
+          <level><![CDATA[CRITICAL]]></level>
+        </active-rule>
+        <active-rule>
           <key><![CDATA[NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE]]></key>
           <plugin><![CDATA[findbugs]]></plugin>
           <level><![CDATA[CRITICAL]]></level>
@@ -1608,11 +1613,6 @@
           <key><![CDATA[RV_ABSOLUTE_VALUE_OF_RANDOM_INT]]></key>
           <plugin><![CDATA[findbugs]]></plugin>
           <level><![CDATA[CRITICAL]]></level>
-        </active-rule>
-        <active-rule>
-          <key><![CDATA[DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD]]></key>
-          <plugin><![CDATA[findbugs]]></plugin>
-          <level><![CDATA[MINOR]]></level>
         </active-rule>
         <active-rule>
           <key><![CDATA[FE_FLOATING_POINT_EQUALITY]]></key>
@@ -3840,7 +3840,7 @@
       <language><![CDATA[java]]></language>
       <active-rules>
         <active-rule>
-          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck]]></key>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1291845135]]></key>
           <plugin><![CDATA[checkstyle]]></plugin>
           <level><![CDATA[MINOR]]></level>
           <params>
@@ -3850,8 +3850,8 @@
             </param>
           </params>
         </active-rule>
-        <!--active-rule>
-          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1289995363]]></key>
+        <active-rule>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1291845186]]></key>
           <plugin><![CDATA[checkstyle]]></plugin>
           <level><![CDATA[MAJOR]]></level>
           <params>
@@ -3862,7 +3862,7 @@
           </params>
         </active-rule>
         <active-rule>
-          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1289995386]]></key>
+          <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1291845242]]></key>
           <plugin><![CDATA[checkstyle]]></plugin>
           <level><![CDATA[CRITICAL]]></level>
           <params>
@@ -3871,9 +3871,64 @@
               <value><![CDATA[FIXME]]></value>
             </param>
           </params>
-        </active-rule-->
+        </active-rule>
+        <active-rule>
+          <key><![CDATA[NoSonar]]></key>
+          <plugin><![CDATA[squid]]></plugin>
+          <level><![CDATA[INFO]]></level>
+        </active-rule>
       </active-rules>
       <alerts/>
     </profile>
   </profiles>
+  <rules>
+    <rule>
+      <parentRepositoryKey><![CDATA[checkstyle]]></parentRepositoryKey>
+      <parentKey><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck]]></parentKey>
+      <repositoryKey><![CDATA[checkstyle]]></repositoryKey>
+      <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1291845135]]></key>
+      <configKey><![CDATA[Checker/TreeWalker/TodoComment]]></configKey>
+      <level><![CDATA[INFO]]></level>
+      <name><![CDATA[TODO Comment]]></name>
+      <description><![CDATA[Detects TODO keyword in comments]]></description>
+      <params>
+        <param>
+          <key><![CDATA[format]]></key>
+          <value><![CDATA[TODO]]></value>
+        </param>
+      </params>
+    </rule>
+    <rule>
+      <parentRepositoryKey><![CDATA[checkstyle]]></parentRepositoryKey>
+      <parentKey><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck]]></parentKey>
+      <repositoryKey><![CDATA[checkstyle]]></repositoryKey>
+      <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1291845186]]></key>
+      <configKey><![CDATA[Checker/TreeWalker/TodoComment]]></configKey>
+      <level><![CDATA[INFO]]></level>
+      <name><![CDATA[@deprecated comment]]></name>
+      <description><![CDATA[Detects @deprecated keyword in comments]]></description>
+      <params>
+        <param>
+          <key><![CDATA[format]]></key>
+          <value><![CDATA[@deprecated]]></value>
+        </param>
+      </params>
+    </rule>
+    <rule>
+      <parentRepositoryKey><![CDATA[checkstyle]]></parentRepositoryKey>
+      <parentKey><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck]]></parentKey>
+      <repositoryKey><![CDATA[checkstyle]]></repositoryKey>
+      <key><![CDATA[com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck_1291845242]]></key>
+      <configKey><![CDATA[Checker/TreeWalker/TodoComment]]></configKey>
+      <level><![CDATA[CRITICAL]]></level>
+      <name><![CDATA[FIXME Comment]]></name>
+      <description><![CDATA[Detects FIXME keyword in comments]]></description>
+      <params>
+        <param>
+          <key><![CDATA[format]]></key>
+          <value><![CDATA[FIXME]]></value>
+        </param>
+      </params>
+    </rule>
+  </rules>
 </sonar-config>
