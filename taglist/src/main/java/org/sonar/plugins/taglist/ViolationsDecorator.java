@@ -64,10 +64,13 @@ public class ViolationsDecorator implements Decorator {
     if (Resource.QUALIFIER_CLASS.equals(resource.getQualifier())) {
       Collection<Rule> rules = new HashSet<Rule>();
 
-      RuleQuery ruleQuery = RuleQuery.create().withRepositoryKey(CoreProperties.CHECKSTYLE_PLUGIN)
+      RuleQuery ruleQuery = RuleQuery.create()
+          .withRepositoryKey(CoreProperties.CHECKSTYLE_PLUGIN)
           .withConfigKey(CHECKSTYLE_RULE_CONFIG_KEY);
       rules.addAll(ruleFinder.findAll(ruleQuery));
-      ruleQuery = RuleQuery.create().withRepositoryKey(CoreProperties.SQUID_PLUGIN).withConfigKey(NOSONAR_RULE_CONFIG_KEY);
+      ruleQuery = RuleQuery.create()
+          .withRepositoryKey(CoreProperties.SQUID_PLUGIN)
+          .withKey(NOSONAR_RULE_CONFIG_KEY);
       rules.addAll(ruleFinder.findAll(ruleQuery));
 
       saveFileMeasures(context, rules);
