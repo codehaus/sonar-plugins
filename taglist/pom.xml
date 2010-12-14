@@ -80,7 +80,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.4-RC1</sonar.version>
+    <sonar.version>2.5-SNAPSHOT</sonar.version>
     <sonar.pluginName>Taglist</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.taglist.TaglistPlugin</sonar.pluginClass>
   </properties>
@@ -117,7 +117,7 @@
       </exclusions>
     </dependency>
   </dependencies>
-  
+
   <profiles>
     <profile>
       <id>integration-tests</id>
