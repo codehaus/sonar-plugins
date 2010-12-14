@@ -51,17 +51,17 @@ public final class WebRulesRepository extends RuleRepository {
   public static final String REPOSITORY_NAME = "Web";
   public static final String REPOSITORY_KEY = "Web";
 
-  private final AnnotationRuleParser annotationRuleParser;
-
-  public WebRulesRepository(AnnotationRuleParser annotationRuleParser) {
+  public WebRulesRepository() {
     super(REPOSITORY_KEY, Web.KEY);
     setName(REPOSITORY_NAME);
-
-    this.annotationRuleParser = annotationRuleParser;
   }
 
   @Override
   public List<Rule> createRules() {
+    // In Sonar 2.3, the AnnotationRuleParser cannot be injected in the constructor.
+    // It would give an exception for unsatisfiable dependencies.
+    AnnotationRuleParser annotationRuleParser = new AnnotationRuleParser();
+
     List<Rule> rules = annotationRuleParser.parse(REPOSITORY_KEY, CheckClasses.getCheckClasses());
     for (Rule rule : rules) {
       rule.setCardinality(Cardinality.MULTIPLE);
