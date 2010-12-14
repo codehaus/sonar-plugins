@@ -37,7 +37,6 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.profiles.XMLProfileParser;
 import org.sonar.api.resources.DefaultProjectFileSystem;
 import org.sonar.api.resources.Project;
-import org.sonar.api.rules.AnnotationRuleParser;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
@@ -60,7 +59,7 @@ public class AbstractWebPluginTester {
     private final List<Rule> rules;
 
     public WebRuleFinder() {
-      repository = new WebRulesRepository(new AnnotationRuleParser());
+      repository = new WebRulesRepository();
       rules = repository.createRules();
     }
 
