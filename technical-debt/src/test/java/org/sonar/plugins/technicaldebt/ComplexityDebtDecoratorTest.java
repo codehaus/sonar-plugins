@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.technicaldebt;
 
+import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
@@ -35,7 +36,8 @@ public class ComplexityDebtDecoratorTest {
 
   @Before
   public void setUp() {
-    decorator = new ComplexityDebtDecorator();
+    Configuration configuration = mock(Configuration.class);
+    decorator = new ComplexityDebtDecorator(configuration);
   }
 
   @Test
