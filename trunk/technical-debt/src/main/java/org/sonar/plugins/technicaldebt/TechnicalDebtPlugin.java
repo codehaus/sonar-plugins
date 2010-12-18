@@ -29,51 +29,53 @@ import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-    @Property(
-        key = TechnicalDebtPlugin.TD_DAILY_RATE,
-        defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT,
-        name = "Daily rate of a developer (in $)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_MAX_COMPLEXITY,
-        defaultValue = TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT,
-        name = "Maximum complexity above which component should be broken"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_COMP_CLASS,
-        defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT,
-        name = "Average time to split a class that has a too high complexity (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_COMP_METHOD,
-        defaultValue = TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT,
-        name = "Average time to split a method that has a too high complexity (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK,
-        defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT,
-        name = "Average time to fix one block duplication block (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_VIOLATION,
-        defaultValue = TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT,
-        name = "Average time to fix a coding violation (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY,
-        defaultValue = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT,
-        name = "Average time to cover complexity of one (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API,
-        defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT,
-        name = "Average time to document 1 API (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.TD_COST_CYCLE,
-        defaultValue = TechnicalDebtPlugin.TD_COST_CYCLE_DEFAULT,
-        name = "Average time to cut a dependency between two files (in hours)"
-    )
+  @Property(
+    key = TechnicalDebtPlugin.TD_DAILY_RATE,
+    defaultValue = TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT,
+    name = "Daily rate of a developer (in $)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_MAX_COMPLEXITY,
+    defaultValue = TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT,
+    name = "Maximum complexity above which component should be broken",
+    global = true,
+    project = true
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_COMP_CLASS,
+    defaultValue = TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT,
+    name = "Average time to split a class that has a too high complexity (in hours)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_COMP_METHOD,
+    defaultValue = TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT,
+    name = "Average time to split a method that has a too high complexity (in hours)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK,
+    defaultValue = TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT,
+    name = "Average time to fix one block duplication block (in hours)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_VIOLATION,
+    defaultValue = TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT,
+    name = "Average time to fix a coding violation (in hours)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY,
+    defaultValue = TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT,
+    name = "Average time to cover complexity of one (in hours)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API,
+    defaultValue = TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT,
+    name = "Average time to document 1 API (in hours)"
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.TD_COST_CYCLE,
+    defaultValue = TechnicalDebtPlugin.TD_COST_CYCLE_DEFAULT,
+    name = "Average time to cut a dependency between two files (in hours)"
+  )
 })
 public final class TechnicalDebtPlugin implements Plugin {
   public static final String TD_DAILY_RATE = "technicaldebt.daily.rate";
@@ -116,11 +118,11 @@ public final class TechnicalDebtPlugin implements Plugin {
    */
   public List<Class<? extends Extension>> getExtensions() {
     return Arrays.asList(
-        TechnicalDebtMetrics.class,
-        TechnicalDebtDecorator.class,
-        TechnicalDebtWidget.class,
-        ComplexityDebtSensor.class,
-        ComplexityDebtDecorator.class
+      TechnicalDebtMetrics.class,
+      TechnicalDebtDecorator.class,
+      TechnicalDebtWidget.class,
+      ComplexityDebtSensor.class,
+      ComplexityDebtDecorator.class
     );
   }
 
