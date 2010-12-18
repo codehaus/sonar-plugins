@@ -20,21 +20,6 @@
 
 package org.sonar.plugins.jacoco.itcoverage;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.doubleThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-
 import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +31,17 @@ import org.sonar.api.resources.Project.AnalysisType;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.test.IsMeasure;
 import org.sonar.plugins.jacoco.JaCoCoPlugin;
+
+import java.io.File;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.doubleThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class JaCoCoItSensorTest {
   private JaCoCoItSensor sensor;
@@ -95,6 +91,9 @@ public class JaCoCoItSensorTest {
     verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_LINES_TO_COVER), doubleThat(greaterThan(0d)));
     verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_UNCOVERED_LINES), doubleThat(greaterThan(0d)));
     verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA)));
+    verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), doubleThat(greaterThan(0d)));
+    verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS), doubleThat(greaterThan(0d)));
+    verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_BRANCH_COVERAGE_HITS_DATA)));
     verifyNoMoreInteractions(context);
   }
 
