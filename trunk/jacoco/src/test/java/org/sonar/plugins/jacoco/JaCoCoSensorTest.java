@@ -20,23 +20,6 @@
 
 package org.sonar.plugins.jacoco;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.doubleThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.Plugins;
@@ -47,6 +30,19 @@ import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.test.IsMeasure;
+
+import java.io.File;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.doubleThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Evgeny Mandrikov
@@ -88,6 +84,9 @@ public class JaCoCoSensorTest {
     verify(context).saveMeasure(eq(resource), eq(CoreMetrics.LINES_TO_COVER), doubleThat(greaterThan(0d)));
     verify(context).saveMeasure(eq(resource), eq(CoreMetrics.UNCOVERED_LINES), doubleThat(greaterThan(0d)));
     verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(CoreMetrics.COVERAGE_LINE_HITS_DATA)));
+    verify(context).saveMeasure(eq(resource), eq(CoreMetrics.CONDITIONS_TO_COVER), doubleThat(greaterThan(0d)));
+    verify(context).saveMeasure(eq(resource), eq(CoreMetrics.UNCOVERED_CONDITIONS), doubleThat(greaterThan(0d)));
+    verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(CoreMetrics.BRANCH_COVERAGE_HITS_DATA)));
     verifyNoMoreInteractions(context);
   }
 

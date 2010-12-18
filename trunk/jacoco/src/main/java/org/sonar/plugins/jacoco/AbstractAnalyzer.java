@@ -20,24 +20,20 @@
 
 package org.sonar.plugins.jacoco;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 import org.apache.commons.lang.StringUtils;
-import org.jacoco.core.analysis.CoverageBuilder;
-import org.jacoco.core.analysis.ICoverageNode;
-import org.jacoco.core.analysis.ILines;
-import org.jacoco.core.analysis.SourceFileCoverage;
+import org.jacoco.core.analysis.*;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
-import org.jacoco.core.instr.Analyzer;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * @author Evgeny Mandrikov
@@ -45,10 +41,12 @@ import org.sonar.api.utils.SonarException;
 public abstract class AbstractAnalyzer {
 
   private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>();
+  private PropertiesBuilder<Integer, String> branchHitsBuilder = new PropertiesBuilder<Integer, String>();
+  private double totalBranches, totalCoveredBranches;
 
   public void analyse(Project project, SensorContext context) {
     final File buildOutputDir = project.getFileSystem().getBuildOutputDir();
-    if ( !buildOutputDir.exists()) {
+    if (!buildOutputDir.exists()) {
       JaCoCoUtils.LOG.info("Can't find build output directory: {}. Skipping JaCoCo analysis.", buildOutputDir);
       return;
     }
@@ -75,9 +73,8 @@ public abstract class AbstractAnalyzer {
       reader.read();
     }
 
-    CoverageBuilder coverageBuilder = new CoverageBuilder(executionDataStore);
-
-    Analyzer analyzer = new Analyzer(coverageBuilder);
+    CoverageBuilder coverageBuilder = new CoverageBuilder();
+    Analyzer analyzer = new Analyzer(executionDataStore, coverageBuilder);
     analyzer.analyzeAll(buildOutputDir);
 
     for (SourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
@@ -96,6 +93,9 @@ public abstract class AbstractAnalyzer {
     }
 
     lineHitsBuilder.clear();
+    branchHitsBuilder.clear();
+    totalBranches = 0;
+    totalCoveredBranches = 0;
 
     final ILines lines = coverage.getLines();
     for (int lineId = lines.getFirstLine(); lineId <= lines.getLastLine(); lineId++) {
@@ -115,12 +115,23 @@ public abstract class AbstractAnalyzer {
           continue;
       }
       lineHitsBuilder.add(lineId, fakeHits);
+
+      double lineBranches = lines.getTotalBranches(lineId);
+      if (lineBranches > 0) {
+        double lineCoveredBranches = lines.getCoveredBranches(lineId);
+        double lineBranchCoverage = 100 * lineCoveredBranches / lineBranches;
+        totalBranches += lineBranches;
+        totalCoveredBranches += lineCoveredBranches;
+        branchHitsBuilder.add(lineId, Math.round(lineBranchCoverage) + "%");
+      }
     }
 
-    saveMeasures(context, resource, coverage.getLines(), lineHitsBuilder.buildData());
+    saveMeasures(context, resource, coverage.getLines(), lineHitsBuilder.buildData(), totalBranches, totalCoveredBranches,
+        branchHitsBuilder.buildData());
   }
 
-  protected abstract void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData);
+  protected abstract void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData,
+      double totalBranches, double totalCoveredBranches, String branchHitsData);
 
   protected abstract String getReportPath(Project project);
 

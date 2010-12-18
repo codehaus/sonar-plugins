@@ -58,11 +58,19 @@ public class JaCoCoItSensor implements Sensor {
     }
 
     @Override
-    protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData) {
+    protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData,
+        double totalBranches, double totalCoveredBranches, String branchHitsData) {
       context.saveMeasure(resource, JaCoCoItMetrics.IT_LINES_TO_COVER, (double) lines.getTotalCount());
       context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_LINES, (double) lines.getMissedCount());
       Measure lineHits = new Measure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
       context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
+
+      if (totalBranches > 0) {
+        context.saveMeasure(resource, JaCoCoItMetrics.IT_CONDITIONS_TO_COVER, totalBranches);
+        context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS, totalBranches - totalCoveredBranches);
+        Measure branchHits = new Measure(JaCoCoItMetrics.IT_BRANCH_COVERAGE_HITS_DATA).setData(branchHitsData);
+        context.saveMeasure(resource, branchHits.setPersistenceMode(PersistenceMode.DATABASE));
+      }
     }
   }
 
