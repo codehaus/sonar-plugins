@@ -77,7 +77,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
     File destfile = project.getFileSystem().resolvePath(destfilePath);
     if (destfile.exists() && destfile.isFile()) {
       JaCoCoUtils.LOG.info("Deleting {}", destfile);
-      if ( !destfile.delete()) {
+      if (!destfile.delete()) {
         throw new SonarException("Unable to delete " + destfile);
       }
     }

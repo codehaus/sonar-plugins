@@ -30,6 +30,7 @@ import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
+import org.sonar.api.resources.Java;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 
@@ -45,7 +46,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
   }
 
   public MavenPluginHandler getMavenPluginHandler(Project project) {
-    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
+    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC) && project.getFileSystem().hasTestFiles(Java.INSTANCE)) {
       return handler;
     }
     return null;
