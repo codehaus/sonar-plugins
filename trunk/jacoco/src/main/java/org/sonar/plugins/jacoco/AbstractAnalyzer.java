@@ -75,7 +75,7 @@ public abstract class AbstractAnalyzer {
 
     CoverageBuilder coverageBuilder = new CoverageBuilder();
     Analyzer analyzer = new Analyzer(executionDataStore, coverageBuilder);
-    analyzer.analyzeAll(buildOutputDir);
+    analyzeAll(analyzer, buildOutputDir);
 
     for (SourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
       String fileName = StringUtils.substringBeforeLast(coverage.getName(), ".");
@@ -83,6 +83,23 @@ public abstract class AbstractAnalyzer {
 
       JavaFile resource = new JavaFile(resourceName);
       analyzeClass(resource, coverage, context);
+    }
+  }
+
+  /**
+   * Copied from {@link Analyzer#analyzeAll(File)} in order to add logging.
+   */
+  private void analyzeAll(Analyzer analyzer, File file) {
+    if (file.isDirectory()) {
+      for (File f : file.listFiles()) {
+        analyzeAll(analyzer, f);
+      }
+    } else {
+      try {
+        analyzer.analyzeAll(file);
+      } catch (Exception e) {
+        JaCoCoUtils.LOG.warn("Exception during analysis of file " + file.getAbsolutePath(), e);
+      }
     }
   }
 
