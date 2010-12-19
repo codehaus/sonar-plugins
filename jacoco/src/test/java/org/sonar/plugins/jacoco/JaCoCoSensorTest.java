@@ -26,9 +26,7 @@ import org.sonar.api.Plugins;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.resources.JavaFile;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.*;
 import org.sonar.api.test.IsMeasure;
 
 import java.io.File;
@@ -61,12 +59,37 @@ public class JaCoCoSensorTest {
   }
 
   @Test
-  public void testGetMavenPluginHandler() {
-    Project project = mock(Project.class);
-    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS).thenReturn(Project.AnalysisType.DYNAMIC);
+  public void shouldExecuteMaven() {
+    Project project = mockProject();
+    when(project.getFileSystem().hasTestFiles(argThat(is(Java.INSTANCE)))).thenReturn(true);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.DYNAMIC);
+
+    assertThat(sensor.getMavenPluginHandler(project), instanceOf(JaCoCoMavenPluginHandler.class));
+  }
+
+  @Test
+  public void shouldNotExecuteMavenWhenReuseReports() {
+    Project project = mockProject();
+    when(project.getFileSystem().hasTestFiles(argThat(is(Java.INSTANCE)))).thenReturn(true);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS);
 
     assertThat(sensor.getMavenPluginHandler(project), nullValue());
-    assertThat(sensor.getMavenPluginHandler(project), instanceOf(JaCoCoMavenPluginHandler.class));
+  }
+
+  @Test
+  public void shouldNotExecuteMavenWhenNoTests() {
+    Project project = mockProject();
+    when(project.getFileSystem().hasTestFiles(argThat(is(Java.INSTANCE)))).thenReturn(false);
+    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.DYNAMIC);
+
+    assertThat(sensor.getMavenPluginHandler(project), nullValue());
+  }
+
+  private Project mockProject() {
+    Project project = mock(Project.class);
+    ProjectFileSystem projectFileSystem = mock(ProjectFileSystem.class);
+    when(project.getFileSystem()).thenReturn(projectFileSystem);
+    return project;
   }
 
   @Test
