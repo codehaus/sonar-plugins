@@ -35,6 +35,6 @@ public final class TechnicalDebtWidget extends AbstractRubyTemplate implements R
   }
 
   public String getTitle() {
-    return getClass().toString();
+    return "Technical Debt";
   }
 }
