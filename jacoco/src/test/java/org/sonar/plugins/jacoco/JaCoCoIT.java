@@ -56,20 +56,40 @@ public class JaCoCoIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("coverage").getValue(), is(15.4));
+    assertThat(getProjectMeasure("coverage").getValue(), is(14.7));
+
     assertThat(getProjectMeasure("line_coverage").getValue(), is(15.4));
-    assertThat(getProjectMeasure("lines_to_cover").getValue(), anyOf(is(26126.0), is(27124.0)));
-    assertThat(getProjectMeasure("uncovered_lines").getValue(), anyOf(is(22110.0), is(22108.0)));
+    assertThat(getProjectMeasure("lines_to_cover").getValue(), anyOf(
+        is(26126.0), // java 1.5.0_22
+        is(27124.0)));
+    assertThat(getProjectMeasure("uncovered_lines").getValue(), anyOf(
+        is(22110.0), // java 1.5.0_22
+        is(22108.0)));
+
+    assertThat(getProjectMeasure("branch_coverage").getValue(), is(13.2));
+    assertThat(getProjectMeasure("conditions_to_cover").getValue(), is(10377.0));
+    assertThat(getProjectMeasure("uncovered_conditions").getValue(), is(9010.0));
+
     assertThat(getProjectMeasure("tests").getValue(), is(323.0));
     assertThat(getProjectMeasure("test_success_density").getValue(), is(100.0));
   }
 
   @Test
   public void CoremoduleMetrics() {
-    assertThat(getCoreModuleMeasure("coverage").getValue(), is(39.7));
+    assertThat(getCoreModuleMeasure("coverage").getValue(), is(37.1));
+
     assertThat(getCoreModuleMeasure("line_coverage").getValue(), is(39.7));
-    assertThat(getCoreModuleMeasure("lines_to_cover").getValue(), anyOf(is(7447.0), is(7448.0)));
-    assertThat(getCoreModuleMeasure("uncovered_lines").getValue(), anyOf(is(4491.0), is(4490.0)));
+    assertThat(getCoreModuleMeasure("lines_to_cover").getValue(), anyOf(
+        is(7448.0), // java 1.5.0_22
+        is(7447.0)));
+    assertThat(getCoreModuleMeasure("uncovered_lines").getValue(), anyOf(
+        is(4491.0), // java 1.5.0_22
+        is(4490.0)));
+
+    assertThat(getCoreModuleMeasure("branch_coverage").getValue(), is(31.4));
+    assertThat(getCoreModuleMeasure("conditions_to_cover").getValue(), is(3355.0));
+    assertThat(getCoreModuleMeasure("uncovered_conditions").getValue(), is(2303.0));
+
     assertThat(getCoreModuleMeasure("tests").getValue(), is(195.0));
     assertThat(getCoreModuleMeasure("test_success_density").getValue(), is(100.0));
   }
@@ -80,16 +100,27 @@ public class JaCoCoIT {
     assertThat(getElModuleMeasure("line_coverage").getValue(), is(0.0));
     assertThat(getElModuleMeasure("lines_to_cover").getValue(), is(8064.0));
     assertThat(getElModuleMeasure("uncovered_lines").getValue(), is(8064.0));
+
+    assertThat(getElModuleMeasure("branch_coverage").getValue(), is(0.0));
+    assertThat(getElModuleMeasure("conditions_to_cover").getValue(), is(3320.0));
+    assertThat(getElModuleMeasure("uncovered_conditions").getValue(), is(3320.0));
+
     assertThat(getElModuleMeasure("tests").getValue(), is(0.0));
     assertNull(getElModuleMeasure("test_success_density"));
   }
 
   @Test
   public void packagesMetrics() {
-    assertThat(getPackageMeasure("coverage").getValue(), is(33.1));
+    assertThat(getPackageMeasure("coverage").getValue(), is(32.4));
+
     assertThat(getPackageMeasure("line_coverage").getValue(), is(33.1));
     assertThat(getPackageMeasure("lines_to_cover").getValue(), is(1569.0));
     assertThat(getPackageMeasure("uncovered_lines").getValue(), is(1050.0));
+
+    assertThat(getPackageMeasure("branch_coverage").getValue(), is(31.0));
+    assertThat(getPackageMeasure("conditions_to_cover").getValue(), is(762.0));
+    assertThat(getPackageMeasure("uncovered_conditions").getValue(), is(526.0));
+
     assertThat(getPackageMeasure("tests").getValue(), is(105.0));
     assertThat(getPackageMeasure("test_success_density").getValue(), is(100.0));
   }
@@ -97,9 +128,15 @@ public class JaCoCoIT {
   @Test
   public void filesMetrics() {
     assertThat(getFileMeasure("coverage").getValue(), is(0.0));
+
     assertThat(getFileMeasure("line_coverage").getValue(), is(0.0));
     assertThat(getFileMeasure("lines_to_cover").getValue(), is(78.0));
     assertThat(getFileMeasure("uncovered_lines").getValue(), is(78.0));
+
+    assertThat(getFileMeasure("branch_coverage").getValue(), is(0.0));
+    assertThat(getFileMeasure("conditions_to_cover").getValue(), is(36.0));
+    assertThat(getFileMeasure("uncovered_conditions").getValue(), is(36.0));
+
     assertNull(getFileMeasure("tests"));
     assertNull(getFileMeasure("test_success_density"));
   }
