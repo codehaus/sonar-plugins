@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>sonar-technicaldebt-plugin</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
   <name>Technical Debt Sonar plugin</name>
@@ -38,6 +38,13 @@
       <organization>SonarSource</organization>
       <timezone>+1</timezone>
     </developer>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <email>simon.brandhof@sonarsource.com</email>
+      <organization>SonarSource</organization>
+      <timezone>+1</timezone>
+    </developer>
   </developers>
 
   <scm>
@@ -55,7 +62,7 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.4</sonar.version>
+    <sonar.version>2.5-SNAPSHOT</sonar.version>
     <sonar.pluginName>Technical Debt</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.technicaldebt.TechnicalDebtPlugin</sonar.pluginClass>
   </properties>
@@ -90,6 +97,12 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-ws-client</artifactId>
       <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+	<dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>2.0.9</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
