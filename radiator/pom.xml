@@ -57,7 +57,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>1.12</sonar.version>
+    <sonar.version>2.3</sonar.version>
     <sonar.pluginName>Radiator</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.radiator.RadiatorPlugin</sonar.pluginClass>
   </properties>

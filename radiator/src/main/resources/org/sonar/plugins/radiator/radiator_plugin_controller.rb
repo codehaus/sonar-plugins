@@ -56,7 +56,7 @@ class Api::RadiatorWebServiceController < Api::RestController
       # WTF Oracle is #!*$$. It does not accept IN clause with more than 1000 elements
       snapshots = snapshots[0...999]
       measures = ProjectMeasure.find(:all,
-        :conditions => ['rules_category_id IS NULL AND rule_id IS NULL AND rule_priority IS NULL AND metric_id IN (?) AND snapshot_id IN (?)',
+        :conditions => ['rules_category_id IS NULL AND rule_id IS NULL AND rule_priority IS NULL AND metric_id IN (?) AND snapshot_id IN (?) AND characteristic_id IS NULL',
           [size_metric.id, color_metric.id], snapshots.map{|s| s.id}])
     end
     measures_by_snapshot = Sonar::TreemapBuilder.measures_by_snapshot(snapshots, measures)
