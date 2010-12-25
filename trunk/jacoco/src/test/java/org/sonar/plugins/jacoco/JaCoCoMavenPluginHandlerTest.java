@@ -48,7 +48,7 @@ public class JaCoCoMavenPluginHandlerTest {
     when(downloader.getAgentJarFile()).thenReturn(new File("jacocoagent.jar"));
     Project project = mock(Project.class);
     when(project.getConfiguration()).thenReturn(new BaseConfiguration());
-    handler = new JaCoCoMavenPluginHandler(downloader, project);
+    handler = new JaCoCoMavenPluginHandler(downloader);
   }
 
   @Test
@@ -56,7 +56,7 @@ public class JaCoCoMavenPluginHandlerTest {
     assertThat(handler.getGroupId(), is(MavenSurefireUtils.GROUP_ID));
     assertThat(handler.getArtifactId(), is(MavenSurefireUtils.ARTIFACT_ID));
     assertThat(handler.getVersion(), is(MavenSurefireUtils.VERSION));
-    assertThat(handler.getGoals(), is(new String[]{"test"}));
+    assertThat(handler.getGoals(), is(new String[] { "test" }));
     assertThat(handler.isFixedVersion(), is(false));
   }
 
@@ -92,7 +92,6 @@ public class JaCoCoMavenPluginHandlerTest {
 
     assertThat(
         plugin.getParameter("argLine"),
-        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*")
-    );
+        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*"));
   }
 }

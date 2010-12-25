@@ -20,15 +20,15 @@
 
 package org.sonar.plugins.jacoco;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author Evgeny Mandrikov
@@ -43,7 +43,7 @@ public class JaCoCoAgentDownloader implements BatchExtension {
   public JaCoCoAgentDownloader() {
   }
 
-  public File getAgentJarFile() {
+  public synchronized File getAgentJarFile() {
     if (agentJarFile == null) {
       agentJarFile = extractAgent();
     }
