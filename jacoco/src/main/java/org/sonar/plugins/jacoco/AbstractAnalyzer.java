@@ -40,10 +40,6 @@ import java.io.IOException;
  */
 public abstract class AbstractAnalyzer {
 
-  private PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>();
-  private PropertiesBuilder<Integer, String> branchHitsBuilder = new PropertiesBuilder<Integer, String>();
-  private double totalBranches, totalCoveredBranches;
-
   public void analyse(Project project, SensorContext context) {
     final File buildOutputDir = project.getFileSystem().getBuildOutputDir();
     if (!buildOutputDir.exists()) {
@@ -109,10 +105,10 @@ public abstract class AbstractAnalyzer {
       return;
     }
 
-    lineHitsBuilder.clear();
-    branchHitsBuilder.clear();
-    totalBranches = 0;
-    totalCoveredBranches = 0;
+    PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>();
+    PropertiesBuilder<Integer, String> branchHitsBuilder = new PropertiesBuilder<Integer, String>();
+    double totalBranches = 0;
+    double totalCoveredBranches = 0;
 
     final ILines lines = coverage.getLines();
     for (int lineId = lines.getFirstLine(); lineId <= lines.getLastLine(); lineId++) {

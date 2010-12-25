@@ -44,7 +44,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
   private final String artifactId;
   private final String version;
 
-  public JaCoCoMavenPluginHandler(JaCoCoAgentDownloader downloader, Project project) {
+  public JaCoCoMavenPluginHandler(JaCoCoAgentDownloader downloader) {
     this.downloader = downloader;
     groupId = MavenSurefireUtils.GROUP_ID;
     artifactId = MavenSurefireUtils.ARTIFACT_ID;

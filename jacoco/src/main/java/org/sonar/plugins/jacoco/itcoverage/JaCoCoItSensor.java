@@ -22,7 +22,6 @@ package org.sonar.plugins.jacoco.itcoverage;
 
 import org.apache.commons.lang.StringUtils;
 import org.jacoco.core.analysis.ILines;
-import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
@@ -33,7 +32,8 @@ import org.sonar.plugins.jacoco.AbstractAnalyzer;
 import org.sonar.plugins.jacoco.JaCoCoPlugin;
 
 /**
- * Note that this class can't extend {@link AbstractCoverageExtension}, because in this case this extension will be disabled under Sonar
+ * Note that this class can't extend {@link org.sonar.api.batch.AbstractCoverageExtension}, because in this case this extension will be
+ * disabled under Sonar
  * 2.3, if JaCoCo is not defined as the default code coverage plugin.
  * 
  * @author Evgeny Mandrikov
