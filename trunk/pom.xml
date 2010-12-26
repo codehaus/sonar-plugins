@@ -62,7 +62,7 @@
                 <module>useless-code-tracker</module>
                 <module>web</module>
                 <module>webscanner</module>
-				<module>xml</module>
+                <module>xml</module>
             </modules>
         </profile>
         <profile>
