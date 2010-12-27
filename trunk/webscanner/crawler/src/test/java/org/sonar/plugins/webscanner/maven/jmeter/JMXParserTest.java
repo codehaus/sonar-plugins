@@ -1,5 +1,5 @@
 /*
- * Maven Crawler Website Plugin
+ * Maven Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
