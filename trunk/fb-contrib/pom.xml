@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>8</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>sonar-fb-contrib-plugin</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>sonar-plugin</packaging>
+
+  <name>Sonar fb-contrib Plugin</name>
+  <description></description>
+  <url>http://docs.codehaus.org/display/SONAR/fb-contrib+Plugin</url>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/fb-contrib</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/fb-contrib</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>2.4</sonar.version>
+    <fbcontrib.version>4.6.0</fbcontrib.version>
+    <sonar.pluginName>fb-contrib</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.mebigfatguy</groupId>
+      <artifactId>fbcontrib</artifactId>
+      <version>${fbcontrib.version}</version>
+    </dependency>
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+    <repository>
+      <!-- for fbcontrib -->
+      <id>sonar</id>
+      <name>Sonar</name>
+      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+</project>
