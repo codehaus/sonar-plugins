@@ -1,5 +1,5 @@
 /*
- * Maven Crawler Website Plugin
+ * Maven Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -31,8 +31,6 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.sonar.plugins.webscanner.html.FileSet;
-import org.sonar.plugins.webscanner.html.FileSet.HtmlFile;
 import org.sonar.plugins.webscanner.maven.jmeter.xml.HttpSample;
 import org.sonar.plugins.webscanner.maven.jmeter.xml.JMeterReport;
 
@@ -89,8 +87,6 @@ class JMeter {
     File htmlFolder = new File(htmlDir);
     resetFolder(htmlFolder);
 
-    FileSet fileSet = new FileSet();
-
     // find JMeter scripts
     Collection<File> scriptFiles = FileUtils.listFiles(new File(jMeterScriptDir), new String[] { "jmx" }, true);
 
@@ -106,7 +102,7 @@ class JMeter {
         if (reportFile != null) {
           JMeterReport report = JMeterReport.fromXml(new FileInputStream(reportFile));
 
-          writeHttpSamples(fileSet, testNames, report.getHttpSamples());
+          writeHttpSamples(testNames, report.getHttpSamples());
         } else {
           LOG.error("Could not find report file for JMeter script " + scriptFile.getName());
         }
@@ -114,9 +110,6 @@ class JMeter {
         throw new RuntimeException(e);
       }
     }
-
-    // save fileset
-    fileSet.toXml(FileSet.getPath(htmlFolder));
   }
 
   private File resetFolder(File folder) {
@@ -148,7 +141,7 @@ class JMeter {
     return false;
   }
 
-  private void writeHttpSamples(FileSet fileSet, Map<String, String> testNames, List<HttpSample> httpSamples) {
+  private void writeHttpSamples(Map<String, String> testNames, List<HttpSample> httpSamples) {
     for (HttpSample sample : httpSamples) {
 
       if ( sample.hasResponse()) {
@@ -160,22 +153,19 @@ class JMeter {
             path += ".html";
           }
           File file = new File(htmlDir + "/" + path);
-          if (writeFile(sample, file)) {
-            HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(htmlDir));
-            htmlFile.url = sample.getLb();
-          }
+          writeFile(sample, file);
+
+          // String url = sample.getLb();
         } catch (MalformedURLException e) {
           File file = new File(htmlDir + "/" + sample.getLb() + ".html");
-          if (writeFile(sample, file)) {
-            String url = testNames.get(sample.getLb());
-            HtmlFile htmlFile = fileSet.addReplaceFile(file, new File(htmlDir));
-            htmlFile.url = url != null ? url : "http://localhost/";
-          }
+          writeFile(sample, file);
+
+          // String url = testNames.get(sample.getLb());
         }
       }
 
       if (sample.getHttpSamples() != null) {
-        writeHttpSamples(fileSet, testNames, sample.getHttpSamples());
+        writeHttpSamples(testNames, sample.getHttpSamples());
       }
     }
   }
