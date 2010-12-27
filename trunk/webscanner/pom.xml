@@ -17,17 +17,12 @@
   </parent>
 
   <modules>
-    <!-- shared code between sonar and maven plugins -->
-    <module>webscanner-commons</module>
-    <!-- webscanner plugin -->
+  
+    <!-- maven plugin -->
+    <module>maven-webscanner-plugin</module>
+    
+    <!-- sonar plugin -->
     <module>sonar-webscanner-plugin</module>
-
-    <!-- crawler services -->
-    <module>crawler</module>
-
-    <!-- validation plugins -->
-    <module>w3cmarkup</module>
-    <module>toetstool</module>
   </modules>
 
   <properties>
@@ -69,49 +64,5 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-plugin-api</artifactId>
-        <scope>provided</scope>
-        <version>${sonar.version}</version>
-        <!-- dependencies of sonar-plugin-api (pmd) should not get older version of junit -->
-        <exclusions>
-          <exclusion>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>log4j</groupId>
-        <artifactId>log4j</artifactId>
-        <version>1.2.14</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging</artifactId>
-        <version>1.0.4</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-interpolation</artifactId>
-        <version>1.11</version>
-        <scope>provided</scope>
-      </dependency>
-
-      <!-- Unit test -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.8.2</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
 </project>
