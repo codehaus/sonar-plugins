@@ -25,7 +25,16 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.webscanner.api.language.Html;
+import org.sonar.plugins.webscanner.language.Html;
+import org.sonar.plugins.webscanner.markup.HtmlViolationFilter;
+import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
+import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
+import org.sonar.plugins.webscanner.markup.rules.MarkupProfileExporter;
+import org.sonar.plugins.webscanner.markup.rules.MarkupProfileImporter;
+import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
+import org.sonar.plugins.webscanner.toetstool.DefaultToetstoolProfile;
+import org.sonar.plugins.webscanner.toetstool.ToetstoolRuleRepository;
+import org.sonar.plugins.webscanner.toetstool.ToetstoolSensor;
 
 /**
  * @author Matthijs Galesloot
@@ -69,6 +78,20 @@ public final class WebScannerPlugin implements Plugin {
 
     // widget for dashboard
  //   list.add(HtmlWidget.class);
+
+ // W3C markup rules
+    list.add(MarkupRuleRepository.class);
+    list.add(MarkupProfileExporter.class);
+    list.add(MarkupProfileImporter.class);
+    list.add(DefaultMarkupProfile.class);
+    list.add(HtmlMetrics.class);
+    list.add(HtmlViolationFilter.class);
+    list.add(W3CMarkupSensor.class);
+
+    // toetstool rules
+    list.add(ToetstoolRuleRepository.class);
+    list.add(DefaultToetstoolProfile.class);
+    list.add(ToetstoolSensor.class);
 
     return list;
   }

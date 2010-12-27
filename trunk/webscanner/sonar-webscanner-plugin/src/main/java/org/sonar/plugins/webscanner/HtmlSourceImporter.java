@@ -28,8 +28,8 @@ import org.sonar.api.batch.ResourceCreationLock;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
-import org.sonar.plugins.webscanner.api.language.Html;
-import org.sonar.plugins.webscanner.api.language.ProjectConfiguration;
+import org.sonar.plugins.webscanner.language.Html;
+import org.sonar.plugins.webscanner.language.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.api.language;
+package org.sonar.plugins.webscanner.language;
 
 import org.sonar.api.resources.AbstractLanguage;
 import org.sonar.api.resources.Project;
