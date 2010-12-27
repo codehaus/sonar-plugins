@@ -24,6 +24,7 @@
         <module>debug</module>
         <module>dotnet</module>
         <module>emma</module>
+        <module>fb-contrib</module>
         <module>flex</module>
         <module>greenpepper</module>
         <module>groovy</module>
