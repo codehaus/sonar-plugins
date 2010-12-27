@@ -24,25 +24,35 @@
 
 package org.sonar.plugins.trac;
 
-import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.Metrics;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.notNullValue;
 
-public class TracMetrics implements Metrics {
+public class TracPluginTest {
 
-  public static final String DOMAIN = "Issues";
+  private TracPlugin plugin;
 
-  public static final Metric ISSUES = new Metric("trac_issues", "Trac issues", "Number of Trac issues", Metric.ValueType.INT,
-      Metric.DIRECTION_NONE, false, DOMAIN);
-
-  public static final Metric TICKET_COMPONENT = new Metric("trac_ticket_component", "Project component", "Project component specified",
-      Metric.ValueType.STRING, Metric.DIRECTION_NONE, false, DOMAIN);
-
-  // getMetrics() method is defined in the Metrics interface and is used by
-  // Sonar to retrieve the list of new Metric
-  public final List<Metric> getMetrics() {
-    return Arrays.asList(ISSUES, TICKET_COMPONENT);
+  @Before
+  public void setUp() {
+    plugin = new TracPlugin();
   }
+
+  @Test
+  public void testPluginDefinition() {
+    assertThat(plugin.getExtensions().size(), greaterThan(0));
+  }
+
+  /**
+   * see SONAR-1898
+   */
+  @Test
+  public void testDeprecatedMethods() {
+    assertThat(plugin.getKey(), notNullValue());
+    assertThat(plugin.getName(), notNullValue());
+    assertThat(plugin.getDescription(), notNullValue());
+  }
+
 }
