@@ -11,7 +11,7 @@
 
   <artifactId>sonar-trac-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.2</version>
   
   <name>Sonar Trac Plugin</name>
   <description>Retrieves and reports the number of project issues from a Trac instance.</description>
@@ -36,9 +36,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/trac</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/trac</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-trac-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-trac-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-trac-plugin-0.2</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
