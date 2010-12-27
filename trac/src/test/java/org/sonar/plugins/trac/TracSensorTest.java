@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package org.sonar.plugins.trac.test;
+package org.sonar.plugins.trac;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

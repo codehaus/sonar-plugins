@@ -20,13 +20,13 @@
  # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  # THE SOFTWARE.
  
-	issues_measure = measure('issues')
+	issues_measure = measure('trac_issues')
 	component = ""
 	# .data is the distribution data - if it is blank the project hasn't 
 	# has its Trac instance analysed.
 	if issues_measure && issues_measure.data != ""
-		if measure('ticket_component')
-			component = measure('ticket_component').formatted_value
+		if measure('trac_ticket_component')
+			component = measure('trac_ticket_component').formatted_value
 		end	
 			
 %>
