@@ -24,7 +24,7 @@ import java.util.List;
 import org.sonar.api.web.CodeColorizerFormat;
 import org.sonar.colorizer.RegexpTokenizer;
 import org.sonar.colorizer.Tokenizer;
-import org.sonar.plugins.webscanner.api.language.Html;
+import org.sonar.plugins.webscanner.language.Html;
 
 public class HtmlCodeColorizerFormat extends CodeColorizerFormat {
 

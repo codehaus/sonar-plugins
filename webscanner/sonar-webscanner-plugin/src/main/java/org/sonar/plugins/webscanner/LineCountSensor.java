@@ -31,8 +31,8 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.webscanner.api.language.Html;
-import org.sonar.plugins.webscanner.api.language.ProjectConfiguration;
+import org.sonar.plugins.webscanner.language.Html;
+import org.sonar.plugins.webscanner.language.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot
