@@ -51,7 +51,10 @@
     <sonar.version>2.4</sonar.version>
     <fbcontrib.version>4.6.0</fbcontrib.version>
     <sonar.pluginName>fb-contrib</sonar.pluginName>
-    <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
+    <sonar.pluginClass>org.sonar.plugins.fbcontrib.FindbugsContribPlugin</sonar.pluginClass>
+    
+    <!-- Plugin updates -->
+    <version.sonar-packaging.plugin>1.1-SNAPSHOT</version.sonar-packaging.plugin>
   </properties>
 
   <dependencies>
@@ -74,6 +77,18 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <configuration>
+          <extendPlugin>findbugs</extendPlugin>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   
   <repositories>
     <repository>
