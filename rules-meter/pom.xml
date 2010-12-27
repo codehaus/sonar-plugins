@@ -5,21 +5,29 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>8</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
   <artifactId>sonar-rulesmeter-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>0.2-SNAPSHOT</version>
-  <name>Rules Meter Sonar Plugin</name>
+  
+  <name>Sonar Rules Meter Plugin</name>
   <description>This plugin gives information on the activated profile for a project.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Rules+Meter+Plugin</url>
   <inceptionYear>2009</inceptionYear>
-
-  <properties>
-    <sonar.version>2.3</sonar.version>
-  </properties>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <developers>
     <developer>
@@ -31,57 +39,6 @@
     </developer>
   </developers>
 
-  <organization>
-    <name>SonarSource</name>
-    <url>http://www.sonarsource.com</url>
-  </organization>
-
-  <licenses>
-    <license>
-      <name>GNU LGPL 3</name>
-      <url>http://www.gnu.org/licenses/lgpl.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <dependencies>
-    <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.version}</version>
-      <scope>test</scope>
-      <type>test-jar</type>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <extensions>true</extensions>
-        <version>0.2</version>
-        <configuration>
-          <pluginName>Sonar PHP Plugin</pluginName>
-          <pluginClass>org.sonar.plugins.ral.RulesActivationPlugin</pluginClass>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/rules-meter</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/rules-meter</developerConnection>
@@ -91,4 +48,30 @@
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14071</url>
   </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-RAL</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>2.3</sonar.version>
+    <sonar.pluginName>Rules Meter</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.ral.RulesActivationPlugin</sonar.pluginClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
