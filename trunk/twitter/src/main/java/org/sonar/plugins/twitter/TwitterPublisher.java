@@ -57,7 +57,7 @@ public class TwitterPublisher implements PostJob {
   private final static TwitterFactory FACTORY = new TwitterFactory();
   private final Twitter twitter = FACTORY.getInstance();
 
-  public void executeOn(Project project, SensorContext context) {
+  public final void executeOn(Project project, SensorContext context) {
     Configuration configuration = project.getConfiguration();
     String hostUrl = configuration.getString(HOST_PROPERTY, HOST_DEFAULT_VALUE);
 
@@ -77,14 +77,10 @@ public class TwitterPublisher implements PostJob {
     }
   }
 
-  public void updateStatus(String message) {
+  protected void updateStatus(String message) throws TwitterException {
     LOG.info("Updating Twitter status to: '{}'", message);
-    try {
-      Status status = twitter.updateStatus(message);
-      LOG.info("Successfully updated the status to [" + status.getText() + "].");
-    } catch (TwitterException e) {
-      LOG.error("Exception updating Twitter status: " + e.getMessage());
-    }
+    Status status = twitter.updateStatus(message);
+    LOG.info("Successfully updated the status to [" + status.getText() + "].");
   }
 
   private void authenticate(Configuration configuration) throws TwitterException, IOException {
