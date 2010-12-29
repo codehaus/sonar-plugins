@@ -33,12 +33,14 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
-import org.sonar.plugins.webscanner.HtmlMetrics;
-import org.sonar.plugins.webscanner.html.HtmlFileScanner;
-import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.language.Html;
+import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.language.ProjectConfiguration;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
+import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
+import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
+import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
+import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 
 /**
  * @author Matthijs Galesloot
@@ -129,9 +131,6 @@ public final class W3CMarkupSensor implements Sensor {
       }
 
       LOG.info("HTML Dir:" + sourceDir);
-
-      HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(sourceDir);
     }
   }
 
