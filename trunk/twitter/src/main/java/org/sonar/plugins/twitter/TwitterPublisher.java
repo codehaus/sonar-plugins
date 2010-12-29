@@ -53,9 +53,9 @@ import twitter4j.http.RequestToken;
 public class TwitterPublisher implements PostJob {
 
   private static final String PROJECT_INDEX_URI = "/project/index/";
-  private final static Logger logger = LoggerFactory.getLogger(TwitterPublisher.class);
-  private final static TwitterFactory factory = new TwitterFactory();
-  private final Twitter twitter = factory.getInstance();
+  private final static Logger LOG = LoggerFactory.getLogger(TwitterPublisher.class);
+  private final static TwitterFactory FACTORY = new TwitterFactory();
+  private final Twitter twitter = FACTORY.getInstance();
 
   public void executeOn(Project project, SensorContext context) {
     Configuration configuration = project.getConfiguration();
@@ -71,19 +71,19 @@ public class TwitterPublisher implements PostJob {
       String status = String.format("Sonar analysis of %s is available at %s", project.getName(), url);
       updateStatus(status);
     } catch (TwitterException e) {
-      logger.warn("Exception updating Twitter status", e);
+      LOG.error("Exception updating Twitter status: " + e.getMessage());
     } catch (IOException e) {
-      logger.warn("Exception updating Twitter status", e);
+      LOG.error("Exception updating Twitter status: " + e.getMessage());
     }
   }
 
   public void updateStatus(String message) throws TwitterException {
-    logger.info("Updating Twitter status to: '{}'", message);
+    LOG.info("Updating Twitter status to: '{}'", message);
     try {
       Status status = twitter.updateStatus(message);
-      logger.info("Successfully updated the status to [" + status.getText() + "].");
+      LOG.info("Successfully updated the status to [" + status.getText() + "].");
     } catch (TwitterException e) {
-      logger.warn("Exception updating Twitter status", e);
+      LOG.error("Exception updating Twitter status: " + e.getMessage());
     }
   }
 
@@ -97,9 +97,9 @@ public class TwitterPublisher implements PostJob {
     AccessToken accessToken = null;
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     while (null == accessToken) {
-      logger.info("Open the following URL and grant access to your account:");
-      logger.info(requestToken.getAuthorizationURL());
-      logger.info("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
+      LOG.info("Open the following URL and grant access to your account:");
+      LOG.info(requestToken.getAuthorizationURL());
+      LOG.info("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
       String pin = br.readLine();
       try {
         if (pin.length() > 0) {
@@ -109,9 +109,9 @@ public class TwitterPublisher implements PostJob {
         }
       } catch (TwitterException te) {
         if (401 == te.getStatusCode()) {
-          logger.error("Unable to get the access token.");
+          LOG.error("Unable to get the access token.");
         } else {
-          logger.error("Unexpected Twitter error: " + te.getMessage(), te);
+          LOG.error("Unexpected Twitter error: " + te.getMessage(), te);
         }
       }
     }
