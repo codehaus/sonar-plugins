@@ -108,7 +108,8 @@ public class TwitterPublisher implements PostJob {
         if (HTTP_ACCESS_DENIED == te.getStatusCode()) {
           LOG.error("Unable to get the access token.");
         } else {
-          LOG.error("Unexpected Twitter error: " + te.getMessage(), te);
+          LOG.error("Unexpected Twitter error: " + te.getMessage());
+          LOG.error("Check your credentials and consider visiting  http://twitter.com/apps/new to add you application to twitter.");
         }
       }
     }
