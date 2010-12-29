@@ -40,17 +40,13 @@ public final class ProjectConfiguration {
   }
 
   public static void configureSourceDir(Project project) {
-    String sourceDir = getSourceDir(project);
+    String sourceDir = (String) project.getProperty(ProjectConfiguration.SOURCE_DIRECTORY);
     if (sourceDir != null) {
       File file = new File(project.getFileSystem().getBasedir() + "/" + sourceDir);
 
       project.getPom().getCompileSourceRoots().clear();
       project.getFileSystem().addSourceDir(file);
     }
-  }
-
-  private static String getSourceDir(Project project) {
-    return (String) project.getProperty(ProjectConfiguration.SOURCE_DIRECTORY);
   }
 
   public static Integer getNrOfSamples(Project project) {

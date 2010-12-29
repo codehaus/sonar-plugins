@@ -34,11 +34,12 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
-import org.sonar.plugins.webscanner.HtmlMetrics;
-import org.sonar.plugins.webscanner.html.HtmlFileScanner;
-import org.sonar.plugins.webscanner.html.HtmlScanner;
 import org.sonar.plugins.webscanner.language.Html;
+import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.language.ProjectConfiguration;
+import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
+import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
+import org.sonar.plugins.webscanner.toetstool.validation.ToetsToolValidator;
 import org.sonar.plugins.webscanner.toetstool.xml.Guideline;
 import org.sonar.plugins.webscanner.toetstool.xml.Guideline.ValidationType;
 import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
@@ -125,9 +126,6 @@ public final class ToetstoolSensor implements Sensor {
       }
 
       LOG.info("HTML Dir:" + sourceDir);
-
-      HtmlScanner htmlScanner = new HtmlScanner();
-      htmlScanner.prepare(sourceDir);
     }
   }
 

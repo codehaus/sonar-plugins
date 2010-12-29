@@ -26,28 +26,31 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.webscanner.language.Html;
-import org.sonar.plugins.webscanner.markup.HtmlViolationFilter;
+import org.sonar.plugins.webscanner.language.HtmlCodeColorizerFormat;
+import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
 import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
-import org.sonar.plugins.webscanner.markup.rules.MarkupProfileExporter;
-import org.sonar.plugins.webscanner.markup.rules.MarkupProfileImporter;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
-import org.sonar.plugins.webscanner.toetstool.DefaultToetstoolProfile;
-import org.sonar.plugins.webscanner.toetstool.ToetstoolRuleRepository;
 import org.sonar.plugins.webscanner.toetstool.ToetstoolSensor;
+import org.sonar.plugins.webscanner.toetstool.rules.DefaultToetstoolProfile;
+import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
 
 /**
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = "sonar.cpd.web.minimumTokens", defaultValue = "70",
-    name = "Minimum tokens",
-    description = "The number of duplicate tokens above which a HTML block is considered as a duplicated.",
-    global = true, project = true),
   @Property(key = "sonar.web.fileExtensions",
     name = "File extensions",
     description = "List of file extensions that will be scanned.",
     defaultValue="html",
+    global = true, project = true),
+  @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API",
+    description = "W3CMarkup Validation API",
+    defaultValue = "http://validator.w3.org/check",
+    global = true, project = true),
+  @Property(key = "sonar.toetstool.url", name = "Toetstool API",
+    description = "Toetstool Validation API",
+    defaultValue = "http://api.toetstool.nl/",
     global = true, project = true)})
 public final class WebScannerPlugin implements Plugin {
 
@@ -73,18 +76,13 @@ public final class WebScannerPlugin implements Plugin {
 
     // Code Colorizer
     list.add(HtmlCodeColorizerFormat.class);
-    // Copy/Paste detection mechanism
-//    list.add(WebCpdMapping.class);
 
     // widget for dashboard
- //   list.add(HtmlWidget.class);
+    list.add(HtmlWidget.class);
 
- // W3C markup rules
+    // W3C markup rules
     list.add(MarkupRuleRepository.class);
-    list.add(MarkupProfileExporter.class);
-    list.add(MarkupProfileImporter.class);
     list.add(DefaultMarkupProfile.class);
-    list.add(HtmlMetrics.class);
     list.add(HtmlViolationFilter.class);
     list.add(W3CMarkupSensor.class);
 
@@ -92,6 +90,9 @@ public final class WebScannerPlugin implements Plugin {
     list.add(ToetstoolRuleRepository.class);
     list.add(DefaultToetstoolProfile.class);
     list.add(ToetstoolSensor.class);
+
+    // metrics
+    list.add(HtmlMetrics.class);
 
     return list;
   }
