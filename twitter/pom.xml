@@ -43,7 +43,12 @@
       <timezone>+1</timezone>
     </developer>
   </developers>
-
+  
+  <ciManagement>
+    <system>bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-ALLSTABLEPLUGINS</url>
+  </ciManagement>
+  
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/twitter</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/twitter</developerConnection>
