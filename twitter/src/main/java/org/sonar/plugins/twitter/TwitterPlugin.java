@@ -50,19 +50,19 @@ public class TwitterPlugin implements Plugin {
   public static final String HOST_PROPERTY = "sonar.host.url";
   public static final String HOST_DEFAULT_VALUE = "http://localhost:9000";
 
-  public String getKey() {
+  public final String getKey() {
     return "twitter";
   }
 
-  public String getName() {
+  public final String getName() {
     return "Twitter";
   }
 
-  public String getDescription() {
+  public final String getDescription() {
     return "Reports about analysis via <a href='http://twitter.com/'>Twitter</a>.";
   }
 
-  public List<Class<? extends Extension>> getExtensions() {
+  public final List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(TwitterPublisher.class);
     return list;

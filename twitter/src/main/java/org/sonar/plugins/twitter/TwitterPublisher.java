@@ -52,12 +52,13 @@ import twitter4j.http.RequestToken;
  */
 public class TwitterPublisher implements PostJob {
 
+  private static final int HTTP_ACCESS_DENIED = 401;
   private static final String PROJECT_INDEX_URI = "/project/index/";
-  private final static Logger logger = LoggerFactory.getLogger(TwitterPublisher.class);
-  private final static TwitterFactory factory = new TwitterFactory();
-  private final Twitter twitter = factory.getInstance();
+  private static final Logger LOG = LoggerFactory.getLogger(TwitterPublisher.class);
+  private static final TwitterFactory FACTORY = new TwitterFactory();
+  private final Twitter twitter = FACTORY.getInstance();
 
-  public void executeOn(Project project, SensorContext context) {
+  public final void executeOn(Project project, SensorContext context) {
     Configuration configuration = project.getConfiguration();
     String hostUrl = configuration.getString(HOST_PROPERTY, HOST_DEFAULT_VALUE);
 
@@ -71,20 +72,16 @@ public class TwitterPublisher implements PostJob {
       String status = String.format("Sonar analysis of %s is available at %s", project.getName(), url);
       updateStatus(status);
     } catch (TwitterException e) {
-      logger.warn("Exception updating Twitter status", e);
+      LOG.error("Exception updating Twitter status");
     } catch (IOException e) {
-      logger.warn("Exception updating Twitter status", e);
+      LOG.error("Exception updating Twitter status");
     }
   }
 
-  public void updateStatus(String message) throws TwitterException {
-    logger.info("Updating Twitter status to: '{}'", message);
-    try {
-      Status status = twitter.updateStatus(message);
-      logger.info("Successfully updated the status to [" + status.getText() + "].");
-    } catch (TwitterException e) {
-      logger.warn("Exception updating Twitter status", e);
-    }
+  protected final void updateStatus(String message) throws TwitterException {
+    LOG.info("Updating Twitter status to: '{}'", message);
+    Status status = twitter.updateStatus(message);
+    LOG.info("Successfully updated the status to [" + status.getText() + "].");
   }
 
   private void authenticate(Configuration configuration) throws TwitterException, IOException {
@@ -97,9 +94,9 @@ public class TwitterPublisher implements PostJob {
     AccessToken accessToken = null;
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     while (null == accessToken) {
-      logger.info("Open the following URL and grant access to your account:");
-      logger.info(requestToken.getAuthorizationURL());
-      logger.info("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
+      LOG.info("Open the following URL and grant access to your account:");
+      LOG.info(requestToken.getAuthorizationURL());
+      LOG.info("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
       String pin = br.readLine();
       try {
         if (pin.length() > 0) {
@@ -108,10 +105,10 @@ public class TwitterPublisher implements PostJob {
           accessToken = twitter.getOAuthAccessToken();
         }
       } catch (TwitterException te) {
-        if (401 == te.getStatusCode()) {
-          logger.error("Unable to get the access token.");
+        if (HTTP_ACCESS_DENIED == te.getStatusCode()) {
+          LOG.error("Unable to get the access token.");
         } else {
-          logger.error("Unexpected Twitter error: " + te.getMessage(), te);
+          LOG.error("Unexpected Twitter error: " + te.getMessage(), te);
         }
       }
     }
