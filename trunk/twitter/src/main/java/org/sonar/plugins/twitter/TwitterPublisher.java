@@ -77,7 +77,7 @@ public class TwitterPublisher implements PostJob {
     }
   }
 
-  public void updateStatus(String message) throws TwitterException {
+  public void updateStatus(String message) {
     LOG.info("Updating Twitter status to: '{}'", message);
     try {
       Status status = twitter.updateStatus(message);
