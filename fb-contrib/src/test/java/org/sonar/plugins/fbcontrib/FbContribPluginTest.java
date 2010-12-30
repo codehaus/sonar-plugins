@@ -24,9 +24,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class FindbugsContribPluginTest {
+public class FbContribPluginTest {
   private FbContribPlugin plugin;
 
   @Before
@@ -44,4 +45,8 @@ public class FindbugsContribPluginTest {
     assertThat(plugin.getDescription(), notNullValue());
   }
 
+  @Test
+  public void testGetExtensions() {
+    assertThat(plugin.getExtensions().size(), is(1));
+  }
 }
