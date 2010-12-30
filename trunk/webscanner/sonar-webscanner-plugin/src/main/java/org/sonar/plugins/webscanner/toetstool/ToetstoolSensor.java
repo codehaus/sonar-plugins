@@ -50,6 +50,8 @@ import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
  */
 public final class ToetstoolSensor implements Sensor {
 
+  public static final String SONAR_TOETSTOOL_URL = "sonar.toetstool.url";
+
   private static final Logger LOG = LoggerFactory.getLogger(ToetstoolSensor.class);
 
   private final RulesProfile profile;
@@ -89,8 +91,7 @@ public final class ToetstoolSensor implements Sensor {
     List<File> files = project.getFileSystem().getSourceFiles(new Html(project));
 
     // create validator
-    ToetsToolValidator validator = new ToetsToolValidator((String) project.getProperty("sonar.toetstool.url"), project.getFileSystem()
-        .getBasedir() + "/" + (String) project.getProperty("sonar.toetstool.cssDir"));
+    ToetsToolValidator validator = new ToetsToolValidator((String) project.getProperty(SONAR_TOETSTOOL_URL));
 
     // configure proxy
     if (session.getSettings().getActiveProxy() != null) {
@@ -100,7 +101,8 @@ public final class ToetstoolSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(files, ProjectConfiguration.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(files, project.getFileSystem().getSourceDirs().get(0),
+        ProjectConfiguration.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, files);

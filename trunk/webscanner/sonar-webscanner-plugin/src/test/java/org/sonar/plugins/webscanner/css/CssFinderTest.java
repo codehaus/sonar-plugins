@@ -16,26 +16,37 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.toetstool.validation;
+package org.sonar.plugins.webscanner.css;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.Test;
 
 public class CssFinderTest {
 
-  private static final String testfile = "src/test/resources/org/sonar/plugins/webscanner/toetstool/a.html";
+  private static final String path = "src/test/resources/org/sonar/plugins/webscanner/css";
+
+  private static final String testfile = path + "/web/stylesheet-includes.html";
 
   @Test
-  public void testCssFinder() {
+  public void testCssFinder() throws FileNotFoundException {
 
     File file = new File(testfile);
     assertTrue(file.exists());
-    List<String> styleSheets = new CssFinder().parseWebFile(file);
+    List<String> styleSheets = new LinkParser().parseStylesheets(new FileInputStream(file));
     assertEquals(3, styleSheets.size());
+
+    File rootDir = new File(path);
+    CssFinder cssFinder = new CssFinder();
+    File[] cssFiles = cssFinder.findCssFiles(styleSheets, file, rootDir);
+    assertEquals(styleSheets.size(), cssFiles.length);
+    File[] importedFiles = cssFinder.findCssImports(cssFiles, rootDir);
+    assertEquals(styleSheets.size(), importedFiles.length);
   }
 }

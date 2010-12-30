@@ -22,6 +22,7 @@ import java.io.File;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.webscanner.WebScannerPlugin;
 
 /**
  * Utilities and constants for the project configuration.
@@ -31,16 +32,12 @@ import org.sonar.api.resources.Project;
  */
 public final class ProjectConfiguration {
 
-  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
-  public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
-  public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
-
   private ProjectConfiguration() {
     // cannot instantiate
   }
 
   public static void configureSourceDir(Project project) {
-    String sourceDir = (String) project.getProperty(ProjectConfiguration.SOURCE_DIRECTORY);
+    String sourceDir = (String) project.getProperty(WebScannerPlugin.SOURCE_DIRECTORY);
     if (sourceDir != null) {
       File file = new File(project.getFileSystem().getBasedir() + "/" + sourceDir);
 
@@ -50,6 +47,6 @@ public final class ProjectConfiguration {
   }
 
   public static Integer getNrOfSamples(Project project) {
-    return NumberUtils.toInt((String) project.getProperty(NR_OF_SAMPLES));
+    return NumberUtils.toInt((String) project.getProperty(WebScannerPlugin.NR_OF_SAMPLES));
   }
 }

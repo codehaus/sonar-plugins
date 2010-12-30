@@ -96,7 +96,8 @@ public final class W3CMarkupSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(files, ProjectConfiguration.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(files, project.getFileSystem().getSourceDirs().get(0),
+        ProjectConfiguration.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, files);
