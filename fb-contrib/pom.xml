@@ -54,6 +54,7 @@
     <sonar.pluginClass>org.sonar.plugins.fbcontrib.FbContribPlugin</sonar.pluginClass>
     
     <!-- Plugin updates -->
+    <enforcer.skip>true</enforcer.skip>
     <version.sonar-packaging.plugin>1.1-SNAPSHOT</version.sonar-packaging.plugin>
   </properties>
 
