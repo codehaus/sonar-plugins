@@ -51,7 +51,7 @@
     <sonar.version>2.4</sonar.version>
     <fbcontrib.version>4.6.0</fbcontrib.version>
     <sonar.pluginName>fb-contrib</sonar.pluginName>
-    <sonar.pluginClass>org.sonar.plugins.fbcontrib.FindbugsContribPlugin</sonar.pluginClass>
+    <sonar.pluginClass>org.sonar.plugins.fbcontrib.FbContribPlugin</sonar.pluginClass>
     
     <!-- Plugin updates -->
     <version.sonar-packaging.plugin>1.1-SNAPSHOT</version.sonar-packaging.plugin>

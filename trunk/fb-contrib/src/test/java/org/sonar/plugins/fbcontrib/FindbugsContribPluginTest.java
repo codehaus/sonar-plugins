@@ -27,11 +27,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class FindbugsContribPluginTest {
-  private FindbugsContribPlugin plugin;
+  private FbContribPlugin plugin;
 
   @Before
   public void setUp() {
-    plugin = new FindbugsContribPlugin();
+    plugin = new FbContribPlugin();
   }
 
   /**

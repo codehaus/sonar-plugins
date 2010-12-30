@@ -25,7 +25,7 @@ import org.sonar.api.Plugin;
 import java.util.Arrays;
 import java.util.List;
 
-public class FindbugsContribPlugin implements Plugin {
+public class FbContribPlugin implements Plugin {
 
   public String getKey() {
     return "fbcontrib";
@@ -40,7 +40,7 @@ public class FindbugsContribPlugin implements Plugin {
   }
 
   public List getExtensions() {
-    return Arrays.asList();
+    return Arrays.asList(FbContribRuleRepository.class);
   }
 
 }
