@@ -141,7 +141,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
   /**
    * Validate a file with the W3C Markup service.
    */
-  public void validateFile(File file) {
+  public void validateFile(File file, File htmlDir) {
     postHtmlContents(file);
   }
 

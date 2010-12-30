@@ -19,6 +19,7 @@
 package org.sonar.plugins.webscanner.toetstool.validation;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ import org.apache.commons.httpclient.methods.multipart.PartBase;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.sonar.plugins.webscanner.css.CssFinder;
+import org.sonar.plugins.webscanner.css.LinkParser;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
@@ -57,17 +60,11 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
   private final String toetstoolURL;
 
-  private final String cssPath;
-
-  public ToetsToolValidator(String toetstoolURL, String cssPath) {
+  public ToetsToolValidator(String toetstoolURL) {
     if ( !toetstoolURL.endsWith("/")) {
       this.toetstoolURL = toetstoolURL + '/';
     } else {
       this.toetstoolURL = toetstoolURL;
-    }
-    this.cssPath = cssPath;
-    if (!new File(cssPath).exists()) {
-      throw new RuntimeException("Cannot find css folder " + cssPath);
     }
   }
 
@@ -79,11 +76,12 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     return toetstoolURL + "insert/";
   }
 
-  private void addCssContent(File file, List<PartBase> parts) throws IOException {
+  private void addCssContent(File file, File htmlDir, List<PartBase> parts) throws IOException {
+    LinkParser linkParser = new LinkParser();
+    List<String> stylesheets = linkParser.parseStylesheets(new FileInputStream(file));
     CssFinder cssFinder = new CssFinder();
-    cssFinder.parseWebFile(file);
-    File[] cssFiles = cssFinder.findCssFiles(cssPath);
-    File[] cssImports = cssFinder.findCssImports(cssPath);
+    File[] cssFiles = cssFinder.findCssFiles(stylesheets, file, htmlDir);
+    File[] cssImports = cssFinder.findCssImports(cssFiles, htmlDir);
 
     // if (cssFiles.length > 0) {
     // PartBase cv = new StringPart("cv", "0");
@@ -156,8 +154,9 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
   /**
    * Post content of HTML file and CSS files to the Toesttool service. In return, receive a redirecte containing the reportNumber.
+   * @param htmlDir
    */
-  private String postHtmlContents(File file, String url) throws IOException {
+  private String postHtmlContents(File file, File htmlDir, String url) throws IOException {
     PostMethod post = new PostMethod(getToetsToolUploadUrl());
 
     try {
@@ -186,7 +185,7 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
       FilePart filePart = new FilePart("htmlfile", file.getName(), file);
       parts.add(filePart);
 
-      addCssContent(file, parts);
+      addCssContent(file, htmlDir, parts);
 
       MultipartRequestEntity multiPartRequestEntity = new MultipartRequestEntity(parts.toArray(new PartBase[parts.size()]),
           post.getParams());
@@ -218,11 +217,11 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
   /**
    * Validate a file with the Toetstool service.
    */
-  public void validateFile(File file) {
+  public void validateFile(File file, File htmlDir) {
 
     try {
       // post html contents, in return we get a redirect location
-      String redirectLocation = postHtmlContents(file, getUrl(file));
+      String redirectLocation = postHtmlContents(file, htmlDir, getUrl(file));
 
       if (redirectLocation != null) {
         // get the report number from the redirect location

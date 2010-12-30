@@ -20,6 +20,7 @@ package org.sonar.plugins.webscanner.language;
 
 import org.sonar.api.resources.AbstractLanguage;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.webscanner.WebScannerPlugin;
 
 /**
  * This class defines the Html language.
@@ -52,7 +53,7 @@ public class Html extends AbstractLanguage {
   public Html(Project project) {
     this();
 
-    String extensions = (String) project.getProperty(ProjectConfiguration.FILE_EXTENSIONS);
+    String extensions = (String) project.getProperty(WebScannerPlugin.FILE_EXTENSIONS);
 
     if (extensions != null) {
       final String[] list = extensions.split(",");

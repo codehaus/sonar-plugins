@@ -39,29 +39,34 @@ import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = "sonar.web.fileExtensions",
-    name = "File extensions",
-    description = "List of file extensions that will be scanned.",
-    defaultValue="html",
-    global = true, project = true),
   @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API",
     description = "W3CMarkup Validation API",
     defaultValue = "http://validator.w3.org/check",
     global = true, project = true),
-  @Property(key = "sonar.toetstool.url", name = "Toetstool API",
+  @Property(key = ToetstoolSensor.SONAR_TOETSTOOL_URL, name = "Toetstool API",
     description = "Toetstool Validation API",
     defaultValue = "http://api.toetstool.nl/",
+    global = true, project = true),
+ @Property(key = WebScannerPlugin.FILE_EXTENSIONS,
+    name = "File extensions",
+    description = "List of file extensions that will be scanned.",
+    defaultValue="html",
+    global = true, project = true),
+  @Property(key = WebScannerPlugin.SOURCE_DIRECTORY,
+    name = "Source directory",
+    description = "Source directory that will be scanned.",
+    defaultValue = "",
     global = true, project = true)})
 public final class WebScannerPlugin implements Plugin {
 
+  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
   private static final String KEY = "sonar-webscanner-plugin";
+  public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
+  public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
 
-  public static String getKEY() {
-    return KEY;
-  }
-
+  @Deprecated
   public String getDescription() {
-    return getName() + " collects metrics on web sites, such as lines of code, violations, documentation level...";
+    return null;
   }
 
   public List<Class<? extends Extension>> getExtensions() {
@@ -97,16 +102,18 @@ public final class WebScannerPlugin implements Plugin {
     return list;
   }
 
+  @Deprecated
   public String getKey() {
-    return KEY;
+    return null;
   }
 
+  @Deprecated
   public String getName() {
-    return "Webscanner";
+    return null;
   }
 
   @Override
   public String toString() {
-    return getKey();
+    return KEY;
   }
 }

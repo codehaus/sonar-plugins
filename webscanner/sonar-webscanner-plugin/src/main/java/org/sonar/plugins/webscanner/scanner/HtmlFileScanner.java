@@ -52,7 +52,7 @@ public final class HtmlFileScanner {
     return newCollection;
   }
 
-  public void validateFiles(List<File> files, Integer nrOfSamples) {
+  public void validateFiles(List<File> files, File htmlDir, Integer nrOfSamples) {
 
     if (nrOfSamples != null && nrOfSamples > 0) {
       files = randomSubsetFiles(files, nrOfSamples);
@@ -67,7 +67,7 @@ public final class HtmlFileScanner {
           visitor.waitBetweenValidationRequests();
         }
         LOG.debug("Validating " + file.getPath() + "...");
-        visitor.validateFile(file);
+        visitor.validateFile(file, htmlDir);
       }
     }
   }
@@ -75,25 +75,25 @@ public final class HtmlFileScanner {
   public static Collection<File> getReportFiles(File htmlFolder, final String reportXml) {
     @SuppressWarnings("unchecked")
     Collection<File> reportFiles = FileUtils.listFiles(htmlFolder, new IOFileFilter() {
-  
+
       public boolean accept(File file) {
         return file.getName().endsWith(reportXml);
       }
-  
+
       public boolean accept(File dir, String name) {
         return name.endsWith(reportXml);
       }
     }, new IOFileFilter() {
-  
+
       public boolean accept(File file) {
         return true;
       }
-  
+
       public boolean accept(File dir, String name) {
         return true;
       }
     });
-  
+
     return reportFiles;
   }
 }
