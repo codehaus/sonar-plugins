@@ -1,0 +1,13 @@
+<rules>
+   <rule key="cqlRule">
+		<name>CQL rule</name>
+		<configKey>CQL</configKey>
+		<category name="Maintainability"/>
+		<cardinality>MULTIPLE</cardinality>
+		<description><![CDATA[CQL rule]]></description>
+		<param key="query" type="s">
+      		<description><![CDATA[the CQL query]]></description>
+    	</param>
+		
+	</rule>
+</rules>
