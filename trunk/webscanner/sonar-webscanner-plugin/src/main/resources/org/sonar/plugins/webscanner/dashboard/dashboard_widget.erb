@@ -1,5 +1,5 @@
 <%
-      if measure('w3c_markup_validity')
+      if measure('w3c_markup_validity') || measure('toetstool_validity') then
 %>
 
 <div class="yui-gd">
@@ -7,11 +7,12 @@
     <div class="dashbox">
       <table>
         <tr>
-          <td><h3>W3C Markup Validation</h3></td>
+          <td><h3>HTML Validation</h3></td>
           <td style="padding-left:2px;"><a href="http://validator.w3.org/docs/" target="validator"><%= image_tag 'help.png', :class => 'png' -%></a></td>
         </tr>
       </table>
-      <p><span class="big"><%= format_measure('w3c_markup_validity', :suffix => '', :url => url_for_drilldown('w3c_markup_validity'), :default => '0')%><%= tendency_icon('w3c_markup_validity') %></span></p>
+      <p><span class="small">W3C Validation:&nbsp;<%= format_measure('w3c_markup_validity', :suffix => '', :url => url_for_drilldown('w3c_markup_validity'), :default => '0')%><%= tendency_icon('w3c_markup_validity') %></span></p>
+	  <p><span class="small">Toetstool Validation:&nbsp;<%= format_measure('toetstool_validity', :suffix => '', :url => url_for_drilldown('toetstool_validity'), :default => '0')%><%= tendency_icon('toetstool_validity') %></span></p>
     </div>
   </div>
 </div>

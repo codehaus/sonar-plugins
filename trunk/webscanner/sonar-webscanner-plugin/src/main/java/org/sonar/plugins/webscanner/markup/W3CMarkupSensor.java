@@ -41,6 +41,7 @@ import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
 import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
+import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 
 /**
  * @author Matthijs Galesloot
@@ -152,7 +153,7 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(Project project, SensorContext sensorContext, MarkupValidator validator, List<File> files) {
+  private void saveResults(Project project, SensorContext sensorContext, HtmlFileVisitor validator, List<File> files) {
     int numValid = 0;
     int numFiles = 0;
 
@@ -171,8 +172,8 @@ public final class W3CMarkupSensor implements Sensor {
       numFiles++;
     }
 
-    double percentageValid = numFiles > 0 ? (double) (numFiles - numValid) / numFiles : 100;
-    sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid);
+    double percentageValid = numFiles > 0 ? (double) numValid / numFiles : 1;
+    sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid * 100);
   }
 
   /**

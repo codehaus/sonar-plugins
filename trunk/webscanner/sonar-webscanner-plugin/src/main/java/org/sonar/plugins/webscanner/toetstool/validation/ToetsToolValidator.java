@@ -58,6 +58,8 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
   private static final long SLEEP_INTERVAL = 5000L;
 
+  private static final String TEXT_HTML_CONTENT_TYPE = "text/html";
+
   private final String toetstoolURL;
 
   public ToetsToolValidator(String toetstoolURL) {
@@ -183,6 +185,8 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
       StringPart urlPart = new StringPart("url_user", url);
       parts.add(urlPart);
       FilePart filePart = new FilePart("htmlfile", file.getName(), file);
+      filePart.setContentType(TEXT_HTML_CONTENT_TYPE);
+      filePart.setCharSet(detectCharset(file));
       parts.add(filePart);
 
       addCssContent(file, htmlDir, parts);
@@ -265,4 +269,5 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
   public void waitBetweenValidationRequests() {
 
   }
+
 }

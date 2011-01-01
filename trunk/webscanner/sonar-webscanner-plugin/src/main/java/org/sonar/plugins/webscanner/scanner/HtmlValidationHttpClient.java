@@ -18,12 +18,15 @@
 
 package org.sonar.plugins.webscanner.scanner;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
+
+import com.sun.syndication.io.XmlReader;
 
 /**
  * Client
@@ -122,6 +125,19 @@ public class HtmlValidationHttpClient {
    */
   public boolean useProxy() {
     return proxyHost != null && proxyPort > 0;
+  }
+
+  /**
+   * Detect charset from html/xml file.
+   */
+  protected String detectCharset(File file) {
+
+    try {
+      XmlReader reader = new XmlReader(file);
+      return reader.getEncoding();
+    } catch (IOException e) {
+      return XmlReader.getDefaultEncoding();
+    }
   }
 
 }
