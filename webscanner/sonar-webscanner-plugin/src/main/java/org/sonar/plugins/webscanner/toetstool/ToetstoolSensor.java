@@ -174,8 +174,8 @@ public final class ToetstoolSensor implements Sensor {
       numFiles++;
     }
 
-    double percentageValid = numFiles > 0 ? (double) (numFiles - numValid) / numFiles : 100;
-    sensorContext.saveMeasure(HtmlMetrics.TOETSTOOL_VALIDITY, percentageValid);
+    double percentageValid = numFiles > 0 ? (double) numValid / numFiles : 1;
+    sensorContext.saveMeasure(HtmlMetrics.TOETSTOOL_VALIDITY, percentageValid * 100);
   }
 
   /**

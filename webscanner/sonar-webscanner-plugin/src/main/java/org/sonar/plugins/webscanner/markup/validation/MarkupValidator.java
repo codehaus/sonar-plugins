@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -84,7 +85,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
   }
 
   /**
-   * Post content of HTML file and CSS files to the W3C validation service. In return, receive a Soap response message.
+   * Post content of HTML to the W3C validation service. In return, receive a Soap response message.
    *
    * Documentation of interface: http://validator.w3.org/docs/api.html
    */
@@ -92,21 +93,28 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
     PostMethod post = new PostMethod(validationUrl);
     post.addRequestHeader(new Header("User-Agent", "sonar-web-plugin/0.1"));
 
+    String charset = detectCharset(file);
+
     try {
 
       LOG.info("W3C Validate: " + file.getName());
 
-      // prepare content
       List<PartBase> parts = new ArrayList<PartBase>();
 
+      // file upload
       try {
         FilePart filePart = new FilePart(UPLOADED_FILE, file.getName(), file);
         filePart.setContentType(TEXT_HTML_CONTENT_TYPE);
+        filePart.setCharSet(charset);
         parts.add(filePart);
       } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
       }
 
+      // charset
+    //  configureCharset(charset, parts);
+
+      // output format
       StringPart outputFormat = new StringPart(OUTPUT, SOAP12);
       parts.add(outputFormat);
 
@@ -129,6 +137,16 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
       // release any connection resources used by the method
       post.releaseConnection();
     }
+  }
+
+  private void configureCharset(Charset charset, List<PartBase> parts) {
+
+    StringPart charsetPart = new StringPart("charset", charset.name());
+    parts.add(charsetPart);
+
+    // only use the charset as fallback
+    StringPart fbCharSet = new StringPart("fbc", "1");
+    parts.add(fbCharSet);
   }
 
   /**

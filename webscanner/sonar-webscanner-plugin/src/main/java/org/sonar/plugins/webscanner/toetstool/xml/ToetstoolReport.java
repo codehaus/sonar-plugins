@@ -22,8 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -40,6 +41,7 @@ public class ToetstoolReport {
     try {
       FileInputStream input = new FileInputStream(file);
       ToetstoolReport report = (ToetstoolReport) getXstream().fromXML(input);
+      IOUtils.closeQuietly(input);
       report.reportFile = file;
       return report;
     } catch (FileNotFoundException e) {
@@ -93,10 +95,8 @@ public class ToetstoolReport {
     try {
       FileOutputStream out = new FileOutputStream(reportFile);
       toXml(out);
-      out.close();
+      IOUtils.closeQuietly(out);
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
-    } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }

@@ -41,7 +41,7 @@ public class Html extends AbstractLanguage {
 
   private String[] fileSuffixes;
 
-  public static Html INSTANCE = new Html();
+  public static final Html INSTANCE = new Html();
 
   public Html() {
     super(KEY, HTML_LANGUAGE_NAME);

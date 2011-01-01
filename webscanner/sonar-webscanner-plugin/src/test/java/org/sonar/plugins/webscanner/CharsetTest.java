@@ -16,26 +16,32 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.toetstool.xml;
+package org.sonar.plugins.webscanner;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
 
 import org.junit.Test;
 
-public class ToetstoolXmlTest {
+import com.sun.syndication.io.XmlReader;
+
+public class CharsetTest {
+
+  private static final String path = "src/test/resources/org/sonar/plugins/webscanner/encoding";
 
   @Test
-  public void testReport() throws FileNotFoundException {
-    InputStream input = getClass().getResourceAsStream("toetstool-report-2876.xml");
-    ToetstoolReport toetstool = ToetstoolReport.fromXml(input);
-    assertNotNull(toetstool);
-    assertEquals("http://www.google.nl/", toetstool.getReport().getUrl());
-    assertNotNull(toetstool.getReport().getCounters().getError());
-    assertTrue(toetstool.getReport().getGuidelines().size() > 20);
+  public void testCharset() throws IOException {
+
+    XmlReader reader = new XmlReader(new File(path + "/UTF8-BOM.html"));
+    assertEquals("UTF-8", reader.getEncoding());
+
+    reader = new XmlReader(new File(path + "/UTF8-withoutBOM.html"));
+    assertEquals("UTF-8", reader.getEncoding());
+
+    XmlReader.setDefaultEncoding("US-ASCII");
+    reader = new XmlReader(new File(path + "/ANSI.html"));
+    assertEquals("US-ASCII", reader.getEncoding());
   }
 }
