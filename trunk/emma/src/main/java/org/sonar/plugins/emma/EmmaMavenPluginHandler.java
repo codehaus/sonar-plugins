@@ -40,11 +40,11 @@ public class EmmaMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String getVersion() {
-    return "1.0-alpha-2";
+    return "1.0-alpha-3";
   }
 
   public boolean isFixedVersion() {
-    return false;
+    return true;
   }
 
   public String[] getGoals() {

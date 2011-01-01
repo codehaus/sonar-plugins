@@ -46,8 +46,8 @@ public class EmmaMavenPluginHandlerTest {
   public void testMavenPluginDefinition() {
     assertThat(handler.getGroupId(), is("org.codehaus.mojo"));
     assertThat(handler.getArtifactId(), is("emma-maven-plugin"));
-    assertThat(handler.getVersion(), is("1.0-alpha-2"));
-    assertThat(handler.isFixedVersion(), is(false));
+    assertThat(handler.getVersion(), is("1.0-alpha-3"));
+    assertThat(handler.isFixedVersion(), is(true));
     assertThat(handler.getGoals(), is(new String[]{"emma"}));
   }
 

@@ -35,7 +35,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EmmaSensorTest {
 
@@ -44,7 +46,9 @@ public class EmmaSensorTest {
     SensorContext context = mock(SensorContext.class);
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromProperty/pom.xml");
     new EmmaSensor(null, null).analyse(project, context);
-    verify(context).saveMeasure(argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.AbstractJavaGeneratingPluginTestCase")), eq(CoreMetrics.LINES_TO_COVER), anyDouble());
+    verify(context).saveMeasure(
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.MessageResourcesFactory")),
+        eq(CoreMetrics.LINES_TO_COVER), anyDouble());
   }
 
   @Test

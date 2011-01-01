@@ -29,7 +29,8 @@ import org.sonar.test.TestUtils;
 
 import java.io.File;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -43,57 +44,24 @@ public class EmmaProcessorTest {
     File dir = TestUtils.getResource(getClass(), "data");
     SensorContext context = mock(SensorContext.class);
     new EmmaProcessor(dir, context).process();
-    // no coverage information for first class
+    // first class
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.AbstractJavaGeneratingPluginTestCase")),
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.MessageResourcesFactory")),
         eq(CoreMetrics.LINES_TO_COVER),
-        eq(11d)
-    );
+        eq(22d));
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.AbstractJavaGeneratingPluginTestCase")),
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.MessageResourcesFactory")),
         eq(CoreMetrics.UNCOVERED_LINES),
-        eq(11d)
-    );
-    // but there is coverage information for second class
+        eq(9d));
+    // second class
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.QDoxMetadataProvider")),
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.ResponseUtils")),
         eq(CoreMetrics.LINES_TO_COVER),
-        eq(69d)
-    );
+        eq(47d));
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.QDoxMetadataProvider")),
+        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.ResponseUtils")),
         eq(CoreMetrics.UNCOVERED_LINES),
-        eq(41d)
-    );
-  }
-
-  @Test
-  public void testNoCoverageData() throws Exception {
-    File dir = TestUtils.getResource(getClass(), "noData");
-    SensorContext context = mock(SensorContext.class);
-    new EmmaProcessor(dir, context).process();
-    // no coverage information for first class
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.AbstractJavaGeneratingPluginTestCase")),
-        eq(CoreMetrics.LINES_TO_COVER),
-        eq(11d)
-    );
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.AbstractJavaGeneratingPluginTestCase")),
-        eq(CoreMetrics.UNCOVERED_LINES),
-        eq(11d)
-    );
-    // no coverage information for second class too
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.QDoxMetadataProvider")),
-        eq(CoreMetrics.LINES_TO_COVER),
-        eq(69d)
-    );
-    verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.xdoclet.QDoxMetadataProvider")),
-        eq(CoreMetrics.UNCOVERED_LINES),
-        eq(69d)
-    );
+        eq(39d));
   }
 
 }
