@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.css.CssFinder;
 import org.sonar.plugins.webscanner.css.LinkParser;
+import org.sonar.plugins.webscanner.scanner.CharsetDetector;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
@@ -186,7 +187,7 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
       parts.add(urlPart);
       FilePart filePart = new FilePart("htmlfile", file.getName(), file);
       filePart.setContentType(TEXT_HTML_CONTENT_TYPE);
-      filePart.setCharSet(detectCharset(file));
+      filePart.setCharSet(CharsetDetector.detect(file));
       parts.add(filePart);
 
       addCssContent(file, htmlDir, parts);

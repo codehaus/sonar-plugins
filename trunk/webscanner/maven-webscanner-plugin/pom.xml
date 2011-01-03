@@ -27,6 +27,19 @@
       <version>2.2.1</version>
     </dependency>
     <dependency>
+      <groupId>net.sourceforge.cssparser</groupId>
+      <artifactId>cssparser</artifactId>
+      <version>0.9.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>1.9.14</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.4</version>
@@ -37,9 +50,11 @@
       <version>2.5</version>
     </dependency>
     <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.9.1</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
@@ -64,36 +79,6 @@
       <version>1.1.3.3</version>
     </dependency>
 
-    <!-- Web Harvest dependencies -->
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webharvest</groupId>
-      <artifactId>webharvest-core</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <!-- web harvest pom doesn't track dependencies well -->
-    <dependency>
-      <groupId>net.sf.saxon</groupId>
-      <artifactId>saxon-xom</artifactId>
-      <version>8.7</version>
-    </dependency>
-    <dependency>
-      <groupId>org.htmlcleaner</groupId>
-      <artifactId>htmlcleaner</artifactId>
-      <version>1.55</version>
-    </dependency>
-    <dependency>
-      <groupId>bsh</groupId>
-      <artifactId>bsh</artifactId>
-      <version>1.3.0</version>
-    </dependency>
-
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -101,16 +86,8 @@
       <version>4.8.2</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
 
-  <repositories>
-    <repository>
-      <id>wso2</id>
-      <url>http://dist.wso2.org/maven2/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+
+  </dependencies>
 
 </project>

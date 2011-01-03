@@ -17,17 +17,8 @@
   </parent>
 
   <properties>
-    <sonar.web.sourceDirectory>target/spider/tenderned.nl</sonar.web.sourceDirectory>
-    <webscanner.seedingUrl>http://www.tenderned.nl</webscanner.seedingUrl>
+    <sonar.html.sourceDirectory>target/spider/tenderned.nl</sonar.html.sourceDirectory>
+    <sonar.html.website>http://www.tenderned.nl</sonar.html.website>
   </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.sonar-plugins</groupId>
-        <artifactId>maven-webscanner-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

@@ -23,19 +23,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.xerces.impl.Constants;
-import org.sonar.api.utils.SonarException;
+import org.cyberneko.html.parsers.SAXParser;
 import org.xml.sax.Attributes;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -45,21 +37,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * @since 1.0
  */
 public final class LinkParser {
-
-  private static class QuietErrorHandler implements ErrorHandler  {
-
-    public void error(SAXParseException arg0) throws SAXException {
-      // nothing to do, keep quiet
-    }
-
-    public void fatalError(SAXParseException arg0) throws SAXException {
-      // nothing to do, keep quiet
-    }
-
-    public void warning(SAXParseException arg0) throws SAXException {
-      // nothing to do, keep quiet
-    }
-  }
 
   private static final class StylesheetHandler extends DefaultHandler {
 
@@ -71,7 +48,7 @@ public final class LinkParser {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attrs) {
-      if (LINK.equals(qName) && StringUtils.equals(TEXT_CSS, attrs.getValue(TYPE))) {
+      if (LINK.equalsIgnoreCase(qName) && StringUtils.equals(TEXT_CSS, attrs.getValue(TYPE))) {
         String href = attrs.getValue(HREF);
         if (href != null) {
           stylesheets.add(href);
@@ -80,44 +57,15 @@ public final class LinkParser {
     }
   }
 
-  private static final SAXParserFactory SAX_FACTORY;
-
-  /**
-   * Build the SAXParserFactory.
-   */
-  static {
-
-    SAX_FACTORY = SAXParserFactory.newInstance();
-
-    try {
-      SAX_FACTORY.setValidating(false);
-      SAX_FACTORY.setNamespaceAware(false);
-      SAX_FACTORY.setFeature("http://xml.org/sax/features/validation", false);
-      SAX_FACTORY.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-      SAX_FACTORY.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-      SAX_FACTORY.setFeature("http://xml.org/sax/features/external-general-entities", false);
-      SAX_FACTORY.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    } catch (SAXException e) {
-      throw new SonarException(e);
-    } catch (ParserConfigurationException e) {
-      throw new SonarException(e);
-    }
-  }
-
   private void parse(InputStream input, DefaultHandler handler) {
     try {
-      SAXParser parser = SAX_FACTORY.newSAXParser();
-      XMLReader reader = parser.getXMLReader();
-      reader.setFeature(Constants.XERCES_FEATURE_PREFIX + "continue-after-fatal-error", true);
-      reader.setErrorHandler(new QuietErrorHandler());
-      reader.setContentHandler(handler);
-      reader.parse(new InputSource(input));
+      SAXParser parser = new SAXParser();
+      parser.setContentHandler(handler);
+      parser.parse(new InputSource(input));
     } catch (IOException e) {
-      throw new SonarException(e);
+      throw new RuntimeException(e);
     } catch (SAXException e) {
-      throw new SonarException(e);
-    } catch (ParserConfigurationException e) {
-      throw new SonarException(e);
+      throw new RuntimeException(e);
     }
   }
 
