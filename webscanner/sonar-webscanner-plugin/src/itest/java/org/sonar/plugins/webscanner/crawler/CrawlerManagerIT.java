@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sonar.plugins.webscanner.maven.crawler;
+package org.sonar.plugins.webscanner.crawler;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -35,7 +35,7 @@ import org.sonar.plugins.webscanner.crawler.frontier.Statistics;
 import org.sonar.plugins.webscanner.crawler.parser.Page;
 
 
-public class CrawlerManagerTest {
+public class CrawlerManagerIT {
 
   @Test
   public void testCrawler() throws MalformedURLException, CrawlerException {
