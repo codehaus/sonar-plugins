@@ -24,8 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-
-import com.sun.syndication.io.XmlReader;
+import org.sonar.plugins.webscanner.scanner.CharsetDetector;
 
 public class CharsetTest {
 
@@ -34,14 +33,17 @@ public class CharsetTest {
   @Test
   public void testCharset() throws IOException {
 
-    XmlReader reader = new XmlReader(new File(path + "/UTF8-BOM.html"));
-    assertEquals("UTF-8", reader.getEncoding());
+    String charset;
+    charset = CharsetDetector.detect(new File(path + "/UTF8-BOM.html"));
+    assertEquals("UTF-8", charset);
 
-    reader = new XmlReader(new File(path + "/UTF8-withoutBOM.html"));
-    assertEquals("UTF-8", reader.getEncoding());
+    charset = CharsetDetector.detect(new File(path + "/UTF8-withoutBOM.html"));
+    assertEquals("UTF-8", charset);
 
-    XmlReader.setDefaultEncoding("US-ASCII");
-    reader = new XmlReader(new File(path + "/ANSI.html"));
-    assertEquals("US-ASCII", reader.getEncoding());
+    charset = CharsetDetector.detect(new File(path + "/ANSI.html"));
+    assertEquals("UTF-8", charset);
+
+    charset = CharsetDetector.detect(new File(path + "/Meta.html"));
+    assertEquals("UTF-16", charset);
   }
 }

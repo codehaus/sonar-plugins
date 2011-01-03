@@ -19,7 +19,7 @@
 
   <properties>
     <sonar.web.sourceDirectory>target/spider/e-overheidvoorburgers.nl</sonar.web.sourceDirectory>
-    <webscanner.seedingUrl>http://www.e-overheidvoorburgers.nl</webscanner.seedingUrl>
+    <sonar.html.website>http://www.e-overheidvoorburgers.nl</sonar.html.website>
   </properties>
 
   <build>

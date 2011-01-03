@@ -61,13 +61,27 @@
       <artifactId>commons-httpclient</artifactId>
       <version>3.1</version>
     </dependency>
+    
+    <!-- configure jars provided by sonar -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
       <scope>provided</scope>
     </dependency>
-
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <scope>provided</scope>
+    </dependency>
+   
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -83,11 +97,45 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>net.java.dev.rome</groupId>
-      <artifactId>rome</artifactId>
-      <version>1.0.0</version>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.9.1</version>
       <type>jar</type>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>net.sourceforge.nekohtml</groupId>
+    	<artifactId>nekohtml</artifactId>
+    	<version>1.9.14</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+   
+    <dependency>
+    	<groupId>org.codehaus.sonar-plugins</groupId>
+    	<artifactId>maven-webscanner-plugin</artifactId>
+    	<version>${project.version}</version>
+    	<type>maven-plugin</type>
+    	<scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-interpolation</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+    	<groupId>net.java.dev.rome</groupId>
+    	<artifactId>rome</artifactId>
+    	<version>1.0.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    	<exclusions>
+    		<exclusion>
+    			<artifactId>jdom</artifactId>
+    			<groupId>jdom</groupId>
+    		</exclusion>
+    	</exclusions>
     </dependency>
   </dependencies>
 

@@ -37,6 +37,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.sonar.plugins.webscanner.scanner.CharsetDetector;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
@@ -90,10 +91,11 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
    * Documentation of interface: http://validator.w3.org/docs/api.html
    */
   private void postHtmlContents(File file) {
+
     PostMethod post = new PostMethod(validationUrl);
     post.addRequestHeader(new Header("User-Agent", "sonar-web-plugin/0.1"));
 
-    String charset = detectCharset(file);
+    String charset = CharsetDetector.detect(file);
 
     try {
 

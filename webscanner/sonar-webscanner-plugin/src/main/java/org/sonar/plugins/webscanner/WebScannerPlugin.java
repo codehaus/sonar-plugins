@@ -56,13 +56,19 @@ import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
     name = "Source directory",
     description = "Source directory that will be scanned.",
     defaultValue = "",
-    global = true, project = true)})
+    global = true, project = true),
+  @Property(key = WebScannerPlugin.WEBSITE,
+    name = "Website",
+    description = "Website that will be scanned.",
+    defaultValue = "",
+    global = false, project = true)})
 public final class WebScannerPlugin implements Plugin {
 
   public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
   private static final String KEY = "sonar-webscanner-plugin";
   public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
   public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
+  public static final String WEBSITE = "sonar.html.website";
 
   @Deprecated
   public String getDescription() {
