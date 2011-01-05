@@ -62,7 +62,10 @@ public class EmmaIT {
       is(26124.0), // java 1.5.0_22
       is(26126.0)  // java 1.6.0_20
       ));
-    assertThat(getProjectMeasure("uncovered_lines").getValue(), is(22264.0));
+    assertThat("uncovered_lines", getProjectMeasure("uncovered_lines").getValue(), anyOf(
+      is(22264.0), // java 1.5_0.22
+      is(22266.0)  // java 1.6.0_20
+      ));
     assertThat(getProjectMeasure("tests").getValue(), is(323.0));
     assertThat(getProjectMeasure("test_success_density").getValue(), is(100.0));
   }
@@ -73,9 +76,12 @@ public class EmmaIT {
     assertThat(getCoreModuleMeasure("line_coverage").getValue(), is(38.1));
     assertThat("lines_to_cover", getCoreModuleMeasure("lines_to_cover").getValue(), anyOf(
       is(7447.0), // java 1.5.0_22
-      is(7448.0)  // java 1.6.0_20
+      is(7448.0) // java 1.6.0_20
       ));
-    assertThat(getCoreModuleMeasure("uncovered_lines").getValue(), is(4606.0));
+    assertThat("uncovered_lines", getCoreModuleMeasure("uncovered_lines").getValue(), anyOf(
+      is(4606.0), // java 1.5.0_22
+      is(4607.0) // java 1.6.0_20
+      ));
     assertThat(getCoreModuleMeasure("tests").getValue(), is(195.0));
     assertThat(getCoreModuleMeasure("test_success_density").getValue(), is(100.0));
   }
