@@ -27,6 +27,7 @@ import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static junit.framework.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -57,7 +58,10 @@ public class EmmaIT {
   public void projectsMetrics() {
     assertThat(getProjectMeasure("coverage").getValue(), is(14.8));
     assertThat(getProjectMeasure("line_coverage").getValue(), is(14.8));
-    assertThat(getProjectMeasure("lines_to_cover").getValue(), is(26124.0));
+    assertThat("lines_to_cover", getProjectMeasure("lines_to_cover").getValue(), anyOf(
+      is(26124.0), // java 1.5.0_22
+      is(26126.0)  // java 1.6.0_20
+      ));
     assertThat(getProjectMeasure("uncovered_lines").getValue(), is(22264.0));
     assertThat(getProjectMeasure("tests").getValue(), is(323.0));
     assertThat(getProjectMeasure("test_success_density").getValue(), is(100.0));
@@ -67,7 +71,10 @@ public class EmmaIT {
   public void CoremoduleMetrics() {
     assertThat(getCoreModuleMeasure("coverage").getValue(), is(38.1));
     assertThat(getCoreModuleMeasure("line_coverage").getValue(), is(38.1));
-    assertThat(getCoreModuleMeasure("lines_to_cover").getValue(), is(7447.0));
+    assertThat("lines_to_cover", getCoreModuleMeasure("lines_to_cover").getValue(), anyOf(
+      is(7447.0), // java 1.5.0_22
+      is(7448.0)  // java 1.6.0_20
+      ));
     assertThat(getCoreModuleMeasure("uncovered_lines").getValue(), is(4606.0));
     assertThat(getCoreModuleMeasure("tests").getValue(), is(195.0));
     assertThat(getCoreModuleMeasure("test_success_density").getValue(), is(100.0));
