@@ -61,10 +61,13 @@ public class JaCoCoIT {
     assertThat(getProjectMeasure("line_coverage").getValue(), is(15.4));
     assertThat(getProjectMeasure("lines_to_cover").getValue(), anyOf(
         is(26126.0), // java 1.5.0_22
-        is(27124.0)));
+        is(26124.0), // java 1.6.0_20 and 1.6.0_22
+        is(27124.0)  // unknown
+        ));
     assertThat(getProjectMeasure("uncovered_lines").getValue(), anyOf(
         is(22110.0), // java 1.5.0_22
-        is(22108.0)));
+        is(22108.0)  // java 1.6.0_20 and 1.6.0_22
+        ));
 
     assertThat(getProjectMeasure("branch_coverage").getValue(), is(13.2));
     assertThat(getProjectMeasure("conditions_to_cover").getValue(), is(10377.0));
