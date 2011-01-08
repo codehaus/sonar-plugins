@@ -80,7 +80,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.5-SNAPSHOT</sonar.version>
+    <sonar.version>2.5-RC1</sonar.version>
     <sonar.pluginName>Taglist</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.taglist.TaglistPlugin</sonar.pluginClass>
   </properties>
