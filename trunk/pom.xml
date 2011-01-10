@@ -60,6 +60,7 @@
       </activation>
       <modules>
         <module>debug</module>
+        <module>email</module>
         <module>fb-contrib</module>
         <module>metrics-help</module>
         <module>profiler</module>
