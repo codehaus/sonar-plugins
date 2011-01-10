@@ -50,7 +50,7 @@
   </ciManagement>
 
   <properties>
-    <jacoco.version>0.5.0.20101220184144</jacoco.version>
+    <jacoco.version>0.5.0.20110108232421</jacoco.version>
 
     <sonar.version>2.2</sonar.version>
     <sonar.pluginName>JaCoCo</sonar.pluginName>
@@ -60,12 +60,23 @@
   <dependencies>
     <dependency>
       <groupId>org.jacoco</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>org.jacoco.core</artifactId>
       <version>${jacoco.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <version>${jacoco.version}</version>
+    </dependency>
+    <!-- Next two dependencies should be provided transitively from org.jacoco.core - see SONARPLUGINS-897 -->
+    <dependency>
       <groupId>asm</groupId>
-      <artifactId>asm-all</artifactId>
+      <artifactId>asm</artifactId>
+      <version>3.2</version>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-commons</artifactId>
       <version>3.2</version>
     </dependency>
     <dependency>
@@ -107,47 +118,7 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/main/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-      </testResource>
-    </testResources>
-
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.jacoco</groupId>
-                  <artifactId>agent-all</artifactId>
-                  <version>${jacoco.version}</version>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>${project.build.outputDirectory}/org/sonar/plugins/jacoco/</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
