@@ -20,7 +20,7 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.jacoco.core.analysis.ILines;
+import org.jacoco.core.analysis.ICounter;
 import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
@@ -63,7 +63,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
     }
 
     @Override
-    protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData,
+    protected void saveMeasures(SensorContext context, JavaFile resource, ICounter lines, String lineHitsData,
         double totalBranches, double totalCoveredBranches, String branchHitsData) {
       context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines.getTotalCount());
       context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines.getMissedCount());

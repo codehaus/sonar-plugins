@@ -21,7 +21,7 @@
 package org.sonar.plugins.jacoco.itcoverage;
 
 import org.apache.commons.lang.StringUtils;
-import org.jacoco.core.analysis.ILines;
+import org.jacoco.core.analysis.ICounter;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.Measure;
@@ -58,7 +58,7 @@ public class JaCoCoItSensor implements Sensor {
     }
 
     @Override
-    protected void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData,
+    protected void saveMeasures(SensorContext context, JavaFile resource, ICounter lines, String lineHitsData,
         double totalBranches, double totalCoveredBranches, String branchHitsData) {
       context.saveMeasure(resource, JaCoCoItMetrics.IT_LINES_TO_COVER, (double) lines.getTotalCount());
       context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_LINES, (double) lines.getMissedCount());

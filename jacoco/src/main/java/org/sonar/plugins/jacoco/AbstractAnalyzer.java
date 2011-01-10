@@ -99,7 +99,7 @@ public abstract class AbstractAnalyzer {
     }
   }
 
-  private void analyzeClass(JavaFile resource, ICoverageNode coverage, SensorContext context) {
+  private void analyzeClass(JavaFile resource, SourceFileCoverage coverage, SensorContext context) {
     if (context.getResource(resource) == null) {
       // Do not save measures on resource which doesn't exist in the context
       return;
@@ -110,18 +110,18 @@ public abstract class AbstractAnalyzer {
     double totalBranches = 0;
     double totalCoveredBranches = 0;
 
-    final ILines lines = coverage.getLines();
-    for (int lineId = lines.getFirstLine(); lineId <= lines.getLastLine(); lineId++) {
+    for (int lineId = coverage.getFirstLine(); lineId <= coverage.getLastLine(); lineId++) {
       final int fakeHits;
-      switch (lines.getStatus(lineId)) {
-        case ILines.FULLY_COVERED:
+      ILine line = coverage.getLine(lineId);
+      switch (line.getStatus()) {
+        case ILine.FULLY_COVERED:
           fakeHits = 1;
           break;
-        case ILines.PARTLY_COVERED:
-        case ILines.NOT_COVERED:
+        case ILine.PARTLY_COVERED:
+        case ILine.NOT_COVERED:
           fakeHits = 0;
           break;
-        case ILines.NO_CODE:
+        case ILine.NO_CODE:
           continue;
         default:
           JaCoCoUtils.LOG.warn("Unknown status for line {} in {}", lineId, resource);
@@ -129,9 +129,11 @@ public abstract class AbstractAnalyzer {
       }
       lineHitsBuilder.add(lineId, fakeHits);
 
-      double lineBranches = lines.getTotalBranches(lineId);
+      ICounter branchCounter = line.getBranchCounter();
+      double lineBranches = branchCounter.getTotalCount();
+
       if (lineBranches > 0) {
-        double lineCoveredBranches = lines.getCoveredBranches(lineId);
+        double lineCoveredBranches = branchCounter.getCoveredCount();
         double lineBranchCoverage = 100 * lineCoveredBranches / lineBranches;
         totalBranches += lineBranches;
         totalCoveredBranches += lineCoveredBranches;
@@ -139,11 +141,11 @@ public abstract class AbstractAnalyzer {
       }
     }
 
-    saveMeasures(context, resource, coverage.getLines(), lineHitsBuilder.buildData(), totalBranches, totalCoveredBranches,
+    saveMeasures(context, resource, coverage.getLineCounter(), lineHitsBuilder.buildData(), totalBranches, totalCoveredBranches,
         branchHitsBuilder.buildData());
   }
 
-  protected abstract void saveMeasures(SensorContext context, JavaFile resource, ILines lines, String lineHitsData,
+  protected abstract void saveMeasures(SensorContext context, JavaFile resource, ICounter lines, String lineHitsData,
       double totalBranches, double totalCoveredBranches, String branchHitsData);
 
   protected abstract String getReportPath(Project project);

@@ -21,14 +21,13 @@
 package org.sonar.plugins.jacoco;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import org.jacoco.agent.AgentJar;
+import org.jacoco.core.JaCoCo;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author Evgeny Mandrikov
@@ -52,12 +51,10 @@ public class JaCoCoAgentDownloader implements BatchExtension {
 
   private File extractAgent() {
     try {
-      InputStream is = getClass().getResourceAsStream("/org/sonar/plugins/jacoco/agent-all-" + JaCoCoVersion.getVersion() + ".jar");
       File agent = File.createTempFile("jacocoagent", ".jar");
-      FileUtils.forceDeleteOnExit(agent);
-      OutputStream os = FileUtils.openOutputStream(agent);
-      IOUtils.copy(is, os);
-      JaCoCoUtils.LOG.info("JaCoCo agent extracted: {}", agent);
+      AgentJar.extractTo(agent);
+      FileUtils.forceDeleteOnExit(agent); // TODO evil method
+      JaCoCoUtils.LOG.info("JaCoCo agent (version " + JaCoCo.VERSION + ") extracted: {}", agent);
       return agent;
     } catch (IOException e) {
       throw new SonarException(e);
