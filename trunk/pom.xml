@@ -21,10 +21,8 @@
         <module>crowd</module>
         <module>c-rules</module>
         <module>cutoff</module>
-        <module>debug</module>
         <module>dotnet</module>
         <module>emma</module>
-        <module>fb-contrib</module>
         <module>flex</module>
         <module>greenpepper</module>
         <module>groovy</module>
@@ -33,13 +31,11 @@
         <module>jlint</module>
         <module>ldap</module>
         <module>maven-report</module>
-        <module>metrics-help</module>
         <module>motion-chart</module>
         <module>parent</module>
         <module>pdf-report</module>
         <module>php</module>
         <module>piwik</module>
-        <module>profiler</module>
         <module>quality-index</module>
         <module>radiator</module>
         <module>rules-meter</module>
@@ -49,13 +45,25 @@
         <module>sonarj</module>
         <module>taglist</module>
         <module>technical-debt</module>
-        <module>testability-explorer</module>
         <module>timeline</module>
         <module>total-quality</module>
         <module>trac</module>
         <module>twitter</module>
         <module>useless-code-tracker</module>
         <module>web</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>unreleased</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>debug</module>
+        <module>fb-contrib</module>
+        <module>metrics-help</module>
+        <module>profiler</module>
+        <module>testability-explorer</module>
         <module>webscanner</module>
         <module>xml</module>
       </modules>
