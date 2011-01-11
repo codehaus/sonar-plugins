@@ -92,6 +92,7 @@ public class ViolationsDecorator implements Decorator {
             } else {
               optional++;
             }
+            String forTests=activeRule.getPriority().toString() + "-foo";
             if (CoreProperties.SQUID_PLUGIN.equals(rule.getRepositoryKey())) {
               noSonarTags++;
             }
