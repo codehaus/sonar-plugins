@@ -73,7 +73,7 @@ public abstract class AbstractAnalyzer {
     Analyzer analyzer = new Analyzer(executionDataStore, coverageBuilder);
     analyzeAll(analyzer, buildOutputDir);
 
-    for (SourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
+    for (ISourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
       String fileName = StringUtils.substringBeforeLast(coverage.getName(), ".");
       String resourceName = StringUtils.replaceChars(coverage.getPackageName() + "/" + fileName, '/', '.');
 
@@ -99,7 +99,7 @@ public abstract class AbstractAnalyzer {
     }
   }
 
-  private void analyzeClass(JavaFile resource, SourceFileCoverage coverage, SensorContext context) {
+  private void analyzeClass(JavaFile resource, ISourceFileCoverage coverage, SensorContext context) {
     if (context.getResource(resource) == null) {
       // Do not save measures on resource which doesn't exist in the context
       return;
