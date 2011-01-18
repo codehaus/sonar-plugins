@@ -78,9 +78,13 @@
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/13744</url>
   </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-TAGLIST</url>
+  </ciManagement>
 
   <properties>
-    <sonar.version>2.5-RC1</sonar.version>
+    <sonar.version>2.5</sonar.version>
     <sonar.pluginName>Taglist</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.taglist.TaglistPlugin</sonar.pluginClass>
   </properties>
@@ -99,7 +103,6 @@
       <version>${sonar.version}</version>
       <scope>test</scope>
     </dependency>
-    
     <!-- TODO http://jira.codehaus.org/browse/SONAR-2011
     We need following dependency, otherwise we will receive
     java.lang.NoClassDefFoundError: org/apache/maven/project/MavenProject
@@ -111,7 +114,6 @@
       <version>2.0.7</version>
       <scope>test</scope>
     </dependency>
-    
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-ws-client</artifactId>
