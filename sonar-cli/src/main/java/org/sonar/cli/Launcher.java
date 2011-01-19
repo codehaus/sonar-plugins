@@ -24,6 +24,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
@@ -39,13 +40,20 @@ import java.io.InputStream;
 
 public class Launcher {
 
-  public static void main(String[] args) {
-    new Launcher().execute();
+  private String[] args;
+
+  public static void main(String[] args) throws Exception {
+    new Launcher(args).execute();
   }
 
-  public void execute() {
+  public Launcher(String[] args) {
+    this.args = args;
+  }
+
+  public void execute() throws Exception {
     initLogging();
-    Reactor reactor = new Reactor(defineProject());
+    PropertiesConfiguration properties = new PropertiesConfiguration(args[0]);
+    Reactor reactor = new Reactor(defineProject(properties));
     Batch batch = new Batch(getInitialConfiguration(),
         Environment.ANT, new FakeMavenPluginExecutor(), reactor); // TODO environment
     batch.execute();
@@ -70,17 +78,19 @@ public class Launcher {
     }
   }
 
-  // TODO hard-coded values
-  private DefaultProjectDefinition defineProject() {
+  private DefaultProjectDefinition defineProject(PropertiesConfiguration properties) {
+    File baseDir = properties.getFile().getParentFile();
+
     DefaultProjectDefinition definition = new DefaultProjectDefinition();
 
-    definition.setKey("org.example:example");
+    definition.setConfiguration(properties);
+    definition.setSonarWorkingDirectory(baseDir);
+    definition.setKey(properties.getString("project.key"));
 
-    definition.setSonarWorkingDirectory(new File("/tmp/ant-test"));
-
+    // TODO hard-coded value
     DefaultProjectDirectory directory = new DefaultProjectDirectory();
     directory.setKind(ProjectDirectory.Kind.SOURCES);
-    directory.setLocation(new File("/tmp/ant-test"));
+    directory.setLocation(new File(baseDir, "src"));
 
     definition.addDir(directory);
 
