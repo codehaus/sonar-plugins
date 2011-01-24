@@ -28,12 +28,11 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.platform.Environment;
-import org.sonar.api.project.ProjectDirectory;
-import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
-import org.sonar.batch.*;
+import org.sonar.batch.Batch;
+import org.sonar.batch.bootstrapper.ProjectDefinition;
+import org.sonar.batch.bootstrapper.Reactor;
 
 import java.io.File;
 import java.io.InputStream;
@@ -54,8 +53,7 @@ public class Launcher {
     initLogging();
     PropertiesConfiguration properties = new PropertiesConfiguration(args[0]);
     Reactor reactor = new Reactor(defineProject(properties));
-    Batch batch = new Batch(getInitialConfiguration(),
-        Environment.ANT, new FakeMavenPluginExecutor(), reactor); // TODO environment
+    Batch batch = new Batch(getInitialConfiguration(), Environment.ANT, reactor); // TODO environment
     batch.execute();
   }
 
@@ -78,21 +76,11 @@ public class Launcher {
     }
   }
 
-  private DefaultProjectDefinition defineProject(PropertiesConfiguration properties) {
+  private ProjectDefinition defineProject(PropertiesConfiguration properties) {
     File baseDir = properties.getFile().getParentFile();
 
-    DefaultProjectDefinition definition = new DefaultProjectDefinition();
-
-    definition.setConfiguration(properties);
-    definition.setSonarWorkingDirectory(baseDir);
-    definition.setKey(properties.getString("project.key"));
-
-    // TODO hard-coded value
-    DefaultProjectDirectory directory = new DefaultProjectDirectory();
-    directory.setKind(ProjectDirectory.Kind.SOURCES);
-    directory.setLocation(new File(baseDir, "src"));
-
-    definition.addDir(directory);
+    ProjectDefinition definition = new ProjectDefinition(baseDir, properties);
+    definition.addSourceDir("src"); // TODO hard-coded value
 
     return definition;
   }
@@ -100,15 +88,6 @@ public class Launcher {
   private Configuration getInitialConfiguration() {
     // TODO
     return new SystemConfiguration();
-  }
-
-  public static class FakeMavenPluginExecutor implements MavenPluginExecutor {
-    public void execute(Project project, String goal) {
-    }
-
-    public MavenPluginHandler execute(Project project, MavenPluginHandler handler) {
-      return handler;
-    }
   }
 
 }

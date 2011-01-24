@@ -20,13 +20,11 @@
 
 package org.sonar.cli;
 
-import org.sonar.bootstrapper.Bootstrapper;
+import org.sonar.batch.bootstrapper.BatchDownloader;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.List;
 
 public class BootstrapLauncher {
@@ -87,30 +85,15 @@ public class BootstrapLauncher {
   }
 
   private static ClassLoader getInitialClassLoader() throws Exception {
-    Bootstrapper bootstrapper = new Bootstrapper("http://localhost:9000"); // TODO hard-coded value
-    List<File> files = bootstrapper.downloadFiles(new File("/tmp/sonar-boot"));
-    URL[] urls = new URL[files.size() + 1];
-    for (int i = 0; i < files.size(); i++) {
-      File file = files.get(i);
+    BatchDownloader downloader = new BatchDownloader("http://localhost:9000"); // TODO hard-coded value
+    List<File> files = downloader.downloadBatchFiles(new File("/tmp/sonar-boot"));
+    ChildFirstClassLoader classLoader = new ChildFirstClassLoader();
+    for (File file : files) {
       System.out.println(file);
-      urls[i] = file.toURL();
+      classLoader.addFile(file);
     }
     // Add JAR with Sonar CLI - it's a Jar which contains this class
-    urls[urls.length - 1] = BootstrapLauncher.class.getProtectionDomain().getCodeSource().getLocation();
-    URLClassLoader classLoader = new InitialClassLoader(urls);
+    classLoader.addURL(BootstrapLauncher.class.getProtectionDomain().getCodeSource().getLocation());
     return classLoader;
-  }
-
-  private static class InitialClassLoader extends URLClassLoader {
-    public InitialClassLoader(URL[] urls) {
-      super(urls, null);
-    }
-
-    protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-      if (LAUNCHER_CLASS_NAME.equals(name)) {
-        return findClass(name);
-      }
-      return super.loadClass(name, resolve);
-    }
   }
 }
