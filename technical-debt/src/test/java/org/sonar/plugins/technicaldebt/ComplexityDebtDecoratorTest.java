@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.technicaldebt;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
@@ -47,4 +48,31 @@ public class ComplexityDebtDecoratorTest {
     assertThat(decorator.shouldExecuteOnProject(mock(Project.class)), is(true));
   }
 
+  @Test
+  public void shouldReadDefaultConfiguration() {
+    PropertiesConfiguration conf = new PropertiesConfiguration();
+    ComplexityDebtDecorator debtDecorator = new ComplexityDebtDecorator(conf);
+    assertThat(debtDecorator.classThreshold, is(60.0));
+    assertThat(debtDecorator.methodThreshold, is(8.0));
+    assertThat(debtDecorator.classSplitCost, is(TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT));
+    assertThat(debtDecorator.methodSplitCost, is(TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT));
+  }
+
+  @Test
+  public void shouldNotFailIfMissingThreshold() {
+    PropertiesConfiguration conf = new PropertiesConfiguration();
+    conf.setProperty(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, "METHOD=8");
+    ComplexityDebtDecorator debtDecorator = new ComplexityDebtDecorator(conf);
+    assertThat(debtDecorator.classThreshold, is(Double.MAX_VALUE));
+    assertThat(debtDecorator.methodThreshold, is(8.0));
+  }
+
+  @Test
+  public void shouldNotFailIfEmptyThreshold() {
+    PropertiesConfiguration conf = new PropertiesConfiguration();
+    conf.setProperty(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, "CLASS=;METHOD=");
+    ComplexityDebtDecorator debtDecorator = new ComplexityDebtDecorator(conf);
+    assertThat(debtDecorator.classThreshold, is(Double.MAX_VALUE));
+    assertThat(debtDecorator.methodThreshold, is(Double.MAX_VALUE));
+  }
 }
