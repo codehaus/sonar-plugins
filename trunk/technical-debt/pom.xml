@@ -152,6 +152,7 @@
           <plugin>
             <groupId>org.codehaus.sonar</groupId>
             <artifactId>sonar-dev-maven-plugin</artifactId>
+            <version>1.1</version>
             <executions>
               <execution>
                 <id>start-server</id>
@@ -159,6 +160,7 @@
                 <configuration>
                   <background>true</background>
                   <clean>true</clean>
+                  <workDir>${project.build.directory}/it-work</workDir>
                 </configuration>
                 <goals>
                   <goal>start-war</goal>

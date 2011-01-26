@@ -21,6 +21,8 @@
 package org.sonar.plugins.technicaldebt;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
@@ -35,14 +37,14 @@ import java.util.Map;
 
 public final class ComplexityDebtDecorator implements Decorator {
   
-  int classThreshold, methodThreshold;
+  double classThreshold, methodThreshold;
   double classSplitCost, methodSplitCost;
 
   public ComplexityDebtDecorator(Configuration configuration) {
     String complexityConfiguration = configuration.getString(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT);
     Map<String, Double> complexityLimits = KeyValueFormat.parse(complexityConfiguration, new KeyValueFormat.StringNumberPairTransformer());
-    classThreshold = complexityLimits.get("CLASS").intValue();
-    methodThreshold = complexityLimits.get("METHOD").intValue();
+    classThreshold = (Double)ObjectUtils.defaultIfNull(complexityLimits.get("CLASS"), Double.MAX_VALUE);
+    methodThreshold = (Double)ObjectUtils.defaultIfNull(complexityLimits.get("METHOD"), Double.MAX_VALUE);
 
     classSplitCost = configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
     methodSplitCost = configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
@@ -64,8 +66,7 @@ public final class ComplexityDebtDecorator implements Decorator {
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    double childrenDebt = MeasureUtils.sum(true, context.getChildrenMeasures(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY));
-    double debt = 0.0;
+    double debt = MeasureUtils.sum(true, context.getChildrenMeasures(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY));
     if (Scopes.isBlockUnit(resource)) {
       double methodComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
       if (methodComplexity>=methodThreshold) {
