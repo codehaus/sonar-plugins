@@ -40,8 +40,7 @@ public class DesignDebtCalculatorTest {
   @Before
   public void setUp() throws Exception {
     Configuration configuration = mock(Configuration.class);
-    when(configuration.getString(anyString(), anyString())).
-        thenReturn(TechnicalDebtPlugin.TD_COST_CYCLE_DEFAULT);
+    when(configuration.getDouble(anyString(), anyDouble())).thenReturn(TechnicalDebtPlugin.COST_CYCLE_DEFVAL);
     calculator = new DesignDebtCalculator(configuration);
     context = mock(DecoratorContext.class);
   }

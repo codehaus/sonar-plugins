@@ -52,8 +52,8 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
     Measure classes = context.getMeasure(CoreMetrics.CLASSES);
     Measure functions = context.getMeasure(CoreMetrics.FUNCTIONS);
 
-    double debt = MeasureUtils.hasValue(classes) ? classes.getValue() * configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT) : 0;
-    debt += MeasureUtils.hasValue(functions) ? functions.getValue() * configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT) : 0;
+    double debt = MeasureUtils.hasValue(classes) ? classes.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_CLASS_COMPLEXITY, TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL) : 0;
+    debt += MeasureUtils.hasValue(functions) ? functions.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_METHOD_COMPLEXITY, TechnicalDebtPlugin.COST_METHOD_COMPLEXITY_DEFVAL) : 0;
 
     // technicaldebt is calculated in man days
     return debt / HOURS_PER_DAY;

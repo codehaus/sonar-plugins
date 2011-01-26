@@ -31,6 +31,7 @@ import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,8 +43,7 @@ public class ViolationsDebtCalculatorTest {
   @Before
   public void setUp() throws Exception {
     Configuration configuration = mock(Configuration.class);
-    when(configuration.getString(anyString(), anyString())).
-        thenReturn(TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT);
+    when(configuration.getDouble(anyString(), anyDouble())).thenReturn(TechnicalDebtPlugin.COST_VIOLATION_DEFVAL);
     calculator = new ViolationsDebtCalculator(configuration);
     context = mock(DecoratorContext.class);
   }

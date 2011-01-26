@@ -55,31 +55,31 @@ public class CommonsCollectionsIT {
 
   @Test
   public void projectsMetrics() {
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
+        is("Comments=15.06;Complexity=22.54;Design=34.91;Duplication=10.35;Violations=17.11"),
+        is("Comments=15.02;Complexity=22.49;Design=34.83;Duplication=10.57;Violations=17.07"),
+        is("Comments=15.4;Complexity=23.05;Design=35.7;Duplication=8.37;Violations=17.46"),
+        is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04")));
 
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and for after Sonar 2.2
     assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103812.5), is(104062.5), is(104025.0), is(101275.0)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(13.9), is(13.8), is(13.5)));
     assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6)));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=15.06;Complexity=22.54;Design=34.91;Duplication=10.35;Violations=17.11"),
-        is("Comments=15.02;Complexity=22.49;Design=34.83;Duplication=10.57;Violations=17.07"),
-        is("Comments=15.4;Complexity=23.05;Design=35.7;Duplication=8.37;Violations=17.46"),
-        is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04")));
   }
 
   @Test
   public void packagesMetrics() {
-    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
-    // and 2 for after Sonar 2.2
-    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25740.3), is(25865.3), is(25840.3), is(25215.3)));
-    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(12.9), is(13.0)));
-    assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(51.5), is(51.7), is(50.7), is(50.4)));
     assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
         is("Comments=14.13;Complexity=47.1;Coverage=7.24;Duplication=11.16;Violations=20.34"),
         is("Comments=14.06;Complexity=46.87;Coverage=7.21;Duplication=11.59;Violations=20.24"),
 
         is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17")));
+    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
+    // and 2 for after Sonar 2.2
+    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25740.3), is(25865.3), is(25840.3), is(25215.3)));
+    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(12.9), is(13.0)));
+    assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(51.5), is(51.7), is(50.7), is(50.4)));
   }
 
   @Test

@@ -53,7 +53,7 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
         - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
 
     // technicaldebt is calculate in man days
-    return violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
+    return violations * configuration.getDouble(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFVAL) / HOURS_PER_DAY;
   }
 
   /**
@@ -75,11 +75,11 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
 
     if (violations == 0 || weightedViolations == 0) {
       // In that case, we say that a major violation every 3 lines of code in average means a RCI of 0%
-      return loc / 3 * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
+      return loc / 3 * configuration.getDouble(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFVAL) / HOURS_PER_DAY;
     }
 
     // Otherwise we calculate based on existing violations
-    return loc / weightedViolations * violations * getWeight(TechnicalDebtPlugin.TD_COST_VIOLATION, TechnicalDebtPlugin.TD_COST_VIOLATION_DEFAULT) / HOURS_PER_DAY;
+    return loc / weightedViolations * violations * configuration.getDouble(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFVAL) / HOURS_PER_DAY;
   }
 
   private double getValue(DecoratorContext context, Metric metric) {

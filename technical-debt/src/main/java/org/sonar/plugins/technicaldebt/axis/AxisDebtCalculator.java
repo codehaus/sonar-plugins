@@ -41,9 +41,4 @@ public abstract class AxisDebtCalculator {
   public abstract List<Metric> dependsOn();
 
   public abstract String getName();
-
-  protected final double getWeight(String weight, String defaultWeight) {
-    return Double.parseDouble(configuration.getString(weight, defaultWeight));
-  }
-
 }

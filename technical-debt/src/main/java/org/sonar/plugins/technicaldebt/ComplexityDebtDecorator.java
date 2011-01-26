@@ -22,7 +22,6 @@ package org.sonar.plugins.technicaldebt;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
@@ -36,18 +35,18 @@ import org.sonar.api.utils.KeyValueFormat;
 import java.util.Map;
 
 public final class ComplexityDebtDecorator implements Decorator {
-  
+
   double classThreshold, methodThreshold;
   double classSplitCost, methodSplitCost;
 
   public ComplexityDebtDecorator(Configuration configuration) {
-    String complexityConfiguration = configuration.getString(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT);
+    String complexityConfiguration = configuration.getString(TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS, TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS_DEFVAL);
     Map<String, Double> complexityLimits = KeyValueFormat.parse(complexityConfiguration, new KeyValueFormat.StringNumberPairTransformer());
-    classThreshold = (Double)ObjectUtils.defaultIfNull(complexityLimits.get("CLASS"), Double.MAX_VALUE);
-    methodThreshold = (Double)ObjectUtils.defaultIfNull(complexityLimits.get("METHOD"), Double.MAX_VALUE);
+    classThreshold = (Double) ObjectUtils.defaultIfNull(complexityLimits.get("CLASS"), Double.MAX_VALUE);
+    methodThreshold = (Double) ObjectUtils.defaultIfNull(complexityLimits.get("METHOD"), Double.MAX_VALUE);
 
-    classSplitCost = configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
-    methodSplitCost = configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
+    classSplitCost = configuration.getDouble(TechnicalDebtPlugin.COST_CLASS_COMPLEXITY, TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL);
+    methodSplitCost = configuration.getDouble(TechnicalDebtPlugin.COST_METHOD_COMPLEXITY, TechnicalDebtPlugin.COST_METHOD_COMPLEXITY_DEFVAL);
   }
 
   ComplexityDebtDecorator(int classThreshold, int methodThreshold) {
@@ -69,19 +68,33 @@ public final class ComplexityDebtDecorator implements Decorator {
     double debt = MeasureUtils.sum(true, context.getChildrenMeasures(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY));
     if (Scopes.isBlockUnit(resource)) {
       double methodComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
-      if (methodComplexity>=methodThreshold) {
+      if (methodComplexity >= methodThreshold) {
         debt += methodSplitCost;
       }
 
     } else if (Scopes.isType(resource)) {
       double classComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
-      if (classComplexity>=classThreshold) {
+      if (classComplexity >= classThreshold) {
         debt += classSplitCost;
+      }
+
+    } else if (Scopes.isFile(resource)) {
+      // two use-cases:
+      // 1. the project language supports only files, but not classes and methods. The class threshold must be applied on the file.
+      // 2. the project language (for example Java) has access to complexity by classes and methods. The class threshold must be applied on the class
+      // but not on the file.
+      if (context.getChildren().isEmpty() && debt == 0.0) {
+        // First use-case.
+        double fileComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
+        if (fileComplexity >= classThreshold) {
+          debt = classSplitCost;
+        }
       }
     }
 
     Measure measure = new Measure(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY, debt);
     if (!Scopes.isProject(resource)) {
+      // Persisting this intermediate measure is required on projects because of the views plugin
       measure.setPersistenceMode(PersistenceMode.MEMORY);
     }
 
