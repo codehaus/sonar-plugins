@@ -63,7 +63,7 @@ public final class CommentDebtCalculator extends AxisDebtCalculator {
     if (!MeasureUtils.hasValue(measure)) {
       return 0.0;
     }
-    return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API, TechnicalDebtPlugin.TD_COST_UNDOCUMENTED_API_DEFAULT) / HOURS_PER_DAY;
+    return measure.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_UNDOCUMENTED_API, TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFVAL) / HOURS_PER_DAY;
   }
 
   /**

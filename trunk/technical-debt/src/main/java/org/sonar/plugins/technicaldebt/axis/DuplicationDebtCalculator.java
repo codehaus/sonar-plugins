@@ -53,7 +53,7 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
       return 0.0;
     }
     // technicaldebt is calculate in man days
-    return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
+    return measure.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS, TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS_DEFVAL) / HOURS_PER_DAY;
   }
 
   /**
@@ -66,7 +66,7 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
     if (duplicationDensity == 0 && absoluteDebt == 0) {
       return 0;
     } else if (duplicationDensity == 0 || absoluteDebt == 0) {
-      return getValue(context, CoreMetrics.LINES) / NUMBER_OF_LINES_PER_BLOCK * getWeight(TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK, TechnicalDebtPlugin.TD_COST_DUPLI_BLOCK_DEFAULT) / HOURS_PER_DAY;
+      return getValue(context, CoreMetrics.LINES) / NUMBER_OF_LINES_PER_BLOCK * configuration.getDouble(TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS, TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS_DEFVAL) / HOURS_PER_DAY;
     }
 
     return absoluteDebt * 100 / duplicationDensity;

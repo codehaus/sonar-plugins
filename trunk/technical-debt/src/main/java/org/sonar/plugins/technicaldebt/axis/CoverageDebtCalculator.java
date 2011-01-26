@@ -60,7 +60,7 @@ public final class CoverageDebtCalculator extends AxisDebtCalculator {
     double gap = (COVERAGE_TARGET - coverage.getValue() / 100) * complexity.getValue();
 
     // technicaldebt is calculate in man days
-    return (gap > 0.0 ? gap : 0.0) * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
+    return (gap > 0.0 ? gap : 0.0) * configuration.getDouble(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFVAL) / HOURS_PER_DAY;
   }
 
   /**
@@ -74,7 +74,7 @@ public final class CoverageDebtCalculator extends AxisDebtCalculator {
     }
 
     // technicaldebt is calculate in man days
-    return COVERAGE_TARGET * complexity.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.TD_COST_UNCOVERED_COMPLEXITY_DEFAULT) / HOURS_PER_DAY;
+    return COVERAGE_TARGET * complexity.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFVAL) / HOURS_PER_DAY;
   }
 
   /**

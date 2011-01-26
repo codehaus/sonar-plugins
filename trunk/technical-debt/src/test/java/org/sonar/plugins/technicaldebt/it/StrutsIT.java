@@ -28,6 +28,7 @@ import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
 
 public class StrutsIT {
@@ -62,7 +63,7 @@ public class StrutsIT {
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(276205.3), is(275455.3), is(310717.8), is(310467.8)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(27.9), is(21.7), is(22.5)));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(552.4), is(550.9), is(447.5), is(446.2), is(620.9)));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(552.4), is(550.9), is(447.5), is(446.2), closeTo(621.0, 1.0)));
   }
 
   @Test
@@ -73,7 +74,7 @@ public class StrutsIT {
         is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.74")));
     assertThat(getCoreModuleMeasure("technical_debt").getValue(), anyOf(is(62258.9), is(61377.6), is(62265.1)));
     assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), anyOf(is(17.3), is(17.1)));
-    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), anyOf(is(124.5), is(122.8)));
+    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), anyOf(is(124.5), closeTo(123.0, 0.5)));
   }
 
   @Test

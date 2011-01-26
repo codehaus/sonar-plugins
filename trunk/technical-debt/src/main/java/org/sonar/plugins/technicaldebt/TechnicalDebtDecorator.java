@@ -102,7 +102,7 @@ public final class TechnicalDebtDecorator implements Decorator {
       addToRepartition(techDebtRepartition, axis.getName(), axis.calculateAbsoluteDebt(context) / sonarDebt * 100);
     }
 
-    double dailyRate = Double.valueOf(configuration.getString(TechnicalDebtPlugin.TD_DAILY_RATE, TechnicalDebtPlugin.TD_DAILY_RATE_DEFAULT));
+    double dailyRate = configuration.getDouble(TechnicalDebtPlugin.DAILY_RATE, TechnicalDebtPlugin.DAILY_RATE_DEFVAL);
 
 
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);

@@ -44,7 +44,7 @@ public final class DesignDebtCalculator extends AxisDebtCalculator {
       return 0.0;
     }
     // technicaldebt is calculated in man days
-    return measure.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_CYCLE, TechnicalDebtPlugin.TD_COST_CYCLE_DEFAULT) / HOURS_PER_DAY;
+    return measure.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_CYCLE, TechnicalDebtPlugin.COST_CYCLE_DEFVAL) / HOURS_PER_DAY;
   }
 
   @Override
@@ -53,7 +53,7 @@ public final class DesignDebtCalculator extends AxisDebtCalculator {
     if (!MeasureUtils.hasValue(measure)) {
       return 0.0;
     }
-    return measure.getValue() / 2 * getWeight(TechnicalDebtPlugin.TD_COST_CYCLE, TechnicalDebtPlugin.TD_COST_CYCLE_DEFAULT) / HOURS_PER_DAY;
+    return measure.getValue() / 2 * configuration.getDouble(TechnicalDebtPlugin.COST_CYCLE, TechnicalDebtPlugin.COST_CYCLE_DEFVAL) / HOURS_PER_DAY;
   }
 
   @Override

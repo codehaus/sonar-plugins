@@ -54,14 +54,14 @@ public class ComplexityDebtDecoratorTest {
     ComplexityDebtDecorator debtDecorator = new ComplexityDebtDecorator(conf);
     assertThat(debtDecorator.classThreshold, is(60.0));
     assertThat(debtDecorator.methodThreshold, is(8.0));
-    assertThat(debtDecorator.classSplitCost, is(TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT));
-    assertThat(debtDecorator.methodSplitCost, is(TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT));
+    assertThat(debtDecorator.classSplitCost, is(TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL));
+    assertThat(debtDecorator.methodSplitCost, is(TechnicalDebtPlugin.COST_METHOD_COMPLEXITY_DEFVAL));
   }
 
   @Test
   public void shouldNotFailIfMissingThreshold() {
     PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, "METHOD=8");
+    conf.setProperty(TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS, "METHOD=8");
     ComplexityDebtDecorator debtDecorator = new ComplexityDebtDecorator(conf);
     assertThat(debtDecorator.classThreshold, is(Double.MAX_VALUE));
     assertThat(debtDecorator.methodThreshold, is(8.0));
@@ -70,7 +70,7 @@ public class ComplexityDebtDecoratorTest {
   @Test
   public void shouldNotFailIfEmptyThreshold() {
     PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, "CLASS=;METHOD=");
+    conf.setProperty(TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS, "CLASS=;METHOD=");
     ComplexityDebtDecorator debtDecorator = new ComplexityDebtDecorator(conf);
     assertThat(debtDecorator.classThreshold, is(Double.MAX_VALUE));
     assertThat(debtDecorator.methodThreshold, is(Double.MAX_VALUE));
