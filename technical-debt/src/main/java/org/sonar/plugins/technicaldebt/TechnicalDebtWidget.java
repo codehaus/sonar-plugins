@@ -31,7 +31,7 @@ public final class TechnicalDebtWidget extends AbstractRubyTemplate implements R
   }
 
   public String getId() {
-    return getClass().toString();
+    return getClass().getName();
   }
 
   public String getTitle() {

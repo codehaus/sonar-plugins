@@ -20,13 +20,11 @@
 
 package org.sonar.plugins.technicaldebt;
 
-import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 
@@ -36,13 +34,12 @@ public class ComplexityDebtDecoratorTest {
 
   @Before
   public void setUp() {
-    Configuration configuration = mock(Configuration.class);
-    decorator = new ComplexityDebtDecorator(configuration);
+    decorator = new ComplexityDebtDecorator(60, 8);
   }
 
   @Test
   public void dependedUpon() {
-    assertThat(decorator.dependedUpon().size(), greaterThan(0));
+    assertThat(decorator.dependedUpon(), is(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY));
   }
 
   @Test

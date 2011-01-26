@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.technicaldebt;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
@@ -31,7 +32,6 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.plugins.technicaldebt.axis.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +67,7 @@ public final class TechnicalDebtDecorator implements Decorator {
 
   @DependsUpon
   public List<Metric> dependsOnMetrics() {
-    List<Metric> list = new ArrayList<Metric>();
+    List<Metric> list = Lists.newLinkedList();
     for (AxisDebtCalculator axis : axisList) {
       list.addAll(axis.dependsOn());
     }
@@ -87,8 +87,8 @@ public final class TechnicalDebtDecorator implements Decorator {
    * {@inheritDoc}
    */
   public void decorate(Resource resource, DecoratorContext context) {
-    double sonarDebt = 0;
-    double denominatorDensity = 0;
+    double sonarDebt = 0.0;
+    double denominatorDensity = 0.0;
     PropertiesBuilder<String, Double> techDebtRepartition = new PropertiesBuilder<String, Double>(TechnicalDebtMetrics.TECHNICAL_DEBT_REPARTITION);
 
     // We calculate the total absolute debt and total maximum debt
@@ -107,7 +107,7 @@ public final class TechnicalDebtDecorator implements Decorator {
 
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS, sonarDebt);
-    if (denominatorDensity != 0) {
+    if (denominatorDensity != 0.0) {
       saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT_RATIO, sonarDebt / denominatorDensity * 100);
     }
     context.saveMeasure(techDebtRepartition.build());
