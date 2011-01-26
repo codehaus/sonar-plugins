@@ -27,8 +27,8 @@ import org.sonar.api.measures.Metric;
 import java.util.List;
 
 public abstract class AxisDebtCalculator {
-  private Configuration configuration;
-  protected static final double HOURS_PER_DAY = 8.0;
+  protected Configuration configuration;
+  public static final double HOURS_PER_DAY = 8.0;
 
   public AxisDebtCalculator(Configuration configuration) {
     this.configuration = configuration;

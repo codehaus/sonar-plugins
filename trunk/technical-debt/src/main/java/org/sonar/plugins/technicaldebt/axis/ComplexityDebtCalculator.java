@@ -26,13 +26,11 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.utils.KeyValueFormat;
 import org.sonar.plugins.technicaldebt.TechnicalDebtMetrics;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * {@inheritDoc}
@@ -47,27 +45,15 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
    * {@inheritDoc}
    */
   public double calculateAbsoluteDebt(DecoratorContext context) {
-    Measure complexity = context.getMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
-    if (!MeasureUtils.hasData(complexity)) {
-      return 0.0;
-    }
-    Map<String, Double> complexityDistribution = KeyValueFormat.parse(complexity.getData(), new KeyValueFormat.StringNumberPairTransformer());
-    int nbClassToSplit = complexityDistribution.get("CLASS").intValue();
-    int nbMethodsToSplit = complexityDistribution.get("METHOD").intValue();
-
-    double debt = nbClassToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
-    debt += nbMethodsToSplit * getWeight(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
-
-    // technicaldebt is calculated in man days
-    return debt / HOURS_PER_DAY;
+    return MeasureUtils.getValue(context.getMeasure(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY), 0.0) / HOURS_PER_DAY;
   }
 
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    Measure files = context.getMeasure(CoreMetrics.CLASSES);
+    Measure classes = context.getMeasure(CoreMetrics.CLASSES);
     Measure functions = context.getMeasure(CoreMetrics.FUNCTIONS);
 
-    double debt = MeasureUtils.hasValue(files) ? files.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT) : 0;
-    debt += MeasureUtils.hasValue(functions) ? functions.getValue() * getWeight(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT) : 0;
+    double debt = MeasureUtils.hasValue(classes) ? classes.getValue() * configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT) : 0;
+    debt += MeasureUtils.hasValue(functions) ? functions.getValue() * configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT) : 0;
 
     // technicaldebt is calculated in man days
     return debt / HOURS_PER_DAY;

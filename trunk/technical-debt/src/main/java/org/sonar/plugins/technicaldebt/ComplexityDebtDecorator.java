@@ -23,68 +23,68 @@ package org.sonar.plugins.technicaldebt;
 import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.batch.DependedUpon;
+import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.*;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
-import org.sonar.api.resources.ResourceUtils;
+import org.sonar.api.resources.Scopes;
 import org.sonar.api.utils.KeyValueFormat;
-import org.sonar.squid.api.SourceClass;
-import org.sonar.squid.api.SourceCode;
-import org.sonar.squid.api.SourceMethod;
-import org.sonar.squid.indexer.QueryByMeasure;
-import org.sonar.squid.indexer.QueryByParent;
-import org.sonar.squid.indexer.QueryByType;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
-public class ComplexityDebtDecorator implements Decorator {
-  private Configuration configuration;
+public final class ComplexityDebtDecorator implements Decorator {
+  
+  int classThreshold, methodThreshold;
+  double classSplitCost, methodSplitCost;
 
   public ComplexityDebtDecorator(Configuration configuration) {
-    this.configuration = configuration;
+    String complexityConfiguration = configuration.getString(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT);
+    Map<String, Double> complexityLimits = KeyValueFormat.parse(complexityConfiguration, new KeyValueFormat.StringNumberPairTransformer());
+    classThreshold = complexityLimits.get("CLASS").intValue();
+    methodThreshold = complexityLimits.get("METHOD").intValue();
+
+    classSplitCost = configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_CLASS, TechnicalDebtPlugin.TD_COST_COMP_CLASS_DEFAULT);
+    methodSplitCost = configuration.getDouble(TechnicalDebtPlugin.TD_COST_COMP_METHOD, TechnicalDebtPlugin.TD_COST_COMP_METHOD_DEFAULT);
   }
 
-  public List<Metric> dependedUpon() {
-    return Arrays.asList(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY, CoreMetrics.COMPLEXITY);
+  ComplexityDebtDecorator(int classThreshold, int methodThreshold) {
+    this.classThreshold = classThreshold;
+    this.methodThreshold = methodThreshold;
+  }
+
+  @DependedUpon
+  public Metric dependedUpon() {
+    return TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY;
+  }
+
+  @DependsUpon
+  public Metric dependsUpon() {
+    return CoreMetrics.COMPLEXITY;
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-
-    if (!Java.INSTANCE.equals(resource.getLanguage()) &&
-      (Resource.QUALIFIER_CLASS.equals(resource.getQualifier()) || Resource.QUALIFIER_FILE.equals(resource.getQualifier()))) {
-
-      Measure complexity = context.getMeasure(CoreMetrics.COMPLEXITY);
-      String complexityConfiguration = configuration.getString(TechnicalDebtPlugin.TD_MAX_COMPLEXITY, TechnicalDebtPlugin.TD_MAX_COMPLEXITY_DEFAULT);
-      Map<String, Double> complexityLimits = KeyValueFormat.parse(complexityConfiguration, new KeyValueFormat.StringNumberPairTransformer());
-      int classComplexityLimits = complexityLimits.get("CLASS").intValue();
-      int methodComplexityLimits = complexityLimits.get("METHOD").intValue();
-
-      PropertiesBuilder<String, Integer> builder = new PropertiesBuilder<String, Integer>(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
-      builder.add("METHOD", 0);
-      if (MeasureUtils.hasValue(complexity) && complexity.getValue() >= classComplexityLimits) {
-        builder.add("CLASS", 1);
-      } else {
-        builder.add("CLASS", 0);
+    double childrenDebt = MeasureUtils.sum(true, context.getChildrenMeasures(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY));
+    double debt = 0.0;
+    if (Scopes.isBlockUnit(resource)) {
+      double methodComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
+      if (methodComplexity>=methodThreshold) {
+        debt += methodSplitCost;
       }
-      context.saveMeasure(builder.build());
-    } else {
 
-
-      Collection<Measure> measures = context.getChildrenMeasures(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
-      if (measures == null || measures.isEmpty()) {
-        return;
-      } else {
-        CountDistributionBuilder distribution = new CountDistributionBuilder(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
-        for (Measure measure : measures) {
-          distribution.add(measure);
-        }
-        context.saveMeasure(distribution.build());
+    } else if (Scopes.isType(resource)) {
+      double classComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
+      if (classComplexity>=classThreshold) {
+        debt += classSplitCost;
       }
     }
+
+    Measure measure = new Measure(TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY, debt);
+    if (!Scopes.isProject(resource)) {
+      measure.setPersistenceMode(PersistenceMode.MEMORY);
+    }
+
+    context.saveMeasure(measure);
   }
 
   public boolean shouldExecuteOnProject(Project project) {

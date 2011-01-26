@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.technicaldebt;
 
-
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
@@ -76,8 +75,8 @@ public final class TechnicalDebtMetrics implements Metrics {
   public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric(
       "technical_debt_complexity",
       "Technical debt complexity",
-      "This is the number of methods and classes above max complexity",
-      Metric.ValueType.DISTRIB,
+      "This is the technical debt of methods and classes above thresholds",
+      Metric.ValueType.FLOAT,
       Metric.DIRECTION_NONE,
       false,
       CoreMetrics.DOMAIN_GENERAL

@@ -38,7 +38,7 @@ public class TechnicalDebtPluginTest {
 
   @Test
   public void defineExtensions() {
-    assertThat(plugin.getExtensions().size(), is(5));
+    assertThat(plugin.getExtensions().size(), is(4));
   }
 
   /**
