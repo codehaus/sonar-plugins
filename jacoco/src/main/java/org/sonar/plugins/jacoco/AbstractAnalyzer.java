@@ -114,14 +114,14 @@ public abstract class AbstractAnalyzer {
       final int fakeHits;
       ILine line = coverage.getLine(lineId);
       switch (line.getStatus()) {
-        case ILine.FULLY_COVERED:
+        case ICounter.FULLY_COVERED:
           fakeHits = 1;
           break;
-        case ILine.PARTLY_COVERED:
-        case ILine.NOT_COVERED:
+        case ICounter.PARTLY_COVERED:
+        case ICounter.NOT_COVERED:
           fakeHits = 0;
           break;
-        case ILine.NO_CODE:
+        case ICounter.EMPTY:
           continue;
         default:
           JaCoCoUtils.LOG.warn("Unknown status for line {} in {}", lineId, resource);
