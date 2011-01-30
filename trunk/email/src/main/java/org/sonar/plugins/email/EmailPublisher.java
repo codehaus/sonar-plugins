@@ -21,7 +21,7 @@
 package org.sonar.plugins.email;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.mail.Email;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.sonar.api.batch.PostJob;
@@ -34,12 +34,23 @@ import org.sonar.api.utils.SonarException;
  * @author Evgeny Mandrikov
  */
 public class EmailPublisher implements PostJob {
-  public static final String HOST_PROPERTY = "sonar.email.host.secured";
-  public static final String HOST_DEFAULT_VALUE = "localhost";
-  public static final String USERNAME_PROPERTY = "sonar.email.username.secured";
-  public static final String PASSWORD_PROPERTY = "sonar.email.password.secured";
+
+  public static final String HOST_PROPERTY = "sonar.email.smtp_host.secured";
+  public static final String SMTP_HOST_DEFAULT_VALUE = "localhost";
+
+  public static final String PORT_PROPERTY = "sonar.email.smtp_port.secured";
+  public static final String PORT_DEFAULT_VALUE = "25";
+
+  public static final String TLS_PROPERTY = "sonar.email.password.secured";
+  public static final boolean TLS_DEFAULT_VALUE = false;
+
+  public static final String USERNAME_PROPERTY = "sonar.email.smtp_username.secured";
+
+  public static final String PASSWORD_PROPERTY = "sonar.email.smtp_password.secured";
+
   public static final String FROM_PROPERTY = "sonar.email.from.secured";
-  public static final String TO_PROPERTY = "sonar.email.to.secured";
+
+  public static final String TO_PROPERTY = "sonar.email.to";
 
   private static final String PROJECT_INDEX_URI = "/project/index/";
 
@@ -51,19 +62,25 @@ public class EmailPublisher implements PostJob {
 
   public void executeOn(Project project, SensorContext context) {
     Configuration configuration = project.getConfiguration();
-    String host = configuration.getString(HOST_PROPERTY, HOST_DEFAULT_VALUE);
+    SonarEmail email = new SonarEmail();
+    String host = configuration.getString(HOST_PROPERTY, SMTP_HOST_DEFAULT_VALUE);
+    String port = configuration.getString(PORT_PROPERTY, PORT_DEFAULT_VALUE);
     String username = configuration.getString(USERNAME_PROPERTY);
     String password = configuration.getString(PASSWORD_PROPERTY);
+    boolean withTLS = configuration.getBoolean(TLS_PROPERTY, TLS_DEFAULT_VALUE);
     String from = configuration.getString(FROM_PROPERTY);
     String to = configuration.getString(TO_PROPERTY);
-
-    Email email = new SimpleEmail();
     try {
       email.setHostName(host);
-      // TODO email.setSmtpPort(port);
+      email.setSmtpPort(port);
       email.setAuthentication(username, password);
+      email.setTLS(withTLS);
       email.setFrom(from);
-      email.addTo(to);
+
+      String[] addrs = StringUtils.split(to, '\n');
+      for (String addr : addrs) {
+        email.addTo(addr);
+      }
       email.setSubject(getSubject(project));
       email.setMsg(getMessage(project));
       email.send();
@@ -72,13 +89,19 @@ public class EmailPublisher implements PostJob {
     }
   }
 
-  private String getSubject(Project project) {
+  String getSubject(Project project) {
     return String.format("Sonar analysis of %s", project.getName());
   }
 
-  private String getMessage(Project project) {
+  String getMessage(Project project) {
     StringBuilder url = new StringBuilder(server.getURL()).append(PROJECT_INDEX_URI).append(project.getKey());
-    return String.format("Sonar analysis of %s is available at %s", project.getName(), url);
+    return String.format("Sonar analysis of %s available %s", project.getName(), url);
+  }
+
+  static class SonarEmail extends SimpleEmail {
+    public void setSmtpPort(String smtpPort) {
+      this.smtpPort = smtpPort;
+    }
   }
 
 }
