@@ -13,8 +13,8 @@
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Email Plugin</name>
-  <description></description>
-  <url></url>
+  <description>Reports about analysis via Email.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Email+Plugin</url>
   <inceptionYear>2011</inceptionYear>
   <organization>
     <name>SonarSource</name>
@@ -40,16 +40,14 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/email</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
-  <!--
   <issueManagement>
     <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/???</url>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14632</url>
   </issueManagement>
   <ciManagement>
     <system>Bamboo</system>
-    <url>http://ci.codehaus.org/browse/???</url>
+    <url>http://ci.codehaus.org/browse/SONAR-EMAIL</url>
   </ciManagement>
-  -->
 
   <properties>
     <sonar.version>2.4</sonar.version>
