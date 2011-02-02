@@ -62,6 +62,7 @@
         <module>debug</module>
         <module>email</module>
         <!--<module>fb-contrib</module>-->
+        <module>jmeter</module>
         <module>metrics-help</module>
         <module>profiler</module>
         <module>testability-explorer</module>
