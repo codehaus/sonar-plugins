@@ -113,11 +113,13 @@ public abstract class AbstractAnalyzer {
     for (int lineId = coverage.getFirstLine(); lineId <= coverage.getLastLine(); lineId++) {
       final int fakeHits;
       ILine line = coverage.getLine(lineId);
-      switch (line.getStatus()) {
+      switch (line.getInstructionCounter().getStatus()) {
         case ICounter.FULLY_COVERED:
           fakeHits = 1;
           break;
         case ICounter.PARTLY_COVERED:
+          fakeHits = 1;
+          break;
         case ICounter.NOT_COVERED:
           fakeHits = 0;
           break;

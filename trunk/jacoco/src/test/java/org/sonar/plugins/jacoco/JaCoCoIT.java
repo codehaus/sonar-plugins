@@ -22,9 +22,12 @@ package org.sonar.plugins.jacoco;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.api.utils.KeyValueFormat;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.ResourceQuery;
+
+import java.util.Map;
 
 import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.anyOf;
@@ -37,7 +40,7 @@ public class JaCoCoIT {
   private static final String PROJECT_STRUTS = "org.apache.struts:struts-parent";
   private static final String MODULE_CORE = "org.apache.struts:struts-core";
   private static final String MODULE_EL = "org.apache.struts:struts-el";
-  private static final String FILE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action.Action";
+  private static final String FILE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action.DynaActionFormClass";
   private static final String PACKAGE_ACTION = "org.apache.struts:struts-core:org.apache.struts.action";
 
   @BeforeClass
@@ -62,11 +65,11 @@ public class JaCoCoIT {
     assertThat(getProjectMeasure("lines_to_cover").getValue(), anyOf(
         is(26126.0), // java 1.5.0_22
         is(26124.0), // java 1.6.0_20 and 1.6.0_22
-        is(27124.0)  // unknown
+        is(27124.0) // unknown
         ));
     assertThat(getProjectMeasure("uncovered_lines").getValue(), anyOf(
         is(22110.0), // java 1.5.0_22
-        is(22108.0)  // java 1.6.0_20 and 1.6.0_22
+        is(22108.0) // java 1.6.0_20 and 1.6.0_22
         ));
 
     assertThat(getProjectMeasure("branch_coverage").getValue(), is(13.2));
@@ -130,15 +133,27 @@ public class JaCoCoIT {
 
   @Test
   public void filesMetrics() {
-    assertThat(getFileMeasure("coverage").getValue(), is(0.0));
+    assertThat(getFileMeasure("coverage").getValue(), is(63.8));
 
-    assertThat(getFileMeasure("line_coverage").getValue(), is(0.0));
-    assertThat(getFileMeasure("lines_to_cover").getValue(), is(78.0));
-    assertThat(getFileMeasure("uncovered_lines").getValue(), is(78.0));
+    assertThat(getFileMeasure("line_coverage").getValue(), is(64.7));
+    assertThat(getFileMeasure("lines_to_cover").getValue(), is(51.0));
+    assertThat(getFileMeasure("uncovered_lines").getValue(), is(18.0));
 
-    assertThat(getFileMeasure("branch_coverage").getValue(), is(0.0));
-    assertThat(getFileMeasure("conditions_to_cover").getValue(), is(36.0));
-    assertThat(getFileMeasure("uncovered_conditions").getValue(), is(36.0));
+    assertThat(getFileMeasure("branch_coverage").getValue(), is(61.1));
+    assertThat(getFileMeasure("conditions_to_cover").getValue(), is(18.0));
+    assertThat(getFileMeasure("uncovered_conditions").getValue(), is(7.0));
+
+    Map<String, String> lineHits = KeyValueFormat.parse(getFileMeasure("coverage_line_hits_data").getData());
+    assertThat(lineHits.get("121"), is("1")); // fully covered
+    assertThat(lineHits.get("191"), is("0")); // not covered
+    assertThat(lineHits.get("228"), is("1")); // partly covered
+    assertThat(lineHits.get("258"), is("1")); // partly covered
+
+    Map<String, String> branchHits = KeyValueFormat.parse(getFileMeasure("branch_coverage_hits_data").getData());
+    assertThat(branchHits.get("121"), is("100%"));
+    assertThat(branchHits.get("191"), is("0%"));
+    assertThat(branchHits.get("228"), is("50%"));
+    assertThat(branchHits.get("258"), is("75%"));
 
     assertNull(getFileMeasure("tests"));
     assertNull(getFileMeasure("test_success_density"));
