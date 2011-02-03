@@ -22,6 +22,7 @@
         <module>c-rules</module>
         <module>cutoff</module>
         <module>dotnet</module>
+        <module>email</module>
         <module>emma</module>
         <module>flex</module>
         <module>greenpepper</module>
@@ -60,7 +61,6 @@
       </activation>
       <modules>
         <module>debug</module>
-        <module>email</module>
         <!--<module>fb-contrib</module>-->
         <module>jmeter</module>
         <module>metrics-help</module>
