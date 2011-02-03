@@ -8,12 +8,13 @@
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>sonar-cli</artifactId>
+  <artifactId>sonar-runner</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-  <name>Sonar CLI</name>
+  <name>Sonar Standalone Runner</name>
   <description></description>
-  <url></url>
+  <url>http://docs.codehaus.org/display/SONAR/Sonar+Standalone+Runner</url>
+  <inceptionYear>2011</inceptionYear>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com</url>

@@ -24,7 +24,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
@@ -34,8 +33,8 @@ import org.sonar.batch.Batch;
 import org.sonar.batch.bootstrapper.ProjectDefinition;
 import org.sonar.batch.bootstrapper.Reactor;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
+import java.util.Properties;
 
 public class Launcher {
 
@@ -51,8 +50,8 @@ public class Launcher {
 
   public void execute() throws Exception {
     initLogging();
-    PropertiesConfiguration properties = new PropertiesConfiguration(args[0]);
-    Reactor reactor = new Reactor(defineProject(properties));
+    ProjectDefinition project = defineProject(new File(args[0]));
+    Reactor reactor = new Reactor(project);
     Batch batch = new Batch(getInitialConfiguration(), Environment.ANT, reactor); // TODO environment
     batch.execute();
   }
@@ -64,7 +63,7 @@ public class Launcher {
     context.reset();
     InputStream input = Batch.class.getResourceAsStream("/org/sonar/batch/logback.xml");
     // System.setProperty("ROOT_LOGGER_LEVEL", getLog().isDebugEnabled() ? "DEBUG" : "INFO");
-    System.setProperty("ROOT_LOGGER_LEVEL", "DEBUG");
+    System.setProperty("ROOT_LOGGER_LEVEL", "INFO");
     try {
       jc.doConfigure(input);
 
@@ -76,11 +75,28 @@ public class Launcher {
     }
   }
 
-  private ProjectDefinition defineProject(PropertiesConfiguration properties) {
-    File baseDir = properties.getFile().getParentFile();
+  private ProjectDefinition defineProject(File file) {
+    File baseDir = file.getParentFile();
+    File workDir = new File(baseDir, ".sonar");
+    Properties properties = new Properties();
+    try {
+      properties.load(new FileInputStream(file));
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
-    ProjectDefinition definition = new ProjectDefinition(baseDir, properties);
-    definition.addSourceDir("src"); // TODO hard-coded value
+    ProjectDefinition definition = new ProjectDefinition(baseDir, workDir, properties);
+    // TODO for some reason it can't be relative
+    definition.addSourceDir(new File(baseDir, "src").getAbsolutePath()); // TODO hard-coded value
+    // TODO definition.addTestDir(path);
+    // TODO definition.addBinaryDir(path);
+    // TODO definition.addLibrary(path);
+
+    System.out.println(baseDir);
 
     return definition;
   }
