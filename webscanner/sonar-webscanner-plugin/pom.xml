@@ -57,11 +57,18 @@
       <version>0.9.5</version>
     </dependency>
     <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.1</version>
+      <scope>compile</scope>
     </dependency>
-    
+     <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.1</version>
+      <scope>compile</scope>
+    </dependency>
+  
     <!-- configure jars provided by sonar -->
     <dependency>
       <groupId>log4j</groupId>
@@ -75,13 +82,7 @@
       <version>1.0.4</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.0.4</version>
-      <scope>provided</scope>
-    </dependency>
-   
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
@@ -104,19 +105,19 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-    	<groupId>net.sourceforge.nekohtml</groupId>
-    	<artifactId>nekohtml</artifactId>
-    	<version>1.9.14</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
+      <groupId>net.sourceforge.nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>1.9.14</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
-   
+
     <dependency>
-    	<groupId>org.codehaus.sonar-plugins</groupId>
-    	<artifactId>maven-webscanner-plugin</artifactId>
-    	<version>${project.version}</version>
-    	<type>maven-plugin</type>
-    	<scope>compile</scope>
+      <groupId>org.codehaus.sonar-plugins</groupId>
+      <artifactId>maven-webscanner-plugin</artifactId>
+      <version>${project.version}</version>
+      <type>maven-plugin</type>
+      <scope>compile</scope>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -125,17 +126,17 @@
       </exclusions>
     </dependency>
     <dependency>
-    	<groupId>net.java.dev.rome</groupId>
-    	<artifactId>rome</artifactId>
-    	<version>1.0.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    	<exclusions>
-    		<exclusion>
-    			<artifactId>jdom</artifactId>
-    			<groupId>jdom</groupId>
-    		</exclusion>
-    	</exclusions>
+      <groupId>net.java.dev.rome</groupId>
+      <artifactId>rome</artifactId>
+      <version>1.0.0</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jdom</artifactId>
+          <groupId>jdom</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 

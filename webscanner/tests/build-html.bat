@@ -1,14 +1,12 @@
 
 rem run this script from webscanner folder
 
-set SONAR_HOME=C:\bin\sonar-2.4.1
-set SONAR_FLAGS=-Dsonar.host.url=http://localhost:9000 -Dsonar.jdbc.url=jdbc:postgresql://localhost/sonar -Dsonar.jdbc.driver=org.postgresql.Driver
+set SONAR_HOME=C:\bin\sonar-2.5
+set SONAR_FLAGS=-Dsonar.host.url=http://localhost:9000 -Dsonar.jdbc.url=jdbc:postgresql://localhost/sonar2.5 -Dsonar.jdbc.driver=org.postgresql.Driver
 set DEBUG=-X 
 
 call mvn install  -Dmaven.test.skip
 call xcopy /Y sonar-webscanner-plugin\target\*.jar %SONAR_HOME%\extensions\plugins
-call xcopy /Y toetstool\sonar-toetstool-plugin\target\*.jar %SONAR_HOME%\extensions\plugins
-call xcopy /Y w3cmarkup\sonar-w3cmarkup-plugin\target\*.jar %SONAR_HOME%\extensions\plugins
 start "Sonar Server" /MIN %SONAR_HOME%\bin\windows-x86-32\StartSonar.bat 
 
 set mvncommand=mvn sonar:sonar

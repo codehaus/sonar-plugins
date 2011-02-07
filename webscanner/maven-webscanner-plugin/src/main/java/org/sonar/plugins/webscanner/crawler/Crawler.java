@@ -19,7 +19,6 @@
 package org.sonar.plugins.webscanner.crawler;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -92,14 +91,7 @@ public class Crawler {
   }
 
   public void configureProxy(String host, int port) {
-    InetSocketAddress address = new InetSocketAddress(host, port);
-    try {
-      if (address.getAddress() != null && address.getAddress().isReachable(500)) {
-        proxy = new Proxy(Type.HTTP, new InetSocketAddress(host, port));
-      }
-    } catch (IOException e) {
-      // ignore
-    }
+    proxy = new Proxy(Type.HTTP, new InetSocketAddress(host, port));
   }
 
   /**
@@ -245,7 +237,7 @@ public class Crawler {
     }
 
     // checking domain
-    if (!StringUtils.equals(UrlUtils.getDomainName(url), crawlerTask.getDomain())) {
+    if ( !StringUtils.equals(UrlUtils.getDomainName(url), crawlerTask.getDomain())) {
       return false;
     }
 

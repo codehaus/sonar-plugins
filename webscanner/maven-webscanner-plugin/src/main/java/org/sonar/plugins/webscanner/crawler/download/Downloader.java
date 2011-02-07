@@ -52,6 +52,11 @@ public class Downloader {
   private final String userAgent = "";
   private final Statistics statistics;
 
+  static {
+    SSLUtilities.trustAllHostnames();
+    SSLUtilities.trustAllHttpsCertificates();
+  }
+
   public Downloader(Proxy proxy, Statistics statistics) {
     this.proxy = proxy;
     this.statistics = statistics;
