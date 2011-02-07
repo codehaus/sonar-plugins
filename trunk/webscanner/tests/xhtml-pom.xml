@@ -12,29 +12,18 @@
 
   <properties>
     <!-- Sonar properties -->
-    <sonar.language>html</sonar.language>
+    <sonar.language>xml</sonar.language>
     <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
 
     <!-- webscanner -->
-    <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
-    <sonar.html.sourceDirectory>src/html</sonar.html.sourceDirectory>
+    <sonar.web.fileExtensions>html</sonar.web.fileExtensions>
+    <sonar.web.sourceDirectory>src/html</sonar.web.sourceDirectory>
 
     <!-- w3cmarkup -->
-    <sonar.html.excludeviolations>
-      127:.*required attribute "rows" not specified,
-      025:.*general entity "organisatie" not defined and no default entity,
-      141:.*ID "javax.faces.ViewState" already defined,
-      108:.*there is no attribute "name",
-      108:.*there is no attribute "target",
-      065:.*document type does not allow element "input" here
-        </sonar.html.excludeviolations>
 
     <!-- toetstool -->
-    <sonar.toetstool.cssDir>src/html</sonar.toetstool.cssDir>
-    <sonar.toetstool.url>http://api.toetstool.nl/</sonar.toetstool.url>
 
-    <sonar.html.nrOfSamples></sonar.html.nrOfSamples>
-    <sonar.branch>HTML</sonar.branch>
+    <sonar.branch>XHTML</sonar.branch>
   </properties>
 
   <build>
@@ -43,6 +32,7 @@
         <plugin>
           <groupId>org.codehaus.sonar</groupId>
           <artifactId>sonar-maven-plugin</artifactId>
+          <version>2.3</version>
         </plugin>
       </plugins>
     </pluginManagement>

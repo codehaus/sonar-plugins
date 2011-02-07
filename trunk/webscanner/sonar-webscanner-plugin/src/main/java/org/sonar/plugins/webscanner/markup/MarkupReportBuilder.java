@@ -21,6 +21,7 @@ package org.sonar.plugins.webscanner.markup;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -30,11 +31,10 @@ import org.sonar.plugins.webscanner.markup.rules.MarkupErrorCatalog;
 import org.sonar.plugins.webscanner.markup.rules.MarkupErrorCatalog.MessageDefinition;
 import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
-import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
 
 /**
  * Builds HTML report from a list of W3C responses.
- *
+ * 
  * @author Matthijs Galesloot
  * @since 0.1
  */
@@ -65,15 +65,16 @@ public final class MarkupReportBuilder {
   private void startRow() {
     sb.append("<tr>");
   }
+
   private static final class Violation {
 
     public int count;
     public String messageId;
   }
 
-  public void buildReports(File folder) {
+  public void buildReports(Collection<File> reportFiles) {
     List<MarkupReport> reports = new ArrayList<MarkupReport>();
-    for (File reportFile : MarkupValidator.getReportFiles(folder)) {
+    for (File reportFile : reportFiles) {
       MarkupReport report = MarkupReport.fromXml(reportFile);
       reports.add(report);
     }

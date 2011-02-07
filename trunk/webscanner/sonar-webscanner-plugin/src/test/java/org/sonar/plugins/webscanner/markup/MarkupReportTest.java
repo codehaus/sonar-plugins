@@ -25,6 +25,7 @@ import java.io.File;
 
 import org.junit.Test;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
+import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
 
 public class MarkupReportTest {
 
@@ -43,7 +44,7 @@ public class MarkupReportTest {
       report.delete();
     }
     MarkupReportBuilder reportBuilder = new MarkupReportBuilder();
-    reportBuilder.buildReports(new File(packagePath));
+    reportBuilder.buildReports(MarkupValidator.getReportFiles(new File(packagePath)));
 
     assertTrue(report.exists());
   }

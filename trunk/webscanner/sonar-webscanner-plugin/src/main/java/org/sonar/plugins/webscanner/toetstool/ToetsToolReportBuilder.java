@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -39,7 +40,7 @@ import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
 
 /**
  * Builds HTML report from the list of Toetstool reports.
- *
+ * 
  * @author Matthijs Galesloot
  * @since 0.1
  */
@@ -56,6 +57,12 @@ public final class ToetsToolReportBuilder {
   private static final Logger LOG = Logger.getLogger(ToetsToolReportBuilder.class);
 
   private StringBuilder sb;
+
+  private final ToetsToolValidator validator;
+
+  public ToetsToolReportBuilder(ToetsToolValidator validator) {
+    this.validator = validator;
+  }
 
   private void addCells(Object... values) {
     for (Object value : values) {
@@ -77,9 +84,9 @@ public final class ToetsToolReportBuilder {
     endRow();
   }
 
-  public void buildReports(File folder) {
+  public void buildReports(Collection<File> reportFiles) {
     List<ToetstoolReport> reports = new ArrayList<ToetstoolReport>();
-    for (File reportFile : ToetsToolValidator.getReportFiles(folder)) {
+    for (File reportFile : reportFiles) {
       ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
       reports.add(report);
     }
@@ -196,7 +203,7 @@ public final class ToetsToolReportBuilder {
       sb.append("<tr>");
 
       // URL to toetstool report
-      String reportUrl = new ToetsToolValidator("http://TODO/").getHtmlReportUrl(report.getReportNumber());
+      String reportUrl = validator.getHtmlReportUrl(report.getReportNumber());
       String anchor = String.format("<a href=\"%s\">%s</a>", reportUrl, report.getReportNumber());
       addCells(anchor);
 

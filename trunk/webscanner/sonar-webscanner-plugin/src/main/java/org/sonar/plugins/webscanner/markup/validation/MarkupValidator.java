@@ -19,29 +19,25 @@
 package org.sonar.plugins.webscanner.markup.validation;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.PartBase;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.scanner.CharsetDetector;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
-
 
 /**
  * Validator for the W3C Markup Validation Service.
@@ -92,8 +88,10 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
    */
   private void postHtmlContents(File file) {
 
-    PostMethod post = new PostMethod(validationUrl);
-    post.addRequestHeader(new Header("User-Agent", "sonar-web-plugin/0.1"));
+    HttpPost post = new HttpPost(validationUrl);
+    HttpResponse response  = null; 
+    
+    post.addHeader("User-Agent", "sonar-web-plugin/0.1");
 
     String charset = CharsetDetector.detect(file);
 
@@ -101,24 +99,13 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
 
       LOG.info("W3C Validate: " + file.getName());
 
-      List<PartBase> parts = new ArrayList<PartBase>();
-
       // file upload
-      try {
-        FilePart filePart = new FilePart(UPLOADED_FILE, file.getName(), file);
-        filePart.setContentType(TEXT_HTML_CONTENT_TYPE);
-        filePart.setCharSet(charset);
-        parts.add(filePart);
-      } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
-      }
-
-      // charset
-    //  configureCharset(charset, parts);
+      MultipartEntity multiPartRequestEntity = new MultipartEntity();
+      FileBody fileBody = new FileBody(file, TEXT_HTML_CONTENT_TYPE, charset);
+      multiPartRequestEntity.addPart(UPLOADED_FILE, fileBody);
 
       // output format
-      StringPart outputFormat = new StringPart(OUTPUT, SOAP12);
-      parts.add(outputFormat);
+      multiPartRequestEntity.addPart(OUTPUT, new StringBody(SOAP12));
 
       // specify default doctype
       // StringPart doctype = new StringPart("doctype", "XHTML 1.0 Strict");
@@ -126,30 +113,40 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
       // StringPart fbd = new StringPart("fbd", "1");
       // parts.add(fbd);
 
-      MultipartRequestEntity multiPartRequestEntity = new MultipartRequestEntity(parts.toArray(new PartBase[parts.size()]),
-          post.getParams());
-      post.setRequestEntity(multiPartRequestEntity);
+      post.setEntity(multiPartRequestEntity);
 
-      executePostMethod(post);
+      response = executePostMethod(post);
 
-      LOG.info("Post: " + parts.size() + " parts, " + post.getStatusLine().toString());
+      if (response != null) {
+        LOG.info("Post: " + response.getStatusLine().toString());
 
-      writeResponse(post, file);
+        writeResponse(response, file);
+      }
+    } catch (UnsupportedEncodingException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     } finally {
       // release any connection resources used by the method
-      post.releaseConnection();
+      if (response != null) {
+        try {
+          EntityUtils.consume(response.getEntity());
+        } catch (IOException ioe) {
+
+        }
+      }
     }
   }
 
-  private void configureCharset(Charset charset, List<PartBase> parts) {
-
-    StringPart charsetPart = new StringPart("charset", charset.name());
-    parts.add(charsetPart);
-
-    // only use the charset as fallback
-    StringPart fbCharSet = new StringPart("fbc", "1");
-    parts.add(fbCharSet);
-  }
+//
+//  private void configureCharset(Charset charset, List<PartBase> parts) {
+//
+//    StringPart charsetPart = new StringPart("charset", charset.name());
+//    parts.add(charsetPart);
+//
+//    // only use the charset as fallback
+//    StringPart fbCharSet = new StringPart("fbc", "1");
+//    parts.add(fbCharSet);
+//  }
 
   /**
    * Create the path to the report file.
@@ -169,9 +166,9 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
     sleep(1000L);
   }
 
-  private void writeResponse(PostMethod post, File file) {
+  private void writeResponse(HttpResponse response, File file) {
     final File reportFile;
-    if (post.getStatusCode() != 200) {
+    if (response.getStatusLine().getStatusCode() != 200) {
       LOG.error("failed to validate file " + file.getPath());
       reportFile = errorFile(file);
     } else {
@@ -181,7 +178,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
     Writer writer = null;
     try {
       writer = new FileWriter(reportFile);
-      IOUtils.copy(post.getResponseBodyAsStream(), writer);
+      IOUtils.copy(response.getEntity().getContent(), writer);
     } catch (IOException e) {
       throw new RuntimeException(e);
     } finally {

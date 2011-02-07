@@ -28,7 +28,6 @@ import org.apache.maven.settings.Settings;
 import org.sonar.plugins.webscanner.crawler.Crawler;
 import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 
-
 /**
  * WebCrawler
  *
@@ -103,6 +102,10 @@ public class CrawlerMojo extends AbstractMojo {
 
   public void setSettings(Settings settings) {
     this.settings = settings;
+  }
+
+  public void setDownloadDirectory(File downloadDirectory) {
+    this.downloadDirectory = downloadDirectory;
   }
 
 }

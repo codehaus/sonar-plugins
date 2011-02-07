@@ -22,17 +22,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.PartBase;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.css.CssFinder;
 import org.sonar.plugins.webscanner.css.LinkParser;
@@ -57,7 +58,9 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
   private static final int RETRIES = 10;
 
-  private static final long SLEEP_INTERVAL = 5000L;
+  private static final long SECOND = 1000L;
+  private int sleepIntervals = 5;
+  private static final int MAX_SLEEP_INTERVALS = 30;
 
   private static final String TEXT_HTML_CONTENT_TYPE = "text/html";
 
@@ -79,7 +82,7 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     return toetstoolURL + "insert/";
   }
 
-  private void addCssContent(File file, File htmlDir, List<PartBase> parts) throws IOException {
+  private void addCssContent(File file, File htmlDir, MultipartEntity multipartEntity) throws IOException {
     LinkParser linkParser = new LinkParser();
     List<String> stylesheets = linkParser.parseStylesheets(new FileInputStream(file));
     CssFinder cssFinder = new CssFinder();
@@ -96,12 +99,12 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     for (File cssFile : cssFiles) {
 
       String name = String.format("cssfile[%d]", cssCounter);
-      PartBase cssFilePart = new FilePart(name, cssFile.getName(), cssFile);
-      parts.add(cssFilePart);
+
+      FileBody fileBody = new FileBody(cssFile, cssFile.getName(), TEXT_HTML_CONTENT_TYPE, CharsetDetector.detect(cssFile));
+      multipartEntity.addPart(name, fileBody);
 
       String contentName = String.format("csscontent[%d]", cssCounter);
-      PartBase cssContent = new StringPart(contentName, "");
-      parts.add(cssContent);
+      multipartEntity.addPart(contentName, new StringBody(""));
 
       cssCounter++;
     }
@@ -111,8 +114,9 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     for (File cssFile : cssImports) {
 
       String name = String.format("cssimportf[%d]", cssCounter);
-      PartBase cssFilePart = new FilePart(name, cssFile.getName(), cssFile);
-      parts.add(cssFilePart);
+
+      FileBody fileBody = new FileBody(cssFile, cssFile.getName(), TEXT_HTML_CONTENT_TYPE, CharsetDetector.detect(cssFile));
+      multipartEntity.addPart(name, fileBody);
 
       // // cssimport or csscontent2 ?
       // String contentName = String.format("cssimport[%d]", cssCounter);
@@ -125,6 +129,8 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
   private ToetstoolReport fetchReport(String reportNumber) {
 
+    HttpResponse response = null;
+
     // Compose report URL, e.g. http://dev.toetstool.nl/report/2927/2927/?xmlout=1
     String reportUrl = String.format("%s/report/%s/%s/?xmlout=1", toetstoolURL, reportNumber, reportNumber);
     LOG.info(reportUrl);
@@ -133,45 +139,63 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     for (int i = 0; i < RETRIES; i++) {
 
       // before requesting a report, wait for a few seconds
-      sleep(SLEEP_INTERVAL);
+      sleep(sleepIntervals * SECOND);
 
       // get the report url
-      GetMethod httpget = new GetMethod(reportUrl);
+      HttpGet httpget = new HttpGet(reportUrl);
       try {
-        getClient().executeMethod(httpget);
-        LOG.debug("Get: " + httpget.getStatusLine().toString());
-        InputStream response = httpget.getResponseBodyAsStream();
-        return ToetstoolReport.fromXml(response);
+        response = getClient().execute(httpget);
+        HttpEntity entity = response.getEntity();
+
+        if (entity != null) {
+          if (sleepIntervals > 1) {
+            sleepIntervals--;
+          }
+          LOG.debug("Get: " + response.getStatusLine().toString());
+          InputStream instream = entity.getContent();
+          return ToetstoolReport.fromXml(instream);
+        }
       } catch (IOException e) {
         failedAttempts++;
       } catch (CannotResolveClassException e) {
         failedAttempts++;
       } finally {
         // release any connection resources used by the method
-        httpget.releaseConnection();
+        if (response != null) {
+          try {
+            EntityUtils.consume(response.getEntity());
+          } catch (IOException ioe) {
+
+          }
+        }
+      }
+      if (sleepIntervals <= MAX_SLEEP_INTERVALS) {
+        sleepIntervals++;
       }
     }
-    LOG.error("Failed to open URL " + reportUrl + " after " + failedAttempts + " attempts");
+    LOG.error("Failed to open URL " + reportUrl + " after " + failedAttempts + " attempts. " +
+    		"\nCurrent sleeptime = " + sleepIntervals * SECOND);
     return null;
   }
 
   /**
    * Post content of HTML file and CSS files to the Toesttool service. In return, receive a redirecte containing the reportNumber.
+   *
    * @param htmlDir
    */
   private String postHtmlContents(File file, File htmlDir, String url) throws IOException {
-    PostMethod post = new PostMethod(getToetsToolUploadUrl());
+    HttpPost post = new HttpPost(getToetsToolUploadUrl());
+    HttpResponse response = null;
 
     try {
 
       LOG.info("Validate " + file.getName());
 
-      // prepare content
-      List<PartBase> parts = new ArrayList<PartBase>();
+      // file upload
+      MultipartEntity multiPartRequestEntity = new MultipartEntity();
 
       // Prepare post parameters
-      StringPart header = new StringPart("header_yes", "0");
-      parts.add(header);
+      multiPartRequestEntity.addPart("header_yes", new StringBody("0"));
 
       if (url == null) {
         url = "http://localhost";
@@ -183,26 +207,22 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
       }
 
       LOG.info("Sending url: " + url);
-      StringPart urlPart = new StringPart("url_user", url);
-      parts.add(urlPart);
-      FilePart filePart = new FilePart("htmlfile", file.getName(), file);
-      filePart.setContentType(TEXT_HTML_CONTENT_TYPE);
-      filePart.setCharSet(CharsetDetector.detect(file));
-      parts.add(filePart);
+      multiPartRequestEntity.addPart("url_user", new StringBody(url));
 
-      addCssContent(file, htmlDir, parts);
+      FileBody fileBody = new FileBody(file, TEXT_HTML_CONTENT_TYPE, CharsetDetector.detect(file));
+      multiPartRequestEntity.addPart("htmlfile", fileBody);
 
-      MultipartRequestEntity multiPartRequestEntity = new MultipartRequestEntity(parts.toArray(new PartBase[parts.size()]),
-          post.getParams());
-      post.setRequestEntity(multiPartRequestEntity);
+      addCssContent(file, htmlDir, multiPartRequestEntity);
 
-      executePostMethod(post);
-      LOG.debug("Post: " + parts.size() + " parts, " + post.getStatusLine().toString());
+      post.setEntity(multiPartRequestEntity);
 
-      if (post.getResponseHeader("location") == null) {
+      response = executePostMethod(post);
+      LOG.debug("Post: " + multiPartRequestEntity.getContentLength() + " bytes " + response.getStatusLine());
+
+      if (response.getFirstHeader("location") == null) {
         return null;
       } else {
-        String location = post.getResponseHeader("location").getValue();
+        String location = response.getFirstHeader("location").getValue();
 
         if (location.contains("csscnt")) {
           // upload css needed
@@ -215,7 +235,9 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
       }
     } finally {
       // release any connection resources used by the method
-      post.releaseConnection();
+      if (response != null) {
+        EntityUtils.consume(response.getEntity());
+      }
     }
   }
 

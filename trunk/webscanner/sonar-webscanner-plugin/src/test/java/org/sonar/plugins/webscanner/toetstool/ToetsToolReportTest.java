@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.junit.Test;
+import org.sonar.plugins.webscanner.toetstool.validation.ToetsToolValidator;
 import org.sonar.plugins.webscanner.toetstool.xml.ToetstoolReport;
 
 public class ToetsToolReportTest {
@@ -42,8 +43,11 @@ public class ToetsToolReportTest {
     if (report.exists()) {
       report.delete();
     }
-    ToetsToolReportBuilder reportBuilder = new ToetsToolReportBuilder();
-    reportBuilder.buildReports(new File(packagePath));
+
+    ToetsToolValidator validator = new ToetsToolValidator("");
+    ToetsToolReportBuilder reportBuilder = new ToetsToolReportBuilder(validator);
+
+    reportBuilder.buildReports(ToetsToolValidator.getReportFiles(new File(packagePath)));
 
     assertTrue(report.exists());
   }

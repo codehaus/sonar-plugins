@@ -19,6 +19,7 @@
 package org.sonar.plugins.webscanner.markup;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -97,8 +98,7 @@ public final class W3CMarkupSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(files, project.getFileSystem().getSourceDirs().get(0),
-        ProjectConfiguration.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(files, project.getFileSystem().getSourceDirs().get(0), ProjectConfiguration.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, files);
@@ -157,11 +157,15 @@ public final class W3CMarkupSensor implements Sensor {
     int numValid = 0;
     int numFiles = 0;
 
+    List<File> reportFiles = new ArrayList<File>();
+
     for (File file : files) {
       org.sonar.api.resources.File htmlFile = org.sonar.api.resources.File.fromIOFile(file, project.getFileSystem().getSourceDirs());
       File reportFile = validator.reportFile(file);
 
       if (reportFile.exists()) {
+        reportFiles.add(reportFile);
+
         boolean isValid = readValidationReport(sensorContext, reportFile, htmlFile);
         if (isValid) {
           numValid++;
@@ -171,6 +175,8 @@ public final class W3CMarkupSensor implements Sensor {
       }
       numFiles++;
     }
+
+    new MarkupReportBuilder().buildReports(reportFiles);
 
     double percentageValid = numFiles > 0 ? (double) numValid / numFiles : 1;
     sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid * 100);
