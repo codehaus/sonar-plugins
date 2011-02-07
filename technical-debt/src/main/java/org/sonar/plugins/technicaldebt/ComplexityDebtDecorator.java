@@ -72,7 +72,7 @@ public final class ComplexityDebtDecorator implements Decorator {
         debt += methodSplitCost;
       }
 
-    } else if (Scopes.isType(resource)) {
+    } else if (Scopes.isProgramUnit(resource)) {
       double classComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
       if (classComplexity >= classThreshold) {
         debt += classSplitCost;
