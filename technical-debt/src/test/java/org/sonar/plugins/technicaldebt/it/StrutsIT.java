@@ -55,11 +55,13 @@ public class StrutsIT {
   @Test
   public void projectsMetrics() {
     assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=4.72;Complexity=12.77;Coverage=32.92;Design=3.52;Duplication=29.23;Violations=16.81"),
-        is("Comments=4.74;Complexity=12.8;Coverage=33.01;Design=3.53;Duplication=29.04;Violations=16.85"),
         is("Comments=4.2;Complexity=11.35;Coverage=29.26;Design=3.13;Duplication=37.09;Violations=14.94"),
-        is("Comments=4.2;Complexity=11.36;Coverage=29.28;Design=3.14;Duplication=37.04;Violations=14.95")
+        is("Comments=4.2;Complexity=11.36;Coverage=29.28;Design=3.14;Duplication=37.04;Violations=14.95"),
+
+        // sonar 2.6, td 1.2
+        is("Comments=4.2;Complexity=11.33;Coverage=29.27;Design=3.13;Duplication=37.09;Violations=14.95")
     ));
+    
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(276205.3), is(275455.3), is(310717.8), is(310467.8)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(27.9), is(21.7), is(22.5)));
@@ -73,7 +75,7 @@ public class StrutsIT {
         is("Comments=10.3;Complexity=21.02;Coverage=35.21;Design=14.66;Duplication=1.22;Violations=17.56"),
         is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.74")));
     assertThat(getCoreModuleMeasure("technical_debt").getValue(), anyOf(is(62258.9), is(61377.6), is(62265.1)));
-    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), anyOf(is(17.3), is(17.1)));
+    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), anyOf(is(17.3), is(17.1), /* sonar 2.6, td 1.2 */is(17.4)));
     assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), anyOf(is(124.5), closeTo(123.0, 0.5)));
   }
 
