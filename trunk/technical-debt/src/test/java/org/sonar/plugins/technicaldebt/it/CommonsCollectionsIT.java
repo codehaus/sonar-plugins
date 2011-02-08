@@ -56,10 +56,11 @@ public class CommonsCollectionsIT {
   @Test
   public void projectsMetrics() {
     assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=15.06;Complexity=22.54;Design=34.91;Duplication=10.35;Violations=17.11"),
-        is("Comments=15.02;Complexity=22.49;Design=34.83;Duplication=10.57;Violations=17.07"),
         is("Comments=15.4;Complexity=23.05;Design=35.7;Duplication=8.37;Violations=17.46"),
-        is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04")));
+        is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04"),
+
+        // sonar 2.6, td 1.2
+        is("Comments=15.08;Complexity=22.42;Design=34.97;Duplication=10.37;Violations=17.14")));
 
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and for after Sonar 2.2
@@ -74,7 +75,10 @@ public class CommonsCollectionsIT {
         is("Comments=14.13;Complexity=47.1;Coverage=7.24;Duplication=11.16;Violations=20.34"),
         is("Comments=14.06;Complexity=46.87;Coverage=7.21;Duplication=11.59;Violations=20.24"),
 
-        is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17")));
+        is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17"),
+
+        // sonar 2.6, td 1.2
+        is("Comments=14.18;Complexity=46.91;Coverage=7.27;Duplication=11.21;Violations=20.42")));
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and 2 for after Sonar 2.2
     assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25740.3), is(25865.3), is(25840.3), is(25215.3)));
