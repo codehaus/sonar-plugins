@@ -85,7 +85,7 @@
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
         <configuration>
-          <extendPlugin>findbugs</extendPlugin>
+          <basePlugin>findbugs</basePlugin>
         </configuration>
       </plugin>
     </plugins>
