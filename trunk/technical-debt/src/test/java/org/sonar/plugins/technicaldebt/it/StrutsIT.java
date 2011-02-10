@@ -59,7 +59,7 @@ public class StrutsIT {
         is("Comments=4.2;Complexity=11.36;Coverage=29.28;Design=3.14;Duplication=37.04;Violations=14.95"),
 
         // sonar 2.6, td 1.2
-        is("Comments=4.2;Complexity=11.33;Coverage=29.27;Design=3.13;Duplication=37.09;Violations=14.95")
+        is("Comments=4.2;Complexity=11.34;Coverage=29.29;Design=3.14;Duplication=37.04;Violations=14.96")
     ));
     
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
