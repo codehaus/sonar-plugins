@@ -60,7 +60,7 @@ public class CommonsCollectionsIT {
         is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04"),
 
         // sonar 2.6, td 1.2
-        is("Comments=15.08;Complexity=22.42;Design=34.97;Duplication=10.37;Violations=17.14")));
+        is("Comments=15.04;Complexity=22.37;Design=34.88;Duplication=10.58;Violations=17.1")));
 
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and for after Sonar 2.2
@@ -78,7 +78,7 @@ public class CommonsCollectionsIT {
         is("Comments=14.07;Complexity=46.92;Coverage=7.21;Duplication=11.6;Violations=20.17"),
 
         // sonar 2.6, td 1.2
-        is("Comments=14.18;Complexity=46.91;Coverage=7.27;Duplication=11.21;Violations=20.42")));
+        is("Comments=14.11;Complexity=46.68;Coverage=7.23;Duplication=11.64;Violations=20.32")));
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
     // and 2 for after Sonar 2.2
     assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(25740.3), is(25865.3), is(25840.3), is(25215.3)));
