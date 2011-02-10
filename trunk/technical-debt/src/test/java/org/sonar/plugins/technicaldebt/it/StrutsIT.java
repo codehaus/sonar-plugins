@@ -63,7 +63,7 @@ public class StrutsIT {
     ));
     
     // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
-    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(276205.3), is(275455.3), is(310717.8), is(310467.8)));
+    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(276205.3), is(275455.3), is(310717.8), is(310467.8), is(310405.3)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(27.9), is(21.7), is(22.5)));
     assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(552.4), is(550.9), is(447.5), is(446.2), closeTo(621.0, 1.0)));
   }
