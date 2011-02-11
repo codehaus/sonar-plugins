@@ -48,7 +48,7 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
   public class Analyzer extends AbstractAnalyzer {
     @Override
     protected String getReportPath(Project project) {
-      return configuration.getItReportPath();
+      return configuration.getReportPath();
     }
 
     @Override

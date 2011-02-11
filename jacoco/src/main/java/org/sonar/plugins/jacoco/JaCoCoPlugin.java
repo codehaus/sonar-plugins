@@ -95,13 +95,14 @@ public class JaCoCoPlugin implements Plugin {
 
   public List getExtensions() {
     return Arrays.asList(
+        JacocoConfiguration.class,
+        JaCoCoAgentDownloader.class,
         // Ant
         JacocoAntInitializer.class,
         // Maven
         JacocoMavenInitializer.class,
-        // Unit tests
-        JaCoCoAgentDownloader.class,
         JaCoCoMavenPluginHandler.class,
+        // Unit tests
         JaCoCoSensor.class,
         // Integration tests
         JaCoCoItMetrics.class,
