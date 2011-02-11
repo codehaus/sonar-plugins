@@ -21,45 +21,34 @@
 package org.sonar.plugins.jacoco;
 
 import org.jacoco.core.analysis.ICounter;
-import org.sonar.api.Plugins;
 import org.sonar.api.batch.AbstractCoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.maven.DependsUponMavenPlugin;
-import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
-  private JaCoCoMavenPluginHandler handler;
+public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
 
-  public JaCoCoSensor(Plugins plugins, JaCoCoMavenPluginHandler handler) {
-    super(plugins);
-    this.handler = handler;
-  }
+  private JacocoConfiguration configuration;
 
-  public MavenPluginHandler getMavenPluginHandler(Project project) {
-    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC) && project.getFileSystem().hasTestFiles(Java.INSTANCE)) {
-      return handler;
-    }
-    return null;
+  public JaCoCoSensor(JacocoConfiguration configuration) {
+    this.configuration = configuration;
   }
 
   public void analyse(Project project, SensorContext context) {
     new Analyzer().analyse(project, context);
   }
 
-  public static class Analyzer extends AbstractAnalyzer {
+  public class Analyzer extends AbstractAnalyzer {
     @Override
     protected String getReportPath(Project project) {
-      return getPath(project);
+      return configuration.getItReportPath();
     }
 
     @Override
@@ -79,12 +68,9 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor, D
     }
   }
 
-  public static String getPath(Project project) {
-    return project.getConfiguration().getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
-  }
-
   @Override
   public String toString() {
     return getClass().getSimpleName();
   }
+
 }

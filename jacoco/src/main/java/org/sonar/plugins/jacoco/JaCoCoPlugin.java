@@ -20,14 +20,14 @@
 
 package org.sonar.plugins.jacoco;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.jacoco.itcoverage.*;
 import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Evgeny Mandrikov
@@ -70,8 +70,7 @@ import java.util.List;
         global = false,
         module = true,
         project = true
-    )
-})
+    ) })
 public class JaCoCoPlugin implements Plugin {
 
   public static final String REPORT_PATH_PROPERTY = "sonar.jacoco.reportPath";
@@ -96,6 +95,10 @@ public class JaCoCoPlugin implements Plugin {
 
   public List getExtensions() {
     return Arrays.asList(
+        // Ant
+        JacocoAntInitializer.class,
+        // Maven
+        JacocoMavenInitializer.class,
         // Unit tests
         JaCoCoAgentDownloader.class,
         JaCoCoMavenPluginHandler.class,
@@ -106,8 +109,7 @@ public class JaCoCoPlugin implements Plugin {
         ItCoverageWidget.class,
         ItCoverageDecorator.class,
         ItLineCoverageDecorator.class,
-        CoverageViewerDefinition.class
-      );
+        CoverageViewerDefinition.class);
   }
 
   @Override

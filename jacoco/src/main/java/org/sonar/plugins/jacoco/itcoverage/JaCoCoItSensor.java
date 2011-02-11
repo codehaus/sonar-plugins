@@ -29,7 +29,7 @@ import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.jacoco.AbstractAnalyzer;
-import org.sonar.plugins.jacoco.JaCoCoPlugin;
+import org.sonar.plugins.jacoco.JacocoConfiguration;
 
 /**
  * Note that this class can't extend {@link org.sonar.api.batch.AbstractCoverageExtension}, because in this case this extension will be
@@ -39,11 +39,14 @@ import org.sonar.plugins.jacoco.JaCoCoPlugin;
  * @author Evgeny Mandrikov
  */
 public class JaCoCoItSensor implements Sensor {
-  public JaCoCoItSensor() {
+  private JacocoConfiguration configuration;
+
+  public JaCoCoItSensor(JacocoConfiguration configuration) {
+    this.configuration = configuration;
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return StringUtils.isNotBlank(project.getConfiguration().getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY))
+    return StringUtils.isNotBlank(configuration.getItReportPath())
         && project.getAnalysisType().isDynamic(true);
   }
 
@@ -51,10 +54,10 @@ public class JaCoCoItSensor implements Sensor {
     new Analyzer().analyse(project, context);
   }
 
-  public static class Analyzer extends AbstractAnalyzer {
+  public class Analyzer extends AbstractAnalyzer {
     @Override
     protected String getReportPath(Project project) {
-      return project.getConfiguration().getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY, JaCoCoPlugin.IT_REPORT_PATH_DEFAULT_VALUE);
+      return configuration.getItReportPath();
     }
 
     @Override
