@@ -66,7 +66,7 @@ public class CommonsCollectionsIT {
     // and for after Sonar 2.2
     assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103812.5), is(104062.5), is(104025.0), is(101275.0), is(103906.3)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(13.9), is(13.8), is(13.5), is(13.6)));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6)));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6), is(207.8)));
   }
 
   @Test
