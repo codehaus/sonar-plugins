@@ -20,16 +20,14 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.apache.commons.configuration.Configuration;
+import java.io.File;
+
 import org.apache.commons.lang.StringUtils;
-import org.jacoco.core.runtime.AgentOptions;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
-
-import java.io.File;
 
 /**
  * @author Evgeny Mandrikov
@@ -38,14 +36,14 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
   private static final String ARG_LINE_PARAMETER = "argLine";
 
-  private JaCoCoAgentDownloader downloader;
-
   private final String groupId;
   private final String artifactId;
   private final String version;
 
-  public JaCoCoMavenPluginHandler(JaCoCoAgentDownloader downloader) {
-    this.downloader = downloader;
+  private JacocoConfiguration configuration;
+
+  public JaCoCoMavenPluginHandler(JacocoConfiguration configuration) {
+    this.configuration = configuration;
     groupId = MavenSurefireUtils.GROUP_ID;
     artifactId = MavenSurefireUtils.ARTIFACT_ID;
     version = MavenSurefireUtils.VERSION;
@@ -73,7 +71,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
   public void configure(Project project, MavenPlugin plugin) {
     // See SONARPLUGINS-600
-    String destfilePath = JaCoCoSensor.getPath(project);
+    String destfilePath = configuration.getReportPath();
     File destfile = project.getFileSystem().resolvePath(destfilePath);
     if (destfile.exists() && destfile.isFile()) {
       JaCoCoUtils.LOG.info("Deleting {}", destfile);
@@ -82,18 +80,7 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
       }
     }
 
-    Configuration configuration = project.getConfiguration();
-    AgentOptions options = new AgentOptions();
-    options.setDestfile(destfilePath);
-    String includes = configuration.getString(JaCoCoPlugin.INCLUDES_PROPERTY);
-    if (StringUtils.isNotBlank(includes)) {
-      options.setIncludes(includes);
-    }
-    String excludes = configuration.getString(JaCoCoPlugin.EXCLUDES_PROPERTY);
-    if (StringUtils.isNotBlank(excludes)) {
-      options.setExcludes(excludes);
-    }
-    String argument = options.getVMArgument(downloader.getAgentJarFile());
+    String argument = configuration.getJvmArgument();
 
     String argLine = plugin.getParameter(ARG_LINE_PARAMETER);
     argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
