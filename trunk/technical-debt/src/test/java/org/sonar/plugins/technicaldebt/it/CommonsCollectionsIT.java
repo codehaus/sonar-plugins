@@ -56,8 +56,7 @@ public class CommonsCollectionsIT {
   @Test
   public void projectsMetrics() {
     assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=15.4;Complexity=23.05;Design=35.7;Duplication=8.37;Violations=17.46"),
-        is("Comments=15.03;Complexity=22.5;Design=34.84;Duplication=10.57;Violations=17.04"),
+        is("Comments=15.02;Complexity=22.49;Design=34.83;Duplication=10.57;Violations=17.07"),
 
         // sonar 2.6, td 1.2
         is("Comments=15.04;Complexity=22.37;Design=34.88;Duplication=10.58;Violations=17.1")));
@@ -66,7 +65,7 @@ public class CommonsCollectionsIT {
     // and for after Sonar 2.2
     assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(103812.5), is(104062.5), is(104025.0), is(101275.0), is(103906.3)));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(13.9), is(13.8), is(13.5), is(13.6)));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6), is(207.8)));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(207.6), is(208.1), is(203.1), is(202.6), is(207.8v)));
   }
 
   @Test
