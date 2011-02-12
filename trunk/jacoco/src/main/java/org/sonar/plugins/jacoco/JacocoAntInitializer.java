@@ -21,7 +21,9 @@
 package org.sonar.plugins.jacoco;
 
 import java.util.Hashtable;
+import java.util.List;
 
+import com.google.common.collect.Lists;
 import org.apache.tools.ant.*;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Initializer;
@@ -49,15 +51,32 @@ public class JacocoAntInitializer extends Initializer implements CoverageExtensi
   public void execute(org.sonar.api.resources.Project project) {
     Hashtable<String, Target> hastable = antProject.getTargets();
 
+    List<TaskEnhancer> taskEnhancers = Lists.newArrayList();
+    taskEnhancers.add(new JavaLikeTaskEnhancer("junit"));
+    taskEnhancers.add(new TestngTaskEnhancer());
+
     Target target = hastable.get("test");
-    JavaLikeTaskEnhancer enhancer = new JavaLikeTaskEnhancer("junit");
     for (Task task : target.getTasks()) {
-      if (enhancer.supportsTask(task.getTaskName())) {
-        enhancer.enhanceTask(task);
+      for (TaskEnhancer enhancer : taskEnhancers) {
+        if (enhancer.supportsTask(task.getTaskName())) {
+          enhancer.enhanceTask(task);
+        }
       }
     }
 
     target.execute();
+  }
+
+  private class TestngTaskEnhancer extends JavaLikeTaskEnhancer {
+
+    public TestngTaskEnhancer() {
+      super("testng");
+    }
+
+    public void enhanceTask(Task task) throws BuildException {
+      addJvmArgs((UnknownElement) task);
+    }
+
   }
 
   /**
