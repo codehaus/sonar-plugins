@@ -34,16 +34,16 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
  */
 @Properties({
     @Property(
-        key = JaCoCoPlugin.REPORT_PATH_PROPERTY,
+        key = JacocoConfiguration.REPORT_PATH_PROPERTY,
         name = "File with execution data",
-        defaultValue = JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE,
+        defaultValue = JacocoConfiguration.REPORT_PATH_DEFAULT_VALUE,
         description = "Path (absolute or relative) to the file with execution data.",
         global = false,
         module = true,
         project = true
     ),
     @Property(
-        key = JaCoCoPlugin.INCLUDES_PROPERTY,
+        key = JacocoConfiguration.INCLUDES_PROPERTY,
         name = "Includes",
         description = "A list of class names that should be included in execution analysis." +
             " The list entries are separated by a vertical bar (|) and may use wildcard characters (* and ?)." +
@@ -53,7 +53,7 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
         module = true
     ),
     @Property(
-        key = JaCoCoPlugin.EXCLUDES_PROPERTY,
+        key = JacocoConfiguration.EXCLUDES_PROPERTY,
         name = "Excludes",
         description = "A list of class names that should be excluded from execution analysis." +
             " The list entries are separated by a vertical bar (|) and may use wildcard characters (* and ?)." +
@@ -63,22 +63,24 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
         module = true
     ),
     @Property(
-        key = JaCoCoPlugin.IT_REPORT_PATH_PROPERTY,
+        key = JacocoConfiguration.IT_REPORT_PATH_PROPERTY,
         name = "File with execution data for integration tests",
-        defaultValue = JaCoCoPlugin.IT_REPORT_PATH_DEFAULT_VALUE,
+        defaultValue = JacocoConfiguration.IT_REPORT_PATH_DEFAULT_VALUE,
         description = "Path (absolute or relative) to the file with execution data.",
         global = false,
         module = true,
         project = true
+    ),
+    @Property(
+        key = JacocoConfiguration.ANT_TARGETS_PROPERTY,
+        name = "",
+        defaultValue = JacocoConfiguration.ANT_TARGETS_DEFAULT_VALUE,
+        description = "",
+        global = true,
+        module = true,
+        project = true
     ) })
 public class JaCoCoPlugin implements Plugin {
-
-  public static final String REPORT_PATH_PROPERTY = "sonar.jacoco.reportPath";
-  public static final String REPORT_PATH_DEFAULT_VALUE = "target/jacoco.exec";
-  public static final String IT_REPORT_PATH_PROPERTY = "sonar.jacoco.itReportPath";
-  public static final String IT_REPORT_PATH_DEFAULT_VALUE = "";
-  public static final String INCLUDES_PROPERTY = "sonar.jacoco.includes";
-  public static final String EXCLUDES_PROPERTY = "sonar.jacoco.excludes";
 
   public String getKey() {
     return "jacoco";

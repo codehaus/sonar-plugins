@@ -27,6 +27,15 @@ import org.sonar.api.BatchExtension;
 
 public class JacocoConfiguration implements BatchExtension {
 
+  public static final String REPORT_PATH_PROPERTY = "sonar.jacoco.reportPath";
+  public static final String REPORT_PATH_DEFAULT_VALUE = "target/jacoco.exec";
+  public static final String IT_REPORT_PATH_PROPERTY = "sonar.jacoco.itReportPath";
+  public static final String IT_REPORT_PATH_DEFAULT_VALUE = "";
+  public static final String INCLUDES_PROPERTY = "sonar.jacoco.includes";
+  public static final String EXCLUDES_PROPERTY = "sonar.jacoco.excludes";
+  public static final String ANT_TARGETS_PROPERTY = "sonar.jacoco.antTargets";
+  public static final String ANT_TARGETS_DEFAULT_VALUE = "test";
+
   private Configuration configuration;
   private JaCoCoAgentDownloader downloader;
 
@@ -36,25 +45,29 @@ public class JacocoConfiguration implements BatchExtension {
   }
 
   public String getReportPath() {
-    return configuration.getString(JaCoCoPlugin.REPORT_PATH_PROPERTY, JaCoCoPlugin.REPORT_PATH_DEFAULT_VALUE);
+    return configuration.getString(REPORT_PATH_PROPERTY, REPORT_PATH_DEFAULT_VALUE);
   }
 
   public String getItReportPath() {
-    return configuration.getString(JaCoCoPlugin.IT_REPORT_PATH_PROPERTY);
+    return configuration.getString(IT_REPORT_PATH_PROPERTY, IT_REPORT_PATH_DEFAULT_VALUE);
   }
 
   public String getJvmArgument() {
     AgentOptions options = new AgentOptions();
     options.setDestfile(getReportPath());
-    String includes = configuration.getString(JaCoCoPlugin.INCLUDES_PROPERTY);
+    String includes = configuration.getString(INCLUDES_PROPERTY);
     if (StringUtils.isNotBlank(includes)) {
       options.setIncludes(includes);
     }
-    String excludes = configuration.getString(JaCoCoPlugin.EXCLUDES_PROPERTY);
+    String excludes = configuration.getString(EXCLUDES_PROPERTY);
     if (StringUtils.isNotBlank(excludes)) {
       options.setExcludes(excludes);
     }
     return options.getVMArgument(downloader.getAgentJarFile());
+  }
+
+  public String[] getAntTargets() {
+    return StringUtils.split(configuration.getString(ANT_TARGETS_PROPERTY, ANT_TARGETS_DEFAULT_VALUE), ',');
   }
 
 }
