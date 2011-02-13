@@ -21,10 +21,9 @@
 package org.sonar.plugins.jacoco;
 
 import java.util.Hashtable;
-import java.util.List;
 
-import com.google.common.collect.Lists;
 import org.apache.tools.ant.*;
+import org.apache.tools.ant.taskdefs.Java;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Initializer;
 import org.sonar.api.batch.SupportedEnvironment;
@@ -32,6 +31,8 @@ import org.sonar.api.resources.Project;
 
 @SupportedEnvironment("ant")
 public class JacocoAntInitializer extends Initializer implements CoverageExtension {
+
+  private final TaskEnhancer[] taskEnhancers = new TaskEnhancer[] { new JavaLikeTaskEnhancer(), new TestngTaskEnhancer() };
 
   private org.apache.tools.ant.Project antProject;
   private JacocoConfiguration configuration;
@@ -50,54 +51,47 @@ public class JacocoAntInitializer extends Initializer implements CoverageExtensi
   @Override
   public void execute(org.sonar.api.resources.Project project) {
     Hashtable<String, Target> hastable = antProject.getTargets();
-
-    List<TaskEnhancer> taskEnhancers = Lists.newArrayList();
-    taskEnhancers.add(new JavaLikeTaskEnhancer("junit"));
-    taskEnhancers.add(new TestngTaskEnhancer());
-
-    Target target = hastable.get("test");
-    for (Task task : target.getTasks()) {
-      for (TaskEnhancer enhancer : taskEnhancers) {
-        if (enhancer.supportsTask(task.getTaskName())) {
-          enhancer.enhanceTask(task);
+    String jvmArg = configuration.getJvmArgument();
+    String[] names = configuration.getAntTargets();
+    for (String name : names) {
+      Target target = hastable.get(name);
+      if (target == null) {
+        JaCoCoUtils.LOG.warn("Target '{}' not found", name);
+      } else {
+        // Enhance target
+        for (Task task : target.getTasks()) {
+          for (TaskEnhancer enhancer : taskEnhancers) {
+            if (enhancer.supportsTask(task)) {
+              enhancer.enhanceTask(task, jvmArg);
+            }
+          }
         }
+        // Execute target
+        // TODO antProject.getExecutor().executeTargets(antProject, new String[] { "test" });
+        target.performTasks();
       }
     }
-
-    target.execute();
   }
 
-  private class TestngTaskEnhancer extends JavaLikeTaskEnhancer {
-
-    public TestngTaskEnhancer() {
-      super("testng");
+  private static class TestngTaskEnhancer extends TaskEnhancer {
+    @Override
+    public boolean supportsTask(Task task) {
+      return "testng".equals(task.getTaskName());
     }
-
-    public void enhanceTask(Task task) throws BuildException {
-      addJvmArgs((UnknownElement) task);
-    }
-
   }
 
   /**
    * Basic task enhancer that can handle all 'java like' tasks. That is, tasks
    * that have a top level fork attribute and nested jvmargs elements
-   * 
-   * @TODO copied from JaCoCo
    */
-  private class JavaLikeTaskEnhancer implements TaskEnhancer {
+  private static class JavaLikeTaskEnhancer extends TaskEnhancer {
 
-    private final String supportedTaskName;
-
-    public JavaLikeTaskEnhancer(final String supportedTaskName) {
-      this.supportedTaskName = supportedTaskName;
+    public boolean supportsTask(final Task task) {
+      return task instanceof Java;
     }
 
-    public boolean supportsTask(final String taskname) {
-      return taskname.equals(supportedTaskName);
-    }
-
-    public void enhanceTask(final Task task) {
+    @Override
+    public void enhanceTask(final Task task, final String jvmArg) {
       final RuntimeConfigurable configurableWrapper = task.getRuntimeConfigurableWrapper();
 
       final String forkValue = (String) configurableWrapper.getAttributeMap().get("fork");
@@ -106,46 +100,42 @@ public class JacocoAntInitializer extends Initializer implements CoverageExtensi
         throw new BuildException("Coverage can only be applied on a forked VM");
       }
 
-      addJvmArgs((UnknownElement) task);
+      super.enhanceTask(task, jvmArg);
     }
 
-    public void addJvmArgs(final UnknownElement task) {
-      final UnknownElement el = new UnknownElement("jvmarg");
-      el.setTaskName("jvmarg");
-      el.setQName("jvmarg");
-
-      final RuntimeConfigurable runtimeConfigurableWrapper = el.getRuntimeConfigurableWrapper();
-      runtimeConfigurableWrapper.setAttribute("value", configuration.getJvmArgument());
-
-      task.getRuntimeConfigurableWrapper().addChild(runtimeConfigurableWrapper);
-
-      task.addChild(el);
-    }
   }
 
-  /**
-   * @TODO copied from JaCoCo
-   */
-  private interface TaskEnhancer {
+  private static abstract class TaskEnhancer {
     /**
-     * @param taskname
-     *          Task type to enhance
-     * @return <code>true</code> iff this enhancer is capable of enhacing
-     *         the requested task type
+     * @param task Task instance to enhance
+     * @return <code>true</code> if this enhancer is capable of enhancing the requested task
      */
-    public boolean supportsTask(String taskname);
+    public abstract boolean supportsTask(Task task);
 
     /**
      * Attempt to enhance the supplied task with coverage information. This
      * operation may fail if the task is being executed in the current VM
      * 
-     * @param task
-     *          Task instance to enhance (usually an {@link UnknownElement})
-     * @throws BuildException
-     *           Thrown if this enhancer can handle this type of task, but
-     *           this instance can not be enhanced for some reason.
+     * @param task Task instance to enhance (usually an {@link UnknownElement})
+     * @param jvmArg
+     * @throws BuildException Thrown if this enhancer can handle this type of task, but this instance can not be enhanced for some reason.
      */
-    public void enhanceTask(Task task) throws BuildException;
+    public void enhanceTask(Task task, String jvmArg) throws BuildException {
+      addJvmArg((UnknownElement) task, jvmArg);
+    }
+
+    public void addJvmArg(final UnknownElement task, final String jvmArg) {
+      final UnknownElement el = new UnknownElement("jvmarg");
+      el.setTaskName("jvmarg");
+      el.setQName("jvmarg");
+
+      final RuntimeConfigurable runtimeConfigurableWrapper = el.getRuntimeConfigurableWrapper();
+      runtimeConfigurableWrapper.setAttribute("value", jvmArg);
+
+      task.getRuntimeConfigurableWrapper().addChild(runtimeConfigurableWrapper);
+
+      task.addChild(el);
+    }
   }
 
 }

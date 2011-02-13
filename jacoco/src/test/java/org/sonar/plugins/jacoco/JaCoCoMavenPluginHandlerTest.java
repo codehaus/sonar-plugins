@@ -88,8 +88,8 @@ public class JaCoCoMavenPluginHandlerTest {
   public void testIncludesExcludes() {
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
     Configuration configuration = project.getConfiguration();
-    configuration.setProperty(JaCoCoPlugin.INCLUDES_PROPERTY, "org.sonar.*");
-    configuration.setProperty(JaCoCoPlugin.EXCLUDES_PROPERTY, "org.sonar.api.*");
+    configuration.setProperty(JacocoConfiguration.INCLUDES_PROPERTY, "org.sonar.*");
+    configuration.setProperty(JacocoConfiguration.EXCLUDES_PROPERTY, "org.sonar.api.*");
     MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
 
     handler.configure(project, plugin);
