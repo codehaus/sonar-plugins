@@ -23,7 +23,6 @@ package org.sonar.plugins.jacoco;
 import java.util.Hashtable;
 
 import org.apache.tools.ant.*;
-import org.apache.tools.ant.taskdefs.Java;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Initializer;
 import org.sonar.api.batch.SupportedEnvironment;
@@ -32,7 +31,7 @@ import org.sonar.api.resources.Project;
 @SupportedEnvironment("ant")
 public class JacocoAntInitializer extends Initializer implements CoverageExtension {
 
-  private final TaskEnhancer[] taskEnhancers = new TaskEnhancer[] { new JavaLikeTaskEnhancer(), new TestngTaskEnhancer() };
+  private final TaskEnhancer[] taskEnhancers = new TaskEnhancer[] { new JavaLikeTaskEnhancer("junit"), new TestngTaskEnhancer() };
 
   private org.apache.tools.ant.Project antProject;
   private JacocoConfiguration configuration;
@@ -85,9 +84,14 @@ public class JacocoAntInitializer extends Initializer implements CoverageExtensi
    * that have a top level fork attribute and nested jvmargs elements
    */
   private static class JavaLikeTaskEnhancer extends TaskEnhancer {
+    private String taskName;
+
+    public JavaLikeTaskEnhancer(String taskName) {
+      this.taskName = taskName;
+    }
 
     public boolean supportsTask(final Task task) {
-      return task instanceof Java;
+      return taskName.equals(task.getTaskName());
     }
 
     @Override
