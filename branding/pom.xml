@@ -36,8 +36,8 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/logo</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/logo</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/branding</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/branding</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
   <issueManagement>
@@ -45,6 +45,8 @@
     <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14663</url>
   </issueManagement>
   <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-BRANDING</url>
   </ciManagement>
 
   <properties>
@@ -59,6 +61,18 @@
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <!-- unit tests -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
     </dependency>
   </dependencies>
 
