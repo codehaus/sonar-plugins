@@ -12,10 +12,10 @@
   <packaging>sonar-plugin</packaging>
   <version>2.7-SNAPSHOT</version>
 
-  <name>Sonar :: Plugins :: Clover</name>
+  <name>Sonar Clover Plugin</name>
   <description></description>
   <url>http://docs.codehaus.org/display/SONAR/Clover+Plugin</url>
-  <inceptionYear>2009</inceptionYear>
+  <inceptionYear>2008</inceptionYear>
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com</url>
