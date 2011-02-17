@@ -1,5 +1,5 @@
 /*
- * Sonar Logo Plugin
+ * Sonar Branding Plugin
  * Copyright (C) 2011 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.logo;
+package org.sonar.plugins.branding;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -26,20 +26,21 @@ import org.sonar.api.web.Footer;
 
 public class LogoFooter implements Footer {
 
-  private Configuration configuration;
+  private final Configuration configuration;
   private String html;
 
   public LogoFooter(Configuration configuration) {
     this.configuration = configuration;
   }
 
-  private String getLogoUrl() {
-    return configuration.getString(LogoPlugin.URL_PROPERTY);
+  private String getImageUrl() {
+    return configuration.getString(BrandingPlugin.IMAGE_PROPERTY, "");
   }
 
-  public void start() {
-    String logoUrl = getLogoUrl();
-    if (StringUtils.isEmpty(logoUrl)) {
+  private void createHtml() {
+    html = "";
+    String imageUrl = getImageUrl();
+    if (StringUtils.isEmpty(imageUrl)) {
       return;
     }
 
@@ -48,11 +49,11 @@ public class LogoFooter implements Footer {
     sb.append("    Event.observe(window, 'load', function(){\n");
 
     sb.append("        var companyLogo = document.createElement('img');\n");
-    sb.append("        companyLogo.setAttribute('src', '").append(logoUrl).append("');\n");
+    sb.append("        companyLogo.setAttribute('src', '").append(imageUrl).append("');\n");
     sb.append("        companyLogo.setAttribute('alt', 'Company Logo');\n");
     sb.append("        companyLogo.setAttribute('title', 'Company');\n");
 
-    sb.append("        var sonarContent = $$('div[id=\"content\"]').first();\n");
+    sb.append("        var sonarContent = $$('div[id=\"error\"]').first().parentNode;\n");
     sb.append("        sonarContent.insertBefore(companyLogo, sonarContent.firstChild);\n");
 
     sb.append("    });\n");
@@ -61,6 +62,9 @@ public class LogoFooter implements Footer {
   }
 
   public String getHtml() {
+    if (html == null) {
+      createHtml();
+    }
     return html;
   }
 
