@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
@@ -48,14 +48,12 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.4</sonar.version>
+    <sonar.version>2.6-RC1</sonar.version>
     <fbcontrib.version>4.6.0</fbcontrib.version>
     <sonar.pluginName>fb-contrib</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.fbcontrib.FbContribPlugin</sonar.pluginClass>
-    
     <!-- Plugin updates -->
-    <enforcer.skip>true</enforcer.skip>
-    <version.sonar-packaging.plugin>1.1-SNAPSHOT</version.sonar-packaging.plugin>
+    <version.sonar-packaging.plugin>1.1</version.sonar-packaging.plugin>
   </properties>
 
   <dependencies>
@@ -78,7 +76,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -90,7 +88,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <repositories>
     <repository>
       <!-- for fbcontrib -->
