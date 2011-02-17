@@ -7,13 +7,13 @@
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>sonar-logo-plugin</artifactId>
+  <artifactId>sonar-branding-plugin</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
-  <name>Sonar Logo Plugin</name>
-  <description></description>
-  <url></url>
+  <name>Sonar Branding Plugin</name>
+  <description>Allows to add your own logo to the Sonar UI.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Branding+Plugin</url>
   <inceptionYear>2011</inceptionYear>
   <organization>
     <name>SonarSource</name>
@@ -41,14 +41,16 @@
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
   <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14663</url>
   </issueManagement>
   <ciManagement>
   </ciManagement>
 
   <properties>
-    <sonar.version>2.4</sonar.version>
-    <sonar.pluginName>Logo</sonar.pluginName>
-    <sonar.pluginClass>org.sonar.plugins.logo.LogoPlugin</sonar.pluginClass>
+    <sonar.version>1.12</sonar.version>
+    <sonar.pluginName>Branding</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.branding.BrandingPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
