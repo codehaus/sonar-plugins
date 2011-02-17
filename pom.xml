@@ -63,6 +63,7 @@
       <modules>
         <module>ant-task</module>
         <module>branding</module>
+        <module>clover</module>
         <module>debug</module>
         <module>fb-contrib</module>
         <module>metrics-help</module>
