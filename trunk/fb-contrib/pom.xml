@@ -48,7 +48,7 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.6-RC1</sonar.version>
+    <sonar.version>2.6</sonar.version>
     <fbcontrib.version>4.6.0</fbcontrib.version>
     <sonar.pluginName>fb-contrib</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.fbcontrib.FbContribPlugin</sonar.pluginClass>
