@@ -25,7 +25,7 @@ import org.sonar.api.Plugin;
 import java.util.Arrays;
 import java.util.List;
 
-public class FbContribPlugin implements Plugin {
+public final class FbContribPlugin implements Plugin {
 
   public String getKey() {
     return "fbcontrib";
