@@ -20,11 +20,12 @@
 
 package org.sonar.c.checks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.sonar.api.Plugin;
 
-import com.google.common.collect.Lists;
+import com.sonarsource.c.plugin.CCheck;
 
 public class CCheckPlugin implements Plugin {
 
@@ -40,24 +41,11 @@ public class CCheckPlugin implements Plugin {
     return "C checks for C projects";
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
   public List getExtensions() {
-    List extensions = Lists.newArrayList();
-    extensions.add(BooleanExpressionComplexityCheck.class);
-    extensions.add(CollapsibleIfStatementsCheck.class);
-    extensions.add(EmptyBlockCheck.class);
-    extensions.add(ExcessiveParameterListCheck.class);
-    extensions.add(FileLocCheck.class);
-    extensions.add(FileNameCheck.class);
-    extensions.add(ForLoopWithoutBracesCheck.class);
-    extensions.add(FunctionComplexityCheck.class);
-    extensions.add(FunctionLocCheck.class);
-    extensions.add(FunctionNameCheck.class);
-    extensions.add(IfStatementWithoutBracesCheck.class);
-    extensions.add(NestedIfDepthCheck.class);
-    extensions.add(ParsingErrorCheck.class);
-    extensions.add(SwitchStatementWithoutDefaultCheck.class);
-    extensions.add(WhileLoopWithoutBracesCheck.class);
+    List<Class<? extends CCheck>> extensions = new ArrayList<Class<? extends CCheck>>();
+    for (Class<? extends CCheck> cCheckClass : new CheckRepository().getCheckClasses()) {
+      extensions.add(cCheckClass);
+    }
     return extensions;
   }
 }
