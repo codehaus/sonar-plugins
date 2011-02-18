@@ -6,7 +6,7 @@
     <configKey><![CDATA[ISB_INEFFICIENT_STRING_BUFFERING]]></configKey>
     <description>
 <![CDATA[
-<p> This method uses StringBuffer or StringBuilder append to concatenate strings. However, it passes the result
+<p>[fb-contrib] This method uses StringBuffer or StringBuilder append to concatenate strings. However, it passes the result
 of doing a simple String concatenation to one of these append calls, thus removing any performance gains
 of using the StringBuffer or StringBuilder class.</p>
 ]]>
@@ -18,7 +18,7 @@ of using the StringBuffer or StringBuilder class.</p>
     <configKey><![CDATA[ISB_EMPTY_STRING_APPENDING]]></configKey>
     <description>
 <![CDATA[
-<p> This method concatenates an empty string with a literal value, in order to convert
+<p>[fb-contrib] This method concatenates an empty string with a literal value, in order to convert
 the literal value into a string. It is more efficient to use String.valueOf() to do the same
 thing as you do not incur the cost of creating a StringBuffer/Builder and calling methods on it
 to accomplish this.</p>
@@ -31,7 +31,7 @@ to accomplish this.</p>
     <configKey><![CDATA[SCI_SYNCHRONIZED_COLLECTION_ITERATORS]]></configKey>
     <description>
 <![CDATA[
-<p> This method uses a synchronized collection, built from Collections.synchronizedXXXX, but accesses it 
+<p>[fb-contrib] This method uses a synchronized collection, built from Collections.synchronizedXXXX, but accesses it 
 through an iterator. Since an iterator is by definition, multithreaded unsafe, this is a conflict in
 concept. When using iterators, you should do the synchronization manually.</p>
 ]]>
@@ -43,7 +43,7 @@ concept. When using iterators, you should do the synchronization manually.</p>
     <configKey><![CDATA[CC_CYCLOMATIC_COMPLEXITY]]></configKey>
     <description>
 <![CDATA[
-<p> This method has a high cyclomatic complexity figure, which calculates the number of branch
+<p>[fb-contrib] This method has a high cyclomatic complexity figure, which calculates the number of branch
 points. It is likely difficult to test, and is brittle to change. Consider refactoring this 
 method into several to reduce the risk.</p>
 ]]>
@@ -55,7 +55,7 @@ method into several to reduce the risk.</p>
     <configKey><![CDATA[OCP_OVERLY_CONCRETE_PARAMETER]]></configKey>
     <description>
 <![CDATA[
-<p> This method uses concrete classes for parameters when only methods defined in an implemented
+<p>[fb-contrib] This method uses concrete classes for parameters when only methods defined in an implemented
 interface or super class are used. Consider increasing the abstraction of the interface to
 make low impact changes easier to accomplish in the future.</p>
 ]]>
@@ -67,7 +67,7 @@ make low impact changes easier to accomplish in the future.</p>
     <configKey><![CDATA[LII_LIST_INDEXED_ITERATING]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses an integer based for loop to iterator over a java.util.List, by calling
+<p>[fb-contrib] This method uses an integer based for loop to iterator over a java.util.List, by calling
 List.get(i) each time thru the loop. The integer is not used for other reasons. It is better
 to use an Iterator instead, as depending on List implementation, iterators can perform better, 
 and they also allow for exchanging of other collection types without issue.</p>
@@ -80,7 +80,7 @@ and they also allow for exchanging of other collection types without issue.</p>
     <configKey><![CDATA[UCC_UNRELATED_COLLECTION_CONTENTS]]></configKey>
     <description>
 <![CDATA[
-<p>This method adds unrelated objects to a collection or array, requiring careful and brittle
+<p>[fb-contrib] This method adds unrelated objects to a collection or array, requiring careful and brittle
 data access to that collection. Create a separate class with properties needed, and add
 an instance of this class to the collection or array, if possible.</p>
 ]]>
@@ -92,7 +92,7 @@ an instance of this class to the collection or array, if possible.</p>
     <configKey><![CDATA[DRE_DECLARED_RUNTIME_EXCEPTION]]></configKey>
     <description>
 <![CDATA[
-<p>This method declares a RuntimeException derived class in it's throws clause.
+<p>[fb-contrib] This method declares a RuntimeException derived class in it's throws clause.
 This may indicate a misunderstanding as to how unchecked exceptions are handled.
 If is felt that a RuntimeException is so prevalent that it should be declared, it 
 is probably a better idea to prevent the occurance in code.</p>
@@ -106,7 +106,7 @@ is probably a better idea to prevent the occurance in code.</p>
     <configKey><![CDATA[CE_CLASS_ENVY]]></configKey>
     <description>
 <![CDATA[
-<p><em>THIS DETECTOR IS HIGHLY EXPERIMENTAL AND IS LIKELY TO CREATE A LOT OF FUD</em></p>
+<p>[fb-contrib] <em>THIS DETECTOR IS HIGHLY EXPERIMENTAL AND IS LIKELY TO CREATE A LOT OF FUD</em></p>
 <p>This method makes extensive use of methods from another class over methods of it's own
 class. Typically this means that the functionality that is accomplished by this method
 most likely belongs with the class that is being used so liberally. Consider refactoring this
@@ -120,7 +120,7 @@ method to be contained in that class, and to accept all the parameters needed in
     <configKey><![CDATA[LSC_LITERAL_STRING_COMPARISON]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the equals or compareTo methods on a String variable passing in a String literal.
+<p>[fb-contrib] This method calls the equals or compareTo methods on a String variable passing in a String literal.
 A NullPointerException may occur if the string variable is null. If instead the method was called on
 the string literal, and the variable was passed as an argument, this exception could never happen.</p>
 ]]>
@@ -132,7 +132,7 @@ the string literal, and the variable was passed as an argument, this exception c
     <configKey><![CDATA[PCOA_PARTIALLY_CONSTRUCTED_OBJECT_ACCESS]]></configKey>
     <description>
 <![CDATA[
-<p>This constructor makes a call to a non-final method. Since this method can be overriden, a subclasses
+<p>[fb-contrib] This constructor makes a call to a non-final method. Since this method can be overriden, a subclasses
 implementation will be executing against an object that has not been initialized at the subclass level.
 You should mark all methods called from the constructor as final to avoid this problem.</p>
 ]]>
@@ -144,7 +144,7 @@ You should mark all methods called from the constructor as final to avoid this p
     <configKey><![CDATA[DLC_DUBIOUS_LIST_COLLECTION]]></configKey>
     <description>
 <![CDATA[
-<p>This class defines a field based on java.util.List, but uses it to some extent like a Set. Since
+<p>[fb-contrib] This class defines a field based on java.util.List, but uses it to some extent like a Set. Since
 lookup type operations are performed using a linear search for Lists, the performance for large
 Lists will be poor. Consider changing this fields implementation to a set based one. If order of
 iteration is important to maintain insert order, perhaps consider a LinkedHashSet.</p>
@@ -157,7 +157,7 @@ iteration is important to maintain insert order, perhaps consider a LinkedHashSe
     <configKey><![CDATA[PL_PARALLEL_LISTS]]></configKey>
     <description>
 <![CDATA[
-<p>This class appears to maintain two or more lists or arrays who's contains is related one-for-one
+<p>[fb-contrib] This class appears to maintain two or more lists or arrays who's contains is related one-for-one
 through the index of the list or array. Consider creating a separate class to hold all the related 
 pieces of information, and adding instances of this class to just one list or array.</p>
 ]]>
@@ -169,7 +169,7 @@ pieces of information, and adding instances of this class to just one list or ar
     <configKey><![CDATA[FP_FINAL_PARAMETERS]]></configKey>
     <description>
 <![CDATA[
-<p>This method correctly does not write to a parameter. To help document this, and to perhaps
+<p>[fb-contrib] This method correctly does not write to a parameter. To help document this, and to perhaps
 help the jvm optimize the invocation of this method, you should consider defining these parameters
 as final.</p>
 ]]>
@@ -181,7 +181,7 @@ as final.</p>
     <configKey><![CDATA[ACEM_ABSTRACT_CLASS_EMPTY_METHODS]]></configKey>
     <description>
 <![CDATA[
-<p>This method is empty or merely throws an exception. Since the class it is defined in is 
+<p>[fb-contrib] This method is empty or merely throws an exception. Since the class it is defined in is 
 abstract, it may be more correct to define this method as abstract instead, so that proper
 subclass behavior is enforced.</p>
 ]]>
@@ -193,7 +193,7 @@ subclass behavior is enforced.</p>
     <configKey><![CDATA[MAC_MANUAL_ARRAY_COPY]]></configKey>
     <description>
 <![CDATA[
-<p>This method copies data from one array to another manually using a loop.
+<p>[fb-contrib] This method copies data from one array to another manually using a loop.
 It is much better performing to use System.arraycopy as this method is native.</p>
 ]]>
     </description>
@@ -204,7 +204,7 @@ It is much better performing to use System.arraycopy as this method is native.</
     <configKey><![CDATA[FPL_FLOATING_POINT_LOOPS]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses floating point variables to index a loop. Since floating point
+<p>[fb-contrib] This method uses floating point variables to index a loop. Since floating point
 math is inprecise, rounding errors will accumulate over time each time the loop is
 executed. It is usually better to use integer indexing, and calculate the new value
 of the floating point number at the top of the loop body.</p>
@@ -217,7 +217,7 @@ of the floating point number at the top of the loop body.</p>
     <configKey><![CDATA[NCMU_NON_COLLECTION_METHOD_USE]]></configKey>
     <description>
 <![CDATA[
-<p>This method makes calls to collection classes where the method is not defined by the Collections
+<p>[fb-contrib] This method makes calls to collection classes where the method is not defined by the Collections
 interface, and an equivalent method exists in the interface. By using the new methods,
 you can define this object by the Collections interface and allow better decoupling.</p>
 ]]>
@@ -229,7 +229,7 @@ you can define this object by the Collections interface and allow better decoupl
     <configKey><![CDATA[CAO_CONFUSING_AUTOBOXED_OVERLOADING]]></configKey>
     <description>
 <![CDATA[
-<p>This class defines two methods that differ only by a parameter being defined
+<p>[fb-contrib] This class defines two methods that differ only by a parameter being defined
 as Character vs. int, long, float or double. As autoboxing is present, it may be
 assumed that a parameter of 'a' would map to the Character version, but does not.</p>
 ]]>
@@ -241,7 +241,7 @@ assumed that a parameter of 'a' would map to the Character version, but does not
     <configKey><![CDATA[AFBR_ABNORMAL_FINALLY_BLOCK_RETURN]]></configKey>
     <description>
 <![CDATA[
-<p>This class returns or throws exceptions from a finally block. This will
+<p>[fb-contrib] This class returns or throws exceptions from a finally block. This will
 mask real program logic in the try block, and short-circuit normal method termination.
 </p>
 ]]>
@@ -253,7 +253,7 @@ mask real program logic in the try block, and short-circuit normal method termin
     <configKey><![CDATA[SMII_STATIC_METHOD_INSTANCE_INVOCATION]]></configKey>
     <description>
 <![CDATA[
-<p>This method makes a static method call on an instance reference. For
+<p>[fb-contrib] This method makes a static method call on an instance reference. For
 reading comprehension of the code is better to call the method on the class,
 rather than an instance. Perhaps this method's static nature has changed since
 this code was written, and should be revisited.
@@ -267,7 +267,7 @@ this code was written, and should be revisited.
     <configKey><![CDATA[STS_SPURIOUS_THREAD_STATES]]></configKey>
     <description>
 <![CDATA[
-<p>This method invokes the methods wait, notify or notifyAll on a Thread instance.
+<p>[fb-contrib] This method invokes the methods wait, notify or notifyAll on a Thread instance.
 Doing so will confuse the internal thread state behaviour causing spurious thread
 wakeups/sleeps because the internal mechanism also uses the thread instance for it's 
 notifications.
@@ -281,7 +281,7 @@ notifications.
     <configKey><![CDATA[NAB_NEEDLESS_AUTOBOXING_CTOR]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a wrapped primitive object to the same class's constructor.
+<p>[fb-contrib] This method passes a wrapped primitive object to the same class's constructor.
 Since wrapper classes are immutable, you can just use the original object, rather
 than constructing a new one. This code works because of an abuse of autoboxing.
 </p>
@@ -294,7 +294,7 @@ than constructing a new one. This code works because of an abuse of autoboxing.
     <configKey><![CDATA[NAB_NEEDLESS_BOXING_STRING_CTOR]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a primitive value retrieved from a BoxedPrimitive.parseBoxedPrimitive("1") call  to 
+<p>[fb-contrib] This method passes a primitive value retrieved from a BoxedPrimitive.parseBoxedPrimitive("1") call  to 
 the same class's constructor. It is simpler to just pass the string to the BoxedPrimitives constructor.
 </p>
 ]]>
@@ -306,7 +306,7 @@ the same class's constructor. It is simpler to just pass the string to the Boxed
     <configKey><![CDATA[NAB_NEEDLESS_AUTOBOXING_VALUEOF]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a wrapped primitive object to the same class's .valueOf method.
+<p>[fb-contrib] This method passes a wrapped primitive object to the same class's .valueOf method.
 Since wrapper classes are immutable, you can just use the original object, rather
 than calling valueOf to create a new one. This code works because of an abuse of autoboxing.
 </p>
@@ -319,7 +319,7 @@ than calling valueOf to create a new one. This code works because of an abuse of
     <configKey><![CDATA[NAB_NEEDLESS_BOXING_PARSE]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a String to a wrapped primitive object's valueOf method, which in turn calls
+<p>[fb-contrib] This method passes a String to a wrapped primitive object's valueOf method, which in turn calls
 the boxedValue() method to convert to a primitive. When it is desired to convert from a String
 to a primitive value, it is simpler to use the BoxedPrimitive.parseBoxedPrimitive(myString)
 method. </p>
@@ -332,7 +332,7 @@ method. </p>
     <configKey><![CDATA[NAB_NEEDLESS_BOXING_VALUEOF]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a String to a wrapped primitive object's parse method, which in turn calls
+<p>[fb-contrib] This method passes a String to a wrapped primitive object's parse method, which in turn calls
 the valueOf() method to convert to a boxed primitive. When it is desired to convert from a String
 to a boxed primitive object, it is simpler to use the BoxedPrimitive.valueOf(myString)
 method. </p>
@@ -345,7 +345,7 @@ method. </p>
     <configKey><![CDATA[NAB_NEEDLESS_BOX_TO_UNBOX]]></configKey>
     <description>
 <![CDATA[
-<p>This method constructs a Boxed Primitive from a primitive only to call the primitiveValue() method to
+<p>[fb-contrib] This method constructs a Boxed Primitive from a primitive only to call the primitiveValue() method to
 convert it back to a primitive. Just use the primitive value instead.</p>
 <pre>
 	primitive i = new BoxedPrimitive(1).primitiveValue();
@@ -364,7 +364,7 @@ convert it back to a primitive. Just use the primitive value instead.</p>
     <configKey><![CDATA[NAB_NEEDLESS_BOX_TO_CAST]]></configKey>
     <description>
 <![CDATA[
-<p>This method constructs a Boxed Primitive from a primitive only to call the primitiveValue() method to
+<p>[fb-contrib] This method constructs a Boxed Primitive from a primitive only to call the primitiveValue() method to
 cast the value to another primitive typee. It is simpler to just use casting</p>
 <pre>
 	primitive i = new BoxedPrimitive(1.0).primitiveValue();
@@ -383,7 +383,7 @@ cast the value to another primitive typee. It is simpler to just use casting</p>
     <configKey><![CDATA[NAB_NEEDLESS_BOOLEAN_CONSTANT_CONVERSION]]></configKey>
     <description>
 <![CDATA[
-<p>This method assigns a Boxed boolean constant to a primitive boolean variable, or assigns a primitive boolean
+<p>[fb-contrib] This method assigns a Boxed boolean constant to a primitive boolean variable, or assigns a primitive boolean
 constant to a Boxed boolean variable. Use the correct constant for the variable desired. Use</p>
 <pre>
 	boolean b = true;
@@ -403,7 +403,7 @@ constant to a Boxed boolean variable. Use the correct constant for the variable 
     <configKey><![CDATA[USBR_UNNECESSARY_STORE_BEFORE_RETURN]]></configKey>
     <description>
 <![CDATA[
-<p>This method stores the return result in a local variable, and then immediately
+<p>[fb-contrib] This method stores the return result in a local variable, and then immediately
 returns the local variable. It would be simpler just to return the value that is
 assigned to the local variable, directly.
 </p>
@@ -416,7 +416,7 @@ assigned to the local variable, directly.
     <configKey><![CDATA[COM_COPIED_OVERRIDDEN_METHOD]]></configKey>
     <description>
 <![CDATA[
-<p>This method is implemented using an exact copy of it's super class method's 
+<p>[fb-contrib] This method is implemented using an exact copy of it's super class method's 
 implementation, which usually means that this method can just be removed.
 </p>
 ]]>
@@ -428,7 +428,7 @@ implementation, which usually means that this method can just be removed.
     <configKey><![CDATA[ABC_ARRAY_BASED_COLLECTIONS]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes an array as the key to a Map, element in a Set, or item in a List when
+<p>[fb-contrib] This method passes an array as the key to a Map, element in a Set, or item in a List when
 the contains method is used on the List. Since arrays do not, and cannot override the equals 
 method, collection inclusion is based on the reference's address, which is probably not desired.
 In the case that this is a TreeMap or TreeSet, consider passing a Comparator to the map's
@@ -443,7 +443,7 @@ constructor.
     <configKey><![CDATA[ODN_ORPHANED_DOM_NODE]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates a DOM node but does not attach it to a DOM document.
+<p>[fb-contrib] This method creates a DOM node but does not attach it to a DOM document.
 </p>
 ]]>
     </description>
@@ -454,7 +454,7 @@ constructor.
     <configKey><![CDATA[AOM_ABSTRACT_OVERRIDDEN_METHOD]]></configKey>
     <description>
 <![CDATA[
-<p>This abstract method is derived from a concrete method implementation. It is highly
+<p>[fb-contrib] This abstract method is derived from a concrete method implementation. It is highly
 suspect that the super class method's implementation would be cast away. 
 </p>
 ]]>
@@ -466,7 +466,7 @@ suspect that the super class method's implementation would be cast away.
     <configKey><![CDATA[CBX_CUSTOM_BUILT_XML]]></configKey>
     <description>
 <![CDATA[
-<p>This method generates an xml based string by concatenating together various 
+<p>[fb-contrib] This method generates an xml based string by concatenating together various 
 xml fragments, and variable values. Doing so makes the code difficult to read, modify 
 and validate. It is much more clean to built xml structures in external files that are
 read in and transformed into the final product, thru modification by Transformer.setParameter.
@@ -481,7 +481,7 @@ read in and transformed into the final product, thru modification by Transformer
     <configKey><![CDATA[BSB_BLOATED_SYNCHRONIZED_BLOCK]]></configKey>
     <description>
 <![CDATA[
-<p>This methods implements a synchronized block, but the code found at the beginning
+<p>[fb-contrib] This methods implements a synchronized block, but the code found at the beginning
 of this block  only accesses local variables, and not member variables, or this. 
 To be better performance move the code that access local variables only, above the
 synchronized block, and leave the synchronized block only for field accesses, or access
@@ -495,7 +495,7 @@ to this object.</p>
     <configKey><![CDATA[CLI_CONSTANT_LIST_INDEX]]></configKey>
     <description>
 <![CDATA[
-<p>This method accesses an array or list using a constant integer index. Often,
+<p>[fb-contrib] This method accesses an array or list using a constant integer index. Often,
 this is a typo where a loop variable is intended to be used. If however, specific
 list indices mean different specific things, then perhaps replacing the list with
 a first-class object with meaningful accessors would make the code less brittle.</p>
@@ -508,7 +508,7 @@ a first-class object with meaningful accessors would make the code less brittle.
     <configKey><![CDATA[SCR_SLOPPY_CLASS_REFLECTION]]></configKey>
     <description>
 <![CDATA[
-<p>This method accesses the class object of a class that is already statically bound
+<p>[fb-contrib] This method accesses the class object of a class that is already statically bound
 in this context, with Class.forName. Using Class.forName makes reflection more fragile
 in regards to code transformations such as obfuscation, and is unneeded here, since 
 the class in question is already 'linked' to this class.</p>
@@ -521,7 +521,7 @@ the class in question is already 'linked' to this class.</p>
     <configKey><![CDATA[AWCBR_ARRAY_WRAPPED_CALL_BY_REFERENCE]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses a one element array to wrap an object that is to be passed to a method as an argument
+<p>[fb-contrib] This method uses a one element array to wrap an object that is to be passed to a method as an argument
 to simulate call by pointer ala C++. It is better to define a proper return class type that holds all
 the relevant information retrieved from the called method.</p>
 ]]>
@@ -533,7 +533,7 @@ the relevant information retrieved from the called method.</p>
     <configKey><![CDATA[SG_SLUGGISH_GUI]]></configKey>
     <description>
 <![CDATA[
-<p>This method implements an awt or swing listener and performs time 
+<p>[fb-contrib] This method implements an awt or swing listener and performs time 
 consuming operations. Doing these operations in the gui thread will cause the
 interface to appear sluggish and non-responsive to the user. Consider
 using a separate thread to do the time consuming work so that the user
@@ -547,7 +547,7 @@ has a better experience.</p>
     <configKey><![CDATA[NIR_NEEDLESS_INSTANCE_RETRIEVAL]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls a method to load a reference to an object, and then only
+<p>[fb-contrib] This method calls a method to load a reference to an object, and then only
 uses it to load a static member of that instance's class. It is simpler and
 better performant to just load the static field from the class itself.</p>
 ]]>
@@ -559,7 +559,7 @@ better performant to just load the static field from the class itself.</p>
     <configKey><![CDATA[DDC_DOUBLE_DATE_COMPARISON]]></configKey>
     <description>
 <![CDATA[
-<p>This method compares dates with two comparisons, rather than using the reverse comparison.
+<p>[fb-contrib] This method compares dates with two comparisons, rather than using the reverse comparison.
 So This pattern
 <pre>
 	if ((date1.equals( date2 )) || (date1.after( date2 )))
@@ -593,7 +593,7 @@ could become
     <configKey><![CDATA[SWCO_SUSPICIOUS_WAIT_ON_CONCURRENT_OBJECT]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls wait() on a on mutex defined in the java.util.concurrent package.
+<p>[fb-contrib] This method calls wait() on a on mutex defined in the java.util.concurrent package.
 These classes, define await, instead of wait, and it is most likely that await
 was intended.</p>
 ]]>
@@ -605,7 +605,7 @@ was intended.</p>
     <configKey><![CDATA[JVR_JDBC_VENDOR_RELIANCE]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses jdbc vendor specific classes and method to perform database work.
+<p>[fb-contrib] This method uses jdbc vendor specific classes and method to perform database work.
 This makes the code specific to this vendor, and unable to run on other databases.</p>
 ]]>
     </description>
@@ -616,7 +616,7 @@ This makes the code specific to this vendor, and unable to run on other database
     <configKey><![CDATA[PMB_POSSIBLE_MEMORY_BLOAT]]></configKey>
     <description>
 <![CDATA[
-<p>This class defines static fields that are collections or StringBuffers that do not
+<p>[fb-contrib] This class defines static fields that are collections or StringBuffers that do not
 appear to have any way to clear or reduce their size. This is a potential cause of 
 memory bloat.</p>
 ]]>
@@ -628,7 +628,7 @@ memory bloat.</p>
     <configKey><![CDATA[LSYC_LOCAL_SYNCHRONIZED_COLLECTION]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates a synchronized collection and store the reference to it
+<p>[fb-contrib] This method creates a synchronized collection and store the reference to it
 in a local variable. As local variables are by definition threadsafe, it seems
 questionable that this collection needs to be synchronized.</p>
 <p>
@@ -648,7 +648,7 @@ questionable that this collection needs to be synchronized.</p>
     <configKey><![CDATA[FCBL_FIELD_COULD_BE_LOCAL]]></configKey>
     <description>
 <![CDATA[
-<p>This class defines fields that are used in a locals only fashion, 
+<p>[fb-contrib] This class defines fields that are used in a locals only fashion, 
 specifically private fields or protected fields in final classes that are accessed 
 first in each method with a store vs. a load. This field could be replaced by one
 or more local variables.</p>
@@ -661,7 +661,7 @@ or more local variables.</p>
     <configKey><![CDATA[NOS_NON_OWNED_SYNCHRONIZATION]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses a synchronize block where the object that is being synchronized on,
+<p>[fb-contrib] This method uses a synchronize block where the object that is being synchronized on,
 is not owned by this current instance. This means that other instances may use this same
 object for synchronization for its own purposes causing synchronization confusion. It is 
 always cleaner and safer to only synchronize on private fields of this class. Note that 'this'
@@ -676,7 +676,7 @@ class. Synchronizing on 'this' is also not a good idea.</p>
     <configKey><![CDATA[NRTL_NON_RECYCLEABLE_TAG_LIB]]></configKey>
     <description>
 <![CDATA[
-<p>This Tag library class implements an attribute who's associated backing store field
+<p>[fb-contrib] This Tag library class implements an attribute who's associated backing store field
 is modified at another point in the tag library. In order for a taglibrary to be
 recycleable, only the container is allowed to change this attribute, through the use
 of the setXXX method of the taglib. By modifying the value programmatically, the 
@@ -690,7 +690,7 @@ container will not initialize the attribute correctly on reuse.</p>
     <configKey><![CDATA[S508C_NULL_LAYOUT]]></configKey>
     <description>
 <![CDATA[
-<p>This class passes null to setLayout, which specifies that components are
+<p>[fb-contrib] This class passes null to setLayout, which specifies that components are
 to be laid out using absolute coordinates. This makes making changes for
 font sizes, etc, difficult as items will not reposition
 </p>
@@ -703,7 +703,7 @@ font sizes, etc, difficult as items will not reposition
     <configKey><![CDATA[S508C_NO_SETLABELFOR]]></configKey>
     <description>
 <![CDATA[
-<p>This class uses JLabels that do not specify what fields are being labeled.
+<p>[fb-contrib] This class uses JLabels that do not specify what fields are being labeled.
 This hampers screen readers from given appropriate feed back to users. Use
 the JLabel.setLabelFor method to accomplish this.
 </p>
@@ -716,7 +716,7 @@ the JLabel.setLabelFor method to accomplish this.
     <configKey><![CDATA[S508C_NO_SETSIZE]]></configKey>
     <description>
 <![CDATA[
-<p>This class creates a window, and sizes the window using setSize. It is better
+<p>[fb-contrib] This class creates a window, and sizes the window using setSize. It is better
 to handle font size changes to use the pack method.
 </p>
 ]]>
@@ -728,7 +728,7 @@ to handle font size changes to use the pack method.
     <configKey><![CDATA[S508C_NON_ACCESSIBLE_JCOMPONENT]]></configKey>
     <description>
 <![CDATA[
-<p>This class extends the JComponent gui control but does not implement the Accessibility interface.
+<p>[fb-contrib] This class extends the JComponent gui control but does not implement the Accessibility interface.
 This makes this control unable to be processed by screen readers, etc, for people with reading/vision
 difficulties</p>
 ]]>
@@ -740,7 +740,7 @@ difficulties</p>
     <configKey><![CDATA[S508C_SET_COMP_COLOR]]></configKey>
     <description>
 <![CDATA[
-<p>This method sets a Components explicitly foreground or background color which may
+<p>[fb-contrib] This method sets a Components explicitly foreground or background color which may
 cause difficulty with people with vision problems from using this application.
 Colors should be allowed to be set from the operating system.</p>
 ]]>
@@ -752,7 +752,7 @@ Colors should be allowed to be set from the operating system.</p>
     <configKey><![CDATA[S508C_NON_TRANSLATABLE_STRING]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates a component and passes a string literal to the title or label
+<p>[fb-contrib] This method creates a component and passes a string literal to the title or label
 of the component. As this string will be shown to users, it should be internationalizable
 through the use of a resource bundle.</p>
 ]]>
@@ -764,7 +764,7 @@ through the use of a resource bundle.</p>
     <configKey><![CDATA[UEC_USE_ENUM_COLLECTIONS]]></configKey>
     <description>
 <![CDATA[
-<p>This class uses an ordinary set or map collection and uses an enum class as the key type.
+<p>[fb-contrib] This class uses an ordinary set or map collection and uses an enum class as the key type.
 It is better performant to use the jdk 1.5 EnumSet or EnumMap classes.</p>
 ]]>
     </description>
@@ -775,7 +775,7 @@ It is better performant to use the jdk 1.5 EnumSet or EnumMap classes.</p>
     <configKey><![CDATA[SIL_SQL_IN_LOOP]]></configKey>
     <description>
 <![CDATA[
-<p>This method executes sql queries inside of a loop. This pattern is often inefficient
+<p>[fb-contrib] This method executes sql queries inside of a loop. This pattern is often inefficient
 as the number of queries may mushroom in fencepost cases. It is probably more performant
 to loop over the input and collect the key data needed for the query for all items, and
 issue one query using an in clause, or similar construct, and then loop over this result
@@ -790,7 +790,7 @@ set, and fetch all the data at once.</p>
     <configKey><![CDATA[NMCS_NEEDLESS_MEMBER_COLLECTION_SYNCHRONIZATION]]></configKey>
     <description>
 <![CDATA[
-<p>This class defines a private collection member as synchronized. It appears however
+<p>[fb-contrib] This class defines a private collection member as synchronized. It appears however
 that this collection isn't only modified in a static initializer, or constructor. As these
 two areas are guaranteed to be thread safe, defining this collection as synchronized is
 unnecessary and a potential performance bottleneck.</p>
@@ -803,7 +803,7 @@ unnecessary and a potential performance bottleneck.</p>
     <configKey><![CDATA[ITC_INHERITANCE_TYPE_CHECKING]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses the instanceof operator in a series of if/else statements to 
+<p>[fb-contrib] This method uses the instanceof operator in a series of if/else statements to 
 differentiate blocks of code based on type. If these types are related by inheritance,
 it is cleaner to just define a method in the base class, and use overridden methods
 in these classes.</p>
@@ -816,7 +816,7 @@ in these classes.</p>
     <configKey><![CDATA[SACM_STATIC_ARRAY_CREATED_IN_METHOD]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates an array initialized by constants. Each time this method is called
+<p>[fb-contrib] This method creates an array initialized by constants. Each time this method is called
 this array will be recreated. It would be more performant to define the array as a
 static field of the class instead.</p>
 ]]>
@@ -828,7 +828,7 @@ static field of the class instead.</p>
     <configKey><![CDATA[PRMC_POSSIBLY_REDUNDANT_METHOD_CALLS]]></configKey>
     <description>
 <![CDATA[
-<p>This method makes two consecutive calls to the same method using the same constant
+<p>[fb-contrib] This method makes two consecutive calls to the same method using the same constant
 parameters, on the same instance without any intervening changes to the objects. If this
 method does not make changes to the object, which it appears it doesn't, then making
 two calls is just a waste. These method calls could be combined by assigning the
@@ -842,7 +842,7 @@ result into a temporary, and using the temporary the second time.
     <configKey><![CDATA[UTA_USE_TO_ARRAY]]></configKey>
     <description>
 <![CDATA[
-<p>This method manually loops over a collection, pulling each element out and storing
+<p>[fb-contrib] This method manually loops over a collection, pulling each element out and storing
 it in an array to build an array from the collection. It is easier, and clearer to use
 the built in collections method toArray. Given a collection 'mycollection' of type T, use
 mycollection.toArray(new T[mycollection.size()]);
@@ -855,7 +855,7 @@ mycollection.toArray(new T[mycollection.size()]);
     <configKey><![CDATA[LEST_LOST_EXCEPTION_STACK_TRACE]]></configKey>
     <description>
 <![CDATA[
-<p>This method catches an exception, and throws a different exception, without incorporating the 
+<p>[fb-contrib] This method catches an exception, and throws a different exception, without incorporating the 
 original exception. Doing so hides the original source of the exception making debugging and fixing
 these problems difficult. It is better to use the constructor of this new exception that takes an 
 original exception so that this detail can be passed along to the user.</p>
@@ -868,7 +868,7 @@ original exception so that this detail can be passed along to the user.</p>
     <configKey><![CDATA[UCPM_USE_CHARACTER_PARAMETERIZED_METHOD]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a constant literal String of length 1 as a parameter to a method, that
+<p>[fb-contrib] This method passes a constant literal String of length 1 as a parameter to a method, that
 exposes a similar method that takes a character. It is simpler and more expedient to handle one
 character, rather than pass a string.</p>
 ]]>
@@ -880,7 +880,7 @@ character, rather than pass a string.</p>
     <configKey><![CDATA[TR_TAIL_RECURSION]]></configKey>
     <description>
 <![CDATA[
-<p>This method recursively calls itself as the last statement of the method
+<p>[fb-contrib] This method recursively calls itself as the last statement of the method
 (Tail Recursion). This method can be easily refactored into a simple loop, which 
 will make it more performant, and reduce the stack size requirements.</p>
 ]]>
@@ -892,7 +892,7 @@ will make it more performant, and reduce the stack size requirements.</p>
     <configKey><![CDATA[URV_UNRELATED_RETURN_VALUES]]></configKey>
     <description>
 <![CDATA[
-<p>This method returns two or more unrelated types of objects (Related only through java.lang.Object).
+<p>[fb-contrib] This method returns two or more unrelated types of objects (Related only through java.lang.Object).
 This will be very confusing to the code that must call it.</p>
 ]]>
     </description>
@@ -903,7 +903,7 @@ This will be very confusing to the code that must call it.</p>
     <configKey><![CDATA[URV_CHANGE_RETURN_TYPE]]></configKey>
     <description>
 <![CDATA[
-<p>This method is defined to return a java.lang.Object. However, the return types
+<p>[fb-contrib] This method is defined to return a java.lang.Object. However, the return types
 returned from this method can be defined by a more specific class or interface. Since this
 method is not derived from a superclass or interface, it would be more clear to 
 change the return type of this method.</p>
@@ -916,7 +916,7 @@ change the return type of this method.</p>
     <configKey><![CDATA[URV_INHERITED_METHOD_WITH_RELATED_TYPES]]></configKey>
     <description>
 <![CDATA[
-<p>This inherited method is defined to return a java.lang.Object. However, the return types returned
+<p>[fb-contrib] This inherited method is defined to return a java.lang.Object. However, the return types returned
 from this method can be defined by a more specific class or interface. If possible consider changing the
 return type in the inheritance hierarchy of this method, otherwise the caller of this method will be brittle
 in handling of the return type.</p>
@@ -929,7 +929,7 @@ in handling of the return type.</p>
     <configKey><![CDATA[PIS_POSSIBLE_INCOMPLETE_SERIALIZATION]]></configKey>
     <description>
 <![CDATA[
-<p>This method implements Serializable but is derived from a 
+<p>[fb-contrib] This method implements Serializable but is derived from a 
 class that does not. The super class has fields that are not serialized
 because this class does not take the responsibility of writing these fields out
 either using Serializable's writeObject method, or Externalizable's writeExternal 
@@ -946,7 +946,7 @@ Serializable or Externalizable methods in the child class.</p>
     <configKey><![CDATA[SC_SUSPICIOUS_COMPARATOR_RETURN_VALUES]]></configKey>
     <description>
 <![CDATA[
-<p>This compareTo or compare method returns constant values for to represent less than,
+<p>[fb-contrib] This compareTo or compare method returns constant values for to represent less than,
 equals and greater than. However it does not return each type. Given that comparators 
 are transitive, this seems incorrect.</p>
 ]]>
@@ -958,7 +958,7 @@ are transitive, this seems incorrect.</p>
     <configKey><![CDATA[SPP_NEGATIVE_BITSET_ITEM]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a constant negative value as a bit position to a java.util.BitSet. The BitSet class
+<p>[fb-contrib] This method passes a constant negative value as a bit position to a java.util.BitSet. The BitSet class
 doesn't support negative values, and thus this method call will not work as expected.</p>
 ]]>
     </description>
@@ -969,7 +969,7 @@ doesn't support negative values, and thus this method call will not work as expe
     <configKey><![CDATA[SPP_INTERN_ON_CONSTANT]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls intern on a constant string. As constant strings are already interned, this call
+<p>[fb-contrib] This method calls intern on a constant string. As constant strings are already interned, this call
 is superfluous</p>
 ]]>
     </description>
@@ -980,7 +980,7 @@ is superfluous</p>
     <configKey><![CDATA[SPP_NO_CHAR_SB_CTOR]]></configKey>
     <description>
 <![CDATA[
-<p>This method constructs a StringBuffer or a StringBuilder using the constructor that takes an integer, but
+<p>[fb-contrib] This method constructs a StringBuffer or a StringBuilder using the constructor that takes an integer, but
 appears to pass a character instead. It is probable that the author assumed that character would be appended to the
 StringBuffer/Builder, but instead the integer value of the character is used as an initial size for the buffer.
 </p>
@@ -993,7 +993,7 @@ StringBuffer/Builder, but instead the integer value of the character is used as 
     <configKey><![CDATA[SPP_USE_MATH_CONSTANT]]></configKey>
     <description>
 <![CDATA[
-<p>This method defines its own version of <em>PI</em> or <em>e</em> and the value is not as precise as the
+<p>[fb-contrib] This method defines its own version of <em>PI</em> or <em>e</em> and the value is not as precise as the
 one defined in the constants Math.PI or Math.E. Use these constants instead.</p>
 ]]>
     </description>
@@ -1004,7 +1004,7 @@ one defined in the constants Math.PI or Math.E. Use these constants instead.</p>
     <configKey><![CDATA[SPP_STUTTERED_ASSIGNMENT]]></configKey>
     <description>
 <![CDATA[
-<p>This method assigns a value twice in a row in a stuttered way such as
+<p>[fb-contrib] This method assigns a value twice in a row in a stuttered way such as
 <code>a = a = 5;</code> This is most probably a cut and paste error where the duplicate
 assignment can be removed.</p>
 ]]>
@@ -1016,7 +1016,7 @@ assignment can be removed.</p>
     <configKey><![CDATA[SPP_USE_ISNAN]]></configKey>
     <description>
 <![CDATA[
-<p>This method compares a douhle or float to the constant Double.NaN or Float.NaN. You should use
+<p>[fb-contrib] This method compares a douhle or float to the constant Double.NaN or Float.NaN. You should use
 Double.isNaN(d) or Float.isNaN(f) if a primitive; or d.isNaN() or f.isNaN() if a boxed double, instead.</p>
 ]]>
     </description>
@@ -1027,7 +1027,7 @@ Double.isNaN(d) or Float.isNaN(f) if a primitive; or d.isNaN() or f.isNaN() if a
     <configKey><![CDATA[SPP_USE_BIGDECIMAL_STRING_CTOR]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the BigDecimal constructor that takes a double, and passes a literal double constant value. Since 
+<p>[fb-contrib] This method calls the BigDecimal constructor that takes a double, and passes a literal double constant value. Since 
 the use of BigDecimal is to get better precision than double, by passing a double, you only get the precision of double number
 space. To take advantage of the BigDecimal space, pass the number as a string. </p>
 ]]>
@@ -1039,7 +1039,7 @@ space. To take advantage of the BigDecimal space, pass the number as a string. <
     <configKey><![CDATA[SPP_STRINGBUFFER_WITH_EMPTY_STRING]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the StringBuffer of StringBuilder constructor passing in a constant empty string (""). 
+<p>[fb-contrib] This method calls the StringBuffer of StringBuilder constructor passing in a constant empty string (""). 
 This is the same as calling the default constructor, but makes the code work harder. Consider passing in a
 default size instead.
 ]]>
@@ -1051,7 +1051,7 @@ default size instead.
     <configKey><![CDATA[SPP_EQUALS_ON_ENUM]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the equals(Object) method on an enum instance. Since enums values are singletons,
+<p>[fb-contrib] This method calls the equals(Object) method on an enum instance. Since enums values are singletons,
 you can use == to safely compare two enum values. In fact, the implementation for Enum.equals does just
 that.</p>
 ]]>
@@ -1063,7 +1063,7 @@ that.</p>
     <configKey><![CDATA[SPP_INVALID_BOOLEAN_NULL_CHECK]]></configKey>
     <description>
 <![CDATA[
-<p>This method attempts to check for null by just refering to the variable name
+<p>[fb-contrib] This method attempts to check for null by just refering to the variable name
 as would be done in C++. This ordinarily would be considered a compile error, except the
 variable in question is a Boolean, which does an auto unbox to boolean.</p>
 <pre>
@@ -1080,7 +1080,7 @@ if ((b != null) && b.booleanValue())
     <configKey><![CDATA[SPP_USE_CHARAT]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the toCharArray method on a String the fetch an array of characters, only
+<p>[fb-contrib] This method calls the toCharArray method on a String the fetch an array of characters, only
 to retrieve one of those characters by index. It is more performant to just use the charAt method.
 </p>
 ]]>
@@ -1092,7 +1092,7 @@ to retrieve one of those characters by index. It is more performant to just use 
     <configKey><![CDATA[SPP_USELESS_TRINARY]]></configKey>
     <description>
 <![CDATA[
-<p>This method tests the value of a boolean and using a trinary operator to return either true or false.
+<p>[fb-contrib] This method tests the value of a boolean and using a trinary operator to return either true or false.
 The trinary operator is completely unecessary, just use the original boolean value.</p>
 ]]>
     </description>
@@ -1103,10 +1103,10 @@ The trinary operator is completely unecessary, just use the original boolean val
     <configKey><![CDATA[SPP_SUSPECT_STRING_TEST]]></configKey>
     <description>
 <![CDATA[
-<p>This method tests a string, and groups null values with real strings, leaving empty strings as another
+<p>[fb-contrib] This method tests a string, and groups null values with real strings, leaving empty strings as another
 case. This might be perfectly valid, but normally, null strings and empty strings are logically handled the same way, 
 and so this test may be flawed.</p>
-<p>Pattern found is one of the following
+<p> Pattern found is one of the following
 <pre>if ((s == null) || (s.length() > 0))</pre> -- did you mean ((s == null) || (s.length() == 0))?
 <pre>if ((s == null) || (s.length() != 0))</pre> -- did you mean ((s == null) || (s.length() == 0))?
 <pre>if ((s != null) && (s.length() == 0))</pre> -- did you mean ((s != null) && (s.length() > 0))?
@@ -1121,7 +1121,7 @@ or perhaps ((s == null) || (s.length() == 0))?
     <configKey><![CDATA[SPP_USE_STRINGBUILDER_LENGTH]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the toString method on a StringBuffer or StringBuilder only to call length() on the resulting
+<p>[fb-contrib] This method calls the toString method on a StringBuffer or StringBuilder only to call length() on the resulting
 string. It is faster, and less memory intensive to just call the length method directly on the StringBuffer or StringBuilder
 itself.</p>
 ]]>
@@ -1133,7 +1133,7 @@ itself.</p>
     <configKey><![CDATA[SPP_INVALID_CALENDAR_COMPARE]]></configKey>
     <description>
 <![CDATA[
-<p>This method passes a non calendar object to the java.util.Calendar.after or java.util.Calendar.before methods.
+<p>[fb-contrib] This method passes a non calendar object to the java.util.Calendar.after or java.util.Calendar.before methods.
 Even though these methods take an Object as a parameter type, only Calendar type objects are supported, otherwise
 false is returned</p>
 ]]>
@@ -1145,7 +1145,7 @@ false is returned</p>
     <configKey><![CDATA[SPP_USE_CONTAINSKEY]]></configKey>
     <description>	
 <![CDATA[
-<p>This method calls mySet.keySet().contains("foo") when mySet.containsKey("foo") is simpler</p>
+<p>[fb-contrib] This method calls mySet.keySet().contains("foo") when mySet.containsKey("foo") is simpler</p>
 ]]>
     </description>
   </rule>
@@ -1155,7 +1155,7 @@ false is returned</p>
     <configKey><![CDATA[SPP_USE_ISEMPTY]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls the size() method on a collection and compares the result to zero to see if the collection
+<p>[fb-contrib] This method calls the size() method on a collection and compares the result to zero to see if the collection
 is empty. For better code clarity, it is better to just use col.isEmpty() or !col.isEmpty()</p>
 ]]>
     </description>
@@ -1229,7 +1229,7 @@ is not case sensitive using equals is simpler. It would be even simpler to do a 
     <configKey><![CDATA[BAS_BLOATED_ASSIGNMENT_SCOPE]]></configKey>
     <description>
 <![CDATA[
-<p><em>THIS DETECTOR IS HIGHLY EXPERIMENTAL AND IS LIKELY TO CREATE A LOT OF FUD</em>
+<p>[fb-contrib] <em>THIS DETECTOR IS HIGHLY EXPERIMENTAL AND IS LIKELY TO CREATE A LOT OF FUD</em>
 This method assigns a value to a variable in an outer scope compared to where the variable is actually used. 
 Assuming this evaluation does not have side effects, the assignment can be moved into the inner scope (if block)
 so that its execution time isn't taken up if the if guard is false. Care should be
@@ -1245,7 +1245,7 @@ will effect the execution of the assignment when done later on.</p>
     <configKey><![CDATA[SCII_SPOILED_CHILD_INTERFACE_IMPLEMENTATOR]]></configKey>
     <description>
 <![CDATA[
-<p>This class declares that it implements an interface, but does so by relying on methods supplied
+<p>[fb-contrib] This class declares that it implements an interface, but does so by relying on methods supplied
 by superclasses, even though those superclasses know nothing about the interface in question. If you wish
 to have the child not implement all the methods of the interface, it would probably be better to declare
 the superclass as implementing the interface, and if that class does not provide all the methods, then declare
@@ -1259,7 +1259,7 @@ that superclass abstract.</p>
     <configKey><![CDATA[DWI_DELETING_WHILE_ITERATING]]></configKey>
     <description>
 <![CDATA[
-<p>This method removes items from a collection using the remove method of the collection, while
+<p>[fb-contrib] This method removes items from a collection using the remove method of the collection, while
 at the same time iterating across the collection. Doing this will invalidate the iterator, and further
 use of it, will cause ConcurrentModificationExceptions to be thrown. To avoid this, the remove 
 method of the iterator should be used.
@@ -1273,7 +1273,7 @@ method of the iterator should be used.
     <configKey><![CDATA[DWI_MODIFYING_WHILE_ITERATING]]></configKey>
     <description>
 <![CDATA[
-<p>This method modifies the contents of a collection using the collection api methods, while
+<p>[fb-contrib] This method modifies the contents of a collection using the collection api methods, while
 at the same time iterating across the collection. Doing this will invalidate the iterator, and further
 use of it, will cause ConcurrentModificationExceptions to be thrown.
 </p>
@@ -1286,10 +1286,10 @@ use of it, will cause ConcurrentModificationExceptions to be thrown.
     <configKey><![CDATA[USS_USE_STRING_SPLIT]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses a StringTokenizer to split up a String and then walks thru the
+<p>[fb-contrib] This method uses a StringTokenizer to split up a String and then walks thru the
 separated elements and builds an array from these enumerated values. It is simpler 
 and easier to use the String.split method.</p>
-<p>PLEASE NOTE: String.split will return an array of 1 element when passed the 
+<p>PLEASE NOTE: String.split will return an array of 1 element when passed the
 empty string, as opposed to using StringTokenizer which returns false on the first
 hasMoreElements/hasMoreTokens call. So you may need to use</p>
 <pre>
@@ -1306,7 +1306,7 @@ hasMoreElements/hasMoreTokens call. So you may need to use</p>
     <configKey><![CDATA[SJVU_SUSPICIOUS_JDK_VERSION_USE]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls a method that does not exist, on a class that does not exist in the jdk that
+<p>[fb-contrib] This method calls a method that does not exist, on a class that does not exist in the jdk that
 this class has been compiled for. This can happen if you compile the class specifying the -source and
 -target options, and use a version that is before the version of the compiler's JDK.</p>
 ]]>
@@ -1318,7 +1318,7 @@ this class has been compiled for. This can happen if you compile the class speci
     <configKey><![CDATA[UAA_USE_ADD_ALL]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses a simple for loop to copy the contents of a set, list, map key/value, array or other collection
+<p>[fb-contrib] This method uses a simple for loop to copy the contents of a set, list, map key/value, array or other collection
 to another collection. It is simpler and more straight forward to just call the addAll method of the destination collection
 passing in the source collection. In the case that the source is an array, you can use Array.asList method to massage the array
 into a collection</p>
@@ -1331,7 +1331,7 @@ into a collection</p>
     <configKey><![CDATA[MRC_METHOD_RETURNS_CONSTANT]]></configKey>
     <description>
 <![CDATA[
-<p>This private or static method only returns one constant value. As this method is private or static,
+<p>[fb-contrib] This private or static method only returns one constant value. As this method is private or static,
 it's behavior can't be overridden, and thus the return of a constant value seems dubious.
 Either the method should be changed to return no value, or perhaps another return value
 was expected to be returned in another code path in this method.</p>
@@ -1344,7 +1344,7 @@ was expected to be returned in another code path in this method.</p>
     <configKey><![CDATA[NCS_NEEDLESS_CUSTOM_SERIALIZATION]]></configKey>
     <description>
 <![CDATA[
-<p>This method implements the Serializable interface by performing the same operations that
+<p>[fb-contrib] This method implements the Serializable interface by performing the same operations that
 would be done if this method did not exist. Since this is the case, this method is not needed.</p>
 ]]>
     </description>
@@ -1355,7 +1355,7 @@ would be done if this method did not exist. Since this is the case, this method 
     <configKey><![CDATA[MOM_MISLEADING_OVERLOAD_MODEL]]></configKey>
     <description>
 <![CDATA[
-<p>This class 'overloads' the same method with both an instance and static version. As the use
+<p>[fb-contrib] This class 'overloads' the same method with both an instance and static version. As the use
 of these two models is different, it will be confusing to the users of these methods.</p>
 ]]>
     </description>
@@ -1366,7 +1366,7 @@ of these two models is different, it will be confusing to the users of these met
     <configKey><![CDATA[EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS]]></configKey>
     <description>
 <![CDATA[
-<p>This method is not constrained by an interface or superclass, but converts a caught checked exception
+<p>[fb-contrib] This method is not constrained by an interface or superclass, but converts a caught checked exception
 to unchecked exception and thrown. It would be more appropriate just throw the checked exception, adding
 the exception to the throws clause of the method.
 ]]>
@@ -1378,7 +1378,7 @@ the exception to the throws clause of the method.
     <configKey><![CDATA[EXS_EXCEPTION_SOFTENING_HAS_CHECKED]]></configKey>
     <description>
 <![CDATA[
-<p>This method's exception signature is constrained by an interface of super class to not throw a 
+<p>[fb-contrib] This method's exception signature is constrained by an interface of super class to not throw a 
 checked exception that was caught. Therefore this exception was converted to an unchecked exception and 
 thrown. It would probably be better to throw the closest checked exception allowed, and to annotate
 the new exception with the original exception using the initial cause field.</p>
@@ -1391,7 +1391,7 @@ the new exception with the original exception using the initial cause field.</p>
     <configKey><![CDATA[EXS_EXCEPTION_SOFTENING_NO_CHECKED]]></configKey>
     <description>
 <![CDATA[
-<p>This method's exception signature is constrained by an interface or super class to not throw
+<p>[fb-contrib] This method's exception signature is constrained by an interface or super class to not throw
 any checked exceptions. Therefore a caught checked exception was converted to an unchecked exception
 and thrown. However it appears that the class in question is owned by the same author as the constraining
 interface or superclass. Consider changes the signature of this method to include the checked exception.</p>
@@ -1404,7 +1404,7 @@ interface or superclass. Consider changes the signature of this method to includ
     <configKey><![CDATA[CFS_CONFUSING_FUNCTION_SEMANTICS]]></configKey>
     <description>
 <![CDATA[
-<p>This method appears to modify a parameter, and then return this parameter as the 
+<p>[fb-contrib] This method appears to modify a parameter, and then return this parameter as the 
 methods return value. This will be confusing to callers of this method, as it won't be
 apparent that the 'original' passed in parameter will be changed as well. If the purpose
 of this method is to change the parameter, it would be more clear to change the method to 
@@ -1419,7 +1419,7 @@ perhaps a clone of the parameter should be made.</p>
     <configKey><![CDATA[JAO_JUNIT_ASSERTION_ODDITIES_ACTUAL_CONSTANT]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls assert passing a constant value as the second of the two values. The assert
+<p>[fb-contrib] This method calls assert passing a constant value as the second of the two values. The assert
 method assumes that the expected value is the first parameter, and so it appears that the order
 of values has been swapped here.</p>
 ]]>
@@ -1431,7 +1431,7 @@ of values has been swapped here.</p>
     <configKey><![CDATA[JAO_JUNIT_ASSERTION_ODDITIES_INEXACT_DOUBLE]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls assert with two doubles or Doubles. Due to the inprecision of doubles, you
+<p>[fb-contrib] This method calls assert with two doubles or Doubles. Due to the inprecision of doubles, you
 should be using the assert method that takes a range parameter that gives a range of error.</p>
 ]]>
     </description>
@@ -1442,7 +1442,7 @@ should be using the assert method that takes a range parameter that gives a rang
     <configKey><![CDATA[JAO_JUNIT_ASSERTION_ODDITIES_BOOLEAN_ASSERT]]></configKey>
     <description>
 <![CDATA[
-<p>This method asserts that a value is equal to true or false. It is simpler to just 
+<p>[fb-contrib] This method asserts that a value is equal to true or false. It is simpler to just 
 use assertTrue, or assertFalse, instead.</p>
 ]]>
     </description>
@@ -1453,7 +1453,7 @@ use assertTrue, or assertFalse, instead.</p>
     <configKey><![CDATA[JAO_JUNIT_ASSERTION_ODDITIES_IMPOSSIBLE_NULL]]></configKey>
     <description>
 <![CDATA[
-<p>This method asserts that a primitive value that was autoboxed into a boxed primitive was not 
+<p>[fb-contrib] This method asserts that a primitive value that was autoboxed into a boxed primitive was not 
 null. This will never happen, as primitives are never null, and thus the autoboxed value isn't 
 either.</p>
 ]]>
@@ -1465,7 +1465,7 @@ either.</p>
     <configKey><![CDATA[SCA_SUSPICIOUS_CLONE_ALGORITHM]]></configKey>
     <description>
 <![CDATA[
-<p>The clone method stores a value to a member field of the source object. Normally, all 
+<p>[fb-contrib] The clone method stores a value to a member field of the source object. Normally, all 
 changes are made to the cloned object, and given that cloning is almost always considered
 a read-only operation, this seems incorrect.</p>]]>
     </description>
@@ -1476,7 +1476,7 @@ a read-only operation, this seems incorrect.</p>]]>
     <configKey><![CDATA[WEM_WEAK_EXCEPTION_MESSAGING]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates and throws an exception using a static string as the exceptions message.
+<p>[fb-contrib] This method creates and throws an exception using a static string as the exceptions message.
 Without any specific context of this particular exception invocation, such as the value of parameters, 
 key member variables, or local variables, it may be difficult to infer how this exception occurred. Consider
 adding context to the exception message.</p>
@@ -1489,7 +1489,7 @@ adding context to the exception message.</p>
     <configKey><![CDATA[SCSS_SUSPICIOUS_CLUSTERED_SESSION_SUPPORT]]></configKey>
     <description>
 <![CDATA[
-<p>This method fetches a complex object from an HttpSession object, modifies this object, but does
+<p>[fb-contrib] This method fetches a complex object from an HttpSession object, modifies this object, but does
 not call setAttribute, to inform the application server that this attribute has been changed. This will
 cause this attribute not to be updated in other servers in a clustered environment, as only changes marked
 by a call to setAttribute are replicated.</p>
@@ -1502,7 +1502,7 @@ by a call to setAttribute are replicated.</p>
     <configKey><![CDATA[LO_SUSPECT_LOG_CLASS]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates a Logger by passing in a specification for a class that is unrelated
+<p>[fb-contrib] This method creates a Logger by passing in a specification for a class that is unrelated
 to the class in which the logger is going to be used. This is likely caused by copy/paste code.
 ]]>
     </description>
@@ -1513,7 +1513,7 @@ to the class in which the logger is going to be used. This is likely caused by c
     <configKey><![CDATA[LO_SUSPECT_LOG_PARAMETER]]></configKey>
     <description>
 <![CDATA[
-<p>This constructor declares a parameter that is a Logger. As loggers are meant to be
+<p>[fb-contrib] This constructor declares a parameter that is a Logger. As loggers are meant to be
 created statically per class, it doesn't make sense that you would pass a Logger from one
 class to another. Declare the Logger static in each class instead.</p>
 ]]>
@@ -1540,7 +1540,7 @@ this method, possibly including the values of key variables.
     <configKey><![CDATA[IICU_INCORRECT_INTERNAL_CLASS_USE]]></configKey>
     <description>
 <![CDATA[
-<p>This class makes use of internal api classes. As these
+<p>[fb-contrib] This class makes use of internal api classes. As these
 classes are not documented, nor externally released as part of the api, they are subject
 to change or removal. You should not be using these classes.</p>
 Packages that shouldn't be used are:
@@ -1558,12 +1558,12 @@ Packages that shouldn't be used are:
     <configKey><![CDATA[DSOC_DUBIOUS_SET_OF_COLLECTIONS]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates a set that contains other collections, or a Map whose keySet is
+<p>[fb-contrib] This method creates a set that contains other collections, or a Map whose keySet is
 another collection. As collections tend to calculate hashCode, equals and compareTo by 
 iterating the contents of the collection, this can perform poorly.</p>
 <p>In addition, when a set is used, you typically are using it to do 'contains', or 'find'
 type functionality, which seems dubious when done on a collection</p>
-<p>Finally, as a collection is often modified, problems will occur if the collection is 
+<p>Finally, as a collection is often modified, problems will occur if the collection is
 contained in a set, because the hashCode, equals or compareTo values will change while the
 collection is in the set</p>
 <p>If you wish to maintain a collection of collections, it is probably better to use a List
@@ -1577,7 +1577,7 @@ as the outer collection</p>
     <configKey><![CDATA[BED_BOGUS_EXCEPTION_DECLARATION]]></configKey>
     <description>
 <![CDATA[
-<p>This method declares that it throws a checked exception that it does not throw. As this method is
+<p>[fb-contrib] This method declares that it throws a checked exception that it does not throw. As this method is
 either a constructor, static method or private method, there is no reason for this method to declare
 the exception in its throws clause, and just causes calling methods to unnecessarily handle an exception
 that will never be thrown. The exception in question should be removed from the throws clause.</p>
@@ -1590,7 +1590,7 @@ that will never be thrown. The exception in question should be removed from the 
     <configKey><![CDATA[UNNC_UNNECESSARY_NEW_NULL_CHECK]]></configKey>
     <description>
 <![CDATA[
-<p>This method allocations an object with new, and then checks that the object is null
+<p>[fb-contrib] This method allocations an object with new, and then checks that the object is null
 or non null. As the new operator is guaranteed to either succeed or throw an exception,
 this null check is unnecessary and can be removed.
 ]]>
@@ -1602,7 +1602,7 @@ this null check is unnecessary and can be removed.
     <configKey><![CDATA[DTEP_DEPRECATED_TYPESAFE_ENUM_PATTERN]]></configKey>
     <description>
 <![CDATA[
-<p>This class appears to implement the old style type safe enum pattern that was used in place of
+<p>[fb-contrib] This class appears to implement the old style type safe enum pattern that was used in place of
 real enums. Since this class is compiled with java 1.5 or better, it would be simpler and more 
 easy to understand if it was just switched over to an enum.</p>
 ]]>
@@ -1614,7 +1614,7 @@ easy to understand if it was just switched over to an enum.</p>
     <configKey><![CDATA[SMA_STUTTERED_METHOD_ARGUMENTS]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls a method passing the same value for two or more of the parameters.
+<p>[fb-contrib] This method calls a method passing the same value for two or more of the parameters.
 Often this is a cut/paste bug, but if not, it is confusing why you would pass the same value for two
 different parameters. Perhaps an alternative method that just takes one parameter should be overridden
 in this case.</p>
@@ -1627,7 +1627,7 @@ in this case.</p>
     <configKey><![CDATA[TBP_TRISTATE_BOOLEAN_PATTERN]]></configKey>
     <description>
 <![CDATA[
-<p>This method declares that it returns a Boolean value. However the code
+<p>[fb-contrib] This method declares that it returns a Boolean value. However the code
 can return a null value. As this is now three values that can be returned;
 Boolean.TRUE, Boolean.FALSE, null; you have changed what a Boolean means.
 It would be clearer to just create a new Enum that has the three values
@@ -1641,7 +1641,7 @@ you want, and define that the method returns that type.</p>
     <configKey><![CDATA[SUA_SUSPICIOUS_UNINITIALIZED_ARRAY]]></configKey>
     <description>
 <![CDATA[
-<p>This method returns an array that was allocated but apparently not initialized. It is
+<p>[fb-contrib] This method returns an array that was allocated but apparently not initialized. It is
 possible that the caller of this method will do the work of initializing this array, but
 that is not a common pattern, and it is assumed that this array has just been forgotten to 
 be initialized.</p>
@@ -1654,7 +1654,7 @@ be initialized.</p>
     <configKey><![CDATA[ITU_INAPPROPRIATE_TOSTRING_USE]]></configKey>
     <description>
 <![CDATA[
-<p>This method calls algorithmic operations on a String that was returned from a toString() method.
+<p>[fb-contrib] This method calls algorithmic operations on a String that was returned from a toString() method.
 As these methods are for debugging/logging purposes, it shouldn't be the basis of core logic in your code.
 ]]>
     </description>
@@ -1665,7 +1665,7 @@ As these methods are for debugging/logging purposes, it shouldn't be the basis o
     <configKey><![CDATA[IKNC_INCONSISTENT_HTTP_ATTRIBUTE_CASING]]></configKey>
     <description>
 <![CDATA[
-<p>This method sets or gets an HttpSession attribute with a parmeter name that was used in other locations
+<p>[fb-contrib] This method sets or gets an HttpSession attribute with a parmeter name that was used in other locations
 but with a different casing. As HttpSession attribute are case sensitive, this will be very confusing.
 ]]>
     </description>
@@ -1676,7 +1676,7 @@ but with a different casing. As HttpSession attribute are case sensitive, this w
     <configKey><![CDATA[IKNC_INCONSISTENT_HTTP_PARAM_CASING]]></configKey>
     <description>
 <![CDATA[
-<p>This method fetches an HttpServletRequest parameter with a parameter name that was used in other locations
+<p>[fb-contrib] This method fetches an HttpServletRequest parameter with a parameter name that was used in other locations
 but with a different casing. As HttpServletRequest parameters are case sensitive, this will be very confusing.
 ]]>
     </description>
@@ -1687,7 +1687,7 @@ but with a different casing. As HttpServletRequest parameters are case sensitive
     <configKey><![CDATA[OC_OVERZEALOUS_CASTING]]></configKey>
     <description>
 <![CDATA[
-<p>This method casts the right hand side of an expression to a class that is more specific than the 
+<p>[fb-contrib] This method casts the right hand side of an expression to a class that is more specific than the 
 variable on the left hand side of the assignment. The cast only has to be as specific as what the variable
 that is on the left. Using a more specific type on the right hand side just increases cohesion.
 ]]>
@@ -1699,7 +1699,7 @@ that is on the left. Using a more specific type on the right hand side just incr
     <configKey><![CDATA[PDP_POORLY_DEFINED_PARAMETER]]></configKey>
     <description>
 <![CDATA[
-<p>This method defines parameters at a more abstract level than is actually needed to function correctly,
+<p>[fb-contrib] This method defines parameters at a more abstract level than is actually needed to function correctly,
 as the code casts these parameters to more concrete types. Since this method is not derivable, you should 
 just define the parameters with the type that is needed.
 ]]>
@@ -1711,7 +1711,7 @@ just define the parameters with the type that is needed.
     <configKey><![CDATA[NSE_NON_SYMMETRIC_EQUALS]]></configKey>
     <description>
 <![CDATA[
-<p>This class implements an equals method that compares this object against another type of object.
+<p>[fb-contrib] This class implements an equals method that compares this object against another type of object.
 This is almost always a bad thing to do, but if it is to be done, you must make sure that the basic
 symmetry rule of equivalence is maintained, that being if a equals b, then b equals a. It does not
 appear that the class that is being compared to this class knows about this class, and doesn't compare itself
@@ -1726,7 +1726,7 @@ to this.</p>
     <configKey><![CDATA[CVAA_CONTRAVARIANT_ARRAY_ASSIGNMENT]]></configKey>
     <description>
 <![CDATA[
-<p>This method contains a contravariant array assignment. Since arrays are mutable data structures, their use 
+<p>[fb-contrib] This method contains a contravariant array assignment. Since arrays are mutable data structures, their use 
 must be restricted to covariant or invariant usage</p>
 
 <pre>
@@ -1746,7 +1746,7 @@ class B extends A {}
     <configKey><![CDATA[CVAA_CONTRAVARIANT_ELEMENT_ASSIGNMENT]]></configKey>
     <description>
 <![CDATA[
-<p>This method contains a contravariant array element assignment. Since arrays are mutable 
+<p>[fb-contrib] This method contains a contravariant array element assignment. Since arrays are mutable 
 data structures, their use must be restricted to covariant or invariant usage</p>
 
 <pre>
@@ -1766,7 +1766,7 @@ class B extends A {}
     <configKey><![CDATA[NFF_NON_FUNCTIONAL_FIELD]]></configKey>
     <description>
 <![CDATA[
-<p>This serializable class defines a field as both transient and final. As transient fields
+<p>[fb-contrib] This serializable class defines a field as both transient and final. As transient fields
 are not serialized across the stream, it is required that some piece of code reinitialize that field
 when it is deserialized. But since constructors aren't called when deserialization, the field is not initialized. 
 And since the field is final, no other method can initialize it as well.</p>
@@ -1780,7 +1780,7 @@ And since the field is final, no other method can initialize it as well.</p>
     <configKey><![CDATA[SNG_SUSPICIOUS_NULL_FIELD_GUARD]]></configKey>
     <description>
 <![CDATA[
-<p>This method tests a field to make sure it's not null before executing a conditional block of
+<p>[fb-contrib] This method tests a field to make sure it's not null before executing a conditional block of
 code. However in the conditional block is reassigns the field. It is likely that the guard
 should have been a check to see if the field is null, not that the field was not null.</p>
 ]]>
@@ -1793,7 +1793,7 @@ should have been a check to see if the field is null, not that the field was not
     <configKey><![CDATA[SNG_SUSPICIOUS_NULL_LOCAL_GUARD]]></configKey>
     <description>
 <![CDATA[
-<p>This method tests a local variable to make sure it's not null before executing a conditional block of
+<p>[fb-contrib] This method tests a local variable to make sure it's not null before executing a conditional block of
 code. However in the conditional block is reassigns the local variable. It is likely that the guard
 should have been a check to see if the local variable is null, not that the local variable was not null.</p>
 ]]>
@@ -1805,7 +1805,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_RUNTIME_EXIT_OR_HALT]]></configKey>
     <description>
 <![CDATA[
-<p>Calling <code>Runtime.exit()</code> or <code>Runtime.halt()</code> shuts down the entire Java virtual machine. This should only been done when it is appropriate. Such calls make it hard or impossible for your code to be invoked by other code. Consider throwing a RuntimeException instead.</p>
+<p>[fb-contrib] Calling <code>Runtime.exit()</code> or <code>Runtime.halt()</code> shuts down the entire Java virtual machine. This should only been done when it is appropriate. Such calls make it hard or impossible for your code to be invoked by other code. Consider throwing a RuntimeException instead.</p>
 ]]>
     </description>
   </rule>
@@ -1815,7 +1815,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_RUNFINALIZATION]]></configKey>
     <description>
 <![CDATA[
-<p>Manually triggering finalization can result in serious performance problems and may be masking resource cleanup bugs.</p>
+<p>[fb-contrib] Manually triggering finalization can result in serious performance problems and may be masking resource cleanup bugs.</p>
 ]]>
     </description>
   </rule>
@@ -1825,7 +1825,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_BIGDECIMAL_EQUALS]]></configKey>
     <description>
 <![CDATA[
-<p><code>equals()</code> being called to compare two <code>java.math.BigDecimal</code> numbers. This is normally a mistake, as two <code>BigDecimal</code> objects are only equal if they are equal in both value and scale, so that <i>2.0</i> is not equal to <i>2.00</i>. To compare <code>BigDecimal</code> objects for mathematical equality, use <code>compareTo()</code> instead.</p>
+<p>[fb-contrib] <code>equals()</code> being called to compare two <code>java.math.BigDecimal</code> numbers. This is normally a mistake, as two <code>BigDecimal</code> objects are only equal if they are equal in both value and scale, so that <i>2.0</i> is not equal to <i>2.00</i>. To compare <code>BigDecimal</code> objects for mathematical equality, use <code>compareTo()</code> instead.</p>
 ]]>
     </description>
   </rule>
@@ -1835,7 +1835,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_INETADDRESS_GETLOCALHOST]]></configKey>
     <description>
 <![CDATA[
-<p>Do not call <code>InetAddress.getLocalHost()</code> on multihomed servers. On a multihomed server, <code>InetAddress.getLocalHost()</code> simply returns the IP address associated with the server's internal hostname. This could any of the network interfaces, which could expose the machine to security risks. Server applications that need to listen on sockets should add configurable properties to define which network interfaces the server should bind.</p>
+<p>[fb-contrib] Do not call <code>InetAddress.getLocalHost()</code> on multihomed servers. On a multihomed server, <code>InetAddress.getLocalHost()</code> simply returns the IP address associated with the server's internal hostname. This could any of the network interfaces, which could expose the machine to security risks. Server applications that need to listen on sockets should add configurable properties to define which network interfaces the server should bind.</p>
 ]]>
     </description>
   </rule>
@@ -1845,7 +1845,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_PROMISCUOUS_SERVERSOCKET]]></configKey>
     <description>
 <![CDATA[
-<p>Do not use the <code>ServerSocket</code> constructor or <code>ServerSocketFactory.createServerSocket()</code> factory methods that accepts connections on any network interface. By default, an application that listens on a socket will listen for connection attempts on any network interface, which can be a security risk. Only the long form the <code>ServerSocket</code> constructor or <code>ServerSocketFactory.createServerSocket()</code> factory methods take a specific local address to define which network interface the socket should bind.</p>
+<p>[fb-contrib] Do not use the <code>ServerSocket</code> constructor or <code>ServerSocketFactory.createServerSocket()</code> factory methods that accepts connections on any network interface. By default, an application that listens on a socket will listen for connection attempts on any network interface, which can be a security risk. Only the long form the <code>ServerSocket</code> constructor or <code>ServerSocketFactory.createServerSocket()</code> factory methods take a specific local address to define which network interface the socket should bind.</p>
 ]]>
     </description>
   </rule>
@@ -1855,7 +1855,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_RANDOM_SEED]]></configKey>
     <description>
 <![CDATA[
-<p><code>Random()</code> constructor without a seed is insecure because it defaults to easily guessable seed: <code>System.currentTimeMillis()</code>. Initialize seed with <code>Random(SecureRandom.getInstance().generateSeed())</code> or use <code>SecureRandom</code> instead.</p>
+<p>[fb-contrib] <code>Random()</code> constructor without a seed is insecure because it defaults to easily guessable seed: <code>System.currentTimeMillis()</code>. Initialize seed with <code>Random(SecureRandom.getInstance().generateSeed())</code> or use <code>SecureRandom</code> instead.</p>
 ]]>
     </description>
   </rule>
@@ -1865,7 +1865,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_SECURERANDOM]]></configKey>
     <description>
 <![CDATA[
-<p>The <code>SecureRandom()</code> constructors and <code>SecureRandom.getSeed()</code> method are deprecated. Call <code>SecureRandom.getInstance()</code> and <code>SecureRandom.getInstance().generateSeed()</code> instead.</p>
+<p>[fb-contrib] The <code>SecureRandom()</code> constructors and <code>SecureRandom.getSeed()</code> method are deprecated. Call <code>SecureRandom.getInstance()</code> and <code>SecureRandom.getInstance().generateSeed()</code> instead.</p>
 ]]>
     </description>
   </rule>
@@ -1875,7 +1875,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_THREAD_PRIORITIES]]></configKey>
     <description>
 <![CDATA[
-<p>Getting or setting thread priorities is not portable and could cause or mask race conditions.</p>
+<p>[fb-contrib] Getting or setting thread priorities is not portable and could cause or mask race conditions.</p>
 ]]>
     </description>
   </rule>
@@ -1885,7 +1885,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_THREAD_YIELD]]></configKey>
     <description>
 <![CDATA[
-<p>Manual thread scheduling with <code>Thread.sleep()</code> or <code>Thread.yield()</code> has no guaranteed semantics and is often used to mask race conditions.</p>
+<p>[fb-contrib] Manual thread scheduling with <code>Thread.sleep()</code> or <code>Thread.yield()</code> has no guaranteed semantics and is often used to mask race conditions.</p>
 ]]>
     </description>
   </rule>
@@ -1895,7 +1895,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_WAIT_WITHOUT_TIMEOUT]]></configKey>
     <description>
 <![CDATA[
-<p>Calling <code>{2}</code> without timeout could block forever. Consider using a timeout to detect deadlocks or performance problems. Thread.join() Object.wait() Condition.await() Lock.lock() Lock.lockInterruptibly()</p>
+<p>[fb-contrib] Calling <code>{2}</code> without timeout could block forever. Consider using a timeout to detect deadlocks or performance problems. Thread.join() Object.wait() Condition.await() Lock.lock() Lock.lockInterruptibly()</p>
 ]]>
     </description>
   </rule>
@@ -1905,7 +1905,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_THREAD_FAIRNESS]]></configKey>
     <description>
 <![CDATA[
-<p>Calling <code>Lock.tryLock()</code> or <code>ReentrantLock.tryLock()</code> without a timeout does not honor the lock's fairness setting. If you want to honor the fairness setting for this lock, then use <code>tryLock(0, TimeUnit.SECONDS)</code> which is almost equivalent (it also detects interruption).</p>
+<p>[fb-contrib] Calling <code>Lock.tryLock()</code> or <code>ReentrantLock.tryLock()</code> without a timeout does not honor the lock's fairness setting. If you want to honor the fairness setting for this lock, then use <code>tryLock(0, TimeUnit.SECONDS)</code> which is almost equivalent (it also detects interruption).</p>
 ]]>
     </description>
   </rule>
@@ -1915,7 +1915,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_SIGNAL_NOT_SIGNALALL]]></configKey>
     <description>
 <![CDATA[
-<p><code>Condition.signalAll()</code> is prefered over <code>Condition.signal()</code>. Calling <code>signal()</code> only wakes up one thread, meaning that the thread woken up might not be the one waiting for the condition that the caller just satisfied.</p>
+<p>[fb-contrib] <code>Condition.signalAll()</code> is prefered over <code>Condition.signal()</code>. Calling <code>signal()</code> only wakes up one thread, meaning that the thread woken up might not be the one waiting for the condition that the caller just satisfied.</p>
 ]]>
     </description>
   </rule>
@@ -1925,7 +1925,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_LOCK_ISLOCKED]]></configKey>
     <description>
 <![CDATA[
-<p>Calling <code>ReentrantLock.isLocked()</code> or <code>ReentrantLock.isHeldByCurrentThread()</code> might indicate race conditions or incorrect locking. These methods are designed for use in debug code or monitoring of the system state, not for synchronization control.</p>
+<p>[fb-contrib] Calling <code>ReentrantLock.isLocked()</code> or <code>ReentrantLock.isHeldByCurrentThread()</code> might indicate race conditions or incorrect locking. These methods are designed for use in debug code or monitoring of the system state, not for synchronization control.</p>
 ]]>
     </description>
   </rule>
@@ -1935,7 +1935,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_STRING_BYTES_ENCODING]]></configKey>
     <description>
 <![CDATA[
-<p>The behavior of the <code>String(byte[] bytes)</code> and <code>String.getBytes()</code> is undefined if the string cannot be encoded in the platform's default charset. Instead, use the <code>String(byte[] bytes, String encoding)</code> or <code>String.getBytes(String encoding)></code> constructor which accepts the string's encoding as an argument. Be sure to specify the encoding used for the user's locale.</p>
+<p>[fb-contrib] The behavior of the <code>String(byte[] bytes)</code> and <code>String.getBytes()</code> is undefined if the string cannot be encoded in the platform's default charset. Instead, use the <code>String(byte[] bytes, String encoding)</code> or <code>String.getBytes(String encoding)></code> constructor which accepts the string's encoding as an argument. Be sure to specify the encoding used for the user's locale.</p>
 ]]>
     </description>
   </rule>
@@ -1945,7 +1945,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[MDM_SETDEFAULTLOCALE]]></configKey>
     <description>
 <![CDATA[
-<p>Do not use the <code>Locale.setDefault()</code> method to change the default locale. It changes the JVM's default locale for all threads and makes your applications unsafe to threads. It does not affect the host locale. Since changing the JVM's default locale may affect many different areas of functionality, this method should only be used if the caller is prepared to reinitialize locale-sensitive code running within the same Java Virtual Machine, such as the user interface.</p>
+<p>[fb-contrib] Do not use the <code>Locale.setDefault()</code> method to change the default locale. It changes the JVM's default locale for all threads and makes your applications unsafe to threads. It does not affect the host locale. Since changing the JVM's default locale may affect many different areas of functionality, this method should only be used if the caller is prepared to reinitialize locale-sensitive code running within the same Java Virtual Machine, such as the user interface.</p>
 ]]>
     </description>
   </rule>
@@ -1955,7 +1955,7 @@ should have been a check to see if the local variable is null, not that the loca
     <configKey><![CDATA[ROOM_REFLECTION_ON_OBJECT_METHODS]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses reflection to call a method that is defined in java.lang.Object.
+<p>[fb-contrib] This method uses reflection to call a method that is defined in java.lang.Object.
 As these methods are always available, it is not necessary to call these methods with
 reflection.
 ]]>
@@ -1967,7 +1967,7 @@ reflection.
     <configKey><![CDATA[IPU_IMPROPER_PROPERTIES_USE]]></configKey>
     <description>
 <![CDATA[
-<p>This method places non-String objects into a Properties object. As the Properties object
+<p>[fb-contrib] This method places non-String objects into a Properties object. As the Properties object
 is intented to be a String to String map, putting non String objects is wrong, and takes advantage
 of a design flaw in the Properties class by deriving from Hashtable instead of using aggregation.
 If you want a collection that holds other types of objects, use a Hashtable, or better still newer collections
@@ -1981,7 +1981,7 @@ like HashMap or TreeMap.
     <configKey><![CDATA[IPU_IMPROPER_PROPERTIES_USE_SETPROPERTY]]></configKey>
     <description>
 <![CDATA[
-<p>This method uses the inherited method from Hashtable put(String key, Object value) in
+<p>[fb-contrib] This method uses the inherited method from Hashtable put(String key, Object value) in
 a Properties object. Since the Properties object was intended to be only a String to String
 map, use of the derived put method is discouraged. Use the Properties.setProperty method instead.
 ]]>
@@ -1993,7 +1993,7 @@ map, use of the derived put method is discouraged. Use the Properties.setPropert
     <configKey><![CDATA[PCAIL_POSSIBLE_CONSTANT_ALLOCATION_IN_LOOP]]></configKey>
     <description>
 <![CDATA[
-<p>This method allocates an object using the default constructor in a loop, and then
+<p>[fb-contrib] This method allocates an object using the default constructor in a loop, and then
 only uses it in a quasi-static way. It is never assigned to anything that lives outside
 the loop, and could potentially be allocated once outside the loop. Often this can be 
 achieved by calling a clear() like method in the loop, to reset the state of the object
@@ -2007,7 +2007,7 @@ in the loop.
     <configKey><![CDATA[WOC_WRITE_ONLY_COLLECTION_LOCAL]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates and initializes a collection but then never access this collection
+<p>[fb-contrib] This method creates and initializes a collection but then never access this collection
 to gain information, or fetch items from the collection. It is likely that this collection
 is left over from a past effort, and can be removed.
 ]]>
@@ -2019,7 +2019,7 @@ is left over from a past effort, and can be removed.
     <configKey><![CDATA[WOC_WRITE_ONLY_COLLECTION_FIELD]]></configKey>
     <description>
 <![CDATA[
-<p>This class creates and initializes a collection as a field but then never access this collection
+<p>[fb-contrib] This class creates and initializes a collection as a field but then never access this collection
 to gain information, or fetch items from the collection. It is likely that this collection
 is left over from a past effort, and can be removed.
 ]]>
@@ -2031,7 +2031,7 @@ is left over from a past effort, and can be removed.
     <configKey><![CDATA[UVA_USE_VAR_ARGS]]></configKey>
     <description>
 <![CDATA[
-<p>This method defines a parameter list that ends with an array. As this class is compiled with
+<p>[fb-contrib] This method defines a parameter list that ends with an array. As this class is compiled with
 Java 1.5 or better, this parameter could be defined as a vararg parameter instead, which can be
 more convienent for client developers to use. This is not a bug, per se, just an improvement.
 ]]>
@@ -2044,7 +2044,7 @@ more convienent for client developers to use. This is not a bug, per se, just an
     <configKey><![CDATA[PUS_POSSIBLE_UNSUSPECTED_SERIALIZATION]]></configKey>
     <description>
 <![CDATA[
-<p>This method serializes an instance of a non-static inner class. Since this class has a
+<p>[fb-contrib] This method serializes an instance of a non-static inner class. Since this class has a
 reference to the containing class, this outer class will be serialized as well. This is often
 not intentional, and will make the amount of data that is serialized much more than is needed.
 If the outer classes is not desired to be serialized, either make the inner class, static, or 
@@ -2059,7 +2059,7 @@ pull it out into a separate "first class" class.
     <configKey><![CDATA[SEC_SIDE_EFFECT_CONSTRUCTOR]]></configKey>
     <description>
 <![CDATA[
-<p>This method creates an object but does not assign this object to any variable or field.
+<p>[fb-contrib] This method creates an object but does not assign this object to any variable or field.
 This implies that the class operates through side effects in the constructor, which is a 
 bad pattern to use, as it adds unnecessary coupling. Consider pulling the side effect out of 
 the constructor, into a separate method, or into the calling method.
@@ -2073,7 +2073,7 @@ the constructor, into a separate method, or into the calling method.
     <configKey><![CDATA[SGSU_SUSPICIOUS_GETTER_SETTER_USE]]></configKey>
     <description>
 <![CDATA[
-<p>This method retrieves the property of a java bean, only to use it in the setter
+<p>[fb-contrib] This method retrieves the property of a java bean, only to use it in the setter
 for the same property of the same bean. This is usually a copy/paste typo.
 ]]>
     </description>

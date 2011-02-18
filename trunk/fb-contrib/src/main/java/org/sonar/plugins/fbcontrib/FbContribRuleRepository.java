@@ -27,14 +27,12 @@ import org.sonar.api.rules.XMLRuleParser;
 
 import java.util.List;
 
-public class FbContribRuleRepository extends RuleRepository {
+public final class FbContribRuleRepository extends RuleRepository {
   private XMLRuleParser xmlRuleParser;
 
   public FbContribRuleRepository(XMLRuleParser xmlRuleParser) {
     super("findbugs", Java.KEY);
     setName("Findbugs");
-    // super(FindbugsConstants.REPOSITORY_KEY, Java.KEY);
-    // setName(FindbugsConstants.REPOSITORY_NAME);
     this.xmlRuleParser = xmlRuleParser;
   }
 
