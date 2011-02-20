@@ -14,7 +14,9 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>ant-task</module>
         <module>artifact-size</module>
+        <module>branding</module>
         <module>build-breaker</module>
         <module>build-stability</module>
         <module>clirr</module>
@@ -44,6 +46,7 @@
         <module>scm-activity</module>
         <module>security-rules</module>
         <module>sigmm</module>
+        <module>sonar-runner</module>
         <module>sonarj</module>
         <module>taglist</module>
         <module>technical-debt</module>
@@ -61,14 +64,11 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>ant-task</module>
-        <module>branding</module>
         <module>clover</module>
         <module>debug</module>
         <module>fb-contrib</module>
         <module>metrics-help</module>
         <module>profiler</module>
-        <module>sonar-runner</module>
         <module>testability-explorer</module>
         <module>webscanner</module>
         <module>xml</module>
