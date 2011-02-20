@@ -29,7 +29,7 @@ import org.sonar.api.Property;
 
 @Properties({ @Property(key = BrandingPlugin.IMAGE_PROPERTY,
     name = "Image URL",
-    description = "Example : http://www.codehaus.org/codehaus-small.gif") })
+    description = "You need to restart server to changes take effect. Example : http://www.codehaus.org/codehaus-small.gif") })
 public class BrandingPlugin implements Plugin {
 
   public static final String IMAGE_PROPERTY = "sonar.branding.image";
