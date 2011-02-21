@@ -28,6 +28,20 @@
     </license>
   </licenses>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/clover</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/clover</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14643</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-CLOVER</url>
+  </ciManagement>
+
   <properties>
     <sonar.version>2.6</sonar.version>
     <sonar.pluginName>Clover</sonar.pluginName>
