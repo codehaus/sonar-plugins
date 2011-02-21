@@ -13,7 +13,7 @@
   <version>2.7-SNAPSHOT</version>
 
   <name>Sonar Clover Plugin</name>
-  <description></description>
+  <description><![CDATA[Get code coverage with <a href="http://www.atlassian.com/software/clover/">Atlassian Clover</a>.]]></description>
   <url>http://docs.codehaus.org/display/SONAR/Clover+Plugin</url>
   <inceptionYear>2008</inceptionYear>
   <organization>
@@ -29,7 +29,9 @@
   </licenses>
 
   <properties>
-    <sonar.version>2.6-RC1</sonar.version>
+    <sonar.version>2.6</sonar.version>
+    <sonar.pluginName>Clover</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.clover.CloverPlugin</sonar.pluginClass>
   </properties>
 
   <build>
@@ -42,17 +44,6 @@
       </testResource>
     </testResources>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <pluginKey>clover</pluginKey>
-          <pluginName>Clover</pluginName>
-          <pluginClass>org.sonar.plugins.clover.CloverPlugin</pluginClass>
-          <pluginDescription><![CDATA[Get code coverage with <a href="http://www.atlassian.com/software/clover/">Atlassian Clover</a>.]]></pluginDescription>
-        </configuration>
-      </plugin>
       <!-- Running JUnit tests in parallel -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -71,11 +62,13 @@
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-java-api</artifactId>
       <version>${sonar.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- TODO http://jira.codehaus.org/browse/SONAR-2011
@@ -88,11 +81,78 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-testing-harness</artifactId>
       <version>${sonar.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- integration tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-ws-client</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>integration-tests</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-dev-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <background>true</background>
+                  <clean>true</clean>
+                  <configBackup>${basedir}/src/it/sonar-backup.xml</configBackup>
+                </configuration>
+                <goals>
+                  <goal>start-war</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>analyze-projects</id>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <projectsDir>${basedir}/src/it/maven-projects</projectsDir>
+                </configuration>
+                <goals>
+                  <goal>analyze</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop-war</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
