@@ -12,31 +12,32 @@
     <module>module2</module>
   </modules>
   <build>
-	<pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-        </configuration>
-      </plugin>
-    
-      <plugin>
-        <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-clover2-plugin</artifactId>
-        <version>2.6.3</version>
-        <configuration>
-	      <license><![CDATA[ONQOnjJexXXewfuckQlojiQGMqMVnhtAbhxwjjoVkHbWgx
-			mi2KrURzVJmEZQD1l0T>JBJk2Ke7ZrTZvmO00u366sv9IY
-			rqqMuWRPpRNNRompPqrtwqnoPpMoqqprMrVVvVXXVtVppQ
-			RrnmqmUUnorrvrtommmmmUUnorrvrtommmmmUUJlkXoUUn
-			mmmm]]></license>
-		</configuration>
-      </plugin>
-    </plugins>
-</pluginManagement>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>com.atlassian.maven.plugins</groupId>
+          <artifactId>maven-clover2-plugin</artifactId>
+          <version>2.6.3</version>
+          <configuration>
+            <license>
+              <![CDATA[ONQOnjJexXXewfuckQlojiQGMqMVnhtAbhxwjjoVkHbWgx
+              mi2KrURzVJmEZQD1l0T>JBJk2Ke7ZrTZvmO00u366sv9IY
+              rqqMuWRPpRNNRompPqrtwqnoPpMoqqprMrVVvVXXVtVppQ
+              RrnmqmUUnorrvrtommmmmUUnorrvrtommmmmUUJlkXoUUn
+              mmmm]]>
+            </license>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <dependencies>
