@@ -21,24 +21,24 @@
 package org.sonar.plugins.radiator;
 
 import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.NavigationSection;
-import org.sonar.api.web.RubyRailsPage;
+import org.sonar.api.web.Description;
+import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 
-@NavigationSection({NavigationSection.HOME, NavigationSection.RESOURCE})
 @UserRole(UserRole.USER)
-public class RadiatorPage extends AbstractRubyTemplate implements RubyRailsPage {
+@Description("Radiator of components")
+public final class RadiatorWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+
+  public String getId() {
+    return "radiator";
+  }
 
   public String getTitle() {
     return "Radiator";
   }
 
   @Override
-  public String getTemplatePath() {
-    return "/org/sonar/plugins/radiator/page.html.erb";
-  }
-
-  public String getId() {
-    return getClass().getName();
+  protected String getTemplatePath() {
+    return "/org/sonar/plugins/radiator/widget.html.erb";
   }
 }
