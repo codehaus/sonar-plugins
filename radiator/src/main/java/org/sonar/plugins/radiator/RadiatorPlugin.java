@@ -20,13 +20,12 @@
 
 package org.sonar.plugins.radiator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 
-public class RadiatorPlugin implements Plugin {
+import java.util.Arrays;
+import java.util.List;
+
+public final class RadiatorPlugin implements Plugin {
 
   public String getKey() {
     return "radiator";
@@ -40,11 +39,8 @@ public class RadiatorPlugin implements Plugin {
     return "Display measures in a big treemap";
   }
 
-  public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
-    extensions.add(RadiatorPage.class);
-    extensions.add(RadiatorWebService.class);
-    return extensions;
+  public List getExtensions() {
+    return Arrays.asList(RadiatorPage.class, RadiatorWidget.class, RadiatorWebService.class);
   }
 
   @Override

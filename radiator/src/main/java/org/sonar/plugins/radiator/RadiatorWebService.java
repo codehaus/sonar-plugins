@@ -31,7 +31,7 @@ public class RadiatorWebService extends AbstractRubyTemplate implements RubyRail
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/radiator/radiator_plugin_controller.rb";
+    return "/org/sonar/plugins/radiator/web_service.rb";
   }
 
 }

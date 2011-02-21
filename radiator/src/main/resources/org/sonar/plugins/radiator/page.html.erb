@@ -63,27 +63,30 @@
       </td>
       <td width="15px"> </td>
       <td>
-        <% layout = (params[:layout].nil? || params[:layout] == 'true') ? false : true
-        if (!layout) %>
-          <%= image_tag 'links/external.png' %> <%= link_to('New window', {:layout => layout.to_s, :page => params[:page]}, :target => 'radiator', :class => 'note') %> 
-        <% end %>
-      </td>
-      <td width="15px"> </td>
-      <td>
          <%= image_tag('loading.gif', {:id => "tm_loading"}) %>
       </td>
 		</tr>
 	</table>
 </form>
-<div class="notes" style="margin: 5px 0 0 0">
-  <div style="float: right"><span>Left click to zoom in. Right click to zoom out.</span></div>
-  <div id="radiator-breadcrumb">&nbsp;&#187;&nbsp;</div>
-</div>
 
 <div id="radiatorroot"> </div>
 <div id="nodata" style="display:none; vertical-align:top">
   <p>No data</p>
 </div>
+
+<div class="notes" style="margin: 5px 0 0 0">
+  <div style="float: right"><span>Left click to zoom in. Right click to zoom out.</span></div>
+  <div id="radiator-breadcrumb">&nbsp;&#187;&nbsp;</div>
+</div>
+
+<%
+   layout = (params[:layout].nil? || params[:layout] == 'true') ? false : true
+   if (!layout)
+%>
+<div class="right">
+  <%= image_tag 'links/external.png' %> <%= link_to('New window', {:layout => layout.to_s, :page => params[:page]}, :target => 'radiator', :class => 'note') %>
+</div>
+<% end %>
 
 <script language="javascript">
 	var treemap = null;

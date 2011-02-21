@@ -1,0 +1,231 @@
+<%
+# http://thejit.org
+# The 1.1.3 jit script need to be modified with the following code
+# line 8138 makes tree map anchors work :
+# var from = e.target || e.srcElement;
+# if (from.nodeName.toLowerCase() == 'a') {
+# 	// event originated form an anchor link, returning
+# 	return;
+# }
+#
+# line 7606 (replace jit tip css class name on tip elements by sonar tooltip css class name) :
+# tip.className = 'tooltip';
+%>
+<%= javascript_include_tag 'jit-yc' %>
+<style type="text/css">
+#radiator<%= widget.id -%> {
+    position: relative;
+    width:100%;
+    margin:auto;
+    overflow:hidden;
+}
+#radiator<%= widget.id -%> div {
+    position:absolute;
+    overflow:hidden;
+    padding: 0px;
+}
+#radiator<%= widget.id -%> .content {
+    background-color:white;
+}
+#radiator<%= widget.id -%> .head {
+    color:white;
+    background-color:#444;
+}
+#radiator<%= widget.id -%> .body {
+    background-color:white;
+    padding: 0;
+}
+#radiator<%= widget.id -%> .over-content {
+    background-color: #9FD4FF;
+}
+#radiator<%= widget.id -%> .leaf {
+  padding: 3px 0 0 3px;
+  border:1px solid #fff;
+}
+#radiator-breadcrumb<%=widget.id-%> {
+  height: 1.2em;
+}
+</style>
+<form name="tm_controls" >
+	<table>
+		<tr>
+      <td>
+        <span class="note">Size:</span>
+        <%= select_tag 'size_metric', options_from_collection_for_select(
+          Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
+          :id => 'select_size_metric', :class => 'small',:onchange => "load_treemap(current_resource_key);" %>
+      </td>
+      <td width="15px"> </td>
+      <td>
+        <span class="note">Color:</span>
+        <%= select_tag 'color_metric', options_from_collection_for_select(
+            Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
+            :id => 'select_color_metric', :class => 'small', :onchange => "load_treemap(current_resource_key);" %>
+      </td>
+      <td>
+         <%= image_tag('loading.gif', {:id => "tm_loading"}) %>
+      </td>
+		</tr>
+	</table>
+</form>
+
+<div id="radiator<%= widget.id -%>" class="radiator"> </div>
+<div id="nodata" style="display:none; vertical-align:top">
+  <p>No data</p>
+</div>
+
+<div class="notes" style="margin: 5px 0 0 0">
+  <div style="float: right"><span>Left click to zoom in. Right click to zoom out.</span></div>
+  <div id="radiator-breadcrumb<%=widget.id-%>">&nbsp;</div>
+</div>
+<div class="small right">
+  <%= image_tag 'links/external.png' %>
+  <a href="<%= ApplicationController.root_context -%>/plugins/resource/<%= @project.id -%>?page=org.sonar.plugins.radiator.RadiatorPage&layout=false" target="radiator">New window</a>
+</div>
+
+
+<script language="javascript">
+  var widgetWidth=$('block_<%= widget.id -%>').getWidth()-2*12;
+  $('radiator<%= widget.id -%>').setStyle({'width': widgetWidth + 'px', 'height': widgetWidth + 'px'});
+
+	var treemap = null;
+	var all_projects_radiator = <%= @project.nil? ? 'true' : 'false' %>;
+	var current_resource_key = null;
+	var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
+	var size_metric, color_metric = null;
+	var breadcrumbs = [];
+
+	TM.Squarified.implement({
+       onLeftClick: function(elem) {
+          isFile = Element.readAttribute(elem, 'isFile');
+          if (isFile == 'false') {
+       	  	breadcrumbs[breadcrumbs.length] = Element.readAttribute(elem, 'name');
+          	load_treemap(elem.parentNode.id);
+          } else {
+          	open_resource_viewer(elem.parentNode.id);
+          }
+       },
+       onRightClick: function() {
+		 load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
+		 if (load) {
+		    breadcrumbs[breadcrumbs.length-1] = null;
+		    breadcrumbs = breadcrumbs.compact();
+         	load_treemap(parent_resource_key);
+         }
+       },
+       leafBox: function(json, coord) {
+			var config = this.config;
+			var backgroundColor = config.Color.allow && this.setColor(json),
+			offst = config.offset,
+			width = coord.width - offst,
+			height = coord.height - offst;
+			var c = {
+			  'top':   (offst / 2)  + "px",
+			  'height': height + "px",
+			  'width': width + "px",
+			  'left': (offst / 2) + "px",
+			  'cursor': 'pointer'
+			};
+			if(backgroundColor) c['background-color'] = backgroundColor;
+			div_content = "<div isFile=\"" + json.is_file + "\" name=\"" + json.name + "\" class=\"leaf\" style=\"" + this.toStyle(c) + "\">";
+			div_content += json.is_file ? json.name : "<a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a>";
+			return div_content + "</div>";
+        },
+        headBox: function(json, coord) {
+        	return "<div></div>";
+        },
+        setColor: function(json) {
+          return json.data.$color;
+        }
+	});
+
+	function dashboard_url(resource_key) {
+		return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
+	}
+
+	function open_resource_viewer(resource_key) {
+	    href='<%=ApplicationController.root_context-%>/resource/index/' + resource_key;
+	    window.open(href,'resource','height=800,width=900,scrollbars=1,resizable=1');
+	}
+
+	function instanciate_treemap(color_metric_direction) {
+
+		return new TM.Squarified({
+		     rootId: 'radiator<%= widget.id -%>',
+		     titleHeight: 1,
+		     offset: 6,
+		     addLeftClickHandler: true,
+		     addRightClickHandler: true,
+		     selectPathOnHover: true,
+		     Color: {
+		         allow: true
+		     },
+		     Tips: {
+		       allow: true,
+		       offsetX: 20,
+		       offsetY: 20,
+		       onShow: function(tip, node, isLeaf, domElement) {
+		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div><div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";
+		       },
+		       makeHTMLFromData: function(data){
+		           var html = '<table><tr><td align="left">' + size_metric + '</td><td align="right"><b>' + data.size_frmt +
+		           '</b></td></tr><tr><td align="left">' + color_metric + '</td><td align="right"><b>' +data.color_frmt + '</b></td></tr></table>';
+		           return html;
+		       }
+		     },
+		     onDestroyElement: function(content, tree, isLeaf, leaf) {
+		         if (leaf.clearAttributes) leaf.clearAttributes();
+		     }
+	 	});
+    }
+
+    function display_breadcrumbs() {
+      var output = "";
+      breadcrumbs.each(function(bc) { output += bc + "&nbsp;&#187;&nbsp;"});
+	  $('radiator-breadcrumb<%=widget.id-%>').innerHTML=output;
+	}
+
+	function load_treemap(resource_key) {
+	    if (treemap != null) {
+	    	treemap.empty();
+	    	treemap = null;
+	    }
+	    $('tm_loading').show();
+
+	    url = '<%=ApplicationController.root_context-%>/api/plugins/RadiatorWebService';
+	    current_resource_key = resource_key;
+	    url += resource_key != null ? '?resource=' + resource_key + '&' : '?';
+		new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemap_ajax_cb',
+		  {
+		    method: 'get',
+		    requestHeaders: {Accept: 'application/json'},
+		    onSuccess: function(transport) {
+		      eval(transport.responseText);
+		    },
+		    onFailure: function(response){ error(response.responseText) }
+		  });
+	}
+
+	function treemap_ajax_cb(json) {
+		$('tm_loading').hide();
+		if (current_resource_key==null &&json.children.length==0) {
+			$('radiator<%= widget.id -%>').hide();
+			$('select_color_metric').disable();
+			$('select_size_metric').disable();
+			$('nodata').show();
+		} else {
+			render_treemap(json);
+		}
+	}
+
+	function render_treemap(json) {
+		treemap = instanciate_treemap(json['color_metric_direction']);
+		parent_resource_key = json['parent'];
+		size_metric = json['size_metric'];
+		color_metric = json['color_metric'];
+		display_breadcrumbs();
+		treemap.loadJSON(json);
+	}
+
+	load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>);
+</script>
