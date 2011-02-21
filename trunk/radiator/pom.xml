@@ -57,7 +57,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.3</sonar.version>
+    <sonar.buildVersion>2.5</sonar.buildVersion>
     <sonar.pluginName>Radiator</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.radiator.RadiatorPlugin</sonar.pluginClass>
   </properties>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.version}</version>
+      <version>${sonar.buildVersion}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
