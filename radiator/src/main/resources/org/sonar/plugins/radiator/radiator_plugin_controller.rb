@@ -98,7 +98,7 @@ class Api::RadiatorWebServiceController < Api::RestController
   
   def get_measure(metric, measures)
     measures.find do |measure|
-      measure.metric_id==metric.id && measure.rule_id.nil? && measure.rules_category_id.nil? && measure.rule_priority.nil?
+      measure.metric_id==metric.id
     end
   end
   
@@ -123,33 +123,7 @@ class Api::RadiatorWebServiceController < Api::RestController
   end
   
   def get_hex_color(measure, color_metric)
-    get_color(measure, color_metric).html
+    MeasureColor.color(measure).html
   end
   
-  def get_color(measure, color_metric)
-    if measure && !measure.alert_status.blank?
-      case(measure.alert_status)
-        when Metric::TYPE_LEVEL_OK : return Color::RGB.from_html("00DF00")
-        when Metric::TYPE_LEVEL_ERROR : return Color::RGB.from_html("DF0000")
-        when Metric::TYPE_LEVEL_WARN : return Color::RGB.from_html("ff8500")
-      end
-    end
-    value = get_measure_value(measure)
-    if value.nil?
-      return Color::RGB.from_html("DDDDDD")
-    end
-    interval = (@max - @min)/2
-    mean = (@min + @max) / 2.0
-    if (value > mean)
-      value_percent = ((value - mean) / interval) * 100.0
-      color = @max_color.mix_with(@mean_color, value_percent) if color_metric.direction >= 0
-      color = @min_color.mix_with(@mean_color, value_percent) if color_metric.direction < 0
-    else
-      value_percent = ((mean - value) / interval) * 100.0
-      color = @min_color.mix_with(@mean_color, value_percent) if color_metric.direction >= 0
-      color = @max_color.mix_with(@mean_color, value_percent) if color_metric.direction < 0
-    end
-    color
-  end
-
 end
