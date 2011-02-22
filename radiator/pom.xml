@@ -11,7 +11,7 @@
 
   <artifactId>sonar-radiator-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
 
   <name>Sonar Radiator plugin</name>
   <description>Display measures in a big treemap.</description>
