@@ -20,23 +20,24 @@
 
 package org.sonar.plugins.secrules;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.*;
 
-public class SecurityRulesWidget extends AbstractDashboardWidget {
+@UserRole(UserRole.USER)
+@WidgetCategory("Security")
+@Description("Displays violations on security rules")
+public final class SecurityRulesWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-//  // For tests purposes
-//  public String getTemplate() {
-//      try {
-//          return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/Windows/Temp/toto.erb"), "UTF-8");
-//
-//      } catch (java.io.IOException e) {
-//          throw new RuntimeException("Can not load the file");
-//      }
-//  }
+  public String getId() {
+    return "securityRules";
+  }
+
+  public String getTitle() {
+    return "Security Rules";
+  }
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/secrules/securityRulesWidget.erb";
+    return "/Users/SimonBrandhof/projects/codehaus/sonar-plugins/trunk/security-rules/src/main/resources/org/sonar/plugins/secrules/widget.html.erb";
   }
 
 }

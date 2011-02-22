@@ -32,6 +32,11 @@
       <name>Olivier Gaudin</name>
       <organization>SonarSource</organization>
     </developer>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <organization>SonarSource</organization>
+    </developer>
   </developers>
 
   <scm>
@@ -45,7 +50,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.1</sonar.version>
+    <sonar.buildVersion>2.6</sonar.buildVersion>
     <sonar.pluginName>Security Rules</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.secrules.SecurityRulesPlugin</sonar.pluginClass>
   </properties>
@@ -60,14 +65,20 @@
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>${sonar.version}</version>
+      <version>${sonar.buildVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-deprecated</artifactId>
+      <version>${sonar.buildVersion}</version>
       <scope>provided</scope>
     </dependency>
     <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-testing-harness</artifactId>
-      <version>${sonar.version}</version>
+      <version>${sonar.buildVersion}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
