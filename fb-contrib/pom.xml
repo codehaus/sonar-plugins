@@ -13,7 +13,7 @@
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar fb-contrib Plugin</name>
-  <description>New Findbugs detectors</description>
+  <description>New Findbugs rules (see http://fb-contrib.sourceforge.net)</description>
   <url>http://docs.codehaus.org/display/SONAR/fb-contrib+Plugin</url>
   <inceptionYear>2010</inceptionYear>
   <organization>
