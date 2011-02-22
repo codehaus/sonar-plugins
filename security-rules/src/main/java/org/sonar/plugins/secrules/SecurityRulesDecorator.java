@@ -20,22 +20,27 @@
 
 package org.sonar.plugins.secrules;
 
-import org.sonar.api.batch.DependedUpon;
+import com.google.common.collect.Maps;
+import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.*;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.utils.KeyValueFormat;
-import org.sonar.api.utils.KeyValue;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Qualifiers;
+import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.Scopes;
 import org.sonar.api.rules.*;
-import org.apache.commons.configuration.Configuration;
+import org.sonar.api.utils.KeyValue;
+import org.sonar.api.utils.KeyValueFormat;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class SecurityRulesDecorator implements Decorator {
+public final class SecurityRulesDecorator implements Decorator {
   private List<Rule> rules;
   private RulesProfile rulesProfile;
   private Map<RulePriority, Integer> weights;
@@ -54,7 +59,7 @@ public class SecurityRulesDecorator implements Decorator {
   @DependedUpon
   public List<Metric> generatesMetrics() {
     return Arrays.asList(SecurityRulesMetrics.SECURITY_VIOLATIONS,
-      SecurityRulesMetrics.SECURITY_RCI, SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS);
+        SecurityRulesMetrics.SECURITY_RCI, SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS);
   }
 
   /**
@@ -65,38 +70,47 @@ public class SecurityRulesDecorator implements Decorator {
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    Map<RulePriority, Integer> distribution = computeViolationsForRules(context);
-    double ncloc = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC), 0.0);
-    int usedRules = getUsedRules();
+    if (shouldDecorate(resource)) {
+      Map<RulePriority, Integer> distribution = computeViolationsForRules(context);
+      double ncloc = MeasureUtils.getValue(context.getMeasure(CoreMetrics.NCLOC), 0.0);
+      int usedRules = getUsedRules();
 
-    // First calculate the violations at the resource level
-    double nbViolations = countViolations(distribution);
-    double weightedViolations = computeWeightedViolations(distribution);
-    CountDistributionBuilder countDistribution = computeCountDistribution(distribution);
+      // First calculate the violations at the resource level
+      double nbViolations = countViolations(distribution);
+      double weightedViolations = computeWeightedViolations(distribution);
+      CountDistributionBuilder countDistribution = computeCountDistribution(distribution);
 
-    // Consolidate violations from children
-    for (DecoratorContext child : context.getChildren()) {
-      nbViolations += MeasureUtils.getValue(child.getMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS), 0.0);
-      weightedViolations += MeasureUtils.getValue(child.getMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS), 0.0);
-      countDistribution.add(child.getMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS_DISTRIBUTION));
+      // Consolidate violations from children
+      for (DecoratorContext child : context.getChildren()) {
+        nbViolations += MeasureUtils.getValue(child.getMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS), 0.0);
+        weightedViolations += MeasureUtils.getValue(child.getMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS), 0.0);
+        countDistribution.add(child.getMeasure(SecurityRulesMetrics.SECURITY_VIOLATIONS_DISTRIBUTION));
+      }
+
+      // Save calculated measures
+      Measure violations = new Measure(SecurityRulesMetrics.SECURITY_VIOLATIONS, nbViolations);
+      if (Scopes.isHigherThan(resource, Scopes.FILE)) {
+        // do not set description on files, else it avoids the "best value mechanism". Measures with value 0 would
+        // still be saved on files.
+        violations.setDescription(usedRules + "/" + rules.size());
+      }
+      context.saveMeasure(violations);
+
+      context.saveMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS, weightedViolations);
+      context.saveMeasure(countDistribution.build());
+      if (ncloc > 0) {
+        context.saveMeasure(SecurityRulesMetrics.SECURITY_RCI, 100 - weightedViolations / ncloc * 100);
+      }
     }
+  }
 
-    // Save calculated measures
-    Measure violations = new Measure(SecurityRulesMetrics.SECURITY_VIOLATIONS, nbViolations);
-    violations.setDescription(usedRules + "/" + rules.size());
-    context.saveMeasure(violations);
-
-    context.saveMeasure(SecurityRulesMetrics.WEIGHTED_SECURITY_VIOLATIONS, weightedViolations);
-    context.saveMeasure(countDistribution.build());
-    if (ncloc > 0) {
-      context.saveMeasure(SecurityRulesMetrics.SECURITY_RCI, 100 - weightedViolations / ncloc * 100);
-    }
-
+  private boolean shouldDecorate(Resource resource) {
+    return Scopes.isHigherThanOrEquals(resource, Scopes.FILE) && !Qualifiers.UNIT_TEST_FILE.equals(resource.getQualifier());
   }
 
 
   private Map<RulePriority, Integer> computeViolationsForRules(DecoratorContext context) {
-    Map<RulePriority, Integer> distribution = new HashMap<RulePriority, Integer>();
+    Map<RulePriority, Integer> distribution = Maps.newHashMap();
     List<Violation> violations = context.getViolations();
 
     for (Rule rule : rules) {
@@ -167,8 +181,7 @@ public class SecurityRulesDecorator implements Decorator {
       public KeyValue<RulePriority, Integer> transform(String key, String value) {
         try {
           return new KeyValue<RulePriority, Integer>(RulePriority.valueOf(key.toUpperCase()), Integer.parseInt(value));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
           return null;
         }
       }

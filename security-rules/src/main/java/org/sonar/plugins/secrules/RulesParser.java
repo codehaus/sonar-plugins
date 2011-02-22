@@ -30,7 +30,7 @@ import org.sonar.api.utils.SonarException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class RulesParser {
+public final class RulesParser {
 
   private List<Rule> rulesList;
 
