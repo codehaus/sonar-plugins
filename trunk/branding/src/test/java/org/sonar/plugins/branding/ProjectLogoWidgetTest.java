@@ -20,34 +20,17 @@
 
 package org.sonar.plugins.branding;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import org.sonar.api.Plugin;
-import org.sonar.api.Properties;
-import org.sonar.api.Property;
+import org.junit.Test;
 
-@Properties({ @Property(key = BrandingPlugin.IMAGE_PROPERTY,
-    name = "Image URL",
-    description = "You need to restart server to changes take effect. Example : http://www.codehaus.org/codehaus-small.gif") })
-public class BrandingPlugin implements Plugin {
-
-  public static final String IMAGE_PROPERTY = "sonar.branding.image";
-
-  public String getKey() {
-    return "branding";
+public class ProjectLogoWidgetTest {
+  @Test
+  public void testWidgetDefinition() {
+    ProjectLogoWidget widget = new ProjectLogoWidget();
+    assertThat(widget.getId(), notNullValue());
+    assertThat(widget.getTitle(), notNullValue());
+    assertThat(getClass().getResource(widget.getTemplatePath()), notNullValue());
   }
-
-  public String getName() {
-    return "Branding";
-  }
-
-  public String getDescription() {
-    return "Allows to add your own logo to the Sonar UI.";
-  }
-
-  public List getExtensions() {
-    return Arrays.asList(LogoFooter.class, ProjectLogoWidget.class);
-  }
-
 }
