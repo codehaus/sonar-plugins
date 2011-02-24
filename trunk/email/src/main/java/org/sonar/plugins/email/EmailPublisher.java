@@ -73,13 +73,17 @@ public class EmailPublisher implements PostJob {
     try {
       email.setHostName(host);
       email.setSmtpPort(port);
-      email.setAuthentication(username, password);
+      if (!StringUtils.isBlank(username) || !StringUtils.isBlank(password)) {
+        email.setAuthentication(username, password);
+      }
       email.setTLS(withTLS);
       email.setFrom(from);
 
-      String[] addrs = StringUtils.split(to, '\n');
+      String[] addrs = StringUtils.split(to, "\t\r\n;, ");
       for (String addr : addrs) {
-        email.addTo(addr);
+        if (!StringUtils.isBlank(addr)) {
+          email.addTo(addr);
+        }
       }
       email.setSubject(getSubject(project));
       email.setMsg(getMessage(project));
