@@ -20,30 +20,58 @@
 
 package org.sonar.plugins.email;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.sonar.api.platform.Server;
-import org.sonar.api.resources.Project;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.mail.Email;
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.api.platform.Server;
+import org.sonar.api.resources.Project;
+
 public class EmailPublisherTest {
   private EmailPublisher publisher;
+  private Project project;
+  private Configuration configuration;
 
   @Before
   public void setUp() {
     Server server = mock(Server.class);
     when(server.getURL()).thenReturn("http://localhost:9000");
     publisher = new EmailPublisher(server);
+    project = new Project("org.example:foo", "", "Foo");
+    configuration = new BaseConfiguration();
+    project.setConfiguration(configuration);
+  }
+
+  @Test
+  public void multipleRecipients() throws Exception {
+    configuration.setProperty(EmailPublisher.FROM_PROPERTY, "sonar@domain");
+    configuration.setProperty(EmailPublisher.TO_PROPERTY, "1@domain;2@domain\r\n3@domain 4@domain");
+
+    Email email = publisher.getEmail(project);
+
+    assertThat(email.getToAddresses().size(), is(4));
+  }
+
+  @Test
+  public void defaultConfiguration() throws Exception {
+    configuration.setProperty(EmailPublisher.FROM_PROPERTY, "sonar@domain"); // TODO it's mandatory property now - see SONARPLUGINS-968
+
+    Email email = publisher.getEmail(project);
+
+    assertThat(email.getHostName(), is("localhost"));
+    assertThat(email.isTLS(), is(false));
+    assertThat(email.getFromAddress().getAddress(), is("sonar@domain"));
+    assertThat(email.getToAddresses().size(), is(0));
   }
 
   @Test
   public void test() {
-    Project project = new Project("org.example:foo", "", "Foo");
-
     assertThat(publisher.getSubject(project), is("Sonar analysis of Foo"));
     assertThat(publisher.getMessage(project), is("Sonar analysis of Foo available http://localhost:9000/project/index/org.example:foo"));
   }
