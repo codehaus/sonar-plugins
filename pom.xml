@@ -64,6 +64,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>basic-cocomo</module>
         <module>clover</module>
         <module>debug</module>
         <module>fb-contrib</module>
