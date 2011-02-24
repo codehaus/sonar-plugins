@@ -22,6 +22,7 @@ package org.sonar.plugins.email;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.sonar.api.batch.PostJob;
@@ -60,7 +61,7 @@ public class EmailPublisher implements PostJob {
     this.server = server;
   }
 
-  public void executeOn(Project project, SensorContext context) {
+  Email getEmail(Project project) throws EmailException {
     Configuration configuration = project.getConfiguration();
     SonarEmail email = new SonarEmail();
     String host = configuration.getString(HOST_PROPERTY, SMTP_HOST_DEFAULT_VALUE);
@@ -69,25 +70,30 @@ public class EmailPublisher implements PostJob {
     String password = configuration.getString(PASSWORD_PROPERTY);
     boolean withTLS = configuration.getBoolean(TLS_PROPERTY, TLS_DEFAULT_VALUE);
     String from = configuration.getString(FROM_PROPERTY);
-    String to = configuration.getString(TO_PROPERTY);
-    try {
-      email.setHostName(host);
-      email.setSmtpPort(port);
-      if (!StringUtils.isBlank(username) || !StringUtils.isBlank(password)) {
-        email.setAuthentication(username, password);
-      }
-      email.setTLS(withTLS);
-      email.setFrom(from);
+    String to = configuration.getString(TO_PROPERTY, "");
 
-      String[] addrs = StringUtils.split(to, "\t\r\n;, ");
-      for (String addr : addrs) {
-        if (!StringUtils.isBlank(addr)) {
-          email.addTo(addr);
-        }
-      }
-      email.setSubject(getSubject(project));
-      email.setMsg(getMessage(project));
-      email.send();
+    email.setHostName(host);
+    email.setSmtpPort(port);
+    if (!StringUtils.isBlank(username) || !StringUtils.isBlank(password)) {
+      email.setAuthentication(username, password);
+    }
+    email.setTLS(withTLS);
+    email.setFrom(from);
+
+    String[] addrs = StringUtils.split(to, "\t\r\n;, ");
+    for (String addr : addrs) {
+      email.addTo(addr);
+    }
+
+    email.setSubject(getSubject(project));
+    email.setMsg(getMessage(project));
+
+    return email;
+  }
+
+  public void executeOn(Project project, SensorContext context) {
+    try {
+      getEmail(project).send();
     } catch (EmailException e) {
       throw new SonarException("Unable to send email", e);
     }
