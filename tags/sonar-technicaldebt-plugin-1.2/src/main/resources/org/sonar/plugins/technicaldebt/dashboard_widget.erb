@@ -1,0 +1,55 @@
+<%
+  technical_debt=measure('technical_debt')
+  if technical_debt
+    technical_debt_ratio=measure('technical_debt_ratio')
+    technical_debt_days=measure('technical_debt_days')
+%>
+
+<div class="yui-gd">
+  <div class="yui-u first">
+    <div class="dashbox">
+    	<table>
+    		<tr>
+    			<td><h3>Technical Debt</h3></td>
+    			<td style="padding-left:2px;"><a href="http://docs.codehaus.org/x/sQCDBw" target="Wiki"><%= image_tag 'help.png', :class => 'png' -%></a></td>
+				</tr>
+			</table>
+      <p>
+        <span class="big">
+          <%= format_measure(technical_debt_ratio, :suffix => '', :url => url_for_drilldown('technical_debt_ratio'), :default => '0')%>
+        </span>
+        <%= dashboard_configuration.selected_period? ? format_variation(technical_debt_ratio) : trend_icon(technical_debt_ratio) -%>
+      </p>
+      <p>
+        <span>
+          <%= format_measure(technical_debt, :prefix => '$ ', :suffix => '', :url => url_for_drilldown('technical_debt'), :default => '$ 0')%>
+          <%= dashboard_configuration.selected_period? ? format_variation(technical_debt) : trend_icon(technical_debt) -%>
+        </span>
+      </p>
+      <p>
+        <span>
+          <%= format_measure(technical_debt_days, :suffix => ' man days', :url => url_for_drilldown('technical_debt_days'), :default => '0 man days') %>
+          <%= dashboard_configuration.selected_period? ? format_variation(technical_debt_days) : trend_icon(technical_debt_days) -%>
+        </span>
+      </p>
+    </div>
+  </div>
+  <div class="yui-u">
+      <%= piechart(measure('technical_debt_repart'), { :size => "248x65"}) -%>
+    <%
+      if !measure('coverage')%>
+        <div class="note" style="font-size: 80%;padding-top: 10px">No information available on coverage</div>
+    <%
+    	end
+    %>
+    <%
+      if !measure('lcom4')%>
+        <div class="note" style="font-size: 80%;padding-top: 10px">No information available on design</div>
+    <%
+    	end
+    %>
+   </div>
+</div>
+<%
+  end
+%>
