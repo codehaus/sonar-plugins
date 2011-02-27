@@ -22,6 +22,8 @@ package org.sonar.plugins.sigmm.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
+
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
@@ -57,8 +59,8 @@ public class StrutsIT {
     assertThat(getProjectMeasure("sigmm-testability").getIntValue(), is(-2));
     assertThat(getProjectMeasure("sigmm-stability").getIntValue(), is(-2));
     assertThat(getProjectMeasure("sigmm-maintainability").getIntValue(), is(-2));
-    assertThat(getProjectMeasure("sigmm-ncloc-by-cc").getData(), is("0=28910;10=5842;20=7739;50=742"));
-    assertThat(getProjectMeasure("sigmm-ncloc-by-ncloc").getData(), is("0=15698;10=16352;50=4266;100=6917"));
+    assertThat(getProjectMeasure("sigmm-ncloc-by-cc").getData(), anyOf(is("0=28910;10=5842;20=7739;50=742"), is("0=28689;10=5794;20=7739;50=742"))); // < 2.6, >= 2.6
+    assertThat(getProjectMeasure("sigmm-ncloc-by-ncloc").getData(), anyOf(is("0=15698;10=16352;50=4266;100=6917"), is("0=15477;10=16304;50=4266;100=6917"))); // < 2.6, >= 2.6
   }
 
   @Test
@@ -68,8 +70,8 @@ public class StrutsIT {
     assertThat(getCoreModuleMeasure("sigmm-testability").getIntValue(), is(-1));
     assertThat(getCoreModuleMeasure("sigmm-stability").getIntValue(), is(-1));
     assertThat(getCoreModuleMeasure("sigmm-maintainability").getIntValue(), is(0));
-    assertThat(getCoreModuleMeasure("sigmm-ncloc-by-cc").getData(), is("0=9341;10=1733;20=552;50=526"));
-    assertThat(getCoreModuleMeasure("sigmm-ncloc-by-ncloc").getData(), is("0=4140;10=6234;50=1422;100=356"));
+    assertThat(getCoreModuleMeasure("sigmm-ncloc-by-cc").getData(), anyOf(is("0=9341;10=1733;20=552;50=526"), is("0=9120;10=1733;20=552;50=526"))); // < 2.6, >= 2.6
+    assertThat(getCoreModuleMeasure("sigmm-ncloc-by-ncloc").getData(), anyOf(is("0=4140;10=6234;50=1422;100=356"), is("0=3919;10=6234;50=1422;100=356"))); // < 2.6, >= 2.6
   }
 
   @Test
@@ -79,8 +81,8 @@ public class StrutsIT {
     assertThat(getPackageMeasure("sigmm-testability").getIntValue(), is(-1));
     assertThat(getPackageMeasure("sigmm-stability").getIntValue(), is(-1));
     assertThat(getPackageMeasure("sigmm-maintainability").getIntValue(), is(0));
-    assertThat(getPackageMeasure("sigmm-ncloc-by-cc").getData(), is("0=1908;10=378;20=159;50=0"));
-    assertThat(getPackageMeasure("sigmm-ncloc-by-ncloc").getData(), is("0=578;10=1643;50=224;100=0"));
+    assertThat(getPackageMeasure("sigmm-ncloc-by-cc").getData(), anyOf(is("0=1908;10=378;20=159;50=0"), is("0=1904;10=378;20=159;50=0"))); // < 2.6, >= 2.6
+    assertThat(getPackageMeasure("sigmm-ncloc-by-ncloc").getData(), anyOf(is("0=578;10=1643;50=224;100=0"), is("0=574;10=1643;50=224;100=0"))); // < 2.6, >= 2.6
   }
 
   @Test
