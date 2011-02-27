@@ -44,7 +44,7 @@ public class StrutsIT {
 
   @BeforeClass
   public static void buildServer() {
-    sonar = Sonar.create("http://localhost:9006");
+    sonar = Sonar.create("http://localhost:9000");
   }
 
   @Test
