@@ -44,7 +44,7 @@ public class StrutsIT {
 
   @BeforeClass
   public static void buildServer() {
-    sonar = Sonar.create("http://localhost:9000");
+    sonar = Sonar.create("http://localhost:9006");
   }
 
   @Test
@@ -65,9 +65,10 @@ public class StrutsIT {
     assertThat(getProjectMeasure("qi-style-weighted-violations").getIntValue(), is(6801));
     assertThat(getProjectMeasure("qi-test-coverage").getValue(), is(1.7));
     assertThat(getProjectMeasure("qi-complexity").getValue(), anyOf(is(2.0), is(0.1)));
-    assertThat(getProjectMeasure("qi-complexity-factor").getValue(), is(15.2));
+    assertThat(getProjectMeasure("qi-complexity-factor").getValue(), anyOf(is(15.2), is(15.3))); // < 2.6, >= 2.6
     assertThat(getProjectMeasure("qi-complexity-factor-methods").getIntValue(), is(37));
-    assertThat(getProjectMeasure("qi-complex-distrib").getData(), is("1=3077;2=1013;10=138;20=27;30=37"));
+    assertThat(getProjectMeasure("qi-complex-distrib").getData(),
+      anyOf(is("1=3077;2=1013;10=138;20=27;30=37"), is("1=3021;2=1013;10=136;20=27;30=37"))); // < 2.6, >= 2.6
   }
 
   @Test
@@ -81,7 +82,8 @@ public class StrutsIT {
     assertThat(getCoreModuleMeasure("qi-complexity").getValue(), is(0.1));
     assertThat(getCoreModuleMeasure("qi-complexity-factor").getValue(), is(4.3));
     assertThat(getCoreModuleMeasure("qi-complexity-factor-methods").getIntValue(), is(5));
-    assertThat(getCoreModuleMeasure("qi-complex-distrib").getData(), is("1=851;2=529;10=43;20=9;30=5"));
+    assertThat(getCoreModuleMeasure("qi-complex-distrib").getData(),
+      anyOf(is("1=851;2=529;10=43;20=9;30=5"), is("1=795;2=529;10=43;20=9;30=5"))); // < 2.6, >= 2.6
   }
 
   @Test

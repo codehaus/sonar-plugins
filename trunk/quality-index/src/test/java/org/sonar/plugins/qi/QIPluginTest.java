@@ -22,13 +22,14 @@ package org.sonar.plugins.qi;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
 public class QIPluginTest {
 
   @Test
   public void testDeclaredExtensions() {
-    assertThat(new QIPlugin().getExtensions().size(), is(9));
+    assertThat(new QIPlugin().getExtensions().size(), is(8));
   }
 
 }

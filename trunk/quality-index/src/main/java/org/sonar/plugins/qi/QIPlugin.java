@@ -142,7 +142,6 @@ public class QIPlugin implements Plugin {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(CodingViolationsDecorator.class);
     list.add(ComplexityDistributionDecorator.class);
-    list.add(ComplexityDistributionSensor.class);
     list.add(ComplexityDecorator.class);
     list.add(CoverageDecorator.class);
     list.add(QIDecorator.class);

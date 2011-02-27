@@ -23,13 +23,12 @@ package org.sonar.plugins.qi;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
-import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.PersistenceMode;
-import org.sonar.api.measures.RangeDistributionBuilder;
+import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.measures.*;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
+import org.sonar.api.resources.Scopes;
 
 /**
  * A decorator to propagate the complexity distribution bottom up
@@ -41,13 +40,22 @@ public class ComplexityDistributionDecorator implements Decorator {
     return QIMetrics.QI_COMPLEX_DISTRIBUTION;
   }
 
+  @DependsUpon
+  public Metric dependsUpon() {
+    return CoreMetrics.COMPLEXITY;
+  }
+
   public boolean shouldExecuteOnProject(Project project) {
     return Utils.shouldExecuteOnProject(project);
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
-    // Distribution has already been calculated by the ComplexityDistributionSensor at file level
-    if (!ResourceUtils.isFile(resource) && Utils.shouldSaveMeasure(resource)) {
+    if (Scopes.isBlockUnit(resource)) {
+      double methodComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
+      RangeDistributionBuilder distribution = new RangeDistributionBuilder(QIMetrics.QI_COMPLEX_DISTRIBUTION, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
+      distribution.add(methodComplexity);
+      context.saveMeasure(distribution.build());
+    } else {
       computeAndSaveComplexityDistribution(resource, context, QIPlugin.COMPLEXITY_BOTTOM_LIMITS);
     }
   }
@@ -69,7 +77,7 @@ public class ComplexityDistributionDecorator implements Decorator {
   }
 
   /**
-   * Computes the complexity distribution by adding up the childre distribution
+   * Computes the complexity distribution by adding up the children distribution
    *
    * @param context      the context
    * @param bottomLimits the bottom limits of complexity ranges

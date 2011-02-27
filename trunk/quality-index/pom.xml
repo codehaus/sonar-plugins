@@ -46,7 +46,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>2.1</sonar.version>
+    <sonar.version>2.7-SNAPSHOT</sonar.version>
     <sonar.pluginName>Quality Index</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.qi.QIPlugin</sonar.pluginClass>
   </properties>
