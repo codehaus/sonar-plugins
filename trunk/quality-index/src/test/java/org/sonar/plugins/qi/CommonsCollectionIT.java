@@ -43,7 +43,7 @@ public class CommonsCollectionIT {
 
   @BeforeClass
   public static void buildServer() {
-    sonar = Sonar.create("http://localhost:9006");
+    sonar = Sonar.create("http://localhost:9000");
   }
 
   @Test
