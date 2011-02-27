@@ -24,9 +24,12 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Scopes;
 import org.sonar.plugins.sigmm.axis.MMAxis;
 
 import java.util.*;
@@ -45,8 +48,8 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
 
   @DependsUpon
   public List<Metric> dependsUpon() {
-    return Arrays.asList(CoreMetrics.NCLOC, CoreMetrics.DUPLICATED_LINES_DENSITY, CoreMetrics.COVERAGE,
-      MMMetrics.NCLOC_BY_CC_DISTRIB, MMMetrics.NCLOC_BY_NCLOC_DISTRIB);
+    return Arrays.asList(CoreMetrics.NCLOC, CoreMetrics.COMPLEXITY, CoreMetrics.DUPLICATED_LINES_DENSITY,
+      CoreMetrics.COVERAGE, MMMetrics.NCLOC_BY_CC_DISTRIB, MMMetrics.NCLOC_BY_NCLOC_DISTRIB);
   }
 
   @DependedUpon
@@ -59,9 +62,11 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
    * {@inheritDoc}
    */
   public void decorate(Resource resource, DecoratorContext context) {
+
     if (!MMPlugin.shouldPersistMeasures(resource)) {
       return;
     }
+    
     MMConfiguration config = new MMConfiguration(context);
 
     saveMeasure(context, config.getTestabilityAxis(), MMMetrics.TESTABILITY);

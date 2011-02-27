@@ -50,7 +50,6 @@ public final class MMPlugin implements org.sonar.api.Plugin {
     list.add(MMDecorator.class);
     list.add(MMDistributionDecorator.class);
     list.add(MMWidget.class);
-    list.add(MMSensor.class);
 
     return list;
   }

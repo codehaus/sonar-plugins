@@ -22,6 +22,8 @@ package org.sonar.plugins.sigmm.it;
 
 import org.junit.Test;
 import org.junit.BeforeClass;
+
+import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
@@ -55,8 +57,8 @@ public class CommonsCollectionIT {
     assertThat(getProjectMeasure("sigmm-testability").getIntValue(), is(0));
     assertThat(getProjectMeasure("sigmm-stability").getIntValue(), is(1));
     assertThat(getProjectMeasure("sigmm-maintainability").getIntValue(), is(1));
-    assertThat(getProjectMeasure("sigmm-ncloc-by-cc").getData(), is("0=20696;10=2367;20=598;50=0"));
-    assertThat(getProjectMeasure("sigmm-ncloc-by-ncloc").getData(), is("0=13755;10=9261;50=502;100=143"));
+    assertThat(getProjectMeasure("sigmm-ncloc-by-cc").getData(), anyOf(is("0=20696;10=2367;20=598;50=0"), is("0=20123;10=2307;20=598;50=0"))); // < 2.6, >= 2.6
+    assertThat(getProjectMeasure("sigmm-ncloc-by-ncloc").getData(), anyOf(is("0=13755;10=9261;50=502;100=143"), is("0=13371;10=9012;50=502;100=143"))); // < 2.6, >= 2.6
   }
 
   @Test
@@ -66,8 +68,8 @@ public class CommonsCollectionIT {
     assertThat(getPackageMeasure("sigmm-testability").getIntValue(), is(0));
     assertThat(getPackageMeasure("sigmm-stability").getIntValue(), is(0));
     assertThat(getPackageMeasure("sigmm-maintainability").getIntValue(), is(0));
-    assertThat(getPackageMeasure("sigmm-ncloc-by-cc").getData(), is("0=7393;10=1424;20=255;50=0"));
-    assertThat(getPackageMeasure("sigmm-ncloc-by-ncloc").getData(), is("0=4239;10=4532;50=301;100=0"));
+    assertThat(getPackageMeasure("sigmm-ncloc-by-cc").getData(), anyOf(is("0=7393;10=1424;20=255;50=0"), is("0=6909;10=1394;20=255;50=0"))); // < 2.6, >= 2.6
+    assertThat(getPackageMeasure("sigmm-ncloc-by-ncloc").getData(), anyOf(is("0=4239;10=4532;50=301;100=0"), is("0=3895;10=4362;50=301;100=0"))); // < 2.6, >= 2.6
   }
 
   @Test

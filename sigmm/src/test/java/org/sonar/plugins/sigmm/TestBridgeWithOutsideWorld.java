@@ -35,12 +35,12 @@ public class TestBridgeWithOutsideWorld {
 
   @Test
   public void testDefinedExtensions() {
-    assertThat(new MMPlugin().getExtensions().size(), equalTo(5));
+    assertThat(new MMPlugin().getExtensions().size(), equalTo(4));
   }
 
   @Test
   public void testDecoratorDependsUpon() {
-    assertThat(new MMDecorator().dependsUpon().size(), equalTo(5));
+    assertThat(new MMDecorator().dependsUpon().size(), equalTo(6));
   }
 
   @Test
@@ -51,10 +51,5 @@ public class TestBridgeWithOutsideWorld {
   @Test
   public void testDistributionDecoratorDependedUpon() {
     assertThat(new MMDistributionDecorator().dependedUpon().size(), equalTo(2));
-  }
-
-  @Test
-  public void testSensorDependsUpon() {
-    assertThat(new MMSensor(null).dependsUpon().size(), equalTo(1));
   }
 }
