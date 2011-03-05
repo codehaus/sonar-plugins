@@ -73,9 +73,9 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
     ),
     @Property(
         key = JacocoConfiguration.ANT_TARGETS_PROPERTY,
-        name = "",
+        name = "Ant targets",
         defaultValue = JacocoConfiguration.ANT_TARGETS_DEFAULT_VALUE,
-        description = "",
+        description = "Comma separated list of Ant targets for execution of tests.",
         global = true,
         module = true,
         project = true

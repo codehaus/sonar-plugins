@@ -34,7 +34,7 @@ public class JacocoConfiguration implements BatchExtension {
   public static final String INCLUDES_PROPERTY = "sonar.jacoco.includes";
   public static final String EXCLUDES_PROPERTY = "sonar.jacoco.excludes";
   public static final String ANT_TARGETS_PROPERTY = "sonar.jacoco.antTargets";
-  public static final String ANT_TARGETS_DEFAULT_VALUE = "test";
+  public static final String ANT_TARGETS_DEFAULT_VALUE = "";
 
   private Configuration configuration;
   private JaCoCoAgentDownloader downloader;

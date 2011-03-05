@@ -52,7 +52,7 @@
   <properties>
     <jacoco.version>0.5.0.20110119215959</jacoco.version>
 
-    <sonar.version>2.6-RC1</sonar.version>
+    <sonar.version>2.6</sonar.version>
     <sonar.pluginName>JaCoCo</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.jacoco.JaCoCoPlugin</sonar.pluginClass>
   </properties>
