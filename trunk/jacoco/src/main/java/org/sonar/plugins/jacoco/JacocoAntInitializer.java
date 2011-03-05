@@ -31,7 +31,7 @@ import org.sonar.api.resources.Project;
 @SupportedEnvironment("ant")
 public class JacocoAntInitializer extends Initializer implements CoverageExtension {
 
-  private final TaskEnhancer[] taskEnhancers = new TaskEnhancer[] { new JavaLikeTaskEnhancer("junit"), new TestngTaskEnhancer() };
+  private final TaskEnhancer[] taskEnhancers = new TaskEnhancer[] { new JavaLikeTaskEnhancer("java"), new JavaLikeTaskEnhancer("junit"), new TestngTaskEnhancer() };
 
   private org.apache.tools.ant.Project antProject;
   private JacocoConfiguration configuration;
