@@ -37,7 +37,7 @@ public class JaCoCoItMetrics implements Metrics {
   public static final String DOMAIN_IT_TESTS = "Integration Tests";
 
   public static final String IT_COVERAGE_KEY = "it_coverage";
-  public static final Metric IT_COVERAGE = new Metric(IT_COVERAGE_KEY, "Coverage", "Coverage by integration tests", Metric.ValueType.PERCENT,
+  public static final Metric IT_COVERAGE = new Metric(IT_COVERAGE_KEY, "IT Coverage", "Coverage by integration tests", Metric.ValueType.PERCENT,
       Metric.DIRECTION_BETTER, true, DOMAIN_IT_TESTS).setWorstValue(0.0).setBestValue(100.0);
 
   public static final String IT_LINES_TO_COVER_KEY = "it_lines_to_cover";
