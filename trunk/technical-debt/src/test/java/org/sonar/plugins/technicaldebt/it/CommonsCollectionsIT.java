@@ -71,7 +71,7 @@ public class CommonsCollectionsIT {
     );
     assertThat(getPackageMeasure("technical_debt").getValue(), is(25771.6));
     assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(13.1));
-    assertThat(getPackageMeasure("technical_debt_days").getValue(), is(51.6));
+    assertThat(getPackageMeasure("technical_debt_days").getValue(), is(51.5));
   }
 
   @Test
