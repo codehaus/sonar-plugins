@@ -27,6 +27,7 @@ import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.*;
+import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Scopes;
@@ -72,23 +73,17 @@ public final class ComplexityDebtDecorator implements Decorator {
         debt += methodSplitCost;
       }
 
-    } else if (Scopes.isProgramUnit(resource)) {
+    } else if (Scopes.isProgramUnit(resource) && Java.INSTANCE.equals(resource.getLanguage())) {
+      // file debt of Java projects is calculated on classes, not files
       double classComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
       if (classComplexity >= classThreshold) {
         debt += classSplitCost;
       }
 
-    } else if (Scopes.isFile(resource)) {
-      // two use-cases:
-      // 1. the project language supports only files, but not classes and methods. The class threshold must be applied on the file.
-      // 2. the project language (for example Java) has access to complexity by classes and methods. The class threshold must be applied on the class
-      // but not on the file.
-      if (context.getChildren().isEmpty() && debt == 0.0) {
-        // First use-case.
-        double fileComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
-        if (fileComplexity >= classThreshold) {
-          debt = classSplitCost;
-        }
+    } else if (Scopes.isFile(resource) && !Java.INSTANCE.equals(resource.getLanguage())) {
+      double fileComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
+      if (fileComplexity >= classThreshold) {
+        debt = classSplitCost;
       }
     }
 

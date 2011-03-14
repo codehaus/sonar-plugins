@@ -46,11 +46,11 @@ public final class TechnicalDebtDecorator implements Decorator {
   /**
    * {@inheritDoc}
    */
-  public TechnicalDebtDecorator(Configuration configuration) {
+  public TechnicalDebtDecorator(Configuration configuration, Project project) {
     this.configuration = configuration;
     axisList = Arrays.asList(
         new CommentDebtCalculator(configuration),
-        new ComplexityDebtCalculator(configuration),
+        new ComplexityDebtCalculator(configuration, project),
         new CoverageDebtCalculator(configuration),
         new DuplicationDebtCalculator(configuration),
         new ViolationsDebtCalculator(configuration),
