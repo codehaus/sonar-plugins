@@ -22,7 +22,9 @@ package org.sonar.plugins.jacoco;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.utils.KeyValueFormat;
+import org.sonar.plugins.jacoco.itcoverage.JaCoCoItMetrics;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.ResourceQuery;
@@ -143,17 +145,23 @@ public class JaCoCoIT {
     assertThat(getFileMeasure("conditions_to_cover").getValue(), is(18.0));
     assertThat(getFileMeasure("uncovered_conditions").getValue(), is(7.0));
 
-    Map<String, String> lineHits = KeyValueFormat.parse(getFileMeasure("coverage_line_hits_data").getData());
+    Map<String, String> lineHits = KeyValueFormat.parse(getFileMeasure(CoreMetrics.COVERAGE_LINE_HITS_DATA_KEY).getData());
     assertThat(lineHits.get("121"), is("1")); // fully covered
     assertThat(lineHits.get("191"), is("0")); // not covered
     assertThat(lineHits.get("228"), is("1")); // partly covered
     assertThat(lineHits.get("258"), is("1")); // partly covered
 
-    Map<String, String> branchHits = KeyValueFormat.parse(getFileMeasure("branch_coverage_hits_data").getData());
-    assertThat(branchHits.get("121"), is("100%"));
-    assertThat(branchHits.get("191"), is("0%"));
-    assertThat(branchHits.get("228"), is("50%"));
-    assertThat(branchHits.get("258"), is("75%"));
+    Map<String, String> lineConditions = KeyValueFormat.parse(getFileMeasure(CoreMetrics.CONDITIONS_BY_LINE_KEY).getData());
+    assertThat(lineConditions.get("121"), is("2"));
+    assertThat(lineConditions.get("191"), is("2"));
+    assertThat(lineConditions.get("228"), is("2"));
+    assertThat(lineConditions.get("258"), is("4"));
+
+    Map<String, String> coveredConditions = KeyValueFormat.parse(getFileMeasure(CoreMetrics.COVERED_CONDITIONS_BY_LINE_KEY).getData());
+    assertThat(coveredConditions.get("121"), is("2"));
+    assertThat(coveredConditions.get("191"), is("0"));
+    assertThat(coveredConditions.get("228"), is("1"));
+    assertThat(coveredConditions.get("258"), is("3"));
 
     assertNull(getFileMeasure("tests"));
     assertNull(getFileMeasure("test_success_density"));

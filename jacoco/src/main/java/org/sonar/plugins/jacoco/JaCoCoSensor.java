@@ -20,20 +20,20 @@
 
 package org.sonar.plugins.jacoco;
 
-import org.jacoco.core.analysis.ICounter;
-import org.sonar.api.batch.AbstractCoverageExtension;
+import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.PersistenceMode;
+import org.sonar.api.resources.Java;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
+
+import java.util.Collection;
 
 /**
  * @author Evgeny Mandrikov
  */
-public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
+public class JaCoCoSensor implements Sensor, CoverageExtension {
 
   private JacocoConfiguration configuration;
 
@@ -42,28 +42,23 @@ public class JaCoCoSensor extends AbstractCoverageExtension implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    new Analyzer().analyse(project, context);
+    new UnitTestsAnalyzer().analyse(project, context);
   }
 
-  public class Analyzer extends AbstractAnalyzer {
+  public boolean shouldExecuteOnProject(Project project) {
+    return Java.KEY.equals(project.getLanguageKey());
+  }
+
+  class UnitTestsAnalyzer extends AbstractAnalyzer {
     @Override
     protected String getReportPath(Project project) {
       return configuration.getReportPath();
     }
 
     @Override
-    protected void saveMeasures(SensorContext context, JavaFile resource, ICounter lines, String lineHitsData,
-        double totalBranches, double totalCoveredBranches, String branchHitsData) {
-      context.saveMeasure(resource, CoreMetrics.LINES_TO_COVER, (double) lines.getTotalCount());
-      context.saveMeasure(resource, CoreMetrics.UNCOVERED_LINES, (double) lines.getMissedCount());
-      Measure lineHits = new Measure(CoreMetrics.COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
-      context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
-
-      if (totalBranches > 0) {
-        context.saveMeasure(resource, CoreMetrics.CONDITIONS_TO_COVER, totalBranches);
-        context.saveMeasure(resource, CoreMetrics.UNCOVERED_CONDITIONS, totalBranches - totalCoveredBranches);
-        Measure branchHits = new Measure(CoreMetrics.BRANCH_COVERAGE_HITS_DATA).setData(branchHitsData);
-        context.saveMeasure(resource, branchHits.setPersistenceMode(PersistenceMode.DATABASE));
+    protected void saveMeasures(SensorContext context, JavaFile resource, Collection<Measure> measures) {
+      for (Measure measure : measures) {
+        context.saveMeasure(resource, measure);
       }
     }
   }

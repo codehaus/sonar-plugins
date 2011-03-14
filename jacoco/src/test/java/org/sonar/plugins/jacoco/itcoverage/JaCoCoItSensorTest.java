@@ -92,7 +92,8 @@ public class JaCoCoItSensorTest {
     verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA)));
     verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER), doubleThat(greaterThan(0d)));
     verify(context).saveMeasure(eq(resource), eq(JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS), doubleThat(greaterThan(0d)));
-    verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_BRANCH_COVERAGE_HITS_DATA)));
+    verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_CONDITIONS_BY_LINE)));
+    verify(context).saveMeasure(eq(resource), argThat(new IsMeasure(JaCoCoItMetrics.IT_COVERED_CONDITIONS_BY_LINE)));
     verifyNoMoreInteractions(context);
   }
 

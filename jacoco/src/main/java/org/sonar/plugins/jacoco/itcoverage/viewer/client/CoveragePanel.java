@@ -36,8 +36,10 @@ import java.util.Map;
  */
 public class CoveragePanel extends SourcePanel {
 
-  private Map<Integer, String> hitsByLine = new HashMap<Integer, String>();
-  private Map<Integer, String> branchHitsByLine = new HashMap<Integer, String>();
+  private Map<Integer, Integer> hitsByLine = new HashMap<Integer, Integer>();
+  private Map<Integer, Integer> conditionsByLine = new HashMap<Integer, Integer>();
+  private Map<Integer, Integer> coveredConditionsByLine = new HashMap<Integer, Integer>();
+  private Map<Integer, String> branchCoverageByLine = new HashMap<Integer, String>();
 
   public CoveragePanel(Resource resource) {
     super(resource);
@@ -45,36 +47,54 @@ public class CoveragePanel extends SourcePanel {
   }
 
   private void loadCoverageHits(Resource resource) {
-    ResourceQuery query = ResourceQuery.createForResource(resource, Metrics.IT_COVERAGE_LINE_HITS_DATA, Metrics.IT_BRANCH_COVERAGE_HITS_DATA);
+    ResourceQuery query = ResourceQuery.createForResource(resource, Metrics.IT_COVERAGE_LINE_HITS_DATA, Metrics.IT_BRANCH_COVERAGE_HITS_DATA, Metrics.IT_CONDITIONS_BY_LINE, Metrics.IT_COVERED_CONDITIONS_BY_LINE);
     Sonar.getInstance().find(query, new AbstractCallback<Resource>() {
 
       @Override
       protected void doOnResponse(Resource resource) {
-        handleResponse(resource, Metrics.IT_COVERAGE_LINE_HITS_DATA, hitsByLine);
-        handleResponse(resource, Metrics.IT_BRANCH_COVERAGE_HITS_DATA, branchHitsByLine);
+        handleLineHits(resource);
+        handleLineConditions(resource);
+        handleDeprecatedBranchCoverage(resource);
         setStarted();
       }
     });
   }
 
-  private void handleResponse(Resource resource, String metric, Map<Integer, String> values) {
+  private void handleLineHits(Resource resource) {
+    parseDataMap(resource, Metrics.IT_COVERAGE_LINE_HITS_DATA, hitsByLine);
+  }
+
+  private void handleLineConditions(Resource resource) {
+    parseDataMap(resource, Metrics.IT_CONDITIONS_BY_LINE, conditionsByLine);
+    parseDataMap(resource, Metrics.IT_COVERED_CONDITIONS_BY_LINE, coveredConditionsByLine);
+  }
+
+  private void parseDataMap(Resource resource, String metric, Map<Integer, Integer> map) {
     if (resource == null || resource.getMeasure(metric) == null) {
       return;
     }
 
-    values.clear();
-    String linesValue = resource.getMeasure(metric).getData();
-    String[] lineWithValueArray;
-    if (linesValue.contains(",")) {
-      // deprecated - format before 1.9
-      lineWithValueArray = linesValue.split(",");
-    } else {
-      lineWithValueArray = linesValue.split(";");
-    }
-    for (String lineWithValue : lineWithValueArray) {
+    map.clear();
+    String data = resource.getMeasure(metric).getData();
+    for (String lineWithValue : data.split(";")) {
       String[] elt = lineWithValue.split("=");
       if (elt != null && elt.length == 2) {
-        values.put(Integer.parseInt(elt[0]), elt[1]);
+        map.put(Integer.parseInt(elt[0]), Integer.parseInt(elt[1]));
+      }
+    }
+  }
+
+  private void handleDeprecatedBranchCoverage(Resource resource) {
+    if (resource == null || resource.getMeasure(Metrics.IT_BRANCH_COVERAGE_HITS_DATA) == null) {
+      return;
+    }
+
+    branchCoverageByLine.clear();
+    String data = resource.getMeasure(Metrics.IT_BRANCH_COVERAGE_HITS_DATA).getData();
+    for (String lineWithValue : data.split(";")) {
+      String[] elt = lineWithValue.split("=");
+      if (elt != null && elt.length == 2) {
+        branchCoverageByLine.put(Integer.parseInt(elt[0]), elt[1]);
       }
     }
   }
@@ -88,12 +108,18 @@ public class CoveragePanel extends SourcePanel {
   protected List<Row> decorateLine(int index, String source) {
     Row row = new Row().setLineIndex(index, "");
 
-    String hits = hitsByLine.get(index);
-    String branchHits = branchHitsByLine.get(index);
-    boolean hasLineCoverage = (null != hits);
-    boolean hasBranchCoverage = (null != branchHits);
-    boolean lineIsCovered = (hasLineCoverage && Integer.parseInt(hits) > 0);
-    boolean branchIsCovered = (hasBranchCoverage && "100%".equals(branchHits));
+    Integer hits = hitsByLine.get(index);
+    Integer conditions = conditionsByLine.get(index);
+    Integer coveredConditions = coveredConditionsByLine.get(index);
+    String branchCoverage = branchCoverageByLine.get(index);
+    if (branchCoverage == null && conditions != null && coveredConditions != null) {
+      branchCoverage = String.valueOf(conditions - coveredConditions) + "/" + String.valueOf(conditions);
+    }
+
+    boolean hasLineCoverage = (hits != null);
+    boolean hasBranchCoverage = (branchCoverage != null);
+    boolean lineIsCovered = (hasLineCoverage && hits > 0);
+    boolean branchIsCovered = ("100%".equals(branchCoverage) || (conditions != null && coveredConditions != null && coveredConditions == conditions));
 
     row.setSource(source, "");
     row.setValue("&nbsp;", "");
@@ -101,20 +127,21 @@ public class CoveragePanel extends SourcePanel {
 
     if (lineIsCovered) {
       if (branchIsCovered) {
-        row.setValue(hits, "green");
-        row.setValue2(branchHits, "green");
+        row.setValue(String.valueOf(hits), "green");
+        row.setValue2(branchCoverage, "green");
+
       } else if (hasBranchCoverage) {
-        row.setValue(hits, "orange");
-        row.setValue2(branchHits, "orange");
+        row.setValue(String.valueOf(hits), "orange");
+        row.setValue2(branchCoverage, "orange");
         row.setSource(source, "orange");
       } else {
-        row.setValue(hits, "green");
+        row.setValue(String.valueOf(hits), "green");
       }
     } else if (hasLineCoverage) {
-      row.setValue(hits, "red");
+      row.setValue(String.valueOf(hits), "red");
       row.setSource(source, "red");
       if (hasBranchCoverage) {
-        row.setValue2(branchHits, "red");
+        row.setValue2(branchCoverage, "red");
       } else {
         row.setValue2("&nbsp;", "red");
       }

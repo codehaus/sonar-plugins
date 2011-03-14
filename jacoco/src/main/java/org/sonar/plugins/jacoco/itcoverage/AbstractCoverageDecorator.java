@@ -44,7 +44,7 @@ public abstract class AbstractCoverageDecorator implements Decorator {
 
   public void decorate(final Resource resource, final DecoratorContext context) {
     if (shouldDecorate(resource, context)) {
-      saveLineCoverage(context);
+      saveCoverage(context);
     }
   }
 
@@ -52,7 +52,7 @@ public abstract class AbstractCoverageDecorator implements Decorator {
     return context.getMeasure(getTargetMetric()) == null && !ResourceUtils.isUnitTestClass(resource);
   }
 
-  private void saveLineCoverage(DecoratorContext context) {
+  private void saveCoverage(DecoratorContext context) {
     Double elements = countElements(context);
     Double coveredElements = countCoveredElements(context);
 
@@ -61,8 +61,8 @@ public abstract class AbstractCoverageDecorator implements Decorator {
     }
   }
 
-  private double calculateCoverage(final Double coveredLines, final Double lines) {
-    return (100.0 * coveredLines) / lines;
+  private double calculateCoverage(final Double coveredElements, final Double elements) {
+    return (100.0 * coveredElements) / elements;
   }
 
   protected abstract Metric getTargetMetric();
