@@ -54,39 +54,31 @@ public class StrutsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=4.2;Complexity=11.35;Coverage=29.26;Design=3.13;Duplication=37.09;Violations=14.94"),
-        is("Comments=4.2;Complexity=11.36;Coverage=29.28;Design=3.14;Duplication=37.04;Violations=14.95"),
-
-        // sonar 2.6, td 1.2
-        is("Comments=4.2;Complexity=11.34;Coverage=29.29;Design=3.14;Duplication=37.04;Violations=14.96")
-    ));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), 
+        is("Comments=4.68;Complexity=12.63;Coverage=32.63;Design=3.49;Duplication=29.87;Violations=16.66")        
+    );
     
-    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
-    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(276205.3), is(275455.3), is(310717.8), is(310467.8), is(310405.3)));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(27.9), is(21.7), is(22.5)));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(552.4), is(550.9), is(447.5), is(446.2), closeTo(621.0, 1.0)));
+    assertThat(getProjectMeasure("technical_debt").getValue(), is(278655.3));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(22.7));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(557.3));
   }
 
   @Test
   public void modulesMetrics() {
-    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.73"),
-        is("Comments=10.3;Complexity=21.02;Coverage=35.21;Design=14.66;Duplication=1.22;Violations=17.56"),
-        is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.74")));
-    assertThat(getCoreModuleMeasure("technical_debt").getValue(), anyOf(is(62258.9), is(61377.6), is(62265.1)));
-    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), anyOf(is(17.3), is(17.1), /* sonar 2.6, td 1.2 */is(17.4)));
-    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), anyOf(is(124.5), closeTo(123.0, 0.5)));
+    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), 
+        is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.74"));
+    assertThat(getCoreModuleMeasure("technical_debt").getValue(), is(62265.1));
+    assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), is(17.4));
+    assertThat(getCoreModuleMeasure("technical_debt_days").getValue(), is(124.5));
   }
 
   @Test
   public void packagesMetrics() {
-    assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
-        is("Comments=0.14;Complexity=26.28;Coverage=50.46;Duplication=2.88;Violations=20.23"),
-        is("Comments=0.15;Complexity=28.03;Coverage=53.83;Duplication=3.07;Violations=14.9")));
-    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(8680.3), is(8136.6)));
-    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(10.1), is(9.5)));
-    assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(17.4), is(16.3)));
+    assertThat(getPackageMeasure("technical_debt_repart").getData(),
+        is("Comments=0.14;Complexity=26.28;Coverage=50.46;Duplication=2.88;Violations=20.23"));
+    assertThat(getPackageMeasure("technical_debt").getValue(), is(8680.3));
+    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(10.1));
+    assertThat(getPackageMeasure("technical_debt_days").getValue(), is(17.4));
   }
 
   @Test

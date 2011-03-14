@@ -35,7 +35,7 @@ public class CommonsLangModeLightIT {
 
   private static Sonar sonar;
   private static final String PROJECT_STRUTS = "commons-lang:commons-lang";
-  private static final String FILE_ACTION = "commons-lang:commons-lang:org.apache.commons.lang.CharRange ";
+  private static final String FILE_ACTION = "commons-lang:commons-lang:org.apache.commons.lang.CharRange";
   private static final String PACKAGE_ACTION = "commons-lang:commons-lang:org.apache.commons.lang";
 
   @BeforeClass
@@ -52,23 +52,20 @@ public class CommonsLangModeLightIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt").getValue(), anyOf(is(39431.3), is(39743.8), is(51618.8)));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), anyOf(is(10.2), is(10.1), is(8.7)));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), anyOf(is(78.9), is(79.5), is(103.2)));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), anyOf(
-        is("Complexity=55.39;Design=6.34;Duplication=10.77;Violations=27.48"),
-        is("Complexity=53.54;Design=6.29;Duplication=12.89;Violations=27.26"),
-        is("Complexity=41.22;Design=4.84;Duplication=32.93;Violations=20.99")));
+    assertThat(getProjectMeasure("technical_debt").getValue(), is(40493.8));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(10));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(81));
+    assertThat(getProjectMeasure("technical_debt_repart").getData(), 
+        is("Complexity=52.55;Design=6.17;Duplication=14.5;Violations=26.76"));
   }
 
   @Test
   public void packagesMetrics() {
-    assertThat(getPackageMeasure("technical_debt").getValue(), anyOf(is(11856.3), is(11356.3)));
-    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), anyOf(is(8.6), is(8.7), is(8.0)));
-    assertThat(getPackageMeasure("technical_debt_days").getValue(), anyOf(is(23.7), is(22.7)));
-    assertThat(getPackageMeasure("technical_debt_repart").getData(), anyOf(
-        is("Complexity=68.26;Duplication=9.48;Violations=22.24"),
-        is("Complexity=71.27;Duplication=5.5;Violations=23.22")));
+    assertThat(getPackageMeasure("technical_debt").getValue(), is(11856.3));
+    assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(8.0));
+    assertThat(getPackageMeasure("technical_debt_days").getValue(), is(23.7));
+    assertThat(getPackageMeasure("technical_debt_repart").getData(),
+        is("Complexity=68.26;Duplication=9.48;Violations=22.24"));
   }
 
   @Test
