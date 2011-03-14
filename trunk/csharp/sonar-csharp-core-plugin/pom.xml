@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.codehaus.sonar-plugins.csharp</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.7-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>sonar-csharp-core-plugin</artifactId>
+	<packaging>sonar-plugin</packaging>
+
+	<name>Sonar C# Plugin :: Core</name>
+	<description>Plugin that defines the core APIs for the C# ecosystem.</description>
+	<url>http://docs.codehaus.org/display/SONAR/XXXXXXX</url>
+
+	<properties>
+		<sonar.pluginKey>csharp</sonar.pluginKey>
+		<sonar.pluginName>C# Core</sonar.pluginName>
+		<sonar.pluginClass>org.sonar.plugins.csharp.core.CSharpCorePlugin</sonar.pluginClass>
+		<sonar.skipDependenciesPackaging>true</sonar.skipDependenciesPackaging>
+	</properties>
+
+	<dependencies>
+		<!-- sonar open-source -->
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-plugin-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-squid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-duplications</artifactId>
+		</dependency>
+
+		<!-- Unit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
