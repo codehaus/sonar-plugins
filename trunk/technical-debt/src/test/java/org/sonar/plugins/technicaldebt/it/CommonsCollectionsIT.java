@@ -43,7 +43,7 @@ public class CommonsCollectionsIT {
 
   @BeforeClass
   public static void buildServer() {
-    sonar = Sonar.create("http://localhost:9000");
+    sonar = Sonar.create("http://172.16.22.128:9000");
   }
 
   @Test
@@ -65,11 +65,10 @@ public class CommonsCollectionsIT {
 
   @Test
   public void packagesMetrics() {
+    System.out.println("Coverage is : " + getPackageMeasure("coverage").getValue() + " on package " + PROJECT_COMMONS_COLLECTIONS);
     assertThat(getPackageMeasure("technical_debt_repart").getData(),
-        is("Comments=14.09;Complexity=46.61;Coverage=7.38;Duplication=11.62;Violations=20.29")
+        is("Comments=14.11;Complexity=46.68;Coverage=7.23;Duplication=11.64;Violations=20.32")
     );
-    // 2 values to cope with the fact that CPD has a different behavior when running in java 5 or 6
-    // and 2 for after Sonar 2.2
     assertThat(getPackageMeasure("technical_debt").getValue(), is(25811.3));
     assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(13.1));
     assertThat(getPackageMeasure("technical_debt_days").getValue(), is(51.6));
