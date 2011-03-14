@@ -24,7 +24,7 @@ package org.sonar.plugins.jacoco.itcoverage.viewer.client;
  * Should be in {@link org.sonar.gwt.Metrics}
  */
 public interface Metrics {
-  String IT_COVERAGE = "coverage";
+  String IT_COVERAGE = "it_coverage";
   String IT_LINES_TO_COVER = "it_lines_to_cover";
   String IT_UNCOVERED_LINES = "it_uncovered_lines";
   String IT_LINE_COVERAGE = "it_line_coverage";
@@ -32,5 +32,12 @@ public interface Metrics {
   String IT_CONDITIONS_TO_COVER = "it_conditions_to_cover";
   String IT_UNCOVERED_CONDITIONS = "it_uncovered_conditions";
   String IT_BRANCH_COVERAGE = "it_branch_coverage";
+  String IT_CONDITIONS_BY_LINE = "it_conditions_by_line";
+  String IT_COVERED_CONDITIONS_BY_LINE = "it_covered_conditions_by_line";
+
+  /**
+   * @deprecated use IT_CONDITIONS_BY_LINE and IT_COVERED_CONDITIONS_BY_LINE
+   */
+  @Deprecated
   String IT_BRANCH_COVERAGE_HITS_DATA = "it_branch_coverage_hits_data";
 }

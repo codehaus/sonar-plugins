@@ -21,21 +21,22 @@
 package org.sonar.plugins.jacoco.itcoverage;
 
 import org.apache.commons.lang.StringUtils;
-import org.jacoco.core.analysis.ICounter;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.jacoco.AbstractAnalyzer;
 import org.sonar.plugins.jacoco.JacocoConfiguration;
 
+import java.util.Collection;
+
 /**
  * Note that this class can't extend {@link org.sonar.api.batch.AbstractCoverageExtension}, because in this case this extension will be
  * disabled under Sonar
  * 2.3, if JaCoCo is not defined as the default code coverage plugin.
- * 
+ *
  * @author Evgeny Mandrikov
  */
 public class JaCoCoItSensor implements Sensor {
@@ -51,29 +52,50 @@ public class JaCoCoItSensor implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    new Analyzer().analyse(project, context);
+    new ITAnalyzer().analyse(project, context);
   }
 
-  public class Analyzer extends AbstractAnalyzer {
+  class ITAnalyzer extends AbstractAnalyzer {
     @Override
     protected String getReportPath(Project project) {
       return configuration.getItReportPath();
     }
 
     @Override
-    protected void saveMeasures(SensorContext context, JavaFile resource, ICounter lines, String lineHitsData,
-        double totalBranches, double totalCoveredBranches, String branchHitsData) {
-      context.saveMeasure(resource, JaCoCoItMetrics.IT_LINES_TO_COVER, (double) lines.getTotalCount());
-      context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_LINES, (double) lines.getMissedCount());
-      Measure lineHits = new Measure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA).setData(lineHitsData);
-      context.saveMeasure(resource, lineHits.setPersistenceMode(PersistenceMode.DATABASE));
-
-      if (totalBranches > 0) {
-        context.saveMeasure(resource, JaCoCoItMetrics.IT_CONDITIONS_TO_COVER, totalBranches);
-        context.saveMeasure(resource, JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS, totalBranches - totalCoveredBranches);
-        Measure branchHits = new Measure(JaCoCoItMetrics.IT_BRANCH_COVERAGE_HITS_DATA).setData(branchHitsData);
-        context.saveMeasure(resource, branchHits.setPersistenceMode(PersistenceMode.DATABASE));
+    protected void saveMeasures(SensorContext context, JavaFile resource, Collection<Measure> measures) {
+      for (Measure measure : measures) {
+        Measure itMeasure = convertForIT(measure);
+        if (itMeasure != null) {
+          System.out.println(resource.getKey() + "-->" + itMeasure.getMetricKey() + " val=" + itMeasure.getValue() + ", data=" + itMeasure.getData());
+          context.saveMeasure(resource, itMeasure);
+        }
       }
+    }
+
+    private Measure convertForIT(Measure measure) {
+      Measure itMeasure = null;
+      if (CoreMetrics.LINES_TO_COVER.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_LINES_TO_COVER, measure.getValue());
+
+      } else if (CoreMetrics.UNCOVERED_LINES.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_UNCOVERED_LINES, measure.getValue());
+
+      } else if (CoreMetrics.COVERAGE_LINE_HITS_DATA.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_COVERAGE_LINE_HITS_DATA, measure.getData());
+
+      } else if (CoreMetrics.CONDITIONS_TO_COVER.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_CONDITIONS_TO_COVER, measure.getValue());
+
+      } else if (CoreMetrics.UNCOVERED_CONDITIONS.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_UNCOVERED_CONDITIONS, measure.getValue());
+
+      } else if (CoreMetrics.COVERED_CONDITIONS_BY_LINE.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_COVERED_CONDITIONS_BY_LINE, measure.getData());
+
+      } else if (CoreMetrics.CONDITIONS_BY_LINE.equals(measure.getMetric())) {
+        itMeasure = new Measure(JaCoCoItMetrics.IT_CONDITIONS_BY_LINE, measure.getData());
+      }
+      return itMeasure;
     }
   }
 

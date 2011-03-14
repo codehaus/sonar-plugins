@@ -61,8 +61,10 @@ public class CoverageViewer extends Page {
 
       addCell(panel, resource.getMeasure(Metrics.IT_LINE_COVERAGE));
       addCell(panel, resource.getMeasure(Metrics.IT_UNCOVERED_LINES));
+      addCell(panel, resource.getMeasure(Metrics.IT_LINES_TO_COVER));
       addCell(panel, resource.getMeasure(Metrics.IT_BRANCH_COVERAGE));
       addCell(panel, resource.getMeasure(Metrics.IT_UNCOVERED_CONDITIONS));
+      addCell(panel, resource.getMeasure(Metrics.IT_CONDITIONS_TO_COVER));
     }
   }
 }

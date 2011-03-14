@@ -106,12 +106,14 @@ public class JaCoCoPlugin implements Plugin {
         JaCoCoMavenPluginHandler.class,
         // Unit tests
         JaCoCoSensor.class,
+
         // Integration tests
         JaCoCoItMetrics.class,
         JaCoCoItSensor.class,
         ItCoverageWidget.class,
         ItCoverageDecorator.class,
         ItLineCoverageDecorator.class,
+        ItBranchCoverageDecorator.class,
         CoverageViewerDefinition.class);
   }
 

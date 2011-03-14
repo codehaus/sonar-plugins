@@ -26,6 +26,8 @@ import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoverageMeasuresBuilder;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
@@ -34,13 +36,14 @@ import org.sonar.api.utils.SonarException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * @author Evgeny Mandrikov
  */
 public abstract class AbstractAnalyzer {
 
-  public void analyse(Project project, SensorContext context) {
+  public final void analyse(Project project, SensorContext context) {
     final File buildOutputDir = project.getFileSystem().getBuildOutputDir();
     if (!buildOutputDir.exists()) {
       JaCoCoUtils.LOG.info("Can't find build output directory: {}. Skipping JaCoCo analysis.", buildOutputDir);
@@ -55,7 +58,7 @@ public abstract class AbstractAnalyzer {
     }
   }
 
-  public void readExecutionData(File jacocoExecutionData, File buildOutputDir, SensorContext context) throws IOException {
+  public final void readExecutionData(File jacocoExecutionData, File buildOutputDir, SensorContext context) throws IOException {
     SessionInfoStore sessionInfoStore = new SessionInfoStore();
     ExecutionDataStore executionDataStore = new ExecutionDataStore();
 
@@ -78,7 +81,7 @@ public abstract class AbstractAnalyzer {
       String resourceName = StringUtils.replaceChars(coverage.getPackageName() + "/" + fileName, '/', '.');
 
       JavaFile resource = new JavaFile(resourceName);
-      analyzeClass(resource, coverage, context);
+      analyzeFile(resource, coverage, context);
     }
   }
 
@@ -99,29 +102,25 @@ public abstract class AbstractAnalyzer {
     }
   }
 
-  private void analyzeClass(JavaFile resource, ISourceFileCoverage coverage, SensorContext context) {
+  private void analyzeFile(JavaFile resource, ISourceFileCoverage coverage, SensorContext context) {
     if (context.getResource(resource) == null) {
       // Do not save measures on resource which doesn't exist in the context
       return;
     }
 
-    PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>();
-    PropertiesBuilder<Integer, String> branchHitsBuilder = new PropertiesBuilder<Integer, String>();
-    double totalBranches = 0;
-    double totalCoveredBranches = 0;
-
+    CoverageMeasuresBuilder builder = CoverageMeasuresBuilder.create();
     for (int lineId = coverage.getFirstLine(); lineId <= coverage.getLastLine(); lineId++) {
-      final int fakeHits;
+      final int hits;
       ILine line = coverage.getLine(lineId);
       switch (line.getInstructionCounter().getStatus()) {
         case ICounter.FULLY_COVERED:
-          fakeHits = 1;
+          hits = 1;
           break;
         case ICounter.PARTLY_COVERED:
-          fakeHits = 1;
+          hits = 1;
           break;
         case ICounter.NOT_COVERED:
-          fakeHits = 0;
+          hits = 0;
           break;
         case ICounter.EMPTY:
           continue;
@@ -129,26 +128,20 @@ public abstract class AbstractAnalyzer {
           JaCoCoUtils.LOG.warn("Unknown status for line {} in {}", lineId, resource);
           continue;
       }
-      lineHitsBuilder.add(lineId, fakeHits);
+      builder.setHits(lineId, hits);
 
       ICounter branchCounter = line.getBranchCounter();
-      double lineBranches = branchCounter.getTotalCount();
-
-      if (lineBranches > 0) {
-        double lineCoveredBranches = branchCounter.getCoveredCount();
-        double lineBranchCoverage = 100 * lineCoveredBranches / lineBranches;
-        totalBranches += lineBranches;
-        totalCoveredBranches += lineCoveredBranches;
-        branchHitsBuilder.add(lineId, Math.round(lineBranchCoverage) + "%");
+      int conditions = branchCounter.getTotalCount();
+      if (conditions > 0) {
+        int coveredConditions = branchCounter.getCoveredCount();
+        builder.setConditions(lineId, conditions, coveredConditions);
       }
     }
 
-    saveMeasures(context, resource, coverage.getLineCounter(), lineHitsBuilder.buildData(), totalBranches, totalCoveredBranches,
-        branchHitsBuilder.buildData());
+    saveMeasures(context, resource, builder.createMeasures());
   }
 
-  protected abstract void saveMeasures(SensorContext context, JavaFile resource, ICounter lines, String lineHitsData,
-      double totalBranches, double totalCoveredBranches, String branchHitsData);
+  protected abstract void saveMeasures(SensorContext context, JavaFile resource, Collection<Measure> measures);
 
   protected abstract String getReportPath(Project project);
 
