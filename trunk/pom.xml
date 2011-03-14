@@ -22,6 +22,7 @@
         <module>clirr</module>
         <module>crowd</module>
         <module>c-rules</module>
+        <module>csharp</module>
         <module>cutoff</module>
         <module>dotnet</module>
         <module>email</module>
