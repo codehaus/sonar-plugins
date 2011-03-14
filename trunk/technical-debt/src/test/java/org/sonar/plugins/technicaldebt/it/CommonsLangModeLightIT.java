@@ -53,8 +53,8 @@ public class CommonsLangModeLightIT {
   @Test
   public void projectsMetrics() {
     assertThat(getProjectMeasure("technical_debt").getValue(), is(40493.8));
-    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(10));
-    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(81));
+    assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(10.0));
+    assertThat(getProjectMeasure("technical_debt_days").getValue(), is(81.0));
     assertThat(getProjectMeasure("technical_debt_repart").getData(), 
         is("Complexity=52.55;Design=6.17;Duplication=14.5;Violations=26.76"));
   }
