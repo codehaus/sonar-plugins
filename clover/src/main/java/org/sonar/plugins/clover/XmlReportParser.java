@@ -26,25 +26,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.measures.CoverageMeasuresBuilder;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.JavaPackage;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.ParsingUtils;
-import static org.sonar.api.utils.ParsingUtils.scaleValue;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.api.utils.XmlParserException;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.text.ParseException;
-import javax.xml.stream.XMLStreamException;
+
+import static org.sonar.api.utils.ParsingUtils.scaleValue;
 
 public class XmlReportParser {
 
   private static final Logger LOG = LoggerFactory.getLogger(XmlReportParser.class);
   private SensorContext context;
-  final PropertiesBuilder<String, Integer> lineHitsBuilder = new PropertiesBuilder<String, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
-  final PropertiesBuilder<String, String> branchHitsBuilder = new PropertiesBuilder<String, String>(CoreMetrics.BRANCH_COVERAGE_HITS_DATA);
+  final CoverageMeasuresBuilder fileMeasuresBuilder = CoverageMeasuresBuilder.create();
 
   public XmlReportParser(SensorContext context) {
     this.context = context;
@@ -138,10 +139,8 @@ public class XmlReportParser {
           SMInputCursor fileChildrenCursor = fileCursor.childCursor(new SimpleFilter(SMEvent.START_ELEMENT));
           // cursor should be on the metrics element
           if (canBeIncludedInFileMetrics(fileChildrenCursor)) {
-            JavaFile resource = new JavaFile(pack.getKey(), classKey, false);
-            analyseMetricsNode(resource, fileChildrenCursor);
-
             // cursor should be now on the line cursor
+            JavaFile resource = new JavaFile(pack.getKey(), classKey, false);
             saveHitsData(resource, fileChildrenCursor);
           }
         }
@@ -150,41 +149,33 @@ public class XmlReportParser {
   }
 
   private void saveHitsData(Resource resource, SMInputCursor lineCursor) throws ParseException, XMLStreamException {
-    lineHitsBuilder.clear();
-    branchHitsBuilder.clear();
-    boolean hasBranches = false;
+    fileMeasuresBuilder.reset();
 
     while (lineCursor.getNext() != null) {
       // skip class elements on format 2_3_2
       if (lineCursor.getLocalName().equals("class")) {
         continue;
       }
-      final String lineId = lineCursor.getAttrValue("num");
-      int hits;
+      final int lineId = Integer.parseInt(lineCursor.getAttrValue("num"));
       String count = lineCursor.getAttrValue("count");
-      if (StringUtils.isBlank(count)) {
-        int trueCount = (int) ParsingUtils.parseNumber(lineCursor.getAttrValue("truecount"));
-        int falseCount = (int) ParsingUtils.parseNumber(lineCursor.getAttrValue("falsecount"));
-        hits = trueCount + falseCount;
-        String branchHits;
-        if (trueCount > 0 && falseCount > 0) {
-          branchHits = "100%";
-        } else if (trueCount == 0 && falseCount == 0) {
-          branchHits = "0%";
-        } else {
-          branchHits = "50%";
-        }
-        branchHitsBuilder.add(lineId, branchHits);
-        hasBranches = true;
+      if (StringUtils.isNotBlank(count)) {
+        fileMeasuresBuilder.setHits(lineId, Integer.parseInt(count));
 
       } else {
-        hits = (int) ParsingUtils.parseNumber(count);
+        int trueCount = (int) ParsingUtils.parseNumber(lineCursor.getAttrValue("truecount"));
+        int falseCount = (int) ParsingUtils.parseNumber(lineCursor.getAttrValue("falsecount"));
+        int coveredConditions = 0;
+        if (trueCount > 0) {
+          coveredConditions++;
+        }
+        if (falseCount > 0) {
+          coveredConditions++;
+        }
+        fileMeasuresBuilder.setConditions(lineId, 2, coveredConditions);
       }
-      lineHitsBuilder.add(lineId, hits);
     }
-    context.saveMeasure(resource, lineHitsBuilder.build());
-    if (hasBranches) {
-      context.saveMeasure(resource, branchHitsBuilder.build());
+    for (Measure measure : fileMeasuresBuilder.createMeasures()) {
+      context.saveMeasure(resource, measure);
     }
   }
 

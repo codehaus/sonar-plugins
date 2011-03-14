@@ -91,37 +91,20 @@ public class XmlReportParserTest {
     verify(context).saveMeasure(new JavaPackage("org.sonar.squid.sensors"), CoreMetrics.COVERAGE, 94.87);
   }
 
-//  @Test
-//  public void doNotSaveInnerClassMeasures() throws ParseException, URISyntaxException {
-//    collector.collect(xmlFile);
-//
-//    verify(context, never()).saveMeasure(
-//        eq(new JavaFile("ch.hortis.sonar.model.MetricMetaInf.Classes")), eq(CoreMetrics.COVERAGE), anyDouble());
-//    verify(context).saveMeasure(
-//        eq(new JavaFile("ch.hortis.sonar.model.MetricMetaInf")), eq(CoreMetrics.COVERAGE), anyDouble());
-//  }
-
   @Test
   public void collectFileMeasures() throws Exception {
     reportParser.collect(xmlFile);
 
     final JavaFile file = new JavaFile("org.sonar.samples.ClassUnderTest");
-    verify(context).saveMeasure(file, CoreMetrics.COVERAGE, 100.0);
-
-    verify(context).saveMeasure(file, CoreMetrics.LINE_COVERAGE, 100.0);
-    verify(context).saveMeasure(file, CoreMetrics.LINES_TO_COVER, 5.0);
-    verify(context).saveMeasure(file, CoreMetrics.UNCOVERED_LINES, 0.0);
-
-    // no conditions
-    verify(context, never()).saveMeasure(eq(file), eq(CoreMetrics.BRANCH_COVERAGE), anyDouble());
-    verify(context, never()).saveMeasure(eq(file), eq(CoreMetrics.CONDITIONS_TO_COVER), anyDouble());
-    verify(context, never()).saveMeasure(eq(file), eq(CoreMetrics.UNCOVERED_CONDITIONS), anyDouble());
+    verify(context).saveMeasure(eq(file), argThat(new IsMeasure(CoreMetrics.LINES_TO_COVER, 5.0)));
+    verify(context).saveMeasure(eq(file), argThat(new IsMeasure(CoreMetrics.UNCOVERED_LINES, 0.0)));
+    verify(context).saveMeasure(eq(file), argThat(new IsMeasure(CoreMetrics.COVERAGE_LINE_HITS_DATA, "4=1;5=1;6=2;8=1;9=1")));
   }
 
   @Test
   public void collectFileHitsData() throws Exception {
     reportParser.collect(xmlFile);
-    verify(context).saveMeasure(eq(new JavaFile("org.sonar.samples.ClassUnderTest")), argThat(new IsMeasure(CoreMetrics.COVERAGE_LINE_HITS_DATA, "4=1;5=1;6=1;8=1;9=1")));
+    verify(context).saveMeasure(eq(new JavaFile("org.sonar.samples.ClassUnderTest")), argThat(new IsMeasure(CoreMetrics.COVERAGE_LINE_HITS_DATA, "4=1;5=1;6=2;8=1;9=1")));
   }
 
   @Test

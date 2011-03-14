@@ -113,7 +113,7 @@
         </class>
         <line num="4" signature="toto() : void" type="method" complexity="1" count="1"/>
         <line num="5" type="stmt" count="1"/>
-        <line num="6" type="stmt" count="1"/>
+        <line num="6" type="stmt" count="2"/>
         <line num="8" signature="hello() : String" type="method" complexity="1" count="1"/>
         <line num="9" type="stmt" count="1"/>
       </file>
