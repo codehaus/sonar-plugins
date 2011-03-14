@@ -69,7 +69,7 @@ public class CommonsCollectionsIT {
     assertThat(getPackageMeasure("technical_debt_repart").getData(),
         is("Comments=14.11;Complexity=46.68;Coverage=7.23;Duplication=11.64;Violations=20.32")
     );
-    assertThat(getPackageMeasure("technical_debt").getValue(), is(25811.3));
+    assertThat(getPackageMeasure("technical_debt").getValue(), is(25771.6));
     assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(13.1));
     assertThat(getPackageMeasure("technical_debt_days").getValue(), is(51.6));
   }
