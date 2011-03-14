@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.technicaldebt;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
@@ -35,7 +36,7 @@ public class TechnicalDebtDecoratorTest {
 
   @Before
   public void setUp() {
-    decorator = new TechnicalDebtDecorator(null);
+    decorator = new TechnicalDebtDecorator(new PropertiesConfiguration(), new Project("project"));
   }
 
   @Test

@@ -26,6 +26,8 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
 import org.sonar.plugins.technicaldebt.TechnicalDebtMetrics;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 
@@ -37,8 +39,11 @@ import java.util.List;
  */
 public final class ComplexityDebtCalculator extends AxisDebtCalculator {
 
-  public ComplexityDebtCalculator(Configuration configuration) {
+  private boolean isJava;
+
+  public ComplexityDebtCalculator(Configuration configuration, Project project) {
     super(configuration);
+    isJava = Java.INSTANCE.equals(project.getLanguage());
   }
 
   /**
@@ -49,7 +54,7 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
   }
 
   public double calculateTotalPossibleDebt(DecoratorContext context) {
-    Measure classes = context.getMeasure(CoreMetrics.CLASSES);
+    Measure classes = context.getMeasure((isJava ? CoreMetrics.CLASSES : CoreMetrics.FILES));
     Measure functions = context.getMeasure(CoreMetrics.FUNCTIONS);
 
     double debt = MeasureUtils.hasValue(classes) ? classes.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_CLASS_COMPLEXITY, TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL) : 0;
@@ -60,11 +65,10 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
   }
 
   public List<Metric> dependsOn() {
-    return Arrays.asList(CoreMetrics.CLASSES, CoreMetrics.FUNCTIONS, TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
+    return Arrays.asList(CoreMetrics.CLASSES, CoreMetrics.FILES, CoreMetrics.FUNCTIONS, TechnicalDebtMetrics.TECHNICAL_DEBT_COMPLEXITY);
   }
 
   public String getName() {
     return "Complexity";
   }
-
 }
