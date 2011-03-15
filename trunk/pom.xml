@@ -22,11 +22,11 @@
         <module>clirr</module>
         <module>crowd</module>
         <module>c-rules</module>
-        <module>csharp</module>
         <module>cutoff</module>
         <module>dotnet</module>
         <module>email</module>
         <module>emma</module>
+        <module>fb-contrib</module>
         <module>flex</module>
         <module>greenpepper</module>
         <module>groovy</module>
@@ -67,8 +67,8 @@
       <modules>
         <module>basic-cocomo</module>
         <module>clover</module>
+        <module>csharp</module>
         <module>debug</module>
-        <module>fb-contrib</module>
         <module>metrics-help</module>
         <module>profiler</module>
         <module>testability-explorer</module>
