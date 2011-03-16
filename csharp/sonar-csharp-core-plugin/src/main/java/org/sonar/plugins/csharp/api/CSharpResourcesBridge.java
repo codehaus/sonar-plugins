@@ -94,10 +94,27 @@ public class CSharpResourcesBridge {
     return getFromTypeName(namespaceName + "." + typeName);
   }
 
+  /**
+   * Returns the physical file that contains the definition of the type referenced by its full name.
+   * 
+   * @param typeFullName
+   *          the type full name
+   * @return the resource that contains this type, or NULL if none
+   */
   public Resource<?> getFromTypeName(String typeFullName) {
     return logicalToPhysicalResourcesMap.get(typeFullName);
   }
 
+  /**
+   * /!\ Do not use for the moment! <br>
+   * <br>
+   * For the moment, method key ends with ':XXXX', where 'XXXX' is the line number, so this API does not work. <br>
+   * <br>
+   * TODO: Need to work on that.
+   * 
+   * @param memberFullName
+   * @return
+   */
   public Resource<?> getFromMemberName(String memberFullName) {
     return logicalToPhysicalResourcesMap.get(memberFullName);
   }
