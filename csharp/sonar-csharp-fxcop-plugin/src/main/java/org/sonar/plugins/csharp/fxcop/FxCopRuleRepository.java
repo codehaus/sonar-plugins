@@ -28,6 +28,7 @@ import org.sonar.api.platform.ServerFileSystem;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleRepository;
 import org.sonar.api.rules.XMLRuleParser;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 
 /**
  * Loads and generated the FXCop rules configuration file.
@@ -39,7 +40,7 @@ public class FxCopRuleRepository extends RuleRepository {
   private XMLRuleParser xmlRuleParser;
 
   public FxCopRuleRepository(ServerFileSystem fileSystem, XMLRuleParser xmlRuleParser) {
-    super(FxCopConstants.REPOSITORY_KEY, FxCopConstants.LANGUAGE_KEY);
+    super(FxCopConstants.REPOSITORY_KEY, CSharpConstants.LANGUAGE_KEY);
     setName(FxCopConstants.REPOSITORY_NAME);
     this.fileSystem = fileSystem;
     this.xmlRuleParser = xmlRuleParser;

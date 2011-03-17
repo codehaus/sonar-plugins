@@ -37,9 +37,9 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRule;
-
 
 public class FxCopProfileExporter extends ProfileExporter {
 
@@ -48,7 +48,7 @@ public class FxCopProfileExporter extends ProfileExporter {
 
   public FxCopProfileExporter() {
     super(FxCopConstants.REPOSITORY_KEY, FxCopConstants.PLUGIN_NAME);
-    setSupportedLanguages(FxCopConstants.LANGUAGE_KEY);
+    setSupportedLanguages(CSharpConstants.LANGUAGE_KEY);
     setMimeType("application/xml");
   }
 

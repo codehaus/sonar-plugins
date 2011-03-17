@@ -33,10 +33,10 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRule;
 import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRuleParser;
-
 
 public class FxCopProfileImporter extends ProfileImporter {
 
@@ -44,7 +44,7 @@ public class FxCopProfileImporter extends ProfileImporter {
 
   public FxCopProfileImporter(RuleFinder ruleFinder) {
     super(FxCopConstants.REPOSITORY_KEY, FxCopConstants.PLUGIN_NAME);
-    setSupportedLanguages(FxCopConstants.LANGUAGE_KEY);
+    setSupportedLanguages(CSharpConstants.LANGUAGE_KEY);
     this.ruleFinder = ruleFinder;
   }
 
@@ -52,7 +52,7 @@ public class FxCopProfileImporter extends ProfileImporter {
   @Override
   public RulesProfile importProfile(Reader reader, ValidationMessages messages) {
     RulesProfile profile = RulesProfile.create();
-    profile.setLanguage(FxCopConstants.LANGUAGE_KEY);
+    profile.setLanguage(CSharpConstants.LANGUAGE_KEY);
 
     try {
       List<FxCopRule> fxcopConfig = FxCopRuleParser.parse(IOUtils.toString(reader));
