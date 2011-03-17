@@ -16,7 +16,7 @@
 	<properties>
 		<sonar.pluginKey>csharpfxcop</sonar.pluginKey>
 		<sonar.pluginName>C# FxCop</sonar.pluginName>
-		<sonar.pluginClass>com.sonar.csharp.fxcop.FxCopPlugin</sonar.pluginClass>
+		<sonar.pluginClass>org.sonar.plugins.csharp.fxcop.FxCopPlugin</sonar.pluginClass>
 		<sonar.skipDependenciesPackaging>true</sonar.skipDependenciesPackaging>
 	</properties>
 
