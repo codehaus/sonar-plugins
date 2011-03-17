@@ -34,9 +34,6 @@ public final class FxCopConstants {
   public static final String REPOSITORY_KEY = PLUGIN_KEY;
   public static final String REPOSITORY_NAME = PLUGIN_NAME;
 
-  public static final String LANGUAGE_KEY = "cs";
-  public static final String LANGUAGE_NAME = "C#";
-
   public static final String FXCOP_REPORT_XML = "fxcop-report.xml";
   public static final String SL_FXCOP_REPORT_XML = "silverlight-fxcop-report.xml";
 
