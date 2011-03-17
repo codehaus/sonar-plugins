@@ -25,7 +25,6 @@ package com.sonar.csharp.fxcop.profiles.utils;
  */
 public class FxCopRule {
 
-  private String category;
   private String name;
   private boolean enabled;
   private String fileName;
@@ -77,26 +76,7 @@ public class FxCopRule {
 
   @Override
   public String toString() {
-    return "FxCopRule(name=" + name + ", enabled=" + enabled + ", category=" + category + ")";
-  }
-
-  /**
-   * Returns the category.
-   * 
-   * @return The category to return.
-   */
-  public String getCategory() {
-    return this.category;
-  }
-
-  /**
-   * Sets the category.
-   * 
-   * @param category
-   *          The category to set.
-   */
-  public void setCategory(String category) {
-    this.category = category;
+    return "FxCopRule(name=" + name + ", enabled=" + enabled + ")";
   }
 
   /**
