@@ -20,14 +20,16 @@
 
 package com.sonar.csharp.fxcop.profiles;
 
-import java.io.CharArrayWriter;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.profiles.ProfileExporter;
 import org.sonar.api.profiles.RulesProfile;
@@ -38,14 +40,11 @@ import org.sonar.api.utils.SonarException;
 
 import com.sonar.csharp.fxcop.FxCopConstants;
 import com.sonar.csharp.fxcop.profiles.utils.FxCopRule;
-import com.sonar.csharp.fxcop.profiles.utils.XmlUtils;
-import com.sonar.csharp.fxcop.profiles.xml.FxCopProject;
-import com.sonar.csharp.fxcop.profiles.xml.ProjectOptions;
-import com.sonar.csharp.fxcop.profiles.xml.RuleDef;
-import com.sonar.csharp.fxcop.profiles.xml.RuleFile;
-import com.sonar.csharp.fxcop.profiles.xml.RuleSet;
 
 public class FxCopProfileExporter extends ProfileExporter {
+
+  private static final String FXCOP_PROJECT_FILE_HEADER = "fxcop-project-file-header.txt";
+  private static final String FXCOP_PROJECT_FILE_FOOTER = "fxcop-project-file-footer.txt";
 
   public FxCopProfileExporter() {
     super(FxCopConstants.REPOSITORY_KEY, FxCopConstants.PLUGIN_NAME);
@@ -54,23 +53,48 @@ public class FxCopProfileExporter extends ProfileExporter {
   }
 
   public void exportProfile(RulesProfile profile, Writer writer) {
-    List<ActiveRule> activeRules = profile.getActiveRulesByRepository(FxCopConstants.REPOSITORY_KEY);
-    List<FxCopRule> rules = buildRules(activeRules);
-    String xmlModules = buildXmlFromRules(rules);
     try {
-      writer.write(xmlModules);
+      printIntoWriter(writer, FXCOP_PROJECT_FILE_HEADER);
+
+      printRules(profile, writer);
+
+      printIntoWriter(writer, FXCOP_PROJECT_FILE_FOOTER);
     } catch (IOException e) {
-      throw new SonarException("Fail to export the profile " + profile, e);
+      throw new SonarException("Error while generating the FxCop profile to export: " + profile, e);
     }
   }
 
-  /**
-   * Builds all the FxCop rules from the active rules
-   * 
-   * @param activeRulesByPlugin
-   * @return
-   */
-  private List<FxCopRule> buildRules(List<ActiveRule> activeRulesByPlugin) {
+  private void printRules(RulesProfile profile, Writer writer) throws IOException {
+    List<ActiveRule> activeRules = profile.getActiveRulesByRepository(FxCopConstants.REPOSITORY_KEY);
+    List<FxCopRule> rules = transformIntoFxCopRules(activeRules);
+
+    // We group the rules by RuleFile names
+    Map<String, List<FxCopRule>> rulesByFile = groupFxCopRulesByRuleFileName(rules);
+    // And then print out each rule
+    for (String fileName : rulesByFile.keySet()) {
+      printRuleFile(writer, rulesByFile, fileName);
+    }
+  }
+
+  private void printRuleFile(Writer writer, Map<String, List<FxCopRule>> rulesByFile, String fileName) throws IOException {
+    writer.append("            <RuleFile AllRulesEnabled=\"False\" Enabled=\"True\" Name=\"");
+    writer.append(fileName);
+    writer.append("\">\n");
+    for (FxCopRule fxCopRule : rulesByFile.get(fileName)) {
+      printRule(writer, fxCopRule);
+    }
+    writer.append("            </RuleFile>\n");
+  }
+
+  private void printRule(Writer writer, FxCopRule fxCopRule) throws IOException {
+    writer.append("                <Rule Enabled=\"True\" Name=\"");
+    writer.append(fxCopRule.getName());
+    writer.append("\" SonarPriority=\"");
+    writer.append(fxCopRule.getPriority());
+    writer.append("\"/>\n");
+  }
+
+  private List<FxCopRule> transformIntoFxCopRules(List<ActiveRule> activeRulesByPlugin) {
     List<FxCopRule> result = new ArrayList<FxCopRule>();
 
     for (ActiveRule activeRule : activeRulesByPlugin) {
@@ -82,7 +106,6 @@ public class FxCopProfileExporter extends ProfileExporter {
 
       // Creates an populates the rule
       FxCopRule fxCopRule = new FxCopRule();
-      fxCopRule.setCategory(rule.getRulesCategory().getName());
       fxCopRule.setEnabled(true);
       fxCopRule.setFileName(fileName);
       fxCopRule.setName(name);
@@ -97,17 +120,9 @@ public class FxCopProfileExporter extends ProfileExporter {
     return result;
   }
 
-  /**
-   * Builds a FxCop rule file from the configured rules.
-   * 
-   * @param allRules
-   * @return
-   */
-  private String buildXmlFromRules(List<FxCopRule> allRules) {
-    FxCopProject report = new FxCopProject();
+  private Map<String, List<FxCopRule>> groupFxCopRulesByRuleFileName(List<FxCopRule> rules) {
     Map<String, List<FxCopRule>> rulesByFile = new HashMap<String, List<FxCopRule>>();
-    // We group the rules by filename
-    for (FxCopRule fxCopRule : allRules) {
+    for (FxCopRule fxCopRule : rules) {
       String fileName = fxCopRule.getFileName();
       List<FxCopRule> rulesList = rulesByFile.get(fileName);
       if (rulesList == null) {
@@ -116,35 +131,24 @@ public class FxCopProfileExporter extends ProfileExporter {
       }
       rulesList.add(fxCopRule);
     }
+    return rulesByFile;
+  }
 
-    // This is the main list
-    List<RuleFile> ruleFiles = new ArrayList<RuleFile>();
-    for (Map.Entry<String, List<FxCopRule>> fileEntry : rulesByFile.entrySet()) {
-      RuleFile ruleFile = new RuleFile();
-      ruleFile.setEnabled("True");
-
-      // We copy all the rules informations
-      ruleFile.setName(fileEntry.getKey());
-      List<RuleDef> ruleDefinitions = new ArrayList<RuleDef>();
-      List<FxCopRule> rules = fileEntry.getValue();
-      for (FxCopRule fxCopRule : rules) {
-        RuleDef currentRule = new RuleDef();
-        currentRule.setName(fxCopRule.getName());
-        currentRule.setPriority(fxCopRule.getPriority());
-        ruleDefinitions.add(currentRule);
+  private void printIntoWriter(Writer writer, String fileName) throws IOException {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(fileName)));
+    try {
+      String line = reader.readLine();
+      while (line != null) {
+        writer.append(line);
+        writer.append("\n");
+        line = reader.readLine();
       }
-      ruleFile.setRules(ruleDefinitions);
-      ruleFiles.add(ruleFile);
+      reader.close();
+    } catch (IOException e) {
+      throw e;
+    } finally {
+      IOUtils.closeQuietly(reader);
     }
-
-    RuleSet ruleSet = new RuleSet();
-    ruleSet.setRules(ruleFiles);
-    report.setProjectOptions(new ProjectOptions());
-    report.setRules(ruleSet);
-
-    CharArrayWriter writer = new CharArrayWriter();
-    XmlUtils.marshall(report, writer);
-    return writer.toString();
   }
 
 }

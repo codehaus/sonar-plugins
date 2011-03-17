@@ -7,16 +7,16 @@
 		<version>0.7-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>sonar-csharp-fxcop-plugin</artifactId>
-	<packaging>sonar-plugin</packaging>
+	<artifactId>sonar-csharp-stylecop-plugin</artifactId>
+	<!-- <packaging>sonar-plugin</packaging> -->
 
-	<name>Sonar C# Plugin :: FxCop</name>
-	<description>Plugin that runs FxCop analyses to check C# sources against rule violations.</description>
+	<name>Sonar C# Plugin :: StyleCop</name>
+	<description>Plugin that runs StyleCop analyses to check C# sources against rule violations.</description>
 
 	<properties>
-		<sonar.pluginKey>csharpfxcop</sonar.pluginKey>
-		<sonar.pluginName>C# FxCop</sonar.pluginName>
-		<sonar.pluginClass>com.sonar.csharp.fxcop.FxCopPlugin</sonar.pluginClass>
+		<sonar.pluginKey>csharpstylecop</sonar.pluginKey>
+		<sonar.pluginName>C# StyleCop</sonar.pluginName>
+		<sonar.pluginClass>com.sonar.csharp.stylecop.StyleCopPlugin</sonar.pluginClass>
 		<sonar.skipDependenciesPackaging>true</sonar.skipDependenciesPackaging>
 	</properties>
 

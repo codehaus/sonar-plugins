@@ -24,8 +24,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -71,7 +69,6 @@ public final class FxCopRuleParser {
     XPathFactory factory = XPathFactory.newInstance();
     XPath xpath = factory.newXPath();
     List<FxCopRule> result = new ArrayList<FxCopRule>();
-    Pattern pattern = Pattern.compile("(\\w+)Rules");
 
     try {
       XPathExpression expression = xpath.compile("//Rule");
@@ -82,11 +79,6 @@ public final class FxCopRuleParser {
         Element ruleElement = (Element) nodes.item(idxRule);
         Element parent = (Element) ruleElement.getParentNode();
         String scopeName = parent.getAttribute("Name");
-        Matcher matcher = pattern.matcher(scopeName);
-        String category = "Default";
-        if (matcher.find()) {
-          category = matcher.group(1);
-        }
 
         FxCopRule rule = new FxCopRule();
         String ruleName = ruleElement.getAttribute("Name");
@@ -94,7 +86,6 @@ public final class FxCopRuleParser {
         String priority = ruleElement.getAttribute("SonarPriority");
         rule.setName(ruleName);
         rule.setEnabled(active.toLowerCase().contains("true"));
-        rule.setCategory(category);
         rule.setFileName(scopeName);
         rule.setPriority(priority);
         result.add(rule);

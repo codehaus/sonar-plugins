@@ -19,13 +19,3 @@
     </ProjectOptions>
     <Rules>
         <RuleFiles>
-            <RuleFile AllRulesEnabled="False" Enabled="True" Name="$(FxCopDir)\Rules\GlobalizationRules.dll">
-                <Rule SonarPriority="major" Enabled="True" Name="AvoidDuplicateAccelerators"/>
-            </RuleFile>
-            <RuleFile AllRulesEnabled="False" Enabled="True" Name="$(FxCopDir)\Rules\DesignRules.dll">
-                <Rule SonarPriority="major" Enabled="True" Name="AssembliesShouldHaveValidStrongNames"/>
-                <Rule SonarPriority="major" Enabled="True" Name="UsePropertiesWhereAppropriate"/>
-            </RuleFile>
-        </RuleFiles>
-    </Rules>
-</FxCopProject>

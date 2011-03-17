@@ -14,7 +14,6 @@
 
 	<name>Sonar C# Plugin :: Core</name>
 	<description>Plugin that defines the core APIs for the C# ecosystem.</description>
-	<url>http://docs.codehaus.org/display/SONAR/XXXXXXX</url>
 
 	<properties>
 		<sonar.pluginKey>csharp</sonar.pluginKey>

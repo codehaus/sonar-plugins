@@ -17,6 +17,7 @@
 
 	<name>Sonar C# Plugin</name>
 	<inceptionYear>2010</inceptionYear>
+	<url>http://docs.codehaus.org/display/SONAR/XXXXXXX</url>
 	<organization>
 		<name>SonarSource</name>
 		<url>http://www.sonarsource.com</url>
@@ -40,6 +41,7 @@
 	<modules>
 		<module>sonar-csharp-core-plugin</module>
 		<module>sonar-csharp-fxcop-plugin</module>
+		<module>sonar-csharp-stylecop-plugin</module>
 	</modules>
 
 	<scm>
@@ -49,7 +51,7 @@
 	</scm>
 	<issueManagement>
 		<system>JIRA</system>
-		<url>http://jira.codehaus.org/browse/SONARPLUGINS/component/XXXXX</url>
+		<url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14696</url>
 	</issueManagement>
 	<ciManagement>
 		<system>Bamboo</system>
