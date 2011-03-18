@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.profiles.ProfileExporter;
 import org.sonar.api.profiles.RulesProfile;
@@ -78,7 +79,7 @@ public class FxCopProfileExporter extends ProfileExporter {
 
   private void printRuleFile(Writer writer, Map<String, List<FxCopRule>> rulesByFile, String fileName) throws IOException {
     writer.append("            <RuleFile AllRulesEnabled=\"False\" Enabled=\"True\" Name=\"");
-    writer.append(fileName);
+    StringEscapeUtils.escapeXml(writer, fileName);
     writer.append("\">\n");
     for (FxCopRule fxCopRule : rulesByFile.get(fileName)) {
       printRule(writer, fxCopRule);
@@ -88,9 +89,9 @@ public class FxCopProfileExporter extends ProfileExporter {
 
   private void printRule(Writer writer, FxCopRule fxCopRule) throws IOException {
     writer.append("                <Rule Enabled=\"True\" Name=\"");
-    writer.append(fxCopRule.getName());
+    StringEscapeUtils.escapeXml(writer, fxCopRule.getName());
     writer.append("\" SonarPriority=\"");
-    writer.append(fxCopRule.getPriority());
+    StringEscapeUtils.escapeXml(writer, fxCopRule.getPriority());
     writer.append("\"/>\n");
   }
 
