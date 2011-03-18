@@ -29,10 +29,8 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileImporter;
-import org.sonar.plugins.csharp.fxcop.profiles.SonarWay2Profile;
 import org.sonar.plugins.csharp.fxcop.profiles.SonarWayProfile;
 import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
-
 
 /**
  * Main class of the FxCop plugin.
@@ -88,7 +86,6 @@ public class FxCopPlugin implements Plugin {
     list.add(FxCopProfileImporter.class);
     list.add(FxCopProfileExporter.class);
     list.add(SonarWayProfile.class);
-    list.add(SonarWay2Profile.class);
 
     // Running FxCop
     list.add(FxCopRunner.class);

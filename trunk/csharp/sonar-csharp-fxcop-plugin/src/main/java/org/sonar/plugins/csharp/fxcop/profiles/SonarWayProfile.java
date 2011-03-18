@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 
 public final class SonarWayProfile extends ProfileDefinition {
 
@@ -37,7 +38,7 @@ public final class SonarWayProfile extends ProfileDefinition {
   public RulesProfile createProfile(ValidationMessages messages) {
     RulesProfile profile = profileImporter.importProfile(
         new InputStreamReader(getClass().getResourceAsStream("/org/sonar/plugins/csharp/fxcop/rules/DefaultRules.FxCop")), messages);
-    profile.setName("Sonar C# Way");
+    profile.setName(CSharpConstants.CSHARP_WAY_PROFILE);
     return profile;
   }
 }
