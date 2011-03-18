@@ -1,5 +1,5 @@
 /*
- * Sonar C# Plugin :: FxCop
+ * Sonar C# Plugin :: StyleCop
  * Copyright (C) 2010 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,7 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.fxcop.profiles.utils;
+/*
+ * Created on May 19, 2009
+ */
+package org.sonar.plugins.csharp.stylecop.profiles.utils;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -31,6 +34,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -38,16 +42,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 /**
- * Parser the FXCop rules to populate sonar.
+ * Parses StyleCop rules configuration file.
  * 
- * @author Jose CHILLAN May 7, 2009
+ * @author Jose CHILLAN May 19, 2009
  */
-public final class FxCopRuleParser {
-
-  private static final Logger LOG = LoggerFactory.getLogger(FxCopRuleParser.class);
-
-  private FxCopRuleParser() {
-  }
+public class StyleCopRuleParser {
+  
+  private final static Logger log = LoggerFactory.getLogger(StyleCopRuleParser.class);
 
   /**
    * Parses the context of FXCop rules.
@@ -55,47 +56,59 @@ public final class FxCopRuleParser {
    * @param xml
    * @return
    */
-  public static List<FxCopRule> parse(String xml) {
+  public static List<StyleCopRule> parse(String xml) {
     StringReader stringReader = new StringReader(xml);
     return parse(stringReader);
   }
 
   /**
-   * Parses a FxCop rule file
-   * 
    * @param reader
    * @return
    */
-  public static List<FxCopRule> parse(Reader reader) {
+  public static List<StyleCopRule> parse(Reader reader) {
     InputSource source = new InputSource(reader);
     XPathFactory factory = XPathFactory.newInstance();
     XPath xpath = factory.newXPath();
-    List<FxCopRule> result = new ArrayList<FxCopRule>();
+    List<StyleCopRule> result = new ArrayList<StyleCopRule>();
 
     try {
       XPathExpression expression = xpath.compile("//Rule");
-      NodeList nodes = (NodeList) expression.evaluate(source, XPathConstants.NODESET);
+      NodeList nodes = (NodeList) expression.evaluate(source,
+          XPathConstants.NODESET);
       int count = nodes.getLength();
-      // For each rule we extract the elements
       for (int idxRule = 0; idxRule < count; idxRule++) {
         Element ruleElement = (Element) nodes.item(idxRule);
-        Element parent = (Element) ruleElement.getParentNode();
-        String scopeName = parent.getAttribute("Name");
-
-        FxCopRule rule = new FxCopRule();
+        Element analyzerElement = (Element) ruleElement.getParentNode()
+            .getParentNode();
         String ruleName = ruleElement.getAttribute("Name");
-        String active = ruleElement.getAttribute("Enabled");
         String priority = ruleElement.getAttribute("SonarPriority");
+
+        StyleCopRule rule = new StyleCopRule();
+        NodeList elements = ruleElement.getElementsByTagName("BooleanProperty");
+        boolean active = true;
+        int countBoolean = elements.getLength();
+        for (int idxElement = 0; idxElement < countBoolean; idxElement++) {
+          Element booleanElement = (Element) elements.item(idxElement);
+          String booleanName = booleanElement.getAttribute("Name");
+          if ("Enabled".equals(booleanName)) {
+            String activeStr = booleanElement.getTextContent();
+            active = !activeStr.toLowerCase().contains("false");
+          }
+        }
+        String analyzerId = analyzerElement.getAttribute("AnalyzerId");
+        String category = StringUtils.removeEnd(
+            StringUtils.substringAfterLast(analyzerId, "."), "Rules");
+        rule.setAnalyzerId(analyzerId);
         rule.setName(ruleName);
-        rule.setEnabled(active.toLowerCase().contains("true"));
-        rule.setFileName(scopeName);
         rule.setPriority(priority);
+        rule.setEnabled(active);
+        rule.setCategory(category);
         result.add(rule);
       }
     } catch (XPathExpressionException e) {
-      // should not occur
-      LOG.error("xpath exception while parsing fxcop config file", e);
+      log.debug("Xpath error un stylecop report", e);
     }
+
     return result;
   }
 

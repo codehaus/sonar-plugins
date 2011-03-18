@@ -1,5 +1,5 @@
 /*
- * Sonar C# Plugin :: FxCop
+ * Sonar C# Plugin :: StyleCop
  * Copyright (C) 2010 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,24 +18,47 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.fxcop.profiles.utils;
+/*
+ * Created on May 19, 2009
+ */
+package org.sonar.plugins.csharp.stylecop.profiles.utils;
 
 /**
- * Definition of a FXCop rule.
+ * A configuration rule for StyleCop.
  * 
- * @author Jose CHILLAN Feb 16, 2010
+ * @author Jose CHILLAN May 19, 2009
  */
-public class FxCopRule {
+public class StyleCopRule {
 
+  private String analyzerId;
+  private String category;
   private String name;
-  private boolean enabled;
-  private String fileName;
   private String priority;
+  private boolean enabled;
 
   /**
-   * Constructs a @link{FxCopRule}.
+   * Constructs a @link{StyleCopRule}.
    */
-  public FxCopRule() {
+  public StyleCopRule() {
+  }
+
+  /**
+   * Returns the category.
+   * 
+   * @return The category to return.
+   */
+  public String getCategory() {
+    return this.category;
+  }
+
+  /**
+   * Sets the category.
+   * 
+   * @param category
+   *          The category to set.
+   */
+  public void setCategory(String category) {
+    this.category = category;
   }
 
   /**
@@ -76,28 +99,23 @@ public class FxCopRule {
     this.enabled = enabled;
   }
 
-  @Override
-  public String toString() {
-    return "FxCopRule(name=" + name + ", enabled=" + enabled + ")";
+  /**
+   * Returns the analyzerId.
+   * 
+   * @return The analyzerId to return.
+   */
+  public String getAnalyzerId() {
+    return this.analyzerId;
   }
 
   /**
-   * Returns the fileName.
+   * Sets the analyzerId.
    * 
-   * @return The fileName to return.
+   * @param analyzerId
+   *          The analyzerId to set.
    */
-  public String getFileName() {
-    return this.fileName;
-  }
-
-  /**
-   * Sets the fileName.
-   * 
-   * @param fileName
-   *          The fileName to set.
-   */
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
+  public void setAnalyzerId(String analyzerId) {
+    this.analyzerId = analyzerId;
   }
 
   /**
@@ -118,4 +136,5 @@ public class FxCopRule {
   public void setPriority(String priority) {
     this.priority = priority;
   }
+
 }

@@ -1,5 +1,5 @@
 /*
- * Sonar C# Plugin :: FxCop
+ * Sonar C# Plugin :: StyleCop
  * Copyright (C) 2010 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.fxcop.profiles;
+package org.sonar.plugins.csharp.stylecop.profiles;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -34,43 +34,45 @@ import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.csharp.api.CSharpConstants;
-import org.sonar.plugins.csharp.fxcop.FxCopConstants;
-import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRule;
-import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRuleParser;
+import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
+import org.sonar.plugins.csharp.stylecop.profiles.utils.StyleCopRule;
+import org.sonar.plugins.csharp.stylecop.profiles.utils.StyleCopRuleParser;
 
 /**
- * Class that allows to import FxCop rule definition files into a Sonar Rule Profile
+ * Class that allows to import StyleCop rule definition files into a Sonar Rule Profile
  */
-public class FxCopProfileImporter extends ProfileImporter {
+public class StyleCopProfileImporter extends ProfileImporter {
 
   private final RuleFinder ruleFinder;
 
-  public FxCopProfileImporter(RuleFinder ruleFinder) {
-    super(FxCopConstants.REPOSITORY_KEY, FxCopConstants.PLUGIN_NAME);
+  public StyleCopProfileImporter(RuleFinder ruleFinder) {
+    super(StyleCopConstants.REPOSITORY_KEY, StyleCopConstants.PLUGIN_NAME);
     setSupportedLanguages(CSharpConstants.LANGUAGE_KEY);
     this.ruleFinder = ruleFinder;
   }
 
-  // TODO This is not enough, we should look at "RuleFile ... AllRulesEnabled=True" as well.
   @Override
   public RulesProfile importProfile(Reader reader, ValidationMessages messages) {
     RulesProfile profile = RulesProfile.create();
     profile.setLanguage(CSharpConstants.LANGUAGE_KEY);
 
     try {
-      List<FxCopRule> fxcopConfig = FxCopRuleParser.parse(IOUtils.toString(reader));
+      List<StyleCopRule> styleCopConfig = StyleCopRuleParser.parse(IOUtils.toString(reader));
 
-      for (FxCopRule fxCopRule : fxcopConfig) {
-        String ruleName = fxCopRule.getName();
-        Rule rule = ruleFinder.find(RuleQuery.create().withRepositoryKey(FxCopConstants.REPOSITORY_KEY).withKey(ruleName));
+      for (StyleCopRule styleCopRule : styleCopConfig) {
+        if (styleCopRule.isEnabled()) {
+          String ruleName = styleCopRule.getName();
+          Rule rule = ruleFinder.find(RuleQuery.create().withRepositoryKey(StyleCopConstants.REPOSITORY_KEY).withKey(ruleName));
 
-        if (rule != null) {
-          String rawPriority = fxCopRule.getPriority();
-          RulePriority rulePriority = RulePriority.MAJOR;
-          if (StringUtils.isNotEmpty(rawPriority)) {
-            rulePriority = RulePriority.valueOfString(rawPriority);
+          if (rule != null) {
+            String rawPriority = styleCopRule.getPriority();
+            RulePriority rulePriority = RulePriority.MINOR;
+            if (StringUtils.isNotEmpty(rawPriority)) {
+              rulePriority = RulePriority.valueOfString(rawPriority);
+            }
+            profile.activateRule(rule, rulePriority);
+
           }
-          profile.activateRule(rule, rulePriority);
         }
       }
     } catch (IOException e) {
