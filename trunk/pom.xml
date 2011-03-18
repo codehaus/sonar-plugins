@@ -70,6 +70,7 @@
         <module>csharp</module>
         <module>debug</module>
         <module>metrics-help</module>
+        <module>pam</module>
         <module>profiler</module>
         <module>testability-explorer</module>
         <module>webscanner</module>
