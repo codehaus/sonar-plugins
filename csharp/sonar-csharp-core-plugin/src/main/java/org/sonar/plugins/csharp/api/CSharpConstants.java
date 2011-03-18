@@ -33,7 +33,7 @@ public final class CSharpConstants {
 
   public static final String FILE_SUFFIXES_KEY = "sonar.csharp.file.suffixes";
   public static final String FILE_SUFFIXES_DEFVALUE = "cs";
-  
+
   public static final String CSHARP_WAY_PROFILE = "Sonar C# Way";
 
 }
