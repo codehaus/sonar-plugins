@@ -51,6 +51,9 @@ public class StyleCopProfileImporter extends ProfileImporter {
     this.ruleFinder = ruleFinder;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public RulesProfile importProfile(Reader reader, ValidationMessages messages) {
     RulesProfile profile = RulesProfile.create();

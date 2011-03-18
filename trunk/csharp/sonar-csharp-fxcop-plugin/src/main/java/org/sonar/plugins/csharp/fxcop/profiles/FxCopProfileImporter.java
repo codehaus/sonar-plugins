@@ -52,6 +52,9 @@ public class FxCopProfileImporter extends ProfileImporter {
   }
 
   // TODO This is not enough, we should look at "RuleFile ... AllRulesEnabled=True" as well.
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public RulesProfile importProfile(Reader reader, ValidationMessages messages) {
     RulesProfile profile = RulesProfile.create();
