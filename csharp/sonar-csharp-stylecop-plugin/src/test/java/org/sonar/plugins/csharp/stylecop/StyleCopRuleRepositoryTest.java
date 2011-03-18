@@ -1,5 +1,5 @@
 /*
- * Sonar C# Plugin :: Core
+ * Sonar C# Plugin :: StyleCop
  * Copyright (C) 2010 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,22 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.api;
+package org.sonar.plugins.csharp.stylecop;
 
-/**
- * Constants for the C# language.
- */
-public final class CSharpConstants {
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
-  private CSharpConstants() {
+import java.util.List;
+
+import org.junit.Test;
+import org.sonar.api.platform.ServerFileSystem;
+import org.sonar.api.rules.Rule;
+import org.sonar.api.rules.XMLRuleParser;
+
+public class StyleCopRuleRepositoryTest {
+
+  @Test
+  public void loadRepositoryFromXml() {
+    ServerFileSystem fileSystem = mock(ServerFileSystem.class);
+    StyleCopRuleRepository repository = new StyleCopRuleRepository(fileSystem, new XMLRuleParser());
+    List<Rule> rules = repository.createRules();
+    assertThat(rules.size(), is(144));
   }
-
-  public static final String LANGUAGE_KEY = "cs";
-  public static final String LANGUAGE_NAME = "C#";
-
-  public static final String FILE_SUFFIXES_KEY = "sonar.csharp.file.suffixes";
-  public static final String FILE_SUFFIXES_DEFVALUE = "cs";
-  
-  public static final String CSHARP_WAY_PROFILE = "Sonar C# Way";
-
 }
