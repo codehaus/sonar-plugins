@@ -1,5 +1,5 @@
 /*
- * Sonar C# Plugin :: FxCop
+ * Sonar C# Plugin :: StyleCop
  * Copyright (C) 2010 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.fxcop;
+package org.sonar.plugins.csharp.stylecop;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,17 +31,17 @@ import org.sonar.api.rules.XMLRuleParser;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 
 /**
- * Loads the FXCop rules configuration file.
+ * Loads the StyleCop rules configuration file.
  */
-public class FxCopRuleRepository extends RuleRepository {
+public class StyleCopRuleRepository extends RuleRepository {
 
   // for user extensions
   private ServerFileSystem fileSystem;
   private XMLRuleParser xmlRuleParser;
 
-  public FxCopRuleRepository(ServerFileSystem fileSystem, XMLRuleParser xmlRuleParser) {
-    super(FxCopConstants.REPOSITORY_KEY, CSharpConstants.LANGUAGE_KEY);
-    setName(FxCopConstants.REPOSITORY_NAME);
+  public StyleCopRuleRepository(ServerFileSystem fileSystem, XMLRuleParser xmlRuleParser) {
+    super(StyleCopConstants.REPOSITORY_KEY, CSharpConstants.LANGUAGE_KEY);
+    setName(StyleCopConstants.REPOSITORY_NAME);
     this.fileSystem = fileSystem;
     this.xmlRuleParser = xmlRuleParser;
   }
@@ -49,8 +49,8 @@ public class FxCopRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    rules.addAll(xmlRuleParser.parse(getClass().getResourceAsStream("/org/sonar/plugins/csharp/fxcop/rules/rules.xml")));
-    for (File userExtensionXml : fileSystem.getExtensions(FxCopConstants.REPOSITORY_KEY, "xml")) {
+    rules.addAll(xmlRuleParser.parse(getClass().getResourceAsStream("/org/sonar/plugins/csharp/stylecop/rules/rules.xml")));
+    for (File userExtensionXml : fileSystem.getExtensions(StyleCopConstants.REPOSITORY_KEY, "xml")) {
       rules.addAll(xmlRuleParser.parse(userExtensionXml));
     }
     return rules;
