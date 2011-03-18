@@ -42,6 +42,9 @@ import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRule;
 
+/**
+ * Class that allows to export a Sonar profile into a FxCop rule definition file.
+ */
 public class FxCopProfileExporter extends ProfileExporter {
 
   private static final String FXCOP_PROJECT_FILE_HEADER = "fxcop-project-file-header.txt";
@@ -53,6 +56,10 @@ public class FxCopProfileExporter extends ProfileExporter {
     setMimeType("application/xml");
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public void exportProfile(RulesProfile profile, Writer writer) {
     try {
       printIntoWriter(writer, FXCOP_PROJECT_FILE_HEADER);
@@ -99,13 +106,13 @@ public class FxCopProfileExporter extends ProfileExporter {
     List<FxCopRule> result = new ArrayList<FxCopRule>();
 
     for (ActiveRule activeRule : activeRulesByPlugin) {
-      // Extracts the rule's date
+      // Extracts the rule's information
       Rule rule = activeRule.getRule();
       String configKey = rule.getConfigKey();
       String fileName = StringUtils.substringAfter(configKey, "@");
       String name = StringUtils.substringBefore(configKey, "@");
 
-      // Creates an populates the rule
+      // Creates the FxCop rule
       FxCopRule fxCopRule = new FxCopRule();
       fxCopRule.setEnabled(true);
       fxCopRule.setFileName(fileName);
