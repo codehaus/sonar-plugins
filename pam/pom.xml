@@ -54,7 +54,7 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>1.1.2</sonar.version>
+    <sonar.version>1.12</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.pam.PamAuthPlugin</sonar.pluginClass>
     <sonar.pluginName>PAM</sonar.pluginName>
     <license.owner>Marco Tizzoni</license.owner>
