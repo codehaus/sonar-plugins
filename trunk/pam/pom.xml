@@ -1,121 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.codehaus.sonar-plugins</groupId>
-        <artifactId>parent</artifactId>
-        <version>8</version>
-        <relativePath>../parent</relativePath>
-    </parent>
-  
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <artifactId>sonar-pam-plugin</artifactId>
-    <version>0.1.0</version>
-    <packaging>sonar-plugin</packaging>
-  
-    <name>Sonar PAM plugin</name>
-    <description>Allow Sonar to use PAM authentication on *nix box.</description>
-    <url>http://docs.codehaus.org/display/SONAR/PAM+Plugin</url>
-    <inceptionYear>2011</inceptionYear>
+    <artifactId>parent</artifactId>
+    <version>8</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-  <!-- optional -->
-    <organization>
-        <name>Freaknet</name>
-        <url>http://www.freaknet.org</url>
-    </organization>
+  <groupId>org.codehaus.sonar-plugins</groupId>
+  <artifactId>sonar-pam-plugin</artifactId>
+  <version>0.1.1</version>
+  <packaging>sonar-plugin</packaging>
 
-    <licenses>
-        <license>
-            <name>GNU LGPL 3</name>
-            <url>http://www.gnu.org/licenses/lgpl.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  <name>Sonar PAM plugin</name>
+  <description>Allow Sonar to use PAM authentication on *nix box.</description>
+  <url>http://docs.codehaus.org/display/SONAR/PAM+Plugin</url>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>Freaknet</name>
+    <url>http://www.freaknet.org</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <developers>
-        <developer>
-            <id>mtizzoni</id>
-            <name>Marco Tizzoni</name>
-            <email>marco.tizzoni@gmail.com</email>
-            <timezone>+1</timezone>
-        </developer>
-    </developers>
+  <developers>
+    <developer>
+      <id>mtizzoni</id>
+      <name>Marco Tizzoni</name>
+      <email>marco.tizzoni@gmail.com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
 
-    <scm>
-        <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/pam</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/pam</developerConnection>
-        <url>http://svn.sonar-plugins.codehaus.org</url>
-    </scm>
-  
-    <issueManagement>
-        <system>JIRA</system>
-        <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14697</url>
-    </issueManagement>
- 
-    <properties>
-        <sonar.version>2.0</sonar.version>
-        <sonar.pluginClass>org.freaknet.sonar.plugins.pam.PamAuthPlugin</sonar.pluginClass>
-        <sonar.runtimeVersion>2.3</sonar.runtimeVersion>
-        <sonar.pluginName>PAM</sonar.pluginName>
-    </properties>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/pam</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/pam</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14697</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-PAM</url>
+  </ciManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-plugin-api</artifactId>
-            <version>2.4</version>
-        </dependency>
-    
-        <dependency>
-            <groupId>net.sf.jpam</groupId>
-            <artifactId>jpam</artifactId>
-            <version>1.1</version>
-        </dependency>
-    
-        <dependency>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-testing-harness</artifactId>
-            <version>2.4</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+  <properties>
+    <sonar.version>1.1.2</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.pam.PamAuthPlugin</sonar.pluginClass>
+    <sonar.pluginName>PAM</sonar.pluginName>
+    <license.owner>Marco Tizzoni</license.owner>
+  </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.sonar</groupId>
-                <artifactId>sonar-packaging-maven-plugin</artifactId>
-                <version>1.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <pluginClass>${sonar.pluginClass}</pluginClass>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>1.8.0</version>
-                <configuration>
-                    <header>src/etc/header.txt</header>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>2.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.jpam</groupId>
+      <artifactId>jpam</artifactId>
+      <version>1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>2.4</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
 </project>
