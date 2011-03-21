@@ -27,6 +27,10 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.plugins.csharp.stylecop.profiles.SonarWayProfile;
+import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
+import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileImporter;
+import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 
 /**
  * Main class of the StyleCop plugin.
@@ -63,17 +67,16 @@ public class StyleCopPlugin implements Plugin {
    */
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    // list.add(StyleCopSensor.class);
+    list.add(StyleCopSensor.class);
     //
     // // Rules and profiles
     list.add(StyleCopRuleRepository.class);
-    // list.add(StyleCopProfileImporter.class);
-    // list.add(StyleCopProfileExporter.class);
-    // list.add(SonarWayProfile.class);
-    // list.add(SonarWay2Profile.class);
+    list.add(StyleCopProfileImporter.class);
+    list.add(StyleCopProfileExporter.class);
+    list.add(SonarWayProfile.class);
     //
     // // Running StyleCop
-    // list.add(StyleCopRunner.class);
+    list.add(StyleCopRunner.class);
     return list;
   }
 
