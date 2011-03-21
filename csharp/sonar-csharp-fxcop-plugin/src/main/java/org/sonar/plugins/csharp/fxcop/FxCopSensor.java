@@ -36,7 +36,6 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
-import org.sonar.plugins.csharp.fxcop.results.FxCopResultParser;
 import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
 
 

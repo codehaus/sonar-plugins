@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.fxcop.results;
+package org.sonar.plugins.csharp.fxcop;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +46,6 @@ import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
-import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 
 
 /**
