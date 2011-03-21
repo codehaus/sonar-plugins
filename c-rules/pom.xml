@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -11,11 +10,11 @@
 	</parent>
 
 	<artifactId>sonar-c-rules-plugin</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.3</version>
 	<packaging>sonar-plugin</packaging>
 
 	<name>Sonar C-Rules Plugin</name>
-	<description></description>
+	<description />
 	<url>http://docs.codehaus.org/display/SONAR/C-rules+plugin</url>
 	<inceptionYear>2010</inceptionYear>
 	<organization>
@@ -31,9 +30,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/c-rules</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/c-rules</developerConnection>
-		<url>http://svn.sonar-plugins.codehaus.org</url>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.3</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.3</developerConnection>
+		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.3</url>
 	</scm>
 
 	<properties>
