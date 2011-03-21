@@ -1,5 +1,0 @@
-Steps to install CodeReview Plugin
-
-1. Copy sonar-plugin-codereview-1.10.1.jar to <SONAR-HOME>/extensions/plugins directorys
-2. Copy blankCommentline.png and comment.png to XXXX images directory
-
