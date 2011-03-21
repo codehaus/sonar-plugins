@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>sonar-c-rules-plugin</artifactId>
-	<version>0.3</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>sonar-plugin</packaging>
 
 	<name>Sonar C-Rules Plugin</name>
@@ -30,9 +30,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.3</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.3</developerConnection>
-		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.3</url>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/c-rules</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/c-rules</developerConnection>
+		<url>http://svn.sonar-plugins.codehaus.org</url>
 	</scm>
 
 	<properties>
