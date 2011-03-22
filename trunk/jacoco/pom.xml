@@ -50,7 +50,7 @@
   </ciManagement>
 
   <properties>
-    <jacoco.version>0.5.0.20110119215959</jacoco.version>
+    <jacoco.version>0.5.1.20110321224001</jacoco.version>
 
     <sonar.version>2.7-SNAPSHOT</sonar.version>
     <sonar.pluginName>JaCoCo</sonar.pluginName>
