@@ -38,7 +38,7 @@ public class CCheckPlugin implements Plugin {
   }
 
   public String getDescription() {
-    return "C checks for C projects";
+    return "Provide a C rule engine. This C-Rules plugin requires the C plugin to be installed in order to work.";
   }
 
   public List getExtensions() {
