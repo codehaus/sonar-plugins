@@ -9,7 +9,7 @@
 
   <artifactId>sonar-security-rules-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.3.1</version>
 
   <name>Security Rules Plugin</name>
   <description>Enables to monitor closely a defined set of security rules.</description>
@@ -40,9 +40,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/security-rules</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/security-rules</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-security-rules-plugin-0.3.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-security-rules-plugin-0.3.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-security-rules-plugin-0.3.1</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
