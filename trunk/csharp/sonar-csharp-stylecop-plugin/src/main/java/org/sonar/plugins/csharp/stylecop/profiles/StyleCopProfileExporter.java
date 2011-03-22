@@ -34,10 +34,13 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
+import org.sonar.api.rules.XMLRuleParser;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 import org.sonar.plugins.csharp.stylecop.profiles.utils.StyleCopRule;
+
+import com.google.common.collect.Maps;
 
 /**
  * Class that allows to export a Sonar profile into a StyleCop rule definition file.
@@ -92,26 +95,36 @@ public class StyleCopProfileExporter extends ProfileExporter {
   private List<StyleCopRule> transformIntoStyleCopRules(List<ActiveRule> activeRulesByPlugin) {
     List<StyleCopRule> result = new ArrayList<StyleCopRule>();
 
+    Map<String, ActiveRule> activeRuleMap = Maps.newHashMap();
     for (ActiveRule activeRule : activeRulesByPlugin) {
+      activeRuleMap.put(activeRule.getRule().getKey(), activeRule);
+    }
+
+    List<Rule> initialRules = new XMLRuleParser().parse(getClass()
+        .getResourceAsStream("/org/sonar/plugins/csharp/stylecop/rules/rules.xml"));
+    for (Rule rule : initialRules) {
       // Extracts the rule's information
-      Rule rule = activeRule.getRule();
       String configKey = rule.getConfigKey();
-      String analyzerName = StringUtils.substringAfter(configKey, "#");
-      String name = StringUtils.substringBefore(configKey, "#");
+      String analyzerName = StringUtils.substringBefore(configKey, "#");
+      String name = StringUtils.substringAfter(configKey, "#");
 
       // Creates the StyleCop rule
       StyleCopRule fxCopRule = new StyleCopRule();
-      fxCopRule.setEnabled(true);
       fxCopRule.setAnalyzerId(analyzerName);
       fxCopRule.setName(name);
 
-      RulePriority priority = activeRule.getSeverity();
-      if (priority != null) {
-        fxCopRule.setPriority(priority.name().toLowerCase());
+      ActiveRule activeRule = activeRuleMap.get(rule.getKey());
+      if (activeRule != null) {
+        fxCopRule.setEnabled(true);
+        RulePriority priority = activeRule.getSeverity();
+        if (priority != null) {
+          fxCopRule.setPriority(priority.name().toLowerCase());
+        }
       }
 
       result.add(fxCopRule);
     }
+
     return result;
   }
 
@@ -148,7 +161,9 @@ public class StyleCopProfileExporter extends ProfileExporter {
     StringEscapeUtils.escapeXml(writer, fxCopRule.getPriority());
     writer.append("\">\n");
     writer.append("                    <RuleSettings>\n");
-    writer.append("                        <BooleanProperty Name=\"Enabled\">True</BooleanProperty>\n");
+    writer.append("                        <BooleanProperty Name=\"Enabled\">");
+    writer.append(fxCopRule.isEnabled() ? "True" : "False");
+    writer.append("</BooleanProperty>\n");
     writer.append("                    </RuleSettings>\n");
     writer.append("                </Rule>\n");
   }
