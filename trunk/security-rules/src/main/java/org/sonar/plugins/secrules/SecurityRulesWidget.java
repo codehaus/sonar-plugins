@@ -37,7 +37,7 @@ public final class SecurityRulesWidget extends AbstractRubyTemplate implements R
 
   @Override
   protected String getTemplatePath() {
-    return "/Users/SimonBrandhof/projects/codehaus/sonar-plugins/trunk/security-rules/src/main/resources/org/sonar/plugins/secrules/widget.html.erb";
+    return "/org/sonar/plugins/secrules/widget.html.erb";
   }
 
 }
