@@ -43,7 +43,6 @@ import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 public class StyleCopSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopSensor.class);
-  private static final String STYLECOP_RULES_FILE = "sonar.StyleCop";
 
   private ProjectFileSystem fileSystem;
   private RuleFinder ruleFinder;
@@ -91,7 +90,7 @@ public class StyleCopSensor implements Sensor {
   }
 
   private File generateConfigurationFile() {
-    File configFile = new File(fileSystem.getSonarWorkingDirectory(), STYLECOP_RULES_FILE);
+    File configFile = new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_RULES_FILE);
     FileWriter writer = null;
     try {
       writer = new FileWriter(configFile);

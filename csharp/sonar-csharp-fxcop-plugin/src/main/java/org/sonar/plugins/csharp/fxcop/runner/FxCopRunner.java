@@ -56,7 +56,7 @@ public class FxCopRunner implements BatchExtension {
    *          the FxCop config file to use
    */
   public void execute(File fxCopConfigFile) {
-    LOG.debug("Executing FxCop program");
+    LOG.debug("Executing FxCop program...");
     command.setFxCopConfigFile(fxCopConfigFile);
     new CommandExecutor().execute(command.toArray(), command.getTimeoutMinutes() * 60);
   }

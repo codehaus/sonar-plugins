@@ -95,7 +95,6 @@ public class FxCopCommand {
    * @return the array of strings that represent the command to launch.
    */
   public String[] toArray() {
-    // assemblyToScanFiles = getAssembliesToScan();
     assemblyToScanFiles = getAsListOfFiles(assembliesToScan);
     assemblyDependencyDirectoriesFiles = getAsListOfFiles(assemblyDependencyDirectories);
     validate();

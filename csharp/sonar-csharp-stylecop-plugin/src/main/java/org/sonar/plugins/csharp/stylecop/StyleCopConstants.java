@@ -34,6 +34,7 @@ public final class StyleCopConstants {
   public static final String REPOSITORY_KEY = PLUGIN_KEY;
   public static final String REPOSITORY_NAME = PLUGIN_NAME;
 
+  public static final String STYLECOP_RULES_FILE = "sonar.StyleCop";
   public static final String STYLECOP_REPORT_XML = "stylecop-report.xml";
 
   // ----------- Plugin Configuration Properties ----------- //
