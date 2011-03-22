@@ -22,9 +22,9 @@ package org.sonar.c.checks;
 
 public final class CChecksConstants {
 
-  public final static String PLUGIN_KEY = "ccheck";
+  public final static String PLUGIN_KEY = "crules";
 
-  public final static String PLUGIN_NAME = "CCheck";
+  public final static String PLUGIN_NAME = "C Rules";
 
   public final static String SONAR_C_WAY_PROFILE_KEY = "Sonar C Way";
 }
