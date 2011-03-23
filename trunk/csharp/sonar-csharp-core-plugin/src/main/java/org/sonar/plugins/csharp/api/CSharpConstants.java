@@ -35,5 +35,13 @@ public final class CSharpConstants {
   public static final String FILE_SUFFIXES_DEFVALUE = "cs";
 
   public static final String CSHARP_WAY_PROFILE = "Sonar C# Way";
+  
+  // ----------- Plugin Configuration Properties ----------- //
+
+  public static final String DOTNET_SDK_DIR_KEY = "sonar.dotnet.sdk.directory";
+  public static final String DOTNET_SDK_DIR_DEFVALUE = "C:/WINDOWS/Microsoft.NET/Framework/v4.0.30319";
+
+  public static final String SOLUTION_FILE_KEY = "sonar.dotnet.visualstudio.solution.file";
+  public static final String SOLUTION_FILE_DEFVALUE = "";
 
 }

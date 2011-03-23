@@ -25,11 +25,23 @@ import java.util.List;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 import org.sonar.plugins.csharp.api.CSharp;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 
 /**
  * C# Core plugin class.
  */
+@Properties({
+    @Property(key = CSharpConstants.DOTNET_SDK_DIR_KEY, defaultValue = CSharpConstants.DOTNET_SDK_DIR_DEFVALUE,
+        name = ".NET SDK directory", description = "Absolute path of the .NET SDK directory.", global = true, project = false),
+    @Property(
+        key = CSharpConstants.SOLUTION_FILE_KEY,
+        defaultValue = CSharpConstants.SOLUTION_FILE_DEFVALUE,
+        name = "Solution to analyse",
+        description = "Relative path to the \".sln\" file that represents the solution to analyse. If none provided, a \".sln\" file will be searched at the root of the project.",
+        global = false, project = true) })
 public class CSharpCorePlugin implements Plugin {
 
   public static final String PLUGIN_KEY = "csharp-core";
@@ -62,6 +74,7 @@ public class CSharpCorePlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
     extensions.add(CSharp.class);
+    extensions.add(MicrosoftWindowsEnvironmentSensor.class);
     extensions.add(CSharpSourceImporter.class);
     return extensions;
   }
