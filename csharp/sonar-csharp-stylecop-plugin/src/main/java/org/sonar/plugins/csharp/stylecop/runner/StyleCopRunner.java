@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 
 /**
  * Class that runs the StyleCop program.
@@ -35,7 +36,9 @@ public class StyleCopRunner implements BatchExtension {
 
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopRunner.class);
 
-//  private StyleCopCommand command;
+  private ProjectFileSystem projectFileSystem;
+  private StyleCopCommand command;
+  private MsBuildFileGenerator msBuildFileGenerator;
 
   /**
    * Constructs a {@link StyleCopRunner}.
@@ -46,19 +49,28 @@ public class StyleCopRunner implements BatchExtension {
    *          the file system of the project
    */
   public StyleCopRunner(Configuration configuration, ProjectFileSystem projectFileSystem) {
-//    this.command = new StyleCopCommand(configuration, projectFileSystem);
+    this.projectFileSystem = projectFileSystem;
+    this.command = new StyleCopCommand(projectFileSystem);
+    this.msBuildFileGenerator = new MsBuildFileGenerator(configuration);
   }
 
   /**
    * Launches the StyleCop program.
    * 
-   * @param fxCopConfigFile
+   * @param styleCopConfigFile
    *          the StyleCop config file to use
    */
-  public void execute(File fxCopConfigFile) {
-    LOG.debug("Executing StyleCop program");
-    // command.setStyleCopConfigFile(fxCopConfigFile);
-    // new CommandExecutor().execute(command.toArray(), command.getTimeoutMinutes() * 60);
+  public void execute(File styleCopConfigFile) {
+    LOG.debug("Generating MSBuild file...");
+    msBuildFileGenerator.setVisualStudioSolution(MicrosoftWindowsEnvironment.getCurrentSolution());
+    File msBuildFile = msBuildFileGenerator.generateFile(projectFileSystem.getSonarWorkingDirectory());
+    LOG.debug("  -> Success: {}", msBuildFile.getAbsolutePath());
+
+    LOG.debug("Executing StyleCop program...");
+    command.setStyleCopConfigFile(styleCopConfigFile);
+    command.setMsBuildFile(msBuildFile);
+    command.setDotnetSdkDirectory(MicrosoftWindowsEnvironment.getDotnetSdkDirectory());
+    new CommandExecutor().execute(command.toArray(), 10 * 60);
   }
 
 }
