@@ -61,7 +61,10 @@ public class CSharpResourcesBridge {
   }
 
   /**
-   * Method used to populate the map with the logical resources found in the Squid file and link them to the Sonar file.
+   * <b>Do not use this method.</b><br/>
+   * <br/>
+   * Method used to populate the map with the logical resources found in the Squid file and link them to the Sonar file. <br/>
+   * This method must be called only by plugins that have the ability to populate this bridge (e.g. C# Squid Plugin).
    * 
    * @param squidFile
    *          the Squid file
