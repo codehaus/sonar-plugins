@@ -29,6 +29,8 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.csharp.api.CSharp;
 import org.sonar.plugins.csharp.api.CSharpConstants;
+import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 
 /**
  * C# Core plugin class.
@@ -74,8 +76,15 @@ public class CSharpCorePlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
     extensions.add(CSharp.class);
+
+    // Utility class shared amongst all the C# plugin ecosystem through API
+    extensions.add(CSharpResourcesBridge.class);
+    extensions.add(MicrosoftWindowsEnvironment.class);
+
+    // Sensors
     extensions.add(MicrosoftWindowsEnvironmentSensor.class);
     extensions.add(CSharpSourceImporter.class);
+
     return extensions;
   }
 }

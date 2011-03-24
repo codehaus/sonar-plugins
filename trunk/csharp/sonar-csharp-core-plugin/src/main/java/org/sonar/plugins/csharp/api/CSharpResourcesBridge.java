@@ -23,6 +23,7 @@ package org.sonar.plugins.csharp.api;
 import java.util.Map;
 import java.util.Set;
 
+import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.File;
 import org.sonar.api.resources.Resource;
 import org.sonar.squid.api.SourceCode;
@@ -36,43 +37,44 @@ import com.google.common.collect.Maps;
  * find to which physical file a given logical item belongs to, so that it is possible to save measure or violations to the correct Sonar
  * resource.
  */
-public class CSharpResourcesBridge {
+public class CSharpResourcesBridge implements BatchExtension {
 
-  private static CSharpResourcesBridge instance;
+  private Map<String, Resource<?>> logicalToPhysicalResourcesMap = Maps.newHashMap();
 
-  private Map<String, Resource<?>> logicalToPhysicalResourcesMap;
+  private boolean canIndexFiles = true;
 
-  private CSharpResourcesBridge() {
-    logicalToPhysicalResourcesMap = Maps.newHashMap();
+  public CSharpResourcesBridge() {
   }
 
   /**
-   * Returns the only instance of the {@link CSharpResourcesBridge} object.
-   * 
-   * @return the instance
+   * After invoking this method, the {@link CSharpResourcesBridge} class won't be able to index files anymore: if
+   * {@link #indexFile(SourceFile, File)} is called, a {@link IllegalStateException} will be thrown.
    */
-  public static CSharpResourcesBridge getInstance() {
-    if (instance == null) {
-      synchronized (CSharpResourcesBridge.class) {
-        instance = new CSharpResourcesBridge();
-      }
-    }
-    return instance;
+  public void lock() {
+    this.canIndexFiles = false;
   }
 
   /**
-   * <b>Do not use this method.</b><br/>
-   * <br/>
    * Method used to populate the map with the logical resources found in the Squid file and link them to the Sonar file. <br/>
-   * This method must be called only by plugins that have the ability to populate this bridge (e.g. C# Squid Plugin).
+   * This method must be called only by plugins that have the ability to populate this bridge (e.g. C# Squid Plugin).<br/>
+   * <br/>
+   * <b>Note</b>: If the CSharpResourcesBridge has been locked (see {@link #lock()}), an {@link IllegalStateException} will be
+   * thrown if this method is called.
    * 
    * @param squidFile
    *          the Squid file
    * @param sonarFile
    *          the Sonar file
+   * @throws IllegalStateException
+   *           if the CSharpResourcesBridge is locked and cannot index more files
    */
   public void indexFile(SourceFile squidFile, File sonarFile) {
-    indexChildren(squidFile.getChildren(), sonarFile);
+    if (canIndexFiles) {
+      indexChildren(squidFile.getChildren(), sonarFile);
+    } else {
+      throw new IllegalStateException(
+          "The CSharpResourcesBridge has been locked to prevent future modifications. It is impossible to index new files.");
+    }
   }
 
   private void indexChildren(Set<SourceCode> sourceCodes, File sonarFile) {

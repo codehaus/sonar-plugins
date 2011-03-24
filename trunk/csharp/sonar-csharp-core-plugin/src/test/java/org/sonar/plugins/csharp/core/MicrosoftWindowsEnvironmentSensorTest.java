@@ -44,15 +44,16 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 public class MicrosoftWindowsEnvironmentSensorTest {
 
   private static File fakeSdkDir;
+  private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private MicrosoftWindowsEnvironmentSensor sensor;
   private Configuration conf;
   private ProjectFileSystem fileSystem;
 
   @BeforeClass
   public static void initResources() {
-    System.setProperty("MicrosoftWindowsEnvironment.allowOverrideAttributes", "true");
     fakeSdkDir = new File("Sonar/SDK");
     fakeSdkDir.mkdirs();
+    microsoftWindowsEnvironment = new MicrosoftWindowsEnvironment(true);
   }
 
   @AfterClass
@@ -66,7 +67,7 @@ public class MicrosoftWindowsEnvironmentSensorTest {
     conf.addProperty(CSharpConstants.DOTNET_SDK_DIR_KEY, fakeSdkDir.getAbsolutePath());
     fileSystem = mock(ProjectFileSystem.class);
     when(fileSystem.getBasedir()).thenReturn(FileUtils.toFile(getClass().getResource("/solution/Example")));
-    sensor = new MicrosoftWindowsEnvironmentSensor(conf, fileSystem);
+    sensor = new MicrosoftWindowsEnvironmentSensor(conf, fileSystem, microsoftWindowsEnvironment);
   }
 
   @Test(expected = SonarException.class)
@@ -74,7 +75,7 @@ public class MicrosoftWindowsEnvironmentSensorTest {
     conf = new BaseConfiguration();
     conf.addProperty(CSharpConstants.DOTNET_SDK_DIR_KEY, "foo");
     fileSystem = mock(ProjectFileSystem.class);
-    sensor = new MicrosoftWindowsEnvironmentSensor(conf, fileSystem);
+    sensor = new MicrosoftWindowsEnvironmentSensor(conf, fileSystem, microsoftWindowsEnvironment);
     sensor.analyse(null, null);
   }
 
@@ -82,8 +83,8 @@ public class MicrosoftWindowsEnvironmentSensorTest {
   public void testCorrectlyConfiguredProject() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "Example.sln");
     sensor.analyse(null, null);
-    assertThat(MicrosoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), is(fakeSdkDir.getAbsolutePath()));
-    VisualStudioSolution solution = MicrosoftWindowsEnvironment.getCurrentSolution();
+    assertThat(microsoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), is(fakeSdkDir.getAbsolutePath()));
+    VisualStudioSolution solution = microsoftWindowsEnvironment.getCurrentSolution();
     assertNotNull(solution);
     assertThat(solution.getProjects().size(), is(3));
   }
@@ -98,8 +99,8 @@ public class MicrosoftWindowsEnvironmentSensorTest {
   public void testNoSpecifiedSlnFileButOneFound() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "");
     sensor.analyse(null, null);
-    assertThat(MicrosoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), is(fakeSdkDir.getAbsolutePath()));
-    VisualStudioSolution solution = MicrosoftWindowsEnvironment.getCurrentSolution();
+    assertThat(microsoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), is(fakeSdkDir.getAbsolutePath()));
+    VisualStudioSolution solution = microsoftWindowsEnvironment.getCurrentSolution();
     assertNotNull(solution);
     assertThat(solution.getProjects().size(), is(3));
   }

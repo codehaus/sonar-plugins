@@ -38,6 +38,7 @@ public class StyleCopRunner implements BatchExtension {
 
   private ProjectFileSystem projectFileSystem;
   private StyleCopCommand command;
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private MsBuildFileGenerator msBuildFileGenerator;
 
   /**
@@ -48,8 +49,10 @@ public class StyleCopRunner implements BatchExtension {
    * @param fileSystem
    *          the file system of the project
    */
-  public StyleCopRunner(Configuration configuration, ProjectFileSystem projectFileSystem) {
+  public StyleCopRunner(Configuration configuration, ProjectFileSystem projectFileSystem,
+      MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.projectFileSystem = projectFileSystem;
+    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.command = new StyleCopCommand(projectFileSystem);
     this.msBuildFileGenerator = new MsBuildFileGenerator(configuration);
   }
@@ -62,14 +65,14 @@ public class StyleCopRunner implements BatchExtension {
    */
   public void execute(File styleCopConfigFile) {
     LOG.debug("Generating MSBuild file...");
-    msBuildFileGenerator.setVisualStudioSolution(MicrosoftWindowsEnvironment.getCurrentSolution());
+    msBuildFileGenerator.setVisualStudioSolution(microsoftWindowsEnvironment.getCurrentSolution());
     File msBuildFile = msBuildFileGenerator.generateFile(projectFileSystem.getSonarWorkingDirectory());
     LOG.debug("  -> Success: {}", msBuildFile.getAbsolutePath());
 
     LOG.debug("Executing StyleCop program...");
     command.setStyleCopConfigFile(styleCopConfigFile);
     command.setMsBuildFile(msBuildFile);
-    command.setDotnetSdkDirectory(MicrosoftWindowsEnvironment.getDotnetSdkDirectory());
+    command.setDotnetSdkDirectory(microsoftWindowsEnvironment.getDotnetSdkDirectory());
     new CommandExecutor().execute(command.toArray(), 10 * 60);
   }
 

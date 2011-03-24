@@ -22,6 +22,7 @@ package org.sonar.plugins.csharp.api;
 
 import java.io.File;
 
+import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
@@ -32,26 +33,27 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
  * <li>the current Visual Studio solution that is being analyzed.</li>
  * </ul>
  */
-public final class MicrosoftWindowsEnvironment {
+public final class MicrosoftWindowsEnvironment implements BatchExtension {
 
   // primarily used to allow unit tests to work
-  private static boolean allowOverrideAttributes;
-  private static VisualStudioSolution currentSolution;
-  private static File dotnetSdkDirectory;
+  private boolean allowOverrideAttributes;
+  private VisualStudioSolution currentSolution;
+  private File dotnetSdkDirectory;
 
-  static {
-    if ("true".equalsIgnoreCase(System.getProperty("MicrosoftWindowsEnvironment.allowOverrideAttributes"))) {
+  public MicrosoftWindowsEnvironment() {
+    if ("true".equalsIgnoreCase(System.getProperty("this.allowOverrideAttributes"))) {
       allowOverrideAttributes = true;
     }
   }
 
-  private MicrosoftWindowsEnvironment() {
+  public MicrosoftWindowsEnvironment(boolean allowOverrideAttributes) {
+    this.allowOverrideAttributes = allowOverrideAttributes;
   }
 
   /*
    * Just to make sure that nobody will override the attributes once they have been set by the C# Core plugin
    */
-  private static void checkIfNotNull(Object attribute) {
+  private void checkIfNotNull(Object attribute) {
     if ( !allowOverrideAttributes && attribute != null) {
       throw new SonarException("Cannot override attributes that have already been assigned on MicrosoftWindowsEnvironment class.");
     }
@@ -63,9 +65,9 @@ public final class MicrosoftWindowsEnvironment {
    * @param currentSolution
    *          the currentSolution to set
    */
-  public static void setCurrentSolution(VisualStudioSolution currentSolution) {
-    checkIfNotNull(MicrosoftWindowsEnvironment.currentSolution);
-    MicrosoftWindowsEnvironment.currentSolution = currentSolution;
+  public void setCurrentSolution(VisualStudioSolution currentSolution) {
+    checkIfNotNull(this.currentSolution);
+    this.currentSolution = currentSolution;
   }
 
   /**
@@ -73,7 +75,7 @@ public final class MicrosoftWindowsEnvironment {
    * 
    * @return the current Visual Studio solution
    */
-  public static VisualStudioSolution getCurrentSolution() {
+  public VisualStudioSolution getCurrentSolution() {
     return currentSolution;
   }
 
@@ -83,9 +85,9 @@ public final class MicrosoftWindowsEnvironment {
    * @param dotnetSdkDirectory
    *          the dotnetSdkDirectory to set
    */
-  public static void setDotnetSdkDirectory(File dotnetSdkDirectory) {
-    checkIfNotNull(MicrosoftWindowsEnvironment.dotnetSdkDirectory);
-    MicrosoftWindowsEnvironment.dotnetSdkDirectory = dotnetSdkDirectory;
+  public void setDotnetSdkDirectory(File dotnetSdkDirectory) {
+    checkIfNotNull(this.dotnetSdkDirectory);
+    this.dotnetSdkDirectory = dotnetSdkDirectory;
   }
 
   /**
@@ -93,7 +95,7 @@ public final class MicrosoftWindowsEnvironment {
    * 
    * @return the dotnetSdkDirectory
    */
-  public static File getDotnetSdkDirectory() {
+  public File getDotnetSdkDirectory() {
     return dotnetSdkDirectory;
   }
 

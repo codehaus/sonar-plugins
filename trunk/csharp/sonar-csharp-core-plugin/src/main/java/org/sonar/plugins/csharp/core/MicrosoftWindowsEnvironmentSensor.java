@@ -51,6 +51,7 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
 
   private ProjectFileSystem projectFileSystem;
   private Configuration configuration;
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
   /**
    * Constructs a {@link MicrosoftWindowsEnvironmentSensor}.
@@ -58,9 +59,11 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
    * @param configuration
    * @param fileSystem
    */
-  public MicrosoftWindowsEnvironmentSensor(Configuration configuration, ProjectFileSystem projectFileSystem) {
+  public MicrosoftWindowsEnvironmentSensor(Configuration configuration, ProjectFileSystem projectFileSystem,
+      MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.configuration = configuration;
     this.projectFileSystem = projectFileSystem;
+    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
   }
 
   /**
@@ -87,7 +90,7 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
       throw new SonarException("The following .NET SDK directory does not exist, please check yoru plugin configuration: "
           + dotnetSdkDirectory.getPath());
     } else {
-      MicrosoftWindowsEnvironment.setDotnetSdkDirectory(dotnetSdkDirectory);
+      microsoftWindowsEnvironment.setDotnetSdkDirectory(dotnetSdkDirectory);
     }
   }
 
@@ -100,7 +103,7 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
 
     try {
       VisualStudioSolution solution = ModelFactory.getSolution(slnFile);
-      MicrosoftWindowsEnvironment.setCurrentSolution(solution);
+      microsoftWindowsEnvironment.setCurrentSolution(solution);
     } catch (IOException e) {
       throw new SonarException("Error occured while reading Visual Studio files.", e);
     }

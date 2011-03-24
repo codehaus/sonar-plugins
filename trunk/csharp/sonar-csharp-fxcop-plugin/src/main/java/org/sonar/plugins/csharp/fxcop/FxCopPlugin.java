@@ -89,6 +89,8 @@ public class FxCopPlugin implements Plugin {
 
     // Running FxCop
     list.add(FxCopRunner.class);
+    list.add(FxCopResultParser.class);
+
     return list;
   }
 
