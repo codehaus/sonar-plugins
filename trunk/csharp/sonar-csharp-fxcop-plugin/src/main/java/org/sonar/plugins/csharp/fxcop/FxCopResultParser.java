@@ -124,7 +124,7 @@ public class FxCopResultParser {
     while (namespacesCursor.getNext() != null) {
       SMInputCursor messagesCursor = namespacesCursor.descendantElementCursor(MESSAGE);
       while (messagesCursor.getNext() != null) {
-        createViolationFromMessage(messagesCursor);
+        createViolationFromMessageAtProjectLevel(messagesCursor);
       }
     }
   }
@@ -144,7 +144,7 @@ public class FxCopResultParser {
       // We are on <Messages>, look for <Message>
       SMInputCursor messagesCursor = moduleChildrenCursor.childElementCursor(MESSAGE);
       while (messagesCursor.getNext() != null) {
-        createViolationFromMessage(messagesCursor);
+        createViolationFromMessageAtProjectLevel(messagesCursor);
       }
     }
     if (moduleChildrenCursor.getNext() != null) {
@@ -186,14 +186,14 @@ public class FxCopResultParser {
             context.saveViolation(violation);
           }
         } else {
-          LOG.debug("Could not find the following rule in the FxCop rule repository: " + messagesCursor.getAttrValue(TYPENAME));
+          LOG.warn("Could not find the following rule in the FxCop rule repository: " + messagesCursor.getAttrValue(TYPENAME));
         }
 
       }
     }
   }
 
-  private void createViolationFromMessage(SMInputCursor messagesCursor) throws XMLStreamException {
+  private void createViolationFromMessageAtProjectLevel(SMInputCursor messagesCursor) throws XMLStreamException {
     Rule currentRule = ruleFinder.find(RuleQuery.create().withRepositoryKey(FxCopConstants.REPOSITORY_KEY)
         .withKey(messagesCursor.getAttrValue(TYPENAME)));
     if (currentRule != null) {

@@ -105,7 +105,15 @@ public class StyleCopSensor implements Sensor {
   }
 
   private void analyseResults(Project project, SensorContext context) {
-    // TODO Still need to write this
+    File report = new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_REPORT_XML);
+    if (report.exists()) {
+      LOG.info("StyleCop report found at location {}", report.getAbsolutePath());
+      StyleCopResultParser parser = new StyleCopResultParser(project, context, ruleFinder);
+      parser.setEncoding(fileSystem.getSourceCharset());
+      parser.parse(report);
+    } else {
+      LOG.error("StyleCop report cound not be found: {}", report.getAbsolutePath());
+    }
   }
 
 }
