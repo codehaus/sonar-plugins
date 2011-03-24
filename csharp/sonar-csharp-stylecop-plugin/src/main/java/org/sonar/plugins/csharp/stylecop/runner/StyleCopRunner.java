@@ -21,7 +21,6 @@
 package org.sonar.plugins.csharp.stylecop.runner;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
@@ -77,7 +76,7 @@ public class StyleCopRunner implements BatchExtension {
     command.setStyleCopConfigFile(styleCopConfigFile);
     command.setMsBuildFile(msBuildFile);
     command.setDotnetSdkDirectory(microsoftWindowsEnvironment.getDotnetSdkDirectory());
-    new CommandExecutor().execute(command.toArray(), TimeUnit.MINUTES.toSeconds(timeoutMinutes));
+    new CommandExecutor().execute(command.toArray(), timeoutMinutes * 60);
   }
 
 }
