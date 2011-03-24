@@ -32,12 +32,9 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
-
 
 /**
  * Collects the FXCop reporting into sonar.
@@ -48,10 +45,10 @@ public class FxCopSensor implements Sensor {
   private static final String FXCOP_RULES_FILE = "sonar.FxCop";
 
   private ProjectFileSystem fileSystem;
-  private RuleFinder ruleFinder;
+  private RulesProfile rulesProfile;
   private FxCopRunner fxCopRunner;
   private FxCopProfileExporter profileExporter;
-  private RulesProfile rulesProfile;
+  private FxCopResultParser fxCopResultParser;
 
   /**
    * Constructs a {@link FxCopSensor}.
@@ -62,13 +59,13 @@ public class FxCopSensor implements Sensor {
    * @param profileExporter
    * @param rulesProfile
    */
-  public FxCopSensor(ProjectFileSystem fileSystem, RuleFinder ruleFinder, FxCopRunner fxCopRunner, FxCopProfileExporter profileExporter,
-      RulesProfile rulesProfile) {
+  public FxCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, FxCopRunner fxCopRunner,
+      FxCopProfileExporter profileExporter, FxCopResultParser fxCopResultParser) {
     this.fileSystem = fileSystem;
-    this.ruleFinder = ruleFinder;
+    this.rulesProfile = rulesProfile;
     this.fxCopRunner = fxCopRunner;
     this.profileExporter = profileExporter;
-    this.rulesProfile = rulesProfile;
+    this.fxCopResultParser = fxCopResultParser;
   }
 
   /**
@@ -82,6 +79,8 @@ public class FxCopSensor implements Sensor {
    * {@inheritDoc}
    */
   public void analyse(Project project, SensorContext context) {
+    fxCopResultParser.setEncoding(fileSystem.getSourceCharset());
+
     // prepare config file for FxCop
     File fxCopConfigFile = generateConfigurationFile();
 
@@ -115,9 +114,7 @@ public class FxCopSensor implements Sensor {
       File report = new File(dir, reportFileName);
       if (report.exists()) {
         LOG.info("FxCop report found at location {}", report);
-        FxCopResultParser parser = new FxCopResultParser(project, context, ruleFinder, CSharpResourcesBridge.getInstance());
-        parser.setEncoding(fileSystem.getSourceCharset());
-        parser.parse(report);
+        fxCopResultParser.parse(report);
       } else {
         LOG.info("No FxCop report found for path {}", report);
       }

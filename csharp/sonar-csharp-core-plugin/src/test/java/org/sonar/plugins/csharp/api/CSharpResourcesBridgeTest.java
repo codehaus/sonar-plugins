@@ -48,7 +48,7 @@ public class CSharpResourcesBridgeTest {
     File sonarFile = mock(File.class);
     when(sonarFile.getName()).thenReturn("Fake.cs");
 
-    cSharpResourcesBridge = CSharpResourcesBridge.getInstance();
+    cSharpResourcesBridge = new CSharpResourcesBridge();
     cSharpResourcesBridge.indexFile(sourceFile, sonarFile);
   }
 
@@ -59,6 +59,12 @@ public class CSharpResourcesBridgeTest {
 
     file = cSharpResourcesBridge.getFromTypeName("MyNamespace.MyClass");
     assertThat(file.getName(), is("Fake.cs"));
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testLocking() {
+    cSharpResourcesBridge.lock();
+    cSharpResourcesBridge.indexFile(null, null);
   }
 
   @Test
