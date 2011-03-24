@@ -23,7 +23,6 @@ package org.sonar.plugins.csharp.fxcop.runner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
@@ -127,7 +126,7 @@ public class FxCopCommand {
       command.add("/igc");
     }
 
-    command.add("/to:" + TimeUnit.MINUTES.toSeconds(timeoutMinutes));
+    command.add("/to:" + timeoutMinutes * 60);
 
     command.add("/gac");
 
