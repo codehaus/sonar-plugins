@@ -21,6 +21,8 @@
 package org.sonar.plugins.csharp.stylecop.runner;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -29,8 +31,12 @@ import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 import org.sonar.test.TestUtils;
+
+import com.google.common.collect.Lists;
 
 public class MsBuildFileGeneratorTest {
 
@@ -40,29 +46,46 @@ public class MsBuildFileGeneratorTest {
   public void init() {
     Configuration conf = new BaseConfiguration();
     conf.setProperty(StyleCopConstants.INSTALL_DIR_KEY, StyleCopConstants.INSTALL_DIR_DEFVALUE);
-
     generator = new MsBuildFileGenerator(conf);
+
+    VisualStudioSolution solution = mock(VisualStudioSolution.class);
+    File solutionDir = mock(File.class);
+    when(solutionDir.getAbsolutePath()).thenReturn("SOLUTIONDIR");
+    File solutionFile = mock(File.class);
+    when(solutionFile.getAbsolutePath()).thenReturn("SOLUTIONFILE.sln");
+    when(solution.getSolutionDir()).thenReturn(solutionDir);
+    when(solution.getSolutionFile()).thenReturn(solutionFile);
+
+    VisualStudioProject project = mock(VisualStudioProject.class);
+    File projectFile = mock(File.class);
+    when(projectFile.getAbsolutePath()).thenReturn("PROJECT.csproj");
+    when(project.getProjectFile()).thenReturn(projectFile);
+    when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
+
+    generator.setVisualStudioSolution(solution);
   }
 
   @Test
   public void testGenerateFile() {
-//    File outputFolder = new File("target/MsBuildFileGenerator");
-//    if ( !outputFolder.exists()) {
-//      outputFolder.mkdirs();
-//    }
-//    generator.generateFile(outputFolder);
-//    File generatedFile = new File(outputFolder, MsBuildFileGenerator.MSBUILD_FILE);
-//    assertTrue(generatedFile.exists());
-//    generatedFile.delete();
+    File outputFolder = new File("target/MsBuildFileGenerator");
+    if ( !outputFolder.exists()) {
+      outputFolder.mkdirs();
+    }
+    generator.generateFile(outputFolder);
+    File generatedFile = new File(outputFolder, MsBuildFileGenerator.MSBUILD_FILE);
+    assertTrue(generatedFile.exists());
+    generatedFile.delete();
   }
 
   @Test
   public void testGenerateContent() throws Exception {
-//    File reportFile = new File("/reportFile");
-//    File styleCopRuleFile = new File("/styleCopRuleFile");
-//
-//    StringWriter writer = new StringWriter();
-//    generator.generateContent(writer, styleCopRuleFile, reportFile);
-//    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/Runner/MSBuild/stylecop-msbuild_for-tests.xml"), writer.toString());
+    File reportFile = mock(File.class);
+    when(reportFile.getAbsolutePath()).thenReturn("REPORTFILE");
+    File styleCopRuleFile = mock(File.class);
+    when(styleCopRuleFile.getAbsolutePath()).thenReturn("STYLECOPRULEFILE");
+
+    StringWriter writer = new StringWriter();
+    generator.generateContent(writer, styleCopRuleFile, reportFile);
+    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/Runner/MSBuild/stylecop-msbuild_for-tests.xml"), writer.toString());
   }
 }
