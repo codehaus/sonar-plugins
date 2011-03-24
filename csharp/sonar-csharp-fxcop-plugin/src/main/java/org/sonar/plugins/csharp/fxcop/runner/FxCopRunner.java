@@ -21,6 +21,7 @@
 package org.sonar.plugins.csharp.fxcop.runner;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ public class FxCopRunner implements BatchExtension {
   public void execute(File fxCopConfigFile) {
     LOG.debug("Executing FxCop program...");
     command.setFxCopConfigFile(fxCopConfigFile);
-    new CommandExecutor().execute(command.toArray(), command.getTimeoutMinutes() * 60);
+    new CommandExecutor().execute(command.toArray(), TimeUnit.MINUTES.toSeconds(command.getTimeoutMinutes()));
   }
 
 }

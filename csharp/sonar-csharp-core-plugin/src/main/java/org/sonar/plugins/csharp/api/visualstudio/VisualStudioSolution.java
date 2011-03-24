@@ -39,11 +39,12 @@ import org.slf4j.LoggerFactory;
 /**
  * A visual studio solution model.
  * 
+ * @author Fabrice BELLINGARD
  * @author Jose CHILLAN Apr 16, 2009
  */
 public class VisualStudioSolution {
 
-  private final static Logger log = LoggerFactory.getLogger(VisualStudioSolution.class);
+  private static final Logger LOG = LoggerFactory.getLogger(VisualStudioSolution.class);
 
   private File solutionFile;
   private File solutionDir;
@@ -124,21 +125,19 @@ public class VisualStudioSolution {
    *          the file to look for
    * @return the associated project, or <code>null</code> if none is matching
    */
-  public VisualStudioProject getProjectByLocation(File file) {
+  public final VisualStudioProject getProjectByLocation(File file) {
     String canonicalPath;
     try {
       canonicalPath = file.getCanonicalPath();
       for (VisualStudioProject project : projects) {
         File directory = project.getDirectory();
         String projectFolderPath = directory.getPath();
-        if (canonicalPath.startsWith(projectFolderPath)) {
-          if (project.isParentDirectoryOf(file)) {
-            return project;
-          }
+        if (canonicalPath.startsWith(projectFolderPath) && project.isParentDirectoryOf(file)) {
+          return project;
         }
       }
     } catch (IOException e) {
-      log.debug("getProjectByLocation i/o exception", e);
+      LOG.debug("getProjectByLocation i/o exception", e);
     }
 
     return null;

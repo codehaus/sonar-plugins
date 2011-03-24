@@ -46,9 +46,12 @@ import org.xml.sax.InputSource;
  * 
  * @author Jose CHILLAN May 19, 2009
  */
-public class StyleCopRuleParser {
-  
-  private final static Logger log = LoggerFactory.getLogger(StyleCopRuleParser.class);
+public final class StyleCopRuleParser {
+
+  private static final Logger LOG = LoggerFactory.getLogger(StyleCopRuleParser.class);
+
+  private StyleCopRuleParser() {
+  }
 
   /**
    * Parses the context of FXCop rules.
@@ -73,13 +76,11 @@ public class StyleCopRuleParser {
 
     try {
       XPathExpression expression = xpath.compile("//Rule");
-      NodeList nodes = (NodeList) expression.evaluate(source,
-          XPathConstants.NODESET);
+      NodeList nodes = (NodeList) expression.evaluate(source, XPathConstants.NODESET);
       int count = nodes.getLength();
       for (int idxRule = 0; idxRule < count; idxRule++) {
         Element ruleElement = (Element) nodes.item(idxRule);
-        Element analyzerElement = (Element) ruleElement.getParentNode()
-            .getParentNode();
+        Element analyzerElement = (Element) ruleElement.getParentNode().getParentNode();
         String ruleName = ruleElement.getAttribute("Name");
         String priority = ruleElement.getAttribute("SonarPriority");
 
@@ -96,8 +97,7 @@ public class StyleCopRuleParser {
           }
         }
         String analyzerId = analyzerElement.getAttribute("AnalyzerId");
-        String category = StringUtils.removeEnd(
-            StringUtils.substringAfterLast(analyzerId, "."), "Rules");
+        String category = StringUtils.removeEnd(StringUtils.substringAfterLast(analyzerId, "."), "Rules");
         rule.setAnalyzerId(analyzerId);
         rule.setName(ruleName);
         rule.setPriority(priority);
@@ -106,7 +106,7 @@ public class StyleCopRuleParser {
         result.add(rule);
       }
     } catch (XPathExpressionException e) {
-      log.debug("Xpath error un stylecop report", e);
+      LOG.debug("Xpath error un stylecop report", e);
     }
 
     return result;

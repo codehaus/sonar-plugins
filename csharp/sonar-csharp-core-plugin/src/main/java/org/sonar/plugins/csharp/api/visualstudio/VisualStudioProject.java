@@ -38,11 +38,11 @@ import org.slf4j.LoggerFactory;
 /**
  * A dot net project extracted from a solution
  * 
- * @author Jose CHILLAN Apr 16, 2009
+ * @author Fabrice BELLINGARD Jose CHILLAN Apr 16, 2009
  */
 public class VisualStudioProject {
-  private final static Logger log = LoggerFactory
-      .getLogger(VisualStudioProject.class);
+
+  private static final Logger LOG = LoggerFactory.getLogger(VisualStudioProject.class);
 
   private String name;
   private File projectFile;
@@ -50,13 +50,13 @@ public class VisualStudioProject {
   private String assemblyName;
   private String realAssemblyName; // assembly name found in the csproj file no matter what
   private String rootNamespace;
-  protected File debugOutputDir;
-  protected File releaseOutputDir;
-  protected File directory;
+  private File debugOutputDir;
+  private File releaseOutputDir;
+  private File directory;
   private boolean test;
   private boolean silverlightProject;
   private Map<File, SourceFile> sourceFileMap;
-  
+
   private List<BinaryReference> binaryReferences = new ArrayList<BinaryReference>();
 
   /**
@@ -71,14 +71,12 @@ public class VisualStudioProject {
 
   /**
    * Gets the relative path of a file contained in the project. <br>
-   * For example, if the visual studio project is
-   * C:/MySolution/MyProject/MyProject.csProj and the file is
+   * For example, if the visual studio project is C:/MySolution/MyProject/MyProject.csProj and the file is
    * C:/MySolution/MyProject/Dummy/Foo.cs, then the result is Dummy/Foo.cs
    * 
    * @param file
    *          the file whose relative path is to be computed
-   * @return the relative path, or <code>null</code> if the file is not in the
-   *         project subdirectories
+   * @return the relative path, or <code>null</code> if the file is not in the project subdirectories
    */
   public String getRelativePath(File file) {
     File canonicalDirectory;
@@ -89,16 +87,14 @@ public class VisualStudioProject {
 
       String filePath = canonicalFile.getPath();
       String directoryPath = canonicalDirectory.getPath();
-      if (!filePath.startsWith(directoryPath)) {
+      if ( !filePath.startsWith(directoryPath)) {
         // The file is not in the directory
         return null;
       }
-      String folder = StringUtils.removeStart(
-          StringUtils.removeStart(filePath, directoryPath), "\\");
-      return folder;
+      return StringUtils.removeStart(StringUtils.removeStart(filePath, directoryPath), "\\");
     } catch (IOException e) {
-      if (log.isDebugEnabled()) {
-        log.debug("io exception with file "+file, e);
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("io exception with file " + file, e);
       }
       return null;
     }
@@ -162,11 +158,9 @@ public class VisualStudioProject {
 
   @Override
   public String toString() {
-    return "Project(name=" + name + ", type=" + type + ", test=" + test
-        + ", directory=" + directory + ", file=" + projectFile
-        + ", assemblyName=" + assemblyName + ", rootNamespace=" + rootNamespace
-        + ", debugDir=" + debugOutputDir + ", releaseDir=" + releaseOutputDir
-        + ")";
+    return "Project(name=" + name + ", type=" + type + ", test=" + test + ", directory=" + directory + ", file=" + projectFile
+        + ", assemblyName=" + assemblyName + ", rootNamespace=" + rootNamespace + ", debugDir=" + debugOutputDir + ", releaseDir="
+        + releaseOutputDir + ")";
   }
 
   /**
@@ -258,9 +252,7 @@ public class VisualStudioProject {
   }
 
   /**
-   * Sets the root directory of the project.
-   * For a regular project, this is where is 
-   * located the csproj file. 
+   * Sets the root directory of the project. For a regular project, this is where is located the csproj file.
    * 
    * @param directory
    *          The directory to set.
@@ -269,7 +261,7 @@ public class VisualStudioProject {
     try {
       this.directory = directory.getCanonicalFile();
     } catch (IOException e) {
-      log.warn("Invalid project directory : " + directory);
+      LOG.warn("Invalid project directory : " + directory);
     }
   }
 
@@ -335,10 +327,13 @@ public class VisualStudioProject {
     final String result;
     switch (type) {
       case EXECUTABLE:
-        result = "exe"; break;
-      case LIBRARY: case WEB:
-        result = "dll"; break;
-      default: 
+        result = "exe";
+        break;
+      case LIBRARY:
+      case WEB:
+        result = "dll";
+        break;
+      default:
         result = null;
     }
     return result;
@@ -366,12 +361,11 @@ public class VisualStudioProject {
           // We build the file and retrieves its canonical path
           File file = new File(directory, filePath).getCanonicalFile();
           String fileName = file.getName();
-          String folder = StringUtils.replace(StringUtils.removeEnd(
-              StringUtils.removeEnd(filePath, fileName), "\\"), "\\", "/");
+          String folder = StringUtils.replace(StringUtils.removeEnd(StringUtils.removeEnd(filePath, fileName), "\\"), "\\", "/");
           SourceFile sourceFile = new SourceFile(this, file, folder, fileName);
           allFiles.put(file, sourceFile);
         } catch (IOException e) {
-          log.error("Bad file :" + filePath, e);
+          LOG.error("Bad file :" + filePath, e);
         }
       }
 
@@ -379,8 +373,7 @@ public class VisualStudioProject {
       // For web projects, we take all the C# files
       List<File> csharpFiles = listRecursiveFiles(directory, ".cs");
       for (File file : csharpFiles) {
-        SourceFile sourceFile = new SourceFile(this, file, file.getParent(),
-            file.getName());
+        SourceFile sourceFile = new SourceFile(this, file, file.getParent(), file.getName());
         allFiles.put(file, sourceFile);
       }
     }
@@ -428,8 +421,7 @@ public class VisualStudioProject {
    * 
    * @param file
    *          the file to retrieve
-   * @return the associated source file, or <code>null</code> if the file is not
-   *         included in the assembly.
+   * @return the associated source file, or <code>null</code> if the file is not included in the assembly.
    */
   public SourceFile getFile(File file) {
     File currentFile;
@@ -437,8 +429,8 @@ public class VisualStudioProject {
       currentFile = file.getCanonicalFile();
     } catch (IOException e) {
       // File not found
-      if (log.isDebugEnabled()) {
-        log.debug("file not found "+file, e);
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("file not found " + file, e);
       }
       return null;
     }
@@ -472,7 +464,7 @@ public class VisualStudioProject {
       getSourceFiles();
       return sourceFileMap.containsKey(currentFile);
     } catch (IOException e) {
-      log.debug("file error", e);
+      LOG.debug("file error", e);
     }
 
     return false;
@@ -482,9 +474,9 @@ public class VisualStudioProject {
     return (projectFile == null);
   }
 
-  
   /**
-   * @param silverlightProject true if it is a silverlight project
+   * @param silverlightProject
+   *          true if it is a silverlight project
    */
   void setSilverlightProject(boolean silverlightProject) {
     this.silverlightProject = silverlightProject;

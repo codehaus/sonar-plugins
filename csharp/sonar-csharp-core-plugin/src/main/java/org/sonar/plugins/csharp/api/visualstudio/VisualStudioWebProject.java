@@ -27,32 +27,29 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Represent a web/asp folder/project
- * Visual Studio handle in a weird way asp projects since there
- * is no csproj files. The description of the project is embedded 
- * in the sln solution file.
+ * Represent a web/asp folder/project Visual Studio handle in a weird way asp projects since there is no csproj files. The description of
+ * the project is embedded in the sln solution file.
  * 
+ * @author Fabrice BELLINGARD
  * @author Alexandre Victoor
- *
  */
 public class VisualStudioWebProject extends VisualStudioProject {
-  
+
   public VisualStudioWebProject() {
     setType(ArtifactType.WEB);
   }
 
   /**
-   * @return null if the project is not a web project, the generated web dlls
-   *         otherwise.
+   * @return null if the project is not a web project, the generated web dlls otherwise.
    */
   public Set<File> getWebAssemblies() {
-    if (!isWebProject()) {
+    if ( !isWebProject()) {
       return null;
     }
     Set<File> result = new HashSet<File>();
-    
+
     // we need to exclude all the dll files
-    // that correspond to 
+    // that correspond to
     Set<String> exclusions = new HashSet<String>();
     Set<File> references = getReferences();
     for (File file : references) {
@@ -71,48 +68,43 @@ public class VisualStudioWebProject extends VisualStudioProject {
   }
 
   /**
-   * @return the directory where asp.net pages are precompiled. null for a non
-   *         web project
+   * @return the directory where asp.net pages are precompiled. null for a non web project
    */
   public File getWebPrecompilationDirectory() {
-    if (!isWebProject()) {
+    if ( !isWebProject()) {
       return null;
     }
     final String precompilationPath;
-    if (debugOutputDir.list()==null || debugOutputDir.list().length == 0) {
-      precompilationPath = releaseOutputDir.getAbsolutePath() + File.separator
-          + "bin";
+    if (getDebugOutputDir().list() == null || getDebugOutputDir().list().length == 0) {
+      precompilationPath = getReleaseOutputDir().getAbsolutePath() + File.separator + "bin";
     } else {
-      precompilationPath = debugOutputDir.getAbsolutePath() + File.separator
-          + "bin";
+      precompilationPath = getDebugOutputDir().getAbsolutePath() + File.separator + "bin";
     }
     return new File(precompilationPath);
   }
-  
+
   /**
-   * @return null if the project is not a web project, the generated web dll
-   *         names otherwise.
+   * @return null if the project is not a web project, the generated web dll names otherwise.
    */
   public Set<String> getWebAssemblyNames() {
-    if (!isWebProject()) {
+    if ( !isWebProject()) {
       return null;
     }
     Set<File> assemblies = getWebAssemblies();
     Set<String> assemblyNames = new HashSet<String>();
 
     for (File assembly : assemblies) {
-      assemblyNames.add(StringUtils.substringBeforeLast(assembly.getName(),
-          ".dll"));
+      assemblyNames.add(StringUtils.substringBeforeLast(assembly.getName(), ".dll"));
     }
 
     return assemblyNames;
   }
-  
+
   /**
-   * @return  the dll files that correspond to VS references
+   * @return the dll files that correspond to VS references
    */
   public Set<File> getReferences() {
-    File binDirectory = new File(directory, "bin");
+    File binDirectory = new File(getDirectory(), "bin");
     Set<File> result = new HashSet<File>();
     if (binDirectory.exists()) {
       File[] files = binDirectory.listFiles();
@@ -121,9 +113,9 @@ public class VisualStudioWebProject extends VisualStudioProject {
         if (StringUtils.endsWith(name, "dll")) {
           result.add(file);
         }
-      } 
-    } 
+      }
+    }
     return result;
   }
-  
+
 }

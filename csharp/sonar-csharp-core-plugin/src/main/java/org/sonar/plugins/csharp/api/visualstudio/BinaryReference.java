@@ -20,6 +20,15 @@
 
 package org.sonar.plugins.csharp.api.visualstudio;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+/**
+ * 
+ * @author Fabrice BELLINGARD
+ * @author Jose CHILLAN
+ * 
+ */
 public class BinaryReference {
 
   private String assemblyName;
@@ -57,40 +66,23 @@ public class BinaryReference {
 
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((assemblyName == null) ? 0 : assemblyName.hashCode());
-    result = prime * result + ((scope == null) ? 0 : scope.hashCode());
-    result = prime * result + ((version == null) ? 0 : version.hashCode());
-    return result;
+    return new HashCodeBuilder().append(assemblyName).append(scope).append(version).toHashCode();
   }
 
   @Override
   @SuppressWarnings("all")
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (obj == null) {
+      return false;
+    }
+    if (obj == this) {
       return true;
-    if (obj == null)
+    }
+    if (obj.getClass() != getClass()) {
       return false;
-    if (getClass() != obj.getClass())
-      return false;
-    BinaryReference other = (BinaryReference) obj;
-    if (assemblyName == null) {
-      if (other.assemblyName != null)
-        return false;
-    } else if ( !assemblyName.equals(other.assemblyName))
-      return false;
-    if (scope == null) {
-      if (other.scope != null)
-        return false;
-    } else if ( !scope.equals(other.scope))
-      return false;
-    if (version == null) {
-      if (other.version != null)
-        return false;
-    } else if ( !version.equals(other.version))
-      return false;
-    return true;
+    }
+    BinaryReference ref = (BinaryReference) obj;
+    return new EqualsBuilder().append(assemblyName, ref.assemblyName).append(scope, ref.scope).append(version, ref.version).isEquals();
   }
 
 }
