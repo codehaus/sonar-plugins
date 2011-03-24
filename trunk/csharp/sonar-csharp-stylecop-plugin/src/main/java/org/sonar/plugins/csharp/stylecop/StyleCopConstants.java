@@ -41,4 +41,7 @@ public final class StyleCopConstants {
   public static final String INSTALL_DIR_KEY = "sonar.stylecop.installDirectory";
   public static final String INSTALL_DIR_DEFVALUE = "C:/Program Files/Microsoft StyleCop 4.4.0.14";
 
+  public static final String TIMEOUT_MINUTES_KEY = "sonar.stylecop.timeoutMinutes";
+  public static final int TIMEOUT_MINUTES_DEFVALUE = 10;
+
 }

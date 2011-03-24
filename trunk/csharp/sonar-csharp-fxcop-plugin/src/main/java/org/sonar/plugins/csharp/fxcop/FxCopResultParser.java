@@ -90,7 +90,7 @@ public class FxCopResultParser implements BatchExtension {
    * @param file
    *          the file to parse
    */
-  public void parse(File file) {System.out.println("------------> " + encoding);
+  public void parse(File file) {
     SMInputFactory inputFactory = initStax();
     FileInputStream fileInputStream = null;
     try {

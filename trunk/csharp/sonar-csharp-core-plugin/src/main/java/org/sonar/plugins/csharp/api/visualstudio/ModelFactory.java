@@ -54,19 +54,21 @@ import org.xml.sax.InputSource;
 /**
  * Utility classes for the parsing of a Visual Studio project
  * 
- * @author Fabrice BELLINGARD March, 2011
- * @author Jose CHILLAN Aug 14, 2009
+ * @author Fabrice BELLINGARD Jose CHILLAN Aug 14, 2009
  */
-public class ModelFactory {
+public final class ModelFactory {
 
   private static final String VERSION_KEY = ", Version=";
 
-  private final static Logger log = LoggerFactory.getLogger(ModelFactory.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ModelFactory.class);
 
-  public final static String TEST_PROJECT_PATTERN_PROPERTY = "visual.test.project.pattern";
-  public final static String VISUAL_SOLUTION_NAME_PROPERTY = "visual.studio.solution";
-  public final static String VISUAL_PROJECT_NAME_PROPERTY = "visual.studio.project";
-  public final static String SOLUTION_PACKAGING = "sln";
+  public static final String TEST_PROJECT_PATTERN_PROPERTY = "visual.test.project.pattern";
+  public static final String VISUAL_SOLUTION_NAME_PROPERTY = "visual.studio.solution";
+  public static final String VISUAL_PROJECT_NAME_PROPERTY = "visual.studio.project";
+  public static final String SOLUTION_PACKAGING = "sln";
+
+  private ModelFactory() {
+  }
 
   /**
    * Checks, whether the child directory is a subdirectory of the base directory.
@@ -81,22 +83,21 @@ public class ModelFactory {
    */
   public static boolean isSubDirectory(File base, File child) {
     try {
-      base = base.getCanonicalFile();
-      child = child.getCanonicalFile();
-
-      File parentFile = child;
+      File baseFile = base.getCanonicalFile();
+      File childFile = child.getCanonicalFile();
+      File parentFile = childFile;
 
       // Checks recursively if "base" is one of the parent of "child"
       while (parentFile != null) {
-        if (base.equals(parentFile)) {
+        if (baseFile.equals(parentFile)) {
           return true;
         }
         parentFile = parentFile.getParentFile();
       }
     } catch (IOException ex) {
       // This is false
-      if (log.isDebugEnabled()) {
-        log.debug(child + " is not in " + base, ex);
+      if (LOG.isDebugEnabled()) {
+        LOG.debug(child + " is not in " + base, ex);
       }
     }
     return false;
@@ -120,7 +121,7 @@ public class ModelFactory {
     }
 
     if (testFlag) {
-      log.info("The project {} has been qualified as a test project", visualStudioProject.getName());
+      LOG.info("The project {} has been qualified as a test project", visualStudioProject.getName());
     }
 
     visualStudioProject.setTest(testFlag);
@@ -298,7 +299,7 @@ public class ModelFactory {
         project.setSilverlightProject(true);
       }
 
-      project.setBinaryReferences(getBinaryReferences(xpath, projectFile, project));
+      project.setBinaryReferences(getBinaryReferences(xpath, projectFile));
 
       return project;
     } catch (XPathExpressionException xpee) {
@@ -309,7 +310,7 @@ public class ModelFactory {
     }
   }
 
-  private static List<BinaryReference> getBinaryReferences(XPath xpath, File projectFile, VisualStudioProject project) {
+  private static List<BinaryReference> getBinaryReferences(XPath xpath, File projectFile) {
     List<BinaryReference> result = new ArrayList<BinaryReference>();
     try {
 
@@ -335,7 +336,7 @@ public class ModelFactory {
         // We filter the files
         String includeAttr = includeElement.getAttribute("Include");
         if (StringUtils.isEmpty(includeAttr)) {
-          log.debug("Binary reference ignored, Include attribute missing");
+          LOG.debug("Binary reference ignored, Include attribute missing");
         } else {
           BinaryReference reference = new BinaryReference();
 
@@ -356,10 +357,10 @@ public class ModelFactory {
 
     } catch (XPathExpressionException exception) {
       // Should not happen
-      log.debug("xpath error", exception);
+      LOG.debug("xpath error", exception);
     } catch (FileNotFoundException exception) {
       // Should not happen
-      log.debug("project file not found", exception);
+      LOG.debug("project file not found", exception);
     }
     return result;
   }
@@ -438,10 +439,10 @@ public class ModelFactory {
 
     } catch (XPathExpressionException exception) {
       // Should not happen
-      log.debug("xpath error", exception);
+      LOG.debug("xpath error", exception);
     } catch (FileNotFoundException exception) {
       // Should not happen
-      log.debug("project file not found", exception);
+      LOG.debug("project file not found", exception);
     }
     return result;
   }
@@ -480,7 +481,7 @@ public class ModelFactory {
      */
     public String getNamespaceURI(String prefix) {
       if (prefix == null) {
-        throw new RuntimeException("Null prefix");
+        throw new SonarException("Null prefix");
       }
 
       final String result;

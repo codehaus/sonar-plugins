@@ -30,8 +30,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * A source file included in a CSharp project.
  * 
- * @author Fabrice BELLINGARD March, 2011
- * @author Jose CHILLAN Sep 1, 2009
+ * @author Fabrice BELLINGARD Jose CHILLAN Sep 1, 2009
  */
 public class SourceFile {
 

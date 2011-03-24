@@ -88,7 +88,7 @@ public class FxCopSensor implements Sensor {
     fxCopRunner.execute(fxCopConfigFile);
 
     // and analyse results
-    analyseResults(project, context);
+    analyseResults(project);
   }
 
   private File generateConfigurationFile() {
@@ -106,7 +106,7 @@ public class FxCopSensor implements Sensor {
     return configFile;
   }
 
-  private void analyseResults(Project project, SensorContext context) {
+  private void analyseResults(Project project) {
     final String[] reportFileNames = new String[] { FxCopConstants.FXCOP_REPORT_XML /* , FxCopConstants.SL_FXCOP_REPORT_XML */};
     File dir = project.getFileSystem().getBuildDir();
 

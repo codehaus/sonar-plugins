@@ -152,8 +152,6 @@ public class FxCopProfileExporter extends ProfileExporter {
         line = reader.readLine();
       }
       reader.close();
-    } catch (IOException e) {
-      throw e;
     } finally {
       IOUtils.closeQuietly(reader);
     }

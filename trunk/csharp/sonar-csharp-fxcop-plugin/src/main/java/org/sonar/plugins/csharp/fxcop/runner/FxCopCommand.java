@@ -23,6 +23,7 @@ package org.sonar.plugins.csharp.fxcop.runner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
@@ -47,7 +48,6 @@ public class FxCopCommand {
   private int timeoutMinutes = FxCopConstants.TIMEOUT_MINUTES_DEFVALUE;
 
   private List<File> assemblyToScanFiles;
-  private List<File> assemblyDependencyDirectoriesFiles;
   private File fxCopConfigFile;
   private File reportFile;
 
@@ -96,7 +96,7 @@ public class FxCopCommand {
    */
   public String[] toArray() {
     assemblyToScanFiles = getAsListOfFiles(assembliesToScan);
-    assemblyDependencyDirectoriesFiles = getAsListOfFiles(assemblyDependencyDirectories);
+    List<File> assemblyDependencyDirectoriesFiles = getAsListOfFiles(assemblyDependencyDirectories);
     validate();
 
     List<String> command = new ArrayList<String>();
@@ -127,7 +127,7 @@ public class FxCopCommand {
       command.add("/igc");
     }
 
-    command.add("/to:" + timeoutMinutes * 60);
+    command.add("/to:" + TimeUnit.MINUTES.toSeconds(timeoutMinutes));
 
     command.add("/gac");
 

@@ -35,9 +35,13 @@ import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 /**
  * Main class of the StyleCop plugin.
  */
-@Properties({ @Property(key = StyleCopConstants.INSTALL_DIR_KEY, defaultValue = StyleCopConstants.INSTALL_DIR_DEFVALUE,
-    name = "StyleCop install directory", description = "Absolute path of the StyleCop program install directory.", global = true,
-    project = false) })
+@Properties({
+    @Property(key = StyleCopConstants.INSTALL_DIR_KEY, defaultValue = StyleCopConstants.INSTALL_DIR_DEFVALUE,
+        name = "StyleCop install directory", description = "Absolute path of the StyleCop program install directory.", global = true,
+        project = false),
+    @Property(key = StyleCopConstants.TIMEOUT_MINUTES_KEY, defaultValue = StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE + "",
+        name = "StyleCop program timeout", description = "Maximum number of minutes before the StyleCop program will be stopped.",
+        global = true, project = true) })
 public class StyleCopPlugin implements Plugin {
 
   /**

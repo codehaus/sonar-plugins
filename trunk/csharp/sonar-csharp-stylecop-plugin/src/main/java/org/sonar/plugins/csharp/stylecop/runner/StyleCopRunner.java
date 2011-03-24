@@ -21,6 +21,7 @@
 package org.sonar.plugins.csharp.stylecop.runner;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 
 /**
  * Class that runs the StyleCop program.
@@ -40,6 +42,7 @@ public class StyleCopRunner implements BatchExtension {
   private StyleCopCommand command;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private MsBuildFileGenerator msBuildFileGenerator;
+  private int timeoutMinutes;
 
   /**
    * Constructs a {@link StyleCopRunner}.
@@ -55,6 +58,7 @@ public class StyleCopRunner implements BatchExtension {
     this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.command = new StyleCopCommand(projectFileSystem);
     this.msBuildFileGenerator = new MsBuildFileGenerator(configuration);
+    timeoutMinutes = configuration.getInt(StyleCopConstants.TIMEOUT_MINUTES_KEY, StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE);
   }
 
   /**
@@ -73,7 +77,7 @@ public class StyleCopRunner implements BatchExtension {
     command.setStyleCopConfigFile(styleCopConfigFile);
     command.setMsBuildFile(msBuildFile);
     command.setDotnetSdkDirectory(microsoftWindowsEnvironment.getDotnetSdkDirectory());
-    new CommandExecutor().execute(command.toArray(), 10 * 60);
+    new CommandExecutor().execute(command.toArray(), TimeUnit.MINUTES.toSeconds(timeoutMinutes));
   }
 
 }
