@@ -82,7 +82,7 @@ public class StyleCopSensor implements Sensor {
    */
   public void analyse(Project project, SensorContext context) {
     if (rulesProfile.getActiveRulesByRepository(StyleCopConstants.REPOSITORY_KEY).isEmpty()) {
-      LOG.warn("/!\\- SKIP StyleCop analysis: no rule defined for StyleCop in the \"{}\" profil.", rulesProfile.getName());
+      LOG.warn("/!\\ SKIP StyleCop analysis: no rule defined for StyleCop in the \"{}\" profil.", rulesProfile.getName());
       return;
     }
 
