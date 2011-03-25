@@ -27,28 +27,30 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 
 /**
  * Collects the FXCop reporting into sonar.
  */
+@DependsUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
 public class StyleCopSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopSensor.class);
 
   private ProjectFileSystem fileSystem;
-  private RuleFinder ruleFinder;
+  private RulesProfile rulesProfile;
   private StyleCopRunner styleCopRunner;
   private StyleCopProfileExporter profileExporter;
-  private RulesProfile rulesProfile;
+  private StyleCopResultParser styleCopResultParser;
 
   /**
    * Constructs a {@link StyleCopSensor}.
@@ -59,13 +61,13 @@ public class StyleCopSensor implements Sensor {
    * @param profileExporter
    * @param rulesProfile
    */
-  public StyleCopSensor(ProjectFileSystem fileSystem, RuleFinder ruleFinder, StyleCopRunner styleCopRunner,
-      StyleCopProfileExporter profileExporter, RulesProfile rulesProfile) {
+  public StyleCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, StyleCopRunner styleCopRunner,
+      StyleCopProfileExporter profileExporter, StyleCopResultParser styleCopResultParser) {
     this.fileSystem = fileSystem;
-    this.ruleFinder = ruleFinder;
+    this.rulesProfile = rulesProfile;
     this.styleCopRunner = styleCopRunner;
     this.profileExporter = profileExporter;
-    this.rulesProfile = rulesProfile;
+    this.styleCopResultParser = styleCopResultParser;
   }
 
   /**
@@ -79,6 +81,13 @@ public class StyleCopSensor implements Sensor {
    * {@inheritDoc}
    */
   public void analyse(Project project, SensorContext context) {
+    if (rulesProfile.getActiveRulesByRepository(StyleCopConstants.REPOSITORY_KEY).isEmpty()) {
+      LOG.warn("/!\\- SKIP StyleCop analysis: no rule defined for StyleCop in the \"{}\" profil.", rulesProfile.getName());
+      return;
+    }
+
+    styleCopResultParser.setEncoding(fileSystem.getSourceCharset());
+
     // prepare config file for StyleCop
     File styleCopConfigFile = generateConfigurationFile();
 
@@ -108,9 +117,7 @@ public class StyleCopSensor implements Sensor {
     File report = new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_REPORT_XML);
     if (report.exists()) {
       LOG.info("StyleCop report found at location {}", report.getAbsolutePath());
-      StyleCopResultParser parser = new StyleCopResultParser(project, context, ruleFinder);
-      parser.setEncoding(fileSystem.getSourceCharset());
-      parser.parse(report);
+      styleCopResultParser.parse(report);
     } else {
       LOG.error("StyleCop report cound not be found: {}", report.getAbsolutePath());
     }

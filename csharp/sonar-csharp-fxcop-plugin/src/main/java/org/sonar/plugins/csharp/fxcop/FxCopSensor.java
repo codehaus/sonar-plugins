@@ -27,18 +27,21 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
 
 /**
  * Collects the FXCop reporting into sonar.
  */
+@DependsUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
 public class FxCopSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopSensor.class);
@@ -79,6 +82,11 @@ public class FxCopSensor implements Sensor {
    * {@inheritDoc}
    */
   public void analyse(Project project, SensorContext context) {
+    if (rulesProfile.getActiveRulesByRepository(FxCopConstants.REPOSITORY_KEY).isEmpty()) {
+      LOG.warn("/!\\- SKIP FxCop analysis: no rule defined for FxCop in the \"{}\" profil.", rulesProfile.getName());
+      return;
+    }
+
     fxCopResultParser.setEncoding(fileSystem.getSourceCharset());
 
     // prepare config file for FxCop
