@@ -19,22 +19,22 @@
 	<inceptionYear>2010</inceptionYear>
 	<url>http://docs.codehaus.org/display/SONAR/XXXXXXX</url>
 	<organization>
-		<name>SonarSource</name>
-		<url>http://www.sonarsource.com</url>
+		<name>Codehaus Sonar Plugins</name>
+		<url>http://sonar-plugins.codehaus.org/</url>
 	</organization>
-	<licenses>
-		<license>
-			<name>GNU LGPL 3</name>
-			<url>http://www.gnu.org/licenses/lgpl.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
 
 	<developers>
 		<developer>
 			<id>fabemn</id>
 			<name>Fabrice Bellingard</name>
-			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>alex</id>
+			<name>Alexandre Victoor</name>
+		</developer>
+		<developer>
+			<id>jose</id>
+			<name>Jose Chillan</name>
 		</developer>
 	</developers>
 
