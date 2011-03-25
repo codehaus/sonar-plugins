@@ -72,15 +72,16 @@ public class StyleCopPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     list.add(StyleCopSensor.class);
-    //
-    // // Rules and profiles
+
+    // Rules and profiles
     list.add(StyleCopRuleRepository.class);
     list.add(StyleCopProfileImporter.class);
     list.add(StyleCopProfileExporter.class);
     list.add(SonarWayProfile.class);
-    //
-    // // Running StyleCop
+
+    // Running StyleCop
     list.add(StyleCopRunner.class);
+    list.add(StyleCopResultParser.class);
     return list;
   }
 

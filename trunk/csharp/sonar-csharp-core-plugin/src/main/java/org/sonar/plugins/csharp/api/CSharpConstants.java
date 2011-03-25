@@ -35,7 +35,9 @@ public final class CSharpConstants {
   public static final String FILE_SUFFIXES_DEFVALUE = "cs";
 
   public static final String CSHARP_WAY_PROFILE = "Sonar C# Way";
-  
+
+  public static final String CSHARP_CORE_EXECUTED = "C# Core executed";
+
   // ----------- Plugin Configuration Properties ----------- //
 
   public static final String DOTNET_SDK_DIR_KEY = "sonar.dotnet.sdk.directory";

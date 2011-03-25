@@ -20,12 +20,16 @@
 
 package org.sonar.plugins.csharp.core;
 
+
+import org.sonar.api.batch.AbstractSourceImporter;
+import org.sonar.api.batch.DependedUpon;
+import org.sonar.plugins.csharp.api.CSharp;
+import org.sonar.plugins.csharp.api.CSharpConstants;
+
 /**
  * Simple source code importer for C# projects.
  */
-import org.sonar.api.batch.AbstractSourceImporter;
-import org.sonar.plugins.csharp.api.CSharp;
-
+@DependedUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
 public class CSharpSourceImporter extends AbstractSourceImporter {
 
   public CSharpSourceImporter(CSharp cSharp) {
