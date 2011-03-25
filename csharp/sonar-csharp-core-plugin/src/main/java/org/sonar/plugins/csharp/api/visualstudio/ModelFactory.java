@@ -205,12 +205,7 @@ public final class ModelFactory {
       Matcher matcher = projectPattern.matcher(projectDefinition);
       if (matcher.find()) {
         String projectName = matcher.group(1);
-        String projectPath = matcher.group(2);
-
-        // fix tests on unix system
-        // but should not be necessary
-        // on windows build machines
-        projectPath = StringUtils.replace(projectPath, "\\", File.separatorChar + ""); // TODO check this
+        String projectPath = StringUtils.replace(matcher.group(2), "\\", File.separatorChar + "");
 
         File projectFile = new File(baseDirectory, projectPath);
         if ( !projectFile.exists()) {
