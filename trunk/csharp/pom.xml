@@ -42,6 +42,7 @@
 		<module>sonar-csharp-core-plugin</module>
 		<module>sonar-csharp-fxcop-plugin</module>
 		<module>sonar-csharp-stylecop-plugin</module>
+		<module>sonar-csharp-gendarme-plugin</module>
 	</modules>
 
 	<scm>
