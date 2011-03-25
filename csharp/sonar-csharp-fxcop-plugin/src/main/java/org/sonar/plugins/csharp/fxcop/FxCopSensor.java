@@ -83,7 +83,7 @@ public class FxCopSensor implements Sensor {
    */
   public void analyse(Project project, SensorContext context) {
     if (rulesProfile.getActiveRulesByRepository(FxCopConstants.REPOSITORY_KEY).isEmpty()) {
-      LOG.warn("/!\\- SKIP FxCop analysis: no rule defined for FxCop in the \"{}\" profil.", rulesProfile.getName());
+      LOG.warn("/!\\ SKIP FxCop analysis: no rule defined for FxCop in the \"{}\" profil.", rulesProfile.getName());
       return;
     }
 
