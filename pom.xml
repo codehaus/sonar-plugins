@@ -1,110 +1,84 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>8</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
   <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <artifactId>sonar-pam-plugin</artifactId>
+  <version>0.1</version>
+  <packaging>sonar-plugin</packaging>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>crowd</module>
-        <module>c-rules</module>
-        <module>cutoff</module>
-        <module>dotnet</module>
-        <module>email</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>jacoco</module>
-        <module>jira</module>
-        <module>jlint</module>
-        <module>jmeter</module>
-        <module>ldap</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pdf-report</module>
-        <module>php</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>radiator</module>
-        <module>rules-meter</module>
-        <module>scm-activity</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonar-runner</module>
-        <module>sonarj</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>twitter</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>basic-cocomo</module>
-        <module>clover</module>
-        <module>csharp</module>
-        <module>debug</module>
-        <module>metrics-help</module>
-        <module>pam</module>
-        <module>profiler</module>
-        <module>testability-explorer</module>
-        <module>webscanner</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>hammurapi</module>
-        <module>jtest</module>
-        <module>sonar-replay</module>
-        <module>sonar-squid-cli</module>
-        <module>sonar-squid-gui</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-        <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-        <module>codereview</module>
-      </modules>
-    </profile>
-  </profiles>
+  <name>Sonar PAM plugin</name>
+  <description>Allow Sonar to use PAM authentication on *nix box.</description>
+  <url>http://docs.codehaus.org/display/SONAR/PAM+Plugin</url>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>Freaknet</name>
+    <url>http://www.freaknet.org</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-  <build>
-    <plugins>
-      <!-- See http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
+  <developers>
+    <developer>
+      <id>mtizzoni</id>
+      <name>Marco Tizzoni</name>
+      <email>marco.tizzoni@gmail.com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-pam-plugin-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-pam-plugin-0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-pam-plugin-0.1</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14697</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-PAM</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>1.12</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.pam.PamAuthPlugin</sonar.pluginClass>
+    <sonar.pluginName>PAM</sonar.pluginName>
+    <license.owner>Marco Tizzoni</license.owner>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.jpam</groupId>
+      <artifactId>jpam</artifactId>
+      <version>1.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+  </dependencies>
+
 </project>
