@@ -40,6 +40,9 @@ public final class CSharpConstants {
 
   // ----------- Plugin Configuration Properties ----------- //
 
+  public static final String TEST_PROJET_PATTERN_KEY = "sonar.csharp.testProjectPattern";
+  public static final String TEST_PROJET_PATTERN_DEFVALUE = "*.Tests";
+  
   public static final String DOTNET_SDK_DIR_KEY = "sonar.dotnet.sdk.directory";
   public static final String DOTNET_SDK_DIR_DEFVALUE = "C:/WINDOWS/Microsoft.NET/Framework/v4.0.30319";
 

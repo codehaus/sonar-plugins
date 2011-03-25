@@ -36,6 +36,9 @@ import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
  * C# Core plugin class.
  */
 @Properties({
+    @Property(key = CSharpConstants.TEST_PROJET_PATTERN_KEY, defaultValue = CSharpConstants.TEST_PROJET_PATTERN_DEFVALUE,
+        name = "Test project names", description = "Pattern that check project names to identify test projects.", global = true,
+        project = true),
     @Property(key = CSharpConstants.DOTNET_SDK_DIR_KEY, defaultValue = CSharpConstants.DOTNET_SDK_DIR_DEFVALUE,
         name = ".NET SDK directory", description = "Absolute path of the .NET SDK directory.", global = true, project = false),
     @Property(

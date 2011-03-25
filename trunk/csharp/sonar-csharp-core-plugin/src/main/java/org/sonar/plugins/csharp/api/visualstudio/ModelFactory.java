@@ -47,6 +47,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.WildcardPattern;
+import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -54,20 +55,30 @@ import org.xml.sax.InputSource;
 /**
  * Utility classes for the parsing of a Visual Studio project
  * 
- * @author Fabrice BELLINGARD Jose CHILLAN Aug 14, 2009
+ * @author Fabrice BELLINGARD
+ * @author Jose CHILLAN Aug 14, 2009
  */
 public final class ModelFactory {
 
+  private static final Logger LOG = LoggerFactory.getLogger(ModelFactory.class);
   private static final String VERSION_KEY = ", Version=";
 
-  private static final Logger LOG = LoggerFactory.getLogger(ModelFactory.class);
-
-  public static final String TEST_PROJECT_PATTERN_PROPERTY = "visual.test.project.pattern";
-  public static final String VISUAL_SOLUTION_NAME_PROPERTY = "visual.studio.solution";
-  public static final String VISUAL_PROJECT_NAME_PROPERTY = "visual.studio.project";
-  public static final String SOLUTION_PACKAGING = "sln";
+  /*
+   * Pattern used to define if a project is a test project or not
+   */
+  private static String testProjectNamePattern = CSharpConstants.TEST_PROJET_PATTERN_DEFVALUE;
 
   private ModelFactory() {
+  }
+
+  /**
+   * Sets the pattern used to define if a project is a test project or not
+   * 
+   * @param testProjectNamePattern
+   *          the pattern
+   */
+  public static void setTestProjectNamePattern(String testProjectNamePattern) {
+    ModelFactory.testProjectNamePattern = testProjectNamePattern;
   }
 
   /**
@@ -106,7 +117,7 @@ public final class ModelFactory {
   /**
    * @param visualStudioProject
    */
-  public static void assessTestProject(VisualStudioProject visualStudioProject, String testProjectPatterns) {
+  protected static void assessTestProject(VisualStudioProject visualStudioProject, String testProjectPatterns) {
 
     String assemblyName = visualStudioProject.getAssemblyName();
 
@@ -121,7 +132,7 @@ public final class ModelFactory {
     }
 
     if (testFlag) {
-      LOG.info("The project {} has been qualified as a test project", visualStudioProject.getName());
+      LOG.info("The project '{}' has been qualified as a test project.", visualStudioProject.getName());
     }
 
     visualStudioProject.setTest(testFlag);
@@ -300,6 +311,8 @@ public final class ModelFactory {
       }
 
       project.setBinaryReferences(getBinaryReferences(xpath, projectFile));
+
+      assessTestProject(project, testProjectNamePattern);
 
       return project;
     } catch (XPathExpressionException xpee) {
