@@ -33,8 +33,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
-import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
-
 
 public class FxCopRunnerTest {
 
@@ -47,10 +45,10 @@ public class FxCopRunnerTest {
   @BeforeClass
   public static void initStatic() throws Exception {
     fakeFxCopProgramFile = getFakeFxCopProgramFile();
-    fakeFxCopConfigFile = FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner/FakeFxCopConfigFile.xml"));
+    fakeFxCopConfigFile = FileUtils.toFile(FxCopRunnerTest.class.getResource("/Runner/FakeFxCopConfigFile.xml"));
     configuration = new BaseConfiguration();
     projectFileSystem = mock(ProjectFileSystem.class);
-    when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner")));
+    when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(FxCopRunnerTest.class.getResource("/Runner")));
   }
 
   @Before
@@ -74,21 +72,9 @@ public class FxCopRunnerTest {
     // for some reason, this test fails on the CI server which is on Windows...
     if ( !System.getProperty("os.name").startsWith("Windows")) {
       configuration.addProperty(FxCopConstants.ASSEMBLIES_TO_SCAN_KEY, "FakeAssemblies/Fake1.assembly, FakeAssemblies/Fake2.assembly");
-      fxCopRunner = new FxCopRunner(configuration, projectFileSystem);
+      fxCopRunner = new FxCopRunner(configuration, projectFileSystem, null);
       fxCopRunner.execute(fakeFxCopConfigFile);
     }
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testExecuteWithNoAssembly() throws Exception {
-    fxCopRunner = new FxCopRunner(configuration, projectFileSystem);
-    fxCopRunner.execute(fakeFxCopConfigFile);
-  }
-
-  @Test(expected = IllegalStateException.class)
-  public void testWithNullParameter() throws Exception {
-    fxCopRunner = new FxCopRunner(configuration, projectFileSystem);
-    fxCopRunner.execute(null);
   }
 
 }

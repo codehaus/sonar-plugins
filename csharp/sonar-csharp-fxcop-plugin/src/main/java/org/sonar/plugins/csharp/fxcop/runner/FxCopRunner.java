@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 
 /**
  * Class that runs the FxCop program.
@@ -45,8 +46,9 @@ public class FxCopRunner implements BatchExtension {
    * @param fileSystem
    *          the file system of the project
    */
-  public FxCopRunner(Configuration configuration, ProjectFileSystem projectFileSystem) {
-    this.command = new FxCopCommand(configuration, projectFileSystem);
+  public FxCopRunner(Configuration configuration, ProjectFileSystem projectFileSystem,
+      MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+    this.command = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
   }
 
   /**

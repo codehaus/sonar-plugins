@@ -28,6 +28,8 @@ import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 
 import com.google.common.collect.Lists;
@@ -40,6 +42,7 @@ public class FxCopCommand {
   private static final Logger LOG = LoggerFactory.getLogger(FxCopCommand.class);
 
   private ProjectFileSystem fileSystem;
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private String fxCopExecutable;
   private String[] assembliesToScan;
   private String[] assemblyDependencyDirectories;
@@ -58,15 +61,16 @@ public class FxCopCommand {
    * @param fileSystem
    *          the file system of the project
    */
-  public FxCopCommand(Configuration configuration, ProjectFileSystem fileSystem) {
+  public FxCopCommand(Configuration configuration, ProjectFileSystem fileSystem, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.fileSystem = fileSystem;
+    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.fxCopExecutable = configuration.getString(FxCopConstants.EXECUTABLE_KEY, FxCopConstants.EXECUTABLE_DEFVALUE);
     this.assembliesToScan = configuration.getStringArray(FxCopConstants.ASSEMBLIES_TO_SCAN_KEY);
     this.assemblyDependencyDirectories = configuration.getStringArray(FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_KEY);
     this.ignoreGeneratedCode = configuration.getBoolean(FxCopConstants.IGNORE_GENERATED_CODE_KEY,
         FxCopConstants.IGNORE_GENERATED_CODE_DEFVALUE);
     this.timeoutMinutes = configuration.getInt(FxCopConstants.TIMEOUT_MINUTES_KEY, FxCopConstants.TIMEOUT_MINUTES_DEFVALUE);
-    reportFile = new File(fileSystem.getBuildDir(), FxCopConstants.FXCOP_REPORT_XML);
+    reportFile = new File(fileSystem.getSonarWorkingDirectory(), FxCopConstants.FXCOP_REPORT_XML);
   }
 
   /**
@@ -94,7 +98,7 @@ public class FxCopCommand {
    * @return the array of strings that represent the command to launch.
    */
   public String[] toArray() {
-    assemblyToScanFiles = getAsListOfFiles(assembliesToScan);
+    assemblyToScanFiles = getAssembliesToScan();
     List<File> assemblyDependencyDirectoriesFiles = getAsListOfFiles(assemblyDependencyDirectories);
     validate();
 
@@ -131,6 +135,33 @@ public class FxCopCommand {
     command.add("/gac");
 
     return command.toArray(new String[command.size()]);
+  }
+
+  private List<File> getAssembliesToScan() {
+    List<File> assemblyFileList = Lists.newArrayList();
+    if (assembliesToScan.length == 0) {
+      LOG.debug("No assembly specified: will look into 'csproj' files to find which should be analyzed.");
+      assemblyFileList = findAssembliesToScan();
+    } else {
+      // Some assemblies have been specified: let's analyze them
+      assemblyFileList = getAsListOfFiles(assembliesToScan);
+    }
+    return assemblyFileList;
+  }
+
+  private List<File> findAssembliesToScan() {
+    List<File> assemblyFileList = Lists.newArrayList();
+    for (VisualStudioProject visualStudioProject : microsoftWindowsEnvironment.getCurrentSolution().getProjects()) {
+      if ( !visualStudioProject.isTest()) {
+        File assembly = visualStudioProject.getDebugArtifact() == null ? visualStudioProject.getReleaseArtifact() : visualStudioProject
+            .getDebugArtifact();
+        if (assembly != null && assembly.isFile()) {
+          LOG.debug(" - Found {}", assembly.getAbsolutePath());
+          assemblyFileList.add(assembly);
+        }
+      }
+    }
+    return assemblyFileList;
   }
 
   private List<File> getAsListOfFiles(String[] fileArray) {

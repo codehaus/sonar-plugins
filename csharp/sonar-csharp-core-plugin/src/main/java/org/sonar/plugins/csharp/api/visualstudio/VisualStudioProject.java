@@ -38,7 +38,8 @@ import org.slf4j.LoggerFactory;
 /**
  * A dot net project extracted from a solution
  * 
- * @author Fabrice BELLINGARD Jose CHILLAN Apr 16, 2009
+ * @author Fabrice BELLINGARD
+ * @author Jose CHILLAN Apr 16, 2009
  */
 public class VisualStudioProject {
 

@@ -39,7 +39,8 @@ import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
     @Property(key = FxCopConstants.EXECUTABLE_KEY, defaultValue = FxCopConstants.EXECUTABLE_DEFVALUE, name = "FxCop executable",
         description = "Absolute path of the FxCop program.", global = true, project = false),
     @Property(key = FxCopConstants.ASSEMBLIES_TO_SCAN_KEY, defaultValue = FxCopConstants.ASSEMBLIES_TO_SCAN_DEFVALUE,
-        name = "Assemblies to scan", description = "Comma-seperated list of paths of assemblies that must be scanned.", global = false,
+        name = "Assemblies to scan", description = "Comma-seperated list of paths of assemblies that should be scanned. "
+            + "If empty, the plugin will try to get this list from the Visual Studio 'csproj' files (if any).", global = false,
         project = true),
     @Property(key = FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_KEY,
         defaultValue = FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_DEFVALUE, name = "Assembly dependency directories",

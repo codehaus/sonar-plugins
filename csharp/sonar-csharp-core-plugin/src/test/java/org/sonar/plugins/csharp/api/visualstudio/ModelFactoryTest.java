@@ -53,11 +53,12 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioWebProject;
 /**
  * Tests for visual studio utilities.
  * 
+ * @author Fabrice BELLINGARD
  * @author Jose CHILLAN Sep 1, 2009
  */
 public class ModelFactoryTest {
 
-  private final static org.slf4j.Logger log = LoggerFactory.getLogger(ModelFactoryTest.class);
+  private static final org.slf4j.Logger log = LoggerFactory.getLogger(ModelFactoryTest.class);
   /**
    * PROJECT_CORE_PATH
    */
@@ -95,6 +96,7 @@ public class ModelFactoryTest {
     BinaryReference systemReference = new BinaryReference();
     systemReference.setAssemblyName("System.Xml.Linq");
     systemReference.setVersion("v3.5");
+    systemReference.setScope("compile");
 
     assertThat(references, hasItems(systemReference));
 
@@ -103,6 +105,7 @@ public class ModelFactoryTest {
     BinaryReference nunitReference = new BinaryReference();
     nunitReference.setAssemblyName("nunit.core.interfaces");
     nunitReference.setVersion("2.4.8.0");
+    nunitReference.setScope("test");
 
     assertThat(testReferences, hasItems(nunitReference));
 

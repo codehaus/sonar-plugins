@@ -95,7 +95,7 @@ public class StyleCopSensor implements Sensor {
     styleCopRunner.execute(styleCopConfigFile);
 
     // and analyse results
-    analyseResults(project, context);
+    analyseResults();
   }
 
   private File generateConfigurationFile() {
@@ -113,7 +113,7 @@ public class StyleCopSensor implements Sensor {
     return configFile;
   }
 
-  private void analyseResults(Project project, SensorContext context) {
+  private void analyseResults() {
     File report = new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_REPORT_XML);
     if (report.exists()) {
       LOG.info("StyleCop report found at location {}", report.getAbsolutePath());

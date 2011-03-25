@@ -33,7 +33,7 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
  * <li>the current Visual Studio solution that is being analyzed.</li>
  * </ul>
  */
-public final class MicrosoftWindowsEnvironment implements BatchExtension {
+public class MicrosoftWindowsEnvironment implements BatchExtension {
 
   // primarily used to allow unit tests to work
   private boolean allowOverrideAttributes;
