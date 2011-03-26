@@ -31,6 +31,7 @@
         <module>greenpepper</module>
         <module>groovy</module>
         <module>jacoco</module>
+        <module>javascript</module>
         <module>jira</module>
         <module>jlint</module>
         <module>jmeter</module>
@@ -38,6 +39,7 @@
         <module>maven-report</module>
         <module>motion-chart</module>
         <module>parent</module>
+        <module>pam</module>
         <module>pdf-report</module>
         <module>php</module>
         <module>piwik</module>
@@ -70,7 +72,6 @@
         <module>csharp</module>
         <module>debug</module>
         <module>metrics-help</module>
-        <module>pam</module>
         <module>profiler</module>
         <module>testability-explorer</module>
         <module>webscanner</module>
