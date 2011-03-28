@@ -68,14 +68,14 @@ public class GendarmePlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
     // list.add(GendarmeSensor.class);
-    //
-    // // Rules and profiles
-    // list.add(GendarmeRuleRepository.class);
+
+    // Rules and profiles
+    list.add(GendarmeRuleRepository.class);
     // list.add(GendarmeProfileImporter.class);
     // list.add(GendarmeProfileExporter.class);
     // list.add(SonarWayProfile.class);
-    //
-    // // Running Gendarme
+
+    // Running Gendarme
     // list.add(GendarmeRunner.class);
     // list.add(GendarmeResultParser.class);
     return list;
