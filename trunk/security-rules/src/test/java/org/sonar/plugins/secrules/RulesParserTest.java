@@ -20,40 +20,41 @@
 
 package org.sonar.plugins.secrules;
 
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import org.apache.commons.configuration.Configuration;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyString;
-import org.mockito.stubbing.Answer;
+
+import org.apache.commons.configuration.Configuration;
+import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulesManager;
-import static org.hamcrest.CoreMatchers.is;
+import org.sonar.api.rules.RuleFinder;
 
 import java.util.List;
 
 public class RulesParserTest {
 
-
   @Test
   public void testDefaultConfig() {
     Configuration configuration = mock(Configuration.class);
-    RulesManager rulesManager = mock(RulesManager.class);
+    RuleFinder ruleFinder = mock(RuleFinder.class);
 
     when(configuration.getString(SecurityRulesPlugin.SEC_RULES, SecurityRulesPlugin.SEC_RULES_DEFAULT)).
-      thenReturn(SecurityRulesPlugin.SEC_RULES_DEFAULT);
+        thenReturn(SecurityRulesPlugin.SEC_RULES_DEFAULT);
 
-    when(rulesManager.getPluginRule(anyString(), anyString())).thenAnswer(new Answer<Rule>() {
+    when(ruleFinder.findByKey(anyString(), anyString())).thenAnswer(new Answer<Rule>() {
       public Rule answer(InvocationOnMock invocationOnMock) throws Throwable {
-        return new Rule((String)invocationOnMock.getArguments()[0], (String)invocationOnMock.getArguments()[1]);
+        String repositoryKey = (String) invocationOnMock.getArguments()[0];
+        String ruleKey = (String) invocationOnMock.getArguments()[1];
+        return Rule.create(repositoryKey, ruleKey, ruleKey);
       }
     });
 
-    List<Rule> rulesList = new RulesParser(configuration, rulesManager).getRulesList();
+    List<Rule> rulesList = new RulesParser(configuration, ruleFinder).getRulesList();
     assertThat(rulesList.size(), is(17));
   }
-
 
 }

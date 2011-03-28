@@ -45,10 +45,10 @@ public final class SecurityRulesDecorator implements Decorator {
   private RulesProfile rulesProfile;
   private Map<RulePriority, Integer> weights;
 
-  public SecurityRulesDecorator(RulesManager rulesManager, RulesProfile rulesProfile, Configuration configuration) {
+  public SecurityRulesDecorator(RuleFinder ruleFinder, RulesProfile rulesProfile, Configuration configuration) {
     this.rulesProfile = rulesProfile;
     weights = getPriorityWeights(configuration);
-    this.rules = new RulesParser(configuration, rulesManager).getRulesList();
+    this.rules = new RulesParser(configuration, ruleFinder).getRulesList();
   }
 
   @DependsUpon
@@ -108,7 +108,6 @@ public final class SecurityRulesDecorator implements Decorator {
     return Scopes.isHigherThanOrEquals(resource, Scopes.FILE) && !Qualifiers.UNIT_TEST_FILE.equals(resource.getQualifier());
   }
 
-
   private Map<RulePriority, Integer> computeViolationsForRules(DecoratorContext context) {
     Map<RulePriority, Integer> distribution = Maps.newHashMap();
     List<Violation> violations = context.getViolations();
@@ -125,17 +124,17 @@ public final class SecurityRulesDecorator implements Decorator {
   protected void countViolationsForRule(Map<RulePriority, Integer> distribution, ActiveRule activeRule, List<Violation> violations) {
     for (Violation violation : violations) {
       if (violation.getRule().equals(activeRule.getRule())) {
-        countViolationForRule(distribution, activeRule.getPriority());
+        countViolationForRule(distribution, activeRule.getSeverity());
       }
     }
   }
 
-  protected void countViolationForRule(Map<RulePriority, Integer> distribution, RulePriority priority) {
+  protected void countViolationForRule(Map<RulePriority, Integer> distribution, RulePriority severity) {
     int current = 0;
-    if (distribution.get(priority) != null) {
-      current += distribution.get(priority);
+    if (distribution.get(severity) != null) {
+      current += distribution.get(severity);
     }
-    distribution.put(priority, current + 1);
+    distribution.put(severity, current + 1);
   }
 
   protected int countViolations(Map<RulePriority, Integer> distribution) {
