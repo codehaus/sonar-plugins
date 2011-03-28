@@ -20,21 +20,21 @@
 
 package org.sonar.plugins.secrules;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.sonar.api.rules.Rule;
-import org.sonar.api.rules.RulesManager;
+import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.SonarException;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public final class RulesParser {
 
   private List<Rule> rulesList;
 
-  protected RulesParser(Configuration configuration, RulesManager rulesManager) {
+  protected RulesParser(Configuration configuration, RuleFinder ruleFinder) {
     rulesList = new ArrayList<Rule>();
 
     String[] tokens = configuration.getStringArray(SecurityRulesPlugin.SEC_RULES);
@@ -43,14 +43,14 @@ public final class RulesParser {
       tokens = StringUtils.split(SecurityRulesPlugin.SEC_RULES_DEFAULT, ",");
     }
 
-    for (String token : tokens){
+    for (String token : tokens) {
       String[] s = StringUtils.split(token, ":");
-      if (s.length != 2){
-        throw new SonarException("Parameter of Security Rules Plugin is incorrectly set, should be pluginKey1:ruleKey1,pluginKey2,ruleKey2...");
+      if (s.length != 2) {
+        throw new SonarException("Parameter of Security Rules Plugin is incorrectly set, should be pluginKey1:ruleKey1,pluginKey2:ruleKey2...");
       }
-      Rule rule = rulesManager.getPluginRule(s[0], s[1]);
-      if (rule == null){
-        throw new SonarException("Wrong plugin key (" + s[0] + ") or rule key (" + s[1] +")");
+      Rule rule = ruleFinder.findByKey(s[0], s[1]);
+      if (rule == null) {
+        throw new SonarException("Wrong plugin key (" + s[0] + ") or rule key (" + s[1] + ")");
       }
       rulesList.add(rule);
     }
