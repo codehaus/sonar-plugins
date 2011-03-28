@@ -43,7 +43,7 @@ import org.sonar.plugins.csharp.stylecop.profiles.utils.StyleCopRuleParser;
  */
 public class StyleCopProfileImporter extends ProfileImporter {
 
-  private final RuleFinder ruleFinder;
+  private RuleFinder ruleFinder;
 
   public StyleCopProfileImporter(RuleFinder ruleFinder) {
     super(StyleCopConstants.REPOSITORY_KEY, StyleCopConstants.PLUGIN_NAME);
