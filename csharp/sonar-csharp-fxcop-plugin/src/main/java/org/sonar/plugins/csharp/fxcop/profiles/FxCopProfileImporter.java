@@ -43,7 +43,7 @@ import org.sonar.plugins.csharp.fxcop.profiles.utils.FxCopRuleParser;
  */
 public class FxCopProfileImporter extends ProfileImporter {
 
-  private final RuleFinder ruleFinder;
+  private RuleFinder ruleFinder;
 
   public FxCopProfileImporter(RuleFinder ruleFinder) {
     super(FxCopConstants.REPOSITORY_KEY, FxCopConstants.PLUGIN_NAME);
