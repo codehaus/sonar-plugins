@@ -55,7 +55,7 @@ public class StyleCopProfileImporterTest {
 
   @Test
   public void testImportSimpleProfile() {
-    Reader reader = new StringReader(TestUtils.getResourceContent("/ProfileImporter/SimpleRules.StyleCop"));
+    Reader reader = new StringReader(TestUtils.getResourceContent("/ProfileImporter/SimpleRules.StyleCop.xml"));
     RulesProfile profile = importer.importProfile(reader, messages);
 
     assertThat(profile.getActiveRules().size(), is(2));

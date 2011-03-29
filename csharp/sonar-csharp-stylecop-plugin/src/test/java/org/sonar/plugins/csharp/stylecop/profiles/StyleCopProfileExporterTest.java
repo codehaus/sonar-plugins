@@ -44,7 +44,7 @@ public class StyleCopProfileExporterTest {
     StringWriter writer = new StringWriter();
     new StyleCopProfileExporter().exportProfile(profile, writer);
 
-    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/ProfileExporter/SimpleRules.StyleCop.exported"), writer.toString());
+    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/ProfileExporter/SimpleRules.StyleCop.exported.xml"), writer.toString());
   }
 
 }
