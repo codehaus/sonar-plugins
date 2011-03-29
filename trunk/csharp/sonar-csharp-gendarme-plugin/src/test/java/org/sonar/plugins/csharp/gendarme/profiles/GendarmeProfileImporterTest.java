@@ -56,7 +56,7 @@ public class GendarmeProfileImporterTest {
 
   @Test
   public void testImportSimpleProfile() {
-    Reader reader = new StringReader(TestUtils.getResourceContent("/ProfileImporter/SimpleRules.Gendarme"));
+    Reader reader = new StringReader(TestUtils.getResourceContent("/ProfileImporter/SimpleRules.Gendarme.xml"));
     RulesProfile profile = importer.importProfile(reader, messages);
 
     for (ActiveRule activeRule : profile.getActiveRules()) {
