@@ -21,7 +21,7 @@
 package org.sonar.plugins.csharp.stylecop;
 
 /**
- * Constants of the FxCop plugin.
+ * Constants of the StyleCop plugin.
  */
 public final class StyleCopConstants {
 

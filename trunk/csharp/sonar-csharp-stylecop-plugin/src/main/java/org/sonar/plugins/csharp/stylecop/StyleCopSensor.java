@@ -39,7 +39,7 @@ import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 
 /**
- * Collects the FXCop reporting into sonar.
+ * Collects the StyleCop reporting into sonar.
  */
 @DependsUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
 public class StyleCopSensor implements Sensor {

@@ -109,20 +109,20 @@ public class StyleCopProfileExporter extends ProfileExporter {
       String name = StringUtils.substringAfter(configKey, "#");
 
       // Creates the StyleCop rule
-      StyleCopRule fxCopRule = new StyleCopRule();
-      fxCopRule.setAnalyzerId(analyzerName);
-      fxCopRule.setName(name);
+      StyleCopRule styleCopRule = new StyleCopRule();
+      styleCopRule.setAnalyzerId(analyzerName);
+      styleCopRule.setName(name);
 
       ActiveRule activeRule = activeRuleMap.get(rule.getKey());
       if (activeRule != null) {
-        fxCopRule.setEnabled(true);
+        styleCopRule.setEnabled(true);
         RulePriority priority = activeRule.getSeverity();
         if (priority != null) {
-          fxCopRule.setPriority(priority.name().toLowerCase());
+          styleCopRule.setPriority(priority.name().toLowerCase());
         }
       }
 
-      result.add(fxCopRule);
+      result.add(styleCopRule);
     }
 
     return result;
@@ -130,14 +130,14 @@ public class StyleCopProfileExporter extends ProfileExporter {
 
   private Map<String, List<StyleCopRule>> groupStyleCopRulesByAnalyzer(List<StyleCopRule> rules) {
     Map<String, List<StyleCopRule>> rulesByAnalyzer = new HashMap<String, List<StyleCopRule>>();
-    for (StyleCopRule fxCopRule : rules) {
-      String analyzerId = fxCopRule.getAnalyzerId();
+    for (StyleCopRule styleCopRule : rules) {
+      String analyzerId = styleCopRule.getAnalyzerId();
       List<StyleCopRule> rulesList = rulesByAnalyzer.get(analyzerId);
       if (rulesList == null) {
         rulesList = new ArrayList<StyleCopRule>();
         rulesByAnalyzer.put(analyzerId, rulesList);
       }
-      rulesList.add(fxCopRule);
+      rulesList.add(styleCopRule);
     }
     return rulesByAnalyzer;
   }
@@ -147,22 +147,22 @@ public class StyleCopProfileExporter extends ProfileExporter {
     StringEscapeUtils.escapeXml(writer, analyzerId);
     writer.append("\">\n");
     writer.append("            <Rules>\n");
-    for (StyleCopRule fxCopRule : rulesByAnalyzer.get(analyzerId)) {
-      printRule(writer, fxCopRule);
+    for (StyleCopRule styleCopRule : rulesByAnalyzer.get(analyzerId)) {
+      printRule(writer, styleCopRule);
     }
     writer.append("            </Rules>\n");
     writer.append("        </Analyzer>\n");
   }
 
-  private void printRule(Writer writer, StyleCopRule fxCopRule) throws IOException {
+  private void printRule(Writer writer, StyleCopRule styleCopRule) throws IOException {
     writer.append("                <Rule Name=\"");
-    StringEscapeUtils.escapeXml(writer, fxCopRule.getName());
+    StringEscapeUtils.escapeXml(writer, styleCopRule.getName());
     writer.append("\" SonarPriority=\"");
-    StringEscapeUtils.escapeXml(writer, fxCopRule.getPriority());
+    StringEscapeUtils.escapeXml(writer, styleCopRule.getPriority());
     writer.append("\">\n");
     writer.append("                    <RuleSettings>\n");
     writer.append("                        <BooleanProperty Name=\"Enabled\">");
-    writer.append(fxCopRule.isEnabled() ? "True" : "False");
+    writer.append(styleCopRule.isEnabled() ? "True" : "False");
     writer.append("</BooleanProperty>\n");
     writer.append("                    </RuleSettings>\n");
     writer.append("                </Rule>\n");

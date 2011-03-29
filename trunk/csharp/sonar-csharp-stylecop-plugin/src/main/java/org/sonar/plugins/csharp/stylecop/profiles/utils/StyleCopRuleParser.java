@@ -54,7 +54,7 @@ public final class StyleCopRuleParser {
   }
 
   /**
-   * Parses the context of FXCop rules.
+   * Parses the context of StyleCop rules.
    * 
    * @param xml
    * @return

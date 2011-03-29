@@ -21,7 +21,7 @@
 package org.sonar.plugins.csharp.gendarme;
 
 /**
- * Constants of the FxCop plugin.
+ * Constants of the Gendarme plugin.
  */
 public final class GendarmeConstants {
 
@@ -34,8 +34,8 @@ public final class GendarmeConstants {
   public static final String REPOSITORY_KEY = PLUGIN_KEY;
   public static final String REPOSITORY_NAME = PLUGIN_NAME;
 
-  public static final String STYLECOP_RULES_FILE = "sonar.Gendarme";
-  public static final String STYLECOP_REPORT_XML = "gendarme-report.xml";
+  public static final String GENDARME_RULES_FILE = "sonar.Gendarme";
+  public static final String GENDARME_REPORT_XML = "gendarme-report.xml";
 
   // ----------- Plugin Configuration Properties ----------- //
   public static final String INSTALL_DIR_KEY = "sonar.gendarme.installDirectory";

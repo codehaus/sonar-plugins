@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 public class StyleCopProfileExporterTest {
 
   @Test
-  public void testSimpleFxCopRulesToExport() throws IOException, SAXException {
+  public void testSimpleStyleCopRulesToExport() throws IOException, SAXException {
     RulesProfile profile = RulesProfile.create("Sonar C# Way", "cs");
     profile.activateRule(Rule.create("stylecop", "ElementMustBeginWithUpperCaseLetter", "Element must begin with upper case letter")
         .setConfigKey("Microsoft.StyleCop.CSharp.NamingRules#ElementMustBeginWithUpperCaseLetter"), null);
