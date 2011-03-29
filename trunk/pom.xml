@@ -36,6 +36,7 @@
         <module>jlint</module>
         <module>jmeter</module>
         <module>ldap</module>
+        <module>mantis</module>
         <module>maven-report</module>
         <module>motion-chart</module>
         <module>parent</module>
