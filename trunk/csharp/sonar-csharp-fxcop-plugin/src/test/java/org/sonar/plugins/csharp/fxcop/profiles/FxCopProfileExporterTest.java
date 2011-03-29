@@ -47,7 +47,7 @@ public class FxCopProfileExporterTest {
     StringWriter writer = new StringWriter();
     new FxCopProfileExporter().exportProfile(profile, writer);
 
-    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/ProfileExporter/SimpleRules.FxCop.exported"), writer.toString());
+    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/ProfileExporter/SimpleRules.FxCop.exported.xml"), writer.toString());
   }
 
 }

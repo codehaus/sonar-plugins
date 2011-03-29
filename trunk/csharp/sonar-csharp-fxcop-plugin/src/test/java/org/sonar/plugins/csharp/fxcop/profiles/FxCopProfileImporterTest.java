@@ -56,7 +56,7 @@ public class FxCopProfileImporterTest {
 
   @Test
   public void testImportSimpleProfile() {
-    Reader reader = new StringReader(TestUtils.getResourceContent("/ProfileImporter/SimpleRules.FxCop"));
+    Reader reader = new StringReader(TestUtils.getResourceContent("/ProfileImporter/SimpleRules.FxCop.xml"));
     RulesProfile profile = importer.importProfile(reader, messages);
 
     assertThat(profile.getActiveRules().size(), is(3));
