@@ -27,6 +27,9 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
+import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileImporter;
+import org.sonar.plugins.csharp.gendarme.profiles.SonarWayProfile;
 
 /**
  * Main class of the Gendarme plugin.
@@ -67,13 +70,13 @@ public class GendarmePlugin implements Plugin {
    */
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    // list.add(GendarmeSensor.class);
+    list.add(GendarmeSensor.class);
 
     // Rules and profiles
     list.add(GendarmeRuleRepository.class);
-    // list.add(GendarmeProfileImporter.class);
-    // list.add(GendarmeProfileExporter.class);
-    // list.add(SonarWayProfile.class);
+    list.add(GendarmeProfileImporter.class);
+    list.add(GendarmeProfileExporter.class);
+    list.add(SonarWayProfile.class);
 
     // Running Gendarme
     // list.add(GendarmeRunner.class);
