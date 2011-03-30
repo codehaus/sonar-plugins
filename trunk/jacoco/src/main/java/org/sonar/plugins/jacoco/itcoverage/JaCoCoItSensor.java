@@ -66,7 +66,6 @@ public class JaCoCoItSensor implements Sensor {
       for (Measure measure : measures) {
         Measure itMeasure = convertForIT(measure);
         if (itMeasure != null) {
-          System.out.println(resource.getKey() + "-->" + itMeasure.getMetricKey() + " val=" + itMeasure.getValue() + ", data=" + itMeasure.getData());
           context.saveMeasure(resource, itMeasure);
         }
       }
