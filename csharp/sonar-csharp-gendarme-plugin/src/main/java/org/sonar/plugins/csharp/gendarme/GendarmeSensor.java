@@ -36,6 +36,7 @@ import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
+import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
 import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 /**
@@ -50,7 +51,7 @@ public class GendarmeSensor implements Sensor {
   private RulesProfile rulesProfile;
   private GendarmeRunner gendarmeRunner;
   private GendarmeProfileExporter profileExporter;
-//  private GendarmeResultParser gendarmeResultParser;
+  private GendarmeResultParser gendarmeResultParser;
 
   /**
    * Constructs a {@link GendarmeSensor}.
@@ -62,12 +63,12 @@ public class GendarmeSensor implements Sensor {
    * @param rulesProfile
    */
   public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, GendarmeRunner gendarmeRunner,
-      GendarmeProfileExporter profileExporter/*, GendarmeResultParser gendarmeResultParser*/) {
+      GendarmeProfileExporter profileExporter, GendarmeResultParser gendarmeResultParser) {
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
     this.gendarmeRunner = gendarmeRunner;
     this.profileExporter = profileExporter;
-//    this.gendarmeResultParser = gendarmeResultParser;
+    this.gendarmeResultParser = gendarmeResultParser;
   }
 
   /**
@@ -86,7 +87,7 @@ public class GendarmeSensor implements Sensor {
       return;
     }
 
-//    gendarmeResultParser.setEncoding(fileSystem.getSourceCharset());
+    gendarmeResultParser.setEncoding(fileSystem.getSourceCharset());
 
     // prepare config file for Gendarme
     File gendarmeConfigFile = generateConfigurationFile();
@@ -114,13 +115,13 @@ public class GendarmeSensor implements Sensor {
   }
 
   private void analyseResults() {
-//    File report = new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_REPORT_XML);
-//    if (report.exists()) {
-//      LOG.info("Gendarme report found at location {}", report.getAbsolutePath());
-//      gendarmeResultParser.parse(report);
-//    } else {
-//      LOG.error("Gendarme report cound not be found: {}", report.getAbsolutePath());
-//    }
+    File report = new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_REPORT_XML);
+    if (report.exists()) {
+      LOG.info("Gendarme report found at location {}", report.getAbsolutePath());
+      gendarmeResultParser.parse(report);
+    } else {
+      LOG.error("Gendarme report cound not be found: {}", report.getAbsolutePath());
+    }
   }
 
 }

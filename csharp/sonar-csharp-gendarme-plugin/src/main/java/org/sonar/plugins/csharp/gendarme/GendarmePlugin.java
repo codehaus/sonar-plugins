@@ -30,6 +30,8 @@ import org.sonar.api.Property;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileImporter;
 import org.sonar.plugins.csharp.gendarme.profiles.SonarWayProfile;
+import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
+import org.sonar.plugins.csharp.gendarme.results.GendarmeViolationMaker;
 import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 /**
@@ -84,7 +86,8 @@ public class GendarmePlugin implements Plugin {
 
     // Running Gendarme
     list.add(GendarmeRunner.class);
-    // list.add(GendarmeResultParser.class);
+    list.add(GendarmeResultParser.class);
+    list.add(GendarmeViolationMaker.class);
     return list;
   }
 
