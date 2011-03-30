@@ -60,7 +60,7 @@ public class FxCopRunner implements BatchExtension {
   public void execute(File fxCopConfigFile) {
     LOG.debug("Executing FxCop program...");
     command.setFxCopConfigFile(fxCopConfigFile);
-    new CommandExecutor().execute(command.toArray(), command.getTimeoutMinutes() * 60);
+    new CommandExecutor().execute(command.toArray(), command.getTimeoutMinutes() * 60); // NOSONAR Cannot use TimeUnit#MINUTES (needs Java 1.6+)
   }
 
 }

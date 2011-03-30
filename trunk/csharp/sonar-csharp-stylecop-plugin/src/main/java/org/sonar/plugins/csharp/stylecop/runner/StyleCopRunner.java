@@ -76,7 +76,7 @@ public class StyleCopRunner implements BatchExtension {
     command.setStyleCopConfigFile(styleCopConfigFile);
     command.setMsBuildFile(msBuildFile);
     command.setDotnetSdkDirectory(microsoftWindowsEnvironment.getDotnetSdkDirectory());
-    new CommandExecutor().execute(command.toArray(), timeoutMinutes * 60);
+    new CommandExecutor().execute(command.toArray(), timeoutMinutes * 60); // NOSONAR Cannot use TimeUnit#MINUTES (needs Java 1.6+)
   }
 
 }

@@ -30,6 +30,7 @@ import org.sonar.api.Property;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileImporter;
 import org.sonar.plugins.csharp.gendarme.profiles.SonarWayProfile;
+import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 /**
  * Main class of the Gendarme plugin.
@@ -38,6 +39,9 @@ import org.sonar.plugins.csharp.gendarme.profiles.SonarWayProfile;
     @Property(key = GendarmeConstants.INSTALL_DIR_KEY, defaultValue = GendarmeConstants.INSTALL_DIR_DEFVALUE,
         name = "Gendarme install directory", description = "Absolute path of the Gendarme program install directory.", global = true,
         project = false),
+    @Property(key = GendarmeConstants.GENDARME_CONFIDENCE_KEY, defaultValue = GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE,
+        name = "Gendarme confidence", description = "Filter defects for the specified confidence levels. (low/normal/high/total with +/-)",
+        global = true, project = true),
     @Property(key = GendarmeConstants.TIMEOUT_MINUTES_KEY, defaultValue = GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE + "",
         name = "Gendarme program timeout", description = "Maximum number of minutes before the Gendarme program will be stopped.",
         global = true, project = true) })
@@ -79,7 +83,7 @@ public class GendarmePlugin implements Plugin {
     list.add(SonarWayProfile.class);
 
     // Running Gendarme
-    // list.add(GendarmeRunner.class);
+    list.add(GendarmeRunner.class);
     // list.add(GendarmeResultParser.class);
     return list;
   }

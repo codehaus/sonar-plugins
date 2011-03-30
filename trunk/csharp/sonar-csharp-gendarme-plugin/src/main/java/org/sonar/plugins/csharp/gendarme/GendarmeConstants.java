@@ -41,6 +41,12 @@ public final class GendarmeConstants {
   public static final String INSTALL_DIR_KEY = "sonar.gendarme.installDirectory";
   public static final String INSTALL_DIR_DEFVALUE = "C:/Program Files/gendarme-2.10-bin";
 
+  public static final String ASSEMBLIES_TO_SCAN_KEY = "sonar.gendarme.assemblies";
+  public static final String ASSEMBLIES_TO_SCAN_DEFVALUE = "";
+
+  public static final String GENDARME_CONFIDENCE_KEY = "sonar.gendarme.confidence";
+  public static final String GENDARME_CONFIDENCE_DEFVALUE = "normal+";
+
   public static final String TIMEOUT_MINUTES_KEY = "sonar.gendarme.timeoutMinutes";
   public static final int TIMEOUT_MINUTES_DEFVALUE = 10;
 
