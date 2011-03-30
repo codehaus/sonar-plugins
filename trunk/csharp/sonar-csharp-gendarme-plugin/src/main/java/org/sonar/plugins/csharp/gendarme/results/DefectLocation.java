@@ -32,9 +32,9 @@ import org.sonar.api.utils.ParsingUtils;
  * 
  * @author Alexandre Victoor
  */
-public class DefectLocation {
+public final class DefectLocation {
 
-  private final static Logger LOG = LoggerFactory.getLogger(DefectLocation.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DefectLocation.class);
 
   private String path;
   private Integer lineNumber;

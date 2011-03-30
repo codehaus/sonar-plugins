@@ -77,11 +77,29 @@ public class GendarmeViolationMakerTest {
   }
 
   @Test
+  public void testCreateViolationWithNoResourceFound() throws Exception {
+    violationMaker.registerRuleType(aRule, "Assembly");
+    violationMaker.setCurrentTargetName("Foo)");
+    violationMaker.setCurrentLocation("Foo");
+    Violation violation = violationMaker.createViolation();
+    assertThat(violation.getResource(), is((Resource) project));
+    assertNull(violation.getLineId());
+  }
+
+  @Test
+  public void testCreateViolationOnAssembly() throws Exception {
+    violationMaker.registerRuleType(aRule, "Assembly");
+    Violation violation = violationMaker.createViolation();
+    assertThat(violation.getResource(), is((Resource) project));
+    assertThat(violation.getSeverity(), is(RulePriority.BLOCKER));
+    assertNull(violation.getLineId());
+  }
+
+  @Test
   public void testCreateViolationWithNoSourceInfoButLocationForMethod() throws Exception {
     violationMaker.registerRuleType(aRule, "Method");
     Violation violation = violationMaker.createViolation();
     assertThat(violation.getResource(), is(aFile));
-    assertThat(violation.getSeverity(), is(RulePriority.BLOCKER));
     assertNull(violation.getLineId());
   }
 
@@ -100,7 +118,6 @@ public class GendarmeViolationMakerTest {
     violationMaker.setCurrentLocation("");
     Violation violation = violationMaker.createViolation();
     assertThat(violation.getResource(), is(aFile));
-    assertThat(violation.getSeverity(), is(RulePriority.BLOCKER));
     assertNull(violation.getLineId());
   }
 
