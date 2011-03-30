@@ -36,6 +36,7 @@ import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
+import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 /**
  * Collects the Gendarme reporting into sonar.
@@ -47,7 +48,7 @@ public class GendarmeSensor implements Sensor {
 
   private ProjectFileSystem fileSystem;
   private RulesProfile rulesProfile;
-//  private GendarmeRunner gendarmeRunner;
+  private GendarmeRunner gendarmeRunner;
   private GendarmeProfileExporter profileExporter;
 //  private GendarmeResultParser gendarmeResultParser;
 
@@ -60,11 +61,11 @@ public class GendarmeSensor implements Sensor {
    * @param profileExporter
    * @param rulesProfile
    */
-  public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, //GendarmeRunner gendarmeRunner,
+  public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, GendarmeRunner gendarmeRunner,
       GendarmeProfileExporter profileExporter/*, GendarmeResultParser gendarmeResultParser*/) {
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
-//    this.gendarmeRunner = gendarmeRunner;
+    this.gendarmeRunner = gendarmeRunner;
     this.profileExporter = profileExporter;
 //    this.gendarmeResultParser = gendarmeResultParser;
   }
@@ -91,7 +92,7 @@ public class GendarmeSensor implements Sensor {
     File gendarmeConfigFile = generateConfigurationFile();
 
     // run Gendarme
-//    gendarmeRunner.execute(gendarmeConfigFile);
+    gendarmeRunner.execute(gendarmeConfigFile);
 
     // and analyse results
     analyseResults();
