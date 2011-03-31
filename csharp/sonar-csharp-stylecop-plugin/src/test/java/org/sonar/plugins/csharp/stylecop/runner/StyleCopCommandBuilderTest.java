@@ -32,45 +32,48 @@ import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.utils.Command;
 
-public class StyleCopCommandTest {
+public class StyleCopCommandBuilderTest {
 
-  private static StyleCopCommand styleCopCommand;
+  private static StyleCopCommandBuilder styleCopCommandBuilder;
   private static ProjectFileSystem projectFileSystem;
 
   @BeforeClass
   public static void initStatic() throws Exception {
     projectFileSystem = mock(ProjectFileSystem.class);
-    when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(StyleCopCommandTest.class.getResource("/Runner")));
+    when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(StyleCopCommandBuilderTest.class.getResource("/Runner")));
   }
 
   @Test
   public void testToArray() throws Exception {
-    styleCopCommand = new StyleCopCommand(projectFileSystem);
-    styleCopCommand.setStyleCopConfigFile(FileUtils.toFile(getClass().getResource("/Runner/Command/SimpleRules.StyleCop")));
-    styleCopCommand.setMsBuildFile(FileUtils.toFile(getClass().getResource("/Runner/Command/stylecop-msbuild.xml")));
-    styleCopCommand.setDotnetSdkDirectory(new File("FakeDirectory"));
-    String[] commands = styleCopCommand.toArray();
-    assertThat(commands[0], endsWith("MSBuild.exe"));
-    assertThat(commands[1], endsWith("Runner"));
-    assertThat(commands[2], is("/target:StyleCopLaunch"));
-    assertThat(commands[3], is("/noconsolelogger"));
-    assertThat(commands[4], endsWith("stylecop-msbuild.xml"));
+    styleCopCommandBuilder = new StyleCopCommandBuilder(projectFileSystem);
+    styleCopCommandBuilder.setStyleCopConfigFile(FileUtils.toFile(getClass().getResource("/Runner/Command/SimpleRules.StyleCop")));
+    styleCopCommandBuilder.setMsBuildFile(FileUtils.toFile(getClass().getResource("/Runner/Command/stylecop-msbuild.xml")));
+    styleCopCommandBuilder.setDotnetSdkDirectory(new File("FakeDirectory"));
+    Command command = styleCopCommandBuilder.createCommand();
+
+    assertThat(command.getExecutable(), endsWith("MSBuild.exe"));
+    String[] commands = command.getArguments().toArray(new String[] {});
+    assertThat(commands[0], endsWith("Runner"));
+    assertThat(commands[1], is("/target:StyleCopLaunch"));
+    assertThat(commands[2], is("/noconsolelogger"));
+    assertThat(commands[3], endsWith("stylecop-msbuild.xml"));
   }
 
   @Test(expected = IllegalStateException.class)
   public void testWithUnexistingStyleCopConfigFile() throws Exception {
-    styleCopCommand = new StyleCopCommand(projectFileSystem);
-    styleCopCommand.setStyleCopConfigFile(new File("Fake"));
-    styleCopCommand.toArray();
+    styleCopCommandBuilder = new StyleCopCommandBuilder(projectFileSystem);
+    styleCopCommandBuilder.setStyleCopConfigFile(new File("Fake"));
+    styleCopCommandBuilder.createCommand();
   }
 
   @Test(expected = IllegalStateException.class)
   public void testWithUnexistingMsBuildFile() throws Exception {
-    styleCopCommand = new StyleCopCommand(projectFileSystem);
-    styleCopCommand.setStyleCopConfigFile(FileUtils.toFile(getClass().getResource("/Runner/Command/SimpleRules.StyleCop")));
-    styleCopCommand.setMsBuildFile(FileUtils.toFile(getClass().getResource("Fake")));
-    styleCopCommand.toArray();
+    styleCopCommandBuilder = new StyleCopCommandBuilder(projectFileSystem);
+    styleCopCommandBuilder.setStyleCopConfigFile(FileUtils.toFile(getClass().getResource("/Runner/Command/SimpleRules.StyleCop")));
+    styleCopCommandBuilder.setMsBuildFile(FileUtils.toFile(getClass().getResource("Fake")));
+    styleCopCommandBuilder.createCommand();
   }
 
 }

@@ -35,28 +35,31 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.utils.Command;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 
 import com.google.common.collect.Lists;
 
-public class FxCopCommandTest {
+public class FxCopCommandBuilderTest {
 
-  private static FxCopCommand fxCopCommand;
+  private static FxCopCommandBuilder fxCopCommandBuilder;
   private static Configuration configuration;
   private static ProjectFileSystem projectFileSystem;
   private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private static VisualStudioProject project;
-  private static File fakeFxCopProgramFile;
+  private static File fakeFxCopExecutable;
+  private static File fakeFxCopConfigFile;
 
   @BeforeClass
   public static void initStatic() throws Exception {
-    fakeFxCopProgramFile = FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner/FakeFxCopConfigFile.xml"));
+    fakeFxCopExecutable = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeProg/FxCopCmd.exe"));
+    fakeFxCopConfigFile = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeFxCopConfigFile.xml"));
     configuration = new BaseConfiguration();
 
     projectFileSystem = mock(ProjectFileSystem.class);
-    when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner")));
+    when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));
 
     microsoftWindowsEnvironment = mock(MicrosoftWindowsEnvironment.class);
     VisualStudioSolution solution = mock(VisualStudioSolution.class);
@@ -68,7 +71,7 @@ public class FxCopCommandTest {
   @Before
   public void init() throws Exception {
     configuration.clear();
-    configuration.addProperty(FxCopConstants.EXECUTABLE_KEY, fakeFxCopProgramFile.getAbsolutePath());
+    configuration.addProperty(FxCopConstants.EXECUTABLE_KEY, fakeFxCopExecutable.getAbsolutePath());
   }
 
   @Test
@@ -76,18 +79,20 @@ public class FxCopCommandTest {
     configuration.addProperty(FxCopConstants.ASSEMBLIES_TO_SCAN_KEY, "FakeAssemblies/Fake1.assembly, FakeAssemblies/Fake2.assembly");
     configuration.addProperty(FxCopConstants.ASSEMBLIES_TO_SCAN_KEY, "FakeDepFolder, UnexistingFolder");
 
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(fakeFxCopProgramFile);
-    String[] commands = fxCopCommand.toArray();
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(fakeFxCopConfigFile);
+    Command command = fxCopCommandBuilder.createCommand();
 
-    assertThat(commands[1], endsWith("FakeFxCopConfigFile.xml"));
-    assertThat(commands[2], endsWith("fxcop-report.xml"));
-    assertThat(commands[3], endsWith("Fake1.assembly"));
-    assertThat(commands[4], endsWith("Fake2.assembly"));
-    assertThat(commands[5], endsWith("FakeDepFolder"));
-    assertThat(commands[6], endsWith("/igc"));
-    assertThat(commands[7], endsWith("/to:600"));
-    assertThat(commands[8], endsWith("/gac"));
+    assertThat(command.getExecutable(), endsWith("FxCopCmd.exe"));
+    String[] commands = command.getArguments().toArray(new String[] {});
+    assertThat(commands[0], endsWith("FakeFxCopConfigFile.xml"));
+    assertThat(commands[1], endsWith("fxcop-report.xml"));
+    assertThat(commands[2], endsWith("Fake1.assembly"));
+    assertThat(commands[3], endsWith("Fake2.assembly"));
+    assertThat(commands[4], endsWith("FakeDepFolder"));
+    assertThat(commands[5], endsWith("/igc"));
+    assertThat(commands[6], endsWith("/to:600"));
+    assertThat(commands[7], endsWith("/gac"));
   }
 
   @Test
@@ -96,29 +101,33 @@ public class FxCopCommandTest {
     configuration.addProperty(FxCopConstants.IGNORE_GENERATED_CODE_KEY, "false");
     configuration.addProperty(FxCopConstants.TIMEOUT_MINUTES_KEY, "100");
 
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(fakeFxCopProgramFile);
-    String[] commands = fxCopCommand.toArray();
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(fakeFxCopConfigFile);
+    Command command = fxCopCommandBuilder.createCommand();
 
-    assertThat(commands[1], endsWith("FakeFxCopConfigFile.xml"));
-    assertThat(commands[2], endsWith("fxcop-report.xml"));
-    assertThat(commands[3], endsWith("Fake1.assembly"));
-    assertThat(commands[4], endsWith("Fake2.assembly"));
-    assertThat(commands[5], endsWith("/to:6000"));
-    assertThat(commands[6], endsWith("/gac"));
+    assertThat(command.getExecutable(), endsWith("FxCopCmd.exe"));
+    String[] commands = command.getArguments().toArray(new String[] {});
+    assertThat(commands[0], endsWith("FakeFxCopConfigFile.xml"));
+    assertThat(commands[1], endsWith("fxcop-report.xml"));
+    assertThat(commands[2], endsWith("Fake1.assembly"));
+    assertThat(commands[3], endsWith("Fake2.assembly"));
+    assertThat(commands[4], endsWith("/to:6000"));
+    assertThat(commands[5], endsWith("/gac"));
   }
 
   @Test
   public void testToArrayWithNoConfigButExistingDebugAssembly() throws Exception {
     when(project.isTest()).thenReturn(false);
     when(project.getDebugArtifact()).thenReturn(
-        FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
+        FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
 
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(fakeFxCopProgramFile);
-    String[] commands = fxCopCommand.toArray();
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(fakeFxCopConfigFile);
+    Command command = fxCopCommandBuilder.createCommand();
 
-    assertThat(commands[3], endsWith("Fake1.assembly"));
+    assertThat(command.getExecutable(), endsWith("FxCopCmd.exe"));
+    String[] commands = command.getArguments().toArray(new String[] {});
+    assertThat(commands[2], endsWith("Fake1.assembly"));
   }
 
   @Test
@@ -126,43 +135,45 @@ public class FxCopCommandTest {
     when(project.isTest()).thenReturn(false);
     when(project.getDebugArtifact()).thenReturn(null);
     when(project.getReleaseArtifact()).thenReturn(
-        FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
+        FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
 
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(fakeFxCopProgramFile);
-    String[] commands = fxCopCommand.toArray();
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(fakeFxCopConfigFile);
+    Command command = fxCopCommandBuilder.createCommand();
 
-    assertThat(commands[3], endsWith("Fake1.assembly"));
+    assertThat(command.getExecutable(), endsWith("FxCopCmd.exe"));
+    String[] commands = command.getArguments().toArray(new String[] {});
+    assertThat(commands[2], endsWith("Fake1.assembly"));
   }
 
   @Test(expected = IllegalStateException.class)
   public void testToArrayWithNoConfigAndNonExistingReleseAssembly() throws Exception {
     when(project.isTest()).thenReturn(false);
     when(project.getDebugArtifact()).thenReturn(null);
-    when(project.getReleaseArtifact()).thenReturn(FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner/FakeAssemblies/")));
+    when(project.getReleaseArtifact()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/")));
 
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(fakeFxCopProgramFile);
-    fxCopCommand.toArray();
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(fakeFxCopConfigFile);
+    fxCopCommandBuilder.createCommand();
   }
 
   @Test(expected = IllegalStateException.class)
   public void testOnlyTestProject() throws Exception {
     when(project.isTest()).thenReturn(true);
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(fakeFxCopProgramFile);
-    fxCopCommand.toArray();
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(fakeFxCopConfigFile);
+    fxCopCommandBuilder.createCommand();
   }
 
   @Test(expected = IllegalStateException.class)
   public void testWithNullFxCopConfigFile() throws Exception {
     when(project.isTest()).thenReturn(false);
     when(project.getDebugArtifact()).thenReturn(
-        FileUtils.toFile(FxCopCommandTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
-    
-    fxCopCommand = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
-    fxCopCommand.setFxCopConfigFile(null);
-    fxCopCommand.toArray();
+        FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
+
+    fxCopCommandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    fxCopCommandBuilder.setFxCopConfigFile(null);
+    fxCopCommandBuilder.createCommand();
   }
 
 }
