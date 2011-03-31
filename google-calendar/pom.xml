@@ -36,6 +36,10 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <scm>
+        <url>https://svn.codehaus.org/sonar-plugins/trunk/google-calendar/</url>
+        <connection>https://svn.codehaus.org/sonar-plugins/trunk/google-calendar/</connection>
+    </scm>
 
     <dependencies>
         <dependency>
