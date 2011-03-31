@@ -55,7 +55,10 @@ public class FxCopResultParser implements BatchExtension {
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopResultParser.class);
   private static final String NAMESPACE = "Namespace";
+  private static final String NAMESPACES = "Namespaces";
+  private static final String TARGETS = "Targets";
   private static final String MESSAGE = "Message";
+  private static final String MESSAGES = "Messages";
   private static final String MODULE = "Module";
   private static final String NAME = "Name";
   private static final String TYPENAME = "TypeName";
@@ -97,8 +100,13 @@ public class FxCopResultParser implements BatchExtension {
       fileInputStream = new FileInputStream(file);
       SMHierarchicCursor cursor = inputFactory.rootElementCursor(new InputStreamReader(fileInputStream, encoding));
       SMInputCursor mainCursor = cursor.advance().childElementCursor();
-      parseNamespacesBloc(mainCursor);
-      parseTargetsBloc(mainCursor);
+      while (mainCursor.getNext() != null) {
+        if (NAMESPACES.equals(mainCursor.getQName().getLocalPart())) {
+          parseNamespacesBloc(mainCursor);
+        } else if (TARGETS.equals(mainCursor.getQName().getLocalPart())) {
+          parseTargetsBloc(mainCursor);
+        }
+      }
       cursor.getStreamReader().closeCompletely();
     } catch (XMLStreamException e) {
       throw new SonarException("Error while reading FxCop result file: " + file.getAbsolutePath(), e);
@@ -120,7 +128,7 @@ public class FxCopResultParser implements BatchExtension {
 
   private void parseNamespacesBloc(SMInputCursor cursor) throws XMLStreamException {
     // Cursor in on <Namespaces>
-    SMInputCursor namespacesCursor = cursor.advance().childElementCursor(NAMESPACE);
+    SMInputCursor namespacesCursor = cursor.childElementCursor(NAMESPACE);
     while (namespacesCursor.getNext() != null) {
       SMInputCursor messagesCursor = namespacesCursor.descendantElementCursor(MESSAGE);
       while (messagesCursor.getNext() != null) {
@@ -131,7 +139,7 @@ public class FxCopResultParser implements BatchExtension {
 
   private void parseTargetsBloc(SMInputCursor cursor) throws XMLStreamException {
     // Cursor on <Targets>
-    SMInputCursor modulesCursor = cursor.advance().descendantElementCursor(MODULE);
+    SMInputCursor modulesCursor = cursor.descendantElementCursor(MODULE);
     while (modulesCursor.getNext() != null) {
       parseModuleMessagesBloc(modulesCursor);
     }
@@ -140,21 +148,22 @@ public class FxCopResultParser implements BatchExtension {
   private void parseModuleMessagesBloc(SMInputCursor cursor) throws XMLStreamException {
     // Cursor on <Module>
     SMInputCursor moduleChildrenCursor = cursor.childElementCursor();
-    if (moduleChildrenCursor.getNext() != null) {
-      // We are on <Messages>, look for <Message>
-      SMInputCursor messagesCursor = moduleChildrenCursor.childElementCursor(MESSAGE);
-      while (messagesCursor.getNext() != null) {
-        createViolationFromMessageAtProjectLevel(messagesCursor);
-      }
-    }
-    if (moduleChildrenCursor.getNext() != null) {
-      // We are on <Namespaces>, get <Namespace>
-      SMInputCursor namespaceCursor = moduleChildrenCursor.childElementCursor();
-      while (namespaceCursor.getNext() != null) {
-        String namespaceName = namespaceCursor.getAttrValue(NAME);
-        SMInputCursor typeCursor = namespaceCursor.childElementCursor().advance().childElementCursor();
-        while (typeCursor.getNext() != null) {
-          parseTypeBloc(namespaceName, typeCursor);
+    while (moduleChildrenCursor.getNext() != null) {
+      if (MESSAGES.equals(moduleChildrenCursor.getQName().getLocalPart())) {
+        // We are on <Messages>, look for <Message>
+        SMInputCursor messagesCursor = moduleChildrenCursor.childElementCursor(MESSAGE);
+        while (messagesCursor.getNext() != null) {
+          createViolationFromMessageAtProjectLevel(messagesCursor);
+        }
+      } else if (NAMESPACES.equals(moduleChildrenCursor.getQName().getLocalPart())) {
+        // We are on <Namespaces>, get <Namespace>
+        SMInputCursor namespaceCursor = moduleChildrenCursor.childElementCursor();
+        while (namespaceCursor.getNext() != null) {
+          String namespaceName = namespaceCursor.getAttrValue(NAME);
+          SMInputCursor typeCursor = namespaceCursor.childElementCursor().advance().childElementCursor();
+          while (typeCursor.getNext() != null) {
+            parseTypeBloc(namespaceName, typeCursor);
+          }
         }
       }
     }
