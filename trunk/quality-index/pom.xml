@@ -131,6 +131,7 @@
                 <configuration>
                   <background>true</background>
                   <clean>true</clean>
+                  <configBackup>${basedir}/src/it/sonar-backup.xml</configBackup>
                 </configuration>
                 <goals>
                   <goal>start-war</goal>
@@ -141,7 +142,6 @@
                 <phase>pre-integration-test</phase>
                 <configuration>
                   <projectsDir>${project.build.directory}/it/maven-projects</projectsDir>
-                  <configBackup>${basedir}/src/it/sonar-backup.xml</configBackup>
                 </configuration>
                 <goals>
                   <goal>analyze</goal>
