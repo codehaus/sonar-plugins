@@ -178,6 +178,7 @@
                   <clean>true</clean>
                   <copyPluginArtifact>false</copyPluginArtifact>
                   <workDir>${project.build.directory}/it-work</workDir>
+                  <configBackup>${basedir}/src/it/sonar-backup.xml</configBackup>
                 </configuration>
                 <goals>
                   <goal>start-war</goal>
