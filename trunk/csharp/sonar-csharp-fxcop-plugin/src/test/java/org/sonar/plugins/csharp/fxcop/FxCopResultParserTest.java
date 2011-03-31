@@ -43,7 +43,6 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
-import org.sonar.plugins.csharp.fxcop.FxCopResultParser;
 
 public class FxCopResultParserTest {
 
@@ -63,11 +62,11 @@ public class FxCopResultParserTest {
     resourcesBridge = mock(CSharpResourcesBridge.class);
     parser = new FxCopResultParser(null, context, newRuleFinder(), resourcesBridge);
     parser.setEncoding(Charset.forName("UTF-8"));
-    resultFile = FileUtils.toFile(getClass().getResource("/Results/fxcop-report.xml"));
   }
 
   @Test
-  public void testParseFile() throws Exception {
+  public void testParseFile1() throws Exception {
+    resultFile = FileUtils.toFile(getClass().getResource("/Results/fxcop-report-1.xml"));
     parser.parse(resultFile);
 
     // Verify calls on C# Resource bridge
@@ -75,6 +74,19 @@ public class FxCopResultParserTest {
 
     // Verify calls on context to save violations
     verify(context, times(13)).saveViolation(any(Violation.class));
+  }
+
+  @Test
+  public void testParseFile2() throws Exception {
+    resultFile = FileUtils.toFile(getClass().getResource("/Results/fxcop-report-2.xml"));
+    parser.parse(resultFile);
+
+    // Verify calls on C# Resource bridge
+    verify(resourcesBridge, times(1)).getFromTypeName(eq("Example.Core"), eq("Money"));
+    verify(resourcesBridge, times(1)).getFromTypeName(eq("Example.Core"), eq("MoneyBag"));
+
+    // Verify calls on context to save violations
+    verify(context, times(4)).saveViolation(any(Violation.class));
   }
 
   private RuleFinder newRuleFinder() {
