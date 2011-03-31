@@ -38,9 +38,8 @@ import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
  * Main class of the Gendarme plugin.
  */
 @Properties({
-    @Property(key = GendarmeConstants.INSTALL_DIR_KEY, defaultValue = GendarmeConstants.INSTALL_DIR_DEFVALUE,
-        name = "Gendarme install directory", description = "Absolute path of the Gendarme program install directory.", global = true,
-        project = false),
+    @Property(key = GendarmeConstants.EXECUTABLE_KEY, defaultValue = GendarmeConstants.EXECUTABLE_DEFVALUE, name = "Gendarme executable",
+        description = "Absolute path of the Gendarme program.", global = true, project = false),
     @Property(key = GendarmeConstants.GENDARME_CONFIDENCE_KEY, defaultValue = GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE,
         name = "Gendarme confidence", description = "Filter defects for the specified confidence levels. (low/normal/high/total with +/-)",
         global = true, project = true),

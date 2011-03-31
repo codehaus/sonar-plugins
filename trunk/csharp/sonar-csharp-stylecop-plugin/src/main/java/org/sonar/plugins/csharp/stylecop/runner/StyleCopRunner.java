@@ -27,7 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.utils.CommandExecutor;
 import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 
 /**
@@ -38,7 +40,7 @@ public class StyleCopRunner implements BatchExtension {
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopRunner.class);
 
   private ProjectFileSystem projectFileSystem;
-  private StyleCopCommand command;
+  private StyleCopCommandBuilder commandBuilder;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private MsBuildFileGenerator msBuildFileGenerator;
   private int timeoutMinutes;
@@ -55,7 +57,7 @@ public class StyleCopRunner implements BatchExtension {
       MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.projectFileSystem = projectFileSystem;
     this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
-    this.command = new StyleCopCommand(projectFileSystem);
+    this.commandBuilder = new StyleCopCommandBuilder(projectFileSystem);
     this.msBuildFileGenerator = new MsBuildFileGenerator(configuration);
     timeoutMinutes = configuration.getInt(StyleCopConstants.TIMEOUT_MINUTES_KEY, StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE);
   }
@@ -73,10 +75,15 @@ public class StyleCopRunner implements BatchExtension {
     LOG.debug("  -> Success: {}", msBuildFile.getAbsolutePath());
 
     LOG.debug("Executing StyleCop program...");
-    command.setStyleCopConfigFile(styleCopConfigFile);
-    command.setMsBuildFile(msBuildFile);
-    command.setDotnetSdkDirectory(microsoftWindowsEnvironment.getDotnetSdkDirectory());
-    new CommandExecutor().execute(command.toArray(), timeoutMinutes * 60); // NOSONAR Cannot use TimeUnit#MINUTES (needs Java 1.6+)
+    commandBuilder.setStyleCopConfigFile(styleCopConfigFile);
+    commandBuilder.setMsBuildFile(msBuildFile);
+    commandBuilder.setDotnetSdkDirectory(microsoftWindowsEnvironment.getDotnetSdkDirectory());
+
+    // The following no-sonar is used because we can't use TimeUnit#MINUTES (needs Java 1.6+)
+    int exitCode = CommandExecutor.create().execute(commandBuilder.createCommand(), timeoutMinutes * 60000); // NOSONAR
+    if (exitCode != 0) {
+      throw new SonarException("StyleCop execution failed. Check the logs for more detail.");
+    }
   }
 
 }

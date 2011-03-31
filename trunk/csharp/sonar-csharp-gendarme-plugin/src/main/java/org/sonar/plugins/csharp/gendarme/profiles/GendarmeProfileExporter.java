@@ -54,7 +54,7 @@ public class GendarmeProfileExporter extends ProfileExporter {
   @Override
   public void exportProfile(RulesProfile profile, Writer writer) {
     try {
-      printRules(writer, profile.getActiveRules());
+      printRules(writer, profile.getActiveRulesByRepository(GendarmeConstants.REPOSITORY_KEY));
     } catch (IOException e) {
       throw new SonarException("Error while generating the Gendarme profile to export: " + profile, e);
     }

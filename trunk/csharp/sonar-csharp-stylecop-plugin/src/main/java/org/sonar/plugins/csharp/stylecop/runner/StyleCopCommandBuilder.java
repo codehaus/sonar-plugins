@@ -21,19 +21,18 @@
 package org.sonar.plugins.csharp.stylecop.runner;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.utils.Command;
 
 /**
  * Class used to build the command line to run StyleCop.
  */
-public class StyleCopCommand {
+public class StyleCopCommandBuilder {
 
-  private static final Logger LOG = LoggerFactory.getLogger(StyleCopCommand.class);
+  private static final Logger LOG = LoggerFactory.getLogger(StyleCopCommandBuilder.class);
 
   private ProjectFileSystem fileSystem;
   private File styleCopConfigFile;
@@ -41,12 +40,12 @@ public class StyleCopCommand {
   private File dotnetSdkDirectory;
 
   /**
-   * Constructs a {@link StyleCopCommand} object.
+   * Constructs a {@link StyleCopCommandBuilder} object.
    * 
    * @param fileSystem
    *          the file system of the project
    */
-  public StyleCopCommand(ProjectFileSystem fileSystem) {
+  public StyleCopCommandBuilder(ProjectFileSystem fileSystem) {
     this.fileSystem = fileSystem;
   }
 
@@ -83,28 +82,26 @@ public class StyleCopCommand {
   /**
    * Transforms this command object into a array of string that can be passed to the CommandExecutor.
    * 
-   * @return the array of strings that represent the command to launch.
+   * @return the Command that represent the command to launch.
    */
-  public String[] toArray() {
+  public Command createCommand() {
     validate();
 
-    List<String> command = new ArrayList<String>();
-
     LOG.debug("- MSBuild path          : " + dotnetSdkDirectory.getAbsolutePath());
-    command.add(new File(dotnetSdkDirectory, "MSBuild.exe").getAbsolutePath());
+    Command command = Command.create(new File(dotnetSdkDirectory, "MSBuild.exe").getAbsolutePath());
 
     LOG.debug("- Application Root      : " + fileSystem.getBasedir().getAbsolutePath());
-    command.add("/p:AppRoot=" + fileSystem.getBasedir().getAbsolutePath());
+    command.addArgument("/p:AppRoot=" + fileSystem.getBasedir().getAbsolutePath());
 
     LOG.debug("- Target to run         : StyleCopLaunch");
-    command.add("/target:StyleCopLaunch");
+    command.addArgument("/target:StyleCopLaunch");
 
-    command.add("/noconsolelogger");
+    command.addArgument("/noconsolelogger");
 
     LOG.debug("- MSBuild file          : " + msBuildFile.getAbsolutePath());
-    command.add(msBuildFile.getAbsolutePath());
+    command.addArgument(msBuildFile.getAbsolutePath());
 
-    return command.toArray(new String[command.size()]);
+    return command;
   }
 
   private void validate() {

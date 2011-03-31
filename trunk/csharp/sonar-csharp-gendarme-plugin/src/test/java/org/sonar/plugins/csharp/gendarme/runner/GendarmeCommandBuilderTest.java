@@ -50,12 +50,12 @@ public class GendarmeCommandBuilderTest {
   private static ProjectFileSystem projectFileSystem;
   private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private static VisualStudioProject project;
-  private static File fakeGendarmeInstallDirectory;
+  private static File fakeGendarmeExecutable;
   private static File fakeGendarmeConfigFile;
 
   @BeforeClass
   public static void initStatic() throws Exception {
-    fakeGendarmeInstallDirectory = FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeProg"));
+    fakeGendarmeExecutable = FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeProg/gendarme.exe"));
     fakeGendarmeConfigFile = FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeGendarmeConfigFile.xml"));
     configuration = new BaseConfiguration();
 
@@ -72,7 +72,7 @@ public class GendarmeCommandBuilderTest {
   @Before
   public void init() throws Exception {
     configuration.clear();
-    configuration.addProperty(GendarmeConstants.INSTALL_DIR_KEY, fakeGendarmeInstallDirectory.getAbsolutePath());
+    configuration.addProperty(GendarmeConstants.EXECUTABLE_KEY, fakeGendarmeExecutable.getAbsolutePath());
   }
 
   @Test

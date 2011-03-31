@@ -40,11 +40,10 @@ import com.google.common.collect.Lists;
 public class GendarmeCommandBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(GendarmeCommandBuilder.class);
-  private static final String GENDARME_EXECUTABLE = "gendarme.exe";
 
   private ProjectFileSystem fileSystem;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
-  private String gendarmeInstallDir;
+  private String gendarmeExecutable;
   private String[] assembliesToScan;
   private String gendarmeConfidence;
   private List<File> assemblyToScanFiles;
@@ -63,7 +62,7 @@ public class GendarmeCommandBuilder {
       MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.fileSystem = fileSystem;
     this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
-    this.gendarmeInstallDir = configuration.getString(GendarmeConstants.INSTALL_DIR_KEY, GendarmeConstants.INSTALL_DIR_DEFVALUE);
+    this.gendarmeExecutable = configuration.getString(GendarmeConstants.EXECUTABLE_KEY, GendarmeConstants.EXECUTABLE_DEFVALUE);
     this.assembliesToScan = configuration.getStringArray(GendarmeConstants.ASSEMBLIES_TO_SCAN_KEY);
     this.gendarmeConfidence = configuration.getString(GendarmeConstants.GENDARME_CONFIDENCE_KEY,
         GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE);
@@ -89,9 +88,8 @@ public class GendarmeCommandBuilder {
     assemblyToScanFiles = getAssembliesToScan();
     validate();
 
-    File gendarmeExecutable = new File(new File(gendarmeInstallDir), GENDARME_EXECUTABLE);
     LOG.debug("- Gendarme program    : " + gendarmeExecutable);
-    Command command = Command.create(gendarmeExecutable.getAbsolutePath());
+    Command command = Command.create(gendarmeExecutable);
 
     LOG.debug("- Config file         : " + gendarmeConfigFile);
     command.addArgument("--config");

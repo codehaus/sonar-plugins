@@ -27,7 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.utils.CommandExecutor;
 
 /**
  * Class that runs the FxCop program.
@@ -36,7 +38,7 @@ public class FxCopRunner implements BatchExtension {
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopRunner.class);
 
-  private FxCopCommand command;
+  private FxCopCommandBuilder commandBuilder;
 
   /**
    * Constructs a {@link FxCopRunner}.
@@ -48,7 +50,7 @@ public class FxCopRunner implements BatchExtension {
    */
   public FxCopRunner(Configuration configuration, ProjectFileSystem projectFileSystem,
       MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
-    this.command = new FxCopCommand(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    this.commandBuilder = new FxCopCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
   }
 
   /**
@@ -59,8 +61,12 @@ public class FxCopRunner implements BatchExtension {
    */
   public void execute(File fxCopConfigFile) {
     LOG.debug("Executing FxCop program...");
-    command.setFxCopConfigFile(fxCopConfigFile);
-    new CommandExecutor().execute(command.toArray(), command.getTimeoutMinutes() * 60); // NOSONAR Cannot use TimeUnit#MINUTES (needs Java 1.6+)
+    commandBuilder.setFxCopConfigFile(fxCopConfigFile);
+    // The following no-sonar is used because we can't use TimeUnit#MINUTES (needs Java 1.6+)
+    int exitCode = CommandExecutor.create().execute(commandBuilder.createCommand(), commandBuilder.getTimeoutMinutes() * 60000); // NOSONAR
+    if (exitCode != 0) {
+      throw new SonarException("FxCop execution failed. Check the logs for more detail.");
+    }
   }
 
 }

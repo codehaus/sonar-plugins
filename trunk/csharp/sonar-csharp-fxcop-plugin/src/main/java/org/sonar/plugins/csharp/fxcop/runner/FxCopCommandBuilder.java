@@ -21,7 +21,6 @@
 package org.sonar.plugins.csharp.fxcop.runner;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
@@ -29,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.utils.Command;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 
@@ -37,9 +37,9 @@ import com.google.common.collect.Lists;
 /**
  * Class used to build the command line to run FxCop.
  */
-public class FxCopCommand {
+public class FxCopCommandBuilder {
 
-  private static final Logger LOG = LoggerFactory.getLogger(FxCopCommand.class);
+  private static final Logger LOG = LoggerFactory.getLogger(FxCopCommandBuilder.class);
 
   private ProjectFileSystem fileSystem;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
@@ -54,14 +54,15 @@ public class FxCopCommand {
   private File reportFile;
 
   /**
-   * Constructs a {@link FxCopCommand} object.
+   * Constructs a {@link FxCopCommandBuilder} object.
    * 
    * @param configuration
    *          FxCop configuration elements
    * @param fileSystem
    *          the file system of the project
    */
-  public FxCopCommand(Configuration configuration, ProjectFileSystem fileSystem, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+  public FxCopCommandBuilder(Configuration configuration, ProjectFileSystem fileSystem,
+      MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.fileSystem = fileSystem;
     this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.fxCopExecutable = configuration.getString(FxCopConstants.EXECUTABLE_KEY, FxCopConstants.EXECUTABLE_DEFVALUE);
@@ -95,46 +96,44 @@ public class FxCopCommand {
   /**
    * Transforms this command object into a array of string that can be passed to the CommandExecutor.
    * 
-   * @return the array of strings that represent the command to launch.
+   * @return the Command that represent the command to launch.
    */
-  public String[] toArray() {
+  public Command createCommand() {
     assemblyToScanFiles = getAssembliesToScan();
     List<File> assemblyDependencyDirectoriesFiles = getAsListOfFiles(assemblyDependencyDirectories);
     validate();
 
-    List<String> command = new ArrayList<String>();
-
     LOG.debug("- FxCop program         : " + fxCopExecutable);
-    command.add(fxCopExecutable);
+    Command command = Command.create(fxCopExecutable);
 
     LOG.debug("- Project file          : " + fxCopConfigFile);
-    command.add("/p:" + fxCopConfigFile.getAbsolutePath());
+    command.addArgument("/p:" + fxCopConfigFile.getAbsolutePath());
 
     LOG.debug("- Report file           : " + reportFile);
-    command.add("/out:" + reportFile.getAbsolutePath());
+    command.addArgument("/out:" + reportFile.getAbsolutePath());
 
     LOG.debug("- Scanned assemblies    :");
     for (File checkedAssembly : assemblyToScanFiles) {
       LOG.debug("   o " + checkedAssembly);
-      command.add("/f:" + checkedAssembly.getAbsolutePath());
+      command.addArgument("/f:" + checkedAssembly.getAbsolutePath());
     }
 
     LOG.debug("- Assembly dependencies :");
     for (File assemblyDependencyDir : assemblyDependencyDirectoriesFiles) {
       LOG.debug("   o " + assemblyDependencyDir);
-      command.add("/d:" + assemblyDependencyDir.getAbsolutePath());
+      command.addArgument("/d:" + assemblyDependencyDir.getAbsolutePath());
     }
 
     if (ignoreGeneratedCode) {
       LOG.debug("- Ignoring generated code");
-      command.add("/igc");
+      command.addArgument("/igc");
     }
 
-    command.add("/to:" + timeoutMinutes * 60);
+    command.addArgument("/to:" + timeoutMinutes * 60);
 
-    command.add("/gac");
+    command.addArgument("/gac");
 
-    return command.toArray(new String[command.size()]);
+    return command;
   }
 
   private List<File> getAssembliesToScan() {
