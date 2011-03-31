@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.codehaus.sonar-plugins</groupId>
+        <artifactId>parent</artifactId>
+        <version>8</version>
+        <relativePath>../parent</relativePath>
+    </parent>
+    <artifactId>sonar-google-calendar-plugin</artifactId>
+    <packaging>sonar-plugin</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>Google Calendar Plugin</name>
+    <description>Plugin that integrates Sonar with Google Calendar providing simple functionality</description>
+
+    <developers>
+        <developer>
+            <name>Papapetrou P.Patroklos</name>
+            <email>ppapapetrou@ots.gr</email>
+            <url>N/A</url>
+            <organization>OTS SA</organization>
+            <timezone>+3</timezone>
+        </developer>
+    </developers>
+
+    <inceptionYear>2011</inceptionYear>
+    <organization>
+        <name>OTS SA</name>
+        <url>http://www.ots.gr</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>GNU LGPL v3</name>
+            <url>http://www.gnu.org/licenses/lgpl.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-plugin-api</artifactId>
+            <version>2.6</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>google</groupId>
+            <artifactId>gdata-core</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>google</groupId>
+            <artifactId>gdata-calendar</artifactId>
+            <version>2.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>google</groupId>
+            <artifactId>gdata-client</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+
+    <!-- unit tests -->
+        <dependency>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-testing-harness</artifactId>
+            <version>2.7-RC2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.sonar</groupId>
+                <artifactId>sonar-packaging-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <pluginClass>com.ots.ejustice.sonar.plugin.google.calendar.GoogleCalendarPlugin</pluginClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>Public Repositories</name>
+            <url>http://192.168.1.181/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+
+</project>
