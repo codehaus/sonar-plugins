@@ -10,7 +10,7 @@
 
   <artifactId>sonar-clover-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>2.7-SNAPSHOT</version>
+  <version>2.7</version>
 
   <name>Sonar Clover Plugin</name>
   <description><![CDATA[Get code coverage with <a href="http://www.atlassian.com/software/clover/">Atlassian Clover</a>.]]></description>
@@ -29,9 +29,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/clover</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/clover</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-clover-plugin-2.7</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-clover-plugin-2.7</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-clover-plugin-2.7</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
