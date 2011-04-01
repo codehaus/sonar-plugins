@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>sonar-jacoco-plugin</artifactId>
-  <version>0.5</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar JaCoCo Plugin</name>
@@ -36,9 +36,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-jacoco-plugin-0.5</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-jacoco-plugin-0.5</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-jacoco-plugin-0.5</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/jacoco</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/jacoco</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
