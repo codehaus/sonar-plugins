@@ -36,6 +36,6 @@ public class SwitchStatementWithoutDefaultCheckTest {
     CheckMessage message = CheckUtils.extractViolation("/checks/switchStatementWithoutDefault.c", new SwitchStatementWithoutDefaultCheck());
 
     assertThat(message.getLine(), is(5));
-    assertThat(message.formatDefaultMessage(), containsString("Avoid swith statement without a \"default\" clause."));
+    assertThat(message.formatDefaultMessage(), containsString("Avoid switch statement without a \"default\" clause."));
   }
 }
