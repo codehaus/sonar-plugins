@@ -1,5 +1,3 @@
-package hello;
-
 public class HelloWorld {
 
   public void neverCalled() {
