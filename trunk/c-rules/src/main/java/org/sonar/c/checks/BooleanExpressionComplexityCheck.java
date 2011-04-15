@@ -29,7 +29,7 @@ import org.sonar.check.RuleProperty;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.BooleanExpressionComplexity", name = "Boolean expression complexity.", isoCategory = IsoCategory.Maintainability,
+@Rule(key = "C.BooleanExpressionComplexity", name = "Boolean expression complexity", isoCategory = IsoCategory.Maintainability,
     priority = Priority.MAJOR, description = "<p>Restricts nested boolean operators (&&, || and ^) to a specified depth.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class BooleanExpressionComplexityCheck extends CCheck {
