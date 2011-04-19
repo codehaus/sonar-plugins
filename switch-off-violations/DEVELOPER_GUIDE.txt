@@ -1,0 +1,10 @@
+----- Build the plugin
+mvn clean install
+
+
+
+----- Run integration tests
+mvn clean verify -Prun-its
+
+# add the property -Djava.io.tmpdir=/tmp on Mac OS
+

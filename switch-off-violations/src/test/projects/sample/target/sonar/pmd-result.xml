@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.5" timestamp="2011-04-19T18:01:58.854">
+<file name="/Users/simonbrandhof/projects/codehaus/sonar-plugins/trunk/switch-off-violations/src/test/projects/sample/src/main/java/foo/SomeIgnoredViolations.java">
+<violation beginline="4" endline="9" begincolumn="11" endcolumn="3" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="foo" class="SomeIgnoredViolations" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
+Avoid unused method parameters such as 'unused'.
+</violation>
+<violation beginline="4" endline="4" begincolumn="15" endcolumn="49" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="foo" class="SomeIgnoredViolations" method="methodWithViolations" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
+Avoid unused private methods such as 'methodWithViolations(String)'.
+</violation>
+<violation beginline="5" endline="5" begincolumn="9" endcolumn="9" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="foo" class="SomeIgnoredViolations" method="methodWithViolations" variable="i" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'i'.
+</violation>
+<violation beginline="7" endline="7" begincolumn="12" endcolumn="20" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="foo" class="SomeIgnoredViolations" method="methodWithViolations" variable="unusedToo" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'unusedToo'.
+</violation>
+</file>
+<file name="/Users/simonbrandhof/projects/codehaus/sonar-plugins/trunk/switch-off-violations/src/test/projects/sample/src/main/java/foo/WithViolations.java">
+<violation beginline="4" endline="9" begincolumn="11" endcolumn="3" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="foo" class="WithViolations" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
+Avoid unused method parameters such as 'unused'.
+</violation>
+<violation beginline="4" endline="4" begincolumn="15" endcolumn="49" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="foo" class="WithViolations" method="methodWithViolations" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
+Avoid unused private methods such as 'methodWithViolations(String)'.
+</violation>
+<violation beginline="5" endline="5" begincolumn="9" endcolumn="9" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="foo" class="WithViolations" method="methodWithViolations" variable="i" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'i'.
+</violation>
+<violation beginline="7" endline="7" begincolumn="12" endcolumn="20" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="foo" class="WithViolations" method="methodWithViolations" variable="unusedToo" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'unusedToo'.
+</violation>
+</file>
+</pmd>
