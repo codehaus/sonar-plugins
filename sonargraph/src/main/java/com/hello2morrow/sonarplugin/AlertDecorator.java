@@ -61,13 +61,13 @@ public final class AlertDecorator
     }
 
     private static AlertThreshold thresholds[] = { new AlertThreshold(SonargraphMetrics.EROSION_INDEX, 400, 1600),
-            new AlertThreshold(SonargraphMetrics.UNASSIGNED_TYPES, 1.0, 20.0), new AlertThreshold(SonargraphMetrics.VIOLATING_TYPES, 10.0, 20.0),
-            new AlertThreshold(SonargraphMetrics.TASKS, 20.0, 50.0), new AlertThreshold(SonargraphMetrics.THRESHOLD_WARNINGS, 20.0, 50.0),
+            new AlertThreshold(SonargraphMetrics.UNASSIGNED_TYPES, 1.0, 20.0), new AlertThreshold(SonargraphMetrics.VIOLATING_TYPES, 1.0, 10.0),
+            new AlertThreshold(SonargraphMetrics.TASKS, 20.0, 50.0), new AlertThreshold(SonargraphMetrics.THRESHOLD_WARNINGS, 1.0, 25.0),
             new AlertThreshold(SonargraphMetrics.WORKSPACE_WARNINGS, 1.0, 10.0), new AlertThreshold(SonargraphMetrics.NCCD, 6.5, 10.0),
             new AlertThreshold(SonargraphMetrics.HIGHEST_NCCD, 6.5, 10.0), new AlertThreshold(SonargraphMetrics.BIGGEST_CYCLE_GROUP, 4, 8),
-            new AlertThreshold(SonargraphMetrics.RELATIVE_CYCLICITY, 25, 50), new AlertThreshold(SonargraphMetrics.DUPLICATE_WARNINGS, 10, 20),
+            new AlertThreshold(SonargraphMetrics.RELATIVE_CYCLICITY, 5, 15), new AlertThreshold(SonargraphMetrics.DUPLICATE_WARNINGS, 1, 20),
             new AlertThreshold(SonargraphMetrics.CYCLE_WARNINGS, 1, 10), new AlertThreshold(SonargraphMetrics.WORKSPACE_WARNINGS, 1, 10),
-            new AlertThreshold(SonargraphMetrics.ALL_WARNINGS, 10, 20) };
+            new AlertThreshold(SonargraphMetrics.ALL_WARNINGS, 1, 20) };
 
     private static void copyAlertLevel(IProjectContext context, Metric from, Metric to)
     {
