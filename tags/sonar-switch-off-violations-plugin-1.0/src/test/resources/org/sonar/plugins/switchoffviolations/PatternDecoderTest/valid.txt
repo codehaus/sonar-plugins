@@ -1,0 +1,18 @@
+# a comment followed by a blank line
+
+
+# suppress all violations
+*;*;*
+
+# exclude a Java file
+com.foo.Bar;*;*
+
+# exclude a Java package
+com.foo.*;*;*
+
+# exclude a specific rule
+*;checkstyle:IllegalRegexp;*
+
+# exclude a specific rule on a specific file
+com.foo.Bar;checkstyle:IllegalRegexp;*
+
