@@ -34,6 +34,12 @@
     </license>
   </licenses>
 
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/switch-off-violations</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/switch-off-violations</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
