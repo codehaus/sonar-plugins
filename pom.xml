@@ -1,114 +1,163 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>8</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+  
+  <artifactId>sonar-switch-off-violations-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>1.0</version>
+  <name>Sonar Switch Off Violations Plugin</name>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>crowd</module>
-        <module>c-rules</module>
-        <module>cutoff</module>
-        <module>dotnet</module>
-        <module>email</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>jacoco</module>
-        <module>javascript</module>
-        <module>jira</module>
-        <module>jlint</module>
-        <module>jmeter</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>php</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>radiator</module>
-        <module>rules-meter</module>
-        <module>scm-activity</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonar-runner</module>
-        <module>sonarj</module>
-        <module>switch-off-violations</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>twitter</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>basic-cocomo</module>
-        <module>clover</module>
-        <module>csharp</module>
-        <module>debug</module>
-        <module>drools</module>
-        <module>metrics-help</module>
-        <module>profiler</module>
-        <module>testability-explorer</module>
-        <module>webscanner</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>hammurapi</module>
-        <module>jtest</module>
-        <module>sonar-replay</module>
-        <module>sonar-squid-cli</module>
-        <module>sonar-squid-gui</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-        <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-        <module>codereview</module>
-      </modules>
-    </profile>
-  </profiles>
+  <properties>
+    <sonar.buildVersion>2.5</sonar.buildVersion>
+  </properties>
+
+  <inceptionYear>2011</inceptionYear>
+
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-switch-off-violations-plugin-1.0</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-switch-off-violations-plugin-1.0</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-switch-off-violations-plugin-1.0</url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.buildVersion}</version>
+    </dependency>
+
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.buildVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-ws-client</artifactId>
+      <version>${sonar.buildVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+      <scope>test</scope>
+    </dependency>
+
+
+  </dependencies>
 
   <build>
     <plugins>
-      <!-- See http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.0</version>
         <extensions>true</extensions>
+        <configuration>
+          <pluginName>Switch Off Violations</pluginName>
+          <pluginClass>org.sonar.plugins.switchoffviolations.SwitchOffViolationsPlugin</pluginClass>
+        </configuration>
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>run-its</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.sonar</groupId>
+            <artifactId>sonar-dev-maven-plugin</artifactId>
+            <version>1.2</version>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <background>true</background>
+                  <clean>true</clean>
+                </configuration>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>analyze-projects</id>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <projectsDir>${project.basedir}/src/test/projects</projectsDir>
+                </configuration>
+                <goals>
+                  <goal>analyze</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.6</version>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>verify</id>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+
 </project>
