@@ -20,10 +20,11 @@
 
 package org.sonar.plugins.branding;
 
-import org.sonar.api.web.*;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.Description;
+import org.sonar.api.web.RubyRailsWidget;
 
 @Description("Displays project logo")
-@WidgetProperties({ @WidgetProperty(key = "image", description = "Image URL", optional = false) })
 public class ProjectLogoWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   public String getId() {

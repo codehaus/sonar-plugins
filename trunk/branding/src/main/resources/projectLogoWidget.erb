@@ -1,1 +1,5 @@
-<img alt="Project Logo" title="Project" src="<%= widget_properties['image'] -%>" />
+<% @project.project_links.sort.each do |link| %>
+  <% if link.key.downcase == 'logo' %>
+    <%= image_tag(link.href) %>
+  <% end %>
+<% end %>
