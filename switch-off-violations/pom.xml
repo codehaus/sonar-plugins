@@ -111,6 +111,7 @@
                 <configuration>
                   <background>true</background>
                   <clean>true</clean>
+                  <workDir>${project.build.directory}/sonar-work</workDir>
                 </configuration>
                 <goals>
                   <goal>start</goal>
@@ -132,6 +133,9 @@
                 <goals>
                   <goal>stop</goal>
                 </goals>
+                <configuration>
+                  <workDir>${project.build.directory}/sonar-work</workDir>
+                </configuration>
               </execution>
             </executions>
           </plugin>
