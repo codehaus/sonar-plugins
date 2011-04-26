@@ -576,11 +576,17 @@ public final class SonargraphSensor implements Sensor {
 		saveMeasure(VIOLATING_DEPENDENCIES,
 				SonargraphMetrics.VIOLATING_DEPENDENCIES, 0);
 		saveMeasure(TASKS, SonargraphMetrics.TASKS, 0);
-		saveMeasure(THRESHOLD_WARNINGS, SonargraphMetrics.THRESHOLD_WARNINGS, 0);
+		if (hasBuildUnitMetric(THRESHOLD_WARNINGS)) {
+			saveMeasure(THRESHOLD_WARNINGS,
+					SonargraphMetrics.THRESHOLD_WARNINGS, 0);
+		}
 		saveMeasure(WORKSPACE_WARNINGS, SonargraphMetrics.WORKSPACE_WARNINGS, 0);
 		saveMeasure(IGNORED_VIOLATIONS, SonargraphMetrics.IGNORED_VIOLATONS, 0);
 		saveMeasure(IGNORED_WARNINGS, SonargraphMetrics.IGNORED_WARNINGS, 0);
-		saveMeasure(DUPLICATE_WARNINGS, SonargraphMetrics.DUPLICATE_WARNINGS, 0);
+		if (hasBuildUnitMetric(DUPLICATE_WARNINGS)) {
+			saveMeasure(DUPLICATE_WARNINGS,
+					SonargraphMetrics.DUPLICATE_WARNINGS, 0);
+		}
 		saveMeasure(CYCLE_WARNINGS, SonargraphMetrics.CYCLE_WARNINGS, 0);
 		saveMeasure(ALL_WARNINGS, SonargraphMetrics.ALL_WARNINGS, 0);
 
