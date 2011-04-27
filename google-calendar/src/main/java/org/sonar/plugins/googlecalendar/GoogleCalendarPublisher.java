@@ -63,7 +63,6 @@ public class GoogleCalendarPublisher implements PostJob {
         this.server = serverPrm;
     }
 
-    @Override
     public final void executeOn(final Project prj,
             final SensorContext sensorContext) {
         final Configuration configuration = prj.getConfiguration();
