@@ -45,7 +45,6 @@ public class GoogleCalendarRedirectHandler {
       transport.intercepters.add(0, this); 
     }
 
-    @Override
     public void intercept(HttpRequest request) {
       request.url.set("gsessionid", this.gsessionid);
     }

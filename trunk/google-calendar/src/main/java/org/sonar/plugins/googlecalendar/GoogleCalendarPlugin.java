@@ -50,7 +50,6 @@ import org.sonar.api.Property;
 
 public class GoogleCalendarPlugin implements Plugin {
 
-    @Override
     public final List getExtensions() {
         return Arrays.asList(GoogleCalendarPublisher.class);
     }
@@ -60,17 +59,14 @@ public class GoogleCalendarPlugin implements Plugin {
         return getClass().getSimpleName();
     }
 
-    @Override
     public final String getKey() {
         return "googleCalendar";
     }
 
-    @Override
     public final String getName() {
         return "Google Calendar";
     }
 
-    @Override
     public final String getDescription() {
         return "Google Calendar Plugin";
     }
