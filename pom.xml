@@ -74,6 +74,7 @@
         <module>csharp</module>
         <module>debug</module>
         <module>drools</module>
+        <module>google-calendar</module>
         <module>metrics-help</module>
         <module>profiler</module>
         <module>testability-explorer</module>
