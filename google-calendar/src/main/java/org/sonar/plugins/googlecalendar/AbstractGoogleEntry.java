@@ -48,7 +48,7 @@ public class AbstractGoogleEntry implements Cloneable {
   public List<AbstractGoogleLink> links;
 
   @Override
-  protected AbstractGoogleEntry clone() {
+  protected AbstractGoogleEntry clone() throws CloneNotSupportedException {
     return DataUtil.clone(this);
   }
 
