@@ -38,80 +38,80 @@ import org.sonar.api.platform.Server;
  */
 public class GoogleCalendarPublisher implements PostJob {
 
-    /** Sonar Property for Google Account. */
-    public static final String ACCOUNT_PROP = "sonar.google.calendar.account";
-    /** Sonar Property for Google Account Password. */
-    public static final String PASSWORD_PROP = "sonar.google.calendar.password";
-    /** Sonar Property for Google Calendar ID. */
-    public static final String CALENDAR_ID_PROP = "sonar.google.calendar.calendarname";
-    /** Sonar Property for Enabling / Disabling Google Calendar Plugin. */
-    public static final String ENABLED_PROP = "sonar.google.calendar.enabled";
-    /** Project Base URI. */
-    private static final String PROJECT_BASE_URI = "/project/index/";
-    /** Google Feeds URL. */
-    private static final String GOOGLE_FEEDS =
-            "http://www.google.com/calendar/feeds/";
-    /** Google Feeds URL. */
-    private static final String GOOGLE_PRIV_CAL = "/private/full";
-    /** Class Logger using SL4J. */
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(GoogleCalendarPublisher.class);
-    /** Sonar Server. */
-    private final Server server;
+  /** Sonar Property for Google Account. */
+  public static final String ACCOUNT_PROP = "sonar.google.calendar.account";
+  /** Sonar Property for Google Account Password. */
+  public static final String PASSWORD_PROP = "sonar.google.calendar.password";
+  /** Sonar Property for Google Calendar ID. */
+  public static final String CALENDAR_ID_PROP = "sonar.google.calendar.calendarname";
+  /** Sonar Property for Enabling / Disabling Google Calendar Plugin. */
+  public static final String ENABLED_PROP = "sonar.google.calendar.enabled";
+  /** Project Base URI. */
+  private static final String PROJECT_BASE_URI = "/project/index/";
+  /** Google Feeds URL. */
+  private static final String GOOGLE_FEEDS =
+          "http://www.google.com/calendar/feeds/";
+  /** Google Feeds URL. */
+  private static final String GOOGLE_PRIV_CAL = "/private/full";
+  /** Class Logger using SL4J. */
+  private static final Logger LOGGER =
+          LoggerFactory.getLogger(GoogleCalendarPublisher.class);
+  /** Sonar Server. */
+  private final Server server;
 
-    public GoogleCalendarPublisher(final Server serverPrm) {
-        this.server = serverPrm;
+  public GoogleCalendarPublisher(final Server serverPrm) {
+    this.server = serverPrm;
+  }
+
+  public final void executeOn(final Project prj,
+          final SensorContext sensorContext) {
+    final Configuration configuration = prj.getConfiguration();
+    final String username = configuration.getString(ACCOUNT_PROP);
+    final String password = configuration.getString(PASSWORD_PROP);
+    final String calendarID = configuration.getString(CALENDAR_ID_PROP);
+    final String isEnabled = configuration.getString(ENABLED_PROP);
+
+    if (isEnabled != null && isEnabled.equals("true")) {
+
+      ClientLogin authenticator = new ClientLogin();
+      authenticator.authTokenType = "cl";
+      authenticator.username = username;
+      authenticator.password = password;
+      authenticator.transport = GoogleHttpTransportFactory.AUTH_TRANSPORT;
+
+      try {
+        authenticator.authenticate().setAuthorizationHeader(GoogleHttpTransportFactory.DEFAULT_TRANSPORT);
+
+        GoogleCalendarUrl calendarUrl = new GoogleCalendarUrl(this.getCalendarURL(calendarID));
+        GoogleEventEntry newEvent = new GoogleEventEntry();
+        newEvent.title = this.getTitle(prj);
+        newEvent.content = this.getContent(prj);
+        newEvent.executeInsert(calendarUrl);
+      } catch (HttpResponseException ex) {
+        LOGGER.error(ex.getLocalizedMessage(), ex);
+      } catch (IOException ex) {
+        LOGGER.error(ex.getLocalizedMessage(), ex);
+      }
     }
+  }
 
-    public final void executeOn(final Project prj,
-            final SensorContext sensorContext) {
-        final Configuration configuration = prj.getConfiguration();
-        final String username = configuration.getString(ACCOUNT_PROP);
-        final String password = configuration.getString(PASSWORD_PROP);
-        final String calendarID = configuration.getString(CALENDAR_ID_PROP);
-        final String isEnabled = configuration.getString(ENABLED_PROP);
+  public final String getTitle(final Project project) {
+    return String.format("Sonar analysis of %s", project.getName());
+  }
 
-        if (isEnabled != null && isEnabled.equals("true")) {
+  public final String getContent(final Project project) {
+    final StringBuilder url =
+            new StringBuilder(server.getURL()).append(PROJECT_BASE_URI).append(project.getKey());
+    return String.format(
+            "New Sonar analysis of %s is available online at %s",
+            project.getName(), url);
+  }
 
-            ClientLogin authenticator = new ClientLogin();
-            authenticator.authTokenType = "cl";
-            authenticator.username = username;
-            authenticator.password = password;
-            authenticator.transport = GoogleHttpTransportFactory.AUTH_TRANSPORT;
-
-            try {
-                authenticator.authenticate().setAuthorizationHeader(GoogleHttpTransportFactory.DEFAULT_TRANSPORT);
-                
-                GoogleCalendarUrl calendarUrl = new GoogleCalendarUrl(this.getCalendarURL(calendarID));
-                GoogleEventEntry newEvent = new GoogleEventEntry();
-                newEvent.title = this.getTitle(prj);
-                newEvent.content = this.getContent(prj);
-                newEvent.executeInsert(calendarUrl);
-            } catch (HttpResponseException ex) {
-                LOGGER.error(ex.getLocalizedMessage(), ex);
-            } catch (IOException ex) {
-                LOGGER.error(ex.getLocalizedMessage(), ex);
-            }
-        }
-    }
-
-    public final String getTitle(final Project project) {
-        return String.format("Sonar analysis of %s", project.getName());
-    }
-
-    public final String getContent(final Project project) {
-        final StringBuilder url =
-                new StringBuilder(server.getURL()).append(PROJECT_BASE_URI).append(project.getKey());
-        return String.format(
-                "New Sonar analysis of %s is available online at %s",
-                project.getName(), url);
-    }
-
-    public final String getCalendarURL(final String calendarID) {
-        final StringBuilder calendarURL =
-                new StringBuilder(GOOGLE_FEEDS);
-        calendarURL.append(calendarID);
-        calendarURL.append(GOOGLE_PRIV_CAL);
-        return calendarURL.toString();
-    }
+  public final String getCalendarURL(final String calendarID) {
+    final StringBuilder calendarURL =
+            new StringBuilder(GOOGLE_FEEDS);
+    calendarURL.append(calendarID);
+    calendarURL.append(GOOGLE_PRIV_CAL);
+    return calendarURL.toString();
+  }
 }

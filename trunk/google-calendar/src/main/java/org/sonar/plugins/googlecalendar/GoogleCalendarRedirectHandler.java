@@ -35,7 +35,11 @@ import java.io.IOException;
 
 public class GoogleCalendarRedirectHandler {
   
-  private static class SessionIntercepter implements HttpExecuteIntercepter {
+  private GoogleCalendarRedirectHandler(){
+    
+  }
+  
+  private static final class SessionIntercepter implements HttpExecuteIntercepter {
 
     private String gsessionid;
 

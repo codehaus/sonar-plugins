@@ -50,25 +50,25 @@ import org.sonar.api.Property;
 
 public class GoogleCalendarPlugin implements Plugin {
 
-    public final List getExtensions() {
-        return Arrays.asList(GoogleCalendarPublisher.class);
-    }
+  public final List getExtensions() {
+    return Arrays.asList(GoogleCalendarPublisher.class);
+  }
 
-    @Override
-    public final String toString() {
-        return getClass().getSimpleName();
-    }
+  @Override
+  public final String toString() {
+    return getClass().getSimpleName();
+  }
 
-    public final String getKey() {
-        return "googleCalendar";
-    }
+  public final String getKey() {
+    return "googleCalendar";
+  }
 
-    public final String getName() {
-        return "Google Calendar";
-    }
+  public final String getName() {
+    return "Google Calendar";
+  }
 
-    public final String getDescription() {
-        return "Google Calendar Plugin";
-    }
+  public final String getDescription() {
+    return "Google Calendar Plugin";
+  }
 }
 

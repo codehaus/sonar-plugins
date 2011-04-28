@@ -28,18 +28,18 @@ import java.io.IOException;
 
 public class GoogleCalendarEntry extends AbstractGoogleEntry {
 
-    public String getEventFeedLink() {
-        return AbstractGoogleLink.find(links, "http://schemas.google.com/gCal/2005#eventFeed");
-    }
+  public String getEventFeedLink() {
+    return AbstractGoogleLink.find(links, "http://schemas.google.com/gCal/2005#eventFeed");
+  }
 
-    @Override
-    public GoogleCalendarEntry clone() {
-        return (GoogleCalendarEntry) super.clone();
-    }
+  @Override
+  public GoogleCalendarEntry clone() throws CloneNotSupportedException {
+    return (GoogleCalendarEntry) super.clone();
+  }
 
-    @Override
-    public GoogleCalendarEntry executeInsert(GoogleCalendarUrl url) throws IOException {
-        return (GoogleCalendarEntry) super.executeInsert(url);
-    }
+  @Override
+  public GoogleCalendarEntry executeInsert(GoogleCalendarUrl url) throws IOException {
+    return (GoogleCalendarEntry) super.executeInsert(url);
+  }
 
 }

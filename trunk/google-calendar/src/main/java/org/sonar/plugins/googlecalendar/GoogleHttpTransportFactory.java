@@ -33,26 +33,30 @@ import com.google.api.client.xml.atom.AtomParser;
 
 public class GoogleHttpTransportFactory {
 
-    public static final HttpTransport DEFAULT_TRANSPORT = newTransport(false);
-    public static final HttpTransport AUTH_TRANSPORT = newTransport(true);
+  public static final HttpTransport DEFAULT_TRANSPORT = newTransport(false);
+  public static final HttpTransport AUTH_TRANSPORT = newTransport(true);
 
-    static HttpTransport newTransport(boolean isAuthentication) {
-        HttpTransport transport = new NetHttpTransport();
-        GoogleUtils.useMethodOverride(transport);
-        GoogleHeaders headers = new GoogleHeaders();
-        headers.setApplicationName("sonar-google-calendar-plugin-0.1");
-        transport.defaultHeaders = headers;
-        if (!isAuthentication) {
+  private GoogleHttpTransportFactory() {
+    
+  }
+  
+  static HttpTransport newTransport(boolean isAuthentication) {
+    HttpTransport transport = new NetHttpTransport();
+    GoogleUtils.useMethodOverride(transport);
+    GoogleHeaders headers = new GoogleHeaders();
+    headers.setApplicationName("sonar-google-calendar-plugin-0.1");
+    transport.defaultHeaders = headers;
+    if (!isAuthentication) {
 
-            headers.gdataVersion = "2";
-            AtomParser parser = new AtomParser();
-            parser.namespaceDictionary = new XmlNamespaceDictionary().set("", "http://www.w3.org/2005/Atom").set(
-                    "batch", "http://schemas.google.com/gdata/batch").set(
-                    "gd", "http://schemas.google.com/g/2005");
+      headers.gdataVersion = "2";
+      AtomParser parser = new AtomParser();
+      parser.namespaceDictionary = new XmlNamespaceDictionary().set("", "http://www.w3.org/2005/Atom").set(
+              "batch", "http://schemas.google.com/gdata/batch").set(
+              "gd", "http://schemas.google.com/g/2005");
 
 
-            transport.addParser(parser);
-        }
-        return transport;
+      transport.addParser(parser);
     }
+    return transport;
+  }
 }

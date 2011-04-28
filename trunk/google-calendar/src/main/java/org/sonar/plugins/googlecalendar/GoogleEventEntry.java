@@ -34,7 +34,7 @@ public class GoogleEventEntry extends AbstractGoogleEntry {
   public String content;
   
   @Override
-  public GoogleEventEntry clone() {
+  public GoogleEventEntry clone() throws CloneNotSupportedException {
     return (GoogleEventEntry) super.clone();
   }
 
