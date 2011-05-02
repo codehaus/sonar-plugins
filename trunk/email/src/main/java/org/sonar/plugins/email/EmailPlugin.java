@@ -32,6 +32,11 @@ import java.util.List;
  */
 @Properties({
     @Property(
+        key = EmailPublisher.ENABLED_PROPERTY,
+        name = "Enabled",
+        defaultValue = EmailPublisher.ENABLED_DEFAULT_VALUE + "",
+        global = true, project = true, module = false),
+    @Property(
         key = EmailPublisher.HOST_PROPERTY,
         name = "SMTP host",
         defaultValue = EmailPublisher.SMTP_HOST_DEFAULT_VALUE,

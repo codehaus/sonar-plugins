@@ -36,6 +36,9 @@ import org.sonar.api.utils.SonarException;
  */
 public class EmailPublisher implements PostJob {
 
+  public static final String ENABLED_PROPERTY = "sonar.email.enabled";
+  public static final boolean ENABLED_DEFAULT_VALUE = false;
+
   public static final String HOST_PROPERTY = "sonar.email.smtp_host.secured";
   public static final String SMTP_HOST_DEFAULT_VALUE = "localhost";
 
@@ -92,6 +95,9 @@ public class EmailPublisher implements PostJob {
   }
 
   public void executeOn(Project project, SensorContext context) {
+    if (!project.getConfiguration().getBoolean(ENABLED_PROPERTY, ENABLED_DEFAULT_VALUE)) {
+      return;
+    }
     try {
       getEmail(project).send();
     } catch (EmailException e) {

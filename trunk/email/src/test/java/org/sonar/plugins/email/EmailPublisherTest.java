@@ -22,16 +22,17 @@ package org.sonar.plugins.email;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.mail.Email;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.batch.SensorContext;
 import org.sonar.api.platform.Server;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.email.EmailPublisher.SonarEmail;
 
 public class EmailPublisherTest {
   private EmailPublisher publisher;
@@ -68,6 +69,31 @@ public class EmailPublisherTest {
     assertThat(email.isTLS(), is(false));
     assertThat(email.getFromAddress().getAddress(), is("sonar@domain"));
     assertThat(email.getToAddresses().size(), is(0));
+  }
+
+  @Test
+  public void enabled() throws Exception {
+    configuration.setProperty(EmailPublisher.ENABLED_PROPERTY, true);
+    SensorContext context = mock(SensorContext.class);
+    publisher = spy(publisher);
+    SonarEmail email = mock(SonarEmail.class);
+    doReturn(email).when(publisher).getEmail(project);
+
+    publisher.executeOn(project, context);
+
+    verify(email).send();
+  }
+
+  @Test
+  public void disabled() throws Exception {
+    SensorContext context = mock(SensorContext.class);
+    publisher = spy(publisher);
+    SonarEmail email = mock(SonarEmail.class);
+    doReturn(email).when(publisher).getEmail(project);
+
+    publisher.executeOn(project, context);
+
+    verify(email, never()).send();
   }
 
   @Test
