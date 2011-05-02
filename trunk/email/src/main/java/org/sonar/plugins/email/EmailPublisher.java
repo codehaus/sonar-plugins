@@ -69,7 +69,7 @@ public class EmailPublisher implements PostJob {
     String username = configuration.getString(USERNAME_PROPERTY);
     String password = configuration.getString(PASSWORD_PROPERTY);
     boolean withTLS = configuration.getBoolean(TLS_PROPERTY, TLS_DEFAULT_VALUE);
-    String from = configuration.getString(FROM_PROPERTY);
+    String from = configuration.getString(FROM_PROPERTY, "");
     String to = configuration.getString(TO_PROPERTY, "");
 
     email.setHostName(host);
