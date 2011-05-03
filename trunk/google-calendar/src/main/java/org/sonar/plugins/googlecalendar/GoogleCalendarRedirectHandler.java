@@ -33,7 +33,7 @@ import java.io.IOException;
  * @author Papapetrou P.Patroklos
  */
 
-public class GoogleCalendarRedirectHandler {
+public final class GoogleCalendarRedirectHandler {
   
   private GoogleCalendarRedirectHandler(){
     
