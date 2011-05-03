@@ -51,7 +51,7 @@
   
   <properties>
     <sonar.version>2.5</sonar.version>
-    <sonar.pluginName>GoogleCalendar</sonar.pluginName>
+    <sonar.pluginName>Google Calendar</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.googlecalendar.GoogleCalendarPlugin</sonar.pluginClass>
   </properties>
   

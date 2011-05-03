@@ -31,7 +31,7 @@ import com.google.api.client.xml.atom.AtomParser;
  * @author Papapetrou P.Patroklos
  */
 
-public class GoogleHttpTransportFactory {
+public final class GoogleHttpTransportFactory {
 
   public static final HttpTransport DEFAULT_TRANSPORT = newTransport(false);
   public static final HttpTransport AUTH_TRANSPORT = newTransport(true);

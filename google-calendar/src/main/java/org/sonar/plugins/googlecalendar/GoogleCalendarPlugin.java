@@ -33,6 +33,7 @@ import org.sonar.api.Property;
     @Property(
         key = GoogleCalendarPublisher.ACCOUNT_PROP,
         name = "Google Account Username",
+        description = "Example:googleuser@gmail.com",
         global = false, project = true, module = false),
     @Property(
         key = GoogleCalendarPublisher.PASSWORD_PROP,
@@ -45,7 +46,7 @@ import org.sonar.api.Property;
      @Property(
         key = GoogleCalendarPublisher.CALENDAR_ID_PROP,
         name = "Google Calendar ID",
-        description = "Example:c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com",
+        description = "Example:c4o4i7m2lbamc4k26sc2vokh5g@group.calendar.google.com",
         global = false, project = true, module = false) })
 
 public class GoogleCalendarPlugin implements Plugin {
