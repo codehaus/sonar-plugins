@@ -26,6 +26,7 @@ import org.sonar.api.batch.Initializer;
 import org.sonar.api.batch.maven.DependsUponMavenPlugin;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
+import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 
 /**
@@ -49,8 +50,7 @@ public class CloverMavenInitializer extends Initializer implements CoverageExten
 
   @Override
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getAnalysisType().isDynamic(true) &&
-        project.getFileSystem().hasJavaSourceFiles();
+    return project.getAnalysisType().isDynamic(true) && !project.getFileSystem().mainFiles(Java.KEY).isEmpty();
   }
 
   @Override
