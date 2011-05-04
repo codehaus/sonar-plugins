@@ -26,12 +26,13 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 
 public class CloverSensor implements Sensor, CoverageExtension {
 
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getFileSystem().hasJavaSourceFiles();
+    return !project.getFileSystem().mainFiles(Java.KEY).isEmpty();
   }
 
   public void analyse(Project project, SensorContext context) {

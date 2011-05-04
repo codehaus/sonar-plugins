@@ -51,7 +51,7 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String getVersion() {
-    return conf.getString(CloverConstants.VERSION_PROPERTY, CloverConstants.DEFAULT_VERSION);
+    return conf.getString(CloverConstants.VERSION_PROPERTY, CloverConstants.MAVEN_DEFAULT_VERSION);
   }
 
   public boolean isFixedVersion() {
