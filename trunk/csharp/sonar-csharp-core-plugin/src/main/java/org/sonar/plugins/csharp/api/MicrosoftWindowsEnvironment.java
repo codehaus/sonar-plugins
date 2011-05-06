@@ -25,6 +25,7 @@ import java.io.File;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
+import org.sonar.squid.api.SourceFile;
 
 /**
  * Class used to share information, between C# plugins, about Windows and Visual Studio elements, such as:
@@ -35,26 +36,27 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
  */
 public class MicrosoftWindowsEnvironment implements BatchExtension {
 
-  // primarily used to allow unit tests to work
-  private boolean allowOverrideAttributes;
-  private VisualStudioSolution currentSolution;
+  private boolean locked;
+
+  private String dotnetVersion;
   private File dotnetSdkDirectory;
+  private String silverlightVersion;
+  private File silverlightDirectory;
+  private VisualStudioSolution currentSolution;
 
   public MicrosoftWindowsEnvironment() {
-    if ("true".equalsIgnoreCase(System.getProperty("this.allowOverrideAttributes"))) {
-      allowOverrideAttributes = true;
-    }
   }
 
-  public MicrosoftWindowsEnvironment(boolean allowOverrideAttributes) {
-    this.allowOverrideAttributes = allowOverrideAttributes;
-  }
-
-  /*
-   * Just to make sure that nobody will override the attributes once they have been set by the C# Core plugin
+  /**
+   * After invoking this method, the {@link CSharpResourcesBridge} class won't be able to index files anymore: if
+   * {@link #indexFile(SourceFile, File)} is called, a {@link IllegalStateException} will be thrown.
    */
-  private void checkIfNotNull(Object attribute) {
-    if ( !allowOverrideAttributes && attribute != null) {
+  public void lock() {
+    this.locked = true;
+  }
+
+  private void checkIfLocked() {
+    if (locked) {
       throw new SonarException("Cannot override attributes that have already been assigned on MicrosoftWindowsEnvironment class.");
     }
   }
@@ -66,7 +68,7 @@ public class MicrosoftWindowsEnvironment implements BatchExtension {
    *          the currentSolution to set
    */
   public void setCurrentSolution(VisualStudioSolution currentSolution) {
-    checkIfNotNull(this.currentSolution);
+    checkIfLocked();
     this.currentSolution = currentSolution;
   }
 
@@ -82,11 +84,30 @@ public class MicrosoftWindowsEnvironment implements BatchExtension {
   /**
    * <b>Must not be used.</b>
    * 
+   * @param dotnetVersion
+   *          the dotnetVersion to set
+   */
+  public void setDotnetVersion(String dotnetVersion) {
+    this.dotnetVersion = dotnetVersion;
+  }
+
+  /**
+   * Returns the version of the .NET framework to use
+   * 
+   * @return the dotnetVersion
+   */
+  public String getDotnetVersion() {
+    return dotnetVersion;
+  }
+
+  /**
+   * <b>Must not be used.</b>
+   * 
    * @param dotnetSdkDirectory
    *          the dotnetSdkDirectory to set
    */
   public void setDotnetSdkDirectory(File dotnetSdkDirectory) {
-    checkIfNotNull(this.dotnetSdkDirectory);
+    checkIfLocked();
     this.dotnetSdkDirectory = dotnetSdkDirectory;
   }
 
@@ -97,6 +118,44 @@ public class MicrosoftWindowsEnvironment implements BatchExtension {
    */
   public File getDotnetSdkDirectory() {
     return dotnetSdkDirectory;
+  }
+
+  /**
+   * Returns the version of Silverlight that must be used
+   * 
+   * @return the silverlightVersion
+   */
+  public String getSilverlightVersion() {
+    return silverlightVersion;
+  }
+
+  /**
+   * <b>Must not be used.</b>
+   * 
+   * @param silverlightVersion
+   *          the silverlightVersion to set
+   */
+  public void setSilverlightVersion(String silverlightVersion) {
+    this.silverlightVersion = silverlightVersion;
+  }
+
+  /**
+   * Returns the path tof the Silverlight directory.
+   * 
+   * @return the silverlightDirectory
+   */
+  public File getSilverlightDirectory() {
+    return silverlightDirectory;
+  }
+
+  /**
+   * <b>Must not be used.</b>
+   * 
+   * @param silverlightDirectory
+   *          the silverlightDirectory to set
+   */
+  public void setSilverlightDirectory(File silverlightDirectory) {
+    this.silverlightDirectory = silverlightDirectory;
   }
 
 }

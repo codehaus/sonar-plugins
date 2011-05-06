@@ -28,6 +28,7 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.csharp.api.CSharp;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
@@ -36,11 +37,25 @@ import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
  * C# Core plugin class.
  */
 @Properties({
+    @Property(key = CSharpConstants.DOTNET_2_0_SDK_DIR_KEY, defaultValue = CSharpConstants.DOTNET_2_0_SDK_DIR_DEFVALUE,
+        name = ".NET 2.0 SDK directory", description = "Absolute path of the .NET SDK 2.0 directory.", global = true, project = false),
+    @Property(key = CSharpConstants.DOTNET_3_5_SDK_DIR_KEY, defaultValue = CSharpConstants.DOTNET_3_5_SDK_DIR_DEFVALUE,
+        name = ".NET 3.5 SDK directory", description = "Absolute path of the .NET SDK 3.5 directory.", global = true, project = false),
+    @Property(key = CSharpConstants.DOTNET_4_0_SDK_DIR_KEY, defaultValue = CSharpConstants.DOTNET_4_0_SDK_DIR_DEFVALUE,
+        name = ".NET 4.0 SDK directory", description = "Absolute path of the .NET SDK 4.0 directory.", global = true, project = false),
+    @Property(key = CSharpConstants.DOTNET_VERSION_KEY, defaultValue = CSharpConstants.DOTNET_VERSION_DEFVALUE, name = ".NET version",
+        description = "Default version of the .NET framework that must be used.", global = true, project = true),
+    @Property(key = CSharpConstants.SILVERLIGHT_3_MSCORLIB_LOCATION_KEY,
+        defaultValue = CSharpConstants.SILVERLIGHT_3_MSCORLIB_LOCATION_DEFVALUE, name = "Silverlight 3 assembly directory",
+        description = "Location of the core assembly for Silverlight 3 framework.", global = true, project = false),
+    @Property(key = CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_KEY,
+        defaultValue = CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_DEFVALUE, name = "Silverlight 4 assembly directory",
+        description = "Location of the core assembly for Silverlight 4 framework.", global = true, project = false),
+    @Property(key = CSharpConstants.SILVERLIGHT_VERSION_KEY, defaultValue = CSharpConstants.SILVERLIGHT_VERSION_DEFVALUE, name = "Silverlight version",
+        description = "Default version of the Silverlight framework that must be used.", global = true, project = true),
     @Property(key = CSharpConstants.TEST_PROJET_PATTERN_KEY, defaultValue = CSharpConstants.TEST_PROJET_PATTERN_DEFVALUE,
         name = "Test project names", description = "Pattern that check project names to identify test projects.", global = true,
         project = true),
-    @Property(key = CSharpConstants.DOTNET_SDK_DIR_KEY, defaultValue = CSharpConstants.DOTNET_SDK_DIR_DEFVALUE,
-        name = ".NET SDK directory", description = "Absolute path of the .NET SDK directory.", global = true, project = false),
     @Property(
         key = CSharpConstants.SOLUTION_FILE_KEY,
         defaultValue = CSharpConstants.SOLUTION_FILE_DEFVALUE,
@@ -79,6 +94,7 @@ public class CSharpCorePlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
     extensions.add(CSharp.class);
+    extensions.add(CSharpConfiguration.class);
 
     // Utility class shared amongst all the C# plugin ecosystem through API
     extensions.add(CSharpResourcesBridge.class);

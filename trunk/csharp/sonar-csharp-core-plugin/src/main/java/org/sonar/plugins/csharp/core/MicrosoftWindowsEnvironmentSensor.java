@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -35,6 +34,7 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.visualstudio.ModelFactory;
@@ -50,7 +50,7 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
   private static final Logger LOG = LoggerFactory.getLogger(MicrosoftWindowsEnvironmentSensor.class);
 
   private ProjectFileSystem projectFileSystem;
-  private Configuration configuration;
+  private CSharpConfiguration configuration;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
   /**
@@ -59,7 +59,7 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
    * @param configuration
    * @param fileSystem
    */
-  public MicrosoftWindowsEnvironmentSensor(Configuration configuration, ProjectFileSystem projectFileSystem,
+  public MicrosoftWindowsEnvironmentSensor(CSharpConfiguration configuration, ProjectFileSystem projectFileSystem,
       MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.configuration = configuration;
     this.projectFileSystem = projectFileSystem;
@@ -82,15 +82,36 @@ public class MicrosoftWindowsEnvironmentSensor implements Sensor {
 
     // Then try to create the Visual Studio Solution object from the ".sln" file
     createVisualStudioSolution();
+
+    // and lock the object so that nobody can modify it
+    microsoftWindowsEnvironment.lock();
   }
 
   private void retrieveMicrosoftWindowsEnvironmentConfig() {
-    File dotnetSdkDirectory = new File(configuration.getString(CSharpConstants.DOTNET_SDK_DIR_KEY, CSharpConstants.DOTNET_SDK_DIR_DEFVALUE));
+    // .NET version
+    String dotnetVersion = configuration.getString(CSharpConstants.DOTNET_VERSION_KEY, CSharpConstants.DOTNET_VERSION_DEFVALUE);
+    microsoftWindowsEnvironment.setDotnetVersion(dotnetVersion);
+    // .NET SDK folder
+    File dotnetSdkDirectory = new File(configuration.getString(CSharpConstants.getDotnetSdkDirKey(dotnetVersion),
+        CSharpConstants.getDotnetSdkDirDefaultValue(dotnetVersion)));
     if ( !dotnetSdkDirectory.isDirectory()) {
-      throw new SonarException("The following .NET SDK directory does not exist, please check yoru plugin configuration: "
+      throw new SonarException("The following .NET SDK directory does not exist, please check your plugin configuration: "
           + dotnetSdkDirectory.getPath());
     } else {
       microsoftWindowsEnvironment.setDotnetSdkDirectory(dotnetSdkDirectory);
+    }
+    // Silverlight version
+    String silverlightVersion = configuration.getString(CSharpConstants.SILVERLIGHT_VERSION_KEY,
+        CSharpConstants.SILVERLIGHT_VERSION_DEFVALUE);
+    microsoftWindowsEnvironment.setSilverlightVersion(silverlightVersion);
+    // Silverlight folder
+    File silverlightDirectory = new File(configuration.getString(CSharpConstants.getSilverlightDirKey(silverlightVersion),
+        CSharpConstants.getSilverlightDirDefaultValue(silverlightVersion)));
+    if ( !silverlightDirectory.isDirectory()) {
+      throw new SonarException("The following Silverlight directory does not exist, please check your plugin configuration: "
+          + silverlightDirectory.getPath());
+    } else {
+      microsoftWindowsEnvironment.setSilverlightDirectory(silverlightDirectory);
     }
   }
 
