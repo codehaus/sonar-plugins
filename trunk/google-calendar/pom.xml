@@ -9,12 +9,12 @@
   </parent>
   
   <artifactId>sonar-google-calendar-plugin</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>sonar-plugin</packaging>
   
   <name>Google Calendar Plugin</name>
   <description>Plugin that integrates Sonar with Google Calendar providing simple functionality</description>
-  <url></url>
+  <url />
   <inceptionYear>2011</inceptionYear>
   <organization>
     <name>OTS SA</name>
@@ -39,9 +39,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/google-calendar</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/google-calendar</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-google-calendar-plugin-0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-google-calendar-plugin-0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-google-calendar-plugin-0.1</url>
   </scm>
   
   <issueManagement>
