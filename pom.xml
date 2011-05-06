@@ -1,115 +1,215 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+	<parent>
+		<groupId>org.codehaus.sonar-plugins</groupId>
+		<artifactId>parent</artifactId>
+		<version>8</version>
+		<relativePath>../parent</relativePath>
+	</parent>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>crowd</module>
-        <module>c-rules</module>
-        <module>cutoff</module>
-        <module>dotnet</module>
-        <module>email</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>jacoco</module>
-        <module>javascript</module>
-        <module>jira</module>
-        <module>jlint</module>
-        <module>jmeter</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>php</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>radiator</module>
-        <module>rules-meter</module>
-        <module>scm-activity</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonar-runner</module>
-        <module>sonarj</module>
-        <module>switch-off-violations</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>twitter</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>basic-cocomo</module>
-        <module>clover</module>
-        <module>csharp</module>
-        <module>debug</module>
-        <module>drools</module>
-        <module>google-calendar</module>
-        <module>metrics-help</module>
-        <module>profiler</module>
-        <module>testability-explorer</module>
-        <module>webscanner</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>hammurapi</module>
-        <module>jtest</module>
-        <module>sonar-replay</module>
-        <module>sonar-squid-cli</module>
-        <module>sonar-squid-gui</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-        <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-        <module>codereview</module>
-      </modules>
-    </profile>
-  </profiles>
+	<groupId>org.codehaus.sonar-plugins</groupId>
+	<artifactId>sonar-xml-plugin</artifactId>
+	<version>0.1</version>
+	<packaging>sonar-plugin</packaging>
 
-  <build>
-    <plugins>
-      <!-- See http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
+	<name>Sonar XML Plugin</name>
+	<description>Analyze XML and XHTML documents.</description>
+
+ 	<url>http://docs.codehaus.org/display/SONAR/XML+Plugin</url>
+ 	<inceptionYear>2010</inceptionYear>
+	<organization>
+		<name>Matthijs Galesloot</name>
+	</organization>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>mgalesloot</id>
+			<name>Matthijs Galesloot</name>
+			<email>matthijs@codehaus.org</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-xml-plugin-0.1</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-xml-plugin-0.1</developerConnection>
+		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-xml-plugin-0.1</url>
+	</scm>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14607</url>
+	</issueManagement>
+	<ciManagement>
+		<system>BAMBOO</system>
+		<url>http://ci.codehaus.org/browse/SONAR-XML</url>
+	</ciManagement>
+
+	<properties>
+		<sonar.version>2.7</sonar.version>
+		<license.name>AL2</license.name>
+		<sonar.pluginName>Xml</sonar.pluginName>
+		<sonar.pluginClass>org.sonar.plugins.xml.XmlPlugin</sonar.pluginClass>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.codehaus.sonar</groupId>
+				<artifactId>sonar-plugin-api</artifactId>
+				<version>${sonar.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-plugin-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>3.0.3</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-testing-harness</artifactId>
+			<version>${sonar.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- integration tests -->
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.sonar</groupId>
+			<artifactId>sonar-ws-client</artifactId>
+			<version>${sonar.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>codehaus.org</id>
+			<name>Codehaus Repository</name>
+			<url>http://repository.codehaus.org</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/itest/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>integration-tests</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/source-its</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${basedir}/source-its</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.sonar</groupId>
+						<artifactId>sonar-dev-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-server</id>
+								<phase>pre-integration-test</phase>
+								<configuration>
+								  <runtimeVersion>2.7</runtimeVersion>
+									<background>true</background>
+									<clean>true</clean>
+								</configuration>
+								<goals>
+									<goal>start-war</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>analyze-projects</id>
+								<phase>pre-integration-test</phase>
+								<configuration>
+									<projectsDir>${basedir}/target/source-its/projects</projectsDir>
+								</configuration>
+								<goals>
+									<goal>analyze</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>stop-server</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop-war</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
