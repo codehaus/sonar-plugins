@@ -62,7 +62,7 @@ public final class CutoffFilter extends FileFilter {
   void parsePeriod(Configuration conf) {
     String property = conf.getString(CutoffConstants.PERIOD_IN_DAYS_PROPERTY);
     if (StringUtils.isNotBlank(property)) {
-      cutoffDate = new Date(System.currentTimeMillis() - Integer.parseInt(property) * 24 * 60 * 60 * 1000);
+      cutoffDate = new Date(System.currentTimeMillis() - Long.parseLong(property) * 24 * 60 * 60 * 1000);
     }
   }
 
