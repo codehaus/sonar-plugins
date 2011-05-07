@@ -87,7 +87,7 @@ public class ViolationsDecorator implements Decorator {
       if (activeRule != null) {
         for (Violation violation : context.getViolations()) {
           if (violation.getRule().equals(rule)) {
-            if (isMandatory(activeRule.getPriority())) {
+            if (isMandatory(activeRule.getSeverity())) {
               mandatory++;
             } else {
               optional++;
