@@ -59,53 +59,53 @@ public class BasicCOCOMOPlugin implements Plugin {
 
   /** {@inheritDoc} */
   public final String getDescription() {
-	StringBuffer desc = new StringBuffer();
-	desc.append( "<h3>Basic <b>CO</b>nstructive <b>CO</b>st <b>MO</b>del (COCOMO)</h3>" );
-	desc.append( "<p>Calculate estimated project cost using the basic COCOMO algorithm.</p>" );
-	desc.append( "	<script>" );
-	desc.append( "	function changeCOCOMO( ab, bb, cb, db ) {" );
-	desc.append( "	  document.getElementById('cocomo.coefficient.Ab').value=ab;" );
-	desc.append( "	  document.getElementById('cocomo.coefficient.Bb').value=bb;" );
-	desc.append( "	  document.getElementById('cocomo.coefficient.Cb').value=cb;" );
-	desc.append( "	  document.getElementById('cocomo.coefficient.Db').value=db;" );
-	desc.append( "	}" );
-	desc.append( "	</script>" );
-	desc.append( "	<table style=\"margin-left: 30px;\">" );
-	desc.append( "	  <thead>" );
-	desc.append( "	    <tr style=\"border-bottom: 1px solid silver; font-weight: bold;\">" );
-	desc.append( "	      <td width=\"120\">Software project</td>" );
-	desc.append( "	      <td width=\"35\" align=\"center\"><i>a<sub>b</sub></i></td>" );
-	desc.append( "	      <td width=\"35\" align=\"center\"><i>b<sub>b</sub></i></td>" );
-	desc.append( "	      <td width=\"35\" align=\"center\"><i>c<sub>b</sub></i></td>" );
-	desc.append( "	      <td width=\"35\" align=\"center\"><i>d<sub>b</sub></i></td>" );
-	desc.append( "	    </tr>" );
-	desc.append( "	  </thead>" );
-	desc.append( "	  <tbody>" );
-	desc.append( "	    <tr class=\"odd\" onclick=\"changeCOCOMO('2.4', '1.05', '2.5', '0.38' );\">" );
-	desc.append( "	      <td>Organic</td>" );
-	desc.append( "	      <td align=\"center\">2.4</td>" );
-	desc.append( "	      <td align=\"center\">1.05</td>" );
-	desc.append( "	      <td align=\"center\">2.5</td>" );
-	desc.append( "	      <td align=\"center\">0.38</td>" );
-	desc.append( "	    </tr>" );
-	desc.append( "	    <tr class=\"even\" onclick=\"changeCOCOMO('3.0', '1.12', '2.5', '0.35' );\">" );
-	desc.append( "	      <td>Semi-detached</td>" );
-	desc.append( "	      <td align=\"center\">3.0</td>" );
-	desc.append( "	      <td align=\"center\">1.12</td>" );
-	desc.append( "	      <td align=\"center\">2.5</td>" );
-	desc.append( "	      <td align=\"center\">0.35</td>" );
-	desc.append( "	    </tr>" );
-	desc.append( "	    <tr class=\"odd\" onclick=\"changeCOCOMO('3.6', '1.20', '2.5', '0.32' );\">" );
-	desc.append( "	      <td>Embedded</td>" );
-	desc.append( "	      <td align=\"center\">3.6</td>" );
-	desc.append( "	      <td align=\"center\">1.20</td>" );
-	desc.append( "	      <td align=\"center\">2.5</td>" );
-	desc.append( "	      <td align=\"center\">0.32</td>" );
-	desc.append( "	    </tr>" );
-	desc.append( "	  </tbody>" );
-	desc.append( "	</table>" );
-	desc.append( "<p>Click on the table to select a row</p>" );
-	desc.append( "<p>For more information on basic COCOMO visit wikipedia. <a href=\"http://en.wikipedia.org/wiki/Cocomo\" target=\"WikiPedia\"><img class=\"png\" src='/images/help.png'></a>" );
+    StringBuffer desc = new StringBuffer();
+    desc.append( "<h3>Basic <b>CO</b>nstructive <b>CO</b>st <b>MO</b>del (COCOMO)</h3>" );
+    desc.append( "<p>Calculate estimated project cost using the basic COCOMO algorithm.</p>" );
+    desc.append( "<script>" );
+    desc.append( "function changeCOCOMO( ab, bb, cb, db ) {" );
+    desc.append( "  document.getElementById('cocomo.coefficient.Ab').value=ab;" );
+    desc.append( "  document.getElementById('cocomo.coefficient.Bb').value=bb;" );
+    desc.append( "  document.getElementById('cocomo.coefficient.Cb').value=cb;" );
+    desc.append( "  document.getElementById('cocomo.coefficient.Db').value=db;" );
+    desc.append( "}" );
+    desc.append( "</script>" );
+    desc.append( "<table style=\"margin-left: 30px;\">" );
+    desc.append( "  <thead>" );
+    desc.append( "    <tr style=\"border-bottom: 1px solid silver; font-weight: bold;\">" );
+    desc.append( "      <td width=\"120\">Software project</td>" );
+    desc.append( "      <td width=\"35\" align=\"center\"><i>a<sub>b</sub></i></td>" );
+    desc.append( "      <td width=\"35\" align=\"center\"><i>b<sub>b</sub></i></td>" );
+    desc.append( "      <td width=\"35\" align=\"center\"><i>c<sub>b</sub></i></td>" );
+    desc.append( "      <td width=\"35\" align=\"center\"><i>d<sub>b</sub></i></td>" );
+    desc.append( "    </tr>" );
+    desc.append( "  </thead>" );
+    desc.append( "  <tbody>" );
+    desc.append( "    <tr class=\"odd\" onclick=\"changeCOCOMO('2.4', '1.05', '2.5', '0.38' );\">" );
+    desc.append( "      <td>Organic</td>" );
+    desc.append( "      <td align=\"center\">2.4</td>" );
+    desc.append( "      <td align=\"center\">1.05</td>" );
+    desc.append( "      <td align=\"center\">2.5</td>" );
+    desc.append( "      <td align=\"center\">0.38</td>" );
+    desc.append( "    </tr>" );
+    desc.append( "    <tr class=\"even\" onclick=\"changeCOCOMO('3.0', '1.12', '2.5', '0.35' );\">" );
+    desc.append( "      <td>Semi-detached</td>" );
+    desc.append( "      <td align=\"center\">3.0</td>" );
+    desc.append( "      <td align=\"center\">1.12</td>" );
+    desc.append( "      <td align=\"center\">2.5</td>" );
+    desc.append( "      <td align=\"center\">0.35</td>" );
+    desc.append( "    </tr>" );
+    desc.append( "    <tr class=\"odd\" onclick=\"changeCOCOMO('3.6', '1.20', '2.5', '0.32' );\">" );
+    desc.append( "      <td>Embedded</td>" );
+    desc.append( "      <td align=\"center\">3.6</td>" );
+    desc.append( "      <td align=\"center\">1.20</td>" );
+    desc.append( "      <td align=\"center\">2.5</td>" );
+    desc.append( "      <td align=\"center\">0.32</td>" );
+    desc.append( "    </tr>" );
+    desc.append( "  </tbody>" );
+    desc.append( "</table>" );
+    desc.append( "<p>Click on the table to select a row</p>" );
+    desc.append( "<p>For more information on basic COCOMO visit wikipedia. <a href=\"http://en.wikipedia.org/wiki/Cocomo\" target=\"WikiPedia\"><img class=\"png\" src='/images/help.png'></a>" );
     return desc.toString();
   }
 
@@ -127,8 +127,8 @@ public class BasicCOCOMOPlugin implements Plugin {
   public final String getName() {
     return "Basic COCOMO";
   }
-  
+
   public static final String getCurrencySymbolConfigKey() {
-	  return CCM_CURRENCY_SYMBOL;
+    return CCM_CURRENCY_SYMBOL;
   }
 }
