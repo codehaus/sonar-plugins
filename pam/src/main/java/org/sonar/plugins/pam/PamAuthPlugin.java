@@ -32,23 +32,14 @@ import org.sonar.api.Extension;
  */
 public class PamAuthPlugin implements Plugin {
 
-  /**
-   * @deprecated this is not used anymore
-   */
   public String getKey() {
     return "pam";
   }
 
-  /**
-   * @deprecated this is not used anymore
-   */
   public String getName() {
     return "Sonar Pam Authenticator plugin";
   }
 
-  /**
-   * @deprecated this is not used anymore
-   */
   public String getDescription() {
     return "Delegate password management to underlying PAM.";
   }
