@@ -20,6 +20,7 @@
         <module>build-breaker</module>
         <module>build-stability</module>
         <module>clirr</module>
+        <module>clover</module>
         <module>crowd</module>
         <module>c-rules</module>
         <module>cutoff</module>
@@ -28,6 +29,7 @@
         <module>emma</module>
         <module>fb-contrib</module>
         <module>flex</module>
+        <module>google-calendar</module>
         <module>greenpepper</module>
         <module>groovy</module>
         <module>jacoco</module>
@@ -61,7 +63,7 @@
         <module>twitter</module>
         <module>useless-code-tracker</module>
         <module>web</module>
-		<module>xml</module>
+        <module>xml</module>
       </modules>
     </profile>
     <profile>
@@ -71,11 +73,9 @@
       </activation>
       <modules>
         <module>basic-cocomo</module>
-        <module>clover</module>
         <module>csharp</module>
         <module>debug</module>
         <module>drools</module>
-        <module>google-calendar</module>
         <module>metrics-help</module>
         <module>profiler</module>
         <module>testability-explorer</module>
