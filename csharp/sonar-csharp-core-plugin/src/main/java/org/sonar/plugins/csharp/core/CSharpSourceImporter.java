@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.csharp.core;
 
-
 import org.sonar.api.batch.AbstractSourceImporter;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.plugins.csharp.api.CSharp;

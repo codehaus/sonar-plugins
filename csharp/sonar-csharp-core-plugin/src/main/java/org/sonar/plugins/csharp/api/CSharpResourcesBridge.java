@@ -58,8 +58,8 @@ public class CSharpResourcesBridge implements BatchExtension {
    * Method used to populate the map with the logical resources found in the Squid file and link them to the Sonar file. <br/>
    * This method must be called only by plugins that have the ability to populate this bridge (e.g. C# Squid Plugin).<br/>
    * <br/>
-   * <b>Note</b>: If the CSharpResourcesBridge has been locked (see {@link #lock()}), an {@link IllegalStateException} will be
-   * thrown if this method is called.
+   * <b>Note</b>: If the CSharpResourcesBridge has been locked (see {@link #lock()}), an {@link IllegalStateException} will be thrown if
+   * this method is called.
    * 
    * @param squidFile
    *          the Squid file

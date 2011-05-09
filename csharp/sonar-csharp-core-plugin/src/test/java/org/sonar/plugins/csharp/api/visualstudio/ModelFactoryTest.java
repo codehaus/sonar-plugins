@@ -43,12 +43,6 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-import org.sonar.plugins.csharp.api.visualstudio.BinaryReference;
-import org.sonar.plugins.csharp.api.visualstudio.ModelFactory;
-import org.sonar.plugins.csharp.api.visualstudio.SourceFile;
-import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
-import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
-import org.sonar.plugins.csharp.api.visualstudio.VisualStudioWebProject;
 
 /**
  * Tests for visual studio utilities.

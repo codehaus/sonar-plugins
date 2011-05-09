@@ -40,6 +40,10 @@ import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 @Properties({
     @Property(key = GendarmeConstants.EXECUTABLE_KEY, defaultValue = GendarmeConstants.EXECUTABLE_DEFVALUE, name = "Gendarme executable",
         description = "Absolute path of the Gendarme program.", global = true, project = false),
+    @Property(key = GendarmeConstants.ASSEMBLIES_TO_SCAN_KEY, defaultValue = GendarmeConstants.ASSEMBLIES_TO_SCAN_DEFVALUE,
+        name = "Assemblies to scan", description = "Comma-seperated list of paths of assemblies that should be scanned. "
+            + "If empty, the plugin will try to get this list from the Visual Studio 'csproj' files (if any).", global = false,
+        project = true),
     @Property(key = GendarmeConstants.GENDARME_CONFIDENCE_KEY, defaultValue = GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE,
         name = "Gendarme confidence", description = "Filter defects for the specified confidence levels. (low/normal/high/total with +/-)",
         global = true, project = true),

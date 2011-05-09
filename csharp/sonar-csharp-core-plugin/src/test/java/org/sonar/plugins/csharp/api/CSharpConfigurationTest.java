@@ -22,6 +22,7 @@ package org.sonar.plugins.csharp.api;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -82,6 +83,21 @@ public class CSharpConfigurationTest {
     assertThat(cSharpConfiguration.getString(CSharpConstants.SILVERLIGHT_VERSION_KEY, CSharpConstants.SILVERLIGHT_VERSION_DEFVALUE),
         is("NEW-bar2"));
     assertThat(cSharpConfiguration.getString("some.new.param", "default"), is("NEW-param"));
+  }
+
+  @Test
+  public void testDifferentParameterTypes() throws Exception {
+    // old params
+    configuration.addProperty("fxcop.ignore.generated.code", "true");
+    configuration.addProperty("fxcop.additionalDirectories", "foo, bar");
+
+    // new params
+    configuration.addProperty("sonar.fxcop.ignoreGeneratedCode", "false");
+    configuration.addProperty("sonar.fxcop.assemblyDependencyDirectories", "toto, tutu");
+
+    assertTrue(cSharpConfiguration.getBoolean("sonar.fxcop.ignoreGeneratedCode", false));
+    assertThat(cSharpConfiguration.getStringArray("sonar.fxcop.assemblyDependencyDirectories")[0], is("foo"));
+    assertThat(cSharpConfiguration.getStringArray("sonar.fxcop.assemblyDependencyDirectories")[1], is("bar"));
   }
 
 }

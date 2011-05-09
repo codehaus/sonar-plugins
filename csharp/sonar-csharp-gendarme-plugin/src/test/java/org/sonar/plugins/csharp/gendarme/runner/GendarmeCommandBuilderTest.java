@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.utils.Command;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
@@ -47,6 +48,7 @@ public class GendarmeCommandBuilderTest {
 
   private static GendarmeCommandBuilder gendarmeCommandBuilder;
   private static Configuration configuration;
+  private static CSharpConfiguration cSharpConfiguration;
   private static ProjectFileSystem projectFileSystem;
   private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private static VisualStudioProject project;
@@ -58,6 +60,7 @@ public class GendarmeCommandBuilderTest {
     fakeGendarmeExecutable = FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeProg/gendarme.exe"));
     fakeGendarmeConfigFile = FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeGendarmeConfigFile.xml"));
     configuration = new BaseConfiguration();
+    cSharpConfiguration = new CSharpConfiguration(configuration);
 
     projectFileSystem = mock(ProjectFileSystem.class);
     when(projectFileSystem.getBasedir()).thenReturn(FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner")));
@@ -80,7 +83,7 @@ public class GendarmeCommandBuilderTest {
     configuration.addProperty(GendarmeConstants.ASSEMBLIES_TO_SCAN_KEY, "FakeAssemblies/Fake1.assembly, FakeAssemblies/Fake2.assembly");
     configuration.addProperty(GendarmeConstants.ASSEMBLIES_TO_SCAN_KEY, "FakeDepFolder, UnexistingFolder");
 
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(fakeGendarmeConfigFile);
     Command command = gendarmeCommandBuilder.createCommand();
 
@@ -100,7 +103,7 @@ public class GendarmeCommandBuilderTest {
     configuration.addProperty(GendarmeConstants.ASSEMBLIES_TO_SCAN_KEY, "FakeAssemblies/Fake1.assembly");
     configuration.addProperty(GendarmeConstants.GENDARME_CONFIDENCE_KEY, "total");
 
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(fakeGendarmeConfigFile);
     Command command = gendarmeCommandBuilder.createCommand();
 
@@ -121,7 +124,7 @@ public class GendarmeCommandBuilderTest {
     when(project.getDebugArtifact()).thenReturn(
         FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
 
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(fakeGendarmeConfigFile);
     Command command = gendarmeCommandBuilder.createCommand();
 
@@ -136,7 +139,7 @@ public class GendarmeCommandBuilderTest {
     when(project.getReleaseArtifact()).thenReturn(
         FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
 
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(fakeGendarmeConfigFile);
     Command command = gendarmeCommandBuilder.createCommand();
 
@@ -151,7 +154,7 @@ public class GendarmeCommandBuilderTest {
     when(project.getReleaseArtifact())
         .thenReturn(FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/")));
 
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(fakeGendarmeConfigFile);
     gendarmeCommandBuilder.createCommand();
   }
@@ -159,7 +162,7 @@ public class GendarmeCommandBuilderTest {
   @Test(expected = IllegalStateException.class)
   public void testOnlyTestProject() throws Exception {
     when(project.isTest()).thenReturn(true);
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(fakeGendarmeConfigFile);
     gendarmeCommandBuilder.createCommand();
   }
@@ -170,7 +173,7 @@ public class GendarmeCommandBuilderTest {
     when(project.getDebugArtifact()).thenReturn(
         FileUtils.toFile(GendarmeCommandBuilderTest.class.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
 
-    gendarmeCommandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
+    gendarmeCommandBuilder = new GendarmeCommandBuilder(cSharpConfiguration, projectFileSystem, microsoftWindowsEnvironment);
     gendarmeCommandBuilder.setGendarmeConfigFile(null);
     gendarmeCommandBuilder.createCommand();
   }
