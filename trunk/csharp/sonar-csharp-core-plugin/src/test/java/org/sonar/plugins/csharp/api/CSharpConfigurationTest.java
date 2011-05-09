@@ -89,11 +89,11 @@ public class CSharpConfigurationTest {
   public void testDifferentParameterTypes() throws Exception {
     // old params
     configuration.addProperty("fxcop.ignore.generated.code", "true");
-    configuration.addProperty("fxcop.additionalDirectories", "foo, bar");
+    configuration.addProperty("fxcop.additionalDirectories", "foo;bar");
 
     // new params
     configuration.addProperty("sonar.fxcop.ignoreGeneratedCode", "false");
-    configuration.addProperty("sonar.fxcop.assemblyDependencyDirectories", "toto, tutu");
+    configuration.addProperty("sonar.fxcop.assemblyDependencyDirectories", "toto,tutu");
 
     assertTrue(cSharpConfiguration.getBoolean("sonar.fxcop.ignoreGeneratedCode", false));
     assertThat(cSharpConfiguration.getStringArray("sonar.fxcop.assemblyDependencyDirectories")[0], is("foo"));
