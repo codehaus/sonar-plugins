@@ -20,6 +20,8 @@
 
 package org.sonar.plugins.csharp.api;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
@@ -27,6 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.Logs;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -53,6 +56,8 @@ public class CSharpConfiguration implements BatchExtension {
     // FxCop OLD parameters
     newToPreviousParamMap.put("sonar.fxcop.assemblyDependencyDirectories", "fxcop.additionalDirectories");
     newToPreviousParamMap.put("sonar.fxcop.ignoreGeneratedCode", "fxcop.ignore.generated.code");
+    newToPreviousParamMap.put("sonar.fxcop.mode", "sonar.dotnet.fxcop");
+    newToPreviousParamMap.put("sonar.fxcop.reports.path", "sonar.dotnet.fxcop.reportsPath");
 
     // Gendarme OLD parameters
     newToPreviousParamMap.put("sonar.gendarme.confidence", "gendarme.confidence");
@@ -90,7 +95,12 @@ public class CSharpConfiguration implements BatchExtension {
       if (result.length != 0) {
         // a former parameter has been specified, let's take this value
         logInfo(result, previousKey);
-        return result;
+        // in the previous .NET plugin, parameters used to be split with a semi-colon
+        Collection<String> resultCollection = Lists.newArrayList();
+        for (int i = 0; i < result.length; i++) {
+          resultCollection.addAll(Arrays.asList(StringUtils.split(result[i], ';')));
+        }
+        return resultCollection.toArray(new String[] {});
       }
     }
     // if this key wasn't used before, or if no value for was for it, use the value of the current key

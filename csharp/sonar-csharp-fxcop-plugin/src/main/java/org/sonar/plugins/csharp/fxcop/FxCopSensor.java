@@ -23,6 +23,7 @@ package org.sonar.plugins.csharp.fxcop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -34,9 +35,12 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
+
+import com.google.common.collect.Lists;
 
 /**
  * Collects the FXCop reporting into sonar.
@@ -52,6 +56,8 @@ public class FxCopSensor implements Sensor {
   private FxCopRunner fxCopRunner;
   private FxCopProfileExporter profileExporter;
   private FxCopResultParser fxCopResultParser;
+  private CSharpConfiguration configuration;
+  private String executionMode;
 
   /**
    * Constructs a {@link FxCopSensor}.
@@ -63,19 +69,21 @@ public class FxCopSensor implements Sensor {
    * @param rulesProfile
    */
   public FxCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, FxCopRunner fxCopRunner,
-      FxCopProfileExporter profileExporter, FxCopResultParser fxCopResultParser) {
+      FxCopProfileExporter profileExporter, FxCopResultParser fxCopResultParser, CSharpConfiguration configuration) {
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
     this.fxCopRunner = fxCopRunner;
     this.profileExporter = profileExporter;
     this.fxCopResultParser = fxCopResultParser;
+    this.configuration = configuration;
+    this.executionMode = configuration.getString(FxCopConstants.MODE, "");
   }
 
   /**
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguageKey().equals("cs");
+    return project.getLanguageKey().equals("cs") && !FxCopConstants.MODE_SKIP.equalsIgnoreCase(executionMode);
   }
 
   /**
@@ -89,14 +97,16 @@ public class FxCopSensor implements Sensor {
 
     fxCopResultParser.setEncoding(fileSystem.getSourceCharset());
 
-    // prepare config file for FxCop
-    File fxCopConfigFile = generateConfigurationFile();
-
-    // run FxCop
-    fxCopRunner.execute(fxCopConfigFile);
+    if ( !FxCopConstants.MODE_REUSE_REPORT.equalsIgnoreCase(executionMode)) {
+      // prepare config file for FxCop
+      File fxCopConfigFile = generateConfigurationFile();
+      // and run FxCop
+      fxCopRunner.execute(fxCopConfigFile);
+    }
 
     // and analyse results
-    analyseResults();
+    Collection<File> reportFiles = getReportFilesList();
+    analyseResults(reportFiles);
   }
 
   private File generateConfigurationFile() {
@@ -114,17 +124,29 @@ public class FxCopSensor implements Sensor {
     return configFile;
   }
 
-  private void analyseResults() {
-    final String[] reportFileNames = new String[] { FxCopConstants.FXCOP_REPORT_XML /* , FxCopConstants.SL_FXCOP_REPORT_XML */};
-    File dir = fileSystem.getSonarWorkingDirectory();
+  private Collection<File> getReportFilesList() {
+    Collection<File> reportFiles = Lists.newArrayList();
+    if (FxCopConstants.MODE_REUSE_REPORT.equalsIgnoreCase(executionMode)) {
+      File targetDir = fileSystem.getBuildDir();
+      String[] reportsPath = configuration.getStringArray(FxCopConstants.REPORTS_PATH_KEY);
+      for (int i = 0; i < reportsPath.length; i++) {
+        reportFiles.add(new File(targetDir, reportsPath[i]));
+      }
+    } else {
+      File sonarDir = fileSystem.getSonarWorkingDirectory();
+      reportFiles.add(new File(sonarDir, FxCopConstants.FXCOP_REPORT_XML));
+      // reportFiles.add(new File(sonarDir, FxCopConstants.SL_FXCOP_REPORT_XML));
+    }
+    return reportFiles;
+  }
 
-    for (String reportFileName : reportFileNames) {
-      File report = new File(dir, reportFileName);
-      if (report.exists()) {
-        LOG.info("FxCop report found at location {}", report);
-        fxCopResultParser.parse(report);
+  private void analyseResults(Collection<File> reportFiles) {
+    for (File reportFile : reportFiles) {
+      if (reportFile.exists()) {
+        LOG.info("FxCop report found at location {}", reportFile);
+        fxCopResultParser.parse(reportFile);
       } else {
-        LOG.info("No FxCop report found for path {}", report);
+        LOG.warn("No FxCop report found for path {}", reportFile);
       }
     }
   }

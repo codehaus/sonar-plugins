@@ -38,18 +38,21 @@ import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
 @Properties({
     @Property(key = FxCopConstants.EXECUTABLE_KEY, defaultValue = FxCopConstants.EXECUTABLE_DEFVALUE, name = "FxCop executable",
         description = "Absolute path of the FxCop program.", global = true, project = false),
-    @Property(key = FxCopConstants.ASSEMBLIES_TO_SCAN_KEY, defaultValue = FxCopConstants.ASSEMBLIES_TO_SCAN_DEFVALUE,
-        name = "Assemblies to scan", description = "Comma-seperated list of paths of assemblies that should be scanned. "
+    @Property(key = FxCopConstants.ASSEMBLIES_TO_SCAN_KEY, defaultValue = "", name = "Assemblies to scan",
+        description = "Comma-seperated list of paths of assemblies that should be scanned. "
             + "If empty, the plugin will try to get this list from the Visual Studio 'csproj' files (if any).", global = false,
         project = true),
-    @Property(key = FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_KEY,
-        defaultValue = FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_DEFVALUE, name = "Assembly dependency directories",
+    @Property(key = FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_KEY, defaultValue = "", name = "Assembly dependency directories",
         description = "Comma-seperated list of folders to search for assembly dependencies.", global = true, project = true),
     @Property(key = FxCopConstants.IGNORE_GENERATED_CODE_KEY, defaultValue = FxCopConstants.IGNORE_GENERATED_CODE_DEFVALUE + "",
         name = "Ignore generated code", description = "Suppress analysis results against generated code.", global = true, project = true),
     @Property(key = FxCopConstants.TIMEOUT_MINUTES_KEY, defaultValue = FxCopConstants.TIMEOUT_MINUTES_DEFVALUE + "",
         name = "FxCop program timeout", description = "Maximum number of minutes before the FxCop program will be stopped.", global = true,
-        project = true) })
+        project = true),
+    @Property(key = FxCopConstants.MODE, defaultValue = "", name = "FxCop activation mode",
+        description = "Possible values : empty (means active), 'skip' and 'reuseReport'.", global = true, project = true),
+    @Property(key = FxCopConstants.REPORTS_PATH_KEY, defaultValue = "", name = "Name of the FxCop report files",
+        description = "Name of the FxCop report file used when reuse report mode is activated.", global = true, project = true) })
 public class FxCopPlugin implements Plugin {
 
   /**
