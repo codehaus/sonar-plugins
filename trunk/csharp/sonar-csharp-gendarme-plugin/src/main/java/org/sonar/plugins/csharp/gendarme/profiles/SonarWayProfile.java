@@ -37,7 +37,8 @@ public final class SonarWayProfile extends ProfileDefinition {
 
   public RulesProfile createProfile(ValidationMessages messages) {
     RulesProfile profile = profileImporter.importProfile(
-        new InputStreamReader(getClass().getResourceAsStream("/org/sonar/plugins/csharp/gendarme/rules/DefaultRules.Gendarme.xml")), messages);
+        new InputStreamReader(getClass().getResourceAsStream("/org/sonar/plugins/csharp/gendarme/rules/DefaultRules.Gendarme.xml")),
+        messages);
     profile.setName(CSharpConstants.CSHARP_WAY_PROFILE);
     return profile;
   }

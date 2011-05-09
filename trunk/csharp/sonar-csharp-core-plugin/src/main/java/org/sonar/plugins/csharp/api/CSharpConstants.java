@@ -78,7 +78,7 @@ public final class CSharpConstants {
    *          the wanted .NET version (2.5, 3.0 or 4.0)
    * @return the config key
    */
-  public static final String getDotnetSdkDirKey(String sdkVersion) {
+  public static String getDotnetSdkDirKey(String sdkVersion) {
     return dotnetFrameworkLocationKeys.get(sdkVersion);
   }
 
@@ -89,7 +89,7 @@ public final class CSharpConstants {
    *          the wanted .NET version (2.5, 3.0 or 4.0)
    * @return the default value
    */
-  public static final String getDotnetSdkDirDefaultValue(String sdkVersion) {
+  public static String getDotnetSdkDirDefaultValue(String sdkVersion) {
     return dotnetFrameworkLocationDefaultValues.get(sdkVersion);
   }
 
@@ -100,7 +100,7 @@ public final class CSharpConstants {
    *          the wanted Silverlight version (3 or 4)
    * @return the config key
    */
-  public static final String getSilverlightDirKey(String silverlightVersion) {
+  public static String getSilverlightDirKey(String silverlightVersion) {
     return silverlightFrameworkLocationKeys.get(silverlightVersion);
   }
 
@@ -111,7 +111,7 @@ public final class CSharpConstants {
    *          the wanted Silverlight version (3 or 4)
    * @return the default value
    */
-  public static final String getSilverlightDirDefaultValue(String silverlightVersion) {
+  public static String getSilverlightDirDefaultValue(String silverlightVersion) {
     return silverlightFrameworkLocationDefaultValues.get(silverlightVersion);
   }
 

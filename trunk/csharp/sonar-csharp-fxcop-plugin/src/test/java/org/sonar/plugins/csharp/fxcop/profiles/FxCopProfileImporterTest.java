@@ -40,7 +40,6 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileImporter;
 import org.sonar.test.TestUtils;
 
 public class FxCopProfileImporterTest {

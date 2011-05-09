@@ -26,7 +26,6 @@ import java.io.StringWriter;
 import org.junit.Test;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.Rule;
-import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.test.TestUtils;
 import org.xml.sax.SAXException;
 

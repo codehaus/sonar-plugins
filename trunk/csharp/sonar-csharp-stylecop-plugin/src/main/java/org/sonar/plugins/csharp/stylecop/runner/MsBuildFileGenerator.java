@@ -25,10 +25,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
@@ -39,10 +39,10 @@ import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 public class MsBuildFileGenerator {
 
   protected static final String MSBUILD_FILE = "stylecop-msbuild.xml";
-  private Configuration configuration;
+  private CSharpConfiguration configuration;
   private VisualStudioSolution solution;
 
-  public MsBuildFileGenerator(Configuration configuration) {
+  public MsBuildFileGenerator(CSharpConfiguration configuration) {
     this.configuration = configuration;
   }
 

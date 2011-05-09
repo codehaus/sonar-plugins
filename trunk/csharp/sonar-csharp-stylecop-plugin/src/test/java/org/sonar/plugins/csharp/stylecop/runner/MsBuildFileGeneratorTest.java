@@ -31,6 +31,7 @@ import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
@@ -46,7 +47,7 @@ public class MsBuildFileGeneratorTest {
   public void init() {
     Configuration conf = new BaseConfiguration();
     conf.setProperty(StyleCopConstants.INSTALL_DIR_KEY, StyleCopConstants.INSTALL_DIR_DEFVALUE);
-    generator = new MsBuildFileGenerator(conf);
+    generator = new MsBuildFileGenerator(new CSharpConfiguration(conf));
 
     VisualStudioSolution solution = mock(VisualStudioSolution.class);
     File solutionDir = mock(File.class);

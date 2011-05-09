@@ -30,7 +30,6 @@ import org.junit.Test;
 import org.sonar.api.platform.ServerFileSystem;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.XMLRuleParser;
-import org.sonar.plugins.csharp.fxcop.FxCopRuleRepository;
 
 public class FxCopRuleRepositoryTest {
 

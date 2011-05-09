@@ -22,12 +22,12 @@ package org.sonar.plugins.csharp.gendarme.runner;
 
 import java.io.File;
 
-import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.utils.CommandExecutor;
 import org.sonar.plugins.csharp.gendarme.GendarmeConstants;
@@ -50,7 +50,7 @@ public class GendarmeRunner implements BatchExtension {
    * @param fileSystem
    *          the file system of the project
    */
-  public GendarmeRunner(Configuration configuration, ProjectFileSystem projectFileSystem,
+  public GendarmeRunner(CSharpConfiguration configuration, ProjectFileSystem projectFileSystem,
       MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.commandBuilder = new GendarmeCommandBuilder(configuration, projectFileSystem, microsoftWindowsEnvironment);
     timeoutMinutes = configuration.getInt(GendarmeConstants.TIMEOUT_MINUTES_KEY, GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE);

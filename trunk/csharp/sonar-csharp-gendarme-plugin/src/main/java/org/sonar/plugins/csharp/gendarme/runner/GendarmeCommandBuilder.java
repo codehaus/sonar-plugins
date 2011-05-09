@@ -23,10 +23,10 @@ package org.sonar.plugins.csharp.gendarme.runner;
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.utils.Command;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
@@ -58,7 +58,7 @@ public class GendarmeCommandBuilder {
    * @param fileSystem
    *          the file system of the project
    */
-  public GendarmeCommandBuilder(Configuration configuration, ProjectFileSystem fileSystem,
+  public GendarmeCommandBuilder(CSharpConfiguration configuration, ProjectFileSystem fileSystem,
       MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.fileSystem = fileSystem;
     this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
