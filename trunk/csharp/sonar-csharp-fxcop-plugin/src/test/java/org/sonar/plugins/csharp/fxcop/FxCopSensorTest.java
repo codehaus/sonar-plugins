@@ -23,7 +23,11 @@ package org.sonar.plugins.csharp.fxcop;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.util.List;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -31,10 +35,12 @@ import org.junit.Test;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 
+import com.google.common.collect.Lists;
+
 public class FxCopSensorTest {
 
   @Test
-  public void testShouldExecute() throws Exception {
+  public void testShouldExecuteOnProject() throws Exception {
     Configuration conf = new BaseConfiguration();
     FxCopSensor sensor = new FxCopSensor(null, null, null, null, null, new CSharpConfiguration(conf));
 
@@ -48,6 +54,18 @@ public class FxCopSensorTest {
     conf.addProperty(FxCopConstants.MODE, FxCopConstants.MODE_SKIP);
     sensor = new FxCopSensor(null, null, null, null, null, new CSharpConfiguration(conf));
     assertFalse(sensor.shouldExecuteOnProject(project));
+  }
+
+  @Test
+  public void testAnalyseResults() throws Exception {
+    FxCopResultParser parser = mock(FxCopResultParser.class);
+    FxCopSensor sensor = new FxCopSensor(null, null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()));
+
+    File tempFile = File.createTempFile("foo", null);
+    List<File> reports = Lists.newArrayList(tempFile, new File("bar"));
+    sensor.analyseResults(reports);
+    tempFile.delete();
+    verify(parser).parse(tempFile);
   }
 
 }
