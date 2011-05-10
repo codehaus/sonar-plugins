@@ -61,6 +61,8 @@ public class CSharpConfiguration implements BatchExtension {
 
     // Gendarme OLD parameters
     newToPreviousParamMap.put("sonar.gendarme.confidence", "gendarme.confidence");
+    newToPreviousParamMap.put("sonar.gendarme.mode", "sonar.dotnet.gendarme");
+    newToPreviousParamMap.put("sonar.gendarme.reports.path", "sonar.dotnet.gendarme.reportPath");
 
   }
 

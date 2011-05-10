@@ -23,6 +23,7 @@ package org.sonar.plugins.csharp.gendarme;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -34,10 +35,13 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
 import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
+
+import com.google.common.collect.Lists;
 
 /**
  * Collects the Gendarme reporting into sonar.
@@ -52,6 +56,8 @@ public class GendarmeSensor implements Sensor {
   private GendarmeRunner gendarmeRunner;
   private GendarmeProfileExporter profileExporter;
   private GendarmeResultParser gendarmeResultParser;
+  private CSharpConfiguration configuration;
+  private String executionMode;
 
   /**
    * Constructs a {@link GendarmeSensor}.
@@ -63,19 +69,25 @@ public class GendarmeSensor implements Sensor {
    * @param rulesProfile
    */
   public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, GendarmeRunner gendarmeRunner,
-      GendarmeProfileExporter profileExporter, GendarmeResultParser gendarmeResultParser) {
+      GendarmeProfileExporter profileExporter, GendarmeResultParser gendarmeResultParser, CSharpConfiguration configuration) {
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
     this.gendarmeRunner = gendarmeRunner;
     this.profileExporter = profileExporter;
     this.gendarmeResultParser = gendarmeResultParser;
+    this.configuration = configuration;
+    this.executionMode = configuration.getString(GendarmeConstants.MODE, "");
   }
 
   /**
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguageKey().equals("cs");
+    boolean skipMode = GendarmeConstants.MODE_SKIP.equalsIgnoreCase(executionMode);
+    if (skipMode) {
+      LOG.info("Gendarme plugin won't execute as it is set to 'skip' mode.");
+    }
+    return project.getLanguageKey().equals("cs") && !skipMode;
   }
 
   /**
@@ -89,17 +101,19 @@ public class GendarmeSensor implements Sensor {
 
     gendarmeResultParser.setEncoding(fileSystem.getSourceCharset());
 
-    // prepare config file for Gendarme
-    File gendarmeConfigFile = generateConfigurationFile();
-
-    // run Gendarme
-    gendarmeRunner.execute(gendarmeConfigFile);
+    if ( !GendarmeConstants.MODE_REUSE_REPORT.equalsIgnoreCase(executionMode)) {
+      // prepare config file for Gendarme
+      File gendarmeConfigFile = generateConfigurationFile();
+      // run Gendarme
+      gendarmeRunner.execute(gendarmeConfigFile);
+    }
 
     // and analyse results
-    analyseResults();
+    Collection<File> reportFiles = getReportFilesList();
+    analyseResults(reportFiles);
   }
 
-  private File generateConfigurationFile() {
+  protected File generateConfigurationFile() {
     File configFile = new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_RULES_FILE);
     FileWriter writer = null;
     try {
@@ -114,13 +128,32 @@ public class GendarmeSensor implements Sensor {
     return configFile;
   }
 
-  private void analyseResults() {
-    File report = new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_REPORT_XML);
-    if (report.exists()) {
-      LOG.info("Gendarme report found at location {}", report.getAbsolutePath());
-      gendarmeResultParser.parse(report);
+  protected Collection<File> getReportFilesList() {
+    Collection<File> reportFiles = Lists.newArrayList();
+    if (GendarmeConstants.MODE_REUSE_REPORT.equalsIgnoreCase(executionMode)) {
+      File targetDir = fileSystem.getBuildDir();
+      String[] reportsPath = configuration.getStringArray(GendarmeConstants.REPORTS_PATH_KEY);
+      for (int i = 0; i < reportsPath.length; i++) {
+        reportFiles.add(new File(targetDir, reportsPath[i]));
+      }
+      if (reportFiles.isEmpty()) {
+        LOG.warn("No report to analyse whereas Gendame runs in 'reuseReport' mode. Please specify at least on report to analyse.");
+      }
     } else {
-      LOG.error("Gendarme report cound not be found: {}", report.getAbsolutePath());
+      File sonarDir = fileSystem.getSonarWorkingDirectory();
+      reportFiles.add(new File(sonarDir, GendarmeConstants.GENDARME_REPORT_XML));
+    }
+    return reportFiles;
+  }
+
+  protected void analyseResults(Collection<File> reportFiles) {
+    for (File reportFile : reportFiles) {
+      if (reportFile.exists()) {
+        LOG.debug("Gendarme report found at location {}", reportFile);
+        gendarmeResultParser.parse(reportFile);
+      } else {
+        LOG.warn("No Gendarme report found for path {}", reportFile);
+      }
     }
   }
 
