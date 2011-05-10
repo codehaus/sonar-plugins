@@ -109,7 +109,7 @@ public class FxCopSensor implements Sensor {
     analyseResults(reportFiles);
   }
 
-  private File generateConfigurationFile() {
+  protected File generateConfigurationFile() {
     File configFile = new File(fileSystem.getSonarWorkingDirectory(), FXCOP_RULES_FILE);
     FileWriter writer = null;
     try {
@@ -124,7 +124,7 @@ public class FxCopSensor implements Sensor {
     return configFile;
   }
 
-  private Collection<File> getReportFilesList() {
+  protected Collection<File> getReportFilesList() {
     Collection<File> reportFiles = Lists.newArrayList();
     if (FxCopConstants.MODE_REUSE_REPORT.equalsIgnoreCase(executionMode)) {
       File targetDir = fileSystem.getBuildDir();
@@ -140,7 +140,7 @@ public class FxCopSensor implements Sensor {
     return reportFiles;
   }
 
-  private void analyseResults(Collection<File> reportFiles) {
+  protected void analyseResults(Collection<File> reportFiles) {
     for (File reportFile : reportFiles) {
       if (reportFile.exists()) {
         LOG.info("FxCop report found at location {}", reportFile);
