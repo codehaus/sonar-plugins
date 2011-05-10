@@ -83,7 +83,11 @@ public class FxCopSensor implements Sensor {
    * {@inheritDoc}
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguageKey().equals("cs") && !FxCopConstants.MODE_SKIP.equalsIgnoreCase(executionMode);
+    boolean skipMode = FxCopConstants.MODE_SKIP.equalsIgnoreCase(executionMode);
+    if (skipMode) {
+      LOG.info("FxCop plugin won't execute as it is set to 'skip' mode.");
+    }
+    return project.getLanguageKey().equals("cs") && !skipMode;
   }
 
   /**
@@ -132,6 +136,9 @@ public class FxCopSensor implements Sensor {
       for (int i = 0; i < reportsPath.length; i++) {
         reportFiles.add(new File(targetDir, reportsPath[i]));
       }
+      if (reportFiles.isEmpty()) {
+        LOG.warn("No report to analyse whereas FxCop runs in 'reuseReport' mode. Please specify at least on report to analyse.");
+      }
     } else {
       File sonarDir = fileSystem.getSonarWorkingDirectory();
       reportFiles.add(new File(sonarDir, FxCopConstants.FXCOP_REPORT_XML));
@@ -143,7 +150,7 @@ public class FxCopSensor implements Sensor {
   protected void analyseResults(Collection<File> reportFiles) {
     for (File reportFile : reportFiles) {
       if (reportFile.exists()) {
-        LOG.info("FxCop report found at location {}", reportFile);
+        LOG.debug("FxCop report found at location {}", reportFile);
         fxCopResultParser.parse(reportFile);
       } else {
         LOG.warn("No FxCop report found for path {}", reportFile);

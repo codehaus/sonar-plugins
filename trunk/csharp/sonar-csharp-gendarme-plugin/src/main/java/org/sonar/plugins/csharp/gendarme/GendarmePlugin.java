@@ -49,7 +49,11 @@ import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
         global = true, project = true),
     @Property(key = GendarmeConstants.TIMEOUT_MINUTES_KEY, defaultValue = GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE + "",
         name = "Gendarme program timeout", description = "Maximum number of minutes before the Gendarme program will be stopped.",
-        global = true, project = true) })
+        global = true, project = true),
+    @Property(key = GendarmeConstants.MODE, defaultValue = "", name = "Gendarme activation mode",
+        description = "Possible values : empty (means active), 'skip' and 'reuseReport'.", global = true, project = true),
+    @Property(key = GendarmeConstants.REPORTS_PATH_KEY, defaultValue = "", name = "Name of the Gendarme report files",
+        description = "Name of the Gendarme report file used when reuse report mode is activated.", global = true, project = true) })
 public class GendarmePlugin implements Plugin {
 
   /**
