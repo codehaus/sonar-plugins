@@ -41,7 +41,11 @@ import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
         project = false),
     @Property(key = StyleCopConstants.TIMEOUT_MINUTES_KEY, defaultValue = StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE + "",
         name = "StyleCop program timeout", description = "Maximum number of minutes before the StyleCop program will be stopped.",
-        global = true, project = true) })
+        global = true, project = true),
+    @Property(key = StyleCopConstants.MODE, defaultValue = "", name = "StyleCop activation mode",
+        description = "Possible values : empty (means active), 'skip' and 'reuseReport'.", global = true, project = true),
+    @Property(key = StyleCopConstants.REPORTS_PATH_KEY, defaultValue = "", name = "Name of the StyleCop report files",
+        description = "Name of the StyleCop report file used when reuse report mode is activated.", global = true, project = true) })
 public class StyleCopPlugin implements Plugin {
 
   /**
