@@ -64,6 +64,10 @@ public class CSharpConfiguration implements BatchExtension {
     newToPreviousParamMap.put("sonar.gendarme.mode", "sonar.dotnet.gendarme");
     newToPreviousParamMap.put("sonar.gendarme.reports.path", "sonar.dotnet.gendarme.reportPath");
 
+    // StyleCop OLD parameters
+    newToPreviousParamMap.put("sonar.stylecop.mode", "sonar.dotnet.stylecop");
+    newToPreviousParamMap.put("sonar.stylecop.reports.path", "sonar.dotnet.stylecop.reportPath");
+
   }
 
   /**
