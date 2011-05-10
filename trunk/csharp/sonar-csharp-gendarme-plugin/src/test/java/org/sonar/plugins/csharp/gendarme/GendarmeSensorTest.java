@@ -25,15 +25,19 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,13 +49,25 @@ import org.mockito.stubbing.Answer;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.api.rules.ActiveRule;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
+import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 import com.google.common.collect.Lists;
 
 public class GendarmeSensorTest {
+
+  @Test
+  public void testExecuteWithoutRule() throws Exception {
+    GendarmeRunner runner = mock(GendarmeRunner.class);
+    RulesProfile rulesProfile = mock(RulesProfile.class);
+    when(rulesProfile.getActiveRulesByRepository(anyString())).thenReturn(new ArrayList<ActiveRule>());
+    GendarmeSensor sensor = new GendarmeSensor(null, rulesProfile, runner, null, null, new CSharpConfiguration(new BaseConfiguration()));
+    sensor.analyse(null, null);
+    verify(runner, never()).execute(any(File.class));
+  }
 
   @Test
   public void testShouldExecuteOnProject() throws Exception {
