@@ -20,19 +20,24 @@
 
 package org.sonar.plugins.csharp.fxcop;
 
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 
 import com.google.common.collect.Lists;
@@ -66,6 +71,32 @@ public class FxCopSensorTest {
     sensor.analyseResults(reports);
     tempFile.delete();
     verify(parser).parse(tempFile);
+  }
+
+  @Test
+  public void testGetReportFilesList() throws Exception {
+    ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(new File("target/sonar"));
+    Configuration conf = new BaseConfiguration();
+    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, null, new CSharpConfiguration(conf));
+
+    Collection<File> reportFiles = sensor.getReportFilesList();
+    assertThat(reportFiles.size(), is(1));
+    assertThat(reportFiles, hasItems(new File("target/sonar", FxCopConstants.FXCOP_REPORT_XML)));
+  }
+
+  @Test
+  public void testGetReportFilesListInReuseMode() throws Exception {
+    ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.getBuildDir()).thenReturn(new File("target"));
+    Configuration conf = new BaseConfiguration();
+    conf.addProperty(FxCopConstants.MODE, FxCopConstants.MODE_REUSE_REPORT);
+    conf.addProperty(FxCopConstants.REPORTS_PATH_KEY, "foo.xml,folder/bar.xml");
+    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, null, new CSharpConfiguration(conf));
+
+    Collection<File> reportFiles = sensor.getReportFilesList();
+    assertThat(reportFiles.size(), is(2));
+    assertThat(reportFiles, hasItems(new File("target/foo.xml"), new File("target/folder/bar.xml")));
   }
 
 }
