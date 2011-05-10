@@ -49,7 +49,6 @@ import com.google.common.collect.Lists;
 public class FxCopSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopSensor.class);
-  private static final String FXCOP_RULES_FILE = "sonar.FxCop";
 
   private ProjectFileSystem fileSystem;
   private RulesProfile rulesProfile;
@@ -114,7 +113,7 @@ public class FxCopSensor implements Sensor {
   }
 
   protected File generateConfigurationFile() {
-    File configFile = new File(fileSystem.getSonarWorkingDirectory(), FXCOP_RULES_FILE);
+    File configFile = new File(fileSystem.getSonarWorkingDirectory(), FxCopConstants.FXCOP_RULES_FILE);
     FileWriter writer = null;
     try {
       writer = new FileWriter(configFile);

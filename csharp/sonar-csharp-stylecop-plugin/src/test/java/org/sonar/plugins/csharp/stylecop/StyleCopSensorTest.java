@@ -25,20 +25,28 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
+import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 
 import com.google.common.collect.Lists;
 
@@ -97,6 +105,30 @@ public class StyleCopSensorTest {
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(2));
     assertThat(reportFiles, hasItems(new File("target/foo.xml"), new File("target/folder/bar.xml")));
+  }
+
+  @Test
+  public void testGenerateConfigurationFile() throws Exception {
+    File sonarDir = new File("target/sonar");
+    sonarDir.mkdirs();
+    ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(sonarDir);
+    StyleCopProfileExporter profileExporter = mock(StyleCopProfileExporter.class);
+    doAnswer(new Answer<Object>() {
+
+      public Object answer(InvocationOnMock invocation) throws IOException {
+        FileWriter writer = (FileWriter) invocation.getArguments()[1];
+        writer.write("Hello");
+        return null;
+      }
+    }).when(profileExporter).exportProfile((RulesProfile) anyObject(), (FileWriter) anyObject());
+    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, profileExporter, null, new CSharpConfiguration(
+        new BaseConfiguration()));
+
+    sensor.generateConfigurationFile();
+    File report = new File(sonarDir, StyleCopConstants.STYLECOP_RULES_FILE);
+    assertTrue(report.exists());
+    report.delete();
   }
 
 }
