@@ -65,7 +65,8 @@ public class FxCopRunner implements BatchExtension {
     // The following no-sonar is used because we can't use TimeUnit#MINUTES (needs Java 1.6+)
     int exitCode = CommandExecutor.create().execute(commandBuilder.createCommand(), commandBuilder.getTimeoutMinutes() * 60000); // NOSONAR
     if (exitCode != 0) {
-      throw new SonarException("FxCop execution failed. Check the logs for more detail.");
+      throw new SonarException("FxCop execution failed with return code '" + exitCode
+          + "'. Check FxCop documentation for more information.");
     }
   }
 
