@@ -69,7 +69,8 @@ public class GendarmeRunner implements BatchExtension {
     int exitCode = CommandExecutor.create().execute(commandBuilder.createCommand(), timeoutMinutes * 60000); // NOSONAR
     // Gendarme returns 1 when the analysis is successful but contains violations, so 1 is valid
     if (exitCode != 0 && exitCode != 1) {
-      throw new SonarException("Gendarme execution failed. Check the logs for more detail.");
+      throw new SonarException("Gendarme execution failed with return code '" + exitCode
+          + "'. Check Gendarme documentation for more information.");
     }
   }
 
