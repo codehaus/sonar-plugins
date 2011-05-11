@@ -26,9 +26,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.api.utils.command.Command;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
-import org.sonar.plugins.csharp.api.utils.Command;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 

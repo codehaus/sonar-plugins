@@ -27,9 +27,9 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
-import org.sonar.plugins.csharp.api.utils.CommandExecutor;
 import org.sonar.plugins.csharp.gendarme.GendarmeConstants;
 
 /**

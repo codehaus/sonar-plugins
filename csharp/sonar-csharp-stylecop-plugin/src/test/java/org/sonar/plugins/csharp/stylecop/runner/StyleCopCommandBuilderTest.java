@@ -32,7 +32,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.csharp.api.utils.Command;
+import org.sonar.api.utils.command.Command;
 
 public class StyleCopCommandBuilderTest {
 
