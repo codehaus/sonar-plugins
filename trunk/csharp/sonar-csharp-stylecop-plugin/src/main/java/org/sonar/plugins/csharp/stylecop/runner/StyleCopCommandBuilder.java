@@ -25,7 +25,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.csharp.api.utils.Command;
+import org.sonar.api.utils.command.Command;
 
 /**
  * Class used to build the command line to run StyleCop.
