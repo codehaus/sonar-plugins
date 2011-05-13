@@ -35,7 +35,6 @@
         <module>jacoco</module>
         <module>javascript</module>
         <module>jira</module>
-        <module>jlint</module>
         <module>jmeter</module>
         <module>ldap</module>
         <module>mantis</module>
@@ -86,6 +85,7 @@
       <id>unmaintained</id>
       <modules>
         <module>hammurapi</module>
+        <module>jlint</module>
         <module>jtest</module>
         <module>sonar-replay</module>
         <module>sonar-squid-cli</module>
