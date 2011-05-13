@@ -79,7 +79,6 @@ public class GendarmeResultParser implements BatchExtension {
     try {
       fileInputStream = new FileInputStream(file);
       SMHierarchicCursor cursor = inputFactory.rootElementCursor(new InputStreamReader(fileInputStream, encoding));
-      // SMInputCursor rulesCursor = cursor.advance().childElementCursor("results").advance().childElementCursor();
       SMInputCursor rulesCursor = cursor.advance().descendantElementCursor("rule");
       parseRuleBlocs(rulesCursor);
       cursor.getStreamReader().closeCompletely();

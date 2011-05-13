@@ -37,9 +37,12 @@ import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.runners.gendarme.GendarmeCommandBuilder;
+import org.sonar.plugins.csharp.api.runners.gendarme.GendarmeException;
+import org.sonar.plugins.csharp.api.runners.gendarme.GendarmeRunner;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
-import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 import com.google.common.collect.Lists;
 
@@ -53,10 +56,10 @@ public class GendarmeSensor implements Sensor {
 
   private ProjectFileSystem fileSystem;
   private RulesProfile rulesProfile;
-  private GendarmeRunner gendarmeRunner;
   private GendarmeProfileExporter profileExporter;
   private GendarmeResultParser gendarmeResultParser;
   private CSharpConfiguration configuration;
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private String executionMode;
 
   /**
@@ -68,14 +71,14 @@ public class GendarmeSensor implements Sensor {
    * @param profileExporter
    * @param rulesProfile
    */
-  public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, GendarmeRunner gendarmeRunner,
-      GendarmeProfileExporter profileExporter, GendarmeResultParser gendarmeResultParser, CSharpConfiguration configuration) {
+  public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, GendarmeProfileExporter profileExporter,
+      GendarmeResultParser gendarmeResultParser, CSharpConfiguration configuration, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
-    this.gendarmeRunner = gendarmeRunner;
     this.profileExporter = profileExporter;
     this.gendarmeResultParser = gendarmeResultParser;
     this.configuration = configuration;
+    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.executionMode = configuration.getString(GendarmeConstants.MODE, "");
   }
 
@@ -105,7 +108,7 @@ public class GendarmeSensor implements Sensor {
       // prepare config file for Gendarme
       File gendarmeConfigFile = generateConfigurationFile();
       // run Gendarme
-      gendarmeRunner.execute(gendarmeConfigFile);
+      launchGendarme(new GendarmeRunner(), gendarmeConfigFile);
     }
 
     // and analyse results
@@ -126,6 +129,22 @@ public class GendarmeSensor implements Sensor {
       IOUtils.closeQuietly(writer);
     }
     return configFile;
+  }
+
+  protected void launchGendarme(GendarmeRunner runner, File gendarmeConfigFile) {
+    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(microsoftWindowsEnvironment.getCurrentSolution());
+    builder.setExecutable(new File(configuration.getString(GendarmeConstants.EXECUTABLE_KEY, GendarmeConstants.EXECUTABLE_DEFVALUE)));
+    builder.setConfigFile(gendarmeConfigFile);
+    builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_REPORT_XML));
+    builder.setConfidence(configuration
+        .getString(GendarmeConstants.GENDARME_CONFIDENCE_KEY, GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE));
+    builder.setSeverity("all");
+    try {
+      runner.execute(builder.toCommand(),
+          configuration.getInt(GendarmeConstants.TIMEOUT_MINUTES_KEY, GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE));
+    } catch (GendarmeException e) {
+      throw new SonarException("Gendarme execution failed.", e);
+    }
   }
 
   protected Collection<File> getReportFilesList() {

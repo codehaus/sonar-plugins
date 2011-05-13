@@ -23,16 +23,32 @@ package org.sonar.plugins.csharp.api.source;
 import org.sonar.squid.api.SourceCode;
 
 /**
- * SourceCode class that represents a member in C# (methods, ... )
+ * SourceCode class that represents a member in C# (methods, properties, ... )
  */
 public class SourceMember extends SourceCode {
 
+  /**
+   * Creates a new {@link SourceMember} object.
+   * 
+   * @param key
+   *          the key of the member
+   */
   public SourceMember(String key) {
     super(key);
   }
 
-  public SourceMember(SourceType parentType, String methodSignature, int startAtLine) {
-    super(parentType.getKey() + "#" + methodSignature, methodSignature);
+  /**
+   * Creates a new {@link SourceMember} object.
+   * 
+   * @param parent
+   *          the parent of this member
+   * @param memberSignature
+   *          the signature of the member
+   * @param startAtLine
+   *          the line where this member begins
+   */
+  public SourceMember(SourceType parent, String memberSignature, int startAtLine) {
+    super(parent.getKey() + "#" + memberSignature, memberSignature);
     setStartAtLine(startAtLine);
   }
 

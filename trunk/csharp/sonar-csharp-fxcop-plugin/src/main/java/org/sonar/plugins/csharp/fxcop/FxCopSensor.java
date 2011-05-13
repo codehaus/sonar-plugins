@@ -141,7 +141,6 @@ public class FxCopSensor implements Sensor {
     } else {
       File sonarDir = fileSystem.getSonarWorkingDirectory();
       reportFiles.add(new File(sonarDir, FxCopConstants.FXCOP_REPORT_XML));
-      // reportFiles.add(new File(sonarDir, FxCopConstants.SL_FXCOP_REPORT_XML));
     }
     return reportFiles;
   }

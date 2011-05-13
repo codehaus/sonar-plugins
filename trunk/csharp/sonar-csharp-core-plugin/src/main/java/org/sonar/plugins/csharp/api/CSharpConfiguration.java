@@ -44,6 +44,13 @@ public class CSharpConfiguration implements BatchExtension {
 
   private Map<String, String> newToPreviousParamMap = Maps.newHashMap();
 
+  /**
+   * Creates a new {@link CSharpConfiguration} object that will use the inner {@link Configuration} object to retrieve the required key
+   * values, taking into account the name of the previous .NET plugin parameters.
+   * 
+   * @param configuration
+   *          the configuration
+   */
   public CSharpConfiguration(Configuration configuration) {
     this.configuration = configuration;
 
@@ -93,11 +100,10 @@ public class CSharpConfiguration implements BatchExtension {
    * @see Configuration#getStringArray(String)
    */
   public String[] getStringArray(String key) {
-    String[] result = null;
     // look if this key existed before
     String previousKey = newToPreviousParamMap.get(key);
     if (StringUtils.isNotBlank(previousKey)) {
-      result = configuration.getStringArray(previousKey);
+      String[] result = configuration.getStringArray(previousKey);
       if (result.length != 0) {
         // a former parameter has been specified, let's take this value
         logInfo(result, previousKey);
@@ -120,13 +126,11 @@ public class CSharpConfiguration implements BatchExtension {
     boolean result = false;
     // look if this key existed before
     String previousKey = newToPreviousParamMap.get(key);
-    if (StringUtils.isNotBlank(previousKey)) {
-      if (configuration.containsKey(previousKey)) {
-        result = configuration.getBoolean(previousKey);
-        // a former parameter has been specified, let's take this value
-        logInfo(result, previousKey);
-        return result;
-      }
+    if (StringUtils.isNotBlank(previousKey) && configuration.containsKey(previousKey)) {
+      result = configuration.getBoolean(previousKey);
+      // a former parameter has been specified, let's take this value
+      logInfo(result, previousKey);
+      return result;
     }
     // if this key wasn't used before, or if no value for was for it, use the value of the current key
     return configuration.getBoolean(key, defaultValue);
@@ -139,13 +143,11 @@ public class CSharpConfiguration implements BatchExtension {
     int result = -1;
     // look if this key existed before
     String previousKey = newToPreviousParamMap.get(key);
-    if (StringUtils.isNotBlank(previousKey)) {
-      if (configuration.containsKey(previousKey)) {
-        result = configuration.getInt(previousKey);
-        // a former parameter has been specified, let's take this value
-        logInfo(result, previousKey);
-        return result;
-      }
+    if (StringUtils.isNotBlank(previousKey) && configuration.containsKey(previousKey)) {
+      result = configuration.getInt(previousKey);
+      // a former parameter has been specified, let's take this value
+      logInfo(result, previousKey);
+      return result;
     }
     // if this key wasn't used before, or if no value for was for it, use the value of the current key
     return configuration.getInt(key, defaultValue);
