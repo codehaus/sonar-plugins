@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.sigmm.axis;
 
-import org.sonar.api.batch.DecoratorContext;
 import org.sonar.plugins.sigmm.MMRank;
 
 public interface MMAxis {

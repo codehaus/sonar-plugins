@@ -21,7 +21,6 @@
 package org.sonar.plugins.sigmm.axis;
 
 import org.sonar.plugins.sigmm.MMRank;
-import org.sonar.api.batch.DecoratorContext;
 
 public class CombinedAxis implements MMAxis {
   private MMAxis[] axisCombination;
