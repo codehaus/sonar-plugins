@@ -20,21 +20,20 @@
 
 package org.sonar.plugins.sigmm;
 
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.resources.ResourceUtils;
+import org.sonar.api.measures.CoreMetrics;
 import org.sonar.plugins.sigmm.axis.AdvancedAxis;
+import org.sonar.plugins.sigmm.axis.CombinedAxis;
 import org.sonar.plugins.sigmm.axis.MMAxis;
 import org.sonar.plugins.sigmm.axis.SimpleAxis;
-import org.sonar.plugins.sigmm.axis.CombinedAxis;
 
 public class MMConfiguration {
 
-  private static int[] volumeLimits = {1310000, 655000, 246000, 66000, 0};
-  private static int[] duplicationLimits = {20, 10, 5, 3, 0};
-  private static int[] coverageLimits = {95, 80, 60, 20, 0};
-  public static Number[] CC_DISTRIBUTION_BOTTOM_LIMITS = {50, 20, 10, 0};
-  public static Number[] NCLOC_DISTRIBUTION_BOTTOM_LIMITS = {100, 50, 10, 0};
+  private static int[] volumeLimits = { 1310000, 655000, 246000, 66000, 0 };
+  private static int[] duplicationLimits = { 20, 10, 5, 3, 0 };
+  private static int[] coverageLimits = { 95, 80, 60, 20, 0 };
+  public static Number[] CC_DISTRIBUTION_BOTTOM_LIMITS = { 50, 20, 10, 0 };
+  public static Number[] NCLOC_DISTRIBUTION_BOTTOM_LIMITS = { 100, 50, 10, 0 };
 
   private MMAxis testabilityAxis;
 
@@ -78,5 +77,4 @@ public class MMConfiguration {
     return testabilityAxis;
   }
 
-  
 }

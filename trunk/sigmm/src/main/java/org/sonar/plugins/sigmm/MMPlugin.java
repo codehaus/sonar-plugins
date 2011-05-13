@@ -21,10 +21,8 @@
 package org.sonar.plugins.sigmm;
 
 import org.sonar.api.Extension;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Java;
-import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,13 +66,8 @@ public final class MMPlugin implements org.sonar.api.Plugin {
     return "SIG Maintainability Model";
   }
 
-  protected static boolean shouldExecuteOnProject(Project project) {
-    // See SONARPLUGINS-190 to extend to other languages
-    return project.getLanguage().equals(Java.INSTANCE);
-  }
-
   protected static boolean shouldPersistMeasures(Resource resource) {
-    if (! ResourceUtils.isFile(resource) && ! ResourceUtils.isClass(resource)) {
+    if (!ResourceUtils.isFile(resource) && !ResourceUtils.isClass(resource)) {
       return true;
     }
     return false;

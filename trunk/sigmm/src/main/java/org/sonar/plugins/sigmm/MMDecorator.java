@@ -21,18 +21,16 @@
 package org.sonar.plugins.sigmm;
 
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.batch.DependedUpon;
+import org.sonar.api.batch.DependsUpon;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.RangeDistributionBuilder;
-import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Scopes;
+import org.sonar.api.resources.Resource;
 import org.sonar.plugins.sigmm.axis.MMAxis;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * {@inheritDoc}
