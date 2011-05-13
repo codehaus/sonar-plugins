@@ -25,12 +25,26 @@ package org.sonar.plugins.csharp.api.source;
  */
 public class SourceClass extends SourceType {
 
+  /**
+   * Creates a new {@link SourceClass} object.
+   * 
+   * @param key
+   *          the key of the class
+   */
   public SourceClass(String key) {
     super(key);
   }
 
-  public SourceClass(String key, String typeName) {
-    super(key, typeName);
+  /**
+   * Creates a new {@link SourceClass} object.
+   * 
+   * @param key
+   *          the key
+   * @param className
+   *          the name of the class
+   */
+  public SourceClass(String key, String className) {
+    super(key, className);
   }
 
 }

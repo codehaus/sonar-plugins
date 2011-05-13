@@ -32,7 +32,6 @@ import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileImporter;
 import org.sonar.plugins.csharp.gendarme.profiles.SonarWayProfile;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeViolationMaker;
-import org.sonar.plugins.csharp.gendarme.runner.GendarmeRunner;
 
 /**
  * Main class of the Gendarme plugin.
@@ -92,7 +91,6 @@ public class GendarmePlugin implements Plugin {
     list.add(SonarWayProfile.class);
 
     // Running Gendarme
-    list.add(GendarmeRunner.class);
     list.add(GendarmeResultParser.class);
     list.add(GendarmeViolationMaker.class);
     return list;

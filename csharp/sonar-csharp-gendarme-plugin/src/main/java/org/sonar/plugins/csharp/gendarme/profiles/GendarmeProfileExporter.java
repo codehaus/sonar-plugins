@@ -85,7 +85,6 @@ public class GendarmeProfileExporter extends ProfileExporter {
 
       String key = activeRule.getConfigKey();
       String assembly = StringUtils.substringAfter(key, "@");
-      // String ruleName = StringUtils.substringBefore(key, "@");
       List<ActiveRule> assemblyRules = assemblyRulesMap.get(assembly);
       if (assemblyRules == null) {
         assemblyRules = new ArrayList<ActiveRule>();
