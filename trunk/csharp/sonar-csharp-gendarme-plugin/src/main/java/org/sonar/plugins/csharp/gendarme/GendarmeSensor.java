@@ -108,7 +108,14 @@ public class GendarmeSensor implements Sensor {
       // prepare config file for Gendarme
       File gendarmeConfigFile = generateConfigurationFile();
       // run Gendarme
-      launchGendarme(new GendarmeRunner(), gendarmeConfigFile);
+      try {
+        GendarmeRunner runner = GendarmeRunner.create(
+            configuration.getString(GendarmeConstants.EXECUTABLE_KEY, GendarmeConstants.EXECUTABLE_DEFVALUE),
+            fileSystem.getSonarWorkingDirectory().getAbsolutePath());
+        launchGendarme(runner, gendarmeConfigFile);
+      } catch (GendarmeException e) {
+        throw new SonarException("Gendarme execution failed.", e);
+      }
     }
 
     // and analyse results
@@ -131,20 +138,15 @@ public class GendarmeSensor implements Sensor {
     return configFile;
   }
 
-  protected void launchGendarme(GendarmeRunner runner, File gendarmeConfigFile) {
-    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(microsoftWindowsEnvironment.getCurrentSolution());
-    builder.setExecutable(new File(configuration.getString(GendarmeConstants.EXECUTABLE_KEY, GendarmeConstants.EXECUTABLE_DEFVALUE)));
+  protected void launchGendarme(GendarmeRunner runner, File gendarmeConfigFile) throws GendarmeException {
+    GendarmeCommandBuilder builder = runner.createCommandBuilder(microsoftWindowsEnvironment.getCurrentSolution());
     builder.setConfigFile(gendarmeConfigFile);
     builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_REPORT_XML));
     builder.setConfidence(configuration
         .getString(GendarmeConstants.GENDARME_CONFIDENCE_KEY, GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE));
     builder.setSeverity("all");
-    try {
-      runner.execute(builder.toCommand(),
-          configuration.getInt(GendarmeConstants.TIMEOUT_MINUTES_KEY, GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE));
-    } catch (GendarmeException e) {
-      throw new SonarException("Gendarme execution failed.", e);
-    }
+    runner.execute(builder.toCommand(),
+        configuration.getInt(GendarmeConstants.TIMEOUT_MINUTES_KEY, GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE));
   }
 
   protected Collection<File> getReportFilesList() {
