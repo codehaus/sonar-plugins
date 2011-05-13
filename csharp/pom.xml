@@ -39,6 +39,9 @@
 	</developers>
 
 	<modules>
+		<!-- TODO: remove this line when the component will be extracted -->
+		<module>tools</module>
+
 		<module>sonar-csharp-core-plugin</module>
 		<module>sonar-csharp-fxcop-plugin</module>
 		<module>sonar-csharp-stylecop-plugin</module>
@@ -63,10 +66,17 @@
 		<license.owner>Jose Chillan, Alexandre Victoor and SonarSource</license.owner>
 		<jdk.min.version>1.5</jdk.min.version>
 		<sonar.buildVersion>2.7</sonar.buildVersion>
+		<sonar.tools>0.1-SNAPSHOT</sonar.tools>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- .NET tools -->
+			<dependency>
+				<groupId>org.codehaus.sonar-plugins.dotnet.tools</groupId>
+				<artifactId>dotnet-tools-commons</artifactId>
+				<version>${sonar.tools}</version>
+			</dependency>
 			<!-- sonar open-source -->
 			<dependency>
 				<groupId>org.codehaus.sonar</groupId>
