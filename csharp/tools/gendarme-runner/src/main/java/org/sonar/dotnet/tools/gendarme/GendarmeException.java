@@ -58,4 +58,11 @@ public class GendarmeException extends Exception {
     return specificMessage;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public GendarmeException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
 }

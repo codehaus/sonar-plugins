@@ -157,7 +157,7 @@ public final class GendarmeCommandBuilder {
     return command;
   }
 
-  private List<File> findAssembliesToScan(VisualStudioSolution solution) {
+  protected List<File> findAssembliesToScan(VisualStudioSolution solution) {
     List<File> assemblyFileList = Lists.newArrayList();
     for (VisualStudioProject visualStudioProject : solution.getProjects()) {
       if ( !visualStudioProject.isTest()) {
@@ -172,7 +172,7 @@ public final class GendarmeCommandBuilder {
     return assemblyFileList;
   }
 
-  private void validate(List<File> assemblyToScanFiles) {
+  protected void validate(List<File> assemblyToScanFiles) {
     if (gendarmeConfigFile == null || !gendarmeConfigFile.exists()) {
       throw new IllegalStateException("The Gendarme configuration file does not exist.");
     }

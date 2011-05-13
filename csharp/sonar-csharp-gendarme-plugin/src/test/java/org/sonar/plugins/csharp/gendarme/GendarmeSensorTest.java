@@ -49,6 +49,7 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.command.Command;
+import org.sonar.dotnet.tools.gendarme.GendarmeCommandBuilder;
 import org.sonar.dotnet.tools.gendarme.GendarmeRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
@@ -75,6 +76,8 @@ public class GendarmeSensorTest {
         microsoftWindowsEnvironment);
 
     GendarmeRunner runner = mock(GendarmeRunner.class);
+    when(runner.createCommandBuilder(any(VisualStudioSolution.class))).thenReturn(
+        GendarmeCommandBuilder.createBuilder(solution).setExecutable(new File("gendarme.exe")));
     sensor.launchGendarme(runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeGendarmeConfigFile.xml")));
     verify(runner).execute(any(Command.class), eq(10));
   }
