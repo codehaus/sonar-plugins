@@ -112,7 +112,7 @@ public class QIPlugin implements Plugin {
   /**
    * The complexity ranges bootm limits
    */
-  public static Number[] COMPLEXITY_BOTTOM_LIMITS = {30, 20, 10, 2, 1};
+  public static final Number[] COMPLEXITY_BOTTOM_LIMITS = {30, 20, 10, 2, 1};
 
   /**
    * @return the plugin key
