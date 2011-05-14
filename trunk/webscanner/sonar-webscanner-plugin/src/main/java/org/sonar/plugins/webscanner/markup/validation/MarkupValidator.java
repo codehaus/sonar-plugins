@@ -123,8 +123,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
         writeResponse(response, file);
       }
     } catch (UnsupportedEncodingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error(e); 
     } finally {
       // release any connection resources used by the method
       if (response != null) {
@@ -158,7 +157,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
   /**
    * Validate a file with the W3C Markup service.
    */
-  public void validateFile(File file, File htmlDir) {
+  public void validateFile(File file, File dir) {
     postHtmlContents(file);
   }
 

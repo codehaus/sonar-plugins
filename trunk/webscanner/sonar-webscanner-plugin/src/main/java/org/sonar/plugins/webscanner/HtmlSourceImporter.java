@@ -35,7 +35,6 @@ import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.crawler.Crawler;
 import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 import org.sonar.plugins.webscanner.language.Html;
-import org.sonar.plugins.webscanner.language.ProjectConfiguration;
 
 /**
  * @author Matthijs Galesloot
@@ -54,14 +53,16 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
 
   @Override
   public void analyse(Project project, SensorContext context) {
-    ProjectConfiguration.configureSourceDir(project);
 
     String website = (String) project.getProperty(WebScannerPlugin.WEBSITE);
     if (website != null) {
       crawl(project, website);
     }
 
-    super.analyse(project, context);
+    HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
+    List<File> files = fileSystem.getSourceFiles();
+
+    parseDirs(context, files, HtmlProjectFileSystem.getSourceDirs(project), false, project.getFileSystem().getSourceCharset());
   }
 
   private void crawl(Project project, String website) {
@@ -69,18 +70,22 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
 
     // configure proxy
     if (session.getSettings().getActiveProxy() != null) {
-      crawler.configureProxy(session.getSettings().getActiveProxy().getHost(),
-          session.getSettings().getActiveProxy().getPort());
+      crawler.configureProxy(session.getSettings().getActiveProxy().getHost(), session.getSettings().getActiveProxy().getPort());
     }
 
     try {
       crawler.addSeed(new URL(website));
-      crawler.setDownloadDirectory(new File((String) project.getProperty(WebScannerPlugin.SOURCE_DIRECTORY)));
+      File downloadDir = new File((String) project.getProperty(WebScannerPlugin.SOURCE_DIRECTORY));
+      if (!downloadDir.isAbsolute()) {
+        File sourceDir = HtmlProjectFileSystem.getSourceDirs(project).get(0);
+        downloadDir = new File(sourceDir.getPath() + "/" + downloadDir.getPath()); 
+      }
+      crawler.setDownloadDirectory(downloadDir);
       crawler.crawl();
     } catch (MalformedURLException e) {
-      throw new SonarException();
+      throw new SonarException(e);
     } catch (CrawlerException e) {
-      throw new SonarException();
+      throw new SonarException(e);
     }
   }
 

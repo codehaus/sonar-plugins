@@ -18,7 +18,10 @@
     <!-- webscanner -->
     <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
     <sonar.html.sourceDirectory>src/html</sonar.html.sourceDirectory>
-
+     <!-- 
+    <sonar.html.website>http://www.sonarsource.org</sonar.html.website>
+    -->
+    
     <!-- w3cmarkup -->
     <sonar.html.excludeviolations>
       127:.*required attribute "rows" not specified,
@@ -37,33 +40,5 @@
     <sonar.branch>HTML</sonar.branch>
   </properties>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.codehaus.sonar</groupId>
-          <artifactId>sonar-maven-plugin</artifactId>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
-  <!-- plugin repository for maven-sonar-web-plugin -->
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus</id>
-      <name>codehaus</name>
-      <url>http://repository.codehaus.org</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-        <checksumPolicy>fail</checksumPolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <checksumPolicy>ignore</checksumPolicy>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 
 </project>

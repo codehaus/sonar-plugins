@@ -33,7 +33,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Parse JMeter jmx file.
- *
+ * 
  * @author Matthijs Galesloot
  * @since 1.0
  */

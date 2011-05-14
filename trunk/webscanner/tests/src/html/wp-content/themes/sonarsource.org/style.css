@@ -1,0 +1,387 @@
+/*
+Theme Name: SonarSource.org
+Theme URI: http://www.sonarsource.org
+Description: 
+Version: 
+Author: 
+*/
+@media print {
+  html, body {
+    font-size: 8pt;
+  }
+
+  #sidebar, #header, #nav, #subnav {
+    display: none;
+    margin: 0;
+  }
+}
+
+/* --------------------------------------------------------------
+
+   fancy-type.css
+   * Lots of pretty advanced classes for manipulating text.
+
+   See the Readme file in this folder for additional instructions.
+
+-------------------------------------------------------------- */
+
+/* Indentation instead of line shifts for sibling paragraphs. */
+   form p + p  { text-indent: 0; } /* Don't want this in forms. */
+
+
+/* For great looking quote marks in titles, replace "asdf" with:
+   <span class="dquo">&#8220;</span>asdf&#8221;
+   (That is, when the title starts with a quote mark).
+   (You may have to change this value depending on your font size). */
+
+.dquo { margin-left: -.5em; }
+
+
+/* Reduced size type with incremental leading
+   (http://www.markboulton.co.uk/journal/comments/incremental_leading/)
+
+   This could be used for side notes. For smaller type, you don't necessarily want to
+   follow the 1.5x vertical rhythm -- the line-height is too much.
+
+   Using this class, it reduces your font size and line-height so that for
+   every four lines of normal sized type, there is five lines of the sidenote. eg:
+
+   New type size in em's:
+     10px (wanted side note size) / 12px (existing base size) = 0.8333 (new type size in ems)
+
+   New line-height value:
+     12px x 1.5 = 18px (old line-height)
+     18px x 4 = 72px
+     72px / 5 = 14.4px (new line height)
+     14.4px / 10px = 1.44 (new line height in em's) */
+
+p.incr, .incr p {
+  font-size: 10px;
+  line-height: 1.44em;
+  margin-bottom: 1.5em;
+}
+body {
+font-family: arial,helvetica,clean,sans-serif;
+}
+.hidden {
+display:none;
+}
+a {
+color: #336699;
+}
+table {margin:0;width:100%;}
+hr {
+height: 1px;
+}
+.data {
+  margin-bottom: 20px;
+}
+.data tbody {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.data tr {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.data2 td, th {
+  text-align: center;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+
+#header {
+	margin-top: 5px;
+}
+#toplinks {
+color: #333;
+text-align: right;
+margin-top: 15px;
+}
+#toplinks a {
+	color: #333;
+}
+#toplogos {
+text-align: right;
+}
+#toplogos img {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#nav {
+	background-color: #262626;
+	color: #fefefe;
+   font-family: "Lucida Grande",Lucida,Verdana,sans-serif;
+	-moz-border-radius: 4px; 
+	  -webkit-border-radius: 4px; 
+	  border-radius: 4px;
+}
+#nav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 5px 10px;
+}
+#nav li {
+  display: inline;
+  list-style-type: none;	
+  margin-right: 30px;
+}
+#nav li a {
+  text-decoration: none;
+  color: #fefefe;
+}
+#nav li a:hover {
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 3px solid #fff;
+}
+
+#nav li.current_page_item a, #nav li.current_page_ancestor a {
+  color: #2583AD;
+  padding-bottom: 3px;
+  border-bottom: 3px solid #2583AD;
+}
+#subnav  {
+
+}
+#subnav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 5px;
+}
+#subnav li {
+  display: inline;
+  list-style-type: none;	
+  margin-right: 10px;
+}
+#subnav li a {
+  text-decoration: underline;
+  color: #666;
+}
+#subnav li a:hover {
+  text-decoration: underline;
+}
+
+#subnav li.current_page_item a {
+	color: #336699;
+	font-weight: bold;
+
+	text-decoration: none;
+}
+#main, #sidebar {
+  margin-top: 20px;
+}
+
+#main h1 {
+color: #2583AD;
+}
+#main h2 {
+border-bottom: 1px solid #777;
+}
+#title {
+border-bottom: 1px solid #ddd;
+}
+
+
+.screen-reader-text {
+display: none;
+}
+#sidebar h1 {
+	color: #444;
+	font-size: 1.46em;
+	margin-bottom: 0.2em;
+}
+ul#widgets {
+	margin: 0;
+	padding: 0;
+	color: #444;
+}
+li.widget {
+	list-style: none;
+	margin-bottom: 20px;
+}
+li.widget ul, li.widget ol {
+margin-left: 0;
+padding-left: 2em;
+}
+.textwidget, .textwid, .sstextwidget, .ctc {
+	background-color: #efefef;
+	border-top: 2px solid #BBBBBB;
+	padding: 8px;
+}
+#rss-2 ul {
+  background-color: #efefef;
+border-top: 2px solid #BBBBBB;
+padding: 0 0 0 1em;
+list-style-type: none;
+}
+#rss-2 li {
+margin-bottom: 10px;
+}
+/* homepage - download */
+#text-370575801 h1 {
+background-image: url(images/folder_download.png);
+background-repeat: no-repeat;
+padding-left: 25px;
+}
+#text-370575809 a {
+  color: #C30C00;
+}
+.postmeta {
+	font-size: 93%;
+	color: #777;
+}
+
+
+
+
+#accroche {
+  background-repeat: repeat-x;
+  background-image: url(images/bg.png);
+  margin: 10px 0 0 0;
+  background-color: #262626;
+  color: #eee;
+  height: 170px;
+	-moz-border-radius: 4px 4px 0 0; 
+	  -webkit-border-radius:  4px 4px 0 0; 
+	  border-radius: 4px 4px 0 0;
+}
+#accroche h1 {
+  color: #2583ad;
+  font-size: 197%;
+  letter-spacing: -1px;
+  padding-bottom: 10px;
+}
+#accroche h2 {
+  color: #efefef;
+  font-size: 146.5%;
+  font-weight: normal;
+  padding: 5px 40px 10px 0;
+  line-height: 170%;
+}
+#accroche p {
+  padding-top: 10px;
+  color: #efefef;
+  font-size: 108%;
+  font-weight: normal;
+}
+#accroche a {
+  text-decoration: underline;
+  color: #efefef;
+}
+.accroche_part {
+	padding: 10px;
+}
+
+#accrochenav {
+background-color: #262626;
+margin-top: 0;
+color: #DEDEDE;
+font-size: 123.1%;
+-moz-border-radius: 0 0 4px 4px; 
+  -webkit-border-radius:  0 0 4px 4px; 
+  border-radius: 0 0 4px 4px; 
+}
+#accrochenav a, #accrochenav a:hover, #accrochenav a:visited {
+	color: #999999;
+	text-decoration: none;
+	padding: 5px 0;
+}
+#accrochenav ul {
+ 	display: inline;
+ 	margin-left: 0;
+	padding: 5px 10px;
+	list-style-type: none;
+}
+#accrochenav ul li {
+ 	margin-left: 10;
+	padding: 3px 25px 3px 0;
+	display: inline;
+	background-image: url(images/triangle.png);
+	background-repeat: no-repeat;
+	background-position: 0 .5em;
+	padding-left: .8em;
+}
+#accrochenav ul li.selected a, #accrochenav ul li.selected a:visited {
+	color: #fff;
+}
+#twitter_div ul {
+padding-left: 0;
+}
+#twitter_div ul li {
+margin-bottom: 5px;
+}
+
+.blog h1 a {
+text-decoration: none;
+}
+.post {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+}
+.post img {
+padding: 15px;
+}
+ul.commentlist {
+list-style-type: none;
+padding-left: 0;
+margin: 1.5em 0 1.5em 0;
+}
+.commentlist li {
+background-color: #efefef;
+border-left: 4px solid #ddd;
+padding: 5px 10px;
+color: #444;
+margin: 0 0 1.5em 0;
+}
+.commentmetadata {
+margin: 0;
+font-size: 93%;
+color: #777;
+}
+.commentmetadata cite, .commentmetadata a{
+font-style: normal;
+}
+
+#downloads {
+width: 100%;
+border-top: 1px solid #ddd;
+border-bottom: 1px solid #ddd;
+margin-bottom: 20px;
+}
+#downloads td {
+padding: 3px 5px;
+}
+#downloads .last {
+  background-color: #d0edf7;
+  font-weight: bold;
+}
+img.screenshot {
+padding: 5px;
+border: 1px solid #ddd;
+margin: 5px;
+}
+#footer {
+color: #333;
+background-color: #fff;
+margin-top: 10px;
+padding: 10px 0;
+}
+#footer h2 {
+color: #2583AD;
+margin-bottom: 0;
+}
+#footer ul {
+padding-left: 1.5em;
+}
+quote {
+  margin-left: 0px;
+  border-left: 3px solid #ddd;
+  display: block;
+  font-style: italic;
+padding: 0.5em 1em;
+}

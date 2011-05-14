@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-
 package org.sonar.plugins.webscanner;
 
 import org.sonar.api.web.AbstractRubyTemplate;

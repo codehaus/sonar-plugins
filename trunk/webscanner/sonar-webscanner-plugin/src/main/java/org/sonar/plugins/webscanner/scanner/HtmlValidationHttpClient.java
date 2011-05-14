@@ -30,107 +30,107 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-  /**
-   * Client
-   *
-   * @author A130564
-   *
-   */
-  public class HtmlValidationHttpClient {
+/**
+ * Client
+ * 
+ * @author A130564
+ * 
+ */
+public class HtmlValidationHttpClient {
 
-    private static final Logger LOG = Logger.getLogger(HtmlValidationHttpClient.class);
+  private static final Logger LOG = Logger.getLogger(HtmlValidationHttpClient.class);
 
-    private HttpClient client;
+  private HttpClient client;
 
-    private String proxyHost;
+  private String proxyHost;
 
-    private int proxyPort;
+  private int proxyPort;
 
-    protected HttpResponse executePostMethod(HttpPost post) {
+  protected HttpResponse executePostMethod(HttpPost post) {
 
-      int retries = 3;
+    int retries = 3;
 
-      for (int i = 0; i < retries; i++) {
-        HttpResponse response = null;
-        try {
-          response = getClient().execute(post);
-          if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 302) {
-            return response;
-          } else {
-            try {
-              EntityUtils.consume(response.getEntity());
-            } catch (IOException e) {
-              // ignore
-            }
-
-            LOG.warn("Bad http response: " + response.getStatusLine().getStatusCode() + ", retrying after 1 second...");
-            sleep(1000L);
-          }
-        } catch (UnknownHostException e) {
-          if (useProxy()) {
-            LOG.warn("Unknown host, retry without proxy...");
-            client.getConnectionManager().shutdown();
-            client = new DefaultHttpClient();
-          }
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
-      return null;
-    }
-
-    protected HttpClient getClient() {
-      if (client == null) {
-        client = new DefaultHttpClient();
-        if (useProxy()) {
-          LOG.debug("Proxy " + getProxyHost() + ":" + getProxyPort());
-          HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort());
-          client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-        }
-      }
-      return client;
-    }
-
-    /**
-     * Returns the proxy host.
-     *
-     * @return proxy host
-     */
-    public String getProxyHost() {
-      return proxyHost;
-    }
-
-    /**
-     * Returns the proxy port.
-     *
-     * @return proxy port
-     */
-    public int getProxyPort() {
-      return proxyPort;
-    }
-
-    public void setProxyHost(String proxyHost) {
-      this.proxyHost = proxyHost;
-    }
-
-    public void setProxyPort(int proxyPort) {
-      this.proxyPort = proxyPort;
-    }
-
-    protected void sleep(long sleepInterval) {
+    for (int i = 0; i < retries; i++) {
+      HttpResponse response = null;
       try {
-        Thread.sleep(sleepInterval);
-      } catch (InterruptedException ie) {
-        throw new RuntimeException(ie);
+        response = getClient().execute(post);
+        if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 302) {
+          return response;
+        } else {
+          try {
+            EntityUtils.consume(response.getEntity());
+          } catch (IOException e) {
+            // ignore
+          }
+
+          LOG.warn("Bad http response: " + response.getStatusLine().getStatusCode() + ", retrying after 1 second...");
+          sleep(1000L);
+        }
+      } catch (UnknownHostException e) {
+        if (useProxy()) {
+          LOG.warn("Unknown host, retry without proxy...");
+          client.getConnectionManager().shutdown();
+          client = new DefaultHttpClient();
+        }
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
     }
+    return null;
+  }
 
-    /**
-     * Returns whether or not to use a proxy.
-     *
-     * @return true/false
-     */
-    public boolean useProxy() {
-      return proxyHost != null && proxyPort > 0;
+  protected HttpClient getClient() {
+    if (client == null) {
+      client = new DefaultHttpClient();
+      if (useProxy()) {
+        LOG.debug("Proxy " + getProxyHost() + ":" + getProxyPort());
+        HttpHost proxy = new HttpHost(getProxyHost(), getProxyPort());
+        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+      }
+    }
+    return client;
+  }
+
+  /**
+   * Returns the proxy host.
+   * 
+   * @return proxy host
+   */
+  public String getProxyHost() {
+    return proxyHost;
+  }
+
+  /**
+   * Returns the proxy port.
+   * 
+   * @return proxy port
+   */
+  public int getProxyPort() {
+    return proxyPort;
+  }
+
+  public void setProxyHost(String proxyHost) {
+    this.proxyHost = proxyHost;
+  }
+
+  public void setProxyPort(int proxyPort) {
+    this.proxyPort = proxyPort;
+  }
+
+  protected void sleep(long sleepInterval) {
+    try {
+      Thread.sleep(sleepInterval);
+    } catch (InterruptedException ie) {
+      throw new RuntimeException(ie);
     }
   }
+
+  /**
+   * Returns whether or not to use a proxy.
+   * 
+   * @return true/false
+   */
+  public boolean useProxy() {
+    return proxyHost != null && proxyPort > 0;
+  }
+}

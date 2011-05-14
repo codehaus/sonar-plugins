@@ -79,7 +79,7 @@ public final class UrlUtils {
 
   public static URL normalize(String url, URL contextUrl) {
 
-    String normalizedUrl = url.toString();
+    String normalizedUrl = url;
     if (normalizedUrl.contains("#")) {
       normalizedUrl = StringUtils.substringBefore(normalizedUrl, "#");
 

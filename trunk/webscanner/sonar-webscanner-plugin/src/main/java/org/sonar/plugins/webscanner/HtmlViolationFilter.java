@@ -36,7 +36,7 @@ public final class HtmlViolationFilter implements ViolationFilter {
 
   public HtmlViolationFilter(Project project) {
 
-    Object property  = project.getProperty(EXCLUDE_VIOLATIONS);
+    Object property = project.getProperty(EXCLUDE_VIOLATIONS);
 
     final List<String> excludeViolations = new ArrayList<String>();
 
@@ -69,7 +69,7 @@ public final class HtmlViolationFilter implements ViolationFilter {
   }
 
   public boolean isIgnored(Violation violation) {
-     return !accept(violation.getRule().getKey(), violation.getMessage());
+    return !accept(violation.getRule().getKey(), violation.getMessage());
   }
 
 }

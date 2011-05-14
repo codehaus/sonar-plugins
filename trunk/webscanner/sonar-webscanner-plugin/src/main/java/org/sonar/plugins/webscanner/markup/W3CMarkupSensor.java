@@ -29,14 +29,16 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
+import org.sonar.plugins.webscanner.HtmlProjectFileSystem;
+import org.sonar.plugins.webscanner.WebScannerPlugin;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlMetrics;
-import org.sonar.plugins.webscanner.language.ProjectConfiguration;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
 import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
@@ -83,10 +85,9 @@ public final class W3CMarkupSensor implements Sensor {
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
-    prepareScanning(project);
-
-    List<File> files = project.getFileSystem().getSourceFiles(new Html(project));
-
+    HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
+    prepareScanning(fileSystem.getSourceDirs());
+     
     // create validator
     MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL));
 
@@ -98,10 +99,10 @@ public final class W3CMarkupSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(files, project.getFileSystem().getSourceDirs().get(0), ProjectConfiguration.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(fileSystem.getSourceFiles(), fileSystem.getSourceDirs().get(0), WebScannerPlugin.getNrOfSamples(project));
 
     // save analysis to sonar
-    saveResults(project, sensorContext, validator, files);
+    saveResults(project, sensorContext, validator, fileSystem.getFiles());
   }
 
   private boolean hasMarkupRules() {
@@ -122,11 +123,9 @@ public final class W3CMarkupSensor implements Sensor {
     }
   }
 
-  private void prepareScanning(Project project) {
+  private void prepareScanning(List<File> sourceDirs) {
 
-    ProjectConfiguration.configureSourceDir(project);
-
-    for (File sourceDir : project.getFileSystem().getSourceDirs()) {
+    for (File sourceDir : sourceDirs) {
       if ( !sourceDir.exists()) {
         LOG.error("Missing HTML directory: " + sourceDir.getPath());
         continue;
@@ -153,15 +152,15 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(Project project, SensorContext sensorContext, HtmlFileVisitor validator, List<File> files) {
+  private void saveResults(Project project, SensorContext sensorContext, HtmlFileVisitor validator, List<InputFile> inputfiles) {
     int numValid = 0;
     int numFiles = 0;
 
     List<File> reportFiles = new ArrayList<File>();
 
-    for (File file : files) {
-      org.sonar.api.resources.File htmlFile = org.sonar.api.resources.File.fromIOFile(file, project.getFileSystem().getSourceDirs());
-      File reportFile = validator.reportFile(file);
+    for (InputFile inputfile : inputfiles) {
+      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
+      File reportFile = validator.reportFile(inputfile.getFile());
 
       if (reportFile.exists()) {
         reportFiles.add(reportFile);
@@ -171,7 +170,7 @@ public final class W3CMarkupSensor implements Sensor {
           numValid++;
         }
       } else {
-        LOG.warn("Missing reportfile for file " + file.getPath());
+        LOG.warn("Missing reportfile for file " + inputfile.getRelativePath());
       }
       numFiles++;
     }
