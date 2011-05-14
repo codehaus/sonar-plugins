@@ -32,7 +32,6 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.JavaFile;
-import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.SonarException;
 
 import java.io.File;
