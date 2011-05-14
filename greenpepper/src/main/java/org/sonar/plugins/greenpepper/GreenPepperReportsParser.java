@@ -20,15 +20,18 @@
 
 package org.sonar.plugins.greenpepper;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Collection;
-
 import org.apache.commons.io.FileUtils;
+import org.sonar.api.utils.Logs;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.XpathParser;
 
-public class GreenPepperReportsParser {
+import java.io.File;
+import java.util.Collection;
+
+public final class GreenPepperReportsParser {
+
+  private GreenPepperReportsParser() {
+  }
 
   public final static GreenPepperReport parseReports(File reportsDir) {
     GreenPepperReport testsResult = new GreenPepperReport();
@@ -54,7 +57,7 @@ public class GreenPepperReportsParser {
       testsResult.setTestsIgnored((int) ParsingUtils.parseNumber(testsIgnored));
       return testsResult;
     } catch (Exception e) {
-      System.out.println("Unable to parse : " + report.getAbsolutePath());
+      Logs.INFO.error("Unable to parse : " + report.getAbsolutePath(), e);
       // throw new XmlParserException("Unable to parse GreenPepper report : " + report.getAbsolutePath(), e);
       return new GreenPepperReport();
     }
@@ -65,7 +68,7 @@ public class GreenPepperReportsParser {
     if (dir == null || !dir.isDirectory() || !dir.exists()) {
       return new File[0];
     }
-    Collection<File> files = FileUtils.listFiles(dir, new String[]{"xml"}, true);
+    Collection<File> files = FileUtils.listFiles(dir, new String[] { "xml" }, true);
     return files.toArray(new File[files.size()]);
   }
 }
