@@ -36,6 +36,6 @@ public class JMXParserTest {
     JMXParser jmxParser = new JMXParser();
     Map<String, String> testnames = jmxParser.findHttpSampleTestNames(new File(testfile));
     assertNotNull(testnames);
-    assertTrue(testnames.isEmpty());
+    assertTrue(testnames.size() > 0);
   }
 }
