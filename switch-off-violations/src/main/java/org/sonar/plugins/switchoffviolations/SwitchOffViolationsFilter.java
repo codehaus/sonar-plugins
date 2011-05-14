@@ -33,7 +33,7 @@ import java.io.File;
 import java.util.List;
 
 public final class SwitchOffViolationsFilter implements ViolationFilter {
-  private static Logger LOG = LoggerFactory.getLogger(SwitchOffViolationsFilter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SwitchOffViolationsFilter.class);
 
   private Pattern[] patterns;
 
