@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class Queue extends LinkedList<CrawlerTask> {
 
+  private static final long serialVersionUID = 1L;
+
   public void addAll(List<URL> seeds) {
     for (URL url : seeds) {
       CrawlerTask crawlerTask = new CrawlerTask(url.toString(), 0);

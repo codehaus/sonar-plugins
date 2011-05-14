@@ -76,10 +76,6 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
     try {
       crawler.addSeed(new URL(website));
       File downloadDir = new File((String) project.getProperty(WebScannerPlugin.SOURCE_DIRECTORY));
-      if (!downloadDir.isAbsolute()) {
-        File sourceDir = HtmlProjectFileSystem.getSourceDirs(project).get(0);
-        downloadDir = new File(sourceDir.getPath() + "/" + downloadDir.getPath()); 
-      }
       crawler.setDownloadDirectory(downloadDir);
       crawler.crawl();
     } catch (MalformedURLException e) {

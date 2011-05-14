@@ -25,7 +25,7 @@ import org.sonar.plugins.webscanner.crawler.frontier.UrlUtils;
 
 /**
  * HTML parser. Extracts links from page.
- *
+ * 
  */
 public class HtmlParser implements Parser {
 
@@ -52,6 +52,5 @@ public class HtmlParser implements Parser {
         }
       }
     }
-
   }
 }

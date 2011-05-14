@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cyberneko.html.parsers.SAXParser;
+import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -38,8 +39,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * @since 1.0
  */
 public final class LinkExtractor {
-
-  private static final Logger LOG = Logger.getLogger(LinkExtractor.class);
 
   private class LinkHandler extends DefaultHandler {
 
@@ -97,24 +96,28 @@ public final class LinkExtractor {
   }
 
   private static enum TagLink {
-    A("href"), AREA("href"), BASE("href"),
+    A(HREF), AREA(HREF), BASE(HREF),
 
-    EMBED("src"), FRAME("src"), IFRAME("src"),
+    EMBED(SRC), FRAME(SRC), IFRAME(SRC),
 
-    LINK("href"),
+    LINK(HREF),
 
     META;
 
     private final String attribute;
 
-    private TagLink(String attribute) {
-      this.attribute = attribute;
-    }
-
     private TagLink() {
       this.attribute = null;
     }
+
+    private TagLink(String attribute) {
+      this.attribute = attribute;
+    }
   }
+
+  private static final String HREF = "href";
+  private static final Logger LOG = Logger.getLogger(LinkExtractor.class); 
+  private static final String SRC = "src";
 
   private String base;
   private final List<String> urls = new ArrayList<String>();
@@ -133,9 +136,9 @@ public final class LinkExtractor {
       parser.setContentHandler(handler);
       parser.parse(new InputSource(new StringReader(content)));
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CrawlerException(e);
     } catch (SAXException e) {
-      throw new RuntimeException(e);
+      throw new CrawlerException(e);
     }
   }
 

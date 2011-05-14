@@ -30,7 +30,6 @@ import java.net.URL;
 import org.junit.Test;
 import org.sonar.plugins.webscanner.crawler.Crawler;
 import org.sonar.plugins.webscanner.crawler.download.Downloader;
-import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 import org.sonar.plugins.webscanner.crawler.frontier.Statistics;
 import org.sonar.plugins.webscanner.crawler.parser.Page;
 
@@ -38,7 +37,7 @@ import org.sonar.plugins.webscanner.crawler.parser.Page;
 public class CrawlerManagerIT {
 
   @Test
-  public void testCrawler() throws MalformedURLException, CrawlerException {
+  public void testCrawler() throws MalformedURLException {
     Crawler crawler = new Crawler();
     String domain = "webrichtlijnen.nl";
     crawler.addSeed(new URL("http://www." + domain));
@@ -49,7 +48,7 @@ public class CrawlerManagerIT {
   }
 
   @Test
-  public void testDownloader() throws MalformedURLException, CrawlerException {
+  public void testDownloader() throws MalformedURLException {
     Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress("www-proxy.nl.int.atosorigin.com", 8080));
     Downloader downloader = new Downloader(proxy, new Statistics(new File("target")));
     Page page = downloader.download(new URL("http://www.ns.nl/cs/Satellite/reizigers/plan-uw-reis"));

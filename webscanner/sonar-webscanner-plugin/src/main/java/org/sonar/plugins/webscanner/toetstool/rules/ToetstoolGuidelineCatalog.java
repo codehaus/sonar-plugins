@@ -29,16 +29,17 @@ import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.sonar.api.utils.SonarException;
 
 /**
  * Parse Toetstool page with the list of Guidelines.
  *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 final class ToetstoolGuidelineCatalog {
 
-  public class MessageDefinition {
+  public static class MessageDefinition {
 
     private String id;
     private String remark;
@@ -81,7 +82,7 @@ final class ToetstoolGuidelineCatalog {
       writer.write("</rules>");
       writer.close();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     } finally {
       IOUtils.closeQuietly(writer);
     }

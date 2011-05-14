@@ -102,9 +102,9 @@ final class JMXParser {
       SAX_FACTORY.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 
     } catch (SAXException e) {
-      throw new RuntimeException(e);
+      throw new JMeterException(e);
     } catch (ParserConfigurationException e) {
-      throw new RuntimeException(e);
+      throw new JMeterException(e);
     }
   }
 
@@ -126,9 +126,9 @@ final class JMXParser {
       LOG.error(e);
       return;
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new JMeterException(e);
     } catch (ParserConfigurationException e) {
-      throw new RuntimeException(e);
+      throw new JMeterException(e);
     }
   }
 

@@ -46,7 +46,7 @@ public class DownloadContent {
   /**
    * This method is called after each crawl attempt. Warning - it does not matter if it was unsuccessfull attempt or response was
    * redirected. So you should check response code before handling it.
-   *
+   * 
    * @param crawlerTask
    * @param page
    */
@@ -67,32 +67,49 @@ public class DownloadContent {
 
   /**
    * Removes jsessionid from string
-   *
+   * 
    * @param value
    * @return
    */
-  private static String removeJSessionId(String str) {
+  private static String makeFileName(String str) {
+    String fileName;
+
     // Removing jsessionid
     if ( !StringUtils.isEmpty(str) && StringUtils.contains(str.toLowerCase(), ";jsessionid")) {
-      return str.substring(0, StringUtils.indexOf(str, ";jsessionid"));
+      fileName = str.substring(0, StringUtils.indexOf(str, ";jsessionid"));
+    } else {
+      fileName = str;
     }
 
-    return str;
+    // Remove numeric and long part elements
+    String[] parts = fileName.split("/");
+    StringBuilder sb = new StringBuilder();
+    for (String part : parts) {
+      if (part.length() == 0 || !Character.isDigit(part.charAt(0))) {
+        if (sb.length() > 0) {
+          sb.append('/');
+        }
+        sb.append(StringUtils.substring(part, 0, 30));
+      }
+    }
+
+    return sb.toString();
   }
 
   private void saveContent(CrawlerTask crawlerTask, Page page) {
     try {
       URL url = new URL(crawlerTask.getUrl());
-      String fileName = removeJSessionId(url.getPath());
+
+      String fileName = makeFileName(url.getPath());
       if (StringUtils.isEmpty(fileName)) {
         fileName = "index";
       } else {
         fileName = URLDecoder.decode(fileName, "UTF-8");
       }
       if (fileName.endsWith("/")) {
-        fileName = fileName.substring(0, fileName.length() - 1);  
+        fileName = fileName.substring(0, fileName.length() - 1);
       }
-      
+
       StringBuilder path = new StringBuilder();
       path.append(downloadDirectory.getAbsolutePath());
       if ( !fileName.startsWith("/")) {

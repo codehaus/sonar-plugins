@@ -28,6 +28,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
+import org.sonar.api.utils.SonarException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -120,7 +121,7 @@ public final class MarkupReport {
   private void parse(File reportFile) {
     this.reportFile = reportFile;
     if ( !reportFile.exists()) {
-      throw new RuntimeException("File does not exist: " + reportFile.getPath());
+      throw new SonarException("File does not exist: " + reportFile.getPath());
     }
     Document document = parseSoapMessage(reportFile);
     if (document != null) {

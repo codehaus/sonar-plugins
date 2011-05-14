@@ -29,6 +29,7 @@ import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.utils.SonarException;
 
 /**
  * Client
@@ -73,7 +74,7 @@ public class HtmlValidationHttpClient {
           client = new DefaultHttpClient();
         }
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new SonarException(e);
       }
     }
     return null;
@@ -121,7 +122,7 @@ public class HtmlValidationHttpClient {
     try {
       Thread.sleep(sleepInterval);
     } catch (InterruptedException ie) {
-      throw new RuntimeException(ie);
+      throw new SonarException(ie);
     }
   }
 

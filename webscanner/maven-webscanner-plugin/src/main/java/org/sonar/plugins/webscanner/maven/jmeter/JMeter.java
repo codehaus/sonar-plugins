@@ -106,7 +106,7 @@ class JMeter {
           LOG.error("Could not find report file for JMeter script " + scriptFile.getName());
         }
       } catch (FileNotFoundException e) {
-        throw new RuntimeException(e);
+        throw new JMeterException(e);
       }
     }
   }
@@ -117,7 +117,7 @@ class JMeter {
       FileUtils.deleteDirectory(folder);
     } catch (IOException e) {
       LOG.error("Could not delete folder " + folder.getPath());
-      throw new RuntimeException(e);
+      throw new JMeterException(e);
     }
     folder.mkdir();
     return folder;
@@ -135,7 +135,7 @@ class JMeter {
         }
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new JMeterException(e);
     }
     return false;
   }

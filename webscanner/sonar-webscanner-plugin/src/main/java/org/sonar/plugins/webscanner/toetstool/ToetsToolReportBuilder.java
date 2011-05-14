@@ -33,6 +33,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.toetstool.validation.ToetsToolValidator;
 import org.sonar.plugins.webscanner.toetstool.xml.Guideline;
 import org.sonar.plugins.webscanner.toetstool.xml.Guideline.ValidationType;
@@ -157,7 +158,7 @@ public final class ToetsToolReportBuilder {
     try {
       FileUtils.writeStringToFile(file, sb.toString());
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 
@@ -182,7 +183,7 @@ public final class ToetsToolReportBuilder {
     addRow("Html files", reports.size());
     addRow("Min score", minscore);
     addRow("Max score", maxscore);
-    addRow("AVG score", reports.size() > 0 ? totalscore / reports.size() : 0);
+    addRow("AVG score", !reports.isEmpty() ? totalscore / reports.size() : 0);
 
     sb.append("</table>");
   }

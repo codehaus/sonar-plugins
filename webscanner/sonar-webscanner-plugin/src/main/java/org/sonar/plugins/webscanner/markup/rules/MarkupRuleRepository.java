@@ -26,8 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleRepository;
-import org.sonar.api.rules.RulesCategory;
-import org.sonar.check.IsoCategory;
 import org.sonar.plugins.webscanner.language.Html;
 
 import com.thoughtworks.xstream.XStream;
@@ -110,8 +108,7 @@ public final class MarkupRuleRepository extends RuleRepository {
       if (htmlMarkupRule.getExplanation() != null) {
         rule.setDescription(StringEscapeUtils.escapeHtml(htmlMarkupRule.getExplanation()));
       }
-      rule.setPriority(htmlMarkupRule.getPriority());
-      rule.setRulesCategory(RulesCategory.fromIsoCategory(IsoCategory.Usability));
+      rule.setSeverity(htmlMarkupRule.getPriority());
       rules.add(rule);
     }
     return rules;

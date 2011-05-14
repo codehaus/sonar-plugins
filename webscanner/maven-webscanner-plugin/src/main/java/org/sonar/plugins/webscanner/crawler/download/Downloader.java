@@ -64,7 +64,7 @@ public class Downloader {
 
   /**
    * Checks downloader constraints. Returns true is everything is OK.
-   *
+   * 
    * @param page
    * @return
    */
@@ -103,7 +103,7 @@ public class Downloader {
 
   /**
    * Clean up connection. Reads errorStream and closes it, disconnects if needed.
-   *
+   * 
    * @param connection
    * @param connectionHeader
    */
@@ -133,7 +133,7 @@ public class Downloader {
 
   /**
    * Creates connection for the specified request
-   *
+   * 
    * @param request
    * @return
    */
@@ -153,13 +153,12 @@ public class Downloader {
     connection.setRequestProperty("User-Agent", userAgent);
     connection.setRequestProperty("Connection", "close");
 
-
     return connection;
   }
 
   /**
    * Creates {@link Page} instance
-   *
+   * 
    * @param request
    * @param content
    * @param responseCode
@@ -170,17 +169,17 @@ public class Downloader {
    */
   protected Page createPage(URL url, byte[] content, int responseCode, Map<String, String> responseHeaders, String encoding,
       long responseTime) {
-    LOG.debug("Response code from " + url + " is " + responseCode);
+    LOG.trace("Response code from " + url + " is " + responseCode);
     return new Page(url, responseHeaders, responseCode, encoding, responseTime, content);
   }
 
   /**
    * Downloads web page. Returns {@code null} if Page cannot be downloaded due to constraints (contentType, maxContentLength)
-   *
+   * 
    * @param url
    * @return
    */
-  public Page download(URL url) throws CrawlerException {
+  public Page download(URL url) {
 
     Page headPage = downloadHead(url);
 
@@ -195,7 +194,7 @@ public class Downloader {
 
     // Checking constrains (content length, content type, etc)
     if ( !checkConstraints(headPage)) {
-      LOG.info("Request to " + url + " violates this downloader constraints");
+      LOG.debug("Request to " + url + " violates this downloader constraints");
       return null;
     }
 
@@ -208,13 +207,13 @@ public class Downloader {
 
   /**
    * Downloads page content
-   *
+   * 
    * @param request
    * @param httpMethod
    * @param useProxy
    * @return
    */
-  protected Page download(URL url, Proxy proxy) throws CrawlerException {
+  protected Page download(URL url, Proxy proxy) {
     HttpURLConnection connection = null;
     byte[] content = null;
     Map<String, String> responseHeaders = new HashMap<String, String>();
@@ -260,15 +259,15 @@ public class Downloader {
         encoding = "UTF-8";
       }
     } catch (SocketTimeoutException ex) {
-      LOG.warn("Timeout exception for url " + url + (proxy == null ? " not using proxy" : " using proxy " + proxy));
+      LOG.warn("Timeout exception for url " + url + proxyUsage());
       // Setting response code to 408
       responseCode = HttpURLConnection.HTTP_CLIENT_TIMEOUT;
     } catch (FileNotFoundException ex) {
-      LOG.warn("FileNotFoundException for url " + url + (proxy == null ? " not using proxy" : " using proxy " + proxy), ex);
+      LOG.warn("FileNotFoundException for url " + url + proxyUsage(), ex);
       // Setting response code to 404
       responseCode = HttpURLConnection.HTTP_NOT_FOUND;
     } catch (IOException ex) {
-      LOG.warn("Error while requesting url " + url + (proxy == null ? " not using proxy" : " using proxy " + proxy), ex);
+      LOG.warn("Error while requesting url " + url + proxyUsage(), ex);
       // Setting response code to 503
       responseCode = HttpURLConnection.HTTP_UNAVAILABLE;
     } finally {
@@ -279,10 +278,14 @@ public class Downloader {
     return createPage(url, content, responseCode, responseHeaders, encoding, responseTime);
   }
 
+  private String proxyUsage() {
+    return proxy == null ? " not using proxy" : " using proxy " + proxy;
+  }
+
   private Page downloadHead(URL url) {
     for (int i = 0; i < triesCount; i++) {
       try {
-        LOG.debug("Downloading from " + url + ", try number " + (i + 1));
+        LOG.trace("Downloading from " + url + ", try number " + (i + 1));
 
         // Sending HEAD request using specified proxy
         Page headPage = headRequest(url, proxy);
@@ -291,7 +294,7 @@ public class Downloader {
           // There was no error, returning page
           return headPage;
         } else {
-          LOG.info("Return code for head request " + headPage.getUrl() + " is " + headPage.getResponseCode());
+          LOG.debug("Return code for head request " + headPage.getUrl() + " is " + headPage.getResponseCode());
         }
       } catch (CrawlerException ex) {
         LOG.info("DownloadException while downloading from " + url + ": " + ex.getMessage() + ", try number " + i);
@@ -314,7 +317,7 @@ public class Downloader {
           // There was no error, returning page
           return page;
         } else {
-          LOG.info("Return code for " + page.getUrl() + " is " + page.getResponseCode());
+          LOG.debug("Return code for " + page.getUrl() + " is " + page.getResponseCode());
         }
       } catch (CrawlerException ex) {
         LOG.info("DownloadException while downloading from " + url + ": " + ex.getMessage() + ", try number " + i);
@@ -329,18 +332,18 @@ public class Downloader {
 
   /**
    * Tries to get encoding. First from the "Content-Type" header, then tries to guess it from the content
-   *
+   * 
    * @param content
    * @param contentType
    * @return
    */
   protected String getCharset(String contentType) {
-    
+
     // Parsing Content-Type header first
     if (contentType != null) {
       String[] parts = contentType.split(";");
 
-      for (int i = 1; i < parts.length ; i++) {
+      for (int i = 1; i < parts.length; i++) {
         final String t = parts[i].trim();
         final int index = t.toLowerCase().indexOf("charset=");
         if (index != -1) {
@@ -357,7 +360,7 @@ public class Downloader {
 
   /**
    * Tries to get charset from {@code meta} tag. Very simple implementation.
-   *
+   * 
    * @param content
    * @return
    */
@@ -381,7 +384,7 @@ public class Downloader {
 
   /**
    * Returns response content
-   *
+   * 
    * @param gzipEncoding
    * @param connection
    * @return
@@ -414,7 +417,7 @@ public class Downloader {
 
   /**
    * Returns downloader's logger
-   *
+   * 
    * @return
    */
   protected Logger getLogger() {
@@ -423,7 +426,7 @@ public class Downloader {
 
   /**
    * Collects response headers from the open connection
-   *
+   * 
    * @param connection
    * @return
    */
@@ -442,12 +445,12 @@ public class Downloader {
   /**
    * Makes HEAD request and returns Response headers. Throws {@link DownloadException} if there's any exception downloading this page.
    * Usually it means that proxy is now dead.
-   *
+   * 
    * @param request
    * @param proxy
    * @return {@link Page} object without content but with response code and headers
    */
-  protected Page headRequest(URL url, Proxy proxy) throws CrawlerException {
+  protected Page headRequest(URL url, Proxy proxy) {
     long startTime = System.currentTimeMillis();
 
     HttpURLConnection connection = null;
@@ -483,8 +486,7 @@ public class Downloader {
       long responseTime = System.currentTimeMillis() - startTime;
       return createPage(url, null, responseCode, responseHeaders, null, responseTime);
     } catch (IOException ex) {
-      String message = "Error while processing HEAD request to " + url
-          + (proxy == null ? " not using proxy" : " using proxy " + proxy);
+      String message = "Error while processing HEAD request to " + url + proxyUsage();
       LOG.info(message, ex);
       throw new CrawlerException(message, ex);
     } finally {

@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.cyberneko.html.parsers.SAXParser;
+import org.sonar.api.utils.SonarException;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -63,9 +64,9 @@ public final class LinkParser {
       parser.setContentHandler(handler);
       parser.parse(new InputSource(input));
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     } catch (SAXException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 

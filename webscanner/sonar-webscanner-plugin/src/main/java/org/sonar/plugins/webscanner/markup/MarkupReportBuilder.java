@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.markup.rules.MarkupErrorCatalog;
 import org.sonar.plugins.webscanner.markup.rules.MarkupErrorCatalog.MessageDefinition;
 import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
@@ -180,7 +181,7 @@ public final class MarkupReportBuilder {
     try {
       FileUtils.writeStringToFile(file, sb.toString());
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 }

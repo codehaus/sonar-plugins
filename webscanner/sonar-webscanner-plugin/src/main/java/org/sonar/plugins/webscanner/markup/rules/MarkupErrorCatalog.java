@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
+import org.sonar.api.utils.SonarException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -93,7 +94,7 @@ public class MarkupErrorCatalog {
   }
 
   /**
-   * method to generate rules.xml for use in WebPlugin.
+   * method to generate rules.xml for use in WebscannerPlugin.
    */
   private void createRulesCatalog() {
 
@@ -118,7 +119,7 @@ public class MarkupErrorCatalog {
       writer.write("</rules>");
       writer.close();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     } finally {
       IOUtils.closeQuietly(writer);
     }
@@ -192,9 +193,9 @@ public class MarkupErrorCatalog {
       parser.parse(new InputSource(MarkupErrorCatalog.class.getClassLoader().getResourceAsStream(
           "org/sonar/plugins/webscanner/markup/" + fileName)));
     } catch (SAXException se) {
-      throw new RuntimeException(se);
+      throw new SonarException(se);
     } catch (IOException ioe) {
-      throw new RuntimeException(ioe);
+      throw new SonarException(ioe);
     }
     return parser.getDocument();
   }

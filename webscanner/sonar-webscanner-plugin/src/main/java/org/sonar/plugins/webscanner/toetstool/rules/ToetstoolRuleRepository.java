@@ -26,8 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleRepository;
-import org.sonar.api.rules.RulesCategory;
-import org.sonar.check.IsoCategory;
 import org.sonar.plugins.webscanner.language.Html;
 
 import com.thoughtworks.xstream.XStream;
@@ -37,7 +35,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public final class ToetstoolRuleRepository extends RuleRepository {
 
   @XStreamAlias("rule")
-  public class ToetstoolRule {
+  public static class ToetstoolRule {
 
     private String explanation;
 
@@ -81,7 +79,7 @@ public final class ToetstoolRuleRepository extends RuleRepository {
   }
 
   @XStreamAlias("rules")
-  public class ToetstoolRules {
+  public static class ToetstoolRules {
 
     @XStreamImplicit(itemFieldName = "rule")
     public List<ToetstoolRule> rules;
@@ -122,8 +120,7 @@ public final class ToetstoolRuleRepository extends RuleRepository {
       if (toetstoolRule.getExplanation() != null) {
         rule.setDescription(StringEscapeUtils.escapeHtml(toetstoolRule.getExplanation()));
       }
-      rule.setPriority(toetstoolRule.getPriority());
-      rule.setRulesCategory(RulesCategory.fromIsoCategory(IsoCategory.Usability));
+      rule.setSeverity(toetstoolRule.getPriority());
       rules.add(rule);
     }
     return rules;

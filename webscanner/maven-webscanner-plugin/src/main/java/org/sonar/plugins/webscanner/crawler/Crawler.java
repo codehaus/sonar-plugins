@@ -97,7 +97,7 @@ public class Crawler {
   /**
    * Starts crawling
    */
-  public void crawl() throws CrawlerException {
+  public void crawl() {
 
     LOG.info("Starting crawling..");
 
@@ -137,7 +137,7 @@ public class Crawler {
    * @throws CrawlerException
    * @throws Exception
    */
-  private Page crawlTask(CrawlerTask crawlerTask) throws MalformedURLException, CrawlerException {
+  private Page crawlTask(CrawlerTask crawlerTask) throws MalformedURLException {
     LOG.debug("Starting processing " + crawlerTask.getUrl() + "...");
     URL url = new URL(crawlerTask.getUrl());
     Downloader downloader = new Downloader(proxy, statistics);
@@ -183,9 +183,9 @@ public class Crawler {
       DownloadContent downloadContent = new DownloadContent(downloadDirectory);
       downloadContent.afterCrawl(crawlerTask, page);
     } catch (MalformedURLException e) {
-
+      LOG.debug(e);
     } catch (CrawlerException e) {
-
+      LOG.debug(e);
     }
   }
 

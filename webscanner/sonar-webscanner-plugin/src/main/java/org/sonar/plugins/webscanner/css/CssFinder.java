@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.utils.SonarException;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.Node;
 import org.w3c.dom.css.CSSImportRule;
@@ -35,8 +36,9 @@ import org.w3c.dom.css.CSSStyleSheet;
 
 import com.steadystate.css.parser.CSSOMParser;
 
-
 /**
+ * Find Css files. 
+ * 
  * @author Matthijs Galesloot
  * @since 1.0
  */
@@ -118,7 +120,7 @@ public final class CssFinder {
       return imports;
 
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 }
