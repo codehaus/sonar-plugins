@@ -23,6 +23,7 @@ package org.sonar.plugins.clover;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.sonar.api.utils.SonarException;
 import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
@@ -113,7 +114,7 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
       FileUtils.writeStringToFile(file, license);
       return file;
     } catch (IOException e) {
-      throw new RuntimeException("can not write the clover license", e);
+      throw new SonarException("Can not write the clover license", e);
     }
   }
 
