@@ -34,6 +34,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.scanner.CharsetDetector;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
@@ -130,7 +131,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
         try {
           EntityUtils.consume(response.getEntity());
         } catch (IOException ioe) {
-
+          LOG.debug(ioe);
         }
       }
     }
@@ -179,7 +180,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
       writer = new FileWriter(reportFile);
       IOUtils.copy(response.getEntity().getContent(), writer);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     } finally {
       IOUtils.closeQuietly(writer);
     }

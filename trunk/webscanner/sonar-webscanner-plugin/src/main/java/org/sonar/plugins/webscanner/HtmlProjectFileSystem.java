@@ -169,8 +169,6 @@ public class HtmlProjectFileSystem {
   /**
    * Get sourcefiles as list of files. 
    * 
-   * @deprecated use getFiles instead
-   * @return
    */
   @Deprecated
   public List<File> getSourceFiles() {

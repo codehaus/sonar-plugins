@@ -26,29 +26,20 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.settings.Settings;
 import org.sonar.plugins.webscanner.crawler.Crawler;
-import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 
 /**
  * WebCrawler
- *
+ * 
  * @goal web-crawler
- *
+ * 
  * @author Matthijs Galesloot
  * @since 1.0
  */
 public class CrawlerMojo extends AbstractMojo {
 
   /**
-   * Base directory of the project.
-   * @parameter expression="${basedir}"
-   * @required
-   * @readonly
-   */
-  private File baseDirectory;
-
-  /**
    * HTML download directory.
-   *
+   * 
    * @required
    * @parameter
    */
@@ -56,14 +47,14 @@ public class CrawlerMojo extends AbstractMojo {
 
   /**
    * Start of the site visiting.
-   *
+   * 
    * @parameter
    */
   private String seedingUrl;
 
   /**
    * The Maven Settings.
-   *
+   * 
    * @parameter default-value="${settings}"
    * @required
    * @readonly
@@ -74,26 +65,18 @@ public class CrawlerMojo extends AbstractMojo {
     try {
       Crawler crawler = new Crawler();
 
-      try {
-        // Adding crawler seed
-        crawler.addSeed(new URL(seedingUrl));
-        crawler.setDownloadDirectory(downloadDirectory);
-        if (settings.getActiveProxy() != null) {
-          crawler.configureProxy(settings.getActiveProxy().getHost(), settings.getActiveProxy().getPort());
-        }
-        // Starting crawler
-        crawler.crawl();
-      } catch (CrawlerException e) {
-        throw new RuntimeException(e);
+      // Adding crawler seed
+      crawler.addSeed(new URL(seedingUrl));
+      crawler.setDownloadDirectory(downloadDirectory);
+      if (settings.getActiveProxy() != null) {
+        crawler.configureProxy(settings.getActiveProxy().getHost(), settings.getActiveProxy().getPort());
       }
+      // Starting crawler
+      crawler.crawl();
 
     } catch (MalformedURLException mue) {
       throw new MojoExecutionException("Wrong seeding URL", mue);
     }
-  }
-
-  public void setBaseDirectory(File baseDirectory) {
-    this.baseDirectory = baseDirectory;
   }
 
   public void setSeedingUrl(String seedingUrl) {

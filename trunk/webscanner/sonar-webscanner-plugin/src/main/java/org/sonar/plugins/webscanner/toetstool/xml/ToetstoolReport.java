@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.sonar.api.utils.SonarException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -45,7 +46,7 @@ public class ToetstoolReport {
       report.reportFile = file;
       return report;
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 
@@ -97,7 +98,7 @@ public class ToetstoolReport {
       toXml(out);
       IOUtils.closeQuietly(out);
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 
@@ -113,7 +114,7 @@ public class ToetstoolReport {
     try {
       getXstream().toXML(this, new FileOutputStream(reportFile));
     } catch (FileNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 

@@ -29,8 +29,9 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
+import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 
 public class Statistics {
 
@@ -47,7 +48,7 @@ public class Statistics {
       file.getParentFile().mkdirs();
       errorUrlsWriter = new FileWriter(downloadDirectory.getPath() + "/error-urls.txt");
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CrawlerException(e);
     }
   }
 
@@ -61,7 +62,7 @@ public class Statistics {
       errorUrlsWriter.append(url.toString());
       errorUrlsWriter.append('\n');
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CrawlerException(e);
     }
   }
 
@@ -147,24 +148,39 @@ public class Statistics {
   }
 
   public boolean isVisited(URL url) {
-    return visitedUrls.contains(stripURLpath(url));
+    return visitedUrls.contains(generalizeURLpath(url));
   }
 
-  private String stripURLpath(URL url) {
-    String[] parts = StringUtils.splitPreserveAllTokens(url.getPath(), '/');
+  private String generalizeURLpath(URL url) {
+    
+    String path = url.toString();
+    
+    // Removing jsessionid
+    if ( !StringUtils.isEmpty(path) && StringUtils.contains(path.toLowerCase(), ";jsessionid")) {
+      path = path.substring(0, StringUtils.indexOf(path, ";jsessionid"));
+    } 
+    
+    String[] parts = StringUtils.splitPreserveAllTokens(path, '/');
     StringBuilder sb = new StringBuilder();
 
+    boolean skipPart = false; 
+    
     // skip number tokens
     for (String part : parts) {
-      if ( !NumberUtils.isNumber(part)) {
-        sb.append(part);
+      if (!skipPart && (part.length() == 0 || !Character.isDigit(part.charAt(0)))) {
+        sb.append(StringUtils.substring(part, 0, 30));
         sb.append("/");
       }
+      skipPart = ArrayUtils.contains(ignoreParts, part); 
     }
     return sb.toString();
   }
 
+  private String[] ignoreParts = new String[] { "akid", 
+      "nutscode" 
+  };
+  
   public void addUrl(URL url) {
-    visitedUrls.add(stripURLpath(url));
+    visitedUrls.add(generalizeURLpath(url));
   }
 }

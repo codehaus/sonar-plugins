@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 
+import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 import org.sonar.plugins.webscanner.crawler.frontier.UrlUtils;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.Node;
@@ -51,7 +52,7 @@ public class CssParser implements Parser {
       }
 
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new CrawlerException(e);
     }
   }
 }

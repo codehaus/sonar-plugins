@@ -35,6 +35,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.css.CssFinder;
 import org.sonar.plugins.webscanner.css.LinkParser;
 import org.sonar.plugins.webscanner.scanner.CharsetDetector;
@@ -55,7 +56,7 @@ import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 public final class ToetsToolValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
 
   private static final Logger LOG = Logger.getLogger(ToetsToolValidator.class);
-
+  private static final String TOETSTOOL_URL = "http://api.toetstool.nl/";
   private static final int RETRIES = 10;
 
   private static final long SECOND = 1000L;
@@ -67,6 +68,9 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
   private final String toetstoolURL;
 
   public ToetsToolValidator(String toetstoolURL) {
+    if (toetstoolURL == null || toetstoolURL.isEmpty()) {
+      toetstoolURL = TOETSTOOL_URL;
+    }
     if ( !toetstoolURL.endsWith("/")) {
       this.toetstoolURL = toetstoolURL + '/';
     } else {
@@ -165,7 +169,7 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
           try {
             EntityUtils.consume(response.getEntity());
           } catch (IOException ioe) {
-
+            LOG.debug(ioe);
           }
         }
       }
@@ -264,7 +268,7 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
         }
       }
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new SonarException(e);
     }
   }
 

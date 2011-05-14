@@ -19,7 +19,7 @@
 package org.sonar.plugins.webscanner.maven.jmeter;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.util.Map;
@@ -36,6 +36,6 @@ public class JMXParserTest {
     JMXParser jmxParser = new JMXParser();
     Map<String, String> testnames = jmxParser.findHttpSampleTestNames(new File(testfile));
     assertNotNull(testnames);
-    assertTrue(testnames.size() > 0);
+    assertFalse(testnames.isEmpty());
   }
 }
