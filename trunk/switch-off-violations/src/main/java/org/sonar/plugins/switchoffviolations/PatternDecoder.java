@@ -106,7 +106,7 @@ final class PatternDecoder {
       return patterns;
 
     } catch (IOException e) {
-      throw new SonarException("Fail to load the file: " + file.getAbsolutePath());
+      throw new SonarException("Fail to load the file: " + file.getAbsolutePath(), e);
     }
   }
 }
