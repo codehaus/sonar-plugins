@@ -24,8 +24,6 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
@@ -33,7 +31,6 @@ import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.Violation;
-import org.sonar.api.utils.KeyValue;
 import org.sonar.api.utils.KeyValueFormat;
 
 import java.util.List;
@@ -125,8 +122,8 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    */
   protected double getWeightedViolations(Map<RulePriority, Integer> weights, Multiset<RulePriority> violations, DecoratorContext context) {
     double weightedViolations = 0.0;
-    for (RulePriority priority : weights.keySet()) {
-      weightedViolations += weights.get(priority) * violations.count(priority);
+    for (Map.Entry<RulePriority, Integer> entry : weights.entrySet()) {
+      weightedViolations += entry.getValue() * violations.count(entry.getKey());
     }
     for (DecoratorContext childContext : context.getChildren()) {
       weightedViolations += MeasureUtils.getValue(childContext.getMeasure(getWeightedViolationMetricKey()), 0.0);
