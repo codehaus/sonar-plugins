@@ -41,15 +41,15 @@ import org.sonar.plugins.webscanner.crawler.parser.Page;
 
 public class Downloader {
 
-  private final String[] allowedContentTypes = new String[] { "text/html", "text/css" };
-  private final int connectionTimeout = 30000;
-  private final long downloadRetryPeriod = 0;
+  private static final String[] allowedContentTypes = new String[] { "text/html", "text/css" };
+  private static final int connectionTimeout = 30000;
+  private static final long downloadRetryPeriod = 0;
   private static final Logger LOG = Logger.getLogger(Downloader.class);
   private long maxContentLength;
   private final Proxy proxy;
-  private final int readTimeout = 30000;
-  private final int triesCount = 3;
-  private final String userAgent = "";
+  private static final int readTimeout = 30000;
+  private static final int triesCount = 3;
+  private static final String userAgent = "";
   private final Statistics statistics;
 
   static {
@@ -171,8 +171,7 @@ public class Downloader {
   protected Page createPage(URL url, byte[] content, int responseCode, Map<String, String> responseHeaders, String encoding,
       long responseTime) {
     LOG.debug("Response code from " + url + " is " + responseCode);
-    Page page = new Page(url, responseHeaders, responseCode, encoding, responseTime, content);
-    return page;
+    return new Page(url, responseHeaders, responseCode, encoding, responseTime, content);
   }
 
   /**
@@ -336,25 +335,24 @@ public class Downloader {
    * @return
    */
   protected String getCharset(String contentType) {
-    String charset = null;
-
+    
     // Parsing Content-Type header first
     if (contentType != null) {
       String[] parts = contentType.split(";");
 
-      for (int i = 1; i < parts.length && charset == null; i++) {
+      for (int i = 1; i < parts.length ; i++) {
         final String t = parts[i].trim();
         final int index = t.toLowerCase().indexOf("charset=");
         if (index != -1) {
           // Encoding found successfully, returning
-          charset = t.substring(index + 8);
+          String charset = t.substring(index + 8);
           charset = StringUtils.split(charset, ",;")[0];
           return charset;
         }
       }
     }
 
-    return charset;
+    return null;
   }
 
   /**

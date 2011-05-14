@@ -36,12 +36,10 @@ import org.sonar.plugins.webscanner.maven.jmeter.xml.JMeterReport;
 
 /**
  * Prepare JMeter report files for HTML validation.
- *
- * In order to save the responses to file:
- * 1. Add a node in the test plan for 'Save Responses to a file'
- * 2. Set the following property in jmeter.properties:
- *  jmeter.save.saveservice.filename=true
- *
+ * 
+ * In order to save the responses to file: 1. Add a node in the test plan for 'Save Responses to a file' 2. Set the following property in
+ * jmeter.properties: jmeter.save.saveservice.filename=true
+ * 
  * @author Matthijs Galesloot
  * @since 0.1
  */
@@ -79,6 +77,7 @@ class JMeter {
 
   /**
    * Extract HTTP responses from the JMeter report file.
+   * 
    * @param jMeterReportDir
    * @param jMeterScriptDir
    */
@@ -116,9 +115,9 @@ class JMeter {
 
     try {
       FileUtils.deleteDirectory(folder);
-    } catch (IOException e1) {
+    } catch (IOException e) {
       LOG.error("Could not delete folder " + folder.getPath());
-      throw new RuntimeException();
+      throw new RuntimeException(e);
     }
     folder.mkdir();
     return folder;
@@ -127,7 +126,7 @@ class JMeter {
   private boolean writeFile(org.sonar.plugins.webscanner.maven.jmeter.xml.HttpSample sample, File file) {
     try {
       if (StringUtils.isNotEmpty(sample.getResponseFile())) {
-        LOG.info("Read response file: "+ sample.getResponseFile());
+        LOG.info("Read response file: " + sample.getResponseFile());
         File sampleFile = new File(sample.getResponseFile());
         String content = FileUtils.readFileToString(sampleFile);
         if (StringUtils.isNotEmpty(content)) {
@@ -144,12 +143,12 @@ class JMeter {
   private void writeHttpSamples(Map<String, String> testNames, List<HttpSample> httpSamples) {
     for (HttpSample sample : httpSamples) {
 
-      if ( sample.hasResponse()) {
+      if (sample.hasResponse()) {
 
         try {
           URL url = new URL(sample.getLb());
           String path = url.getPath();
-          if (!path.contains(".")) {
+          if ( !path.contains(".")) {
             path += ".html";
           }
           File file = new File(htmlDir + "/" + path);

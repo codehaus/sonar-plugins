@@ -28,7 +28,11 @@ import org.apache.commons.io.IOUtils;
 
 import com.sun.syndication.io.XmlReader;
 
-public class CharsetDetector {
+public final class CharsetDetector {
+  
+  private CharsetDetector() {
+    // cannot instantiate
+  }
 
   /**
    * Tries to get charset from {@code meta} tag.

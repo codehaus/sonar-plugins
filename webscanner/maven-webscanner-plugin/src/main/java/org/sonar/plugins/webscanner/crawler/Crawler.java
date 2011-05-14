@@ -52,7 +52,7 @@ public class Crawler {
 
   private File downloadDirectory;
   private final Map<Integer, Integer> maxHttpErrors = new HashMap<Integer, Integer>();
-  private final int maxLevel = 10;
+  private static final int maxLevel = 10;
   private int politenessPeriod;
   private Proxy proxy;
 
@@ -62,7 +62,7 @@ public class Crawler {
 
   /**
    * Adds crawler seed
-   *
+   * 
    * @param url
    */
   public void addSeed(URL url) {
@@ -71,7 +71,7 @@ public class Crawler {
 
   /**
    * Checks maximum http errors limit
-   *
+   * 
    * @param statistics
    * @return
    */
@@ -130,7 +130,7 @@ public class Crawler {
 
   /**
    * Crawls url from the specified {@link CrawlerTask}.
-   *
+   * 
    * @param crawlerTask
    * @return
    * @throws MalformedURLException
@@ -147,13 +147,10 @@ public class Crawler {
 
     statistics.setLastTimeDownloaded(System.currentTimeMillis());
 
-    if (page != null) {
-
-      if (page.getResponseCode() == HttpURLConnection.HTTP_OK) {
-        LOG.debug(url + " was downloaded successfully. Download time " + page.getResponseTime());
-        getParser(page).parse(page);
-        LOG.debug(url + " has been parsed. " + page.getLinks().size() + " links were found");
-      }
+    if (page != null && page.getResponseCode() == HttpURLConnection.HTTP_OK) {
+      LOG.debug(url + " was downloaded successfully. Download time " + page.getResponseTime());
+      getParser(page).parse(page);
+      LOG.debug(url + " has been parsed. " + page.getLinks().size() + " links were found");
     }
 
     return page;
@@ -199,7 +196,7 @@ public class Crawler {
     }
 
     // Page was downloaded, tracking statistics
-    updateStatistics(crawlerTask, page);
+    updateStatistics(page);
 
     if (page.getResponseCode() == HttpURLConnection.HTTP_OK) {
       LOG.debug(crawlerTask.getUrl() + " has been successfully crawled, scheduling tasks");
@@ -214,7 +211,7 @@ public class Crawler {
         }
       }
       LOG.debug(page.getLinks() == null ? 0 : page.getLinks().size() + " tasks were passed to the scheduler");
-    } else if (page.getResponseCode() >= 300 && page.getResponseCode() < 400) {
+    } else if (page.getResponseCode() > 300 && page.getResponseCode() < 400) {
       LOG.debug("Processing redirect from " + crawlerTask.getUrl() + " to " + page.getRedirectUrl());
 
       if (shouldCrawl(page.getRedirectUrl(), crawlerTask)) {
@@ -245,7 +242,7 @@ public class Crawler {
     return !statistics.isVisited(url);
   }
 
-  private void updateStatistics(CrawlerTask crawlerTask, Page page) {
+  private void updateStatistics(Page page) {
 
     if (page.getResponseCode() >= 400) {
       statistics.setErrors(statistics.getErrors() + 1);

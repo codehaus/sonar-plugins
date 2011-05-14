@@ -128,8 +128,7 @@ public class Page {
     if (responseCode >= 300 && responseCode < 400) {
       try {
         // Response was redirected, returning "Location" header
-        URL redirectUrl = UrlUtils.normalize(getHeader("location"), url);
-        return redirectUrl;
+        return UrlUtils.normalize(getHeader("location"), url);
       } catch (Exception ex) {
         // Ignoring exception
         return null;

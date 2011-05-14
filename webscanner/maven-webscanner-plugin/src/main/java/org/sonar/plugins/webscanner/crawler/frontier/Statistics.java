@@ -128,7 +128,7 @@ public class Statistics {
     Long count = httpErrors.get(code);
 
     if (count == null) {
-      httpErrors.put(code, new Long(1));
+      httpErrors.put(code, 1L);
     } else {
       httpErrors.put(code, count + 1);
     }

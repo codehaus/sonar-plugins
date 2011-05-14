@@ -21,10 +21,12 @@ package org.sonar.plugins.webscanner;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.resources.Project;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlCodeColorizerFormat;
 import org.sonar.plugins.webscanner.language.HtmlMetrics;
@@ -39,29 +41,16 @@ import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
  * @author Matthijs Galesloot
  */
 @Properties({
-  @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API",
-    description = "W3CMarkup Validation API",
-    defaultValue = "http://validator.w3.org/check",
-    global = true, project = true),
-  @Property(key = ToetstoolSensor.SONAR_TOETSTOOL_URL, name = "Toetstool API",
-    description = "Toetstool Validation API",
-    defaultValue = "http://api.toetstool.nl/",
-    global = true, project = true),
- @Property(key = WebScannerPlugin.FILE_EXTENSIONS,
-    name = "File extensions",
-    description = "List of file extensions that will be scanned.",
-    defaultValue="html",
-    global = true, project = true),
-  @Property(key = WebScannerPlugin.SOURCE_DIRECTORY,
-    name = "Source directory",
-    description = "Source directory that will be scanned.",
-    defaultValue = "",
-    global = true, project = true),
-  @Property(key = WebScannerPlugin.WEBSITE,
-    name = "Website",
-    description = "Website that will be scanned.",
-    defaultValue = "",
-    global = false, project = true)})
+    @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API", description = "W3CMarkup Validation API",
+        defaultValue = "http://validator.w3.org/check", global = true, project = true),
+    @Property(key = ToetstoolSensor.SONAR_TOETSTOOL_URL, name = "Toetstool API", description = "Toetstool Validation API",
+        defaultValue = "http://api.toetstool.nl/", global = true, project = true),
+    @Property(key = WebScannerPlugin.FILE_EXTENSIONS, name = "File extensions",
+        description = "List of file extensions that will be scanned.", defaultValue = "html", global = true, project = true),
+    @Property(key = WebScannerPlugin.SOURCE_DIRECTORY, name = "Source directory", description = "Source directory that will be scanned.",
+        defaultValue = "", global = true, project = true),
+    @Property(key = WebScannerPlugin.WEBSITE, name = "Website", description = "Website that will be scanned.", defaultValue = "",
+        global = false, project = true) })
 public final class WebScannerPlugin implements Plugin {
 
   public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
@@ -70,7 +59,6 @@ public final class WebScannerPlugin implements Plugin {
   public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
   public static final String WEBSITE = "sonar.html.website";
 
-  @Deprecated
   public String getDescription() {
     return null;
   }
@@ -108,12 +96,10 @@ public final class WebScannerPlugin implements Plugin {
     return list;
   }
 
-  @Deprecated
   public String getKey() {
     return null;
   }
 
-  @Deprecated
   public String getName() {
     return null;
   }
@@ -121,5 +107,12 @@ public final class WebScannerPlugin implements Plugin {
   @Override
   public String toString() {
     return KEY;
+  }
+  
+  /**
+   * Get Nr of samples to validate. 
+   */
+  public static Integer getNrOfSamples(Project project) {
+    return NumberUtils.toInt((String) project.getProperty(WebScannerPlugin.NR_OF_SAMPLES));
   }
 }

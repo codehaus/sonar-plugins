@@ -77,7 +77,7 @@ public class CrawlerMojo extends AbstractMojo {
       try {
         // Adding crawler seed
         crawler.addSeed(new URL(seedingUrl));
-        crawler.setDownloadDirectory(new File(baseDirectory.getPath() + "/" + downloadDirectory));
+        crawler.setDownloadDirectory(downloadDirectory);
         if (settings.getActiveProxy() != null) {
           crawler.configureProxy(settings.getActiveProxy().getHost(), settings.getActiveProxy().getPort());
         }

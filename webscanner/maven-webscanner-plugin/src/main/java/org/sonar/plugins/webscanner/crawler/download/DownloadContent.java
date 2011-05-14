@@ -74,8 +74,7 @@ public class DownloadContent {
   private static String removeJSessionId(String str) {
     // Removing jsessionid
     if ( !StringUtils.isEmpty(str) && StringUtils.contains(str.toLowerCase(), ";jsessionid")) {
-      String value = str.substring(0, StringUtils.indexOf(str, ";jsessionid"));
-      return value;
+      return str.substring(0, StringUtils.indexOf(str, ";jsessionid"));
     }
 
     return str;
@@ -90,6 +89,10 @@ public class DownloadContent {
       } else {
         fileName = URLDecoder.decode(fileName, "UTF-8");
       }
+      if (fileName.endsWith("/")) {
+        fileName = fileName.substring(0, fileName.length() - 1);  
+      }
+      
       StringBuilder path = new StringBuilder();
       path.append(downloadDirectory.getAbsolutePath());
       if ( !fileName.startsWith("/")) {

@@ -47,10 +47,10 @@ import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 /**
  * Validate HTML and CSS using api.toetstool.nl.
- *
+ * 
  * @author Matthijs Galesloot
  * @since 0.1
- *
+ * 
  */
 public final class ToetsToolValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
 
@@ -173,14 +173,14 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
         sleepIntervals++;
       }
     }
-    LOG.error("Failed to open URL " + reportUrl + " after " + failedAttempts + " attempts. " +
-    		"\nCurrent sleeptime = " + sleepIntervals * SECOND);
+    LOG.error("Failed to open URL " + reportUrl + " after " + failedAttempts + " attempts. " + "\nCurrent sleeptime = " + sleepIntervals
+        * SECOND);
     return null;
   }
 
   /**
    * Post content of HTML file and CSS files to the Toesttool service. In return, receive a redirecte containing the reportNumber.
-   *
+   * 
    * @param htmlDir
    */
   private String postHtmlContents(File file, File htmlDir, String url) throws IOException {

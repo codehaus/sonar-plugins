@@ -27,7 +27,7 @@
 
   <properties>
     <license.name>AL2</license.name>
-    <sonar.version>2.4</sonar.version>
+    <sonar.version>2.7</sonar.version>
   </properties>
 
   <url>http://docs.codehaus.org/display/SONAR/Webscanner+Plugins</url>
