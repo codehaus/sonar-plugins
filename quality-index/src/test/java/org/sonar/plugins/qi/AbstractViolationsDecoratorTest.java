@@ -72,9 +72,9 @@ public class AbstractViolationsDecoratorTest {
   }
 
   @Test
-  public void testCountViolationsByPriority() {
+  public void testCountViolationsBySeverity() {
     createMultiSetViolations();
-    Multiset<RulePriority> set = decorator.countViolationsByPriority(context);
+    Multiset<RulePriority> set = decorator.countViolationsBySeverity(context);
     assertThat(set.count(RulePriority.BLOCKER), is(2));
     assertThat(set.count(RulePriority.CRITICAL), is(0));
     assertThat(set.count(RulePriority.MAJOR), is(1));
@@ -86,7 +86,7 @@ public class AbstractViolationsDecoratorTest {
     when(configuration.getString(anyString(), anyString())).
         thenReturn("INFO=1;MINOR=1;MAJOR=3;CRITICAL=5;BLOCKER=10");
     createMultiSetViolations();
-    Multiset<RulePriority> set = decorator.countViolationsByPriority(context);
+    Multiset<RulePriority> set = decorator.countViolationsBySeverity(context);
     Map<RulePriority, Integer> map = decorator.getWeightsByPriority();
 
     assertThat(decorator.getWeightedViolations(map, set, context), is(24.0));

@@ -89,7 +89,7 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    * @param context  the context
    */
   public void decorate(Resource resource, DecoratorContext context) {
-    Multiset<RulePriority> violations = countViolationsByPriority(context);
+    Multiset<RulePriority> violations = countViolationsBySeverity(context);
     Map<RulePriority, Integer> weights = getWeightsByPriority();
 
     double weightedViolations = getWeightedViolations(weights, violations, context);
@@ -103,16 +103,16 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    * @param context the context
    * @return a multiset of priority count
    */
-  protected Multiset<RulePriority> countViolationsByPriority(DecoratorContext context) {
+  protected Multiset<RulePriority> countViolationsBySeverity(DecoratorContext context) {
     List<Violation> violations = context.getViolations();
-    Multiset<RulePriority> violationsByPriority = HashMultiset.create();
+    Multiset<RulePriority> violationsBySeverity = HashMultiset.create();
 
     for (Violation violation : violations) {
       if (violation.getRule().getPluginName().equals(getPluginKey())) {
-        violationsByPriority.add(violation.getPriority());
+        violationsBySeverity.add(violation.getSeverity());
       }
     }
-    return violationsByPriority;
+    return violationsBySeverity;
   }
 
   /**
