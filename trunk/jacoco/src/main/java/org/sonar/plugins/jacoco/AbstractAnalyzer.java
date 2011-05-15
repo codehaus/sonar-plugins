@@ -28,7 +28,6 @@ import org.jacoco.core.data.SessionInfoStore;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
@@ -77,10 +76,10 @@ public abstract class AbstractAnalyzer {
     analyzeAll(analyzer, buildOutputDir);
 
     for (ISourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
+      String packageName = StringUtils.replaceChars(coverage.getPackageName(), '/', '.');
       String fileName = StringUtils.substringBeforeLast(coverage.getName(), ".");
-      String resourceName = StringUtils.replaceChars(coverage.getPackageName() + "/" + fileName, '/', '.');
 
-      JavaFile resource = new JavaFile(resourceName);
+      JavaFile resource = new JavaFile(packageName, fileName);
       analyzeFile(resource, coverage, context);
     }
   }
@@ -114,8 +113,6 @@ public abstract class AbstractAnalyzer {
       ILine line = coverage.getLine(lineId);
       switch (line.getInstructionCounter().getStatus()) {
         case ICounter.FULLY_COVERED:
-          hits = 1;
-          break;
         case ICounter.PARTLY_COVERED:
           hits = 1;
           break;
