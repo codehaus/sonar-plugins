@@ -41,8 +41,8 @@ public class MarkupValidatorIT {
     FileUtils.copyURLToFile(url, file);
 
     // validate
-    HtmlFileVisitor validator = new MarkupValidator(null);
-    validator.validateFile(file, null);
+    HtmlFileVisitor validator = new MarkupValidator(null, file.getParentFile(), new File("target"));
+    validator.validateFile(file);
     MarkupReport report = MarkupReport.fromXml(validator.reportFile(file));
 
     // assert

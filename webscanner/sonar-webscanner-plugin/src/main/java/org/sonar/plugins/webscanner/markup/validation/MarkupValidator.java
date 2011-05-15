@@ -42,12 +42,12 @@ import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
 
 /**
  * Validator for the W3C Markup Validation Service.
- *
+ * 
  * @see http://validator.w3.org/docs/api.html
- *
+ * 
  * @author Matthijs Galesloot
  * @since 0.1
- *
+ * 
  */
 public final class MarkupValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
 
@@ -73,25 +73,29 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
   }
 
   private final String validationUrl;
+  private final File buildDir;
+  private final File baseDir;
 
-  public MarkupValidator(String validationUrl) {
+  public MarkupValidator(String validationUrl, File baseDir, File buildDir) {
+    this.baseDir = baseDir;
+    this.buildDir = buildDir;
     this.validationUrl = StringUtils.isEmpty(validationUrl) ? DEFAULT_URL : validationUrl;
   }
 
-  private File errorFile(File file) {
-    return new File(file.getParentFile().getPath() + "/" + file.getName() + ERROR_XML);
+  public File errorFile(File file) {
+    return new File(buildDir.getPath() + "/" + relativePath(baseDir, file) + "/" + file.getName() + ERROR_XML);
   }
 
   /**
    * Post content of HTML to the W3C validation service. In return, receive a Soap response message.
-   *
+   * 
    * Documentation of interface: http://validator.w3.org/docs/api.html
    */
   private void postHtmlContents(File file) {
 
     HttpPost post = new HttpPost(validationUrl);
-    HttpResponse response  = null; 
-    
+    HttpResponse response = null;
+
     post.addHeader("User-Agent", "sonar-web-plugin/0.1");
 
     String charset = CharsetDetector.detect(file);
@@ -119,12 +123,12 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
       response = executePostMethod(post);
 
       if (response != null) {
-        LOG.info("Post: " + response.getStatusLine().toString());
+        LOG.debug("Post: " + response.getStatusLine().toString());
 
         writeResponse(response, file);
       }
     } catch (UnsupportedEncodingException e) {
-      LOG.error(e); 
+      LOG.error(e);
     } finally {
       // release any connection resources used by the method
       if (response != null) {
@@ -137,28 +141,28 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
     }
   }
 
-//
-//  private void configureCharset(Charset charset, List<PartBase> parts) {
-//
-//    StringPart charsetPart = new StringPart("charset", charset.name());
-//    parts.add(charsetPart);
-//
-//    // only use the charset as fallback
-//    StringPart fbCharSet = new StringPart("fbc", "1");
-//    parts.add(fbCharSet);
-//  }
+  //
+  // private void configureCharset(Charset charset, List<PartBase> parts) {
+  //
+  // StringPart charsetPart = new StringPart("charset", charset.name());
+  // parts.add(charsetPart);
+  //
+  // // only use the charset as fallback
+  // StringPart fbCharSet = new StringPart("fbc", "1");
+  // parts.add(fbCharSet);
+  // }
 
   /**
    * Create the path to the report file.
    */
   public File reportFile(File file) {
-    return new File(file.getParentFile().getPath() + "/" + file.getName() + MarkupReport.REPORT_SUFFIX);
+    return new File(buildDir.getPath() + "/" + relativePath(baseDir, file) + MarkupReport.REPORT_SUFFIX);
   }
 
   /**
    * Validate a file with the W3C Markup service.
    */
-  public void validateFile(File file, File dir) {
+  public void validateFile(File file) {
     postHtmlContents(file);
   }
 
@@ -175,6 +179,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
       reportFile = reportFile(file);
     }
 
+    reportFile.getParentFile().mkdirs();
     Writer writer = null;
     try {
       writer = new FileWriter(reportFile);

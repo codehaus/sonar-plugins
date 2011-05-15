@@ -25,13 +25,13 @@ import org.sonar.api.web.UserRole;
 @UserRole(UserRole.USER)
 public final class HtmlWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
+  public String getId() {
+    return "htmlvalidation";
+  }
+
   @Override
   protected String getTemplatePath() {
     return "/org/sonar/plugins/webscanner/dashboard/dashboard_widget.erb";
-  }
-
-  public String getId() {
-    return "htmlvalidation";
   }
 
   public String getTitle() {

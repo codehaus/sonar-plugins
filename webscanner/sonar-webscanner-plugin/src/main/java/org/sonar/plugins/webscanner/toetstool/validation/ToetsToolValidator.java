@@ -66,8 +66,12 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
   private static final String TEXT_HTML_CONTENT_TYPE = "text/html";
 
   private final String toetstoolURL;
+  private final File baseDir;
+  private final File buildDir;
 
-  public ToetsToolValidator(String toetstoolURL) {
+  public ToetsToolValidator(String toetstoolURL, File baseDir, File buildDir) {
+    this.baseDir = baseDir;
+    this.buildDir = buildDir;
     if (toetstoolURL == null || toetstoolURL.isEmpty()) {
       toetstoolURL = TOETSTOOL_URL;
     }
@@ -187,7 +191,8 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
    * 
    * @param htmlDir
    */
-  private String postHtmlContents(File file, File htmlDir, String url) throws IOException {
+  private String postHtmlContents(File file, File htmlDir) throws IOException {
+    
     HttpPost post = new HttpPost(getToetsToolUploadUrl());
     HttpResponse response = null;
 
@@ -195,27 +200,27 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
       LOG.info("Validate " + file.getName());
 
-      // file upload
+      // prepare Multipart post
       MultipartEntity multiPartRequestEntity = new MultipartEntity();
 
-      // Prepare post parameters
-      multiPartRequestEntity.addPart("header_yes", new StringBody("0"));
-
-      if (url == null) {
-        url = "http://localhost";
-      } else if ( !url.startsWith("http")) {
-        if ( !url.startsWith("/")) {
-          url = "/" + url;
-        }
-        url = "http://localhost" + url;
-      }
-
+      // url
+      String url = getUrl(file);
       LOG.info("Sending url: " + url);
       multiPartRequestEntity.addPart("url_user", new StringBody(url));
-
-      FileBody fileBody = new FileBody(file, TEXT_HTML_CONTENT_TYPE, CharsetDetector.detect(file));
+      
+      // contenttype 
+      String contentType = getProperty(file, "content-type"); 
+      if (contentType == null) {
+        contentType = CharsetDetector.detect(file); 
+      }
+      multiPartRequestEntity.addPart("header_yes", new StringBody("1"));
+      multiPartRequestEntity.addPart("headercontent", new StringBody(contentType)); 
+      
+      // file upload
+      FileBody fileBody = new FileBody(file, TEXT_HTML_CONTENT_TYPE, contentType);
       multiPartRequestEntity.addPart("htmlfile", fileBody);
-
+      
+      // css file upload
       addCssContent(file, htmlDir, multiPartRequestEntity);
 
       post.setEntity(multiPartRequestEntity);
@@ -248,11 +253,11 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
   /**
    * Validate a file with the Toetstool service.
    */
-  public void validateFile(File file, File htmlDir) {
+  public void validateFile(File file) {
 
     try {
       // post html contents, in return we get a redirect location
-      String redirectLocation = postHtmlContents(file, htmlDir, getUrl(file));
+      String redirectLocation = postHtmlContents(file, baseDir);
 
       if (redirectLocation != null) {
         // get the report number from the redirect location
@@ -262,7 +267,9 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
         ToetstoolReport report = fetchReport(reportNumber);
         if (report != null) {
           report.setReportNumber(reportNumber);
-          report.toXml(reportFile(file));
+          File reportFile = reportFile(file);
+          reportFile.getParentFile().mkdirs();
+          report.toXml(reportFile);
 
           LOG.info("Validated: " + file.getPath());
         }
@@ -273,11 +280,16 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
   }
 
   private String getUrl(File file) {
-    File reportFile = reportFile(file);
-    String url = null;
-    if (reportFile.exists()) {
-      ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
-      url = report.getReport().getUrl();
+    // try properties file 
+    String url = getProperty(file, "url");
+    
+    // try report file 
+    if (url == null) {
+      File reportFile = reportFile(file);
+      if (reportFile.exists()) {
+        ToetstoolReport report = ToetstoolReport.fromXml(reportFile);
+        url = report.getReport().getUrl();
+      }
     }
     if (StringUtils.isEmpty(url)) {
       url = "http://localhost";
@@ -289,8 +301,11 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     return HtmlFileScanner.getReportFiles(htmlFolder, ToetstoolReport.REPORT_SUFFIX);
   }
 
+  /**
+   * Create the path to the report file.
+   */
   public File reportFile(File file) {
-    return new File(file.getParentFile().getPath() + "/" + file.getName() + ToetstoolReport.REPORT_SUFFIX);
+    return new File(buildDir.getPath() + "/" + relativePath(baseDir, file) + ToetstoolReport.REPORT_SUFFIX);
   }
 
   public void waitBetweenValidationRequests() {

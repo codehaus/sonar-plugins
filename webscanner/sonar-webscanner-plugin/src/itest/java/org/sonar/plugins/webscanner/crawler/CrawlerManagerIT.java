@@ -18,41 +18,26 @@
 
 package org.sonar.plugins.webscanner.crawler;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.Proxy.Type;
 import java.net.URL;
 
 import org.junit.Test;
-import org.sonar.plugins.webscanner.crawler.Crawler;
-import org.sonar.plugins.webscanner.crawler.download.Downloader;
-import org.sonar.plugins.webscanner.crawler.frontier.Statistics;
-import org.sonar.plugins.webscanner.crawler.parser.Page;
-
 
 public class CrawlerManagerIT {
 
   @Test
   public void testCrawler() throws MalformedURLException {
     Crawler crawler = new Crawler();
-    String domain = "webrichtlijnen.nl";
-    crawler.addSeed(new URL("http://www." + domain));
-    crawler.setDownloadDirectory(new File("target/" + domain));
-    crawler.configureProxy("www-proxy.nl.int.atosorigin.com", 8080);
+    String seed = "http://docs.codehaus.org/display/SONAR/Web+Plugin";
+    crawler.addSeed(new URL(seed));
+    crawler.setDownloadDirectory(new File("target/sonar/html"));
+  //  crawler.configureProxy("www-proxy.nl.int.atosorigin.com", 8080);
     // Starting crawler
     crawler.crawl();
-  }
-
-  @Test
-  public void testDownloader() throws MalformedURLException {
-    Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress("www-proxy.nl.int.atosorigin.com", 8080));
-    Downloader downloader = new Downloader(proxy, new Statistics(new File("target")));
-    Page page = downloader.download(new URL("http://www.ns.nl/cs/Satellite/reizigers/plan-uw-reis"));
-
-    assertNotNull(page);
+    
+    assertTrue(crawler.getStatistics().getDownloaded() < 10); 
   }
 }

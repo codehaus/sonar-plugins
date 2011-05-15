@@ -37,34 +37,6 @@ public class DownloadContent {
 
   private static final Logger LOG = Logger.getLogger(DownloadContent.class);
 
-  private final File downloadDirectory;
-
-  public DownloadContent(File downloadDirectory) {
-    this.downloadDirectory = downloadDirectory;
-  }
-
-  /**
-   * This method is called after each crawl attempt. Warning - it does not matter if it was unsuccessfull attempt or response was
-   * redirected. So you should check response code before handling it.
-   * 
-   * @param crawlerTask
-   * @param page
-   */
-  public void afterCrawl(CrawlerTask crawlerTask, Page page) {
-
-    if (page == null) {
-      LOG.debug(crawlerTask.getUrl() + " violates crawler constraints (content-type or content-length or other)");
-    } else if (page.getResponseCode() >= 300 && page.getResponseCode() < 400) {
-      // If response is redirected - crawler schedules new task with new url
-      LOG.debug("Response was redirected from " + crawlerTask.getUrl());
-    } else if (page.getResponseCode() == HttpURLConnection.HTTP_OK) {
-      // Printing url crawled
-      LOG.debug(crawlerTask.getUrl() + ". Found " + (page.getLinks() != null ? page.getLinks().size() : 0) + " links.");
-
-      saveContent(crawlerTask, page);
-    }
-  }
-
   /**
    * Removes jsessionid from string
    * 
@@ -95,6 +67,38 @@ public class DownloadContent {
 
     return sb.toString();
   }
+  
+  private File downloadDirectory;
+
+  public DownloadContent() {
+
+  }
+
+  /**
+   * This method is called after each crawl attempt. Warning - it does not matter if it was unsuccessfull attempt or response was
+   * redirected. So you should check response code before handling it.
+   * 
+   * @param crawlerTask
+   * @param page
+   */
+  public void afterCrawl(CrawlerTask crawlerTask, Page page) {
+
+    if (page == null) {
+      LOG.debug(crawlerTask.getUrl() + " violates crawler constraints (content-type or content-length or other)");
+    } else if (page.getResponseCode() >= 300 && page.getResponseCode() < 400) {
+      // If response is redirected - crawler schedules new task with new url
+      LOG.debug("Response was redirected from " + crawlerTask.getUrl());
+    } else if (page.getResponseCode() == HttpURLConnection.HTTP_OK) {
+      // Printing url crawled
+      LOG.debug(crawlerTask.getUrl() + ". Found " + (page.getLinks() != null ? page.getLinks().size() : 0) + " links.");
+
+      saveContent(crawlerTask, page);
+    }
+  }
+
+  public File getDownloadDirectory() {
+    return downloadDirectory;
+  }
 
   private void saveContent(CrawlerTask crawlerTask, Page page) {
     try {
@@ -120,6 +124,7 @@ public class DownloadContent {
         path.append(".html");
       }
 
+      // write content 
       OutputStream out = FileUtils.openOutputStream(new File(path.toString()));
       OutputStreamWriter writer = new OutputStreamWriter(out, page.getCharset());
       writer.write(page.getContentString());
@@ -127,9 +132,26 @@ public class DownloadContent {
       IOUtils.closeQuietly(writer);
       IOUtils.closeQuietly(out);
 
+      // write headers 
+      path.append(".url"); 
+      out = FileUtils.openOutputStream(new File(path.toString()));
+      writer = new OutputStreamWriter(out);
+      writer.write("url = ");
+      writer.write(crawlerTask.getUrl());
+      writer.write('\n');
+      writer.write("content-type = ");
+      writer.write(page.getHeader("content-type"));
+      writer.write('\n');
+      
+      IOUtils.closeQuietly(writer);
+      IOUtils.closeQuietly(out);
     } catch (IOException e) {
       LOG.warn("Could not download from " + page.getUrl());
     }
+  }
+
+  public void setDownloadDirectory(File downloadDirectory) {
+    this.downloadDirectory = downloadDirectory;
   }
 
 }

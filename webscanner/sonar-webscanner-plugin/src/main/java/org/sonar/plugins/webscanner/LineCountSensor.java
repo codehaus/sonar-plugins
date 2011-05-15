@@ -42,17 +42,6 @@ public final class LineCountSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCountSensor.class);
 
-  public void analyse(Project project, SensorContext sensorContext) {
-
-    HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
-
-    for (InputFile inputfile : fileSystem.getFiles()) {
-      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
-
-      addMeasures(sensorContext, inputfile.getFile(), htmlFile);
-    }
-  }
-
   private void addMeasures(SensorContext sensorContext, File file, org.sonar.api.resources.File htmlFile) {
 
     LineIterator iterator = null;
@@ -81,16 +70,27 @@ public final class LineCountSensor implements Sensor {
     LOG.debug("LineCountSensor: " + htmlFile.getKey() + ":" + numLines + "," + numEmptyLines + "," + 0);
   }
 
-  /**
-   * This sensor only executes on Web projects with W3C Markup rules.
-   */
-  public boolean shouldExecuteOnProject(Project project) {
-    return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
+  public void analyse(Project project, SensorContext sensorContext) {
+
+    HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
+
+    for (InputFile inputfile : fileSystem.getFiles()) {
+      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
+
+      addMeasures(sensorContext, inputfile.getFile(), htmlFile);
+    }
   }
 
   private boolean isEnabled(Project project) {
     return project.getConfiguration().getBoolean(CoreProperties.CORE_IMPORT_SOURCES_PROPERTY,
         CoreProperties.CORE_IMPORT_SOURCES_DEFAULT_VALUE);
+  }
+
+  /**
+   * This sensor only executes on Web projects with W3C Markup rules.
+   */
+  public boolean shouldExecuteOnProject(Project project) {
+    return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
   }
 
   @Override

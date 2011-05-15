@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.log4j.Logger;
+import org.sonar.api.resources.InputFile;
 
 /**
  * Scanner for html files.
@@ -52,22 +53,18 @@ public final class HtmlFileScanner {
     return newCollection;
   }
 
-  public void validateFiles(List<File> files, File htmlDir, Integer nrOfSamples) {
-
-    if (nrOfSamples != null && nrOfSamples > 0) {
-      files = randomSubsetFiles(files, nrOfSamples);
-    }
+  public void validateFiles(List<InputFile> inputfiles, Integer nrOfSamples) {
 
     int n = 0;
-    for (File file : files) {
+    for (InputFile inputfile : inputfiles) {
       // skip analysis if the report already exists
-      File reportFile = visitor.reportFile(file);
+      File reportFile = visitor.reportFile(inputfile.getFile());
       if (!reportFile.exists()) {
         if (n++ > 0) {
           visitor.waitBetweenValidationRequests();
         }
-        LOG.debug("Validating " + file.getPath() + "...");
-        visitor.validateFile(file, htmlDir);
+        LOG.debug("Validating " + inputfile.getRelativePath() + "...");
+        visitor.validateFile(inputfile.getFile());
       }
     }
   }

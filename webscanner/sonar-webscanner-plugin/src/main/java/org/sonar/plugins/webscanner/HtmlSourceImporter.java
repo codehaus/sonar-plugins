@@ -41,9 +41,9 @@ import org.sonar.plugins.webscanner.language.Html;
  */
 public final class HtmlSourceImporter extends AbstractSourceImporter {
 
+  private static final Logger LOG = LoggerFactory.getLogger(HtmlSourceImporter.class);
   private final ResourceCreationLock lock;
   private final MavenSession session;
-  private static final Logger LOG = LoggerFactory.getLogger(HtmlSourceImporter.class);
 
   public HtmlSourceImporter(MavenSession session, Project project, ResourceCreationLock lock) {
     super(new Html(project));
@@ -86,11 +86,6 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
   }
 
   @Override
-  public boolean shouldExecuteOnProject(Project project) {
-    return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
-  }
-
-  @Override
   protected Resource<?> createResource(File file, List<File> sourceDirs, boolean unitTest) {
     LOG.debug("HtmlSourceImporter:" + file.getPath());
     return org.sonar.api.resources.File.fromIOFile(file, sourceDirs);
@@ -99,6 +94,11 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
   @Override
   protected void onFinished() {
     lock.lock();
+  }
+
+  @Override
+  public boolean shouldExecuteOnProject(Project project) {
+    return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
   }
 
   @Override

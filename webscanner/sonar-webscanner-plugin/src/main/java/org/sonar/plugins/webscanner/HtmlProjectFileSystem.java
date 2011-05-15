@@ -65,8 +65,8 @@ public class HtmlProjectFileSystem {
 
   private static class ExclusionFilter implements IOFileFilter {
 
-    private File sourceDir;
     private WildcardPattern[] patterns;
+    private File sourceDir;
 
     ExclusionFilter(File sourceDir, WildcardPattern[] patterns) {
       this.sourceDir = sourceDir;
@@ -137,9 +137,20 @@ public class HtmlProjectFileSystem {
     }
   }
 
-  private final Project project;
+  /**
+   * Conversion from InputFile to File. Allows to provide backward compatibility.
+   */
+  private static List<File> toFiles(List<InputFile> files) {
+    List<File> result = Lists.newArrayList();
+    for (InputFile file : files) {
+      result.add(file.getFile());
+    }
+    return result;
+  }
 
   private List<IOFileFilter> filters = Lists.newArrayList();
+
+  private final Project project;
 
   public HtmlProjectFileSystem(Project project) {
     this.project = project;
@@ -153,26 +164,6 @@ public class HtmlProjectFileSystem {
       exclusionPatterns = new WildcardPattern[0];
     }
     return exclusionPatterns;
-  }
-
-  /**
-   * Conversion from InputFile to File. Allows to provide backward compatibility.
-   */
-  private static List<File> toFiles(List<InputFile> files) {
-    List<File> result = Lists.newArrayList();
-    for (InputFile file : files) {
-      result.add(file.getFile());
-    }
-    return result;
-  }
-
-  /**
-   * Get sourcefiles as list of files. 
-   * 
-   */
-  @Deprecated
-  public List<File> getSourceFiles() {
-    return toFiles(getFiles());
   }
 
   public List<InputFile> getFiles() {
@@ -237,5 +228,14 @@ public class HtmlProjectFileSystem {
 
   public List<File> getSourceDirs() {
     return getSourceDirs(project);
+  }
+
+  /**
+   * Get sourcefiles as list of files.
+   * 
+   */
+  @Deprecated
+  public List<File> getSourceFiles() {
+    return toFiles(getFiles());
   }
 }
