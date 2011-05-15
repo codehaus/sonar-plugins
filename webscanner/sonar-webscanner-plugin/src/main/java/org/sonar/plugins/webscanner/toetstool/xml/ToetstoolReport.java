@@ -58,6 +58,7 @@ public class ToetstoolReport {
     XStream xstream = new XStream();
     xstream.setClassLoader(ToetstoolReport.class.getClassLoader());
     xstream.processAnnotations(new Class[] { ToetstoolReport.class });
+    xstream.registerConverter(new IntegerConverter(), XStream.PRIORITY_VERY_HIGH); 
     return xstream;
   }
 
