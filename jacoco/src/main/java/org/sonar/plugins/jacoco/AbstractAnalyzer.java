@@ -76,12 +76,14 @@ public abstract class AbstractAnalyzer {
     analyzeAll(analyzer, buildOutputDir);
 
     for (ISourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
-      String packageName = StringUtils.replaceChars(coverage.getPackageName(), '/', '.');
-      String fileName = StringUtils.substringBeforeLast(coverage.getName(), ".");
-
-      JavaFile resource = new JavaFile(packageName, fileName);
-      analyzeFile(resource, coverage, context);
+      analyzeFile(getResource(coverage), coverage, context);
     }
+  }
+
+  static JavaFile getResource(ISourceFileCoverage coverage) {
+    String packageName = StringUtils.replaceChars(coverage.getPackageName(), '/', '.');
+    String fileName = StringUtils.substringBeforeLast(coverage.getName(), ".");
+    return new JavaFile(packageName, fileName);
   }
 
   /**

@@ -34,9 +34,8 @@ import java.util.Collection;
 
 /**
  * Note that this class can't extend {@link org.sonar.api.batch.AbstractCoverageExtension}, because in this case this extension will be
- * disabled under Sonar
- * 2.3, if JaCoCo is not defined as the default code coverage plugin.
- *
+ * disabled under Sonar 2.3, if JaCoCo is not defined as the default code coverage plugin.
+ * 
  * @author Evgeny Mandrikov
  */
 public class JaCoCoItSensor implements Sensor {
