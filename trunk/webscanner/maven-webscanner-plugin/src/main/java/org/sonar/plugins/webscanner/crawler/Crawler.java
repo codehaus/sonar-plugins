@@ -46,20 +46,20 @@ import org.sonar.plugins.webscanner.crawler.parser.Parser;
 
 public class Crawler {
 
-  private static final String TEXT_CSS = "text/css";
-
   private static final Logger LOG = Logger.getLogger(Crawler.class);
 
-  private File downloadDirectory;
-  private final Map<Integer, Integer> maxHttpErrors = new HashMap<Integer, Integer>();
   private static final int maxLevel = 10;
+
+  private static final String TEXT_CSS = "text/css";
+  private final Map<Integer, Integer> maxHttpErrors = new HashMap<Integer, Integer>();
   private int politenessPeriod;
   private Proxy proxy;
 
   private final Queue queue = new Queue();
   private final List<URL> seeds = new ArrayList<URL>();
   private Statistics statistics;
-
+  private final DownloadContent downloadContent = new DownloadContent();
+  
   /**
    * Adds crawler seed
    * 
@@ -90,6 +90,15 @@ public class Crawler {
     return true;
   }
 
+  private boolean checkSeedPath(URL url) {
+    for (URL seed : seeds) {
+      if (url.getPath().contains(seed.getPath())) {
+        return true; 
+      }
+    }
+    return false;
+  }
+
   public void configureProxy(String host, int port) {
     proxy = new Proxy(Type.HTTP, new InetSocketAddress(host, port));
   }
@@ -101,7 +110,7 @@ public class Crawler {
 
     LOG.info("Starting crawling..");
 
-    statistics = new Statistics(downloadDirectory);
+    statistics = new Statistics(downloadContent.getDownloadDirectory());
 
     queue.addAll(seeds);
 
@@ -165,6 +174,10 @@ public class Crawler {
     }
   }
 
+  public Statistics getStatistics() {
+    return statistics;
+  }
+
   private void handleTask(CrawlerTask crawlerTask) {
 
     try {
@@ -180,8 +193,7 @@ public class Crawler {
       Page page = crawlTask(crawlerTask);
       processPage(page, crawlerTask);
 
-      DownloadContent downloadContent = new DownloadContent(downloadDirectory);
-      downloadContent.afterCrawl(crawlerTask, page);
+      downloadContent .afterCrawl(crawlerTask, page);
     } catch (MalformedURLException e) {
       LOG.debug(e);
     } catch (CrawlerException e) {
@@ -223,7 +235,7 @@ public class Crawler {
   }
 
   public void setDownloadDirectory(File downloadDirectory) {
-    this.downloadDirectory = downloadDirectory;
+    downloadContent.setDownloadDirectory(downloadDirectory);
   }
 
   private boolean shouldCrawl(URL url, CrawlerTask crawlerTask) {
@@ -235,6 +247,10 @@ public class Crawler {
 
     // checking domain
     if ( !StringUtils.equals(UrlUtils.getDomainName(url), crawlerTask.getDomain())) {
+      return false;
+    }
+    // checking seeds path
+    if (!checkSeedPath(url)) {
       return false;
     }
 

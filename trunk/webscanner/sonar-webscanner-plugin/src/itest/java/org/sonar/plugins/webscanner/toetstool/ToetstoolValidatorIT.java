@@ -54,14 +54,14 @@ public class ToetstoolValidatorIT {
     }
 
     // validate
-    HtmlFileVisitor validator = new ToetsToolValidator("http://api.toetstool.nl");
-    validator.validateFile(file, file.getParentFile());
+    HtmlFileVisitor validator = new ToetsToolValidator("http://api.toetstool.nl", file.getParentFile(), new File("target"));
+    validator.validateFile(file);
     ToetstoolReport report = ToetstoolReport.fromXml(validator.reportFile(file));
 
     // assert
     assertEquals("1", report.getStatus());
     // <counters csserrors="2" error="1" htmlerrors="0" info="8" ok="37" unknown="78" warning="1"/>
-    assertEquals(38, (int) report.getReport().getCounters().getOk());
+    assertEquals(37, (int) report.getReport().getCounters().getOk());
 
     // clean up temp files
     for (String stylesheet : stylesheets) {

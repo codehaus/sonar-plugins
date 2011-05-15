@@ -18,9 +18,18 @@
 
 package org.sonar.plugins.webscanner.scanner;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -29,6 +38,7 @@ import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.resources.DefaultProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 
 /**
@@ -133,5 +143,49 @@ public class HtmlValidationHttpClient {
    */
   public boolean useProxy() {
     return proxyHost != null && proxyPort > 0;
+  }
+
+  /**
+   * getRelativePath("c:/foo/src/my/package/Hello.java", ["c:/bar", "c:/foo/src"]) is "my/package/Hello.java".
+   * <p>
+   * Relative path is composed of slashes. Windows backslaches are replaced by /
+   * </p>
+   * 
+   * @return null if file is not in dir (including recursive subdirectories)
+   */
+  protected String relativePath(File baseDir, File file) {
+    List<String> stack = new ArrayList<String>();
+    String path = FilenameUtils.normalize(file.getAbsolutePath());
+    File cursor = new File(path);
+    while (cursor != null) {
+      if (FilenameUtils.equalsNormalizedOnSystem(baseDir.getAbsolutePath(), cursor.getAbsolutePath())) {
+        return StringUtils.join(stack, "/");
+      }
+      stack.add(0, cursor.getName());
+      cursor = cursor.getParentFile();
+    }
+    return null;
+  }
+
+  protected String getProperty(File file, String property) {
+    File propertiesFile = new File(file.getPath() + ".url");
+
+    if (propertiesFile.exists()) {
+      Properties properties = new Properties();
+
+      InputStream in = null;
+      try {
+        in = new FileInputStream(file.getPath() + ".url");
+        properties.load(in);
+        if (properties.contains(property)) {
+          return properties.getProperty(property);
+        }
+      } catch (IOException e) {
+        return null;
+      } finally {
+        IOUtils.closeQuietly(in);
+      }
+    }
+    return null;
   }
 }

@@ -45,6 +45,7 @@ import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
 import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
+import org.sonar.plugins.webscanner.toetstool.validation.ToetsToolValidator;
 
 /**
  * @author Matthijs Galesloot
@@ -87,9 +88,11 @@ public final class W3CMarkupSensor implements Sensor {
 
     HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
     prepareScanning(fileSystem.getSourceDirs());
-     
+
     // create validator
-    MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL));
+    MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL),
+        fileSystem.getSourceDirs().get(0), 
+        new File(project.getFileSystem().getBuildDir() + "/html"));
 
     // configure proxy
     if (session.getSettings().getActiveProxy() != null) {
@@ -99,7 +102,7 @@ public final class W3CMarkupSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(fileSystem.getSourceFiles(), fileSystem.getSourceDirs().get(0), WebScannerPlugin.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(fileSystem.getFiles(), WebScannerPlugin.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, fileSystem.getFiles());

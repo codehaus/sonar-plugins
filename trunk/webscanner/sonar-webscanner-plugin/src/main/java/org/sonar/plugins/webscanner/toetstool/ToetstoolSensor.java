@@ -19,9 +19,11 @@
 package org.sonar.plugins.webscanner.toetstool;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.execution.MavenSession;
 import org.codehaus.plexus.util.StringUtils;
@@ -36,6 +38,7 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
+import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.HtmlProjectFileSystem;
 import org.sonar.plugins.webscanner.WebScannerPlugin;
 import org.sonar.plugins.webscanner.language.Html;
@@ -91,9 +94,10 @@ public final class ToetstoolSensor implements Sensor {
 
     HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
     prepareScanning(fileSystem.getSourceDirs());
-   
+
     // create validator
-    ToetsToolValidator validator = new ToetsToolValidator((String) project.getProperty(SONAR_TOETSTOOL_URL));
+    ToetsToolValidator validator = new ToetsToolValidator((String) project.getProperty(SONAR_TOETSTOOL_URL), 
+        fileSystem.getSourceDirs().get(0), new File(project.getFileSystem().getBuildDir() + "/html"));
 
     // configure proxy
     if (session.getSettings().getActiveProxy() != null) {
@@ -103,7 +107,7 @@ public final class ToetstoolSensor implements Sensor {
 
     // start the html scanner
     HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(fileSystem.getSourceFiles(), fileSystem.getSourceDirs().get(0), WebScannerPlugin.getNrOfSamples(project));
+    htmlFileScanner.validateFiles(fileSystem.getFiles(), WebScannerPlugin.getNrOfSamples(project));
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, fileSystem.getFiles());
@@ -161,7 +165,12 @@ public final class ToetstoolSensor implements Sensor {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
-      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project); 
+      try {
+        FileUtils.copyFile(inputfile.getFile(), new File(project.getFileSystem().getBuildDir() + inputfile.getRelativePath()));
+      } catch (IOException e) {
+        throw new SonarException(e);
+      }
+      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
       File reportFile = validator.reportFile(inputfile.getFile());
 
       if (reportFile.exists()) {

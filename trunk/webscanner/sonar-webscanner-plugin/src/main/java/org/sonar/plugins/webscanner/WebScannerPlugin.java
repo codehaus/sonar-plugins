@@ -59,6 +59,13 @@ public final class WebScannerPlugin implements Plugin {
   public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
   public static final String WEBSITE = "sonar.html.website";
 
+  /**
+   * Get Nr of samples to validate.
+   */
+  public static Integer getNrOfSamples(Project project) {
+    return NumberUtils.toInt((String) project.getProperty(WebScannerPlugin.NR_OF_SAMPLES));
+  }
+
   public String getDescription() {
     return null;
   }
@@ -107,12 +114,5 @@ public final class WebScannerPlugin implements Plugin {
   @Override
   public String toString() {
     return KEY;
-  }
-  
-  /**
-   * Get Nr of samples to validate. 
-   */
-  public static Integer getNrOfSamples(Project project) {
-    return NumberUtils.toInt((String) project.getProperty(WebScannerPlugin.NR_OF_SAMPLES));
   }
 }

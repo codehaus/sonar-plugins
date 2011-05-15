@@ -30,9 +30,11 @@ import org.sonar.api.rules.ViolationFilter;
 
 public final class HtmlViolationFilter implements ViolationFilter {
 
+  public static final String EXCLUDE_VIOLATIONS = "sonar.html.excludeviolations";
+
   private static final Logger LOG = Logger.getLogger(HtmlViolationFilter.class);
 
-  public static final String EXCLUDE_VIOLATIONS = "sonar.html.excludeviolations";
+  private final Pattern[] patterns;
 
   public HtmlViolationFilter(Project project) {
 
@@ -54,8 +56,6 @@ public final class HtmlViolationFilter implements ViolationFilter {
       patterns[i] = Pattern.compile(excludeViolations.get(i));
     }
   }
-
-  private final Pattern[] patterns;
 
   public boolean accept(String key, String message) {
     String text = String.format("%s:%s", key, message);

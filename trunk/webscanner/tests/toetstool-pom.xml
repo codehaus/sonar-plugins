@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>toetstool</groupId>
+  <artifactId>website</artifactId>
+  <version>0.1</version>
+
+  <name>toetstool-website</name>
+  <packaging>pom</packaging>
+
+  <properties>
+    <!-- Sonar properties -->
+    <sonar.language>html</sonar.language>
+    <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+    <sonar.branch>HTML</sonar.branch>
+    
+    <!-- webscanner -->
+    <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
+    <sonar.html.sourceDirectory>toetstool/html</sonar.html.sourceDirectory>
+    <sonar.html.website>http://www.toetstool.nl</sonar.html.website>
+
+  </properties>
+
+</project>

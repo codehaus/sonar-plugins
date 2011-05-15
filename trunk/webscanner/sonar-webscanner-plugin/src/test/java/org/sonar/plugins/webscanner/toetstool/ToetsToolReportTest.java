@@ -44,7 +44,7 @@ public class ToetsToolReportTest {
       report.delete();
     }
 
-    ToetsToolValidator validator = new ToetsToolValidator("");
+    ToetsToolValidator validator = new ToetsToolValidator("", new File("target"), new File("target"));
     ToetsToolReportBuilder reportBuilder = new ToetsToolReportBuilder(validator);
 
     reportBuilder.buildReports(ToetsToolValidator.getReportFiles(new File(packagePath)));

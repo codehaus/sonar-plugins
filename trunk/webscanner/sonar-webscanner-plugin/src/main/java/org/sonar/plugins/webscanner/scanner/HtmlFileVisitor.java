@@ -30,7 +30,7 @@ public interface HtmlFileVisitor {
 
   File reportFile(File file);
 
-  void validateFile(File file, File htmlDir);
+  void validateFile(File file);
 
   void waitBetweenValidationRequests();
 }
