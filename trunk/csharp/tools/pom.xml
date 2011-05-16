@@ -43,6 +43,7 @@
 	<modules>
 		<module>dotnet-tools-commons</module>
 		<module>gendarme-runner</module>
+		<module>stylecop-runner</module>
 	</modules>
 
 	<scm>
@@ -101,6 +102,11 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.sonar</groupId>
+				<artifactId>sonar-testing-harness</artifactId>
+				<version>2.7</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>

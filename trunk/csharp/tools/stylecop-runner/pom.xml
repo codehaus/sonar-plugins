@@ -7,10 +7,10 @@
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>gendarme-runner</artifactId>
+	<artifactId>stylecop-runner</artifactId>
 
-	<name>.NET tools :: Gendarme Runner</name>
-	<description>Java component that wraps Gendarme execution.</description>
+	<name>.NET tools :: StyleCop Runner</name>
+	<description>Java component that wraps StyleCop execution.</description>
 
 	<dependencies>
 		<dependency>

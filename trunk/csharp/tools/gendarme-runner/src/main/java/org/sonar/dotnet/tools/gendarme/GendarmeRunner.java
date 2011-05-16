@@ -51,10 +51,11 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
    * Creates a new {@link GendarmeRunner} object for the given executable file. If the executable file does not exist, then the embedded one
    * will be used.
    * 
-   * @param defaultExecutablePath
-   *          the full path of the executable. For instance: "C:/Program Files/gendarme-2.10-bin/gendarme.exe"
+   * @param gendarmePath
+   *          the full path of the executable. For instance: "C:/Program Files/gendarme-2.10-bin/gendarme.exe". May be null: in this case,
+   *          the embedded Gendarme executable will be used.
    * @param tempFolder
-   *          the temporary folder where the embeded Gendarme executable will be copied if the gendarmePath does not point to a valid
+   *          the temporary folder where the embedded Gendarme executable will be copied if the gendarmePath does not point to a valid
    *          executable
    */
   public static GendarmeRunner create(String gendarmePath, String tempFolder) throws GendarmeException {
@@ -68,7 +69,7 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
       try {
         URL executableURL = GendarmeRunner.class.getResource("/gendarme-" + EMBEDDED_VERSION + "-bin");
         File extractedFolder = ZipUtils.extractArchiveFolderIntoDirectory(StringUtils.substringBefore(executableURL.getFile(), "!")
-            .substring(5), "gendarme-2.10-bin", tempFolder);
+            .substring(5), "gendarme-" + EMBEDDED_VERSION + "-bin", tempFolder);
         runner.gendarmeExecutable = new File(extractedFolder, "gendarme.exe");
       } catch (IOException e) {
         throw new GendarmeException("Could not extract the embedded Gendarme executable: " + e.getMessage(), e);
@@ -79,9 +80,10 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
   }
 
   /**
-   * Creates an empty {@link GendarmeCommandBuilder}, containing only the path of the Gendarme executable.
+   * Creates a pre-configured {@link GendarmeCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
+   * method.
    * 
-   * @return the command to complete before running the {@link #execute(Command, int)} method.
+   * @return the command to complete.
    */
   public GendarmeCommandBuilder createCommandBuilder(VisualStudioSolution solution) {
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(solution);

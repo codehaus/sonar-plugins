@@ -25,19 +25,15 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -49,30 +45,18 @@ import org.mockito.stubbing.Answer;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
-import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 
 import com.google.common.collect.Lists;
 
 public class StyleCopSensorTest {
 
   @Test
-  public void testExecuteWithoutRule() throws Exception {
-    StyleCopRunner runner = mock(StyleCopRunner.class);
-    RulesProfile rulesProfile = mock(RulesProfile.class);
-    when(rulesProfile.getActiveRulesByRepository(anyString())).thenReturn(new ArrayList<ActiveRule>());
-    StyleCopSensor sensor = new StyleCopSensor(null, rulesProfile, runner, null, null, new CSharpConfiguration(new BaseConfiguration()));
-    sensor.analyse(null, null);
-    verify(runner, never()).execute(any(File.class));
-  }
-
-  @Test
   public void testShouldExecuteOnProject() throws Exception {
     Configuration conf = new BaseConfiguration();
-    StyleCopSensor sensor = new StyleCopSensor(null, null, null, null, null, new CSharpConfiguration(conf));
+    StyleCopSensor sensor = new StyleCopSensor(null, null, null, null, new CSharpConfiguration(conf), null);
 
     Project project = mock(Project.class);
     when(project.getLanguageKey()).thenReturn("java");
@@ -82,14 +66,14 @@ public class StyleCopSensorTest {
     assertTrue(sensor.shouldExecuteOnProject(project));
 
     conf.addProperty(StyleCopConstants.MODE, StyleCopConstants.MODE_SKIP);
-    sensor = new StyleCopSensor(null, null, null, null, null, new CSharpConfiguration(conf));
+    sensor = new StyleCopSensor(null, null, null, null, new CSharpConfiguration(conf), null);
     assertFalse(sensor.shouldExecuteOnProject(project));
   }
 
   @Test
   public void testAnalyseResults() throws Exception {
     StyleCopResultParser parser = mock(StyleCopResultParser.class);
-    StyleCopSensor sensor = new StyleCopSensor(null, null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()));
+    StyleCopSensor sensor = new StyleCopSensor(null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()), null);
 
     File tempFile = File.createTempFile("foo", null);
     List<File> reports = Lists.newArrayList(tempFile, new File("bar"));
@@ -103,7 +87,7 @@ public class StyleCopSensorTest {
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
     when(fileSystem.getSonarWorkingDirectory()).thenReturn(new File("target/sonar"));
     Configuration conf = new BaseConfiguration();
-    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, null, null, new CSharpConfiguration(conf));
+    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), null);
 
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(1));
@@ -117,7 +101,7 @@ public class StyleCopSensorTest {
     Configuration conf = new BaseConfiguration();
     conf.addProperty(StyleCopConstants.MODE, StyleCopConstants.MODE_REUSE_REPORT);
     conf.addProperty(StyleCopConstants.REPORTS_PATH_KEY, "foo.xml,folder/bar.xml");
-    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, null, null, new CSharpConfiguration(conf));
+    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), null);
 
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(2));
@@ -139,8 +123,8 @@ public class StyleCopSensorTest {
         return null;
       }
     }).when(profileExporter).exportProfile((RulesProfile) anyObject(), (FileWriter) anyObject());
-    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, profileExporter, null, new CSharpConfiguration(
-        new BaseConfiguration()));
+    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, profileExporter, null, new CSharpConfiguration(new BaseConfiguration()),
+        null);
 
     sensor.generateConfigurationFile();
     File report = new File(sonarDir, StyleCopConstants.STYLECOP_RULES_FILE);
@@ -162,8 +146,8 @@ public class StyleCopSensorTest {
         return null;
       }
     }).when(profileExporter).exportProfile((RulesProfile) anyObject(), (FileWriter) anyObject());
-    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, null, profileExporter, null, new CSharpConfiguration(
-        new BaseConfiguration()));
+    StyleCopSensor sensor = new StyleCopSensor(fileSystem, null, profileExporter, null, new CSharpConfiguration(new BaseConfiguration()),
+        null);
 
     sensor.generateConfigurationFile();
   }
