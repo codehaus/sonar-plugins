@@ -1,6 +1,6 @@
 /*
- * Sonar C# Plugin :: StyleCop
- * Copyright (C) 2010 Jose Chillan, Alexandre Victoor and SonarSource
+ * .NET tools :: StyleCop Runner
+ * Copyright (C) 2011 Jose Chillan, Alexandre Victoor and SonarSource
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.stylecop.runner;
+package org.sonar.dotnet.tools.stylecop;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -28,10 +28,8 @@ import java.io.Writer;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
-import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 
 /**
  * Class that generates MSBuild
@@ -39,21 +37,16 @@ import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 public class MsBuildFileGenerator {
 
   protected static final String MSBUILD_FILE = "stylecop-msbuild.xml";
-  private CSharpConfiguration configuration;
   private VisualStudioSolution solution;
+  private File styleCopRuleFile;
+  private File reportFile;
+  private File styleCopFolder;
 
-  public MsBuildFileGenerator(CSharpConfiguration configuration) {
-    this.configuration = configuration;
-  }
-
-  /**
-   * Sets the current VS solution
-   * 
-   * @param solution
-   *          the solution
-   */
-  public void setVisualStudioSolution(VisualStudioSolution solution) {
+  public MsBuildFileGenerator(VisualStudioSolution solution, File styleCopRuleFile, File reportFile, File styleCopFolder) {
     this.solution = solution;
+    this.styleCopRuleFile = styleCopRuleFile;
+    this.reportFile = reportFile;
+    this.styleCopFolder = styleCopFolder;
   }
 
   /**
@@ -64,8 +57,6 @@ public class MsBuildFileGenerator {
    */
   public File generateFile(File outputFolder) {
     File msBuildFile = new File(outputFolder, MSBUILD_FILE);
-    File styleCopRuleFile = new File(outputFolder, StyleCopConstants.STYLECOP_RULES_FILE);
-    File reportFile = new File(outputFolder, StyleCopConstants.STYLECOP_REPORT_XML);
 
     FileWriter writer = null;
     try {
@@ -90,7 +81,7 @@ public class MsBuildFileGenerator {
     StringEscapeUtils.escapeXml(writer, solution.getSolutionDir().getAbsolutePath());
     writer.append("</ProjectRoot>\n");
     writer.append("        <StyleCopRoot>");
-    StringEscapeUtils.escapeXml(writer, configuration.getString(StyleCopConstants.INSTALL_DIR_KEY, StyleCopConstants.INSTALL_DIR_DEFVALUE));
+    StringEscapeUtils.escapeXml(writer, styleCopFolder.getAbsolutePath());
     writer.append("</StyleCopRoot>\n");
     writer.append("    </PropertyGroup>\n");
     writer.append("    <UsingTask TaskName=\"StyleCopTask\" AssemblyFile=\"$(StyleCopRoot)\\Microsoft.StyleCop.dll\"></UsingTask>\n");

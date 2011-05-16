@@ -35,10 +35,13 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.dotnet.tools.stylecop.StyleCopCommandBuilder;
+import org.sonar.dotnet.tools.stylecop.StyleCopException;
+import org.sonar.dotnet.tools.stylecop.StyleCopRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
-import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 
 import com.google.common.collect.Lists;
 
@@ -52,10 +55,10 @@ public class StyleCopSensor implements Sensor {
 
   private ProjectFileSystem fileSystem;
   private RulesProfile rulesProfile;
-  private StyleCopRunner styleCopRunner;
   private StyleCopProfileExporter profileExporter;
   private StyleCopResultParser styleCopResultParser;
   private CSharpConfiguration configuration;
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private String executionMode;
 
   /**
@@ -67,14 +70,14 @@ public class StyleCopSensor implements Sensor {
    * @param profileExporter
    * @param rulesProfile
    */
-  public StyleCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, StyleCopRunner styleCopRunner,
-      StyleCopProfileExporter profileExporter, StyleCopResultParser styleCopResultParser, CSharpConfiguration configuration) {
+  public StyleCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, StyleCopProfileExporter profileExporter,
+      StyleCopResultParser styleCopResultParser, CSharpConfiguration configuration, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
-    this.styleCopRunner = styleCopRunner;
     this.profileExporter = profileExporter;
     this.styleCopResultParser = styleCopResultParser;
     this.configuration = configuration;
+    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.executionMode = configuration.getString(StyleCopConstants.MODE, "");
   }
 
@@ -104,12 +107,27 @@ public class StyleCopSensor implements Sensor {
       // prepare config file for StyleCop
       File styleCopConfigFile = generateConfigurationFile();
       // run StyleCop
-      styleCopRunner.execute(styleCopConfigFile);
+      try {
+        StyleCopRunner runner = StyleCopRunner.create(configuration.getString(StyleCopConstants.INSTALL_DIR_KEY,
+            StyleCopConstants.INSTALL_DIR_DEFVALUE), microsoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), fileSystem
+            .getSonarWorkingDirectory().getAbsolutePath());
+        launchStyleCop(runner, styleCopConfigFile);
+      } catch (StyleCopException e) {
+        throw new SonarException("StyleCop execution failed.", e);
+      }
     }
 
     // and analyse results
     Collection<File> reportFiles = getReportFilesList();
     analyseResults(reportFiles);
+  }
+
+  protected void launchStyleCop(StyleCopRunner runner, File styleCopConfigFile) throws StyleCopException {
+    StyleCopCommandBuilder builder = runner.createCommandBuilder(microsoftWindowsEnvironment.getCurrentSolution());
+    builder.setConfigFile(styleCopConfigFile);
+    builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_REPORT_XML));
+    runner.execute(builder.toCommand(),
+        configuration.getInt(StyleCopConstants.TIMEOUT_MINUTES_KEY, StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE));
   }
 
   protected File generateConfigurationFile() {

@@ -30,7 +30,6 @@ import org.sonar.api.Property;
 import org.sonar.plugins.csharp.stylecop.profiles.SonarWayProfile;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileImporter;
-import org.sonar.plugins.csharp.stylecop.runner.StyleCopRunner;
 
 /**
  * Main class of the StyleCop plugin.
@@ -84,7 +83,6 @@ public class StyleCopPlugin implements Plugin {
     list.add(SonarWayProfile.class);
 
     // Running StyleCop
-    list.add(StyleCopRunner.class);
     list.add(StyleCopResultParser.class);
     return list;
   }

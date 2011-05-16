@@ -1,6 +1,6 @@
 /*
- * Sonar C# Plugin :: StyleCop
- * Copyright (C) 2010 Jose Chillan, Alexandre Victoor and SonarSource
+ * .NET tools :: StyleCop Runner
+ * Copyright (C) 2011 Jose Chillan, Alexandre Victoor and SonarSource
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -18,35 +18,39 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.stylecop.runner;
+package org.sonar.dotnet.tools.stylecop;
 
 import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.command.Command;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
 /**
  * Class used to build the command line to run StyleCop.
  */
-public class StyleCopCommandBuilder {
+public final class StyleCopCommandBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopCommandBuilder.class);
 
-  private ProjectFileSystem fileSystem;
+  private VisualStudioSolution solution;
   private File styleCopConfigFile;
-  private File msBuildFile;
+  private File styleCopReportFile;
   private File dotnetSdkDirectory;
+  private File styleCopFolder;
+  private File msBuildFile;
+
+  private StyleCopCommandBuilder() {
+  }
 
   /**
-   * Constructs a {@link StyleCopCommandBuilder} object.
-   * 
-   * @param fileSystem
-   *          the file system of the project
+   * Constructs a {@link GendarmeCommandBuilder} object for the given Visual Studio solution.
    */
-  public StyleCopCommandBuilder(ProjectFileSystem fileSystem) {
-    this.fileSystem = fileSystem;
+  public static StyleCopCommandBuilder createBuilder(VisualStudioSolution solution) {
+    StyleCopCommandBuilder builder = new StyleCopCommandBuilder();
+    builder.solution = solution;
+    return builder;
   }
 
   /**
@@ -54,19 +58,23 @@ public class StyleCopCommandBuilder {
    * 
    * @param styleCopConfigFile
    *          the file
+   * @return the current builder
    */
-  public void setStyleCopConfigFile(File styleCopConfigFile) {
+  public StyleCopCommandBuilder setConfigFile(File styleCopConfigFile) {
     this.styleCopConfigFile = styleCopConfigFile;
+    return this;
   }
 
   /**
-   * Sets the MSBuild file that will be used to launch StyleCop. It is mandatory.
+   * Sets the report file to generate
    * 
-   * @param msBuildFile
-   *          the file
+   * @param reportFile
+   *          the report file
+   * @return the current builder
    */
-  public void setMsBuildFile(File msBuildFile) {
-    this.msBuildFile = msBuildFile;
+  public StyleCopCommandBuilder setReportFile(File reportFile) {
+    this.styleCopReportFile = reportFile;
+    return this;
   }
 
   /**
@@ -74,24 +82,41 @@ public class StyleCopCommandBuilder {
    * 
    * @param dotnetSdkDirectory
    *          the directory
+   * @return the current builder
    */
-  public void setDotnetSdkDirectory(File dotnetSdkDirectory) {
+  protected StyleCopCommandBuilder setDotnetSdkDirectory(File dotnetSdkDirectory) {
     this.dotnetSdkDirectory = dotnetSdkDirectory;
+    return this;
   }
 
   /**
-   * Transforms this command object into a array of string that can be passed to the CommandExecutor.
+   * Sets the directory where StyleCop is installed.
+   * 
+   * @param styleCopFolder
+   *          the install folder
+   * @return the current builder
+   */
+  protected StyleCopCommandBuilder setStyleCopFolder(File styleCopFolder) {
+    this.styleCopFolder = styleCopFolder;
+    return this;
+  }
+
+  /**
+   * Transforms this command object into a array of string that can be passed to the CommandExecutor, and generates the required MSBuild
+   * file to execute StyleCop.
    * 
    * @return the Command that represent the command to launch.
    */
-  public Command createCommand() {
+  public Command toCommand() {
     validate();
+    MsBuildFileGenerator msBuildFileGenerator = new MsBuildFileGenerator(solution, styleCopConfigFile, styleCopReportFile, styleCopFolder);
+    msBuildFile = msBuildFileGenerator.generateFile(styleCopReportFile.getParentFile());
 
     LOG.debug("- MSBuild path          : " + dotnetSdkDirectory.getAbsolutePath());
     Command command = Command.create(new File(dotnetSdkDirectory, "MSBuild.exe").getAbsolutePath());
 
-    LOG.debug("- Application Root      : " + fileSystem.getBasedir().getAbsolutePath());
-    command.addArgument("/p:AppRoot=" + fileSystem.getBasedir().getAbsolutePath());
+    LOG.debug("- Application Root      : " + solution.getSolutionDir().getAbsolutePath());
+    command.addArgument("/p:AppRoot=" + solution.getSolutionDir().getAbsolutePath());
 
     LOG.debug("- Target to run         : StyleCopLaunch");
     command.addArgument("/target:StyleCopLaunch");
@@ -108,8 +133,9 @@ public class StyleCopCommandBuilder {
     if (styleCopConfigFile == null || !styleCopConfigFile.exists()) {
       throw new IllegalStateException("The StyleCop configuration file does not exist.");
     }
-    if (msBuildFile == null || !msBuildFile.exists()) {
-      throw new IllegalStateException("The MSBuild file does not exist.");
-    }
+  }
+
+  protected VisualStudioSolution getSolution() {
+    return solution;
   }
 }

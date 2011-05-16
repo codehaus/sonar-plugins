@@ -29,24 +29,25 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.utils.command.Command;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
+import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
 
 public class GendarmeCommandBuilderTest {
 
-  public VisualStudioProject project;
-  public VisualStudioSolution solution;
+  public static VisualStudioProject project;
+  public static VisualStudioSolution solution;
 
-  @Before
-  public void initData() {
+  @BeforeClass
+  public static void initData() {
     project = mock(VisualStudioProject.class);
     solution = mock(VisualStudioSolution.class);
-    when(project.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("/runner/FakeAssemblies/Fake1.assembly")));
+    when(project.getReleaseArtifact()).thenReturn(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly"));
     when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
   }
 
@@ -54,7 +55,7 @@ public class GendarmeCommandBuilderTest {
   public void testToCommand() throws Exception {
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(solution);
     builder.setExecutable(new File("gendarme.exe"));
-    builder.setConfigFile(FileUtils.toFile(getClass().getResource("/runner/FakeGendarmeConfigFile.xml")));
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.setReportFile(new File("gendarme-report.xml"));
     Command command = builder.toCommand();
 
@@ -86,7 +87,7 @@ public class GendarmeCommandBuilderTest {
   public void testToArrayWithNoExistingAssembly() throws Exception {
     when(project.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("nothing")));
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(solution);
-    builder.setConfigFile(FileUtils.toFile(getClass().getResource("/runner/FakeGendarmeConfigFile.xml")));
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.toCommand();
   }
 

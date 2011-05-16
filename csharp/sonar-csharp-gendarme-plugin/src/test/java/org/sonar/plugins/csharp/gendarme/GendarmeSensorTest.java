@@ -65,7 +65,7 @@ public class GendarmeSensorTest {
   @Test
   public void testLaunchGendarme() throws Exception {
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
-    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Runner")));
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor")));
     MicrosoftWindowsEnvironment microsoftWindowsEnvironment = mock(MicrosoftWindowsEnvironment.class);
     VisualStudioProject project = mock(VisualStudioProject.class);
     VisualStudioSolution solution = mock(VisualStudioSolution.class);

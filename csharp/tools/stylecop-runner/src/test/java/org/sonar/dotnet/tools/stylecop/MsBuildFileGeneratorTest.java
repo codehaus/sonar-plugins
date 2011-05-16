@@ -1,6 +1,6 @@
 /*
- * Sonar C# Plugin :: StyleCop
- * Copyright (C) 2010 Jose Chillan, Alexandre Victoor and SonarSource
+ * .NET tools :: StyleCop Runner
+ * Copyright (C) 2011 Jose Chillan, Alexandre Victoor and SonarSource
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.csharp.stylecop.runner;
+package org.sonar.dotnet.tools.stylecop;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -27,14 +27,10 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.StringWriter;
 
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
-import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
@@ -42,13 +38,10 @@ import com.google.common.collect.Lists;
 public class MsBuildFileGeneratorTest {
 
   private MsBuildFileGenerator generator;
+  private File outputFolder;
 
   @Before
   public void init() {
-    Configuration conf = new BaseConfiguration();
-    conf.setProperty(StyleCopConstants.INSTALL_DIR_KEY, StyleCopConstants.INSTALL_DIR_DEFVALUE);
-    generator = new MsBuildFileGenerator(new CSharpConfiguration(conf));
-
     VisualStudioSolution solution = mock(VisualStudioSolution.class);
     File solutionDir = mock(File.class);
     when(solutionDir.getAbsolutePath()).thenReturn("SOLUTIONDIR");
@@ -63,12 +56,13 @@ public class MsBuildFileGeneratorTest {
     when(project.getProjectFile()).thenReturn(projectFile);
     when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
 
-    generator.setVisualStudioSolution(solution);
+    outputFolder = new File("target/MsBuildFileGenerator");
+    generator = new MsBuildFileGenerator(solution, TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"), outputFolder,
+        new File("/StyleCopDir"));
   }
 
   @Test
   public void testGenerateFile() {
-    File outputFolder = new File("target/MsBuildFileGenerator");
     if ( !outputFolder.exists()) {
       outputFolder.mkdirs();
     }
