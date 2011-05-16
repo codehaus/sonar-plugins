@@ -22,10 +22,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.junit.Test;
 import org.sonar.plugins.webscanner.css.LinkParser;
@@ -43,7 +47,11 @@ public class ToetstoolValidatorIT {
     URL url = new URL(domain);
     File file = FileUtils.createTempFile("toetstool", ".html", null);
     FileUtils.copyURLToFile(url, file);
-
+    File propertyFile = new File(file.getPath() + ".txt");
+    Properties properties = new Properties(); 
+    properties.put("url", "http://hello-world\n");
+    properties.store(new FileOutputStream(propertyFile), null); 
+    
     // download css files
     LinkParser linkParser = new LinkParser();
     List<String> stylesheets = linkParser.parseStylesheets(new FileInputStream(file));

@@ -97,11 +97,6 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
     File[] cssFiles = cssFinder.findCssFiles(stylesheets, file, htmlDir);
     File[] cssImports = cssFinder.findCssImports(cssFiles, htmlDir);
 
-    // if (cssFiles.length > 0) {
-    // PartBase cv = new StringPart("cv", "0");
-    // parts.add(cv);
-    // }
-
     // cssfiles
     int cssCounter = 0;
     for (File cssFile : cssFiles) {
@@ -125,11 +120,6 @@ public final class ToetsToolValidator extends HtmlValidationHttpClient implement
 
       FileBody fileBody = new FileBody(cssFile, cssFile.getName(), TEXT_HTML_CONTENT_TYPE, CharsetDetector.detect(cssFile));
       multipartEntity.addPart(name, fileBody);
-
-      // // cssimport or csscontent2 ?
-      // String contentName = String.format("cssimport[%d]", cssCounter);
-      // PartBase cssContent = new StringPart(contentName, "");
-      // parts.add(cssContent);
 
       cssCounter++;
     }

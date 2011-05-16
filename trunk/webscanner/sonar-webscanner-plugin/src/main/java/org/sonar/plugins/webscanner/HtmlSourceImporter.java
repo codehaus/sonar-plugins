@@ -75,7 +75,7 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
 
     try {
       crawler.addSeed(new URL(website));
-      File downloadDir = new File(project.getFileSystem().getBasedir() + "/" + (String) project.getProperty(WebScannerPlugin.SOURCE_DIRECTORY));
+      File downloadDir = new File(project.getFileSystem().getBasedir(), (String) project.getProperty(WebScannerPlugin.SOURCE_DIRECTORY));
       crawler.setDownloadDirectory(downloadDir);
       crawler.crawl();
     } catch (MalformedURLException e) {
@@ -87,8 +87,14 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
 
   @Override
   protected Resource<?> createResource(File file, List<File> sourceDirs, boolean unitTest) {
-    LOG.debug("HtmlSourceImporter:" + file.getPath());
-    return org.sonar.api.resources.File.fromIOFile(file, sourceDirs);
+    Resource<?> resource = org.sonar.api.resources.File.fromIOFile(file, sourceDirs);
+    if (resource == null) {
+      LOG.debug("HtmlSourceImporter failed for: " + file.getPath());
+    } 
+    else {
+      LOG.debug("HtmlSourceImporter:" + file.getPath());
+    }
+    return resource; 
   }
 
   @Override

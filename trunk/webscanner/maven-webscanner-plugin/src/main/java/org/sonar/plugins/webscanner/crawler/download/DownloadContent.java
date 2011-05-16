@@ -19,12 +19,14 @@
 package org.sonar.plugins.webscanner.crawler.download;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -133,17 +135,14 @@ public class DownloadContent {
       IOUtils.closeQuietly(out);
 
       // write headers 
-      path.append(".url"); 
-      out = FileUtils.openOutputStream(new File(path.toString()));
-      writer = new OutputStreamWriter(out);
-      writer.write("url = ");
-      writer.write(crawlerTask.getUrl());
-      writer.write('\n');
-      writer.write("content-type = ");
-      writer.write(page.getHeader("content-type"));
-      writer.write('\n');
+      path.append(".txt");
+      File propertyFile = new File(path.toString());
+      Properties properties = new Properties(); 
+      properties.put("url", crawlerTask.getUrl());
+      properties.put("content-type",page.getHeader("content-type")); 
+      out = FileUtils.openOutputStream(propertyFile);
+      properties.store(new FileOutputStream(propertyFile), null); 
       
-      IOUtils.closeQuietly(writer);
       IOUtils.closeQuietly(out);
     } catch (IOException e) {
       LOG.warn("Could not download from " + page.getUrl());
