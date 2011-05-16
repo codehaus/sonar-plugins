@@ -168,16 +168,16 @@ public class HtmlValidationHttpClient {
   }
 
   protected String getProperty(File file, String property) {
-    File propertiesFile = new File(file.getPath() + ".url");
+    File propertiesFile = new File(file.getPath() + ".txt");
 
     if (propertiesFile.exists()) {
       Properties properties = new Properties();
 
       InputStream in = null;
       try {
-        in = new FileInputStream(file.getPath() + ".url");
+        in = new FileInputStream(propertiesFile);
         properties.load(in);
-        if (properties.contains(property)) {
+        if (properties.containsKey(property)) {
           return properties.getProperty(property);
         }
       } catch (IOException e) {

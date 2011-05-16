@@ -165,11 +165,6 @@ public final class ToetstoolSensor implements Sensor {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
-      try {
-        FileUtils.copyFile(inputfile.getFile(), new File(project.getFileSystem().getBuildDir() + inputfile.getRelativePath()));
-      } catch (IOException e) {
-        throw new SonarException(e);
-      }
       org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
       File reportFile = validator.reportFile(inputfile.getFile());
 
