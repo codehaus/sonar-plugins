@@ -29,10 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.sonar.api.web.CodeColorizerFormat;
-import org.sonar.colorizer.CDocTokenizer;
-import org.sonar.colorizer.CppDocTokenizer;
 import org.sonar.colorizer.KeywordsTokenizer;
-import org.sonar.colorizer.StringTokenizer;
 import org.sonar.colorizer.Tokenizer;
 
 import com.echosource.ada.Ada;
@@ -71,10 +68,12 @@ public class AdaSourceCodeColorizer extends CodeColorizerFormat {
   public List<Tokenizer> getTokenizers() {
     String tagAfter = "</span>";
     KeywordsTokenizer tokenizer = new KeywordsTokenizer("<span class=\"k\">", tagAfter, ADA_KEYWORDS);
-    KeywordsTokenizer phpVariablesTokenizer = new KeywordsTokenizer("<span class=\"c\">", tagAfter, ADA_VARIABLES);
-    CppDocTokenizer cppDocTokenizer = new CppDocTokenizer("<span class=\"cppd\">", tagAfter);
-    CDocTokenizer cDocTokenizer = new CDocTokenizer("<span class=\"cd\">", tagAfter);
-    StringTokenizer stringTokenizer = new StringTokenizer("<span class=\"s\">", tagAfter);
-    return Collections.unmodifiableList(Arrays.asList(cDocTokenizer, cppDocTokenizer, tokenizer, stringTokenizer, phpVariablesTokenizer));
+    KeywordsTokenizer keywordsTokenizer = new KeywordsTokenizer("<span class=\"c\">", tagAfter, ADA_VARIABLES);
+
+    // Ada language only supports inline doc, starting with --, and ending with eol
+    AdaCommentTokenizer adaCommentsTokenizer = new AdaCommentTokenizer("<span class=\"cd\">", tagAfter);
+    AdaStringTokenizer stringTokenizer = new AdaStringTokenizer("<span class=\"s\">", tagAfter);
+
+    return Collections.unmodifiableList(Arrays.asList(adaCommentsTokenizer, tokenizer, stringTokenizer, keywordsTokenizer));
   }
 }
