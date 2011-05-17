@@ -19,7 +19,6 @@
 package org.sonar.plugins.webscanner.markup;
 
 import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -44,11 +43,10 @@ public class MarkupRulesRepositoryTest {
     assertTrue(rules.size() > 400);
 
     for (Rule rule : rules) {
-      assertNotNull(rule.getRulesCategory());
       if (rule.getName().startsWith("W")) {
-        assertTrue(rule.getPriority().equals(RulePriority.MINOR));
+        assertTrue(rule.getSeverity().equals(RulePriority.MINOR));
       } else {
-        assertTrue(rule.getPriority().equals(RulePriority.MAJOR));
+        assertTrue(rule.getSeverity().equals(RulePriority.MAJOR));
       }
     }
   }

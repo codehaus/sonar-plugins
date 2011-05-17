@@ -24,13 +24,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.AndFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.HiddenFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.resources.DefaultProjectFileSystem;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.WildcardPattern;
@@ -42,8 +42,8 @@ public class HtmlProjectFileSystem {
 
   private static final class DefaultInputFile implements InputFile {
 
-    private File basedir;
-    private String relativePath;
+    private final File basedir;
+    private final String relativePath;
 
     DefaultInputFile(File basedir, String relativePath) {
       this.basedir = basedir;
@@ -65,8 +65,8 @@ public class HtmlProjectFileSystem {
 
   private static class ExclusionFilter implements IOFileFilter {
 
-    private WildcardPattern[] patterns;
-    private File sourceDir;
+    private final WildcardPattern[] patterns;
+    private final File sourceDir;
 
     ExclusionFilter(File sourceDir, WildcardPattern[] patterns) {
       this.sourceDir = sourceDir;
@@ -74,7 +74,7 @@ public class HtmlProjectFileSystem {
     }
 
     public boolean accept(File file) {
-      String relativePath = DefaultProjectFileSystem.getRelativePath(file, sourceDir);
+      String relativePath = getRelativePath(file, sourceDir);
       if (relativePath == null) {
         return false;
       }
@@ -91,39 +91,48 @@ public class HtmlProjectFileSystem {
     }
   }
 
-  private static class InclusionFilter implements IOFileFilter {
-
-    private String inclusionPattern;
-    private File sourceDir;
-
-    public InclusionFilter(File sourceDir, String inclusionPattern) {
-      this.sourceDir = sourceDir;
-      this.inclusionPattern = inclusionPattern;
-    }
-
-    public boolean accept(File file) {
-      String relativePath = DefaultProjectFileSystem.getRelativePath(file, sourceDir);
-      if (relativePath == null) {
-        return false;
+  private static boolean containsFile(List<File> dirs, File cursor) {
+    for (File dir : dirs) {
+      if (FilenameUtils.equalsNormalizedOnSystem(dir.getAbsolutePath(), cursor.getAbsolutePath())) {
+        return true;
       }
-
-      // one of the inclusionpatterns must match.
-      for (String filter : inclusionPattern.split(",")) {
-        WildcardPattern matcher = WildcardPattern.create(filter);
-        if (matcher.match(relativePath)) {
-          return true;
-        }
-      }
-      return false;
     }
-
-    public boolean accept(File file, String name) {
-      return accept(file);
-    }
+    return false;
   }
 
   public static org.sonar.api.resources.File fromIOFile(InputFile inputfile, Project project) {
     return org.sonar.api.resources.File.fromIOFile(inputfile.getFile(), getSourceDirs(project));
+  }
+
+  /**
+   * getRelativePath("c:/foo/src/my/package/Hello.java", "c:/foo/src") is "my/package/Hello.java"
+   *
+   * @return null if file is not in dir (including recursive subdirectories)
+   */
+  public static String getRelativePath(File file, File dir) {
+    return getRelativePath(file, Arrays.asList(dir));
+  }
+
+  /**
+   * getRelativePath("c:/foo/src/my/package/Hello.java", ["c:/bar", "c:/foo/src"]) is "my/package/Hello.java".
+   * <p>
+   * Relative path is composed of slashes. Windows backslaches are replaced by /
+   * </p>
+   *
+   * @return null if file is not in dir (including recursive subdirectories)
+   */
+  public static String getRelativePath(File file, List<File> dirs) {
+    List<String> stack = new ArrayList<String>();
+    String path = FilenameUtils.normalize(file.getAbsolutePath());
+    File cursor = new File(path);
+    while (cursor != null) {
+      if (containsFile(dirs, cursor)) {
+        return StringUtils.join(stack, "/");
+      }
+      stack.add(0, cursor.getName());
+      cursor = cursor.getParentFile();
+    }
+    return null;
   }
 
   public static List<File> getSourceDirs(Project project) {
@@ -148,7 +157,7 @@ public class HtmlProjectFileSystem {
     return result;
   }
 
-  private List<IOFileFilter> filters = Lists.newArrayList();
+  private final List<IOFileFilter> filters = Lists.newArrayList();
 
   private final Project project;
 
@@ -183,17 +192,12 @@ public class HtmlProjectFileSystem {
         IOFileFilter exclusionFilter = new ExclusionFilter(dir, exclusionPatterns);
         // visible filter
         List<IOFileFilter> fileFilters = Lists.newArrayList(visibleFileFilter, suffixFilter, exclusionFilter);
-        // inclusion filter
-        // String inclusionPattern = (String) project.getProperty(WebScannerPlugin.INCLUDE_FILE_FILTER);
-        // if (inclusionPattern != null) {
-        // fileFilters.add(new InclusionFilter(dir, inclusionPattern));
-        // }
         fileFilters.addAll(this.filters);
 
         // create DefaultInputFile for each file.
         List<File> files = (List<File>) FileUtils.listFiles(dir, new AndFileFilter(fileFilters), HiddenFileFilter.VISIBLE);
         for (File file : files) {
-          String relativePath = DefaultProjectFileSystem.getRelativePath(file, dir);
+          String relativePath = getRelativePath(file, dir);
           result.add(new DefaultInputFile(dir, relativePath));
         }
       }
@@ -232,7 +236,7 @@ public class HtmlProjectFileSystem {
 
   /**
    * Get sourcefiles as list of files.
-   * 
+   *
    */
   @Deprecated
   public List<File> getSourceFiles() {

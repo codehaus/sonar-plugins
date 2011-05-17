@@ -19,11 +19,9 @@
 package org.sonar.plugins.webscanner.toetstool;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.execution.MavenSession;
 import org.codehaus.plexus.util.StringUtils;
@@ -38,7 +36,6 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
-import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.HtmlProjectFileSystem;
 import org.sonar.plugins.webscanner.WebScannerPlugin;
 import org.sonar.plugins.webscanner.language.Html;
@@ -96,7 +93,7 @@ public final class ToetstoolSensor implements Sensor {
     prepareScanning(fileSystem.getSourceDirs());
 
     // create validator
-    ToetsToolValidator validator = new ToetsToolValidator((String) project.getProperty(SONAR_TOETSTOOL_URL), 
+    ToetsToolValidator validator = new ToetsToolValidator((String) project.getProperty(SONAR_TOETSTOOL_URL),
         fileSystem.getSourceDirs().get(0), new File(project.getFileSystem().getBuildDir() + "/html"));
 
     // configure proxy

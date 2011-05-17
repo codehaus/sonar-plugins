@@ -38,14 +38,13 @@ import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.sonar.api.resources.DefaultProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 
 /**
  * Client
- * 
+ *
  * @author A130564
- * 
+ *
  */
 public class HtmlValidationHttpClient {
 
@@ -104,7 +103,7 @@ public class HtmlValidationHttpClient {
 
   /**
    * Returns the proxy host.
-   * 
+   *
    * @return proxy host
    */
   public String getProxyHost() {
@@ -113,7 +112,7 @@ public class HtmlValidationHttpClient {
 
   /**
    * Returns the proxy port.
-   * 
+   *
    * @return proxy port
    */
   public int getProxyPort() {
@@ -138,7 +137,7 @@ public class HtmlValidationHttpClient {
 
   /**
    * Returns whether or not to use a proxy.
-   * 
+   *
    * @return true/false
    */
   public boolean useProxy() {
@@ -150,7 +149,7 @@ public class HtmlValidationHttpClient {
    * <p>
    * Relative path is composed of slashes. Windows backslaches are replaced by /
    * </p>
-   * 
+   *
    * @return null if file is not in dir (including recursive subdirectories)
    */
   protected String relativePath(File baseDir, File file) {
