@@ -27,6 +27,7 @@ public class MetricNodeConverter implements Converter {
     return metricNode;
   }
 
+  @SuppressWarnings("unchecked")
   public boolean canConvert(Class clazz) {
     return clazz == MetricNode.class;
   }
