@@ -30,10 +30,6 @@ import com.echosource.ada.core.PluginAbstractExecutor;
  */
 public class GnatMetricExecutor extends PluginAbstractExecutor {
 
-  private static final String IGNORE_DIRECTORIES_KEY = null;
-  private static final String GNAT_IGNORE_DIRECTORY_MODIFIER = null;
-  private static final String GNAT_DEFAULT_ARGUMENT_LINE_KEY = "metric";
-
   /** The configuration. */
   private GnatConfiguration configuration;
 
@@ -54,6 +50,12 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
   protected List<String> getCommandLine() {
     List<String> result = new ArrayList<String>();
     result.add(configuration.getExecutable());
+    result.add(configuration.getDefaultArgument());
+
+    result.add(configuration.getXmlOutputModifier());
+    result.add(configuration.getXmlOutputFileModifier());
+    result.add(configuration.getReportFile().toString());
+
     String excludedPackages = configuration.getExcludedPackages();
     if (excludedPackages != null) {
       result.add(configuration.getExcludePackagesModifier() + excludedPackages);
@@ -63,11 +65,7 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
     if (ignoreDirectories != null) {
       result.add(configuration.getIgnoreDirectoryModifier() + ignoreDirectories);
     }
-    String argument = configuration.getDefaultArgument();
-    if (argument != null) {
-      result.add(argument);
-    }
-    result.add(configuration.getSourceDirectories());
+    result.addAll(configuration.getSourceFiles());
     return result;
   }
 

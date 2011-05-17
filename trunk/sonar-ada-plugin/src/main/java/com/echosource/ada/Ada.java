@@ -26,7 +26,7 @@ public class Ada extends AbstractLanguage {
 
   private static final String FILE_SUFFIXES_KEY = "sonar.ada.file.suffixes";
 
-  private static final String DEFAULT_SUFFIXES = "adb, ads";
+  private static final String[] DEFAULT_SUFFIXES = { "adb", "ads" };
 
   /**
    * Default constructor.
@@ -60,7 +60,7 @@ public class Ada extends AbstractLanguage {
    */
 
   public String[] getFileSuffixes() {
-    String[] suffixes = StringUtils.split(DEFAULT_SUFFIXES, ",");
+    String[] suffixes = DEFAULT_SUFFIXES;
     if (configuration != null) {
       suffixes = configuration.getStringArray(FILE_SUFFIXES_KEY);
     }

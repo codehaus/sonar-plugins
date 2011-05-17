@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
@@ -22,10 +23,13 @@ public class UnitNode {
   @XStreamAsAttribute
   private String name;
   /**
-   * Unit type.
+   * Unit kind.
    */
   @XStreamAsAttribute
-  private String type;
+  private String kind;
+
+  private UnitNode unit;
+
   /**
    * Line on which the unit is located.
    */
@@ -38,6 +42,7 @@ public class UnitNode {
    * Metrics related to the unit.
    */
   @XStreamImplicit
+  @XStreamConverter(MetricNodeConverter.class)
   private List<MetricNode> metrics;
 
   /**
@@ -48,10 +53,10 @@ public class UnitNode {
   }
 
   /**
-   * @return the type
+   * @return the kind
    */
-  public String getType() {
-    return type;
+  public String getKind() {
+    return kind;
   }
 
   /**
@@ -73,5 +78,12 @@ public class UnitNode {
    */
   public List<MetricNode> getMetrics() {
     return metrics;
+  }
+
+  /**
+   * @return the unit
+   */
+  public UnitNode getUnit() {
+    return unit;
   }
 }

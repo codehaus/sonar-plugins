@@ -5,12 +5,14 @@ package com.echosource.ada.gnat.metric.xml;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 /**
  * @author Akram Ben Aissi
  * 
  */
 @XStreamAlias("metric")
+@XStreamConverter(MetricNodeConverter.class)
 public class MetricNode {
 
   /**
@@ -37,6 +39,22 @@ public class MetricNode {
    */
   public Double getValue() {
     return value;
+  }
+
+  /**
+   * @param name
+   *          the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  /**
+   * @param value
+   *          the value to set
+   */
+  public void setValue(Double value) {
+    this.value = value;
   }
 
 }

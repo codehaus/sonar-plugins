@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 
+import com.echosource.ada.gnat.metric.GnatConfiguration;
+
 /**
  * Abstract plugin executor. This class handles common executor needs such as running the process, reading its common and error output
  * streams and logging. In nominal case implementing executor should just construct the desire command line.
@@ -71,24 +73,28 @@ public abstract class PluginAbstractExecutor implements BatchExtension {
    * Executes the external tool.
    */
   public void execute() {
-    try {
+    if ( !getConfiguration().isAnalyzeOnly()) {
       // Gets the tool command line
-      List<String> commandLine = getCommandLine();
-      ProcessBuilder builder = new ProcessBuilder(commandLine);
-      LOG.info("Execute " + getExecutable() + " with command '{}'", prettyPrint(commandLine));
-      // Starts the process
-      Process process = builder.start();
-      // And handles it's normal and error stream in separated threads.
-      new AsyncPipe(process.getInputStream(), System.out).start();
-      new AsyncPipe(process.getErrorStream(), System.err).start();
-      LOG.info(getExecutable() + " ended with returned code '{}'.", process.waitFor());
-    } catch (IOException e) {
-      LOG.error("Can't execute the external tool", e);
-      throw new SonarException(e);
-    } catch (InterruptedException e) {
-      LOG.error("Async pipe interrupted: ", e);
+      try {
+        List<String> commandLine = getCommandLine();
+        LOG.info("Executing " + getExecutable() + " with command '{}'", prettyPrint(commandLine));
+        ProcessBuilder builder = new ProcessBuilder(commandLine);
+        // Starts the process
+        Process process = builder.start();
+        // And handles it's normal and error stream in separated threads.
+        new AsyncPipe(process.getInputStream(), System.out).start();
+        new AsyncPipe(process.getErrorStream(), System.err).start();
+        LOG.info(getExecutable() + " ended with returned code '{}'.", process.waitFor());
+      } catch (IOException e) {
+        LOG.error("Can't execute the external tool", e);
+        throw new SonarException(e);
+      } catch (InterruptedException e) {
+        LOG.error("Async pipe interrupted: ", e);
+      }
     }
   }
+
+  protected abstract GnatConfiguration getConfiguration();
 
   /**
    * Returns a String where each list member is separated with a space
