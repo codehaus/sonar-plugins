@@ -23,9 +23,6 @@ package com.echosource.ada.gnat.metric;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.lang.StringUtils;
-
 import com.echosource.ada.core.PluginAbstractExecutor;
 
 /**
@@ -33,16 +30,12 @@ import com.echosource.ada.core.PluginAbstractExecutor;
  */
 public class GnatMetricExecutor extends PluginAbstractExecutor {
 
-  private static final String GNAT_DIRECTORY_SEPARATOR = ",";
-  private static final String GNAT_EXCLUDE_PACKAGE_KEY = null;
-  private static final String GNAT_EXECUTABLE_NAME = "gnat";
-  private static final String GNAT_EXCLUDE_OPTION = null;
-  private static final String GNAT_SOURCE_DIRECTORIES = null;
   private static final String IGNORE_DIRECTORIES_KEY = null;
-  private static final String GNAT_IGNORE_DIRECTORY_OPTION = null;
-  private static final String GNAT_ARGUMENT_LINE_KEY = "metric";
+  private static final String GNAT_IGNORE_DIRECTORY_MODIFIER = null;
+  private static final String GNAT_DEFAULT_ARGUMENT_LINE_KEY = "metric";
+
   /** The configuration. */
-  private Configuration configuration;
+  private GnatConfiguration configuration;
 
   /**
    * Instantiates a new executor.
@@ -50,7 +43,7 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
    * @param configuration
    *          the configuration
    */
-  public GnatMetricExecutor(Configuration configuration) {
+  public GnatMetricExecutor(GnatConfiguration configuration) {
     this.configuration = configuration;
   }
 
@@ -60,29 +53,36 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
   @Override
   protected List<String> getCommandLine() {
     List<String> result = new ArrayList<String>();
-    result.add(configuration.getString(GNAT_EXECUTABLE_NAME));
-    String excludePackage = configuration.getString(GNAT_EXCLUDE_PACKAGE_KEY);
-    if (excludePackage != null) {
-      result.add(GNAT_EXCLUDE_OPTION + excludePackage);
+    result.add(configuration.getExecutable());
+    String excludedPackages = configuration.getExcludedPackages();
+    if (excludedPackages != null) {
+      result.add(configuration.getExcludePackagesModifier() + excludedPackages);
     }
 
-    String ignoreDirectories = configuration.getString(IGNORE_DIRECTORIES_KEY);
+    String ignoreDirectories = configuration.getIgnoredDirectories();
     if (ignoreDirectories != null) {
-      result.add(GNAT_IGNORE_DIRECTORY_OPTION + ignoreDirectories);
+      result.add(configuration.getIgnoreDirectoryModifier() + ignoreDirectories);
     }
-    String argument = configuration.getString(GNAT_ARGUMENT_LINE_KEY);
+    String argument = configuration.getDefaultArgument();
     if (argument != null) {
       result.add(argument);
     }
-    result.add(StringUtils.join(configuration.getStringArray(GNAT_SOURCE_DIRECTORIES), GNAT_DIRECTORY_SEPARATOR));
+    result.add(configuration.getSourceDirectories());
     return result;
   }
 
   /**
-   * @see com.echosource.ada.core.PluginAbstractExecutor#getExecutedTool()
+   * @return the configuration
+   */
+  public GnatConfiguration getConfiguration() {
+    return configuration;
+  }
+
+  /**
+   * @see com.echosource.ada.core.PluginAbstractExecutor#getExecutable()
    */
   @Override
-  protected String getExecutedTool() {
-    return GNAT_EXECUTABLE_NAME;
+  protected String getExecutable() {
+    return configuration.getExecutable();
   }
 }

@@ -7,6 +7,7 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
+import com.echosource.ada.gnat.metric.GnatConfiguration;
 import com.echosource.ada.gnat.metric.GnatMetricExecutor;
 import com.echosource.ada.gnat.metric.GnatMetricResultsParser;
 import com.echosource.ada.gnat.metric.GnatMetricSensor;
@@ -25,7 +26,7 @@ public class AdaPlugin implements Plugin {
 
   public static final String KEY = "sonar-ada-plugin";
   public static final String NAME = "Sonar Ada Plugin";
-  private static final String DESCRIPTION = "Plugin to analyze Ada source code";
+  public static final String DESCRIPTION = "Plugin to analyze Ada source code";
   public static final String FILTERS_DEFAULT_VALUE = "xml";
   public static final String FILTERS_KEY = "sonar.ada.filters";
 
@@ -59,11 +60,14 @@ public class AdaPlugin implements Plugin {
   public List getExtensions() {
     List extensions = new ArrayList();
 
+    extensions.add(Ada.class);
     extensions.add(AdaProfile.class);
     extensions.add(EchoSourceAdaProfile.class);
 
     extensions.add(GnatMetricExecutor.class);
     extensions.add(GnatMetricResultsParser.class);
+    extensions.add(GnatConfiguration.class);
+
     extensions.add(GnatMetricSensor.class);
 
     extensions.add(AdaRuleRepository.class);
