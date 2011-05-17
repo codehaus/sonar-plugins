@@ -23,7 +23,6 @@ package com.echosource.ada.core;
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -42,20 +41,17 @@ import com.echosource.ada.Ada;
  */
 public class AdaFile extends Resource<AdaDirectory> {
 
-  private static final String PACKAGE_SEPARATOR = ".";
+  private static final String PACKAGE_SEPARATOR = File.separator;
 
   private static final String PATH_SEPARATOR = "/";
 
   private static final Logger LOG = LoggerFactory.getLogger(AdaFile.class);
 
-  /** The Constant SEPARATOR. */
-  private static final String SEPARATOR = PATH_SEPARATOR;
-
   private boolean unitTest;
   private String filename;
   private String packageKey;
   private String longName;
-  private AdaDirectory parent = null;
+  private AdaDirectory parent;
 
   /**
    * From absolute path.
@@ -118,69 +114,10 @@ public class AdaFile extends Resource<AdaDirectory> {
         className = StringUtils.substringAfterLast(relativePath, PATH_SEPARATOR);
       }
       String extension = PACKAGE_SEPARATOR + StringUtils.substringAfterLast(className, PACKAGE_SEPARATOR);
-      className = StringUtils.substringBeforeLast(className, PACKAGE_SEPARATOR);
+      // className = StringUtils.substringBeforeLast(className, PACKAGE_SEPARATOR);
       return new AdaFile(packageName, className, extension, isUnitTest);
     }
     return null;
-  }
-
-  /**
-   * The default Constructor.
-   * 
-   * @param key
-   *          String representing the resource key.
-   * @throws IllegalArgumentException
-   *           If the given key is null or empty.
-   */
-  public AdaFile(String key) {
-    this(key, false);
-  }
-
-  /**
-   * The Constructor.
-   * 
-   * @param key
-   *          the key
-   * @param unitTest
-   *          the unit test
-   */
-  public AdaFile(String key, boolean unitTest) {
-    LOG.debug("key=[" + key + "], unitTest=[" + unitTest + "]");
-    if (key == null) {
-      throw new IllegalArgumentException("Php filename can not be null");
-    }
-    if (key.indexOf('$') > 0) {
-      throw new IllegalArgumentException("Php inner classes are not supported yet : " + key);
-    }
-    this.unitTest = unitTest;
-    String extension = FilenameUtils.getExtension(StringUtils.trim(key));
-    if (extension != null) {
-      extension = PACKAGE_SEPARATOR + extension;
-    }
-    String realKey = FilenameUtils.removeExtension(StringUtils.trim(key)).replaceAll(SEPARATOR, PACKAGE_SEPARATOR);
-    if (realKey.contains(PACKAGE_SEPARATOR)) {
-      this.filename = StringUtils.substringAfterLast(realKey, PACKAGE_SEPARATOR);
-      this.packageKey = StringUtils.substringBeforeLast(realKey, PACKAGE_SEPARATOR);
-      this.longName = realKey;
-    } else {
-      this.filename = realKey;
-      this.longName = realKey;
-      this.packageKey = AdaDirectory.DEFAULT_PACKAGE_NAME;
-      realKey = new StringBuilder().append(realKey).toString();
-    }
-    setKey(realKey + extension);
-  }
-
-  /**
-   * Calls the default constructor supposing the class isn't a Unit Test.
-   * 
-   * @param packageName
-   *          the package name
-   * @param className
-   *          the class name
-   */
-  public AdaFile(String packageName, String className) {
-    this(packageName, className, "", false);
   }
 
   /**

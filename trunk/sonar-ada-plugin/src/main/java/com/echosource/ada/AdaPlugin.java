@@ -29,7 +29,7 @@ public class AdaPlugin implements Plugin {
 
   public static final String KEY = "sonar-ada-plugin";
   public static final String NAME = "Sonar Ada Plugin";
-  public static final String DESCRIPTION = "Plugin to analyze Ada source code";
+  public static final String DESCRIPTION = "Ada language support for Sonar";
   public static final String FILTERS_DEFAULT_VALUE = "xml";
   public static final String FILTERS_KEY = "sonar.ada.filters";
 

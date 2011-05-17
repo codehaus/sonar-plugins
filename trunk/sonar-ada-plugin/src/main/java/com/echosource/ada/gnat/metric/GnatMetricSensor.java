@@ -53,7 +53,6 @@ public class GnatMetricSensor implements Sensor {
     METRICS_BY_TYPE_MAP.put("package body", CoreMetrics.CLASSES);
     METRICS_BY_TYPE_MAP.put("generic package", CoreMetrics.CLASSES);
     METRICS_BY_TYPE_MAP.put("lsloc", CoreMetrics.NCLOC);
-
     // METRICS_BY_TYPE_MAP.put("blank_lines", CoreMetrics.COMMENT_BLANK_LINES);
   }
 
@@ -74,7 +73,7 @@ public class GnatMetricSensor implements Sensor {
     this.executor = executor;
     this.parser = parser;
     resourcesBag = new ResourcesBag<AdaFile>();
-    metrics = new HashSet<Metric>();
+    metrics = getMetrics();
   }
 
   /**
@@ -83,23 +82,31 @@ public class GnatMetricSensor implements Sensor {
   public void analyse(Project project, SensorContext context) {
     try {
       executor.execute();
-      GlobalNode node = parser.getGlobalNode(executor.getConfiguration().getReportFile());
-      analyse(project, context, node);
+      File reportFile = executor.getConfiguration().getReportFile();
+      GlobalNode node = parser.parse(reportFile);
+      for (FileNode file : node.getFiles()) {
+        AdaFile currentResourceFile = AdaFile.fromAbsolutePath(file.getName(), project);
+        collectFileMeasures(context, file, currentResourceFile);
+      }
+      saveMeasures(context);
     } catch (SonarException e) {
       LOG.error("Error occured while launching gnat metric sensor", e);
     }
   }
 
   /**
-   * @param project
-   * @param context
-   * @param node
+   * @return the metrics that we want to be saved by this sensor.
    */
-  private void analyse(Project project, SensorContext context, GlobalNode node) {
-    for (FileNode file : node.getFiles()) {
-      AdaFile currentResourceFile = AdaFile.fromAbsolutePath(file.getName(), project);
-      collectFileMeasures(context, file, currentResourceFile);
-    }
+  private Set<Metric> getMetrics() {
+    Set<Metric> metrics = new HashSet<Metric>();
+    metrics.add(CoreMetrics.LINES);
+    metrics.add(CoreMetrics.NCLOC);
+    metrics.add(CoreMetrics.FUNCTIONS);
+    metrics.add(CoreMetrics.COMMENT_LINES);
+    metrics.add(CoreMetrics.FILES);
+    metrics.add(CoreMetrics.COMPLEXITY);
+    // metrics.add(CoreMetrics.CLASSES);
+    return metrics;
   }
 
   /**
@@ -113,7 +120,7 @@ public class GnatMetricSensor implements Sensor {
    *           the parse exception
    */
   protected void collectMeasures(SensorContext context, File reportFile) throws FileNotFoundException, ParseException {
-    GlobalNode globalNode = parser.getGlobalNode(reportFile);
+    GlobalNode globalNode = parser.parse(reportFile);
     for (FileNode fileNode : globalNode.getFiles()) {
       String fileName = fileNode.getName();
       AdaFile currentResourceFile = AdaFile.fromAbsolutePath(fileName, project);
@@ -123,7 +130,6 @@ public class GnatMetricSensor implements Sensor {
         LOG.warn("The following file doesn't belong to current project sources or tests : " + fileName);
       }
     }
-    saveMeasures(context);
   }
 
   /**
@@ -185,92 +191,83 @@ public class GnatMetricSensor implements Sensor {
    *          the node representing the file in the report file.
    */
   private void collectFileMeasures(SensorContext context, FileNode fileNode, AdaFile file) {
-    List<UnitNode> adaPackages = new ArrayList<UnitNode>();
-    List<UnitNode> adaFunctionsOrProcedures = new ArrayList<UnitNode>();
+
     for (MetricNode metricNode : fileNode.getMetrics()) {
+      addMeasure(file, CoreMetrics.FILES, 1.0);
       String metricName = metricNode.getName();
       Metric metric = METRICS_BY_TYPE_MAP.get(metricName);
       if (metric != null) {
-        context.saveMeasure(file, metric, metricNode.getValue());
-      } else {
-        LOG.error("Metric '" + metricName + "' has no equivalent in Sonar. ");
+        addMeasureIfNecessary(file, metric, metricNode.getValue());
       }
-
-      List<UnitNode> units = fileNode.getUnits();
-      for (UnitNode unit : units) {
-        // Add a resource for the found type.
-        // Mapping between type and metric is defined in METRICS_BY_TYPE_MAP.
-        Metric unitMetric = METRICS_BY_TYPE_MAP.get(unit.getKind());
-        addMeasure(file, unitMetric, 1.0);
-        if (CoreMetrics.CLASSES.equals(unitMetric)) {
-          adaPackages.add(unit);
-        }
-        if (CoreMetrics.COMPLEXITY.equals(unitMetric)) {
-          adaFunctionsOrProcedures.add(unit);
-        }
-      }
-      addMeasure(file, CoreMetrics.FILES, 1.0);
     }
+
+    List<UnitNode> adaPackages = new ArrayList<UnitNode>();
+    List<UnitNode> adaFunctionsOrProcedures = new ArrayList<UnitNode>();
+    List<UnitNode> units = fileNode.getUnits();
+    extractUnits(adaPackages, adaFunctionsOrProcedures, units);
 
     // for all class in this file
     RangeDistributionBuilder ccd = new RangeDistributionBuilder(CLASS_COMPLEXITY_DISTRIBUTION, CLASSES_DISTRIB_BOTTOM_LIMITS);
     RangeDistributionBuilder mcd = new RangeDistributionBuilder(FUNCTION_COMPLEXITY_DISTRIBUTION, FUNCTIONS_DISTRIB_BOTTOM_LIMITS);
+
     for (UnitNode adaProcedures : adaFunctionsOrProcedures) {
-      collectFunctionsMeasures(adaProcedures, file, mcd);
-      List<MetricNode> metrics = adaProcedures.getMetrics();
-      // TODO find a better way to get the CC for a unit.
-      for (MetricNode metric : metrics) {
-        if ("cyclomatic_complexity".equals(metric.getName())) {
-          ccd.add(metric.getValue());
-        }
-      }
+      collectFunctionsMeasures(adaProcedures, file, mcd, ccd);
     }
 
-    for (UnitNode adaFunction : adaFunctionsOrProcedures) {
-      collectFunctionsMeasures(adaFunction, file, mcd);
+    for (UnitNode adaPackage : adaPackages) {
+      collectPackagesMeasures(adaPackage, file, ccd);
+      // ccd.add(adaPackage.getComplexity());
     }
-
-    // if (fileNode.getClasses() != null) {
-    // for (ClassNode classNode : fileNode.getClasses()) {
-    // collectClassMeasures(classNode, file, methodComplexityDistribution);
-    // classComplexityDistribution.add(classNode.getComplexity());
-    // }// for all class in this file
-    // }
-    // if (fileNode.getFunctions() != null) {
-    // for (FunctionNode funcNode : fileNode.getFunctions()) {
-    // collectFunctionsMeasures(funcNode, file, methodComplexityDistribution);
-    // }
-    // }
-    // String fileName = fileNode.getFileName();
     context.saveMeasure(file, ccd.build().setPersistenceMode(PersistenceMode.MEMORY));
     context.saveMeasure(file, mcd.build().setPersistenceMode(PersistenceMode.MEMORY));
   }
 
   /**
-   * Collects the given function measures.
-   * 
    * @param file
-   *          the php related file
-   * @param functionNode
-   *          representing the class in the report file
-   * @param mcd
+   * @param adaPackages
+   * @param adaFunctionsOrProcedures
+   * @param units
    */
-  private void collectFunctionsMeasures(UnitNode functionNode, AdaFile file, RangeDistributionBuilder mcd) {
-    // addMeasureIfNecessary(file, CoreMetrics.LINES, functionNode.getLinesNumber());
-    // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, functionNode.getCommentLineNumber());
-    // addMeasureIfNecessary(file, CoreMetrics.NCLOC, functionNode.getCodeLinesNumber());
-    // // Adds one class to this file
-    // addMeasure(file, CoreMetrics.COMPLEXITY, functionNode.getComplexity());
-    addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
-    for (MetricNode node : functionNode.getMetrics()) {
-      String nodeName = node.getName();
-      if (CoreMetrics.COMPLEXITY.equals(METRICS_BY_TYPE_MAP.get(nodeName))) {
-        mcd.add(node.getValue());
+  private void extractUnits(List<UnitNode> adaPackages, List<UnitNode> adaFunctionsOrProcedures, List<UnitNode> units) {
+    for (UnitNode unit : units) {
+      String kind = unit.getKind();
+      if ("package body".equals(kind) || "package".equals(kind)) {
+        adaPackages.add(unit);
       }
-      if (CoreMetrics.LINES.equals(METRICS_BY_TYPE_MAP.get(nodeName))) {
-        addMeasureIfNecessary(file, CoreMetrics.LINES, node.getValue());
+      if ("procedure body".equals(kind) || "function body".equals(kind)) {
+        adaFunctionsOrProcedures.add(unit);
+      }
+      if (unit.getUnits() != null) {
+        extractUnits(adaPackages, adaFunctionsOrProcedures, unit.getUnits());
       }
     }
+  }
+
+  /**
+   * Collects the given function measures.
+   * 
+   * @param ccd
+   */
+  private void collectFunctionsMeasures(UnitNode unitNode, AdaFile file, RangeDistributionBuilder mcd, RangeDistributionBuilder ccd) {
+    Map<String, Double> metrics = getMetricsMap(unitNode);
+    addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get("all_lines"));
+    addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, metrics.get("comment_lines"));
+    addMeasureIfNecessary(file, CoreMetrics.NCLOC, metrics.get("code_lines"));
+
+    addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
+    Double cyclomaticComplexity = metrics.get("cyclomatic_complexity");
+    addMeasure(file, CoreMetrics.COMPLEXITY, cyclomaticComplexity);
+    mcd.add(cyclomaticComplexity);
+
+  }
+
+  /** */
+  private Map<String, Double> getMetricsMap(UnitNode unitNode) {
+    Map<String, Double> metricsMap = new HashMap<String, Double>();
+    for (MetricNode metric : unitNode.getMetrics()) {
+      metricsMap.put(metric.getName(), metric.getValue());
+    }
+    return metricsMap;
   }
 
   /**
@@ -292,16 +289,17 @@ public class GnatMetricSensor implements Sensor {
    * 
    * @param file
    *          the php related file
-   * @param classNode
+   * @param packageNode
    *          representing the class in the report file
-   * @param methodComplexityDistribution
+   * @param ccd
    */
-  private void collectClassMeasures(UnitNode classNode, AdaFile file, RangeDistributionBuilder methodComplexityDistribution) {
-    // addMeasureIfNecessary(file, CoreMetrics.LINES, classNode.getLinesNumber());
+  private void collectPackagesMeasures(UnitNode packageNode, AdaFile file, RangeDistributionBuilder ccd) {
+    Map<String, Double> metrics = getMetricsMap(packageNode);
+    addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get("all_lines"));
     // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, classNode.getCommentLineNumber());
     // addMeasureIfNecessary(file, CoreMetrics.NCLOC, classNode.getCodeLinesNumber());
     // Adds one class to this file
-    addMeasure(file, CoreMetrics.CLASSES, 1.0);
+    addMeasureIfNecessary(file, CoreMetrics.CLASSES, 1.0);
     // for all methods in this class.
     // List<MethodNode> methodes = classNode.getMethodes();
     // if (methodes != null && !methodes.isEmpty()) {
@@ -311,5 +309,4 @@ public class GnatMetricSensor implements Sensor {
     // }
     // }
   }
-
 }
