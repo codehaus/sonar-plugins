@@ -34,6 +34,8 @@ public class GnatConfiguration implements BatchExtension {
 
   private static final String GNAT_XML_OUTPUT_FILE_MODIFIER_KEY = "sonar.ada.xml.output.file.modifier";
   private static final String GNAT_DEFAULT_XML_OUTPUT_FILE_MODIFIER = "-ox";
+  private static final String GNAT_DEFAULT_DO_NOT_GENERATE_TEXT_MODIFIER = "-nt";
+  private static final String GNAT_DO_NOT_GENERATE_TEXT_MODIFIER_KEY = "sonar.ada.do.not.generate.modifier";
 
   private static final String GNAT_DIRECTORY_SEPARATOR = ",";
   private static final String GNAT_SOURCE_DIRECTORIES = "";
@@ -51,7 +53,6 @@ public class GnatConfiguration implements BatchExtension {
   private static final String GNAT_DEFAULT_EXCLUDE_PACKAGES_MODIFIER = null;
   private static final String GNAT_DEFAULT_IGNORED_DIRECTORIES = null;
   private static final String GNAT_IGNORED_DIRECTORIES_KEY = "sonar.ada.ignored.directories";
-  private static final String GNAT_FILE_SEPARATOR = " ";
 
   protected Project project;
   protected Configuration configuration;
@@ -136,6 +137,10 @@ public class GnatConfiguration implements BatchExtension {
 
   public String getIgnoredDirectories() {
     return configuration.getString(GNAT_IGNORED_DIRECTORIES_KEY, GNAT_DEFAULT_IGNORED_DIRECTORIES);
+  }
+
+  public String getDoNoteGenerateTextModifier() {
+    return configuration.getString(GNAT_DO_NOT_GENERATE_TEXT_MODIFIER_KEY, GNAT_DEFAULT_DO_NOT_GENERATE_TEXT_MODIFIER);
   }
 
   public String getExcludePackagesModifier() {
