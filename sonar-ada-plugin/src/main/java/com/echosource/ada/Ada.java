@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.resources.AbstractLanguage;
 
 /**
- * @author akbenaissi
+ * @author Akram Ben Aissi
  * 
  */
 public class Ada extends AbstractLanguage {
@@ -33,27 +33,6 @@ public class Ada extends AbstractLanguage {
    */
   public Ada() {
     super(LANGUAGE_KEY, LANGUAGE_NAME);
-    INSTANCE = this;
-  }
-
-  /**
-   * @param configuration
-   */
-  private Ada(Configuration configuration) {
-    super(LANGUAGE_KEY, LANGUAGE_NAME);
-    this.configuration = configuration;
-    INSTANCE = this;
-  }
-
-  /**
-   * @param configuration
-   * @return The Ada instance.
-   */
-  public final static Ada getInstance(Configuration configuration) {
-    if (INSTANCE.configuration == null) {
-      INSTANCE.configuration = configuration;
-    }
-    return INSTANCE;
   }
 
   /**
@@ -81,9 +60,9 @@ public class Ada extends AbstractLanguage {
    */
 
   public String[] getFileSuffixes() {
-    String[] suffixes = configuration.getStringArray(FILE_SUFFIXES_KEY);
-    if (suffixes == null || suffixes.length == 0) {
-      suffixes = StringUtils.split(DEFAULT_SUFFIXES, ",");
+    String[] suffixes = StringUtils.split(DEFAULT_SUFFIXES, ",");
+    if (configuration != null) {
+      suffixes = configuration.getStringArray(FILE_SUFFIXES_KEY);
     }
     return suffixes;
   }

@@ -33,17 +33,14 @@ import com.echosource.ada.core.PluginAbstractExecutor;
  */
 public class GnatMetricExecutor extends PluginAbstractExecutor {
 
-  /**
-   * 
-   */
-  private static final String DIRECTORY_SEPARATOR = ",";
-  private static final String EXCLUDE_PACKAGE_KEY = null;
-  private static final String EXECUTABLE_NAME = "gnat";
-  private static final String EXCLUDE_OPTION = null;
-  private static final String SOURCE_DIRECTORIES = null;
+  private static final String GNAT_DIRECTORY_SEPARATOR = ",";
+  private static final String GNAT_EXCLUDE_PACKAGE_KEY = null;
+  private static final String GNAT_EXECUTABLE_NAME = "gnat";
+  private static final String GNAT_EXCLUDE_OPTION = null;
+  private static final String GNAT_SOURCE_DIRECTORIES = null;
   private static final String IGNORE_DIRECTORIES_KEY = null;
-  private static final String IGNORE_DIRECTORY_OPTION = null;
-  private static final String ARGUMENT_LINE_KEY = "metric";
+  private static final String GNAT_IGNORE_DIRECTORY_OPTION = null;
+  private static final String GNAT_ARGUMENT_LINE_KEY = "metric";
   /** The configuration. */
   private Configuration configuration;
 
@@ -63,21 +60,21 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
   @Override
   protected List<String> getCommandLine() {
     List<String> result = new ArrayList<String>();
-    result.add(configuration.getString(EXECUTABLE_NAME));
-    String excludePackage = configuration.getString(EXCLUDE_PACKAGE_KEY);
+    result.add(configuration.getString(GNAT_EXECUTABLE_NAME));
+    String excludePackage = configuration.getString(GNAT_EXCLUDE_PACKAGE_KEY);
     if (excludePackage != null) {
-      result.add(EXCLUDE_OPTION + excludePackage);
+      result.add(GNAT_EXCLUDE_OPTION + excludePackage);
     }
 
     String ignoreDirectories = configuration.getString(IGNORE_DIRECTORIES_KEY);
     if (ignoreDirectories != null) {
-      result.add(IGNORE_DIRECTORY_OPTION + ignoreDirectories);
+      result.add(GNAT_IGNORE_DIRECTORY_OPTION + ignoreDirectories);
     }
-    String argument = configuration.getString(ARGUMENT_LINE_KEY);
+    String argument = configuration.getString(GNAT_ARGUMENT_LINE_KEY);
     if (argument != null) {
       result.add(argument);
     }
-    result.add(StringUtils.join(configuration.getStringArray(SOURCE_DIRECTORIES), DIRECTORY_SEPARATOR));
+    result.add(StringUtils.join(configuration.getStringArray(GNAT_SOURCE_DIRECTORIES), GNAT_DIRECTORY_SEPARATOR));
     return result;
   }
 
@@ -86,6 +83,6 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
    */
   @Override
   protected String getExecutedTool() {
-    return EXECUTABLE_NAME;
+    return GNAT_EXECUTABLE_NAME;
   }
 }
