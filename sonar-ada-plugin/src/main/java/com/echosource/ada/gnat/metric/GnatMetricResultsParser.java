@@ -24,20 +24,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
-import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.Metric;
-import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.utils.SonarException;
 
-import com.echosource.ada.ResourcesBag;
-import com.echosource.ada.core.AdaFile;
 import com.echosource.ada.gnat.metric.xml.FileNode;
 import com.echosource.ada.gnat.metric.xml.GlobalNode;
 import com.echosource.ada.gnat.metric.xml.MetricNode;
@@ -53,135 +46,6 @@ public class GnatMetricResultsParser implements BatchExtension {
 
   private static final Logger LOG = LoggerFactory.getLogger(GnatMetricResultsParser.class);
 
-  /** Resources bag to store metrics and their values. */
-  private ResourcesBag<AdaFile> resourcesBag;
-
-  /** Default constructor */
-  public GnatMetricResultsParser() {
-    this.resourcesBag = new ResourcesBag<AdaFile>();
-  }
-
-  /**
-   * @param path
-   */
-  public void parse(String path) {
-    File file = new File(path);
-    // If no files can be found, plugin will stop normally only logging the error
-    if ( !file.exists()) {
-      LOG.error("Result file not found : " + file.getAbsolutePath() + ". Plugin will stop");
-      return;
-    } else {
-      parse(file);
-    }
-  }
-
-  /** Parses the report file. */
-  public void parse(File file) {
-    try {
-      LOG.info("Collecting measures...");
-      // collectMeasures(file);
-    } catch (Exception e) {
-      LOG.error("Report file is invalid or can't be found, plugin will stop.", e);
-      throw new SonarException(e);
-    }
-  }
-
-  /** If the given value is not null, the metric, resource and value will be associated */
-  private void addMeasure(AdaFile file, Metric metric, Double value) {
-    if (value != null) {
-      resourcesBag.add(value, metric, file);
-    }
-  }
-
-  /**
-   * Adds the measure if the given metrics isn't already present on this resource.
-   * 
-   * @param file
-   * @param metric
-   * @param value
-   */
-  private void addMeasureIfNecessary(AdaFile file, Metric metric, double value) {
-    Double measure = resourcesBag.getMeasure(metric, file);
-    if (measure == null || measure == 0) {
-      resourcesBag.add(value, metric, file);
-    }
-  }
-
-  /**
-   * Collects the given class measures and launches {@see #collectFunctionMeasures(MethodNode, AdaFile)} for all its descendant.
-   * 
-   * @param file
-   *          the php related file
-   * @param classNode
-   *          representing the class in the report file
-   * @param methodComplexityDistribution
-   */
-  private void collectClassMeasures(UnitNode classNode, AdaFile file, RangeDistributionBuilder methodComplexityDistribution) {
-    // addMeasureIfNecessary(file, CoreMetrics.LINES, classNode.getLinesNumber());
-    // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, classNode.getCommentLineNumber());
-    // addMeasureIfNecessary(file, CoreMetrics.NCLOC, classNode.getCodeLinesNumber());
-    // Adds one class to this file
-    addMeasure(file, CoreMetrics.CLASSES, 1.0);
-    // for all methods in this class.
-    // List<MethodNode> methodes = classNode.getMethodes();
-    // if (methodes != null && !methodes.isEmpty()) {
-    // for (MethodNode methodNode : methodes) {
-    // collectMethodMeasures(methodNode, file);
-    // methodComplexityDistribution.add(methodNode.getComplexity());
-    // }
-    // }
-  }
-
-  /**
-   * Collects the given function measures.
-   * 
-   * @param file
-   *          the php related file
-   * @param functionNode
-   *          representing the class in the report file
-   * @param methodComplexityDistribution
-   */
-  private void collectFunctionsMeasures(MetricNode functionNode, AdaFile file, RangeDistributionBuilder methodComplexityDistribution) {
-    // addMeasureIfNecessary(file, CoreMetrics.LINES, functionNode.getLinesNumber());
-    // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, functionNode.getCommentLineNumber());
-    // addMeasureIfNecessary(file, CoreMetrics.NCLOC, functionNode.getCodeLinesNumber());
-    // // Adds one class to this file
-    // addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
-    // addMeasure(file, CoreMetrics.COMPLEXITY, functionNode.getComplexity());
-    methodComplexityDistribution.add(functionNode.getValue());
-  }
-
-  /**
-   * Collect function measures.
-   * 
-   * @param file
-   *          the file
-   * @param unitNode
-   *          the method node
-   */
-  private void collectMethodMeasures(UnitNode unitNode, AdaFile file) {
-    // Adds one method to this file
-    addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
-    // addMeasure(file, CoreMetrics.COMPLEXITY, unitNode.getComplexity());
-  }
-
-  /**
-   * Gets the metrics.
-   * 
-   * @return the metrics
-   */
-  private Set<Metric> getMetrics() {
-    Set<Metric> metricsNode = new HashSet<Metric>();
-    metricsNode.add(CoreMetrics.LINES);
-    metricsNode.add(CoreMetrics.NCLOC);
-    metricsNode.add(CoreMetrics.FUNCTIONS);
-    metricsNode.add(CoreMetrics.COMMENT_LINES);
-    metricsNode.add(CoreMetrics.FILES);
-    metricsNode.add(CoreMetrics.COMPLEXITY);
-    metricsNode.add(CoreMetrics.CLASSES);
-    return metricsNode;
-  }
-
   /**
    * Gets the metrics.
    * 
@@ -189,7 +53,8 @@ public class GnatMetricResultsParser implements BatchExtension {
    *          the report
    * @return the metrics
    */
-  GlobalNode getGlobalNode(File report) {
+  GlobalNode parse(File report) {
+    LOG.debug("Parsing report file " + report);
     InputStream inputStream = null;
     String reportFilename = report.getAbsolutePath();
     try {
