@@ -7,6 +7,7 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
+import com.echosource.ada.core.AdaCpdMapping;
 import com.echosource.ada.core.AdaSourceCodeColorizer;
 import com.echosource.ada.core.AdaSourceImporter;
 import com.echosource.ada.gnat.metric.GnatConfiguration;
@@ -74,6 +75,7 @@ public class AdaPlugin implements Plugin {
     extensions.add(GnatConfiguration.class);
 
     extensions.add(GnatMetricSensor.class);
+    extensions.add(AdaCpdMapping.class);
 
     extensions.add(AdaRuleRepository.class);
     extensions.add(AdaProfileExporter.class);
