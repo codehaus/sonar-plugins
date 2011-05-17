@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>6</version>
+    <version>8</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <groupId>com.echosource.ada</groupId>
+  <groupId>org.sonar.plugins</groupId>
   <artifactId>sonar-ada-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
@@ -19,29 +19,29 @@
   <description>Sonar plugin to analyze Ada source code</description>
   <inceptionYear>2010</inceptionYear>
   <organization>
-    <name>Echo Source</name>
-    <url>http://www.echosource.com</url>
+    <name>Akram Ben Aissi</name>
+    <url>http://akram.benaissi.wordpress.com</url>
   </organization>
 
   <developers>
     <developer>
       <id>akram</id>
       <name>Akram Ben Aissi</name>
-      <email>aba@echosource.com</email>
+      <email>akram.benaissi@free.fr</email>
     </developer>
   </developers>
 
   <properties>
-    <sonar.version>2.3</sonar.version>
-    <sonar.pluginClass>com.echosource.ada.AdaPlugin</sonar.pluginClass>
-    <sonar.runtimeVersion>2.3</sonar.runtimeVersion>
+    <sonar.version>2.4</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.ada.AdaPlugin</sonar.pluginClass>
+    <sonar.runtimeVersion>2.4</sonar.runtimeVersion>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>2.3</version>
+      <version>2.4</version>
     </dependency>
 
     <!-- add your dependencies here -->
@@ -82,7 +82,7 @@
         <extensions>true</extensions>
         <configuration>
           <pluginKey>ada</pluginKey>
-          <pluginClass>com.echosource.ada.AdaPlugin</pluginClass>
+          <pluginClass>org.sonar.plugins.ada.AdaPlugin</pluginClass>
         </configuration>
       </plugin>
       <plugin>
