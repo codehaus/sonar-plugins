@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-    <parent>
+  <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
     <version>6</version>
     <relativePath>../parent</relativePath>
   </parent>
-  
+
   <groupId>com.echosource.ada</groupId>
   <artifactId>sonar-ada-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
@@ -21,7 +22,7 @@
     <name>Echo Source</name>
     <url>http://www.echosource.com</url>
   </organization>
- 
+
   <developers>
     <developer>
       <id>akram</id>
@@ -35,16 +36,16 @@
     <sonar.pluginClass>com.echosource.ada.AdaPlugin</sonar.pluginClass>
     <sonar.runtimeVersion>2.3</sonar.runtimeVersion>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
       <version>2.3</version>
     </dependency>
-    
+
     <!-- add your dependencies here -->
-    
+
     <!-- unit tests -->
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -78,9 +79,9 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <profiles>
-  <profile>
+    <profile>
       <id>package</id>
       <build>
         <plugins>

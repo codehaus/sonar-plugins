@@ -16,35 +16,33 @@ import com.echosource.ada.Ada;
 public class GnatMetricSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(GnatMetricSensor.class);
+  private static final String ANALYZE_ONLY_KEY = "sonar.dynamicAnalysis";
+  private static final String REPORT_FILE_KEY = "metrics.xml";
 
-  private static final String ANALYZE_ONLY_KEY = null;
+  private GnatMetricExecutor executor;
+  private GnatMetricResultsParser parser;
 
-  private static final String REPORT_FILE_KEY = null;
-
-  private Configuration configuration;
+  /**
+   * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
+   */
+  public void analyse(Project project, SensorContext context) {
+    try {
+      Configuration configuration = project.getConfiguration();
+      if ( !configuration.getBoolean(ANALYZE_ONLY_KEY)) {
+        executor.execute();
+      }
+      parser.parse(configuration.getString(REPORT_FILE_KEY));
+    } catch (SonarException e) {
+      LOG.error("Error occured while launching gnat metric sensor", e);
+    }
+  }
 
   /**
    * 
    * @see org.sonar.api.batch.CheckProject#shouldExecuteOnProject(org.sonar.api.resources.Project)
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return Ada.getInstance(project.getConfiguration()).equals(project.getLanguage());
+    return Ada.INSTANCE.equals(project.getLanguage());
   }
 
-  /**
-   * 
-   // * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
-   */
-  public void analyse(Project project, SensorContext context) {
-    try {
-      if (project.getConfiguration().getBoolean(ANALYZE_ONLY_KEY)) {
-        GnatMetricExecutor executor = new GnatMetricExecutor(configuration);
-        executor.execute();
-      }
-      GnatMetricResultsParser parser = new GnatMetricResultsParser(project, context);
-      parser.parse(project.getConfiguration().getString(REPORT_FILE_KEY));
-    } catch (SonarException e) {
-      LOG.error("Error occured while launching gnat metric sensor", e);
-    }
-  }
 }

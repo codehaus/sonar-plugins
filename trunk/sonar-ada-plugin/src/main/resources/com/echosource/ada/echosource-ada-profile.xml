@@ -1,5 +1,5 @@
 <profile>
-  <name>Akram Ada default profile</name>
+  <name>EchoSource Ada default profile</name>
   <language>ada</language>
   <rules>
     <rule>

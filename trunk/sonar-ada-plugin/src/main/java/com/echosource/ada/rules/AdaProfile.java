@@ -19,21 +19,35 @@
  */
 package com.echosource.ada.rules;
 
-import org.sonar.api.profiles.XMLProfileDefinition;
-import org.sonar.api.rules.RuleFinder;
+import org.sonar.api.profiles.ProfileDefinition;
+import org.sonar.api.profiles.RulesProfile;
+import org.sonar.api.profiles.XMLProfileParser;
+import org.sonar.api.utils.ValidationMessages;
 
 /**
  * @author Akram Ben Aissi
  * 
  */
-public final class AdaProfile extends XMLProfileDefinition {
+public final class AdaProfile extends ProfileDefinition {
 
-  public static final String DEFAULT_PROFILE_NAME = "Akram Ada default profile";
+  public static final String DEFAULT_PROFILE_NAME = "Ada profile with all rules";
+  /**
+   * XML profile parser.
+   */
+  private XMLProfileParser parser;
 
   /**
-   * @param ruleFinder
+   * @param parser
    */
-  public AdaProfile(RuleFinder ruleFinder) {
-    super(AdaProfile.class.getClassLoader(), "com/hashcode/ada/sonar-ada-profile.xml", ruleFinder);
+  public AdaProfile(XMLProfileParser parser) {
+    this.parser = parser;
+  }
+
+  /**
+   * @see org.sonar.api.profiles.ProfileDefinition#createProfile(org.sonar.api.utils.ValidationMessages)
+   */
+  @Override
+  public RulesProfile createProfile(ValidationMessages messages) {
+    return parser.parseResource(getClass().getClassLoader(), "com/echosource/ada/ada-profile.xml", messages);
   }
 }

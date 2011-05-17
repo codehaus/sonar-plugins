@@ -8,12 +8,13 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
 import com.echosource.ada.gnat.metric.GnatMetricExecutor;
+import com.echosource.ada.gnat.metric.GnatMetricResultsParser;
 import com.echosource.ada.gnat.metric.GnatMetricSensor;
 import com.echosource.ada.rules.AdaProfile;
 import com.echosource.ada.rules.AdaProfileExporter;
 import com.echosource.ada.rules.AdaProfileImporter;
 import com.echosource.ada.rules.AdaRuleRepository;
-import com.echosource.ada.rules.DefaultAdaProfile;
+import com.echosource.ada.rules.EchoSourceAdaProfile;
 
 /**
  * Entry point for all Ada extensions plugins.
@@ -57,13 +58,18 @@ public class AdaPlugin implements Plugin {
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public List getExtensions() {
     List extensions = new ArrayList();
-    extensions.add(GnatMetricSensor.class);
-    extensions.add(AdaRuleRepository.class);
+
+    extensions.add(AdaProfile.class);
+    extensions.add(EchoSourceAdaProfile.class);
+
     extensions.add(GnatMetricExecutor.class);
+    extensions.add(GnatMetricResultsParser.class);
+    extensions.add(GnatMetricSensor.class);
+
+    extensions.add(AdaRuleRepository.class);
     extensions.add(AdaProfileExporter.class);
     extensions.add(AdaProfileImporter.class);
-    extensions.add(AdaProfile.class);
-    extensions.add(DefaultAdaProfile.class);
+
     return extensions;
   }
 

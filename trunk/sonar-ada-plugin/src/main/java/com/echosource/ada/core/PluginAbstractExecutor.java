@@ -1,23 +1,3 @@
-/*
- * Sonar, open source software quality management tool.
- * Copyright (C) 2010 SQLi
- * mailto:contact AT sonarsource DOT com
- *
- * Sonar is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * Sonar is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with Sonar; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
- */
-
 package com.echosource.ada.core;
 
 import java.io.IOException;
@@ -28,13 +8,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 
 /**
  * Abstract plugin executor. This class handles common executor needs such as running the process, reading its common and error output
  * streams and logging. In nominal case implementing executor should just construct the desire command line.
  */
-public abstract class PluginAbstractExecutor {
+public abstract class PluginAbstractExecutor implements BatchExtension {
+
+  /** The logger */
+  private static final Logger LOG = LoggerFactory.getLogger(PluginAbstractExecutor.class);
 
   /**
    * The Class AsyncPipe.
@@ -44,10 +28,10 @@ public abstract class PluginAbstractExecutor {
     private static final int BUFFER_SIZE = 1024;
 
     /** The input stream. */
-    private InputStream istrm;
+    private InputStream inputStream;
 
     /** The output stream. */
-    private OutputStream ostrm;
+    private OutputStream outputStream;
 
     /**
      * Instantiates a new async pipe.
@@ -58,8 +42,8 @@ public abstract class PluginAbstractExecutor {
      *          an OutputStream
      */
     public AsyncPipe(InputStream input, OutputStream output) {
-      istrm = input;
-      ostrm = output;
+      inputStream = input;
+      outputStream = output;
     }
 
     /**
@@ -70,21 +54,18 @@ public abstract class PluginAbstractExecutor {
       try {
         final byte[] buffer = new byte[BUFFER_SIZE];
         // Reads the process input stream and writes it to the output stream
-        int length = istrm.read(buffer);
+        int length = inputStream.read(buffer);
         while (length != -1) {
-          synchronized (ostrm) {
-            ostrm.write(buffer, 0, length);
+          synchronized (outputStream) {
+            outputStream.write(buffer, 0, length);
           }
-          length = istrm.read(buffer);
+          length = inputStream.read(buffer);
         }
       } catch (IOException e) {
         LOG.error("Can't execute the Async Pipe", e);
       }
     }
   }
-
-  /** The logger */
-  private static final Logger LOG = LoggerFactory.getLogger(PluginAbstractExecutor.class);
 
   /**
    * Executes the external tool.

@@ -38,18 +38,16 @@ public final class AdaRuleRepository extends RuleRepository {
 
   public static final String REPOSITORY_KEY = "ada-rule-repository";
   public static final String REPOSITORY_NAME = "Ada rules";
-  /**
-   * for user extensions
-   */
-  private ServerFileSystem fileSystem;
 
-  /**
-   * @param fileSystem
-   */
-  public AdaRuleRepository(ServerFileSystem fileSystem) {
+  // for user extensions
+  private ServerFileSystem fileSystem;
+  private XMLRuleParser parser;
+
+  public AdaRuleRepository(ServerFileSystem fileSystem, XMLRuleParser parser) {
     super(REPOSITORY_KEY, Ada.LANGUAGE_KEY);
     setName(REPOSITORY_NAME);
     this.fileSystem = fileSystem;
+    this.parser = parser;
   }
 
   /**
@@ -58,11 +56,11 @@ public final class AdaRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    rules.addAll(XMLRuleParser.parseXML(getClass().getResourceAsStream("/com/hashcode/ada/rules.xml")));
+    rules.addAll(parser.parse(getClass().getResourceAsStream("/com/echosource/ada/rules.xml")));
     // Gives the ability for the user to extends system rules withs its own rules.
     // user rules must be set in SONAR_HOME/extensions/rules/REPOSITORY_KEY/*.xml
     for (File userExtensionXml : fileSystem.getExtensions(REPOSITORY_KEY, "xml")) {
-      rules.addAll(XMLRuleParser.parseXML(userExtensionXml));
+      rules.addAll(parser.parse(userExtensionXml));
     }
     return rules;
   }
