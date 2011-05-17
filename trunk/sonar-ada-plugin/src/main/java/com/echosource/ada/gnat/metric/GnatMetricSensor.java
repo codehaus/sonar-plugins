@@ -63,7 +63,6 @@ public class GnatMetricSensor implements Sensor {
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_ALL_LINES, CoreMetrics.LINES);
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_CODE_LINES, CoreMetrics.NCLOC);
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_COMMENT_LINES, CoreMetrics.COMMENT_LINES);
-    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_EOL_COMMENTS, CoreMetrics.COMMENT_BLANK_LINES);
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_COMMENT_PERCENTAGE, CoreMetrics.COMMENT_LINES_DENSITY);
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_ALL_STMTS, CoreMetrics.STATEMENTS);
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_CYCLOMATIC_COMPLEXITY, CoreMetrics.COMPLEXITY);
@@ -71,6 +70,7 @@ public class GnatMetricSensor implements Sensor {
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_GENERIC_PACKAGE, CoreMetrics.CLASSES);
     METRICS_BY_TYPE_MAP.put(GNAT_METRIC_LSLOC, CoreMetrics.NCLOC);
     // METRICS_BY_TYPE_MAP.put("blank_lines", CoreMetrics.COMMENT_BLANK_LINES);
+    // METRICS_BY_TYPE_MAP.put(GNAT_METRIC_EOL_COMMENTS, CoreMetrics.COMMENT_LINES);
   }
 
   private GnatMetricExecutor executor;
@@ -153,8 +153,8 @@ public class GnatMetricSensor implements Sensor {
     metrics.add(CoreMetrics.NCLOC);
     metrics.add(CoreMetrics.FUNCTIONS);
     metrics.add(CoreMetrics.COMMENT_LINES);
-    metrics.add(CoreMetrics.FILES);
     metrics.add(CoreMetrics.COMPLEXITY);
+    // metrics.add(CoreMetrics.FILES);
     // metrics.add(CoreMetrics.CLASSES);
     return metrics;
   }
@@ -301,7 +301,7 @@ public class GnatMetricSensor implements Sensor {
   private void collectFunctionsMeasures(UnitNode unitNode, AdaFile file, RangeDistributionBuilder mcd, RangeDistributionBuilder ccd) {
     Map<String, Double> metrics = getMetricsMap(unitNode);
     addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get(GNAT_METRIC_ALL_LINES));
-    addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, metrics.get(GNAT_METRIC_COMMENT_LINES));
+    addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, metrics.get(GNAT_METRIC_COMMENT_LINES) + metrics.get(GNAT_METRIC_EOL_COMMENTS));
     addMeasureIfNecessary(file, CoreMetrics.NCLOC, metrics.get(GNAT_METRIC_CODE_LINES));
 
     addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
