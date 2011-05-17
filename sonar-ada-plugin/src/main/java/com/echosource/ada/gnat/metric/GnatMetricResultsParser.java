@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.utils.SonarException;
 
 import com.echosource.ada.ResourcesBag;
@@ -90,6 +91,64 @@ public class GnatMetricResultsParser implements BatchExtension {
     if (value != null) {
       resourcesBag.add(value, metric, file);
     }
+  }
+
+  /**
+   * Adds the measure if the given metrics isn't already present on this resource.
+   * 
+   * @param file
+   * @param metric
+   * @param value
+   */
+  private void addMeasureIfNecessary(AdaFile file, Metric metric, double value) {
+    Double measure = resourcesBag.getMeasure(metric, file);
+    if (measure == null || measure == 0) {
+      resourcesBag.add(value, metric, file);
+    }
+  }
+
+  /**
+   * Collects the given class measures and launches {@see #collectFunctionMeasures(MethodNode, AdaFile)} for all its descendant.
+   * 
+   * @param file
+   *          the php related file
+   * @param classNode
+   *          representing the class in the report file
+   * @param methodComplexityDistribution
+   */
+  private void collectClassMeasures(UnitNode classNode, AdaFile file, RangeDistributionBuilder methodComplexityDistribution) {
+    // addMeasureIfNecessary(file, CoreMetrics.LINES, classNode.getLinesNumber());
+    // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, classNode.getCommentLineNumber());
+    // addMeasureIfNecessary(file, CoreMetrics.NCLOC, classNode.getCodeLinesNumber());
+    // Adds one class to this file
+    addMeasure(file, CoreMetrics.CLASSES, 1.0);
+    // for all methods in this class.
+    // List<MethodNode> methodes = classNode.getMethodes();
+    // if (methodes != null && !methodes.isEmpty()) {
+    // for (MethodNode methodNode : methodes) {
+    // collectMethodMeasures(methodNode, file);
+    // methodComplexityDistribution.add(methodNode.getComplexity());
+    // }
+    // }
+  }
+
+  /**
+   * Collects the given function measures.
+   * 
+   * @param file
+   *          the php related file
+   * @param functionNode
+   *          representing the class in the report file
+   * @param methodComplexityDistribution
+   */
+  private void collectFunctionsMeasures(MetricNode functionNode, AdaFile file, RangeDistributionBuilder methodComplexityDistribution) {
+    // addMeasureIfNecessary(file, CoreMetrics.LINES, functionNode.getLinesNumber());
+    // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, functionNode.getCommentLineNumber());
+    // addMeasureIfNecessary(file, CoreMetrics.NCLOC, functionNode.getCodeLinesNumber());
+    // // Adds one class to this file
+    // addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
+    // addMeasure(file, CoreMetrics.COMPLEXITY, functionNode.getComplexity());
+    methodComplexityDistribution.add(functionNode.getValue());
   }
 
   /**
