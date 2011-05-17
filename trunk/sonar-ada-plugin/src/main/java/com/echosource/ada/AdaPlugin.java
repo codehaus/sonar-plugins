@@ -3,6 +3,7 @@ package com.echosource.ada;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
@@ -14,6 +15,9 @@ import com.echosource.ada.gnat.metric.GnatConfiguration;
 import com.echosource.ada.gnat.metric.GnatMetricExecutor;
 import com.echosource.ada.gnat.metric.GnatMetricResultsParser;
 import com.echosource.ada.gnat.metric.GnatMetricSensor;
+import com.echosource.ada.lexer.PageLexer;
+import com.echosource.ada.lexer.PageLineCounter;
+import com.echosource.ada.lexer.PageScanner;
 import com.echosource.ada.rules.AdaProfile;
 import com.echosource.ada.rules.AdaProfileExporter;
 import com.echosource.ada.rules.AdaProfileImporter;
@@ -59,9 +63,9 @@ public class AdaPlugin implements Plugin {
    * 
    * @see org.sonar.api.Plugin#getExtensions()
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public List getExtensions() {
-    List extensions = new ArrayList();
+  public List<Class<? extends Extension>> getExtensions() {
+
+    List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
 
     extensions.add(Ada.class);
     extensions.add(AdaSourceImporter.class);
@@ -73,6 +77,10 @@ public class AdaPlugin implements Plugin {
     extensions.add(GnatMetricExecutor.class);
     extensions.add(GnatMetricResultsParser.class);
     extensions.add(GnatConfiguration.class);
+
+    extensions.add(PageLineCounter.class);
+    extensions.add(PageScanner.class);
+    extensions.add(PageLexer.class);
 
     extensions.add(GnatMetricSensor.class);
     extensions.add(AdaCpdMapping.class);
