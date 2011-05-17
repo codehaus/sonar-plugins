@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.echosource.ada;
+package org.sonar.plugins.ada;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.rules;
+package org.sonar.plugins.ada.rules;
 
 import java.io.File;
 import java.io.InputStream;
@@ -30,7 +30,7 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleRepository;
 import org.sonar.api.rules.XMLRuleParser;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * The Class AdaRuleRepository handles ruleset and profile import and export

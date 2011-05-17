@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.core;
+package org.sonar.plugins.ada.core;
 
 import java.io.File;
 import java.util.List;
@@ -28,7 +28,7 @@ import net.sourceforge.pmd.cpd.Tokenizer;
 import org.sonar.api.batch.AbstractCpdMapping;
 import org.sonar.api.resources.Language;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * The Class AdaCpdMapping.

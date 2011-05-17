@@ -1,4 +1,4 @@
-package com.echosource.ada.rules;
+package org.sonar.plugins.ada.rules;
 
 import java.io.Reader;
 
@@ -18,7 +18,7 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * @author Akram Ben Aissi

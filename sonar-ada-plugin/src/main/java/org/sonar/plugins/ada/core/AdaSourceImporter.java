@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.core;
+package org.sonar.plugins.ada.core;
 
 import java.io.File;
 import java.util.List;
@@ -29,7 +29,7 @@ import org.sonar.api.batch.AbstractSourceImporter;
 import org.sonar.api.batch.Phase;
 import org.sonar.api.resources.Project;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * The AdaSourceImporter is in charge of analysing and loading valid ada files. All source files under source folder and test source folder

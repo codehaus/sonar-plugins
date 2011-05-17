@@ -1,4 +1,4 @@
-package com.echosource.ada.gnat.metric;
+package org.sonar.plugins.ada.gnat.metric;
 
 import static org.sonar.api.measures.CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION;
 import static org.sonar.api.measures.CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION;
@@ -25,18 +25,18 @@ import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.SonarException;
 
-import com.echosource.ada.Ada;
-import com.echosource.ada.ResourcesBag;
-import com.echosource.ada.core.AdaFile;
-import com.echosource.ada.gnat.metric.xml.FileNode;
-import com.echosource.ada.gnat.metric.xml.GlobalNode;
-import com.echosource.ada.gnat.metric.xml.MetricNode;
-import com.echosource.ada.gnat.metric.xml.UnitNode;
-import com.echosource.ada.lexer.AdaSourceCode;
-import com.echosource.ada.lexer.Node;
-import com.echosource.ada.lexer.PageLexer;
-import com.echosource.ada.lexer.PageLineCounter;
-import com.echosource.ada.lexer.PageScanner;
+import org.sonar.plugins.ada.Ada;
+import org.sonar.plugins.ada.ResourcesBag;
+import org.sonar.plugins.ada.core.AdaFile;
+import org.sonar.plugins.ada.gnat.metric.xml.FileNode;
+import org.sonar.plugins.ada.gnat.metric.xml.GlobalNode;
+import org.sonar.plugins.ada.gnat.metric.xml.MetricNode;
+import org.sonar.plugins.ada.gnat.metric.xml.UnitNode;
+import org.sonar.plugins.ada.lexer.AdaSourceCode;
+import org.sonar.plugins.ada.lexer.Node;
+import org.sonar.plugins.ada.lexer.PageLexer;
+import org.sonar.plugins.ada.lexer.PageLineCounter;
+import org.sonar.plugins.ada.lexer.PageScanner;
 
 /**
  * @author Akram Ben Aissi

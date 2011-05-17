@@ -1,4 +1,4 @@
-package com.echosource.ada.core;
+package org.sonar.plugins.ada.core;
 
 import java.util.List;
 
