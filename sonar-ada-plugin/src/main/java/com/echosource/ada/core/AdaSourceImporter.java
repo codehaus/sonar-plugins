@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.AbstractSourceImporter;
 import org.sonar.api.batch.Phase;
+import org.sonar.api.resources.Project;
 
 import com.echosource.ada.Ada;
 
@@ -40,18 +41,20 @@ public class AdaSourceImporter extends AbstractSourceImporter {
   /** The logger. */
   private static final Logger LOG = LoggerFactory.getLogger(AdaSourceImporter.class);
 
+  private Project project;
+
   /**
    * Instantiates a new php source importer.
    */
-  public AdaSourceImporter() {
+  public AdaSourceImporter(Project project) {
     super(Ada.INSTANCE);
+    this.project = project;
   }
 
-  @Override
   protected AdaFile createResource(File file, List<File> sourceDirs, boolean unitTest) {
-    LOG.debug("Importing source files from " + sourceDirs);
-    super.createResource(file, sourceDirs, unitTest);
-    return file != null ? AdaFile.fromIOFile(file, sourceDirs, unitTest) : null;
+    String absolutePath = file.getAbsolutePath();
+    LOG.debug("Creating ada file " + absolutePath);
+    return AdaFile.fromAbsolute(project, absolutePath);
   }
 
   @Override

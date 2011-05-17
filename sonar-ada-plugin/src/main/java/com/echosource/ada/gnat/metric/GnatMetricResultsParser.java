@@ -37,7 +37,7 @@ import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.utils.SonarException;
 
 import com.echosource.ada.ResourcesBag;
-import com.echosource.ada.core.AdaFile;
+import com.echosource.ada.core.AdaPackage;
 import com.echosource.ada.gnat.metric.xml.FileNode;
 import com.echosource.ada.gnat.metric.xml.GlobalNode;
 import com.echosource.ada.gnat.metric.xml.MetricNode;
@@ -54,11 +54,11 @@ public class GnatMetricResultsParser implements BatchExtension {
   private static final Logger LOG = LoggerFactory.getLogger(GnatMetricResultsParser.class);
 
   /** Resources bag to store metrics and their values. */
-  private ResourcesBag<AdaFile> resourcesBag;
+  private ResourcesBag<AdaPackage> resourcesBag;
 
   /** Default constructor */
   public GnatMetricResultsParser() {
-    this.resourcesBag = new ResourcesBag<AdaFile>();
+    this.resourcesBag = new ResourcesBag<AdaPackage>();
   }
 
   /**
@@ -87,7 +87,7 @@ public class GnatMetricResultsParser implements BatchExtension {
   }
 
   /** If the given value is not null, the metric, resource and value will be associated */
-  private void addMeasure(AdaFile file, Metric metric, Double value) {
+  private void addMeasure(AdaPackage file, Metric metric, Double value) {
     if (value != null) {
       resourcesBag.add(value, metric, file);
     }
@@ -101,7 +101,7 @@ public class GnatMetricResultsParser implements BatchExtension {
    * @param unitNode
    *          the method node
    */
-  private void collectMethodMeasures(UnitNode unitNode, AdaFile file) {
+  private void collectMethodMeasures(UnitNode unitNode, AdaPackage file) {
     // Adds one method to this file
     addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
     // addMeasure(file, CoreMetrics.COMPLEXITY, unitNode.getComplexity());
