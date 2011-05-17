@@ -1,6 +1,5 @@
 package com.echosource.ada.gnat.metric;
 
-import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -16,22 +15,30 @@ import com.echosource.ada.Ada;
 public class GnatMetricSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(GnatMetricSensor.class);
-  private static final String ANALYZE_ONLY_KEY = "sonar.dynamicAnalysis";
-  private static final String REPORT_FILE_KEY = "metrics.xml";
 
   private GnatMetricExecutor executor;
   private GnatMetricResultsParser parser;
+
+  /**
+   * @param executor
+   * @param parser
+   */
+  public GnatMetricSensor(GnatMetricExecutor executor, GnatMetricResultsParser parser) {
+    super();
+    this.executor = executor;
+    this.parser = parser;
+  }
 
   /**
    * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
    */
   public void analyse(Project project, SensorContext context) {
     try {
-      Configuration configuration = project.getConfiguration();
-      if ( !configuration.getBoolean(ANALYZE_ONLY_KEY)) {
+      GnatConfiguration configuration = executor.getConfiguration();
+      if ( !configuration.isAnalyzeOnly()) {
         executor.execute();
       }
-      parser.parse(configuration.getString(REPORT_FILE_KEY));
+      parser.parse(configuration.getReportFile());
     } catch (SonarException e) {
       LOG.error("Error occured while launching gnat metric sensor", e);
     }

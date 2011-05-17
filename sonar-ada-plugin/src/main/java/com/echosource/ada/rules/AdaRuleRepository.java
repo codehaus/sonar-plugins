@@ -21,6 +21,7 @@
 package com.echosource.ada.rules;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +57,14 @@ public final class AdaRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    rules.addAll(parser.parse(getClass().getResourceAsStream("/com/echosource/ada/rules.xml")));
+    InputStream inputStream = getClass().getResourceAsStream("/com/echosource/ada/rules.xml");
+    List<Rule> parsedRules = parser.parse(inputStream);
+    rules.addAll(parsedRules);
     // Gives the ability for the user to extends system rules withs its own rules.
     // user rules must be set in SONAR_HOME/extensions/rules/REPOSITORY_KEY/*.xml
     for (File userExtensionXml : fileSystem.getExtensions(REPOSITORY_KEY, "xml")) {
-      rules.addAll(parser.parse(userExtensionXml));
+      List<Rule> userRules = parser.parse(userExtensionXml);
+      rules.addAll(userRules);
     }
     return rules;
   }

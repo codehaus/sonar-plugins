@@ -323,7 +323,7 @@ public class GnatMetricResultsParser implements BatchExtension {
   /**
    * Parses the pdepend report file.
    */
-  private void parse(File file) {
+  public void parse(File file) {
     try {
       LOG.info("Collecting measures...");
       collectMeasures(file);

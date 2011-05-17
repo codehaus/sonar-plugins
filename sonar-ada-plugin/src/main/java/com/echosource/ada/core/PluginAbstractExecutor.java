@@ -75,13 +75,13 @@ public abstract class PluginAbstractExecutor implements BatchExtension {
       // Gets the tool command line
       List<String> commandLine = getCommandLine();
       ProcessBuilder builder = new ProcessBuilder(commandLine);
-      LOG.info("Execute " + getExecutedTool() + " with command '{}'", prettyPrint(commandLine));
+      LOG.info("Execute " + getExecutable() + " with command '{}'", prettyPrint(commandLine));
       // Starts the process
       Process process = builder.start();
       // And handles it's normal and error stream in separated threads.
       new AsyncPipe(process.getInputStream(), System.out).start();
       new AsyncPipe(process.getErrorStream(), System.err).start();
-      LOG.info(getExecutedTool() + " ended with returned code '{}'.", process.waitFor());
+      LOG.info(getExecutable() + " ended with returned code '{}'.", process.waitFor());
     } catch (IOException e) {
       LOG.error("Can't execute the external tool", e);
       throw new SonarException(e);
@@ -121,5 +121,5 @@ public abstract class PluginAbstractExecutor implements BatchExtension {
    * 
    * @return the executed tool
    */
-  protected abstract String getExecutedTool();
+  protected abstract String getExecutable();
 }
