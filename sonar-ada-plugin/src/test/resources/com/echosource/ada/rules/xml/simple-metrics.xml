@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+<global>
+   <file name="d:\projets\sonar-ada-plugin\math-ada-test\src\main\ada\akram\helloworld.adb">
+      <metric name="all_lines">6</metric>
+      <metric name="code_lines">5</metric>
+      <metric name="comment_lines">0</metric>
+      <metric name="eol_comments">0</metric>
+      <metric name="comment_percentage">0.00</metric>
+      <metric name="blank_lines">1</metric>
+      <unit name="HelloWorld" kind="procedure body" line="3" col="1">
+         <metric name="all_lines">4</metric>
+         <metric name="code_lines">4</metric>
+         <metric name="comment_lines">0</metric>
+         <metric name="eol_comments">0</metric>
+         <metric name="comment_percentage">0.00</metric>
+         <metric name="blank_lines">0</metric>
+         <metric name="public_subprograms">1</metric>
+         <metric name="all_subprograms">1</metric>
+         <metric name="all_stmts">1</metric>
+         <metric name="all_dcls">1</metric>
+         <metric name="construct_nesting">1</metric>
+         <metric name="lsloc">2</metric>
+         <metric name="statement_complexity">1</metric>
+         <metric name="short_circuit_complexity">0</metric>
+         <metric name="cyclomatic_complexity">1</metric>
+         <metric name="essential_complexity">1</metric>
+         <metric name="max_loop_nesting">0</metric>
+         <metric name="extra_exit_points">0</metric>
+      </unit>
+   </file>
+   <file name="d:\projets\sonar-ada-plugin\math-ada-test\src\main\ada\akram\sort.adb">
+      <metric name="all_lines">46</metric>
+      <metric name="code_lines">20</metric>
+      <metric name="comment_lines">12</metric>
+      <metric name="eol_comments">0</metric>
+      <metric name="comment_percentage">37.50</metric>
+      <metric name="blank_lines">14</metric>
+      <unit name="SORT" kind="package body" line="2" col="1">
+         <metric name="all_lines">45</metric>
+         <metric name="code_lines">20</metric>
+         <metric name="comment_lines">12</metric>
+         <metric name="eol_comments">0</metric>
+         <metric name="comment_percentage">37.50</metric>
+         <metric name="blank_lines">13</metric>
+         <metric name="all_subprograms">1</metric>
+         <metric name="all_stmts">8</metric>
+         <metric name="all_dcls">7</metric>
+         <metric name="unit_nesting">1</metric>
+         <metric name="construct_nesting">5</metric>
+         <metric name="lsloc">15</metric>
+         <unit name="SORT" kind="procedure body" line="13" col="4">
+            <metric name="all_lines">32</metric>
+            <metric name="code_lines">18</metric>
+            <metric name="comment_lines">5</metric>
+            <metric name="eol_comments">0</metric>
+            <metric name="comment_percentage">21.73</metric>
+            <metric name="blank_lines">9</metric>
+            <metric name="all_stmts">8</metric>
+            <metric name="all_dcls">6</metric>
+            <metric name="construct_nesting">4</metric>
+            <metric name="lsloc">14</metric>
+            <metric name="statement_complexity">5</metric>
+            <metric name="short_circuit_complexity">0</metric>
+            <metric name="cyclomatic_complexity">5</metric>
+            <metric name="essential_complexity">1</metric>
+            <metric name="max_loop_nesting">2</metric>
+            <metric name="extra_exit_points">0</metric>
+         </unit>
+      </unit>
+   </file>
+   <file name="d:\projets\sonar-ada-plugin\math-ada-test\src\main\ada\akram\sort.ads">
+      <metric name="all_lines">52</metric>
+      <metric name="code_lines">11</metric>
+      <metric name="comment_lines">20</metric>
+      <metric name="eol_comments">0</metric>
+      <metric name="comment_percentage">64.51</metric>
+      <metric name="blank_lines">21</metric>
+      <unit name="SORT" kind="generic package" line="18" col="1">
+         <metric name="all_lines">35</metric>
+         <metric name="code_lines">10</metric>
+         <metric name="comment_lines">10</metric>
+         <metric name="eol_comments">0</metric>
+         <metric name="comment_percentage">50.00</metric>
+         <metric name="blank_lines">15</metric>
+         <metric name="public_subprograms">1</metric>
+         <metric name="all_stmts">0</metric>
+         <metric name="all_dcls">16</metric>
+         <metric name="unit_nesting">1</metric>
+         <metric name="construct_nesting">1</metric>
+         <metric name="lsloc">16</metric>
+      </unit>
+   </file>
+   <file name="d:\projets\sonar-ada-plugin\math-ada-test\src\main\ada\helloworld.adb">
+      <metric name="all_lines">6</metric>
+      <metric name="code_lines">5</metric>
+      <metric name="comment_lines">0</metric>
+      <metric name="eol_comments">0</metric>
+      <metric name="comment_percentage">0.00</metric>
+      <metric name="blank_lines">1</metric>
+      <unit name="HelloWorld" kind="procedure body" line="3" col="1">
+         <metric name="all_lines">4</metric>
+         <metric name="code_lines">4</metric>
+         <metric name="comment_lines">0</metric>
+         <metric name="eol_comments">0</metric>
+         <metric name="comment_percentage">0.00</metric>
+         <metric name="blank_lines">0</metric>
+         <metric name="public_subprograms">1</metric>
+         <metric name="all_subprograms">1</metric>
+         <metric name="all_stmts">1</metric>
+         <metric name="all_dcls">1</metric>
+         <metric name="construct_nesting">1</metric>
+         <metric name="lsloc">2</metric>
+         <metric name="statement_complexity">1</metric>
+         <metric name="short_circuit_complexity">0</metric>
+         <metric name="cyclomatic_complexity">1</metric>
+         <metric name="essential_complexity">1</metric>
+         <metric name="max_loop_nesting">0</metric>
+         <metric name="extra_exit_points">0</metric>
+      </unit>
+   </file>
+   <file name="d:\projets\sonar-ada-plugin\math-ada-test\src\main\ada\sort.adb">
+      <metric name="all_lines">46</metric>
+      <metric name="code_lines">20</metric>
+      <metric name="comment_lines">12</metric>
+      <metric name="eol_comments">0</metric>
+      <metric name="comment_percentage">37.50</metric>
+      <metric name="blank_lines">14</metric>
+      <unit name="SORT" kind="package body" line="2" col="1">
+         <metric name="all_lines">45</metric>
+         <metric name="code_lines">20</metric>
+         <metric name="comment_lines">12</metric>
+         <metric name="eol_comments">0</metric>
+         <metric name="comment_percentage">37.50</metric>
+         <metric name="blank_lines">13</metric>
+         <metric name="all_subprograms">1</metric>
+         <metric name="all_stmts">8</metric>
+         <metric name="all_dcls">7</metric>
+         <metric name="unit_nesting">1</metric>
+         <metric name="construct_nesting">5</metric>
+         <metric name="lsloc">15</metric>
+         <unit name="SORT" kind="procedure body" line="13" col="4">
+            <metric name="all_lines">32</metric>
+            <metric name="code_lines">18</metric>
+            <metric name="comment_lines">5</metric>
+            <metric name="eol_comments">0</metric>
+            <metric name="comment_percentage">21.73</metric>
+            <metric name="blank_lines">9</metric>
+            <metric name="all_stmts">8</metric>
+            <metric name="all_dcls">6</metric>
+            <metric name="construct_nesting">4</metric>
+            <metric name="lsloc">14</metric>
+            <metric name="statement_complexity">5</metric>
+            <metric name="short_circuit_complexity">0</metric>
+            <metric name="cyclomatic_complexity">5</metric>
+            <metric name="essential_complexity">1</metric>
+            <metric name="max_loop_nesting">2</metric>
+            <metric name="extra_exit_points">0</metric>
+         </unit>
+      </unit>
+   </file>
+   <file name="d:\projets\sonar-ada-plugin\math-ada-test\src\main\ada\sort.ads">
+      <metric name="all_lines">52</metric>
+      <metric name="code_lines">11</metric>
+      <metric name="comment_lines">20</metric>
+      <metric name="eol_comments">0</metric>
+      <metric name="comment_percentage">64.51</metric>
+      <metric name="blank_lines">21</metric>
+      <unit name="SORT" kind="generic package" line="18" col="1">
+         <metric name="all_lines">35</metric>
+         <metric name="code_lines">10</metric>
+         <metric name="comment_lines">10</metric>
+         <metric name="eol_comments">0</metric>
+         <metric name="comment_percentage">50.00</metric>
+         <metric name="blank_lines">15</metric>
+         <metric name="public_subprograms">1</metric>
+         <metric name="all_stmts">0</metric>
+         <metric name="all_dcls">16</metric>
+         <metric name="unit_nesting">1</metric>
+         <metric name="construct_nesting">1</metric>
+         <metric name="lsloc">16</metric>
+      </unit>
+   </file>
+   <metric name="all_lines">208</metric>
+   <metric name="code_lines">72</metric>
+   <metric name="comment_lines">64</metric>
+   <metric name="eol_comments">0</metric>
+   <metric name="comment_percentage">47.05</metric>
+   <metric name="blank_lines">72</metric>
+   <metric name="average_lines_in_bodies">11.00</metric>
+   <metric name="all_stmts">18</metric>
+   <metric name="all_dcls">48</metric>
+   <metric name="lsloc">66</metric>
+   <metric name="public_subprograms">4</metric>
+   <metric name="all_subprograms">4</metric>
+   <metric name="public_types">0</metric>
+   <metric name="all_types">0</metric>
+   <metric name="average_complexity">3.00</metric>
+</global>
