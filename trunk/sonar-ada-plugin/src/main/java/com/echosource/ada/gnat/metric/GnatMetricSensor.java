@@ -26,7 +26,7 @@ import org.sonar.api.utils.SonarException;
 
 import com.echosource.ada.Ada;
 import com.echosource.ada.ResourcesBag;
-import com.echosource.ada.core.AdaFile;
+import com.echosource.ada.core.AdaPackage;
 import com.echosource.ada.gnat.metric.xml.FileNode;
 import com.echosource.ada.gnat.metric.xml.GlobalNode;
 import com.echosource.ada.gnat.metric.xml.MetricNode;
@@ -61,7 +61,7 @@ public class GnatMetricSensor implements Sensor {
   private GnatMetricResultsParser parser;
   private Project project;
 
-  private ResourcesBag<AdaFile> resourcesBag;
+  private ResourcesBag<AdaPackage> resourcesBag;
   private Set<Metric> metrics;
 
   /**
@@ -73,7 +73,7 @@ public class GnatMetricSensor implements Sensor {
     this.project = project;
     this.executor = executor;
     this.parser = parser;
-    resourcesBag = new ResourcesBag<AdaFile>();
+    resourcesBag = new ResourcesBag<AdaPackage>();
     metrics = new HashSet<Metric>();
   }
 
@@ -97,7 +97,7 @@ public class GnatMetricSensor implements Sensor {
    */
   private void analyse(Project project, SensorContext context, GlobalNode node) {
     for (FileNode file : node.getFiles()) {
-      AdaFile currentResourceFile = AdaFile.fromAbsolutePath(file.getName(), project);
+      AdaPackage currentResourceFile = AdaPackage.fromAbsolutePath(file.getName(), project);
       collectFileMeasures(context, file, currentResourceFile);
     }
   }
@@ -116,7 +116,7 @@ public class GnatMetricSensor implements Sensor {
     GlobalNode globalNode = parser.getGlobalNode(reportFile);
     for (FileNode fileNode : globalNode.getFiles()) {
       String fileName = fileNode.getName();
-      AdaFile currentResourceFile = AdaFile.fromAbsolutePath(fileName, project);
+      AdaPackage currentResourceFile = AdaPackage.fromAbsolutePath(fileName, project);
       if (currentResourceFile != null) {
         collectFileMeasures(context, fileNode, currentResourceFile);
       } else {
@@ -133,7 +133,7 @@ public class GnatMetricSensor implements Sensor {
    */
   private void saveMeasures(SensorContext context) {
     LOG.info("Saving measures...");
-    for (AdaFile resource : resourcesBag.getResources()) {
+    for (AdaPackage resource : resourcesBag.getResources()) {
       for (Metric metric : resourcesBag.getMetrics(resource)) {
         if (metrics.contains(metric)) {
           Double measure = resourcesBag.getMeasure(metric, resource);
@@ -155,13 +155,13 @@ public class GnatMetricSensor implements Sensor {
    * Saves on measure in the context. One value is associated with a metric and a resource.
    * 
    * @param resource
-   *          Can be a AdaFile or a AdaPackage
+   *          Can be a AdaPackage or a AdaDirectory
    * @param metric
    *          the metric evaluated
    * @param measure
    *          the corresponding value
    */
-  private void saveMeasure(SensorContext context, AdaFile resource, Metric metric, Double measure) {
+  private void saveMeasure(SensorContext context, AdaPackage resource, Metric metric, Double measure) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("Saving " + metric.getName() + " for resource " + resource.getKey() + " with value " + measure);
     }
@@ -169,14 +169,14 @@ public class GnatMetricSensor implements Sensor {
   }
 
   /** If the given value is not null, the metric, resource and value will be associated */
-  private void addMeasure(AdaFile file, Metric metric, Double value) {
+  private void addMeasure(AdaPackage file, Metric metric, Double value) {
     if (value != null) {
       resourcesBag.add(value, metric, file);
     }
   }
 
   /**
-   * Collect the fiven php file measures and launches {@see #collectClassMeasures(ClassNode, AdaFile)} for all its descendant. Indeed even
+   * Collect the fiven php file measures and launches {@see #collectClassMeasures(ClassNode, AdaPackage)} for all its descendant. Indeed even
    * if it's not a good practice it isn't illegal to have more than one public class in one php file.
    * 
    * @param file
@@ -184,7 +184,7 @@ public class GnatMetricSensor implements Sensor {
    * @param fileNode
    *          the node representing the file in the report file.
    */
-  private void collectFileMeasures(SensorContext context, FileNode fileNode, AdaFile file) {
+  private void collectFileMeasures(SensorContext context, FileNode fileNode, AdaPackage file) {
     List<UnitNode> adaPackages = new ArrayList<UnitNode>();
     List<UnitNode> adaFunctionsOrProcedures = new ArrayList<UnitNode>();
     for (MetricNode metricNode : fileNode.getMetrics()) {
@@ -250,7 +250,7 @@ public class GnatMetricSensor implements Sensor {
    *          representing the class in the report file
    * @param mcd
    */
-  private void collectFunctionsMeasures(UnitNode functionNode, AdaFile file, RangeDistributionBuilder mcd) {
+  private void collectFunctionsMeasures(UnitNode functionNode, AdaPackage file, RangeDistributionBuilder mcd) {
     // addMeasureIfNecessary(file, CoreMetrics.LINES, functionNode.getLinesNumber());
     // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, functionNode.getCommentLineNumber());
     // addMeasureIfNecessary(file, CoreMetrics.NCLOC, functionNode.getCodeLinesNumber());
@@ -275,7 +275,7 @@ public class GnatMetricSensor implements Sensor {
    * @param metric
    * @param value
    */
-  private void addMeasureIfNecessary(AdaFile file, Metric metric, double value) {
+  private void addMeasureIfNecessary(AdaPackage file, Metric metric, double value) {
     Double measure = resourcesBag.getMeasure(metric, file);
     if (measure == null || measure == 0) {
       resourcesBag.add(value, metric, file);
@@ -283,7 +283,7 @@ public class GnatMetricSensor implements Sensor {
   }
 
   /**
-   * Collects the given class measures and launches {@see #collectFunctionMeasures(MethodNode, AdaFile)} for all its descendant.
+   * Collects the given class measures and launches {@see #collectFunctionMeasures(MethodNode, AdaPackage)} for all its descendant.
    * 
    * @param file
    *          the php related file
@@ -291,7 +291,7 @@ public class GnatMetricSensor implements Sensor {
    *          representing the class in the report file
    * @param methodComplexityDistribution
    */
-  private void collectClassMeasures(UnitNode classNode, AdaFile file, RangeDistributionBuilder methodComplexityDistribution) {
+  private void collectClassMeasures(UnitNode classNode, AdaPackage file, RangeDistributionBuilder methodComplexityDistribution) {
     // addMeasureIfNecessary(file, CoreMetrics.LINES, classNode.getLinesNumber());
     // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, classNode.getCommentLineNumber());
     // addMeasureIfNecessary(file, CoreMetrics.NCLOC, classNode.getCodeLinesNumber());

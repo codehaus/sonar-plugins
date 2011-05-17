@@ -46,8 +46,8 @@ public class AdaCpdMapping extends AbstractCpdMapping {
    * @see org.sonar.api.batch.AbstractCpdMapping#createResource(java.io.File, java.util.List)
    */
   @Override
-  public AdaFile createResource(File file, List<File> sourceDirs) {
-    return AdaFile.fromIOFile(file, sourceDirs, false);
+  public AdaPackage createResource(File file, List<File> sourceDirs) {
+    return AdaPackage.fromIOFile(file, sourceDirs, false);
   }
 
   /**
