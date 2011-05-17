@@ -41,20 +41,17 @@ public class AdaSourceImporter extends AbstractSourceImporter {
   /** The logger. */
   private static final Logger LOG = LoggerFactory.getLogger(AdaSourceImporter.class);
 
-  private Project project;
-
   /**
-   * Instantiates a new php source importer.
+   * Instantiates the source importer.
    */
   public AdaSourceImporter(Project project) {
     super(Ada.INSTANCE);
-    this.project = project;
   }
 
   protected AdaFile createResource(File file, List<File> sourceDirs, boolean unitTest) {
     String absolutePath = file.getAbsolutePath();
     LOG.debug("Creating ada file " + absolutePath);
-    return AdaFile.fromAbsolute(project, absolutePath);
+    return file != null ? AdaFile.fromIOFile(file, sourceDirs, unitTest) : null;
   }
 
   @Override
