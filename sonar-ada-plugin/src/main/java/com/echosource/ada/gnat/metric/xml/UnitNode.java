@@ -28,15 +28,20 @@ public class UnitNode {
   @XStreamAsAttribute
   private String kind;
 
-  private UnitNode unit;
+  @XStreamImplicit
+  private List<UnitNode> units;
 
   /**
    * Line on which the unit is located.
    */
+  @XStreamAlias("line")
+  @XStreamAsAttribute
   private Double line;
   /**
    * Column on which unit is located.
    */
+  @XStreamAlias("col")
+  @XStreamAsAttribute
   private Double column;
   /**
    * Metrics related to the unit.
@@ -81,9 +86,10 @@ public class UnitNode {
   }
 
   /**
-   * @return the unit
+   * @return the units
    */
-  public UnitNode getUnit() {
-    return unit;
+  public List<UnitNode> getUnits() {
+    return units;
   }
+
 }
