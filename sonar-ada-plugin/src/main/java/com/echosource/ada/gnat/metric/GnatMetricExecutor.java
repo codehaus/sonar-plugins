@@ -67,7 +67,48 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
       result.add(configuration.getIgnoreDirectoryModifier() + ignoreDirectories);
     }
     result.addAll(configuration.getSourceFiles());
+    addIncludesAndExtraArguments(result);
+
     return result;
+  }
+
+  /**
+   * @param result
+   */
+  private void addIncludesAndExtraArguments(List<String> result) {
+    // Add include directories. Copy the directories to include in a ArrayList
+    List<String> includeDirectories = new ArrayList<String>(configuration.getIncludeDirectories());
+    // if the option to automatically include source directories is set, we add the source directories to directories to include.
+    if (configuration.isIncludeSourceDirectories()) {
+      includeDirectories.addAll(configuration.getAutomaticalyIncludedDirectories());
+    }
+
+    // The -cargs and -I option should be repeated for each directory to include.
+    String includeDirectoryModifier = configuration.getIncludeDirectoryModifier();
+    for (String include : includeDirectories) {
+      include(result, includeDirectoryModifier, include);
+    }
+
+    String includeLibraryModifier = configuration.getIncludeLibraryModifier();
+    for (String include : configuration.getIncludeLibraries()) {
+      include(result, includeLibraryModifier, include);
+    }
+
+    for (String argument : configuration.getExtraArguments()) {
+      result.add(argument);
+    }
+  }
+
+  /**
+   * @param result
+   * @param includeDirectoryModifier
+   * @param include
+   */
+  private void include(List<String> result, String includeDirectoryModifier, String include) {
+    String compilerArgumentModifier = configuration.getCompilerArgumentModifier();
+    result.add(compilerArgumentModifier);
+    result.add(includeDirectoryModifier);
+    result.add(include);
   }
 
   /**

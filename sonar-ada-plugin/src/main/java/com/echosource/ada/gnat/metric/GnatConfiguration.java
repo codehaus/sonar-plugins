@@ -54,6 +54,22 @@ public class GnatConfiguration implements BatchExtension {
   private static final String GNAT_DEFAULT_IGNORED_DIRECTORIES = null;
   private static final String GNAT_IGNORED_DIRECTORIES_KEY = "sonar.ada.ignored.directories";
 
+  private static final String GNAT_AUTO_INCLUDE_SOURCE_DIRS_KEY = "sonar.ada.automaticaly.include.source.directories";
+  private static final Boolean GNAT_AUTO_INCLUDE_SOURCE_DIRS_DEFAULT = Boolean.TRUE;
+
+  private static final String GNAT_COMPILER_ARGUMENT_MODIFIER_KEY = "sonar.ada.compiler.argument.modifier";
+  private static final String GNAT_DEFAULT_COMPILER_ARGUMENT_MODIFIER = "-cargs";
+
+  private static final String GNAT_COMPILER_EXTRA_ARGUMENTS_KEY = "sonar.ada.compiler.extra.arguments";
+
+  private static final String GNAT_INCLUDE_DIRECTORIES_KEY = "sonar.ada.include.directories";
+  private static final String GNAT_INCLUDE_DIRECTORY_MODIFIER_KEY = "sonar.ada.include.directory.modifier";
+  private static final String GNAT_DEFAULT_INCLUDE_DIRECTORY_MODIFIER = "-I";
+
+  private static final String GNAT_INCLUDE_LIBRARIES_KEY = "sonar.ada.include.libraries";
+  private static final String GNAT_INCLUDE_LIBRARY_MODIFIER_KEY = "sonar.ada.include.library.modifier";
+  private static final String GNAT_DEFAULT_INCLUDE_LIBRARY_MODIFIER = "-L";
+
   protected Project project;
   protected Configuration configuration;
 
@@ -87,6 +103,39 @@ public class GnatConfiguration implements BatchExtension {
 
   public boolean isAnalyzeOnly() {
     return project.getConfiguration().getBoolean(GNAT_ANALYZE_ONLY_KEY, GNAT_ANALYZE_ONLY_DEFAULT);
+  }
+
+  public boolean isIncludeSourceDirectories() {
+    return project.getConfiguration().getBoolean(GNAT_AUTO_INCLUDE_SOURCE_DIRS_KEY, GNAT_AUTO_INCLUDE_SOURCE_DIRS_DEFAULT);
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<String> getExtraArguments() {
+    return configuration.getList(GNAT_COMPILER_EXTRA_ARGUMENTS_KEY);
+  }
+
+  public List<String> getAutomaticalyIncludedDirectories() {
+    List<String> automaticallyIncludedDirectories = new ArrayList<String>();
+    List<File> sourceDirectories = project.getFileSystem().getSourceDirs();
+    for (File dir : sourceDirectories) {
+      automaticallyIncludedDirectories.add(dir.getAbsolutePath());
+      automaticallyIncludedDirectories.addAll(getAutomaticalyIncludedDirectories(dir));
+    }
+    return automaticallyIncludedDirectories;
+  }
+
+  private List<String> getAutomaticalyIncludedDirectories(File dir) {
+    List<String> dirs = new ArrayList<String>();
+    if (dir.isDirectory()) {
+      File[] files = dir.listFiles();
+      for (File file : files) {
+        if (file.isDirectory()) {
+          dirs.add(file.getAbsolutePath());
+          dirs.addAll(getAutomaticalyIncludedDirectories(file));
+        }
+      }
+    }
+    return dirs;
   }
 
   /**
@@ -133,6 +182,33 @@ public class GnatConfiguration implements BatchExtension {
       sourceFiles.add(file.getAbsolutePath());
     }
     return sourceFiles;
+  }
+
+  /**
+   * @return
+   */
+  public String getCompilerArgumentModifier() {
+    return configuration.getString(GNAT_COMPILER_ARGUMENT_MODIFIER_KEY, GNAT_DEFAULT_COMPILER_ARGUMENT_MODIFIER);
+  }
+
+  public String getIncludeDirectoryModifier() {
+    return configuration.getString(GNAT_INCLUDE_DIRECTORY_MODIFIER_KEY, GNAT_DEFAULT_INCLUDE_DIRECTORY_MODIFIER);
+  }
+
+  public String getIncludeLibraryModifier() {
+    return configuration.getString(GNAT_INCLUDE_LIBRARY_MODIFIER_KEY, GNAT_DEFAULT_INCLUDE_LIBRARY_MODIFIER);
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<String> getIncludeDirectories() {
+    return project.getConfiguration().getList(GNAT_INCLUDE_DIRECTORIES_KEY);
+
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<String> getIncludeLibraries() {
+    return project.getConfiguration().getList(GNAT_INCLUDE_LIBRARIES_KEY);
+
   }
 
   public String getIgnoredDirectories() {
