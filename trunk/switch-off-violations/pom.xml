@@ -13,7 +13,7 @@
   <packaging>sonar-plugin</packaging>
   <version>1.1-SNAPSHOT</version>
   <name>Sonar Switch Off Violations Plugin</name>
-
+  <description>Filter out chosen violations from analysis</description>
   <properties>
     <sonar.buildVersion>2.5</sonar.buildVersion>
   </properties>
