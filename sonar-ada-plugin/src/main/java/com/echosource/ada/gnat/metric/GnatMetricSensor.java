@@ -37,22 +37,33 @@ import com.echosource.ada.gnat.metric.xml.UnitNode;
  */
 public class GnatMetricSensor implements Sensor {
 
+  private static final String GNAT_METRIC_LSLOC = "lsloc";
+  private static final String GNAT_METRIC_GENERIC_PACKAGE = "generic package";
+  private static final String GNAT_METRIC_PACKAGE_BODY = "package body";
+  private static final String GNAT_METRIC_ALL_STMTS = "all_stmts";
+  private static final String GNAT_METRIC_COMMENT_PERCENTAGE = "comment_percentage";
+  private static final String GNAT_METRIC_EOL_COMMENTS = "eol_comments";
+  private static final String GNAT_METRIC_CYCLOMATIC_COMPLEXITY = "cyclomatic_complexity";
+  private static final String GNAT_METRIC_CODE_LINES = "code_lines";
+  private static final String GNAT_METRIC_COMMENT_LINES = "comment_lines";
+  private static final String GNAT_METRIC_ALL_LINES = "all_lines";
+
   private static final Logger LOG = LoggerFactory.getLogger(GnatMetricSensor.class);
 
   private final static Number[] FUNCTIONS_DISTRIB_BOTTOM_LIMITS = { 1, 2, 4, 6, 8, 10, 12 };
   private final static Number[] CLASSES_DISTRIB_BOTTOM_LIMITS = { 0, 5, 10, 20, 30, 60, 90 };
   private final static Map<String, Metric> METRICS_BY_TYPE_MAP = new HashMap<String, Metric>();
   static {
-    METRICS_BY_TYPE_MAP.put("all_lines", CoreMetrics.LINES);
-    METRICS_BY_TYPE_MAP.put("code_lines", CoreMetrics.NCLOC);
-    METRICS_BY_TYPE_MAP.put("comment_lines", CoreMetrics.COMMENT_LINES);
-    METRICS_BY_TYPE_MAP.put("eol_comments", CoreMetrics.COMMENT_BLANK_LINES);
-    METRICS_BY_TYPE_MAP.put("comment_percentage", CoreMetrics.COMMENT_LINES_DENSITY);
-    METRICS_BY_TYPE_MAP.put("all_stmts", CoreMetrics.STATEMENTS);
-    METRICS_BY_TYPE_MAP.put("cyclomatic_complexity", CoreMetrics.COMPLEXITY);
-    METRICS_BY_TYPE_MAP.put("package body", CoreMetrics.CLASSES);
-    METRICS_BY_TYPE_MAP.put("generic package", CoreMetrics.CLASSES);
-    METRICS_BY_TYPE_MAP.put("lsloc", CoreMetrics.NCLOC);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_ALL_LINES, CoreMetrics.LINES);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_CODE_LINES, CoreMetrics.NCLOC);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_COMMENT_LINES, CoreMetrics.COMMENT_LINES);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_EOL_COMMENTS, CoreMetrics.COMMENT_BLANK_LINES);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_COMMENT_PERCENTAGE, CoreMetrics.COMMENT_LINES_DENSITY);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_ALL_STMTS, CoreMetrics.STATEMENTS);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_CYCLOMATIC_COMPLEXITY, CoreMetrics.COMPLEXITY);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_PACKAGE_BODY, CoreMetrics.CLASSES);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_GENERIC_PACKAGE, CoreMetrics.CLASSES);
+    METRICS_BY_TYPE_MAP.put(GNAT_METRIC_LSLOC, CoreMetrics.NCLOC);
     // METRICS_BY_TYPE_MAP.put("blank_lines", CoreMetrics.COMMENT_BLANK_LINES);
   }
 
@@ -231,10 +242,10 @@ public class GnatMetricSensor implements Sensor {
   private void extractUnits(List<UnitNode> adaPackages, List<UnitNode> adaFunctionsOrProcedures, List<UnitNode> units) {
     for (UnitNode unit : units) {
       String kind = unit.getKind();
-      if ("package body".equals(kind) || "package".equals(kind)) {
+      if (adaPackages != null && (GNAT_METRIC_PACKAGE_BODY.equals(kind) || "package".equals(kind))) {
         adaPackages.add(unit);
       }
-      if ("procedure body".equals(kind) || "function body".equals(kind)) {
+      if (adaFunctionsOrProcedures != null && ("procedure body".equals(kind) || "function body".equals(kind))) {
         adaFunctionsOrProcedures.add(unit);
       }
       if (unit.getUnits() != null) {
@@ -250,12 +261,12 @@ public class GnatMetricSensor implements Sensor {
    */
   private void collectFunctionsMeasures(UnitNode unitNode, AdaFile file, RangeDistributionBuilder mcd, RangeDistributionBuilder ccd) {
     Map<String, Double> metrics = getMetricsMap(unitNode);
-    addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get("all_lines"));
-    addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, metrics.get("comment_lines"));
-    addMeasureIfNecessary(file, CoreMetrics.NCLOC, metrics.get("code_lines"));
+    addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get(GNAT_METRIC_ALL_LINES));
+    addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, metrics.get(GNAT_METRIC_COMMENT_LINES));
+    addMeasureIfNecessary(file, CoreMetrics.NCLOC, metrics.get(GNAT_METRIC_CODE_LINES));
 
     addMeasure(file, CoreMetrics.FUNCTIONS, 1.0);
-    Double cyclomaticComplexity = metrics.get("cyclomatic_complexity");
+    Double cyclomaticComplexity = metrics.get(GNAT_METRIC_CYCLOMATIC_COMPLEXITY);
     addMeasure(file, CoreMetrics.COMPLEXITY, cyclomaticComplexity);
     mcd.add(cyclomaticComplexity);
 
@@ -295,18 +306,21 @@ public class GnatMetricSensor implements Sensor {
    */
   private void collectPackagesMeasures(UnitNode packageNode, AdaFile file, RangeDistributionBuilder ccd) {
     Map<String, Double> metrics = getMetricsMap(packageNode);
-    addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get("all_lines"));
+    addMeasure(file, CoreMetrics.CLASSES, 1.0);
+    addMeasureIfNecessary(file, CoreMetrics.LINES, metrics.get(GNAT_METRIC_ALL_LINES));
+
     // addMeasureIfNecessary(file, CoreMetrics.COMMENT_LINES, classNode.getCommentLineNumber());
     // addMeasureIfNecessary(file, CoreMetrics.NCLOC, classNode.getCodeLinesNumber());
-    // Adds one class to this file
-    addMeasureIfNecessary(file, CoreMetrics.CLASSES, 1.0);
-    // for all methods in this class.
-    // List<MethodNode> methodes = classNode.getMethodes();
-    // if (methodes != null && !methodes.isEmpty()) {
-    // for (MethodNode methodNode : methodes) {
-    // collectMethodMeasures(methodNode, file);
-    // methodComplexityDistribution.add(methodNode.getComplexity());
-    // }
-    // }
+
+    // for all methods in this package
+    List<UnitNode> onePackage = new ArrayList<UnitNode>();
+    onePackage.add(packageNode);
+    List<UnitNode> functionsAndProcedures = new ArrayList<UnitNode>();
+    extractUnits(null, functionsAndProcedures, onePackage);
+    for (UnitNode functionOrProcedure : functionsAndProcedures) {
+      // collectMethodMeasures(methodNode, file);
+      Map<String, Double> functionMetrics = getMetricsMap(functionOrProcedure);
+      ccd.add(functionMetrics.get(GNAT_METRIC_CYCLOMATIC_COMPLEXITY));
+    }
   }
 }
