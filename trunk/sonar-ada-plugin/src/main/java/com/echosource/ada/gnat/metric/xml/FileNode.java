@@ -20,7 +20,8 @@ public class FileNode {
   @XStreamAsAttribute
   private String name;
 
-  private UnitNode unit;
+  @XStreamImplicit
+  private List<UnitNode> units;
 
   private CouplingNode coupling;
 
@@ -50,10 +51,10 @@ public class FileNode {
   }
 
   /**
-   * @return the unit
+   * @return the units
    */
-  public UnitNode getUnit() {
-    return unit;
+  public List<UnitNode> getUnits() {
+    return units;
   }
 
 }
