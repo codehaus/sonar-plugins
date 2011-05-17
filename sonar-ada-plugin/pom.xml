@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+    <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>6</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+  
+  <groupId>com.echosource.ada</groupId>
+  <artifactId>sonar-ada-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.1-SNAPSHOT</version>
+  <name>Ada Sonar Plugin</name>
+
+  <!-- optional -->
+  <description>Sonar plugin to analyze Ada source code</description>
+  <inceptionYear>2010</inceptionYear>
+  <organization>
+    <name>Echo Source</name>
+    <url>http://www.echosource.com</url>
+  </organization>
+ 
+  <developers>
+    <developer>
+      <id>akram</id>
+      <name>Akram Ben Aissi</name>
+      <email>aba@echosource.com</email>
+    </developer>
+  </developers>
+
+  <properties>
+    <sonar.version>2.3</sonar.version>
+    <sonar.pluginClass>com.echosource.ada.AdaPlugin</sonar.pluginClass>
+    <sonar.runtimeVersion>2.3</sonar.runtimeVersion>
+  </properties>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>2.3</version>
+    </dependency>
+    
+    <!-- add your dependencies here -->
+    
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>2.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.sonar</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>0.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginKey>ada</pluginKey>
+          <pluginClass>com.echosource.ada.AdaPlugin</pluginClass>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <profiles>
+  <profile>
+      <id>package</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <dependencies>
+              <dependency>
+                <groupId>yguard</groupId>
+                <artifactId>yguard</artifactId>
+                <version>2.1.0</version>
+                <scope>system</scope>
+                <systemPath>lib/yguard.jar</systemPath>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <configuration>
+                  <tasks>
+                    <property refid="maven.compile.classpath" name="mvn.classpath"></property>
+                    <!-- <echo message="Using Maven Classpath: ${mvn.classpath}" /> -->
+                    <taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" />
+                    <yguard>
+                      <!-- Input file and output file is the same. -->
+                      <inoutpair in="${project.build.directory}/${project.build.finalName}.jar"
+                        out="${project.build.directory}/${project.build.finalName}.jar" />
+                      <!-- Obfuscate classes plus string references. -->
+                      <rename logfile="${project.build.directory}/yguard.log.xml"
+                        replaceClassNameStrings="true">
+                        <!-- Keep the only class to be used for easy running and its public method main(). -->
+                        <keep>
+                          <class classes="public" methods="public">
+                            <patternset>
+                              <include name="**.*Profile" />
+                              <include name="**.PhpPlugin" />
+                            </patternset>
+                          </class>
+                        </keep>
+                      </rename>
+                      <!-- There are some external libraries used - Maven knows details. -->
+                      <externalclasses>
+                        <pathelement path="${mvn.classpath}" />
+                      </externalclasses>
+                    </yguard>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

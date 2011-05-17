@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<rules>
+  <rule key="com.echosource.ada.gnat.metric.rule1" priority="MAJOR">
+    <category name="Maintainability" />
+    <name>RC_DYNAMIC_ERROR</name>
+    <configKey>rulesets/RC_DYNAMIC_ERROR</configKey>
+    <description>:message</description>
+  </rule>
+  <rule key="com.echosource.ada.gnat.metric.rule2" priority="MAJOR">
+    <category name="Maintainability" />
+    <name>RC_DYNAMIC_ERROR</name>
+    <configKey>rulesets/RC_DYNAMIC_ERROR</configKey>
+    <description>:message</description>
+  </rule>
+  <rule key="com.echosource.ada.gnat.metric.rule3" priority="MAJOR">
+    <category name="Maintainability" />
+    <name>RC_DYNAMIC_ERROR</name>
+    <configKey>rulesets/RC_DYNAMIC_ERROR</configKey>
+    <description>:message</description>
+  </rule>
+  <rule key="com.echosource.ada.gnat.metric.rule4" priority="MAJOR">
+    <category name="Maintainability" />
+    <name>RC_DYNAMIC_ERROR</name>
+    <configKey>rulesets/RC_DYNAMIC_ERROR</configKey>
+    <description>:message</description>
+  </rule>
+</rules>
+
