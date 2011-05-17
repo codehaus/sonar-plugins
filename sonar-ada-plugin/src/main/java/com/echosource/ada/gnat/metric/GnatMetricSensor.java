@@ -5,6 +5,7 @@ import static org.sonar.api.measures.CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTIO
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,11 @@ import com.echosource.ada.gnat.metric.xml.FileNode;
 import com.echosource.ada.gnat.metric.xml.GlobalNode;
 import com.echosource.ada.gnat.metric.xml.MetricNode;
 import com.echosource.ada.gnat.metric.xml.UnitNode;
+import com.echosource.ada.lexer.AdaSourceCode;
+import com.echosource.ada.lexer.Node;
+import com.echosource.ada.lexer.PageLexer;
+import com.echosource.ada.lexer.PageLineCounter;
+import com.echosource.ada.lexer.PageScanner;
 
 /**
  * @author Akram Ben Aissi
@@ -69,7 +75,10 @@ public class GnatMetricSensor implements Sensor {
 
   private GnatMetricExecutor executor;
   private GnatMetricResultsParser parser;
+  private PageLexer lexer;
   private Project project;
+  private PageScanner scanner;
+  private PageLineCounter pageLineCounter;
 
   private ResourcesBag<AdaFile> resourcesBag;
   private Set<Metric> metrics;
@@ -78,11 +87,15 @@ public class GnatMetricSensor implements Sensor {
    * @param executor
    * @param parser
    */
-  public GnatMetricSensor(Project project, GnatMetricExecutor executor, GnatMetricResultsParser parser) {
+  public GnatMetricSensor(Project project, GnatMetricExecutor executor, GnatMetricResultsParser parser, PageLexer lexer,
+      PageScanner scanner, PageLineCounter pageLineCounter) {
     super();
     this.project = project;
     this.executor = executor;
     this.parser = parser;
+    this.lexer = lexer;
+    this.scanner = scanner;
+    this.pageLineCounter = pageLineCounter;
     resourcesBag = new ResourcesBag<AdaFile>();
     metrics = getMetrics();
   }
@@ -91,6 +104,33 @@ public class GnatMetricSensor implements Sensor {
    * @see org.sonar.api.batch.Sensor#analyse(org.sonar.api.resources.Project, org.sonar.api.batch.SensorContext)
    */
   public void analyse(Project project, SensorContext context) {
+    scan(project);
+    execute(project, context);
+    saveMeasures(context);
+  }
+
+  /**
+   * @param project
+   */
+  private void scan(Project project) {
+    for (File file : project.getFileSystem().getSourceFiles(Ada.INSTANCE)) {
+      try {
+        AdaFile resource = AdaFile.fromIOFile(file, project.getFileSystem().getSourceDirs(), false);
+        List<Node> nodeList = lexer.parse(new FileReader(file));
+        AdaSourceCode sourceCode = new AdaSourceCode(resource);
+        scanner.scan(nodeList, sourceCode);
+        pageLineCounter.count(nodeList, sourceCode);
+      } catch (FileNotFoundException e) {
+        LOG.error("Cannot read project file " + file.getAbsolutePath(), e);
+      }
+    }
+  }
+
+  /**
+   * @param project
+   * @param context
+   */
+  private void execute(Project project, SensorContext context) {
     try {
       executor.execute();
       File reportFile = executor.getConfiguration().getReportFile();
@@ -99,7 +139,6 @@ public class GnatMetricSensor implements Sensor {
         AdaFile currentResourceFile = AdaFile.fromAbsolutePath(file.getName(), project);
         collectFileMeasures(context, file, currentResourceFile);
       }
-      saveMeasures(context);
     } catch (SonarException e) {
       LOG.error("Error occured while launching gnat metric sensor", e);
     }
