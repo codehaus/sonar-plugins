@@ -23,17 +23,17 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Extract HTML responses from JMeter report files
- * 
+ *
  * @goal jmeter-extract-html
- * 
+ *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public class JMeterMojo extends AbstractMojo {
 
   /**
    * HTML directory with location of HTML files.
-   * 
+   *
    * @parameter
    * @required
    */
@@ -41,7 +41,7 @@ public class JMeterMojo extends AbstractMojo {
 
   /**
    * JMeter directory with report files.
-   * 
+   *
    * @required
    * @parameter
    */
@@ -49,7 +49,7 @@ public class JMeterMojo extends AbstractMojo {
 
   /**
    * JMeter directory with script files.
-   * 
+   *
    * @required
    * @parameter
    */

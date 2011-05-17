@@ -25,10 +25,16 @@ import org.sonar.plugins.webscanner.crawler.frontier.UrlUtils;
 
 /**
  * HTML parser. Extracts links from page.
- * 
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ *
  */
 public class HtmlParser implements Parser {
 
+  /**
+   * Parse the HTML page and find the links to other pages.
+   */
   public void parse(Page page) {
 
     LinkExtractor linkExtractor = new LinkExtractor();

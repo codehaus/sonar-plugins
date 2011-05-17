@@ -39,7 +39,7 @@ final class SSLUtilities {
   private SSLUtilities() {
     // cannot instantiate
   }
-  
+
   /**
    * Hostname verifier for the Sun's deprecated API.
    *

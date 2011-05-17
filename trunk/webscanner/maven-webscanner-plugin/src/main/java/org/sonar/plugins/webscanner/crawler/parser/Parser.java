@@ -21,8 +21,14 @@ package org.sonar.plugins.webscanner.crawler.parser;
 
 /**
  * Page parser.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
  */
 public interface Parser {
 
+  /**
+   * Parse the page.
+   */
   void parse(Page page);
 }

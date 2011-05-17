@@ -35,13 +35,19 @@ import org.apache.log4j.Logger;
 import org.sonar.plugins.webscanner.crawler.frontier.CrawlerTask;
 import org.sonar.plugins.webscanner.crawler.parser.Page;
 
+/**
+ * Compose filename and download the content.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
 public class DownloadContent {
 
   private static final Logger LOG = Logger.getLogger(DownloadContent.class);
 
   /**
    * Removes jsessionid from string
-   * 
+   *
    * @param value
    * @return
    */
@@ -69,7 +75,7 @@ public class DownloadContent {
 
     return sb.toString();
   }
-  
+
   private File downloadDirectory;
 
   public DownloadContent() {
@@ -79,7 +85,7 @@ public class DownloadContent {
   /**
    * This method is called after each crawl attempt. Warning - it does not matter if it was unsuccessfull attempt or response was
    * redirected. So you should check response code before handling it.
-   * 
+   *
    * @param crawlerTask
    * @param page
    */
@@ -126,7 +132,7 @@ public class DownloadContent {
         path.append(".html");
       }
 
-      // write content 
+      // write content
       OutputStream out = FileUtils.openOutputStream(new File(path.toString()));
       OutputStreamWriter writer = new OutputStreamWriter(out, page.getCharset());
       writer.write(page.getContentString());
@@ -134,15 +140,15 @@ public class DownloadContent {
       IOUtils.closeQuietly(writer);
       IOUtils.closeQuietly(out);
 
-      // write headers 
+      // write headers
       path.append(".txt");
       File propertyFile = new File(path.toString());
-      Properties properties = new Properties(); 
+      Properties properties = new Properties();
       properties.put("url", crawlerTask.getUrl());
-      properties.put("content-type",page.getHeader("content-type")); 
+      properties.put("content-type",page.getHeader("content-type"));
       out = FileUtils.openOutputStream(propertyFile);
-      properties.store(new FileOutputStream(propertyFile), null); 
-      
+      properties.store(new FileOutputStream(propertyFile), null);
+
       IOUtils.closeQuietly(out);
     } catch (IOException e) {
       LOG.warn("Could not download from " + page.getUrl());

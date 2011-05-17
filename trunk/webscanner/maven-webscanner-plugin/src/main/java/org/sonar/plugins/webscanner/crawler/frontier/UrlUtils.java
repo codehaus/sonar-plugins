@@ -25,6 +25,9 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * Helper class for working with URLs
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
  */
 public final class UrlUtils {
 
@@ -87,11 +90,6 @@ public final class UrlUtils {
         return null;
       }
     }
-//    try {
-//      normalizedUrl = URLEncoder.encode(normalizedUrl, "UTF-8");
-//    } catch (UnsupportedEncodingException e) {
-//      // ignore
-//    }
 
     try {
       return new URL(normalizedUrl);

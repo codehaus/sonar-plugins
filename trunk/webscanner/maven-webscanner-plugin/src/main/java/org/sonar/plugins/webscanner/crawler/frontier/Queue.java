@@ -24,8 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Simple Queue for CrawlerTasks.
  *
- * Simple Queue.
+ * @author Matthijs Galesloot
+ * @ since 1.0
  *
  */
 public class Queue extends LinkedList<CrawlerTask> {

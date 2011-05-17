@@ -18,6 +18,12 @@
 
 package org.sonar.plugins.webscanner.crawler.exception;
 
+/**
+ * Exception for Crawler issues.
+ *
+ * @author Matthijs Galesloot
+ * @ since 1.0
+ */
 public class CrawlerException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;

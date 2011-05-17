@@ -44,6 +44,12 @@ import org.sonar.plugins.webscanner.crawler.parser.HtmlParser;
 import org.sonar.plugins.webscanner.crawler.parser.Page;
 import org.sonar.plugins.webscanner.crawler.parser.Parser;
 
+/**
+ * Crawler managed
+ *
+ * @author Matthijs Galesloot (simplified version of http://code.google.com/p/flaxcrawler/)
+ * @since 1.0
+ */
 public class Crawler {
 
   private static final Logger LOG = Logger.getLogger(Crawler.class);
@@ -59,10 +65,10 @@ public class Crawler {
   private final List<URL> seeds = new ArrayList<URL>();
   private Statistics statistics;
   private final DownloadContent downloadContent = new DownloadContent();
-  
+
   /**
    * Adds crawler seed
-   * 
+   *
    * @param url
    */
   public void addSeed(URL url) {
@@ -71,7 +77,7 @@ public class Crawler {
 
   /**
    * Checks maximum http errors limit
-   * 
+   *
    * @param statistics
    * @return
    */
@@ -93,7 +99,7 @@ public class Crawler {
   private boolean checkSeedPath(URL url) {
     for (URL seed : seeds) {
       if (url.getPath().contains(seed.getPath())) {
-        return true; 
+        return true;
       }
     }
     return false;
@@ -139,7 +145,7 @@ public class Crawler {
 
   /**
    * Crawls url from the specified {@link CrawlerTask}.
-   * 
+   *
    * @param crawlerTask
    * @return
    * @throws MalformedURLException

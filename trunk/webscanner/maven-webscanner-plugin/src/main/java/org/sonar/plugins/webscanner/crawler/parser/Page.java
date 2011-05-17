@@ -28,6 +28,12 @@ import java.util.Map;
 
 import org.sonar.plugins.webscanner.crawler.frontier.UrlUtils;
 
+/**
+ * Defines information about a page for download.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
 public class Page {
 
   private final URL url;
@@ -39,6 +45,9 @@ public class Page {
   private final byte[] content;
   private List<URL> links = new ArrayList<URL>();
 
+  /**
+   * Create a new page.
+   */
   public Page(URL url, Map<String, String> headers, int responseCode, String charset, long responseTime, byte[] content) {
     this.url = url;
     this.headers = headers;

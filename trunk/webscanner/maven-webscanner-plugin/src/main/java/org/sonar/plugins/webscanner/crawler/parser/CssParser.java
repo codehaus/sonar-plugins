@@ -32,10 +32,16 @@ import org.w3c.dom.css.CSSStyleSheet;
 import com.steadystate.css.parser.CSSOMParser;
 
 /**
- * Css Parser extracts links to imported css files.
+ * Css Parser helps to find the links to imported css files.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
  */
 public class CssParser implements Parser {
 
+  /**
+   * Parse the CSS file and find the links to imported css files.
+   */
   public void parse(Page page) {
     CSSOMParser parser = new CSSOMParser();
     InputSource is = new InputSource(new StringReader(page.getContentString()));
