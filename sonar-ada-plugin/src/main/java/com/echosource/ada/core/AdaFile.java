@@ -103,7 +103,7 @@ public class AdaFile extends Resource<AdaPackage> {
    */
   public static AdaFile fromIOFile(File file, List<File> dirs, boolean isUnitTest) {
     // If the file has a valid suffix
-    if (file == null || !Ada.hasValidSuffixes(file.getName())) {
+    if (file == null || !Ada.INSTANCE.hasValidSuffixes(file.getName())) {
       return null;
     }
     String relativePath = DefaultProjectFileSystem.getRelativePath(file, dirs);

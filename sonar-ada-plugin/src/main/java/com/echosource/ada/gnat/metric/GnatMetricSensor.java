@@ -28,6 +28,7 @@ import com.echosource.ada.core.AdaFile;
 import com.echosource.ada.gnat.metric.xml.FileNode;
 import com.echosource.ada.gnat.metric.xml.GlobalNode;
 import com.echosource.ada.gnat.metric.xml.MetricNode;
+import com.echosource.ada.gnat.metric.xml.UnitNode;
 
 /**
  * @author Akram Ben Aissi
@@ -47,6 +48,7 @@ public class GnatMetricSensor implements Sensor {
     metricsByType.put("comment_percentage", CoreMetrics.COMMENT_LINES_DENSITY);
     metricsByType.put("all_stmts", CoreMetrics.STATEMENTS);
     metricsByType.put("cyclomatic_complexity", CoreMetrics.NCLOC);
+    metricsByType.put("package body", CoreMetrics.CLASSES);
     // metricsByType.put("blank_lines", CoreMetrics.);
 
   }
@@ -186,6 +188,12 @@ public class GnatMetricSensor implements Sensor {
         context.saveMeasure(file, metric, metricNode.getValue());
       } else {
         LOG.error("Metric '" + metricName + "' has no equivalent in Sonar. ");
+      }
+
+      // Add a resource for the found type.
+      UnitNode unit = fileNode.getUnit();
+      if (unit != null) {
+        addMeasure(file, metricsByType.get(unit.getKind()), 1.0);
       }
       addMeasure(file, CoreMetrics.FILES, 1.0);
     }

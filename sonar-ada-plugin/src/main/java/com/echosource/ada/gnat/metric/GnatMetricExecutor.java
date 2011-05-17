@@ -52,6 +52,7 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
     result.add(configuration.getExecutable());
     result.add(configuration.getDefaultArgument());
 
+    result.add(configuration.getDoNoteGenerateTextModifier());
     result.add(configuration.getXmlOutputModifier());
     result.add(configuration.getXmlOutputFileModifier());
     result.add(configuration.getReportFile().toString());
