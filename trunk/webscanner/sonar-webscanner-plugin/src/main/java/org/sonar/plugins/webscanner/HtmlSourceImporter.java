@@ -19,16 +19,21 @@
 package org.sonar.plugins.webscanner;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.execution.MavenSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.AbstractSourceImporter;
-import org.sonar.api.batch.ResourceCreationLock;
+import org.sonar.api.CoreProperties;
+import org.sonar.api.batch.Phase;
+import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.SonarException;
@@ -39,19 +44,18 @@ import org.sonar.plugins.webscanner.language.Html;
 /**
  * @author Matthijs Galesloot
  */
-public final class HtmlSourceImporter extends AbstractSourceImporter {
+@Phase(name = Phase.Name.PRE)
+public final class HtmlSourceImporter implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(HtmlSourceImporter.class);
-  private final ResourceCreationLock lock;
   private final MavenSession session;
+  private final Project project;
 
-  public HtmlSourceImporter(MavenSession session, Project project, ResourceCreationLock lock) {
-    super(new Html(project));
-    this.lock = lock;
+  public HtmlSourceImporter(MavenSession session, Project project) {
     this.session = session;
+    this.project = project;
   }
 
-  @Override
   public void analyse(Project project, SensorContext context) {
 
     String website = (String) project.getProperty(WebScannerPlugin.WEBSITE);
@@ -59,10 +63,29 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
       crawl(project, website);
     }
 
-    HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
-    List<File> files = fileSystem.getSourceFiles();
+    parseDirs(context, new HtmlProjectFileSystem(project).getFiles());
+  }
 
-    parseDirs(context, files, HtmlProjectFileSystem.getSourceDirs(project), false, project.getFileSystem().getSourceCharset());
+  private void parseDirs(SensorContext context, List<InputFile> files) {
+
+    Charset sourcesEncoding = project.getFileSystem().getSourceCharset();
+
+    for (InputFile file : files) {
+      Resource<?> resource = createResource(file);
+      if (resource != null) {
+        try {
+          context.index(resource);
+
+          String source = FileUtils.readFileToString(file.getFile(), sourcesEncoding.name());
+          context.saveSource(resource, source);
+
+        } catch (IOException e) {
+          throw new SonarException("Unable to read and import the source file : '" + file.getFile().getAbsolutePath()
+              + "' with the charset : '" + sourcesEncoding.name() + "'. You should check the property " + CoreProperties.ENCODING_PROPERTY,
+              e);
+        }
+      }
+    }
   }
 
   private void crawl(Project project, String website) {
@@ -85,26 +108,23 @@ public final class HtmlSourceImporter extends AbstractSourceImporter {
     }
   }
 
-  @Override
-  protected Resource<?> createResource(File file, List<File> sourceDirs, boolean unitTest) {
-    Resource<?> resource = org.sonar.api.resources.File.fromIOFile(file, sourceDirs);
+  private Resource<?> createResource(InputFile file) {
+    Resource<?> resource = HtmlProjectFileSystem.fromIOFile(file, project);
     if (resource == null) {
-      LOG.debug("HtmlSourceImporter failed for: " + file.getPath());
-    } 
-    else {
-      LOG.debug("HtmlSourceImporter:" + file.getPath());
+      LOG.debug("HtmlSourceImporter failed for: " + file.getRelativePath());
+    } else {
+      LOG.debug("HtmlSourceImporter:" + file.getRelativePath());
     }
-    return resource; 
+    return resource;
   }
 
-  @Override
-  protected void onFinished() {
-    lock.lock();
-  }
-
-  @Override
   public boolean shouldExecuteOnProject(Project project) {
     return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
+  }
+
+  private boolean isEnabled(Project project) {
+    return project.getConfiguration().getBoolean(CoreProperties.CORE_IMPORT_SOURCES_PROPERTY,
+        CoreProperties.CORE_IMPORT_SOURCES_DEFAULT_VALUE);
   }
 
   @Override
