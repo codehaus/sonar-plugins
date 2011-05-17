@@ -33,8 +33,6 @@ import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
 import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
-import org.sonar.plugins.webscanner.toetstool.rules.DefaultToetstoolProfile;
-import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
 
 /**
  * @author Matthijs Galesloot
@@ -88,10 +86,6 @@ public final class WebScannerPlugin implements Plugin {
     list.add(DefaultMarkupProfile.class);
     list.add(HtmlViolationFilter.class);
     list.add(W3CMarkupSensor.class);
-
-    // toetstool rules
-    list.add(ToetstoolRuleRepository.class);
-    list.add(DefaultToetstoolProfile.class);
 
     // metrics
     list.add(HtmlMetrics.class);
