@@ -1,4 +1,4 @@
-package com.echosource.ada;
+package org.sonar.plugins.ada;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,21 +8,21 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
-import com.echosource.ada.core.AdaCpdMapping;
-import com.echosource.ada.core.AdaSourceCodeColorizer;
-import com.echosource.ada.core.AdaSourceImporter;
-import com.echosource.ada.gnat.metric.GnatConfiguration;
-import com.echosource.ada.gnat.metric.GnatMetricExecutor;
-import com.echosource.ada.gnat.metric.GnatMetricResultsParser;
-import com.echosource.ada.gnat.metric.GnatMetricSensor;
-import com.echosource.ada.lexer.PageLexer;
-import com.echosource.ada.lexer.PageLineCounter;
-import com.echosource.ada.lexer.PageScanner;
-import com.echosource.ada.rules.AdaProfile;
-import com.echosource.ada.rules.AdaProfileExporter;
-import com.echosource.ada.rules.AdaProfileImporter;
-import com.echosource.ada.rules.AdaRuleRepository;
-import com.echosource.ada.rules.EchoSourceAdaProfile;
+import org.sonar.plugins.ada.core.AdaCpdMapping;
+import org.sonar.plugins.ada.core.AdaSourceCodeColorizer;
+import org.sonar.plugins.ada.core.AdaSourceImporter;
+import org.sonar.plugins.ada.gnat.metric.GnatConfiguration;
+import org.sonar.plugins.ada.gnat.metric.GnatMetricExecutor;
+import org.sonar.plugins.ada.gnat.metric.GnatMetricResultsParser;
+import org.sonar.plugins.ada.gnat.metric.GnatMetricSensor;
+import org.sonar.plugins.ada.lexer.PageLexer;
+import org.sonar.plugins.ada.lexer.PageLineCounter;
+import org.sonar.plugins.ada.lexer.PageScanner;
+import org.sonar.plugins.ada.rules.AdaProfile;
+import org.sonar.plugins.ada.rules.AdaProfileExporter;
+import org.sonar.plugins.ada.rules.AdaProfileImporter;
+import org.sonar.plugins.ada.rules.AdaRuleRepository;
+import org.sonar.plugins.ada.rules.EchoSourceAdaProfile;
 
 /**
  * Entry point for all Ada extensions plugins.

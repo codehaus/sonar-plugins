@@ -1,4 +1,4 @@
-package com.echosource.ada.lexer;
+package org.sonar.plugins.ada.lexer;
 
 import org.apache.commons.lang.StringUtils;
 

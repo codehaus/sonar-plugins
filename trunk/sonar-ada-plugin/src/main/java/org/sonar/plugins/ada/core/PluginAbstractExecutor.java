@@ -1,4 +1,4 @@
-package com.echosource.ada.core;
+package org.sonar.plugins.ada.core;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 
-import com.echosource.ada.gnat.metric.GnatConfiguration;
+import org.sonar.plugins.ada.gnat.metric.GnatConfiguration;
 
 /**
  * Abstract plugin executor. This class handles common executor needs such as running the process, reading its common and error output

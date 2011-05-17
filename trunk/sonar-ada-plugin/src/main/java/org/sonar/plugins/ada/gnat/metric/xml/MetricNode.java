@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.echosource.ada.gnat.metric.xml;
+package org.sonar.plugins.ada.gnat.metric.xml;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;

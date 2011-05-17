@@ -17,10 +17,10 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.echosource.ada.core;
+package org.sonar.plugins.ada.core;
 
-import static com.echosource.ada.Ada.ADA_RESERVED_KEYWORDS;
-import static com.echosource.ada.Ada.ADA_RESERVED_VARIABLES;
+import static org.sonar.plugins.ada.Ada.ADA_RESERVED_KEYWORDS;
+import static org.sonar.plugins.ada.Ada.ADA_RESERVED_VARIABLES;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +32,7 @@ import org.sonar.api.web.CodeColorizerFormat;
 import org.sonar.colorizer.KeywordsTokenizer;
 import org.sonar.colorizer.Tokenizer;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * @author Akram Ben Aissi

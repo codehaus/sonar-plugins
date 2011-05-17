@@ -1,4 +1,4 @@
-package com.echosource.ada.rules;
+package org.sonar.plugins.ada.rules;
 
 import java.io.InputStreamReader;
 import java.io.Reader;

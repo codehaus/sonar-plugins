@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.gnat.metric;
+package org.sonar.plugins.ada.gnat.metric;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,11 +31,11 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 
-import com.echosource.ada.gnat.metric.xml.FileNode;
-import com.echosource.ada.gnat.metric.xml.GlobalNode;
-import com.echosource.ada.gnat.metric.xml.MetricNode;
-import com.echosource.ada.gnat.metric.xml.MetricNodeConverter;
-import com.echosource.ada.gnat.metric.xml.UnitNode;
+import org.sonar.plugins.ada.gnat.metric.xml.FileNode;
+import org.sonar.plugins.ada.gnat.metric.xml.GlobalNode;
+import org.sonar.plugins.ada.gnat.metric.xml.MetricNode;
+import org.sonar.plugins.ada.gnat.metric.xml.MetricNodeConverter;
+import org.sonar.plugins.ada.gnat.metric.xml.UnitNode;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 

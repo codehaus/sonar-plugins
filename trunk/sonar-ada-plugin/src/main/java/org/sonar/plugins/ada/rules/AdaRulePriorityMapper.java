@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.rules;
+package org.sonar.plugins.ada.rules;
 
 import org.sonar.api.rules.RulePriority;
 

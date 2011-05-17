@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.echosource.ada.gnat.metric;
+package org.sonar.plugins.ada.gnat.metric;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.Project;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * @author Akram Ben Aissi

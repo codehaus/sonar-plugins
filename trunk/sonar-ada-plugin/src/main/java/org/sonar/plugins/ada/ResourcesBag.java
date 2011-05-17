@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada;
+package org.sonar.plugins.ada;
 
 import java.util.HashMap;
 import java.util.Map;

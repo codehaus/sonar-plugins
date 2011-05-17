@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.core;
+package org.sonar.plugins.ada.core;
 
 import java.io.File;
 import java.util.List;
@@ -34,7 +34,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.WildcardPattern;
 
-import com.echosource.ada.Ada;
+import org.sonar.plugins.ada.Ada;
 
 /**
  * This class defines a AdaFile. Its "fromIoFile" infer the package name and class name depending on the complete IO File name.

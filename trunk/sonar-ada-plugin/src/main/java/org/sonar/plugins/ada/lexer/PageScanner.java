@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.echosource.ada.lexer;
+package org.sonar.plugins.ada.lexer;
 
 import java.util.ArrayList;
 import java.util.List;

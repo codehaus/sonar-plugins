@@ -17,7 +17,7 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.echosource.ada.rules;
+package org.sonar.plugins.ada.rules;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -33,8 +33,8 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.RuleParam;
 import org.sonar.api.utils.SonarException;
 
-import com.echosource.ada.Ada;
-import com.echosource.ada.AdaPlugin;
+import org.sonar.plugins.ada.Ada;
+import org.sonar.plugins.ada.AdaPlugin;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 

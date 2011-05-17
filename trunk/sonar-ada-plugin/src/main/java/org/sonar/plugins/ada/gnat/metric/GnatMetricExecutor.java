@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package com.echosource.ada.gnat.metric;
+package org.sonar.plugins.ada.gnat.metric;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.echosource.ada.core.PluginAbstractExecutor;
+import org.sonar.plugins.ada.core.PluginAbstractExecutor;
 
 /**
  * The Class GnatMetricExecutor.
@@ -44,7 +44,7 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
   }
 
   /**
-   * @see com.echosource.ada.core.PluginAbstractExecutor#getCommandLine()
+   * @see org.sonar.plugins.ada.core.PluginAbstractExecutor#getCommandLine()
    */
   @Override
   protected List<String> getCommandLine() {
@@ -119,7 +119,7 @@ public class GnatMetricExecutor extends PluginAbstractExecutor {
   }
 
   /**
-   * @see com.echosource.ada.core.PluginAbstractExecutor#getExecutable()
+   * @see org.sonar.plugins.ada.core.PluginAbstractExecutor#getExecutable()
    */
   @Override
   protected String getExecutable() {
