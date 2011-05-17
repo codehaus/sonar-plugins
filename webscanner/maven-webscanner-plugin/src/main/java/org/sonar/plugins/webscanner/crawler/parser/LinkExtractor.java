@@ -116,7 +116,7 @@ public final class LinkExtractor {
   }
 
   private static final String HREF = "href";
-  private static final Logger LOG = Logger.getLogger(LinkExtractor.class); 
+  private static final Logger LOG = Logger.getLogger(LinkExtractor.class);
   private static final String SRC = "src";
 
   private String base;

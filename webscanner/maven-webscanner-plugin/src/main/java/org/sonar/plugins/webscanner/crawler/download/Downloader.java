@@ -39,6 +39,12 @@ import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 import org.sonar.plugins.webscanner.crawler.frontier.Statistics;
 import org.sonar.plugins.webscanner.crawler.parser.Page;
 
+/**
+ * Download
+ *
+ * @author Matthijs Galesloot (based on http://code.google.com/p/flaxcrawler/)
+ * @since 1.0
+ */
 public class Downloader {
 
   private static final String[] allowedContentTypes = new String[] { "text/html", "text/css" };
@@ -64,7 +70,7 @@ public class Downloader {
 
   /**
    * Checks downloader constraints. Returns true is everything is OK.
-   * 
+   *
    * @param page
    * @return
    */
@@ -103,7 +109,7 @@ public class Downloader {
 
   /**
    * Clean up connection. Reads errorStream and closes it, disconnects if needed.
-   * 
+   *
    * @param connection
    * @param connectionHeader
    */
@@ -133,7 +139,7 @@ public class Downloader {
 
   /**
    * Creates connection for the specified request
-   * 
+   *
    * @param request
    * @return
    */
@@ -158,7 +164,7 @@ public class Downloader {
 
   /**
    * Creates {@link Page} instance
-   * 
+   *
    * @param request
    * @param content
    * @param responseCode
@@ -175,7 +181,7 @@ public class Downloader {
 
   /**
    * Downloads web page. Returns {@code null} if Page cannot be downloaded due to constraints (contentType, maxContentLength)
-   * 
+   *
    * @param url
    * @return
    */
@@ -207,7 +213,7 @@ public class Downloader {
 
   /**
    * Downloads page content
-   * 
+   *
    * @param request
    * @param httpMethod
    * @param useProxy
@@ -332,7 +338,7 @@ public class Downloader {
 
   /**
    * Tries to get encoding. First from the "Content-Type" header, then tries to guess it from the content
-   * 
+   *
    * @param content
    * @param contentType
    * @return
@@ -360,7 +366,7 @@ public class Downloader {
 
   /**
    * Tries to get charset from {@code meta} tag. Very simple implementation.
-   * 
+   *
    * @param content
    * @return
    */
@@ -384,7 +390,7 @@ public class Downloader {
 
   /**
    * Returns response content
-   * 
+   *
    * @param gzipEncoding
    * @param connection
    * @return
@@ -417,7 +423,7 @@ public class Downloader {
 
   /**
    * Returns downloader's logger
-   * 
+   *
    * @return
    */
   protected Logger getLogger() {
@@ -426,7 +432,7 @@ public class Downloader {
 
   /**
    * Collects response headers from the open connection
-   * 
+   *
    * @param connection
    * @return
    */
@@ -445,7 +451,7 @@ public class Downloader {
   /**
    * Makes HEAD request and returns Response headers. Throws {@link DownloadException} if there's any exception downloading this page.
    * Usually it means that proxy is now dead.
-   * 
+   *
    * @param request
    * @param proxy
    * @return {@link Page} object without content but with response code and headers

@@ -28,10 +28,10 @@ import org.apache.maven.settings.Settings;
 import org.sonar.plugins.webscanner.crawler.Crawler;
 
 /**
- * WebCrawler
- * 
+ * Start Crawler from maven command.
+ *
  * @goal web-crawler
- * 
+ *
  * @author Matthijs Galesloot
  * @since 1.0
  */
@@ -39,7 +39,7 @@ public class CrawlerMojo extends AbstractMojo {
 
   /**
    * HTML download directory.
-   * 
+   *
    * @required
    * @parameter
    */
@@ -47,14 +47,14 @@ public class CrawlerMojo extends AbstractMojo {
 
   /**
    * Start of the site visiting.
-   * 
+   *
    * @parameter
    */
   private String seedingUrl;
 
   /**
    * The Maven Settings.
-   * 
+   *
    * @parameter default-value="${settings}"
    * @required
    * @readonly

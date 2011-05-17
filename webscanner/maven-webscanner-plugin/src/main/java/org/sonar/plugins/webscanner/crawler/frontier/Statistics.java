@@ -33,6 +33,12 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 
+/**
+ * Information about urls visited.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
 public class Statistics {
 
   private long downloaded;
@@ -152,34 +158,34 @@ public class Statistics {
   }
 
   private String generalizeURLpath(URL url) {
-    
+
     String path = url.toString();
-    
+
     // Removing jsessionid
     if ( !StringUtils.isEmpty(path) && StringUtils.contains(path.toLowerCase(), ";jsessionid")) {
       path = path.substring(0, StringUtils.indexOf(path, ";jsessionid"));
-    } 
-    
+    }
+
     String[] parts = StringUtils.splitPreserveAllTokens(path, '/');
     StringBuilder sb = new StringBuilder();
 
-    boolean skipPart = false; 
-    
+    boolean skipPart = false;
+
     // skip number tokens
     for (String part : parts) {
       if (!skipPart && (part.length() == 0 || !Character.isDigit(part.charAt(0)))) {
         sb.append(StringUtils.substring(part, 0, 30));
         sb.append("/");
       }
-      skipPart = ArrayUtils.contains(ignoreParts, part); 
+      skipPart = ArrayUtils.contains(ignoreParts, part);
     }
     return sb.toString();
   }
 
-  private String[] ignoreParts = new String[] { "akid", 
-      "nutscode" 
+  private final String[] ignoreParts = new String[] { "akid",
+      "nutscode"
   };
-  
+
   public void addUrl(URL url) {
     visitedUrls.add(generalizeURLpath(url));
   }

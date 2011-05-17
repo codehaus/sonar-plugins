@@ -33,7 +33,6 @@ import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
 import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
-import org.sonar.plugins.webscanner.toetstool.ToetstoolSensor;
 import org.sonar.plugins.webscanner.toetstool.rules.DefaultToetstoolProfile;
 import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
 
@@ -43,8 +42,6 @@ import org.sonar.plugins.webscanner.toetstool.rules.ToetstoolRuleRepository;
 @Properties({
     @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API", description = "W3CMarkup Validation API",
         defaultValue = "http://validator.w3.org/check", global = true, project = true),
-    @Property(key = ToetstoolSensor.SONAR_TOETSTOOL_URL, name = "Toetstool API", description = "Toetstool Validation API",
-        defaultValue = "http://api.toetstool.nl/", global = true, project = true),
     @Property(key = WebScannerPlugin.FILE_EXTENSIONS, name = "File extensions",
         description = "List of file extensions that will be scanned.", defaultValue = "html", global = true, project = true),
     @Property(key = WebScannerPlugin.SOURCE_DIRECTORY, name = "Source directory", description = "Source directory that will be scanned.",
@@ -84,7 +81,7 @@ public final class WebScannerPlugin implements Plugin {
     list.add(HtmlCodeColorizerFormat.class);
 
     // widget for dashboard
-    list.add(HtmlWidget.class);
+  //  list.add(HtmlWidget.class);
 
     // W3C markup rules
     list.add(MarkupRuleRepository.class);
@@ -95,7 +92,6 @@ public final class WebScannerPlugin implements Plugin {
     // toetstool rules
     list.add(ToetstoolRuleRepository.class);
     list.add(DefaultToetstoolProfile.class);
-    list.add(ToetstoolSensor.class);
 
     // metrics
     list.add(HtmlMetrics.class);

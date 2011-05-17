@@ -36,12 +36,13 @@ import org.sonar.plugins.webscanner.maven.jmeter.xml.JMeterReport;
 
 /**
  * Prepare JMeter report files for HTML validation.
- * 
- * In order to save the responses to file: 1. Add a node in the test plan for 'Save Responses to a file' 2. Set the following property in
- * jmeter.properties: jmeter.save.saveservice.filename=true
- * 
+ *
+ * In order to save the responses to file: <br/>
+ * 1. Add a node in the test plan for 'Save Responses to a file' <br/>
+ * 2. Set the following property in jmeter.properties: jmeter.save.saveservice.filename=true
+ *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 class JMeter {
 
@@ -77,7 +78,7 @@ class JMeter {
 
   /**
    * Extract HTTP responses from the JMeter report file.
-   * 
+   *
    * @param jMeterReportDir
    * @param jMeterScriptDir
    */

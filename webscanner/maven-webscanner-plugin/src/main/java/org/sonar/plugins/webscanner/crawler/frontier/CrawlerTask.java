@@ -18,7 +18,12 @@
 
 package org.sonar.plugins.webscanner.crawler.frontier;
 
-
+/**
+ * A crawler task for an URL.
+ *
+ * @author Matthijs Galesloot
+ * @ since 1.0
+ */
 public class CrawlerTask {
 
   private String url;
