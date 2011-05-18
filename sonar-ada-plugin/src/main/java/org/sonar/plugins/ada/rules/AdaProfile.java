@@ -34,7 +34,7 @@ import org.sonar.api.utils.ValidationMessages;
  */
 public final class AdaProfile extends ProfileDefinition {
 
-  private static final String COM_ECHOSOURCE_ADA_ADA_PROFILE_XML = "/com/echosource/ada/ada-profile.xml";
+  private static final String ADA_PROFILE_XML = "/org/sonar/plugins/ada/ada-profile.xml";
 
   public static final String DEFAULT_PROFILE_NAME = "Ada profile with all rules";
   /**
@@ -55,7 +55,7 @@ public final class AdaProfile extends ProfileDefinition {
   @Override
   public RulesProfile createProfile(ValidationMessages messages) {
     ClassLoader classLoader = getClass().getClassLoader();
-    Reader reader = new InputStreamReader(classLoader.getResourceAsStream(COM_ECHOSOURCE_ADA_ADA_PROFILE_XML));
+    Reader reader = new InputStreamReader(classLoader.getResourceAsStream(ADA_PROFILE_XML));
     return parser.parse(reader, messages);
   }
 }

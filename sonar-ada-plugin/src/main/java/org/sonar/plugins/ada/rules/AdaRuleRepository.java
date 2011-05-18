@@ -57,7 +57,7 @@ public final class AdaRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    InputStream inputStream = getClass().getResourceAsStream("/com/echosource/ada/rules.xml");
+    InputStream inputStream = getClass().getResourceAsStream("/org/sonar/plugins/ada/rules.xml");
     List<Rule> parsedRules = parser.parse(inputStream);
     rules.addAll(parsedRules);
     // Gives the ability for the user to extends system rules withs its own rules.
