@@ -173,7 +173,7 @@ public class Statistics {
 
     // skip number tokens
     for (String part : parts) {
-      if (!skipPart && (part.length() == 0 || !Character.isDigit(part.charAt(0)))) {
+      if ( !skipPart && (part.length() == 0 || !Character.isDigit(part.charAt(0)))) {
         sb.append(StringUtils.substring(part, 0, 30));
         sb.append("/");
       }
@@ -182,9 +182,7 @@ public class Statistics {
     return sb.toString();
   }
 
-  private final String[] ignoreParts = new String[] { "akid",
-      "nutscode"
-  };
+  private final String[] ignoreParts = new String[] { "akid", "nutscode" };
 
   public void addUrl(URL url) {
     visitedUrls.add(generalizeURLpath(url));

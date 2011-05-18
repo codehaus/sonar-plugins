@@ -20,6 +20,7 @@ package org.sonar.plugins.webscanner.markup.rules;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,7 +51,9 @@ import org.xml.sax.SAXException;
  */
 public class MarkupErrorCatalog {
 
-  private static final class MessageDefinitionComparator implements Comparator<MessageDefinition> {
+  private static final class MessageDefinitionComparator implements Comparator<MessageDefinition>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public int compare(MessageDefinition e1, MessageDefinition e2) {
       return e1.id.compareTo(e2.id);

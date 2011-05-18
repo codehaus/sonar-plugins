@@ -1,6 +1,8 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+  
   <head> 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
     <title>Error Explanations for The W3C Markup Validation Service</title> 
@@ -8,7 +10,7 @@
     <link rel="shortcut icon" href="http://www.w3.org/2008/site/images/favicon.ico" type="image/x-icon" /> 
     <link rev="start" href="../" title="Home Page" /> 
     <style type="text/css" media="all"> 
-      @import "../style/base.css";
+      @import "../style/base";
     </style> 
         
     <meta name="keywords" content="HTML, HyperText Markup Language, Validation,
@@ -16,7 +18,6 @@
     <meta name="description" content="W3C's easy-to-use
       markup validation service, based on SGML and XML parsers." /> 
     
- 
   </head> 
  
   <body> 
@@ -103,7 +104,7 @@
         <dt id="ve-47">47: end of document in prolog</dt> 
         <dd><div class="ve mid-47"> 
   <p> 
-      This error may appear when the validator receives an empty document. Please make sure that the document you are uploading is not empty, and <a href="http://validator.w3.org/feedback.html">report</a> any discrepancy.
+      This error may appear when the validator receives an empty document. Please make sure that the document you are uploading is not empty, and <a href="../feedback.html">report</a> any discrepancy.
   </p> 
 </div> 
   <p> 
@@ -301,7 +302,7 @@
     </p> 
     <p> 
       If this error occurred in a script section of your document, you should probably
-      read this <a href="http://validator.w3.org/docs/help.html#faq-javascript">FAQ entry</a>.
+      read this <a href="../docs/help.html#faq-javascript">FAQ entry</a>.
     </p> 
   </div> 
   <p> 
@@ -386,7 +387,7 @@
       check that they are both allowed in the chosen document type, and/or
       use CSS instead of this attribute. If you received this error when using the 
       &lt;embed&gt; element to incorporate flash media in a Web page, see the 
-      <a href="http://validator.w3.org/docs/help.html#faq-flash">FAQ item on valid flash</a>.
+      <a href="../docs/help.html#faq-flash">FAQ item on valid flash</a>.
     </p> 
   </div> 
   <p> 
@@ -438,7 +439,7 @@
             The "<code class="inline">src</code>" value for the first
             <code class="inline">&lt;img&gt;</code> is the entire
             fifty lines of stuff up to the next double quote, which probably
-            exceeds the <a href="sgml.html#sgml"><abbr 
+            exceeds the <a href="sgml.html#sgml"><abbr
               title="Standard Generalized Markup Language">SGML</abbr></a>-defined
             length limit for <abbr title="HyperText Markup Language">HTML</abbr> 
             string literals. Note that the position indicator in the error
@@ -459,7 +460,7 @@
       the specified syntax for that type of attribute. For instance, the
       &ldquo;<code class="inline">selected</code>&rdquo; attribute must be
       either minimized as &ldquo;<code class="inline">selected</code>&rdquo;
-      or spelled out in full as &ldquo;<code 
+      or spelled out in full as &ldquo;<code
         class="inline">selected="selected"</code>&rdquo;; the variant
       &ldquo;<code class="inline">selected=""</code>&rdquo; is not allowed.
     </p> 
@@ -548,10 +549,10 @@
     <p> 
       The value of the attribute is defined to be one of a list of possible
       values but in the document it contained something that is not allowed
-      for that type of attribute. For instance, the &ldquo;<code 
+      for that type of attribute. For instance, the &ldquo;<code
         class="inline">selected</code>&rdquo; attribute must be either
       minimized as &ldquo;<code class="inline">selected</code>&rdquo;
-      or spelled out in full as &ldquo;<code 
+      or spelled out in full as &ldquo;<code
         class="inline">selected="selected"</code>&rdquo;; a value like
       &ldquo;<code class="inline">selected="true"</code>&rdquo; is not
       allowed.
@@ -592,7 +593,7 @@
           </p> 
           <p> 
             Your best bet is to replace the character with the nearest equivalent
-            ASCII character, or to use an appropriate <a 
+            ASCII character, or to use an appropriate <a
               href="http://www.w3.org/MarkUp/html3/latin1.html">character
             entity</a>.
             <!-- 
@@ -600,7 +601,7 @@
                 http://www.w3.org/mid/45EFC85A.1000706@dorward.me.uk
             --> 
             For more information on Character Encoding on the web, see Alan
-            Flavell's excellent <a 
+            Flavell's excellent <a
               href="http://web.archive.org/web/20060425191748/ppewww.ph.gla.ac.uk/~flavell/charset/">HTML Character
             Set Issues</a> reference.
           </p> 
@@ -651,7 +652,7 @@
         <dt id="ve-187">187: no document type declaration; will parse without validation</dt> 
         <dd><div class="ve mid-187"> 
     <p>The document type could not be determined, because the document had no correct DOCTYPE declaration. The document does not look like HTML, therefore automatic fallback could not be performed, and the document was only checked against basic markup syntax.</p> 
-    <p>Learn <a href="http://validator.w3.org/docs/help.html#faq-doctype">how to add a doctype to your document</a> 
+    <p>Learn <a href="../docs/help.html#faq-doctype">how to add a doctype to your document</a> 
     from our <acronym title="Frequently Asked Questions">FAQ</acronym>, or use the validator's
     <code>Document Type</code> option to validate your document against a specific Document Type.</p> 
   </div> 
@@ -743,7 +744,7 @@
   </dd>  
       
         <dt id="ve-333">333: empty start-tag</dt> 
-        <dd><div class="ve mid-333"> 
+        <dd><div class="ve mid-334"> 
       <p> 
         The construct &lt;&gt; is sometimes valid in HTML (it is an example of the rather obscure “Shorttags” feature)
         but <a href="http://www.w3.org/TR/html4/appendix/notes.html#h-B.3.7">its use is not recommended</a>.
@@ -779,8 +780,8 @@
       by that name defined. Often this is caused by misspelling the reference
       name, unencoded ampersands, or by leaving off the trailing semicolon (;).
       <strong>The most common cause of this error is unencoded ampersands in
-      URLs</strong> as described by the <a 
-        href="http://www.htmlhelp.com/">WDG</a> in "<a 
+      URLs</strong> as described by the <a
+        href="http://www.htmlhelp.com/">WDG</a> in "<a
         href="http://www.htmlhelp.com/tools/validator/problems.html#amp">Ampersands
         in URLs</a>".
     </p> 
@@ -934,7 +935,7 @@
     <p> 
       The solution is to reference UNICODE characters instead. A list of
       common characters from the Windows character repertoire and their
-      UNICODE equivalents can be found in the document "<a 
+      UNICODE equivalents can be found in the document "<a
         href="http://www.cs.tut.fi/~jkorpela/www/windows-chars.html#list"
       >On the use of some MS Windows characters in HTML</a>" maintained by
       <a href="http://www.cs.tut.fi/~jkorpela/">Jukka Korpela</a> 
@@ -3337,16 +3338,16 @@
  
 <div id="footer"> 
     <p id="activity_logos"> 
-      <a href="http://www.w3.org/Status" title="W3C's Open Source, bringing you free Web quality tools and more"><img src="http://www.w3.org/Icons/WWW/w3c_home_nb" alt="W3C" /><img src="/images/opensource-55x48.png" alt="Open-Source" title="We are building certified Open Source/Free Software. - see www.opensource.org" /></a> 
+      <a href="http://www.w3.org/Status" title="W3C's Open Source, bringing you free Web quality tools and more"><img src="http://www.w3.org/Icons/WWW/w3c_home_nb" alt="W3C" width="72" height="47" /><img src="../images/opensource-55x48.png" alt="Open-Source" title="We are building certified Open Source/Free Software. - see www.opensource.org" width="55" height="48" /></a> 
          </p> 
  
     <p id="support_logo"> 
       <a href="http://www.w3.org/QA/Tools/Donate"> 
-      <img src="http://www.w3.org/QA/Tools/I_heart_validator" alt="I heart Validator logo" title=" Validators Donation Program" /> 
+      <img src="http://www.w3.org/QA/Tools/I_heart_validator" alt="I heart Validator logo" title=" Validators Donation Program" width="80" height="15" /> 
       </a> 
     </p> 
     <p id="version_info"> 
-      This service runs the W3C Markup Validator, <a href="../whatsnew.html#v11"><abbr title="version">v</abbr>1.1</a>. 
+      This service runs the W3C Markup Validator, <a href="../whatsnew.html#v12"><abbr title="version">v</abbr>1.2</a>. 
     </p> 
  
     <p class="copyright"> 

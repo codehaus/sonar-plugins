@@ -19,8 +19,7 @@
     <!-- webscanner -->
     <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
     <sonar.html.sourceDirectory>toetstool/html</sonar.html.sourceDirectory>
-    <sonar.html.website>http://www.toetstool.nl</sonar.html.website>
-
+    
   </properties>
 
 </project>

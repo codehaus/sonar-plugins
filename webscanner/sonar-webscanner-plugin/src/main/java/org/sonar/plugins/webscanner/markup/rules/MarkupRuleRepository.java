@@ -101,7 +101,7 @@ public final class MarkupRuleRepository extends RuleRepository {
     XStream xstream = new XStream();
     xstream.setClassLoader(getClass().getClassLoader());
     xstream.processAnnotations(HtmlMarkupRules.class);
-    HtmlMarkupRules markupRules = (HtmlMarkupRules) xstream.fromXML(getClass().getClassLoader().getResourceAsStream(ALL_RULES));
+    HtmlMarkupRules markupRules = (HtmlMarkupRules) xstream.fromXML(MarkupRuleRepository.class.getClassLoader().getResourceAsStream(ALL_RULES));
     for (HtmlMarkupRule htmlMarkupRule : markupRules.rules) {
       Rule rule = Rule.create(REPOSITORY_KEY, htmlMarkupRule.getKey(),
           StringUtils.abbreviate(htmlMarkupRule.getRemark(), RULENAME_MAX_LENGTH));

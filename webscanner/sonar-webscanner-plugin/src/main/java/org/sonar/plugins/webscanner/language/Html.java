@@ -18,9 +18,8 @@
 
 package org.sonar.plugins.webscanner.language;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.sonar.api.resources.AbstractLanguage;
-import org.sonar.api.resources.Project;
-import org.sonar.plugins.webscanner.WebScannerPlugin;
 
 /**
  * This class defines the Html language.
@@ -39,31 +38,10 @@ public class Html extends AbstractLanguage {
   /** The html language name */
   private static final String HTML_LANGUAGE_NAME = "Html";
 
-  private String[] fileSuffixes;
-
   public static final Html INSTANCE = new Html();
 
   public Html() {
     super(KEY, HTML_LANGUAGE_NAME);
-  }
-
-  /**
-   * Default constructor.
-   */
-  public Html(Project project) {
-    this();
-
-    String extensions = (String) project.getProperty(WebScannerPlugin.FILE_EXTENSIONS);
-
-    if (extensions != null) {
-      final String[] list = extensions.split(",");
-      if (list.length > 0) {
-        for (int i = 0; i < list.length; i++) {
-          list[i] = list[i].trim();
-        }
-        fileSuffixes = list;
-      }
-    }
   }
 
   /**
@@ -73,6 +51,6 @@ public class Html extends AbstractLanguage {
    * @see org.sonar.api.resources.Language#getFileSuffixes()
    */
   public String[] getFileSuffixes() {
-    return fileSuffixes == null ?  DEFAULT_SUFFIXES : fileSuffixes;
+    return (String[]) ArrayUtils.clone(DEFAULT_SUFFIXES);
   }
 }
