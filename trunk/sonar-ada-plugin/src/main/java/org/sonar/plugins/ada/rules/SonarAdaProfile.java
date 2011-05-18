@@ -32,9 +32,9 @@ import org.sonar.api.utils.ValidationMessages;
  * @author Akram Ben Aissi
  * 
  */
-public final class EchoSourceAdaProfile extends ProfileDefinition {
+public final class SonarAdaProfile extends ProfileDefinition {
 
-  private static final String COM_ECHOSOURCE_ADA_ECHOSOURCE_ADA_PROFILE_XML = "/com/echosource/ada/echosource-ada-profile.xml";
+  private static final String SONAR_ADA_PROFILE_XML = "/org/sonar/plugins/ada/echosource-ada-profile.xml";
   /**
    * XML profile parser.
    */
@@ -43,7 +43,7 @@ public final class EchoSourceAdaProfile extends ProfileDefinition {
   /**
    * @param parser
    */
-  public EchoSourceAdaProfile(XMLProfileParser parser) {
+  public SonarAdaProfile(XMLProfileParser parser) {
     this.parser = parser;
   }
 
@@ -53,7 +53,7 @@ public final class EchoSourceAdaProfile extends ProfileDefinition {
   @Override
   public RulesProfile createProfile(ValidationMessages messages) {
     ClassLoader classLoader = getClass().getClassLoader();
-    Reader reader = new InputStreamReader(classLoader.getResourceAsStream(COM_ECHOSOURCE_ADA_ECHOSOURCE_ADA_PROFILE_XML));
+    Reader reader = new InputStreamReader(classLoader.getResourceAsStream(SONAR_ADA_PROFILE_XML));
     return parser.parse(reader, messages);
   }
 }

@@ -42,7 +42,7 @@ import org.sonar.plugins.ada.rules.AdaProfile;
 import org.sonar.plugins.ada.rules.AdaProfileExporter;
 import org.sonar.plugins.ada.rules.AdaProfileImporter;
 import org.sonar.plugins.ada.rules.AdaRuleRepository;
-import org.sonar.plugins.ada.rules.EchoSourceAdaProfile;
+import org.sonar.plugins.ada.rules.SonarAdaProfile;
 
 /**
  * Entry point for all Ada extensions plugins.
@@ -92,7 +92,7 @@ public class AdaPlugin implements Plugin {
     extensions.add(AdaSourceCodeColorizer.class);
 
     extensions.add(AdaProfile.class);
-    extensions.add(EchoSourceAdaProfile.class);
+    extensions.add(SonarAdaProfile.class);
 
     extensions.add(GnatMetricExecutor.class);
     extensions.add(GnatMetricResultsParser.class);
