@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <rules>
-  <rule key="com.echosource.ada.gnat.metric.rule1" priority="CRITICAL">
+  <rule key="org.sonar.plugins.ada.gnat.metric.rule1" priority="CRITICAL">
     <name>Class cyclomatic complexity exceed maximum</name>
     <configKey>rulesets/codesize.xml/CyclomaticComplexity</configKey>
     <category name="Maintainability" />
   </rule>
 
-  <rule key="com.echosource.ada.gnat.metric.rule2" priority="CRITICAL">
+  <rule key="org.sonar.plugins.ada.gnat.metric.rule2" priority="CRITICAL">
     <name><![CDATA[Class NPath Complexity exceeds maximum]]></name>
     <configKey><![CDATA[rulesets/codesize.xml/NPathComplexity]]></configKey>
     <category name="Maintainability" />
   </rule>
 
-  <rule key="com.echosource.ada.gnat.metric.rule3" priority="BLOCKER">
+  <rule key="org.sonar.plugins.ada.gnat.metric.rule3" priority="BLOCKER">
     <name><![CDATA[Method length exceeds maximum]]></name>
     <configKey><![CDATA[rulesets/codesize.xml/ExcessiveMethodLength]]></configKey>
     <category name="Maintainability" />
   </rule>
 
-  <rule key="com.echosource.ada.gnat.metric.rule4" priority="MAJOR">
+  <rule key="org.sonar.plugins.ada.gnat.metric.rule4" priority="MAJOR">
     <name><![CDATA[Class length exceeds maximum]]></name>
     <configKey><![CDATA[rulesets/codesize.xml/ExcessiveClassLength]]></configKey>
     <category name="Maintainability" />

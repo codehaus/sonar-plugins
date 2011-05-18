@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.ada.rules;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -34,7 +35,7 @@ import org.sonar.api.utils.ValidationMessages;
  */
 public final class SonarAdaProfile extends ProfileDefinition {
 
-  private static final String SONAR_ADA_PROFILE_XML = "/org/sonar/plugins/ada/echosource-ada-profile.xml";
+  private static final String SONAR_ADA_PROFILE_XML = "org/sonar/plugins/ada/sonar-ada-profile.xml";
   /**
    * XML profile parser.
    */
@@ -53,7 +54,8 @@ public final class SonarAdaProfile extends ProfileDefinition {
   @Override
   public RulesProfile createProfile(ValidationMessages messages) {
     ClassLoader classLoader = getClass().getClassLoader();
-    Reader reader = new InputStreamReader(classLoader.getResourceAsStream(SONAR_ADA_PROFILE_XML));
+    InputStream stream = classLoader.getResourceAsStream(SONAR_ADA_PROFILE_XML);
+    Reader reader = new InputStreamReader(stream);
     return parser.parse(reader, messages);
   }
 }
