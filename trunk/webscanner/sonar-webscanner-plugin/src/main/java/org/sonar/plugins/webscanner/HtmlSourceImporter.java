@@ -42,7 +42,10 @@ import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 import org.sonar.plugins.webscanner.language.Html;
 
 /**
+ * Import HTML sources into Sonar.
+ *
  * @author Matthijs Galesloot
+ * @since 1.0
  */
 @Phase(name = Phase.Name.PRE)
 public final class HtmlSourceImporter implements Sensor {
@@ -56,6 +59,9 @@ public final class HtmlSourceImporter implements Sensor {
     this.project = project;
   }
 
+  /**
+   * Import the HTML sources. Optionally scan a live website first.
+   */
   public void analyse(Project project, SensorContext context) {
 
     String website = (String) project.getProperty(WebScannerPlugin.WEBSITE);
@@ -118,6 +124,9 @@ public final class HtmlSourceImporter implements Sensor {
     return resource;
   }
 
+  /**
+   * Execute on HTML language only.
+   */
   public boolean shouldExecuteOnProject(Project project) {
     return isEnabled(project) && Html.KEY.equals(project.getLanguageKey());
   }

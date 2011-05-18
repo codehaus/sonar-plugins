@@ -35,8 +35,10 @@ import org.sonar.api.resources.Project;
 import org.sonar.plugins.webscanner.language.Html;
 
 /**
+ * Counts lines in HTML files.
+ *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public final class LineCountSensor implements Sensor {
 

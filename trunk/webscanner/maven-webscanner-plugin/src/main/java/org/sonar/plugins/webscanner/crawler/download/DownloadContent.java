@@ -19,10 +19,11 @@
 package org.sonar.plugins.webscanner.crawler.download;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -118,9 +119,7 @@ public class DownloadContent {
       } else {
         fileName = URLDecoder.decode(fileName, "UTF-8");
       }
-      if (fileName.endsWith("/")) {
-        fileName = fileName.substring(0, fileName.length() - 1);
-      }
+      fileName = StringUtils.stripEnd(fileName, "/");
 
       StringBuilder path = new StringBuilder();
       path.append(downloadDirectory.getAbsolutePath());
@@ -128,30 +127,45 @@ public class DownloadContent {
         path.append('/');
       }
       path.append(fileName);
-      if ( !fileName.contains(".")) {
+      if ( !fileName.endsWith(".html")) {
         path.append(".html");
       }
 
       // write content
-      OutputStream out = FileUtils.openOutputStream(new File(path.toString()));
-      OutputStreamWriter writer = new OutputStreamWriter(out, page.getCharset());
-      writer.write(page.getContentString());
-
-      IOUtils.closeQuietly(writer);
-      IOUtils.closeQuietly(out);
+      writeContent(path.toString(), page.getContentString(), page.getCharset());
 
       // write headers
       path.append(".txt");
       File propertyFile = new File(path.toString());
       Properties properties = new Properties();
       properties.put("url", crawlerTask.getUrl());
-      properties.put("content-type",page.getHeader("content-type"));
-      out = FileUtils.openOutputStream(propertyFile);
-      properties.store(new FileOutputStream(propertyFile), null);
+      properties.put("content-type", page.getHeader("content-type"));
+      OutputStream out = FileUtils.openOutputStream(propertyFile);
+      properties.store(out, null);
 
       IOUtils.closeQuietly(out);
     } catch (IOException e) {
       LOG.warn("Could not download from " + page.getUrl());
+    }
+  }
+
+  private void writeContent(String fileName, String content, String charset) {
+    OutputStream out = null;
+    OutputStreamWriter writer = null;
+    try {
+      File file = new File(fileName);
+      boolean equals = file.exists() && IOUtils.contentEquals(new StringReader(content), new FileReader(file));
+
+      if (!equals) {
+        out = FileUtils.openOutputStream(file);
+        writer = new OutputStreamWriter(out, charset);
+        writer.write(content);
+      }
+    } catch (IOException e) {
+      LOG.warn("Could not write content to " + fileName);
+    } finally {
+      IOUtils.closeQuietly(writer);
+      IOUtils.closeQuietly(out);
     }
   }
 

@@ -38,6 +38,12 @@ import org.sonar.plugins.webscanner.language.Html;
 
 import com.google.common.collect.Lists;
 
+/**
+ * Provide list of sourcefiles and dirs in scope for the WebScanner.
+ *
+ * @author Matthijs
+ * @since 1.0
+ */
 public class HtmlProjectFileSystem {
 
   private static final class DefaultInputFile implements InputFile {
@@ -146,17 +152,6 @@ public class HtmlProjectFileSystem {
     }
   }
 
-  /**
-   * Conversion from InputFile to File. Allows to provide backward compatibility.
-   */
-  private static List<File> toFiles(List<InputFile> files) {
-    List<File> result = Lists.newArrayList();
-    for (InputFile file : files) {
-      result.add(file.getFile());
-    }
-    return result;
-  }
-
   private final List<IOFileFilter> filters = Lists.newArrayList();
 
   private final Project project;
@@ -232,14 +227,5 @@ public class HtmlProjectFileSystem {
 
   public List<File> getSourceDirs() {
     return getSourceDirs(project);
-  }
-
-  /**
-   * Get sourcefiles as list of files.
-   *
-   */
-  @Deprecated
-  public List<File> getSourceFiles() {
-    return toFiles(getFiles());
   }
 }

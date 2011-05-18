@@ -21,12 +21,10 @@ package org.sonar.plugins.webscanner;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.api.resources.Project;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlCodeColorizerFormat;
 import org.sonar.plugins.webscanner.language.HtmlMetrics;
@@ -35,7 +33,10 @@ import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
 
 /**
+ * WebScanner plugin.
+ *
  * @author Matthijs Galesloot
+ * @since 1.0
  */
 @Properties({
     @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API", description = "W3CMarkup Validation API",
@@ -50,16 +51,8 @@ public final class WebScannerPlugin implements Plugin {
 
   public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
   private static final String KEY = "sonar-webscanner-plugin";
-  public static final String NR_OF_SAMPLES = "sonar.html.nrOfSamples";
   public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
   public static final String WEBSITE = "sonar.html.website";
-
-  /**
-   * Get Nr of samples to validate.
-   */
-  public static Integer getNrOfSamples(Project project) {
-    return NumberUtils.toInt((String) project.getProperty(WebScannerPlugin.NR_OF_SAMPLES));
-  }
 
   public String getDescription() {
     return null;

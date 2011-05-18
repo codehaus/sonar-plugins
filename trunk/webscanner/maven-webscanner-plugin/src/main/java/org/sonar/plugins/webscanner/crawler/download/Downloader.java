@@ -422,15 +422,6 @@ public class Downloader {
   }
 
   /**
-   * Returns downloader's logger
-   *
-   * @return
-   */
-  protected Logger getLogger() {
-    return LOG;
-  }
-
-  /**
    * Collects response headers from the open connection
    *
    * @param connection

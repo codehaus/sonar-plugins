@@ -19,7 +19,6 @@
 package org.sonar.plugins.webscanner.scanner;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,15 +44,7 @@ public final class HtmlFileScanner {
     this.visitor = visitor;
   }
 
-  protected List<File> randomSubsetFiles(List<File> files, Integer amount) {
-    List<File> newCollection = new ArrayList<File>();
-    for (int i = 0; i < amount && i < files.size(); i++) {
-      newCollection.add(files.get(i));
-    }
-    return newCollection;
-  }
-
-  public void validateFiles(List<InputFile> inputfiles, Integer nrOfSamples) {
+  public void validateFiles(List<InputFile> inputfiles) {
 
     int n = 0;
     for (InputFile inputfile : inputfiles) {

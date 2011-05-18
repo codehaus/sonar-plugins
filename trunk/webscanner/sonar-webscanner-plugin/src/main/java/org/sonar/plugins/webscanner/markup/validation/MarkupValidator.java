@@ -35,6 +35,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.webscanner.HtmlProjectFileSystem;
 import org.sonar.plugins.webscanner.scanner.CharsetDetector;
 import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
 import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
@@ -42,12 +43,12 @@ import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
 
 /**
  * Validator for the W3C Markup Validation Service.
- * 
+ *
  * @see http://validator.w3.org/docs/api.html
- * 
+ *
  * @author Matthijs Galesloot
  * @since 0.1
- * 
+ *
  */
 public final class MarkupValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
 
@@ -83,12 +84,12 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
   }
 
   public File errorFile(File file) {
-    return new File(buildDir.getPath() + "/" + relativePath(baseDir, file) + "/" + file.getName() + ERROR_XML);
+    return new File(buildDir.getPath() + "/" + HtmlProjectFileSystem.getRelativePath(file, baseDir) + "/" + file.getName() + ERROR_XML);
   }
 
   /**
    * Post content of HTML to the W3C validation service. In return, receive a Soap response message.
-   * 
+   *
    * Documentation of interface: http://validator.w3.org/docs/api.html
    */
   private void postHtmlContents(File file) {
@@ -156,7 +157,7 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
    * Create the path to the report file.
    */
   public File reportFile(File file) {
-    return new File(buildDir.getPath() + "/" + relativePath(baseDir, file) + MarkupReport.REPORT_SUFFIX);
+    return new File(buildDir.getPath() + "/" + HtmlProjectFileSystem.getRelativePath(file, baseDir) + MarkupReport.REPORT_SUFFIX);
   }
 
   /**
