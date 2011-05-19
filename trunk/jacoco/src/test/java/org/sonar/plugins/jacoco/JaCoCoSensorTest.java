@@ -33,10 +33,7 @@ import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.resources.JavaFile;
-import org.sonar.api.resources.Project;
-import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.*;
 import org.sonar.api.test.IsMeasure;
 
 import java.io.File;
@@ -58,6 +55,20 @@ public class JaCoCoSensorTest {
   @Test
   public void testSensorDefinition() {
     assertThat(sensor.toString(), is("JaCoCoSensor"));
+  }
+
+  @Test
+  public void shouldNotExecuteOnProject() {
+    Project project = mock(Project.class);
+    when(project.getLanguageKey()).thenReturn("flex");
+    assertThat(sensor.shouldExecuteOnProject(project), is(false));
+  }
+
+  @Test
+  public void shouldExecuteOnProject() {
+    Project project = mock(Project.class);
+    when(project.getLanguageKey()).thenReturn(Java.KEY);
+    assertThat(sensor.shouldExecuteOnProject(project), is(true));
   }
 
   @Test
