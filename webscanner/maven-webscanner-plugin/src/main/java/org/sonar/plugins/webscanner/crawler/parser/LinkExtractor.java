@@ -132,7 +132,7 @@ public final class LinkExtractor {
 
   private void parse(String content, DefaultHandler handler) {
     try {
-      SAXParser parser = new SAXParser();
+      SAXParser parser = new SAXParser(); //NOSONAR
       parser.setContentHandler(handler);
       parser.parse(new InputSource(new StringReader(content)));
     } catch (IOException e) {
