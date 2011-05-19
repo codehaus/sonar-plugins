@@ -45,7 +45,7 @@ public class WebScannerSensorTest extends AbstractWebScannerPluginTester {
     assertNull(webscannerPlugin.getKey());
     assertNull(webscannerPlugin.getName());
     assertNull(webscannerPlugin.getDescription());
-    assertEquals(9, webscannerPlugin.getExtensions().size());
+    assertEquals(8, webscannerPlugin.getExtensions().size());
   }
 
   private class MockMavenSession extends MavenSession {

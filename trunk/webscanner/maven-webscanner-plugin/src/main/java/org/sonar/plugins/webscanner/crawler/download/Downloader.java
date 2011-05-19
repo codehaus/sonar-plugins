@@ -40,7 +40,7 @@ import org.sonar.plugins.webscanner.crawler.frontier.Statistics;
 import org.sonar.plugins.webscanner.crawler.parser.Page;
 
 /**
- * Download
+ * Downloader.
  *
  * @author Matthijs Galesloot (based on http://code.google.com/p/flaxcrawler/)
  * @since 1.0
@@ -70,9 +70,6 @@ public class Downloader {
 
   /**
    * Checks downloader constraints. Returns true is everything is OK.
-   *
-   * @param page
-   * @return
    */
   protected boolean checkConstraints(Page page) {
     LOG.debug("Checking constraints for page " + page.getUrl());
@@ -109,9 +106,6 @@ public class Downloader {
 
   /**
    * Clean up connection. Reads errorStream and closes it, disconnects if needed.
-   *
-   * @param connection
-   * @param connectionHeader
    */
   protected void cleanUpConnection(HttpURLConnection connection, String connectionHeader) {
     // Handling error stream
@@ -138,10 +132,7 @@ public class Downloader {
   }
 
   /**
-   * Creates connection for the specified request
-   *
-   * @param request
-   * @return
+   * Creates connection for the specified request.
    */
   protected HttpURLConnection createConnection(URL url, Proxy proxy) throws IOException {
     LOG.debug("Opening connection to " + url + (proxy == null ? " not using proxy " : " using proxy " + proxy));
@@ -163,15 +154,7 @@ public class Downloader {
   }
 
   /**
-   * Creates {@link Page} instance
-   *
-   * @param request
-   * @param content
-   * @param responseCode
-   * @param responseHeaders
-   * @param encoding
-   * @param responseTime
-   * @return
+   * Creates {@link Page} instance.
    */
   protected Page createPage(URL url, byte[] content, int responseCode, Map<String, String> responseHeaders, String encoding,
       long responseTime) {
@@ -181,9 +164,6 @@ public class Downloader {
 
   /**
    * Downloads web page. Returns {@code null} if Page cannot be downloaded due to constraints (contentType, maxContentLength)
-   *
-   * @param url
-   * @return
    */
   public Page download(URL url) {
 
@@ -212,12 +192,7 @@ public class Downloader {
   }
 
   /**
-   * Downloads page content
-   *
-   * @param request
-   * @param httpMethod
-   * @param useProxy
-   * @return
+   * Downloads page content.
    */
   protected Page download(URL url, Proxy proxy) {
     HttpURLConnection connection = null;
@@ -338,10 +313,6 @@ public class Downloader {
 
   /**
    * Tries to get encoding. First from the "Content-Type" header, then tries to guess it from the content
-   *
-   * @param content
-   * @param contentType
-   * @return
    */
   protected String getCharset(String contentType) {
 
@@ -366,9 +337,6 @@ public class Downloader {
 
   /**
    * Tries to get charset from {@code meta} tag. Very simple implementation.
-   *
-   * @param content
-   * @return
    */
   protected String getCharsetFromMeta(byte[] content) {
     try {
@@ -390,10 +358,6 @@ public class Downloader {
 
   /**
    * Returns response content
-   *
-   * @param gzipEncoding
-   * @param connection
-   * @return
    */
   protected byte[] getContent(boolean gzipEncoding, HttpURLConnection connection) throws IOException {
     InputStream inputStream = connection.getInputStream();
@@ -409,23 +373,14 @@ public class Downloader {
         content = IOUtils.toByteArray(inputStream);
       }
     } finally {
-      if (inputStream != null) {
-        try {
-          inputStream.close();
-        } catch (IOException ex) {
-          LOG.warn("Error closing input stream for request " + connection.getURL(), ex);
-        }
-      }
+      IOUtils.closeQuietly(inputStream);
     }
 
     return content;
   }
 
   /**
-   * Collects response headers from the open connection
-   *
-   * @param connection
-   * @return
+   * Collects response headers from the open connection.
    */
   protected Map<String, String> getResponseHeaders(HttpURLConnection connection) {
     Map<String, String> responseHeaders = new HashMap<String, String>();

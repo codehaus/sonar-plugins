@@ -22,6 +22,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 
@@ -29,6 +30,7 @@ import org.sonar.plugins.webscanner.crawler.exception.CrawlerException;
 public class CrawlerTest {
 
   @Test
+  @Ignore
   public void testPensioenOverzicht() throws MalformedURLException, CrawlerException {
     Crawler crawler = new Crawler();
 

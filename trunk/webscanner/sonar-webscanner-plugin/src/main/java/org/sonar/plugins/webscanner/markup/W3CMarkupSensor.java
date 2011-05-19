@@ -37,7 +37,6 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.webscanner.HtmlProjectFileSystem;
 import org.sonar.plugins.webscanner.language.Html;
-import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
 import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
@@ -177,9 +176,6 @@ public final class W3CMarkupSensor implements Sensor {
     }
 
     new MarkupReportBuilder().buildReports(reportFiles);
-
-    double percentageValid = numFiles > 0 ? (double) numValid / numFiles : 1;
-    sensorContext.saveMeasure(HtmlMetrics.W3C_MARKUP_VALIDITY, percentageValid * 100);
   }
 
   /**

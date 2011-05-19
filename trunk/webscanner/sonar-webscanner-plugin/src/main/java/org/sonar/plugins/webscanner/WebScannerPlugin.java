@@ -27,7 +27,6 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.webscanner.language.Html;
 import org.sonar.plugins.webscanner.language.HtmlCodeColorizerFormat;
-import org.sonar.plugins.webscanner.language.HtmlMetrics;
 import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
 import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
@@ -71,17 +70,11 @@ public final class WebScannerPlugin implements Plugin {
     // Code Colorizer
     list.add(HtmlCodeColorizerFormat.class);
 
-    // widget for dashboard
-  //  list.add(HtmlWidget.class);
-
     // W3C markup rules
     list.add(MarkupRuleRepository.class);
     list.add(DefaultMarkupProfile.class);
     list.add(HtmlViolationFilter.class);
     list.add(W3CMarkupSensor.class);
-
-    // metrics
-    list.add(HtmlMetrics.class);
 
     return list;
   }
