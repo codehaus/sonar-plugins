@@ -61,7 +61,7 @@ public final class LinkParser {
 
   private void parse(InputStream input, DefaultHandler handler) {
     try {
-      XMLReader parser = new SAXParser();
+      XMLReader parser = new SAXParser(); //NOSONAR
       parser.setContentHandler(handler);
       parser.parse(new InputSource(input));
     } catch (IOException e) {

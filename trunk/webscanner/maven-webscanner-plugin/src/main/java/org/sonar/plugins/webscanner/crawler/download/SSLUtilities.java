@@ -45,57 +45,42 @@ final class SSLUtilities {
   /**
    * Hostname verifier.
    */
-  private static HostnameVerifier _hostnameVerifier;
-  /**
-   * Thrust managers.
-   */
-  private static TrustManager[] _trustManagers;
+  private static final HostnameVerifier hostnameVerifier;
 
   /**
-   * Set the default Hostname Verifier to an instance of a fake class that trust all hostnames.
+   * Trust managers.
    */
-  private static void _trustAllHostnames() {
-    // Create a trust manager that does not validate certificate chains
-    if (_hostnameVerifier == null) {
-      _hostnameVerifier = new FakeHostnameVerifier();
-    } // if
-      // Install the all-trusting host name verifier:
-    HttpsURLConnection.setDefaultHostnameVerifier(_hostnameVerifier);
-  } // _trustAllHttpsCertificates
+  private static final TrustManager[] trustManagers;
 
-  /**
-   * Set the default X509 Trust Manager to an instance of a fake class that trust all certificates, even the self-signed ones.
-   */
-  private static void _trustAllHttpsCertificates() {
-    SSLContext context;
-
-    // Create a trust manager that does not validate certificate chains
-    if (_trustManagers == null) {
-      _trustManagers = new TrustManager[] { new FakeX509TrustManager() };
-    } // if
-    // Install the all-trusting trust manager:
-    try {
-      context = SSLContext.getInstance("SSL");
-      context.init(null, _trustManagers, new SecureRandom());
-    } catch (GeneralSecurityException gse) {
-      throw new IllegalStateException(gse.getMessage());
-    } // catch
-    HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
-  } // _trustAllHttpsCertificates
+  static {
+    // Create trust manager that does not validate certificate chains
+    hostnameVerifier = new FakeHostnameVerifier();
+    trustManagers = new TrustManager[] { new FakeX509TrustManager() };
+  }
 
   /**
    * Set the default Hostname Verifier to an instance of a fake class that trust all hostnames.
    */
   public static void trustAllHostnames() {
-    _trustAllHostnames();
-  } // trustAllHostnames
+
+    // Install the all-trusting host name verifier:
+    HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
+  }
 
   /**
    * Set the default X509 Trust Manager to an instance of a fake class that trust all certificates, even the self-signed ones.
    */
   public static void trustAllHttpsCertificates() {
-    _trustAllHttpsCertificates();
-  } // trustAllHttpsCertificates
+
+    // Install the all-trusting trust manager:
+    try {
+      SSLContext context = SSLContext.getInstance("SSL");
+      context.init(null, trustManagers, new SecureRandom());
+      HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+    } catch (GeneralSecurityException gse) {
+      throw new IllegalStateException(gse.getMessage());
+    }
+  }
 
   /**
    * This class implements a fake hostname verificator, trusting any host name.
@@ -115,8 +100,8 @@ final class SSLUtilities {
      */
     public boolean verify(String hostname, javax.net.ssl.SSLSession session) {
       return true;
-    } // verify
-  } // FakeHostnameVerifier
+    }
+  }
 
   /**
    * This class allow any X509 certificates to be used to authenticate the remote side of a secure socket, including self-signed
@@ -140,7 +125,7 @@ final class SSLUtilities {
      *          the authentication type based on the client certificate.
      */
     public void checkClientTrusted(X509Certificate[] chain, String authType) {
-    } // checkClientTrusted
+    }
 
     /**
      * Always trust for server SSL chain peer certificate chain with any authType exchange algorithm types.
@@ -151,7 +136,7 @@ final class SSLUtilities {
      *          the key exchange algorithm used.
      */
     public void checkServerTrusted(X509Certificate[] chain, String authType) {
-    } // checkServerTrusted
+    }
 
     /**
      * Return an empty array of certificate authority certificates which are trusted for authenticating peers.
@@ -160,6 +145,6 @@ final class SSLUtilities {
      */
     public X509Certificate[] getAcceptedIssuers() {
       return _AcceptedIssuers;
-    } // getAcceptedIssuers
-  } // FakeX509TrustManager
-} // SSLUtilities
+    }
+  }
+}
