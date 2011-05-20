@@ -32,8 +32,8 @@ public class MMConfiguration {
   private static int[] volumeLimits = { 1310000, 655000, 246000, 66000, 0 };
   private static int[] duplicationLimits = { 20, 10, 5, 3, 0 };
   private static int[] coverageLimits = { 95, 80, 60, 20, 0 };
-  public static Number[] CC_DISTRIBUTION_BOTTOM_LIMITS = { 50, 20, 10, 0 };
-  public static Number[] NCLOC_DISTRIBUTION_BOTTOM_LIMITS = { 100, 50, 10, 0 };
+  static final Number[] CC_DISTRIBUTION_BOTTOM_LIMITS = { 50, 20, 10, 0 };
+  static final Number[] NCLOC_DISTRIBUTION_BOTTOM_LIMITS = { 100, 50, 10, 0 };
 
   private MMAxis testabilityAxis;
 
