@@ -20,6 +20,7 @@ package org.sonar.plugins.webscanner.crawler.parser;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 import java.util.ArrayList;
@@ -174,7 +175,7 @@ public class Page {
     try {
       return Charset.forName(charset).newDecoder().onMalformedInput(CodingErrorAction.REPLACE)
           .onUnmappableCharacter(CodingErrorAction.REPLACE).decode(ByteBuffer.wrap(content)).toString();
-    } catch (Exception ex) {
+    } catch (CharacterCodingException ex) {
       // Ignoring error
       return new String(content);
     }

@@ -51,7 +51,9 @@ public final class CharsetDetector {
       } else {
         return null;
       }
-    } catch (Exception ex) {
+    } catch (RuntimeException ex) {
+      return null;
+    } catch (IOException e) {
       return null;
     }
   }

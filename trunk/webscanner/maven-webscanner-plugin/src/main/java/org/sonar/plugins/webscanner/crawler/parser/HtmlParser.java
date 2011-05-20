@@ -18,6 +18,8 @@
 
 package org.sonar.plugins.webscanner.crawler.parser;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.List;
 
@@ -38,16 +40,16 @@ public class HtmlParser implements Parser {
   public void parse(Page page) {
 
     LinkExtractor linkExtractor = new LinkExtractor();
-    linkExtractor.parseLinks(page.getContentString());
+    linkExtractor.parseLinks(new StringReader(page.getContentString()));
     handleLinks(page, linkExtractor.getUrls(), linkExtractor.getBase());
   }
 
   private void handleLinks(Page page, List<String> urls, String base) {
-    URL baseUrl = page.getUrl();
+    URL baseUrl;
     try {
       baseUrl = base == null ? page.getUrl() : new URL(base);
-    } catch (Exception ex) {
-      // Ignore
+    } catch (IOException ex) {
+      baseUrl = page.getUrl();
     }
 
     for (String url : urls) {
