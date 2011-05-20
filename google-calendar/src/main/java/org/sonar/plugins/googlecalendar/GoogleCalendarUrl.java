@@ -21,8 +21,6 @@
 package org.sonar.plugins.googlecalendar;
 
 import com.google.api.client.googleapis.GoogleUrl;
-import com.google.api.client.util.Key;
-
 
 /**
  * @author Papapetrou P.Patroklos
