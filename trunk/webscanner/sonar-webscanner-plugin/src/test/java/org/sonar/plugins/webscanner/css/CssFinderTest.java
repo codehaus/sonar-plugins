@@ -22,11 +22,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.List;
 
 import org.junit.Test;
+import org.sonar.plugins.webscanner.crawler.parser.LinkExtractor;
 
 public class CssFinderTest {
 
@@ -39,7 +40,9 @@ public class CssFinderTest {
 
     File file = new File(testfile);
     assertTrue(file.exists());
-    List<String> styleSheets = new LinkParser().parseStylesheets(new FileInputStream(file));
+    LinkExtractor extractor = new LinkExtractor();
+    extractor.parseLinks(new FileReader(file));
+    List<String> styleSheets = extractor.getUrls();
     assertEquals(3, styleSheets.size());
 
     File rootDir = new File(path);

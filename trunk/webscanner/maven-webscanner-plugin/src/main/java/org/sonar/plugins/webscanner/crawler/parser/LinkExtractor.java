@@ -126,7 +126,7 @@ public final class LinkExtractor {
     return base;
   }
 
-  protected List<String> getUrls() {
+  public List<String> getUrls() {
     return urls;
   }
 
