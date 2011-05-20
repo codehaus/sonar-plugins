@@ -38,6 +38,7 @@ import com.sonarsource.c.plugin.CCheckRepository;
  * 
  * @deprecated
  */
+@Deprecated
 public class CheckRepository implements CCheckRepository {
 
   public Collection<Class<? extends CCheck>> getCheckClasses() {
