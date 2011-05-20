@@ -33,7 +33,7 @@ public final class GreenPepperReportsParser {
   private GreenPepperReportsParser() {
   }
 
-  public final static GreenPepperReport parseReports(File reportsDir) {
+  public static GreenPepperReport parseReports(File reportsDir) {
     GreenPepperReport testsResult = new GreenPepperReport();
     File[] reports = getReports(reportsDir);
     for (File report : reports) {
@@ -42,7 +42,7 @@ public final class GreenPepperReportsParser {
     return testsResult;
   }
 
-  public final static GreenPepperReport parseReport(File report) {
+  public static GreenPepperReport parseReport(File report) {
     try {
       XpathParser parser = new XpathParser();
       parser.parse(report);
