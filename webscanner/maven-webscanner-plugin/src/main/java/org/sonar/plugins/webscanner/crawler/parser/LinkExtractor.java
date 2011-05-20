@@ -19,7 +19,7 @@
 package org.sonar.plugins.webscanner.crawler.parser;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,11 +130,11 @@ public final class LinkExtractor {
     return urls;
   }
 
-  private void parse(String content, DefaultHandler handler) {
+  private void parse(Reader reader, DefaultHandler handler) {
     try {
       SAXParser parser = new SAXParser(); //NOSONAR
       parser.setContentHandler(handler);
-      parser.parse(new InputSource(new StringReader(content)));
+      parser.parse(new InputSource(reader));
     } catch (IOException e) {
       throw new CrawlerException(e);
     } catch (SAXException e) {
@@ -145,9 +145,9 @@ public final class LinkExtractor {
   /**
    * Parse HTML file to get a list of referenced urls.
    */
-  public void parseLinks(String content) {
+  public void parseLinks(Reader reader) {
 
     LinkHandler handler = new LinkHandler();
-    parse(content, handler);
+    parse(reader, handler);
   }
 }

@@ -351,7 +351,9 @@ public class Downloader {
       } else {
         return null;
       }
-    } catch (Exception ex) {
+    } catch (RuntimeException ex) {
+      return null;
+    } catch (IOException e) {
       return null;
     }
   }

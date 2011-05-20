@@ -61,7 +61,6 @@ public final class HtmlFileScanner {
   }
 
   public static Collection<File> getReportFiles(File htmlFolder, final String reportXml) {
-    @SuppressWarnings("unchecked")
     Collection<File> reportFiles = FileUtils.listFiles(htmlFolder, new IOFileFilter() {
 
       public boolean accept(File file) {

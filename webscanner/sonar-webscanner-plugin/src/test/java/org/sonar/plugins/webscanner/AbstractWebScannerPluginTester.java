@@ -21,7 +21,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,8 +34,11 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
-import org.sonar.api.resources.DefaultProjectFileSystem;
+import org.sonar.api.resources.InputFile;
+import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
@@ -114,15 +119,119 @@ public class AbstractWebScannerPluginTester {
     }
   }
 
+  private static class MockFileSystem implements ProjectFileSystem {
+
+    public ProjectFileSystem addSourceDir(File arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public ProjectFileSystem addTestDir(File arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public File getBasedir() {
+      return new File("src/test/resources");
+    }
+
+    public File getBuildDir() {
+      return new File(getBasedir(), "target");
+    }
+
+    public File getBuildOutputDir() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public File getFileFromBuildDirectory(String arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public List<File> getJavaSourceFiles() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public File getReportOutputDir() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public File getSonarWorkingDirectory() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public Charset getSourceCharset() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public List<File> getSourceDirs() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public List<File> getSourceFiles(Language... arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public List<File> getTestDirs() {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public List<File> getTestFiles(Language... arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public boolean hasJavaSourceFiles() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    public boolean hasTestFiles(Language arg0) {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    public List<InputFile> mainFiles(String... arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public File resolvePath(String arg0) {
+      return new File(getBasedir(), arg0);
+    }
+
+    public List<InputFile> testFiles(String... arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public Resource toResource(File arg0) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+    public File writeToWorkingDirectory(String arg0, String arg1) throws IOException {
+      // TODO Auto-generated method stub
+      return null;
+    }
+  }
+
   protected Project loadProjectFromPom(File pomFile) throws Exception {
     MavenProject pom = loadPom(pomFile);
     Project project = new Project(pom.getGroupId() + ":" + pom.getArtifactId()).setPom(pom).setConfiguration(
         new MapConfiguration(pom.getProperties()));
-    project.setFileSystem(new DefaultProjectFileSystem(project, null));
+    project.setFileSystem(new MockFileSystem());
     project.setPom(pom);
     project.setLanguageKey(Html.INSTANCE.getKey());
     project.setLanguage(Html.INSTANCE);
-    project.getPom().getBuild().setDirectory("target");
 
     return project;
   }
