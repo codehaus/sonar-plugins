@@ -28,7 +28,6 @@ import org.codehaus.plexus.util.FileUtils;
 import org.junit.Test;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
 import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
-import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 
 
 public class MarkupValidatorIT {
@@ -41,7 +40,7 @@ public class MarkupValidatorIT {
     FileUtils.copyURLToFile(url, file);
 
     // validate
-    HtmlFileVisitor validator = new MarkupValidator(null, file.getParentFile(), new File("target"));
+    MarkupValidator validator = new MarkupValidator(null, file.getParentFile(), new File("target"));
     validator.validateFile(file);
     MarkupReport report = MarkupReport.fromXml(validator.reportFile(file));
 

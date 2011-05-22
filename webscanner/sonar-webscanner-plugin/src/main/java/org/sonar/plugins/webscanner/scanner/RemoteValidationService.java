@@ -37,14 +37,14 @@ import org.apache.log4j.Logger;
 import org.sonar.api.utils.SonarException;
 
 /**
- * Client
+ *
  *
  * @author A130564
  *
  */
-public class HtmlValidationHttpClient {
+public abstract class RemoteValidationService {
 
-  private static final Logger LOG = Logger.getLogger(HtmlValidationHttpClient.class);
+  private static final Logger LOG = Logger.getLogger(RemoteValidationService.class);
 
   private HttpClient client;
 
@@ -52,6 +52,11 @@ public class HtmlValidationHttpClient {
 
   private int proxyPort;
 
+  private Long waitBetweenRequests; // MILLISECONDS
+
+  /**
+   * Execute post method to the remote validation service. On errors, the post is tried 3 times with a waiting time of 1 second.
+   */
   protected HttpResponse executePostMethod(HttpPost post) {
 
     int retries = 3;
@@ -70,7 +75,7 @@ public class HtmlValidationHttpClient {
           }
 
           LOG.warn("Bad http response: " + response.getStatusLine().getStatusCode() + ", retrying after 1 second...");
-          sleep(1000L);
+          sleep(waitBetweenRequests);
         }
       } catch (UnknownHostException e) {
         if (useProxy()) {
@@ -85,7 +90,7 @@ public class HtmlValidationHttpClient {
     return null;
   }
 
-  protected HttpClient getClient() {
+  private HttpClient getClient() {
     if (client == null) {
       client = new DefaultHttpClient();
       if (useProxy()) {
@@ -95,49 +100,6 @@ public class HtmlValidationHttpClient {
       }
     }
     return client;
-  }
-
-  /**
-   * Returns the proxy host.
-   *
-   * @return proxy host
-   */
-  public String getProxyHost() {
-    return proxyHost;
-  }
-
-  /**
-   * Returns the proxy port.
-   *
-   * @return proxy port
-   */
-  public int getProxyPort() {
-    return proxyPort;
-  }
-
-  public void setProxyHost(String proxyHost) {
-    this.proxyHost = proxyHost;
-  }
-
-  public void setProxyPort(int proxyPort) {
-    this.proxyPort = proxyPort;
-  }
-
-  protected void sleep(long sleepInterval) {
-    try {
-      Thread.sleep(sleepInterval);
-    } catch (InterruptedException ie) {
-      throw new SonarException(ie);
-    }
-  }
-
-  /**
-   * Returns whether or not to use a proxy.
-   *
-   * @return true/false
-   */
-  public boolean useProxy() {
-    return proxyHost != null && proxyPort > 0;
   }
 
   protected String getProperty(File file, String property) {
@@ -160,5 +122,54 @@ public class HtmlValidationHttpClient {
       }
     }
     return null;
+  }
+
+  /**
+   * Returns the proxy host.
+   *
+   * @return proxy host
+   */
+  private String getProxyHost() {
+    return proxyHost;
+  }
+
+  /**
+   * Returns the proxy port.
+   */
+  private int getProxyPort() {
+    return proxyPort;
+  }
+
+  public void setProxyHost(String proxyHost) {
+    this.proxyHost = proxyHost;
+  }
+
+  public void setProxyPort(int proxyPort) {
+    this.proxyPort = proxyPort;
+  }
+
+  protected void setWaitBetweenRequests(Long waitBetweenRequests) {
+    this.waitBetweenRequests = waitBetweenRequests;
+  }
+
+  protected void sleep(long sleepInterval) {
+    try {
+      Thread.sleep(sleepInterval);
+    } catch (InterruptedException ie) {
+      throw new SonarException(ie);
+    }
+  }
+
+  /**
+   * Returns whether or not to use a proxy.
+   *
+   * @return true/false
+   */
+  private boolean useProxy() {
+    return proxyHost != null && proxyPort > 0;
+  }
+
+  public void waitBetweenValidationRequests() {
+    sleep(waitBetweenRequests);
   }
 }
