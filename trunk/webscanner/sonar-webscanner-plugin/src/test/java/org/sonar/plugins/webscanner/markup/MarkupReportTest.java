@@ -19,13 +19,11 @@
 package org.sonar.plugins.webscanner.markup;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.junit.Test;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
-import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
 
 public class MarkupReportTest {
 
@@ -35,17 +33,5 @@ public class MarkupReportTest {
   public void parseReport() {
     MarkupReport report = MarkupReport.fromXml(new File(packagePath + "report.mur"));
     assertNotNull(report);
-  }
-
-  @Test
-  public void buildReport() {
-    File report = new File("target/markup-report.html");
-    if (report.exists()) {
-      report.delete();
-    }
-    MarkupReportBuilder reportBuilder = new MarkupReportBuilder();
-    reportBuilder.buildReports(MarkupValidator.getReportFiles(new File(packagePath)));
-
-    assertTrue(report.exists());
   }
 }

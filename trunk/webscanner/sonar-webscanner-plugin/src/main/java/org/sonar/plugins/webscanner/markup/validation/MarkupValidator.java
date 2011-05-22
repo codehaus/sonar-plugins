@@ -23,7 +23,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
-import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,12 +34,11 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.sonar.api.resources.InputFile;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.webscanner.HtmlProjectFileSystem;
-import org.sonar.plugins.webscanner.scanner.CharsetDetector;
-import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
-import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
-import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
+import org.sonar.plugins.webscanner.crawler.parser.CharsetDetector;
+import org.sonar.plugins.webscanner.scanner.RemoteValidationService;
 
 /**
  * Validator for the W3C Markup Validation Service.
@@ -50,7 +49,7 @@ import org.sonar.plugins.webscanner.scanner.HtmlValidationHttpClient;
  * @since 0.1
  *
  */
-public final class MarkupValidator extends HtmlValidationHttpClient implements HtmlFileVisitor {
+public final class MarkupValidator extends RemoteValidationService {
 
   /** the URL for the online validation service */
   private static final String DEFAULT_URL = "http://validator.w3.org/check";
@@ -66,21 +65,16 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
 
   private static final String UPLOADED_FILE = "uploaded_file";
 
-  /**
-   * Get all report files
-   */
-  public static Collection<File> getReportFiles(File folder) {
-    return HtmlFileScanner.getReportFiles(folder, MarkupReport.REPORT_SUFFIX);
-  }
-
-  private final String validationUrl;
-  private final File buildDir;
   private final File baseDir;
+  private final File buildDir;
+  private final String validationUrl;
 
   public MarkupValidator(String validationUrl, File baseDir, File buildDir) {
     this.baseDir = baseDir;
     this.buildDir = buildDir;
     this.validationUrl = StringUtils.isEmpty(validationUrl) ? DEFAULT_URL : validationUrl;
+
+    setWaitBetweenRequests(1000L);
   }
 
   public File errorFile(File file) {
@@ -167,8 +161,20 @@ public final class MarkupValidator extends HtmlValidationHttpClient implements H
     postHtmlContents(file);
   }
 
-  public void waitBetweenValidationRequests() {
-    sleep(1000L);
+  public void validateFiles(List<InputFile> inputfiles) {
+
+    int n = 0;
+    for (InputFile inputfile : inputfiles) {
+      // skip analysis if the report already exists
+      File reportFile = reportFile(inputfile.getFile());
+      if (!reportFile.exists()) {
+        if (n++ > 0) {
+          waitBetweenValidationRequests();
+        }
+        LOG.debug("Validating " + inputfile.getRelativePath() + "...");
+        validateFile(inputfile.getFile());
+      }
+    }
   }
 
   private void writeResponse(HttpResponse response, File file) {

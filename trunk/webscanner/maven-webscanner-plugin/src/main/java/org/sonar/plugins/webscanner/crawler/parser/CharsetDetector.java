@@ -1,5 +1,5 @@
 /*
- * Sonar Webscanner Plugin
+ * Maven Webscanner Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -15,8 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.sonar.plugins.webscanner.scanner;
+package org.sonar.plugins.webscanner.crawler.parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import com.sun.syndication.io.XmlReader;
 
 public final class CharsetDetector {
-  
+
   private CharsetDetector() {
     // cannot instantiate
   }

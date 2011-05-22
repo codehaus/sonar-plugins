@@ -41,8 +41,6 @@ import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
 import org.sonar.plugins.webscanner.markup.validation.MarkupMessage;
 import org.sonar.plugins.webscanner.markup.validation.MarkupReport;
 import org.sonar.plugins.webscanner.markup.validation.MarkupValidator;
-import org.sonar.plugins.webscanner.scanner.HtmlFileScanner;
-import org.sonar.plugins.webscanner.scanner.HtmlFileVisitor;
 
 /**
  * @author Matthijs Galesloot
@@ -97,9 +95,8 @@ public final class W3CMarkupSensor implements Sensor {
       validator.setProxyPort(session.getSettings().getActiveProxy().getPort());
     }
 
-    // start the html scanner
-    HtmlFileScanner htmlFileScanner = new HtmlFileScanner(validator);
-    htmlFileScanner.validateFiles(fileSystem.getFiles());
+    // start the validation
+    validator.validateFiles(fileSystem.getFiles());
 
     // save analysis to sonar
     saveResults(project, sensorContext, validator, fileSystem.getFiles());
@@ -152,7 +149,7 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(Project project, SensorContext sensorContext, HtmlFileVisitor validator, List<InputFile> inputfiles) {
+  private void saveResults(Project project, SensorContext sensorContext, MarkupValidator validator, List<InputFile> inputfiles) {
     int numValid = 0;
     int numFiles = 0;
 

@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.sonar.plugins.webscanner.scanner.CharsetDetector;
+import org.sonar.plugins.webscanner.crawler.parser.CharsetDetector;
 
 public class CharsetTest {
 
