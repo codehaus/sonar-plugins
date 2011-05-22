@@ -12,13 +12,12 @@
 
   <properties>
     <!-- Sonar properties -->
-    <sonar.language>html</sonar.language>
-    <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+  	<sonar.language>web</sonar.language>
+  	<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
 
     <!-- webscanner -->
-    <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
-    <sonar.html.sourceDirectory>src/html</sonar.html.sourceDirectory>
-     <!-- 
+  	<sonar.webscanner.downloadDirectory>src/html</sonar.webscanner.downloadDirectory>
+  	<!-- 
     <sonar.html.website>http://www.sonarsource.org</sonar.html.website>
     -->
     
@@ -30,14 +29,13 @@
       108:.*there is no attribute "name",
       108:.*there is no attribute "target",
       065:.*document type does not allow element "input" here
-        </sonar.html.excludeviolations>
+    </sonar.html.excludeviolations>
 
-    <!-- toetstool -->
-    <sonar.toetstool.cssDir>src/html</sonar.toetstool.cssDir>
-    <sonar.toetstool.url>http://api.toetstool.nl/</sonar.toetstool.url>
-
-    <sonar.html.nrOfSamples></sonar.html.nrOfSamples>
     <sonar.branch>HTML</sonar.branch>
+    <sonar.web.sourceDirectory>src/html</sonar.web.sourceDirectory>
+    <sonar.web.fileExtensions>html</sonar.web.fileExtensions>
+    
+    <sonar.profile>W3C Markup Validation</sonar.profile>
   </properties>
 
 

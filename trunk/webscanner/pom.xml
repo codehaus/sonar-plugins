@@ -21,8 +21,9 @@
     <!-- maven plugin -->
     <module>maven-webscanner-plugin</module>
     
-    <!-- sonar plugin -->
+    <!-- sonar plugins -->
     <module>sonar-webscanner-plugin</module>
+    <module>sonar-w3c-markup-validation-plugin</module>
   </modules>
 
   <properties>

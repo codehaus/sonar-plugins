@@ -12,13 +12,17 @@
 
   <properties>
     <!-- Sonar properties -->
-    <sonar.language>html</sonar.language>
-    <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+  	<sonar.language>web</sonar.language>
+  	<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
     <sonar.branch>HTML</sonar.branch>
     
-    <!-- webscanner -->
-    <sonar.html.fileExtensions>html</sonar.html.fileExtensions>
-    <sonar.html.sourceDirectory>toetstool/html</sonar.html.sourceDirectory>
+    <!-- webscanner. -->
+    <sonar.webscanner.website>http://www.toetstool.nl</sonar.webscanner.website>
+    <sonar.webscanner.downloadDirectory>toetstool/html</sonar.webscanner.downloadDirectory>
+    
+    <!-- web -->
+    <sonar.web.fileExtensions>html</sonar.web.fileExtensions>
+    <sonar.web.sourceDirectory>toetstool/html</sonar.web.sourceDirectory>
     
   </properties>
 
