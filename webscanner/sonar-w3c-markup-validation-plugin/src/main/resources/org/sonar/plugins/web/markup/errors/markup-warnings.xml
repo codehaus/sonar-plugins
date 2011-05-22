@@ -1,0 +1,130 @@
+<!--
+  List of warnings defined by W3C Markup Validator. 
+   
+  Derived from http://dev.w3.org/cvsweb/~checkout~/validator/share/templates/en_US/warnings.tmpl 
+  See also: http://dev.opera.com/articles/view/mama-w3c-validator-research-2/?page=3
+-->
+
+<rules>
+
+    <rule>
+        <key>W01</key>
+        <remark>Missing 'charset' attribute (HTTP header for XML)</remark>
+    </rule>
+    <rule>
+        <key>W02</key>
+        <remark>No Character Encoding Found</remark>
+    </rule>
+    <rule>
+        <key>W04</key>
+        <remark>No Character Encoding Found</remark>
+    </rule>
+    <rule>
+        <key>W05</key>
+        <remark>DOCTYPE Override in effect</remark>
+    </rule>
+    <rule>
+        <key>W06</key>
+        <remark>Unable to determine parse mode (XML/SGML)</remark>
+    </rule>
+    <rule>
+        <key>W07</key>
+        <remark>Contradictory parse modes detected (XML/SGML)</remark>
+    </rule>
+    <rule>
+        <key>W08</key>
+        <remark>No Content-Type found</remark>
+    </rule>
+    <rule>
+        <key>W09</key>
+        <remark>No DOCTYPE found</remark>
+    </rule>
+    <rule>
+        <key>W09nohtml</key>
+        <remark>No DOCTYPE found, and unknown root element. Aborting validation</remark>
+    </rule>
+    <rule>
+        <key>W09xml</key>
+        <remark>No DOCTYPE found! Checking XML syntax only</remark>
+    </rule>
+    <rule>
+        <key>W10</key>
+        <remark>Unknown Namespace Found</remark>
+    </rule>
+    <rule>
+        <key>W11</key>
+        <remark>Namespace found in non-XML Document</remark>
+    </rule> 
+    <rule>
+        <key>W12</key>
+        <remark>No Namespace Found</remark>
+    </rule>
+    <rule>
+        <key>W13</key>
+        <remark>DOCTYPE Override in effect</remark>
+    </rule>
+    <rule>
+        <key>W14</key>
+        <remark>No DOCTYPE Found, falling back to HTML 4.01 Transitional</remark>
+    </rule>
+    <rule>
+        <key>W15</key>
+        <remark>DOCTYPE Override in effect</remark>
+    </rule>
+    <rule>
+        <key>W16</key>
+        <remark>No DOCTYPE Found</remark>
+    </rule>
+    <rule>
+        <key>W17</key>
+        <remark>No Character Encoding detected</remark>
+    </rule>
+    <rule>
+        <key>W18</key>
+        <remark>Character encoding mismatch (HTTP header/XML encoding)</remark>
+    </rule>
+    <rule>
+        <key>W19</key>
+        <remark>Character encoding mismatch (HTTP header/META element)</remark>
+    </rule>
+    <rule>
+        <key>W20</key>
+        <remark>Character encoding mismatch (XML encoding/META element)</remark>
+    </rule>
+    <rule>
+        <key>W21</key>
+        <remark>Byte-order mark found in UTF-8 File</remark>
+    </rule>
+    <rule>
+        <key>W22</key>
+        <remark>Character Encoding suggestion: use XXX instead of YYY</remark>
+    </rule>
+    <rule>
+        <key>W23</key>
+        <remark>Conflict between MIME type and document type</remark>
+    </rule>
+    <rule>
+        <key>W24</key>
+        <remark>Rare or unregistered character encoding detected</remark>
+    </rule>
+    <rule>
+        <key>W25</key>
+        <remark>Document without DOCTYPE detected</remark>
+    </rule>
+    <rule>
+        <key>W26</key>
+        <remark>Mismatch between Public and System identifiers in the DOCTYPE declaration</remark>
+    </rule>
+    <rule>
+        <key>W27</key>
+        <remark>No Character encoding declared at document level</remark>
+    </rule>
+    <rule>
+        <key>W28</key>
+        <remark>Using Direct Input mode: UTF-8 character encoding assumed</remark>
+    </rule>
+    <rule>
+        <key>W29</key>
+        <remark>Error cleaning up markup with HTML Tidy</remark>
+    </rule>
+</rules>
