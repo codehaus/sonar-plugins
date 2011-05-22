@@ -17,27 +17,20 @@
  */
 package org.sonar.plugins.webscanner;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-
-import org.apache.maven.execution.DefaultMavenExecutionRequest;
-import org.apache.maven.execution.MavenSession;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
-import org.sonatype.aether.RepositorySystemSession;
 
 /**
  * @author Matthijs Galesloot
  */
-public class WebScannerSensorTest extends AbstractWebScannerPluginTester {
-
-  private static final Logger LOG = LoggerFactory.getLogger(WebScannerSensorTest.class);
+public class WebScannerSensorTest {
 
   @Test
   public void webScannerPlugin() {
@@ -45,28 +38,23 @@ public class WebScannerSensorTest extends AbstractWebScannerPluginTester {
     assertNull(webscannerPlugin.getKey());
     assertNull(webscannerPlugin.getName());
     assertNull(webscannerPlugin.getDescription());
-    assertEquals(8, webscannerPlugin.getExtensions().size());
-  }
-
-  private class MockMavenSession extends MavenSession {
-    public MockMavenSession() {
-      super(null, (RepositorySystemSession) null, new DefaultMavenExecutionRequest(), null);
-    }
+    assertNotNull(webscannerPlugin.toString());
+    assertEquals(1, webscannerPlugin.getExtensions().size());
   }
 
   @Test
-  public void testSensor() throws Exception {
-    W3CMarkupSensor sensor = new W3CMarkupSensor(new MockMavenSession(), createStandardRulesProfile(), new MarkupRuleFinder());
+  public void webScanner() {
+    WebScanner scanner = new WebScanner(null);
+    assertNotNull(scanner.toString());
 
-    File pomFile = new File(WebScannerSensorTest.class.getResource("/pom.xml").toURI());
+    Project project = new Project("test");
+    assertFalse(scanner.shouldExecuteOnProject(project));
 
-    final Project project = loadProjectFromPom(pomFile);
+    project.setLanguageKey("web");
+    assertFalse(scanner.shouldExecuteOnProject(project));
 
-    assertTrue(sensor.shouldExecuteOnProject(project));
-
-    MockSensorContext sensorContext = new MockSensorContext();
-    sensor.analyse(project, sensorContext);
-
-    assertTrue("Should have found 1 violation", sensorContext.getViolations().size() > 0);
+    project.setConfiguration(new PropertiesConfiguration());
+    project.getConfiguration().addProperty(WebScannerPlugin.WEBSITE, "test");
+    assertTrue(scanner.shouldExecuteOnProject(project));
   }
 }

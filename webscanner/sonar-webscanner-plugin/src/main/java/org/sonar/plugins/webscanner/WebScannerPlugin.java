@@ -25,11 +25,6 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.webscanner.language.Html;
-import org.sonar.plugins.webscanner.language.HtmlCodeColorizerFormat;
-import org.sonar.plugins.webscanner.markup.W3CMarkupSensor;
-import org.sonar.plugins.webscanner.markup.rules.DefaultMarkupProfile;
-import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
 
 /**
  * WebScanner plugin.
@@ -38,20 +33,15 @@ import org.sonar.plugins.webscanner.markup.rules.MarkupRuleRepository;
  * @since 1.0
  */
 @Properties({
-    @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3CMarkup API", description = "W3CMarkup Validation API",
-        defaultValue = "http://validator.w3.org/check", global = true, project = true),
-    @Property(key = WebScannerPlugin.FILE_EXTENSIONS, name = "File extensions",
-        description = "List of file extensions that will be scanned.", defaultValue = "html", global = true, project = true),
-    @Property(key = WebScannerPlugin.SOURCE_DIRECTORY, name = "Source directory", description = "Source directory that will be scanned.",
-        defaultValue = "", global = true, project = true),
+    @Property(key = WebScannerPlugin.DOWNLOAD_DIRECTORY, name = "Download directory", description = "Directory for saving web content.",
+        defaultValue = "src/html", global = true, project = true),
     @Property(key = WebScannerPlugin.WEBSITE, name = "Website", description = "Website that will be scanned.", defaultValue = "",
         global = false, project = true) })
 public final class WebScannerPlugin implements Plugin {
 
-  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
   private static final String KEY = "sonar-webscanner-plugin";
-  public static final String SOURCE_DIRECTORY = "sonar.html.sourceDirectory";
-  public static final String WEBSITE = "sonar.html.website";
+  public static final String DOWNLOAD_DIRECTORY = "sonar.webscanner.downloadDirectory";
+  public static final String WEBSITE = "sonar.webscanner.website";
 
   public String getDescription() {
     return null;
@@ -60,21 +50,8 @@ public final class WebScannerPlugin implements Plugin {
   public List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
-    // html language
-    list.add(Html.class);
-    list.add(LineCountSensor.class);
-
     // html files importer
-    list.add(HtmlSourceImporter.class);
-
-    // Code Colorizer
-    list.add(HtmlCodeColorizerFormat.class);
-
-    // W3C markup rules
-    list.add(MarkupRuleRepository.class);
-    list.add(DefaultMarkupProfile.class);
-    list.add(HtmlViolationFilter.class);
-    list.add(W3CMarkupSensor.class);
+    list.add(WebScanner.class);
 
     return list;
   }
