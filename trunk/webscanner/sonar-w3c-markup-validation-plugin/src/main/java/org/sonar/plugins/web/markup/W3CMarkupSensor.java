@@ -34,7 +34,7 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
-import org.sonar.plugins.web.markup.language.Web;
+import org.sonar.plugins.web.markup.language.WebConstants;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 import org.sonar.plugins.web.markup.validation.HtmlProjectFileSystem;
 import org.sonar.plugins.web.markup.validation.MarkupMessage;
@@ -155,8 +155,7 @@ public final class W3CMarkupSensor implements Sensor {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
-      org.sonar.api.resources.File htmlFile = org.sonar.api.resources.File.fromIOFile(inputfile.getFile(), project.getFileSystem()
-          .getSourceDirs());
+      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
       File reportFile = validator.reportFile(inputfile.getFile());
 
       if (reportFile.exists()) {
@@ -179,7 +178,7 @@ public final class W3CMarkupSensor implements Sensor {
    * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return Web.KEY.equals(project.getLanguageKey()) && hasMarkupRules();
+    return WebConstants.KEY.equals(project.getLanguageKey()) && hasMarkupRules();
   }
 
   @Override

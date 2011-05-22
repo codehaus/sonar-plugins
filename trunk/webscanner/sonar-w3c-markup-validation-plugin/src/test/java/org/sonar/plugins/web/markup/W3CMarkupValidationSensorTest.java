@@ -25,7 +25,6 @@ import java.io.File;
 
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
     assertNull(webscannerPlugin.getKey());
     assertNull(webscannerPlugin.getName());
     assertNull(webscannerPlugin.getDescription());
-    assertEquals(4, webscannerPlugin.getExtensions().size());
+    assertEquals(3, webscannerPlugin.getExtensions().size());
   }
 
   private class MockMavenSession extends MavenSession {
@@ -54,7 +53,7 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
     }
   }
 
-  @Test @Ignore
+  @Test
   public void testSensor() throws Exception {
     W3CMarkupSensor sensor = new W3CMarkupSensor(new MockMavenSession(), createStandardRulesProfile(), new MarkupRuleFinder());
 

@@ -34,7 +34,7 @@ import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.utils.WildcardPattern;
 import org.sonar.plugins.web.markup.W3CMarkupValidationPlugin;
-import org.sonar.plugins.web.markup.language.Web;
+import org.sonar.plugins.web.markup.language.WebConstants;
 
 import com.google.common.collect.Lists;
 
@@ -210,7 +210,7 @@ public class HtmlProjectFileSystem {
       }
       return fileSuffixes;
     } else {
-      return Web.DEFAULT_SUFFIXES;
+      return WebConstants.DEFAULT_SUFFIXES;
     }
   }
 

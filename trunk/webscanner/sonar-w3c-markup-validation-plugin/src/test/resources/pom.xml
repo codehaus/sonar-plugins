@@ -12,7 +12,7 @@
     <sonar.language>web</sonar.language>
     <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
     <sonar.profile>W3C Markup Validation</sonar.profile>
-    <sonar.web.sourceDirectory>src/html</sonar.web.sourceDirectory>
+    <sonar.web.sourceDirectory>html</sonar.web.sourceDirectory>
     <sonar.web.fileExtensions>html</sonar.web.fileExtensions>
   </properties>
 </project>
