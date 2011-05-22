@@ -24,7 +24,7 @@ package org.sonar.plugins.web.markup.language;
  * @author Matthijs Galesloot
  * @since 1.0
  */
-public class Web {
+public class WebConstants {
 
   /** The html language key. */
   public static final String KEY = "web";

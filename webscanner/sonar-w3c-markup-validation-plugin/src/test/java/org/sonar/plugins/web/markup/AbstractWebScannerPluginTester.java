@@ -44,7 +44,7 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.plugins.web.markup.language.Web;
+import org.sonar.plugins.web.markup.language.WebConstants;
 import org.sonar.plugins.web.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 
@@ -230,7 +230,7 @@ public class AbstractWebScannerPluginTester {
         new MapConfiguration(pom.getProperties()));
     project.setFileSystem(new MockFileSystem());
     project.setPom(pom);
-    project.setLanguageKey(Web.KEY);
+    project.setLanguageKey(WebConstants.KEY);
     project.setLanguage(new Language() {
 
       public String getName() {
@@ -238,11 +238,11 @@ public class AbstractWebScannerPluginTester {
       }
 
       public String getKey() {
-        return Web.KEY;
+        return WebConstants.KEY;
       }
 
       public String[] getFileSuffixes() {
-        return Web.DEFAULT_SUFFIXES;
+        return WebConstants.DEFAULT_SUFFIXES;
       }
     });
 

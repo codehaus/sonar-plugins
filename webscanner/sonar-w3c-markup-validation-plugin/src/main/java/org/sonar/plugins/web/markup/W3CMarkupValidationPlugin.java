@@ -52,7 +52,6 @@ public final class W3CMarkupValidationPlugin implements Plugin {
     // W3C markup rules
     list.add(MarkupRuleRepository.class);
     list.add(DefaultMarkupProfile.class);
-    list.add(HtmlViolationFilter.class);
     list.add(W3CMarkupSensor.class);
 
     return list;
