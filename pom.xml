@@ -52,7 +52,6 @@
         <module>security-rules</module>
         <module>sigmm</module>
         <module>sonar-runner</module>
-        <module>sonarj</module>
         <module>switch-off-violations</module>
         <module>taglist</module>
         <module>technical-debt</module>
@@ -90,6 +89,7 @@
         <module>sonar-replay</module>
         <module>sonar-squid-cli</module>
         <module>sonar-squid-gui</module>
+        <module>sonarj</module>
       </modules>
     </profile>
     <profile>
