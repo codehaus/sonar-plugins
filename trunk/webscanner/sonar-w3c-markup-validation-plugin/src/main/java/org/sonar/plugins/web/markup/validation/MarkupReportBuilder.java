@@ -32,9 +32,9 @@ import org.sonar.plugins.web.markup.rules.MarkupErrorCatalog.MessageDefinition;
 
 /**
  * Builds HTML report from a list of W3C responses.
- * 
+ *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public final class MarkupReportBuilder {
 

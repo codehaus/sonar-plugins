@@ -46,7 +46,7 @@ import org.xml.sax.SAXException;
  * @see http://validator.w3.org/docs/errors.html - Explanation of the error messages for the W3C Markup Validator
  *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public class MarkupErrorCatalog {
 

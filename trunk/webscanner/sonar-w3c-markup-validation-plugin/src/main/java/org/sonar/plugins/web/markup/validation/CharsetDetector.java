@@ -27,6 +27,12 @@ import org.apache.commons.io.IOUtils;
 
 import com.sun.syndication.io.XmlReader;
 
+/**
+ * Detects charset using rome library of meta tag lookup.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
 public final class CharsetDetector {
 
   private CharsetDetector() {
@@ -35,7 +41,6 @@ public final class CharsetDetector {
 
   /**
    * Tries to get charset from {@code meta} tag.
-   *
    */
   private static String getCharsetFromMetaTag(byte[] content) {
     try {
@@ -57,6 +62,9 @@ public final class CharsetDetector {
     }
   }
 
+  /**
+   * Get charset from metatag or by inspecting the content.
+   */
   public static String detect(File file) {
     try {
       String charset = getCharsetFromMetaTag(FileUtils.readFileToByteArray(file));
@@ -71,6 +79,9 @@ public final class CharsetDetector {
     }
   }
 
+  /**
+   * Find charset using rome toolkit.
+   */
   private static String findCharset(File file) {
     XmlReader reader = null;
     try {

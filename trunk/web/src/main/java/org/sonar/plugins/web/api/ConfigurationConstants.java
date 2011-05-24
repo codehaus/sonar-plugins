@@ -1,5 +1,5 @@
 /*
- * Sonar W3C Markup Validation Plugin
+ * Sonar Web Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -15,20 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.web.markup.language;
 
+package org.sonar.plugins.web.api;
 
 /**
- * This class defines constants for the Web language.
+ * Constants for the project configuration.
  *
  * @author Matthijs Galesloot
  * @since 1.0
  */
-public class WebConstants {
+public interface ConfigurationConstants {
 
-  /** The html language key. */
-  public static final String KEY = "web";
-
-  /** All the valid html files suffixes. */
-  public static final String[] DEFAULT_SUFFIXES = { "html" };
+  String FILE_EXTENSIONS = "sonar.web.fileExtensions";
+  String SOURCE_DIRECTORY = "sonar.web.sourceDirectory";
+  String CPD_MINIMUM_TOKENS = "sonar.cpd.web.minimumTokens";
 }

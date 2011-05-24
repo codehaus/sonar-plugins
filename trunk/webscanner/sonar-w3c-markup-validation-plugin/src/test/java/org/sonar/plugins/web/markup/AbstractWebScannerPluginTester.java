@@ -44,7 +44,7 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.plugins.web.markup.language.WebConstants;
+import org.sonar.plugins.web.markup.language.HtmlConstants;
 import org.sonar.plugins.web.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 
@@ -136,7 +136,7 @@ public class AbstractWebScannerPluginTester {
     }
 
     public File getBuildDir() {
-      return new File(getBasedir(), "target");
+      return new File(getBasedir(), "builddir");
     }
 
     public File getBuildOutputDir() {
@@ -230,7 +230,7 @@ public class AbstractWebScannerPluginTester {
         new MapConfiguration(pom.getProperties()));
     project.setFileSystem(new MockFileSystem());
     project.setPom(pom);
-    project.setLanguageKey(WebConstants.KEY);
+    project.setLanguageKey(HtmlConstants.KEY);
     project.setLanguage(new Language() {
 
       public String getName() {
@@ -238,11 +238,11 @@ public class AbstractWebScannerPluginTester {
       }
 
       public String getKey() {
-        return WebConstants.KEY;
+        return HtmlConstants.KEY;
       }
 
       public String[] getFileSuffixes() {
-        return WebConstants.DEFAULT_SUFFIXES;
+        return HtmlConstants.DEFAULT_SUFFIXES;
       }
     });
 

@@ -34,15 +34,17 @@ import org.sonar.api.rules.ActiveRule;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
-import org.sonar.plugins.web.markup.language.WebConstants;
+import org.sonar.plugins.web.api.ProjectFileManager;
+import org.sonar.plugins.web.markup.language.HtmlConstants;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
-import org.sonar.plugins.web.markup.validation.HtmlProjectFileSystem;
 import org.sonar.plugins.web.markup.validation.MarkupMessage;
 import org.sonar.plugins.web.markup.validation.MarkupReport;
 import org.sonar.plugins.web.markup.validation.MarkupReportBuilder;
 import org.sonar.plugins.web.markup.validation.MarkupValidator;
 
 /**
+ * Sensor using the W3C Validator.
+ *
  * @author Matthijs Galesloot
  * @since 1.0
  */
@@ -53,14 +55,15 @@ public final class W3CMarkupSensor implements Sensor {
   public static final String VALIDATION_URL = "sonar.w3cmarkup.url";
   private final RulesProfile profile;
   private final RuleFinder ruleFinder;
-
   private final MavenSession session;
+  private final ProjectFileManager fileManager;
 
-  public W3CMarkupSensor(MavenSession session, RulesProfile profile, RuleFinder ruleFinder) {
+  public W3CMarkupSensor(MavenSession session, Project project, RulesProfile profile, RuleFinder ruleFinder) {
     LOG.info("Profile: " + profile.getName());
     this.session = session;
     this.profile = profile;
     this.ruleFinder = ruleFinder;
+    this.fileManager = new ProjectFileManager(project);
   }
 
   private void addViolation(SensorContext sensorContext, org.sonar.api.resources.File resource, MarkupMessage message, boolean error) {
@@ -81,11 +84,10 @@ public final class W3CMarkupSensor implements Sensor {
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
-    HtmlProjectFileSystem fileSystem = new HtmlProjectFileSystem(project);
-    prepareScanning(fileSystem.getSourceDirs());
+    prepareScanning(fileManager.getSourceDirs());
 
     // create validator
-    MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL), fileSystem.getSourceDirs().get(0),
+    MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL), fileManager.getSourceDirs().get(0),
         new File(project.getFileSystem().getBuildDir() + "/html"));
 
     // configure proxy
@@ -95,10 +97,10 @@ public final class W3CMarkupSensor implements Sensor {
     }
 
     // start the validation
-    validator.validateFiles(fileSystem.getFiles());
+    validator.validateFiles(fileManager.getFiles());
 
     // save analysis to sonar
-    saveResults(project, sensorContext, validator, fileSystem.getFiles());
+    saveResults(project, sensorContext, validator, fileManager.getFiles());
   }
 
   private boolean hasMarkupRules() {
@@ -155,7 +157,7 @@ public final class W3CMarkupSensor implements Sensor {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
-      org.sonar.api.resources.File htmlFile = HtmlProjectFileSystem.fromIOFile(inputfile, project);
+      org.sonar.api.resources.File htmlFile = fileManager.fromIOFile(inputfile);
       File reportFile = validator.reportFile(inputfile.getFile());
 
       if (reportFile.exists()) {
@@ -178,7 +180,7 @@ public final class W3CMarkupSensor implements Sensor {
    * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return WebConstants.KEY.equals(project.getLanguageKey()) && hasMarkupRules();
+    return HtmlConstants.KEY.equals(project.getLanguageKey()) && hasMarkupRules();
   }
 
   @Override
