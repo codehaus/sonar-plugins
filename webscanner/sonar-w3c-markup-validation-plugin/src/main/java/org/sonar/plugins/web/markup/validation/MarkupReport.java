@@ -38,7 +38,7 @@ import org.xml.sax.SAXException;
  * Parser for the W3C Validation Soap Report
  *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public final class MarkupReport {
 

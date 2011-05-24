@@ -17,12 +17,11 @@
  */
 package org.sonar.plugins.web.markup.validation;
 
-
 /**
  * MarkupError contains error information retrieved from the W3C error messages.
  *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  */
 public class MarkupMessage {
 

@@ -25,12 +25,18 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleRepository;
-import org.sonar.plugins.web.markup.language.WebConstants;
+import org.sonar.plugins.web.markup.language.HtmlConstants;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
+/**
+ * MarkupRuleRepository provides a repository of the W3C Markup rules.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
 public final class MarkupRuleRepository extends RuleRepository {
 
   @XStreamAlias("rule")
@@ -89,7 +95,7 @@ public final class MarkupRuleRepository extends RuleRepository {
   private static final int RULENAME_MAX_LENGTH = 192;
 
   public MarkupRuleRepository() {
-    super(MarkupRuleRepository.REPOSITORY_KEY, WebConstants.KEY);
+    super(MarkupRuleRepository.REPOSITORY_KEY, HtmlConstants.KEY);
     setName(MarkupRuleRepository.REPOSITORY_NAME);
   }
 

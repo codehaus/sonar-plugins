@@ -35,14 +35,15 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.web.api.ProjectFileManager;
 
 /**
- * Validator for the W3C Markup Validation Service.
+ * Remote Validator using the W3C Markup Validation Service.
  *
  * @see http://validator.w3.org/docs/api.html
  *
  * @author Matthijs Galesloot
- * @since 0.1
+ * @since 1.0
  *
  */
 public final class MarkupValidator extends RemoteValidationService {
@@ -74,7 +75,7 @@ public final class MarkupValidator extends RemoteValidationService {
   }
 
   public File errorFile(File file) {
-    return new File(buildDir.getPath() + "/" + HtmlProjectFileSystem.getRelativePath(file, baseDir) + "/" + file.getName() + ERROR_XML);
+    return new File(buildDir.getPath() + "/" + ProjectFileManager.getRelativePath(file, baseDir) + "/" + file.getName() + ERROR_XML);
   }
 
   /**
@@ -87,7 +88,7 @@ public final class MarkupValidator extends RemoteValidationService {
     HttpPost post = new HttpPost(validationUrl);
     HttpResponse response = null;
 
-    post.addHeader("User-Agent", "sonar-web-plugin/0.1");
+    post.addHeader("User-Agent", "sonar-w3c-markup-validation-plugin/1.0");
 
     String charset = CharsetDetector.detect(file);
 
@@ -147,7 +148,7 @@ public final class MarkupValidator extends RemoteValidationService {
    * Create the path to the report file.
    */
   public File reportFile(File file) {
-    return new File(buildDir.getPath() + "/" + HtmlProjectFileSystem.getRelativePath(file, baseDir) + MarkupReport.REPORT_SUFFIX);
+    return new File(buildDir.getPath() + "/" + ProjectFileManager.getRelativePath(file, baseDir) + MarkupReport.REPORT_SUFFIX);
   }
 
   /**

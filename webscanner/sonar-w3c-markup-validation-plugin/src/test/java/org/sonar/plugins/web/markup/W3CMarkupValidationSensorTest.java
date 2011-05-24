@@ -26,8 +26,6 @@ import java.io.File;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.Project;
 import org.sonatype.aether.RepositorySystemSession;
 
@@ -35,8 +33,6 @@ import org.sonatype.aether.RepositorySystemSession;
  * @author Matthijs Galesloot
  */
 public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTester {
-
-  private static final Logger LOG = LoggerFactory.getLogger(W3CMarkupValidationSensorTest.class);
 
   @Test
   public void webScannerPlugin() {
@@ -55,11 +51,10 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
 
   @Test
   public void testSensor() throws Exception {
-    W3CMarkupSensor sensor = new W3CMarkupSensor(new MockMavenSession(), createStandardRulesProfile(), new MarkupRuleFinder());
-
     File pomFile = new File(W3CMarkupSensor.class.getResource("/pom.xml").toURI());
-
     final Project project = loadProjectFromPom(pomFile);
+
+    W3CMarkupSensor sensor = new W3CMarkupSensor(new MockMavenSession(), project, createStandardRulesProfile(), new MarkupRuleFinder());
 
     assertTrue(sensor.shouldExecuteOnProject(project));
 

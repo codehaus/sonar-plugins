@@ -36,19 +36,17 @@ import org.apache.log4j.Logger;
 import org.sonar.api.utils.SonarException;
 
 /**
+ * RemoteValidationService provides a framework for validators using a remote service.
  *
- *
- * @author A130564
- *
+ * @author Matthijs Galesloot
+ * @since 1.0
  */
 public abstract class RemoteValidationService {
 
   private static final Logger LOG = Logger.getLogger(RemoteValidationService.class);
 
   private HttpClient client;
-
   private String proxyHost;
-
   private int proxyPort;
 
   private Long waitBetweenRequests; // MILLISECONDS
