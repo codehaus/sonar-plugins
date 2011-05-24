@@ -1,7 +1,7 @@
 
 rem run this script from webscanner folder
 
-set SONAR_HOME=C:\bin\sonar-2.7
+set SONAR_HOME=D:\bin\sonar-2.8-RC2
 set SONAR_FLAGS=-Dsonar.host.url=http://localhost:9000 -Dsonar.dynamicAnalysis=false
 set DEBUG=-X 
 

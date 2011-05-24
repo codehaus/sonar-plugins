@@ -1,8 +1,7 @@
 
 rem run this script from webscanner folder
 
-set SONAR_FLAGS=
+set SONAR_FLAGS=-Dsonar.host.url=http://nlsivm114.sdmc.ao-srv.com:8080 -Dsonar.jdbc.url=jdbc:mysql://nlsivm114.sdmc.ao-srv.com:3306/sonar?useUnicode=true -Dsonar.jdbc.driver=com.mysql.jdbc.Driver
 set DEBUG= 
 
-call %mvncommand% -f tests/html-pom.xml %SONAR_FLAGS% %DEBUG% > sonar-html.log
-call %mvncommand% -f tests/xhtml-pom.xml %SONAR_FLAGS% %DEBUG% > sonar-xml.log
+call mvn sonar:sonar -X -f html-pom.xml %SONAR_FLAGS% %DEBUG% > sonar-html.log
