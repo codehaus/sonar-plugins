@@ -84,8 +84,6 @@ public final class W3CMarkupSensor implements Sensor {
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
-    prepareScanning(fileManager.getSourceDirs());
-
     // create validator
     MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL), fileManager.getSourceDirs().get(0),
         new File(project.getFileSystem().getBuildDir() + "/html"));
@@ -118,18 +116,6 @@ public final class W3CMarkupSensor implements Sensor {
       return String.format("%03d", id);
     } else {
       return idString;
-    }
-  }
-
-  private void prepareScanning(List<File> sourceDirs) {
-
-    for (File sourceDir : sourceDirs) {
-      if ( !sourceDir.exists()) {
-        LOG.error("Missing HTML directory: " + sourceDir.getPath());
-        continue;
-      }
-
-      LOG.info("HTML Dir:" + sourceDir);
     }
   }
 
