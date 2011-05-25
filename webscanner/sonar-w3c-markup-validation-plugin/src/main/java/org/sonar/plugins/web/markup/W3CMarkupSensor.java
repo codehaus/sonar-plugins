@@ -35,7 +35,7 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.web.api.ProjectFileManager;
-import org.sonar.plugins.web.markup.language.HtmlConstants;
+import org.sonar.plugins.web.api.WebConstants;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 import org.sonar.plugins.web.markup.validation.MarkupMessage;
 import org.sonar.plugins.web.markup.validation.MarkupReport;
@@ -166,7 +166,7 @@ public final class W3CMarkupSensor implements Sensor {
    * This sensor only executes on Web projects with W3C Markup rules.
    */
   public boolean shouldExecuteOnProject(Project project) {
-    return HtmlConstants.KEY.equals(project.getLanguageKey()) && hasMarkupRules();
+    return WebConstants.LANGUAGE_KEY.equals(project.getLanguageKey()) && hasMarkupRules();
   }
 
   @Override

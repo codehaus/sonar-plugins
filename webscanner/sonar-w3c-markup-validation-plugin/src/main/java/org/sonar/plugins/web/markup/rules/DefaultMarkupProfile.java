@@ -24,7 +24,7 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.utils.ValidationMessages;
-import org.sonar.plugins.web.markup.language.HtmlConstants;
+import org.sonar.plugins.web.api.WebConstants;
 
 /**
  * Default rukles profile containing all markup rules.
@@ -38,7 +38,7 @@ public final class DefaultMarkupProfile extends ProfileDefinition {
   public RulesProfile createProfile(ValidationMessages validation) {
     MarkupRuleRepository repository = new MarkupRuleRepository();
     List<Rule> rules = repository.createRules();
-    RulesProfile rulesProfile = RulesProfile.create(MarkupRuleRepository.REPOSITORY_NAME, HtmlConstants.KEY);
+    RulesProfile rulesProfile = RulesProfile.create(MarkupRuleRepository.REPOSITORY_NAME, WebConstants.LANGUAGE_KEY);
     for (Rule rule : rules) {
       rulesProfile.activateRule(rule, RulePriority.MAJOR);
     }

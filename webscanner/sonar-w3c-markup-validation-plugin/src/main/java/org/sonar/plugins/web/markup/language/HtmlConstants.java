@@ -25,9 +25,6 @@ package org.sonar.plugins.web.markup.language;
  */
 public interface HtmlConstants {
 
-  /** The language key. */
-  String KEY = "web";
 
-  /** All the valid html files suffixes. */
-  String[] DEFAULT_SUFFIXES = { "html" };
+
 }
