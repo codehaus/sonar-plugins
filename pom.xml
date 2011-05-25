@@ -76,6 +76,7 @@
         <module>drools</module>
         <module>metrics-help</module>
         <module>profiler</module>
+        <module>sonargraph</module>
         <module>testability-explorer</module>
         <module>webscanner</module>
       </modules>
