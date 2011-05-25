@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
 import org.sonar.api.rules.RuleRepository;
-import org.sonar.plugins.web.markup.language.HtmlConstants;
+import org.sonar.plugins.web.api.WebConstants;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -95,7 +95,7 @@ public final class MarkupRuleRepository extends RuleRepository {
   private static final int RULENAME_MAX_LENGTH = 192;
 
   public MarkupRuleRepository() {
-    super(MarkupRuleRepository.REPOSITORY_KEY, HtmlConstants.KEY);
+    super(MarkupRuleRepository.REPOSITORY_KEY, WebConstants.LANGUAGE_KEY);
     setName(MarkupRuleRepository.REPOSITORY_NAME);
   }
 

@@ -126,9 +126,14 @@ public class DownloadContent {
       if ( !fileName.startsWith("/")) {
         path.append('/');
       }
-      path.append(fileName);
-      if ( !fileName.endsWith(".html")) {
+
+      // for html files we force the extension to html
+      if ("text/html".equals(page.getContentType())) {
+        path.append(StringUtils.substringBeforeLast(fileName, "."));
         path.append(".html");
+      } else {
+      // other filenames stay as is.
+        path.append(fileName);
       }
 
       // write content
@@ -156,7 +161,7 @@ public class DownloadContent {
       File file = new File(fileName);
       boolean equals = file.exists() && IOUtils.contentEquals(new StringReader(content), new FileReader(file));
 
-      if (!equals) {
+      if ( !equals) {
         out = FileUtils.openOutputStream(file);
         writer = new OutputStreamWriter(out, charset);
         writer.write(content);
