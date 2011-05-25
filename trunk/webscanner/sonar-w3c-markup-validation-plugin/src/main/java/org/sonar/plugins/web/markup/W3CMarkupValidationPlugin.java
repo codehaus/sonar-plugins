@@ -33,14 +33,9 @@ import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
  * @author Matthijs Galesloot
  * @since 1.0
  */
-@Properties({
-    @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3C Validation URL", description = "URL of the W3C Markup Validation API",
-        defaultValue = "http://validator.w3.org/check", global = true, project = true),
-    @Property(key = W3CMarkupValidationPlugin.FILE_EXTENSIONS, name = "File extensions",
-        description = "List of file extensions that will be scanned.", defaultValue = "html", global = true, project = true) })
+@Properties({ @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3C Validation URL",
+    description = "URL of the W3C Markup Validation API", defaultValue = "http://validator.w3.org/check", global = true, project = true) })
 public final class W3CMarkupValidationPlugin implements Plugin {
-
-  public static final String FILE_EXTENSIONS = "sonar.html.fileExtensions";
 
   public String getDescription() {
     return null;
