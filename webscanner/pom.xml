@@ -23,7 +23,6 @@
     
     <!-- sonar plugins -->
     <module>sonar-webscanner-plugin</module>
-    <module>sonar-w3c-markup-validation-plugin</module>
   </modules>
 
   <properties>
