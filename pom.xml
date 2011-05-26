@@ -78,6 +78,7 @@
         <module>profiler</module>
         <module>sonargraph</module>
         <module>testability-explorer</module>
+		<module>w3c-markup-validation</module>
         <module>webscanner</module>
       </modules>
     </profile>
