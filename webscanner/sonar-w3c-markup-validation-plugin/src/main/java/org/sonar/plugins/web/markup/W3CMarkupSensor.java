@@ -70,6 +70,10 @@ public final class W3CMarkupSensor implements Sensor {
     String ruleKey = makeIdentifier(message.getMessageId());
     Rule rule = ruleFinder.findByKey(MarkupRuleRepository.REPOSITORY_KEY, ruleKey);
     if (rule != null) {
+      Integer lineId = message.getLine();
+      if (lineId != null && lineId == 0) {
+        lineId = null;
+      }
       Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
       violation.setMessage((error ? "" : "Warning: ") + message.getMessage());
       sensorContext.saveViolation(violation);
