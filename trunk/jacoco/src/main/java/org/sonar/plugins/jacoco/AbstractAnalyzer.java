@@ -25,6 +25,7 @@ import org.jacoco.core.analysis.*;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
+import org.jfree.util.Log;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
@@ -75,8 +76,17 @@ public abstract class AbstractAnalyzer {
     Analyzer analyzer = new Analyzer(executionDataStore, coverageBuilder);
     analyzeAll(analyzer, buildOutputDir);
 
+    int analyzedResources = 0;
     for (ISourceFileCoverage coverage : coverageBuilder.getSourceFiles()) {
-      analyzeFile(getResource(coverage), coverage, context);
+      JavaFile resource = getResource(coverage);
+      // Do not save measures on resource which doesn't exist in the context
+      if (context.getResource(resource) != null) {
+        analyzeFile(resource, coverage, context);
+        analyzedResources++;
+      }
+    }
+    if (analyzedResources == 0) {
+      Log.warn("Coverage information was not collected. Perhaps you forget to include debug information into compiled classes?");
     }
   }
 
@@ -104,11 +114,6 @@ public abstract class AbstractAnalyzer {
   }
 
   private void analyzeFile(JavaFile resource, ISourceFileCoverage coverage, SensorContext context) {
-    if (context.getResource(resource) == null) {
-      // Do not save measures on resource which doesn't exist in the context
-      return;
-    }
-
     CoverageMeasuresBuilder builder = CoverageMeasuresBuilder.create();
     for (int lineId = coverage.getFirstLine(); lineId <= coverage.getLastLine(); lineId++) {
       final int hits;
