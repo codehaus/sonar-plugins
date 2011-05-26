@@ -33,7 +33,7 @@
 						<configuration>
 							<target>
 								<!-- Using an ant task to deflate zip -->
-								<unzip src="../../../xml/tests/sonarsource.zip" dest="." />
+								<unzip src="../../xml/tests/sonarsource.zip" dest="." />
 							</target>
 						</configuration>
 						<goals>
