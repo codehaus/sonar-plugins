@@ -23,24 +23,26 @@ package org.sonar.plugins.jacoco;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
-
 import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
 
+import java.io.File;
+
 /**
  * @author Evgeny Mandrikov
  */
 public class JaCoCoMavenPluginHandlerTest {
+
+  private JacocoConfiguration configuration;
   private JaCoCoMavenPluginHandler handler;
 
   @Before
@@ -49,7 +51,7 @@ public class JaCoCoMavenPluginHandlerTest {
     when(downloader.getAgentJarFile()).thenReturn(new File("jacocoagent.jar"));
     Project project = mock(Project.class);
     when(project.getConfiguration()).thenReturn(new BaseConfiguration());
-    JacocoConfiguration configuration = new JacocoConfiguration(project.getConfiguration(), downloader);
+    configuration = spy(new JacocoConfiguration(project.getConfiguration(), downloader));
 
     handler = new JaCoCoMavenPluginHandler(configuration);
   }
@@ -70,6 +72,7 @@ public class JaCoCoMavenPluginHandlerTest {
 
     handler.configure(project, plugin);
 
+    verify(configuration).getJvmArgument();
     assertThat(plugin.getParameter("argLine"), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec"));
   }
 
@@ -80,22 +83,8 @@ public class JaCoCoMavenPluginHandlerTest {
 
     handler.configure(project, plugin);
 
+    verify(configuration).getJvmArgument();
     assertThat(plugin.getParameter("argLine"), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec -esa"));
   }
 
-  @Ignore
-  @Test
-  public void testIncludesExcludes() {
-    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "pom.xml");
-    Configuration configuration = project.getConfiguration();
-    configuration.setProperty(JacocoConfiguration.INCLUDES_PROPERTY, "org.sonar.*");
-    configuration.setProperty(JacocoConfiguration.EXCLUDES_PROPERTY, "org.sonar.api.*");
-    MavenPlugin plugin = new MavenPlugin(handler.getGroupId(), handler.getArtifactId(), handler.getVersion());
-
-    handler.configure(project, plugin);
-
-    assertThat(
-        plugin.getParameter("argLine"),
-        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*"));
-  }
 }

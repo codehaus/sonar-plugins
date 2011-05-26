@@ -1,0 +1,81 @@
+/*
+ * Sonar JaCoCo Plugin
+ * Copyright (C) 2010 SonarSource
+ * dev@sonar.codehaus.org
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
+ */
+package org.sonar.plugins.jacoco;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+
+public class JacocoConfigurationTest {
+
+  private Configuration configuration;
+  private JacocoConfiguration jacocoConfiguration;
+
+  @Before
+  public void setUp() {
+    JaCoCoAgentDownloader downloader = mock(JaCoCoAgentDownloader.class);
+    when(downloader.getAgentJarFile()).thenReturn(new File("jacocoagent.jar"));
+
+    configuration = new BaseConfiguration();
+
+    jacocoConfiguration = new JacocoConfiguration(configuration, downloader);
+  }
+
+  @Test
+  public void defaults() {
+    assertThat(jacocoConfiguration.getReportPath(), is("target/jacoco.exec"));
+    assertThat(jacocoConfiguration.getJvmArgument(), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec"));
+
+    assertThat(jacocoConfiguration.getItReportPath(), is(""));
+  }
+
+  @Test
+  public void test() {
+    configuration.setProperty(JacocoConfiguration.IT_REPORT_PATH_PROPERTY, "target/it-jacoco.exec");
+
+    assertThat(jacocoConfiguration.getItReportPath(), is("target/it-jacoco.exec"));
+  }
+
+  @Test
+  public void shouldSetDestfile() {
+    configuration.setProperty(JacocoConfiguration.REPORT_PATH_PROPERTY, "jacoco.exec");
+
+    assertThat(jacocoConfiguration.getReportPath(), is("jacoco.exec"));
+    assertThat(jacocoConfiguration.getJvmArgument(), is("-javaagent:jacocoagent.jar=destfile=jacoco.exec"));
+  }
+
+  @Test
+  public void shouldSetIncludesAndExcludes() {
+    configuration.setProperty(JacocoConfiguration.INCLUDES_PROPERTY, "org.sonar.*");
+    configuration.setProperty(JacocoConfiguration.EXCLUDES_PROPERTY, "org.sonar.api.*");
+
+    assertThat(jacocoConfiguration.getJvmArgument(),
+        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*"));
+  }
+
+}
