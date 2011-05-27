@@ -74,7 +74,7 @@ public final class W3CMarkupSensor implements Sensor {
       if (lineId != null && lineId == 0) {
         lineId = null;
       }
-      Violation violation = Violation.create(rule, resource).setLineId(message.getLine());
+      Violation violation = Violation.create(rule, resource).setLineId(lineId);
       violation.setMessage((error ? "" : "Warning: ") + message.getMessage());
       sensorContext.saveViolation(violation);
       LOG.debug(resource.getName() + ": " + message.getMessageId() + ":" + message.getMessage());
@@ -102,7 +102,7 @@ public final class W3CMarkupSensor implements Sensor {
     validator.validateFiles(fileManager.getFiles());
 
     // save analysis to sonar
-    saveResults(project, sensorContext, validator, fileManager.getFiles());
+    saveResults(sensorContext, validator, fileManager.getFiles());
   }
 
   private boolean hasMarkupRules() {
@@ -140,10 +140,7 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(Project project, SensorContext sensorContext, MarkupValidator validator, List<InputFile> inputfiles) {
-    int numValid = 0;
-    int numFiles = 0;
-
+  private void saveResults(SensorContext sensorContext, MarkupValidator validator, List<InputFile> inputfiles) {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
@@ -153,14 +150,10 @@ public final class W3CMarkupSensor implements Sensor {
       if (reportFile.exists()) {
         reportFiles.add(reportFile);
 
-        boolean isValid = readValidationReport(sensorContext, reportFile, htmlFile);
-        if (isValid) {
-          numValid++;
-        }
+        readValidationReport(sensorContext, reportFile, htmlFile);
       } else {
         LOG.warn("Missing reportfile for file " + inputfile.getRelativePath());
       }
-      numFiles++;
     }
 
     new MarkupReportBuilder().buildReports(reportFiles);
