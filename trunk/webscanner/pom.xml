@@ -16,15 +16,6 @@
     <relativePath>../parent</relativePath>
   </parent>
 
-  <modules>
-  
-    <!-- maven plugin -->
-    <module>maven-webscanner-plugin</module>
-    
-    <!-- sonar plugins -->
-    <module>sonar-webscanner-plugin</module>
-  </modules>
-
   <properties>
     <license.name>AL2</license.name>
     <sonar.version>2.7</sonar.version>
