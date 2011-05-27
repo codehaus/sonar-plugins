@@ -20,13 +20,13 @@
 
 package org.sonar.plugins.jacoco;
 
-import java.util.Hashtable;
-
 import org.apache.tools.ant.*;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Initializer;
 import org.sonar.api.batch.SupportedEnvironment;
 import org.sonar.api.resources.Project;
+
+import java.util.Hashtable;
 
 @SupportedEnvironment("ant")
 public class JacocoAntInitializer extends Initializer implements CoverageExtension {
@@ -124,7 +124,7 @@ public class JacocoAntInitializer extends Initializer implements CoverageExtensi
      * @param jvmArg
      * @throws BuildException Thrown if this enhancer can handle this type of task, but this instance can not be enhanced for some reason.
      */
-    public void enhanceTask(Task task, String jvmArg) throws BuildException {
+    public void enhanceTask(Task task, String jvmArg) {
       addJvmArg((UnknownElement) task, jvmArg);
     }
 

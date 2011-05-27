@@ -44,6 +44,7 @@ public class JacocoMavenInitializer extends Initializer implements CoverageExten
 
   @Override
   public void execute(Project project) {
+    // nothing to do
   }
 
   public MavenPluginHandler getMavenPluginHandler(Project project) {

@@ -52,10 +52,21 @@ public class JacocoConfigurationTest {
     assertThat(jacocoConfiguration.getJvmArgument(), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec"));
 
     assertThat(jacocoConfiguration.getItReportPath(), is(""));
+
+    assertThat(jacocoConfiguration.getAntTargets(), is(new String[] {}));
   }
 
   @Test
-  public void test() {
+  public void shouldReturnAntTargets() {
+    configuration.setProperty(JacocoConfiguration.ANT_TARGETS_PROPERTY, "test");
+    assertThat(jacocoConfiguration.getAntTargets(), is(new String[] { "test" }));
+
+    configuration.setProperty(JacocoConfiguration.ANT_TARGETS_PROPERTY, "test1,test2");
+    assertThat(jacocoConfiguration.getAntTargets(), is(new String[] { "test1", "test2" }));
+  }
+
+  @Test
+  public void shouldReturnItReportPath() {
     configuration.setProperty(JacocoConfiguration.IT_REPORT_PATH_PROPERTY, "target/it-jacoco.exec");
 
     assertThat(jacocoConfiguration.getItReportPath(), is("target/it-jacoco.exec"));

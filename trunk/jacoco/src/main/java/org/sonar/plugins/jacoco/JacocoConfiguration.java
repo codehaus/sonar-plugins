@@ -67,7 +67,6 @@ public class JacocoConfiguration implements BatchExtension {
   }
 
   public String[] getAntTargets() {
-    return StringUtils.split(configuration.getString(ANT_TARGETS_PROPERTY, ANT_TARGETS_DEFAULT_VALUE), ',');
+    return configuration.getStringArray(ANT_TARGETS_PROPERTY);
   }
-
 }
