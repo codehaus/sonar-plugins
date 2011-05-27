@@ -24,8 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.List;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.web.api.ProjectFileManager;
+import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
 
 /**
  * Remote Validator using the W3C Markup Validation Service.
@@ -48,77 +49,61 @@ import org.sonar.plugins.web.api.ProjectFileManager;
  */
 public final class MarkupValidator extends RemoteValidationService {
 
-  /** the URL for the online validation service */
-  private static final String DEFAULT_URL = "http://validator.w3.org/check";
-
-  private static final String ERROR_XML = ".mur.error";
+  private static final long DEFAULT_PAUSE_BETWEEN_VALIDATIONS = 1000L;
 
   private static final Logger LOG = Logger.getLogger(MarkupValidator.class);
 
   private static final String OUTPUT = "output";
+
+  // suffix for report with soap response
+  private static final String REPORT_SUFFIX = ".smv";
   private static final String SOAP12 = "soap12";
 
   private static final String TEXT_HTML_CONTENT_TYPE = "text/html";
 
   private static final String UPLOADED_FILE = "uploaded_file";
 
-  private final File baseDir;
   private final File buildDir;
   private final String validationUrl;
 
-  public MarkupValidator(String validationUrl, File baseDir, File buildDir) {
-    this.baseDir = baseDir;
+  public MarkupValidator(Configuration configuration, File buildDir) {
     this.buildDir = buildDir;
-    this.validationUrl = StringUtils.isEmpty(validationUrl) ? DEFAULT_URL : validationUrl;
 
-    setWaitBetweenRequests(1000L);
-  }
-
-  public File errorFile(File file) {
-    return new File(buildDir.getPath() + "/" + ProjectFileManager.getRelativePath(file, baseDir) + "/" + file.getName() + ERROR_XML);
+    this.validationUrl = configuration.getString(MarkupValidatorConstants.VALIDATION_URL, MarkupValidatorConstants.DEFAULT_URL);
+    setWaitBetweenRequests(configuration.getLong(MarkupValidatorConstants.PAUSE_BETWEEN_VALIDATIONS, DEFAULT_PAUSE_BETWEEN_VALIDATIONS));
   }
 
   /**
-   * Post content of HTML to the W3C validation service. In return, receive a Soap response message.
+   * Post contents of HTML file to the W3C validation service. In return, receive a Soap response message.
    *
-   * Documentation of interface: http://validator.w3.org/docs/api.html
+   * @see http://validator.w3.org/docs/api.html
    */
-  private void postHtmlContents(File file) {
+  private void postHtmlContents(InputFile inputfile) {
 
     HttpPost post = new HttpPost(validationUrl);
     HttpResponse response = null;
 
     post.addHeader("User-Agent", "sonar-w3c-markup-validation-plugin/1.0");
 
-    String charset = CharsetDetector.detect(file);
-
     try {
 
-      LOG.info("W3C Validate: " + file.getName());
+      LOG.info("W3C Validate: " + inputfile.getRelativePath());
 
       // file upload
       MultipartEntity multiPartRequestEntity = new MultipartEntity();
-      FileBody fileBody = new FileBody(file, TEXT_HTML_CONTENT_TYPE, charset);
+      String charset = CharsetDetector.detect(inputfile.getFile());
+      FileBody fileBody = new FileBody(inputfile.getFile(), TEXT_HTML_CONTENT_TYPE, charset);
       multiPartRequestEntity.addPart(UPLOADED_FILE, fileBody);
 
-      // output format
+      // set output format
       multiPartRequestEntity.addPart(OUTPUT, new StringBody(SOAP12));
 
-      // specify default doctype
-      // StringPart doctype = new StringPart("doctype", "XHTML 1.0 Strict");
-      // parts.add(doctype);
-      // StringPart fbd = new StringPart("fbd", "1");
-      // parts.add(fbd);
-
       post.setEntity(multiPartRequestEntity);
-
       response = executePostMethod(post);
 
-      if (response != null) {
-        LOG.debug("Post: " + response.getStatusLine().toString());
+      // write response to report file
+      writeResponse(response, inputfile);
 
-        writeResponse(response, file);
-      }
     } catch (UnsupportedEncodingException e) {
       LOG.error(e);
     } finally {
@@ -133,65 +118,56 @@ public final class MarkupValidator extends RemoteValidationService {
     }
   }
 
-  //
-  // private void configureCharset(Charset charset, List<PartBase> parts) {
-  //
-  // StringPart charsetPart = new StringPart("charset", charset.name());
-  // parts.add(charsetPart);
-  //
-  // // only use the charset as fallback
-  // StringPart fbCharSet = new StringPart("fbc", "1");
-  // parts.add(fbCharSet);
-  // }
-
   /**
    * Create the path to the report file.
    */
-  public File reportFile(File file) {
-    return new File(buildDir.getPath() + "/" + ProjectFileManager.getRelativePath(file, baseDir) + MarkupReport.REPORT_SUFFIX);
+  public File reportFile(InputFile inputfile) {
+    return new File(buildDir.getPath() + "/" + ProjectFileManager.getRelativePath(inputfile.getFile(), inputfile.getFileBaseDir()) + REPORT_SUFFIX);
   }
 
   /**
-   * Validate a file with the W3C Markup service.
+   * Validate a file with the W3C Markup Validation Service.
    */
-  public void validateFile(File file) {
-    postHtmlContents(file);
+  public void validateFile(InputFile inputfile) {
+    postHtmlContents(inputfile);
   }
 
+  /**
+   * Validate a list of files with the W3C Markup Validation Service
+   */
   public void validateFiles(List<InputFile> inputfiles) {
 
     int n = 0;
     for (InputFile inputfile : inputfiles) {
       // skip analysis if the report already exists
-      File reportFile = reportFile(inputfile.getFile());
-      if (!reportFile.exists()) {
+      File reportFile = reportFile(inputfile);
+      if ( !reportFile.exists()) {
         if (n++ > 0) {
           waitBetweenValidationRequests();
         }
-        LOG.debug("Validating " + inputfile.getRelativePath() + "...");
-        validateFile(inputfile.getFile());
+        validateFile(inputfile);
       }
     }
   }
 
-  private void writeResponse(HttpResponse response, File file) {
-    final File reportFile;
-    if (response.getStatusLine().getStatusCode() != 200) {
-      LOG.error("failed to validate file " + file.getPath());
-      reportFile = errorFile(file);
-    } else {
-      reportFile = reportFile(file);
-    }
+  private void writeResponse(HttpResponse response, InputFile inputfile) {
+    if (response != null && response.getStatusLine().getStatusCode() == 200) {
+      LOG.info("Validated:" + inputfile.getRelativePath());
 
-    reportFile.getParentFile().mkdirs();
-    Writer writer = null;
-    try {
-      writer = new FileWriter(reportFile);
-      IOUtils.copy(response.getEntity().getContent(), writer);
-    } catch (IOException e) {
-      throw new SonarException(e);
-    } finally {
-      IOUtils.closeQuietly(writer);
+      File reportFile = reportFile(inputfile);
+      reportFile.getParentFile().mkdirs();
+      Writer writer = null;
+      try {
+        writer = new FileWriter(reportFile);
+        IOUtils.copy(response.getEntity().getContent(), writer);
+      } catch (IOException e) {
+        throw new SonarException(e);
+      } finally {
+        IOUtils.closeQuietly(writer);
+      }
+    } else {
+      LOG.error("Response " + response.getStatusLine().getStatusCode() + ": " + response.getStatusLine().getReasonPhrase());
+      LOG.error("Failed to validate file: " + inputfile.getRelativePath());
     }
   }
 }

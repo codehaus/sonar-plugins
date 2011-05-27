@@ -52,7 +52,6 @@ public final class W3CMarkupSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(W3CMarkupSensor.class);
 
-  public static final String VALIDATION_URL = "sonar.w3cmarkup.url";
   private final RulesProfile profile;
   private final RuleFinder ruleFinder;
   private final MavenSession session;
@@ -89,8 +88,7 @@ public final class W3CMarkupSensor implements Sensor {
   public void analyse(Project project, SensorContext sensorContext) {
 
     // create validator
-    MarkupValidator validator = new MarkupValidator((String) project.getProperty(VALIDATION_URL), fileManager.getSourceDirs().get(0),
-        new File(project.getFileSystem().getBuildDir() + "/html"));
+    MarkupValidator validator = new MarkupValidator(project.getConfiguration(), new File(project.getFileSystem().getBuildDir() + "/html"));
 
     // configure proxy
     if (session.getSettings().getActiveProxy() != null) {
@@ -145,7 +143,7 @@ public final class W3CMarkupSensor implements Sensor {
 
     for (InputFile inputfile : inputfiles) {
       org.sonar.api.resources.File htmlFile = fileManager.fromIOFile(inputfile);
-      File reportFile = validator.reportFile(inputfile.getFile());
+      File reportFile = validator.reportFile(inputfile);
 
       if (reportFile.exists()) {
         reportFiles.add(reportFile);

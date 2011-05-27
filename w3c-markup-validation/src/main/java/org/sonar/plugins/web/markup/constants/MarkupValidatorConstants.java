@@ -15,39 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.web.markup.validation;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.IOUtils;
-
-import com.sun.syndication.io.XmlReader;
+package org.sonar.plugins.web.markup.constants;
 
 /**
- * Detects charset using rome library.
+ * Constants for the W3C Markup Validation Service
  *
  * @author Matthijs Galesloot
- * @since 1.0
+ * @sicne 1.0
  */
-public final class CharsetDetector {
+public interface MarkupValidatorConstants {
 
-  private CharsetDetector() {
-    // cannot instantiate
-  }
+  // name of parameter for validation URL
+  String VALIDATION_URL = "sonar.w3cmarkup.url";
 
-  /**
-   * Find charset using rome toolkit.
-   */
-  public static String detect(File file) {
-    XmlReader reader = null;
-    try {
-      reader = new XmlReader(file);
-      return reader.getEncoding();
-    } catch (IOException e) {
-      return null;
-    } finally {
-      IOUtils.closeQuietly(reader);
-    }
-  }
+  // name of parameter for waiting time between validation requests
+  String PAUSE_BETWEEN_VALIDATIONS = "sonar.w3cmarkup.pauseBetweenValidations";
+
+  // the default URL for the online validation service
+  String DEFAULT_URL = "http://validator.w3.org/check";
 }
