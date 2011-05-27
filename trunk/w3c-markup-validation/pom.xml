@@ -13,6 +13,7 @@
   <artifactId>sonar-w3c-markup-validation-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <name>Sonar W3C Markup Validation Plugin</name>
+  <description>Validates HTML with the W3C Markup Validator</description>
   <version>0.1-SNAPSHOT</version>
 
   <properties>
