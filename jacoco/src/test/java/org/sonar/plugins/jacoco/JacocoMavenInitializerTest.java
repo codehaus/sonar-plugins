@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -34,11 +35,21 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 
 public class JacocoMavenInitializerTest {
+  private JaCoCoMavenPluginHandler mavenPluginHandler;
   private JacocoMavenInitializer initializer;
 
   @Before
   public void setUp() {
-    initializer = new JacocoMavenInitializer(mock(JaCoCoMavenPluginHandler.class));
+    mavenPluginHandler = mock(JaCoCoMavenPluginHandler.class);
+    initializer = new JacocoMavenInitializer(mavenPluginHandler);
+  }
+
+  @Test
+  public void shouldDoNothing() {
+    Project project = mockProject();
+    initializer.execute(project);
+    verifyNoMoreInteractions(project);
+    verifyNoMoreInteractions(mavenPluginHandler);
   }
 
   @Test
