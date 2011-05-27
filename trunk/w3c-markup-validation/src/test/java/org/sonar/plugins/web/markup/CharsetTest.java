@@ -41,8 +41,5 @@ public class CharsetTest {
 
     charset = CharsetDetector.detect(new File(path + "/ANSI.html"));
     assertEquals("UTF-8", charset);
-
-    charset = CharsetDetector.detect(new File(path + "/Meta.html"));
-    assertEquals("UTF-16", charset);
   }
 }

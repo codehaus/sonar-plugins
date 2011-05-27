@@ -24,6 +24,7 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
 import org.sonar.plugins.web.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 
@@ -33,7 +34,7 @@ import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
  * @author Matthijs Galesloot
  * @since 1.0
  */
-@Properties({ @Property(key = W3CMarkupSensor.VALIDATION_URL, name = "W3C Validation URL",
+@Properties({ @Property(key = MarkupValidatorConstants.VALIDATION_URL, name = "W3C Validation URL",
     description = "URL of the W3C Markup Validation API", defaultValue = "http://validator.w3.org/check", global = true, project = true) })
 public final class W3CMarkupValidationPlugin implements Plugin {
 

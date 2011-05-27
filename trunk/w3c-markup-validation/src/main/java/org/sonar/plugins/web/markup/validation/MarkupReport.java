@@ -42,13 +42,7 @@ import org.xml.sax.SAXException;
  */
 public final class MarkupReport {
 
-  public boolean isValid() {
-    return valid;
-  }
-
   private static final Logger LOG = Logger.getLogger(MarkupReport.class);
-
-  public static final String REPORT_SUFFIX = ".mur";
 
   /**
    * Create a report from W3C Markup Validation Soap message.
@@ -63,9 +57,9 @@ public final class MarkupReport {
 
   private File reportFile;
 
-  private final List<MarkupMessage> warnings = new ArrayList<MarkupMessage>();
-
   private boolean valid;
+
+  private final List<MarkupMessage> warnings = new ArrayList<MarkupMessage>();
 
   private MarkupMessage createMessage(Element element) {
     MarkupMessage message = new MarkupMessage();
@@ -112,6 +106,10 @@ public final class MarkupReport {
    */
   public List<MarkupMessage> getWarnings() {
     return warnings;
+  }
+
+  public boolean isValid() {
+    return valid;
   }
 
   /**
