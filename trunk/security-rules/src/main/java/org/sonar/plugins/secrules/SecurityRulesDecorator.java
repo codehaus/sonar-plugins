@@ -147,16 +147,16 @@ public final class SecurityRulesDecorator implements Decorator {
 
   protected int computeWeightedViolations(Map<RulePriority, Integer> distribution) {
     int count = 0;
-    for (RulePriority priority : distribution.keySet()) {
-      count += distribution.get(priority) * weights.get(priority);
+    for (Map.Entry<RulePriority, Integer> entry : distribution.entrySet()) {
+      count += entry.getValue() * weights.get(entry.getKey());
     }
     return count;
   }
 
   protected CountDistributionBuilder computeCountDistribution(Map<RulePriority, Integer> distribution) {
     CountDistributionBuilder countDistribution = new CountDistributionBuilder(SecurityRulesMetrics.SECURITY_VIOLATIONS_DISTRIBUTION);
-    for (RulePriority priority : distribution.keySet()) {
-      countDistribution.add(priority, distribution.get(priority));
+    for (Map.Entry<RulePriority, Integer> entry : distribution.entrySet()) {
+      countDistribution.add(entry.getKey(), entry.getValue());
     }
     return countDistribution;
   }

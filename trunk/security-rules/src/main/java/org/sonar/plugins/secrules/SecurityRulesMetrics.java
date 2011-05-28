@@ -28,15 +28,38 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class SecurityRulesMetrics implements Metrics {
+  public final static Metric SECURITY_VIOLATIONS = new Metric("security-violations", "Security violations",
+      "Security violations",
+      Metric.ValueType.INT,
+      Metric.DIRECTION_WORST,
+      true,
+      CoreMetrics.DOMAIN_RULES)
+      .setBestValue(0.0)
+      .setOptimizedBestValue(true);
 
-  public final static Metric SECURITY_VIOLATIONS = new Metric("security-violations", "Security violations", "Security violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES)
-      .setBestValue(0.0).setOptimizedBestValue(true);
-  public final static Metric WEIGHTED_SECURITY_VIOLATIONS = new Metric("weighted-security-violations", "Weighted Security Violations", "Weighted Security Violations", Metric.ValueType.INT, Metric.DIRECTION_WORST, true, CoreMetrics.DOMAIN_RULES)
-      .setBestValue(0.0).setOptimizedBestValue(true);
-  public final static Metric SECURITY_RCI = new Metric("security-rci", "Security rules compliance", "Security rules compliance", Metric.ValueType.PERCENT, Metric.DIRECTION_BETTER, true, CoreMetrics.DOMAIN_RULES)
-      .setBestValue(100.0).setOptimizedBestValue(true);
-  public final static Metric SECURITY_VIOLATIONS_DISTRIBUTION = new Metric("security-violations-distribution", "Security Violations Distribution", "Security Violations Distribution", Metric.ValueType.DATA, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_RULES);
+  public final static Metric WEIGHTED_SECURITY_VIOLATIONS = new Metric("weighted-security-violations", "Weighted Security Violations",
+      "Weighted Security Violations",
+      Metric.ValueType.INT,
+      Metric.DIRECTION_WORST,
+      true,
+      CoreMetrics.DOMAIN_RULES)
+      .setBestValue(0.0)
+      .setOptimizedBestValue(true);
 
+  public final static Metric SECURITY_RCI = new Metric("security-rci", "Security rules compliance",
+      "Security rules compliance",
+      Metric.ValueType.PERCENT,
+      Metric.DIRECTION_BETTER,
+      true, CoreMetrics.DOMAIN_RULES)
+      .setBestValue(100.0)
+      .setOptimizedBestValue(true);
+
+  public final static Metric SECURITY_VIOLATIONS_DISTRIBUTION = new Metric("security-violations-distribution", "Security Violations Distribution",
+      "Security Violations Distribution",
+      Metric.ValueType.DATA,
+      Metric.DIRECTION_NONE,
+      false,
+      CoreMetrics.DOMAIN_RULES);
 
   public List<Metric> getMetrics() {
     return Arrays.asList(SECURITY_VIOLATIONS, WEIGHTED_SECURITY_VIOLATIONS, SECURITY_RCI, SECURITY_VIOLATIONS_DISTRIBUTION);
