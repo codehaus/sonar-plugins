@@ -45,6 +45,7 @@ import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.web.api.WebConstants;
+import org.sonar.plugins.web.language.Web;
 import org.sonar.plugins.web.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 
@@ -110,7 +111,6 @@ public class AbstractWebScannerPluginTester {
       MavenProject project = new MavenProject(model);
       project.setFile(pomFile);
       project.addCompileSourceRoot(project.getBuild().getSourceDirectory());
-
       return project;
     } catch (Exception e) {
       throw new SonarException("Failed to read Maven project file : " + pomFile.getPath(), e);
@@ -231,20 +231,7 @@ public class AbstractWebScannerPluginTester {
     project.setFileSystem(new MockFileSystem());
     project.setPom(pom);
     project.setLanguageKey(WebConstants.LANGUAGE_KEY);
-    project.setLanguage(new Language() {
-
-      public String getName() {
-        return "Web";
-      }
-
-      public String getKey() {
-        return WebConstants.LANGUAGE_KEY;
-      }
-
-      public String[] getFileSuffixes() {
-        return new String[] { "html" };
-      }
-    });
+    project.setLanguage(Web.INSTANCE);
 
     return project;
   }
