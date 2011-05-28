@@ -14,5 +14,7 @@
     <sonar.profile>W3C Markup Validation</sonar.profile>
     <sonar.web.sourceDirectory>html</sonar.web.sourceDirectory>
     <sonar.web.fileExtensions>html</sonar.web.fileExtensions>
+    <sonar.w3cmarkup.http.proxyHost>www-proxy.nl.int.atosorigin.com</sonar.w3cmarkup.http.proxyHost>
+    <sonar.w3cmarkup.http.proxyPort>8080</sonar.w3cmarkup.http.proxyPort>
   </properties>
 </project>

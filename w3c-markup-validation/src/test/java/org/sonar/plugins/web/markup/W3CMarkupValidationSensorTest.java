@@ -23,11 +23,8 @@ import static org.junit.Assert.assertNull;
 
 import java.io.File;
 
-import org.apache.maven.execution.DefaultMavenExecutionRequest;
-import org.apache.maven.execution.MavenSession;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
-import org.sonatype.aether.RepositorySystemSession;
 
 /**
  * @author Matthijs Galesloot
@@ -43,18 +40,12 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
     assertEquals(3, webscannerPlugin.getExtensions().size());
   }
 
-  private class MockMavenSession extends MavenSession {
-    public MockMavenSession() {
-      super(null, (RepositorySystemSession) null, new DefaultMavenExecutionRequest(), null);
-    }
-  }
-
   @Test
   public void testSensor() throws Exception {
     File pomFile = new File(W3CMarkupSensor.class.getResource("/pom.xml").toURI());
     final Project project = loadProjectFromPom(pomFile);
 
-    W3CMarkupSensor sensor = new W3CMarkupSensor(new MockMavenSession(), project, createStandardRulesProfile(), new MarkupRuleFinder());
+    W3CMarkupSensor sensor = new W3CMarkupSensor(project, createStandardRulesProfile(), new MarkupRuleFinder());
 
     assertTrue(sensor.shouldExecuteOnProject(project));
 
