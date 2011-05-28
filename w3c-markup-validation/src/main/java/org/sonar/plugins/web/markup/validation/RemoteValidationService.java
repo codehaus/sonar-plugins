@@ -53,7 +53,7 @@ public abstract class RemoteValidationService {
 
   private final Configuration configuration;
 
-  private final Long waitBetweenRequests; // MILLISECONDS
+  private Long waitBetweenRequests; // MILLISECONDS
 
   public RemoteValidationService(Configuration configuration) {
     this.configuration = configuration;
@@ -145,6 +145,14 @@ public abstract class RemoteValidationService {
    */
   private int getProxyPort() {
     return configuration.getInt(MarkupValidatorConstants.PROXY_PORT, -1);
+  }
+
+  protected Long getWaitBetweenRequests() {
+    return waitBetweenRequests;
+  }
+
+  protected void setWaitBetweenRequests(Long waitBetweenRequests) {
+    this.waitBetweenRequests = waitBetweenRequests;
   }
 
   protected void sleep(long sleepInterval) {

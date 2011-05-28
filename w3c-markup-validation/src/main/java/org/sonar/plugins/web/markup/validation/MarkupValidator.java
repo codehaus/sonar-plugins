@@ -70,6 +70,11 @@ public final class MarkupValidator extends RemoteValidationService {
     this.buildDir = buildDir;
 
     this.validationUrl = configuration.getString(MarkupValidatorConstants.VALIDATION_URL, MarkupValidatorConstants.DEFAULT_URL);
+
+    if (getWaitBetweenRequests() < 1000L && this.validationUrl.contains(MarkupValidatorConstants.DEFAULT_URL)) {
+      LOG.warn("Minimum waiting time between requests is 1000 milliseconds");
+      setWaitBetweenRequests(1000L);
+    }
   }
 
   /**
