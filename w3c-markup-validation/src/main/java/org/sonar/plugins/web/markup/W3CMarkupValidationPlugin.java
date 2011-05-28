@@ -34,8 +34,13 @@ import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
  * @author Matthijs Galesloot
  * @since 1.0
  */
-@Properties({ @Property(key = MarkupValidatorConstants.VALIDATION_URL, name = "W3C Validation URL",
-    description = "URL of the W3C Markup Validation API", defaultValue = "http://validator.w3.org/check", global = true, project = true) })
+@Properties({
+    @Property(key = MarkupValidatorConstants.VALIDATION_URL, name = "W3C Validation URL",
+        description = "URL of the W3C Markup Validation API", defaultValue = "http://validator.w3.org/check", global = true, project = true),
+    @Property(key = MarkupValidatorConstants.PAUSE_BETWEEN_VALIDATIONS, name = "Pause between validations",
+        description = "Pause between validation requests, in milliseconds", defaultValue = "1000", global = true, project = true),
+    @Property(key = MarkupValidatorConstants.PROXY_HOST, name = "Proxy host", global = true, project = true),
+    @Property(key = MarkupValidatorConstants.PROXY_PORT, name = "Proxy port", global = true, project = true) })
 public final class W3CMarkupValidationPlugin implements Plugin {
 
   public String getDescription() {
