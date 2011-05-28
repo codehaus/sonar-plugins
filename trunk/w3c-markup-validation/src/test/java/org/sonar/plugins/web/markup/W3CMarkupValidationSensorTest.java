@@ -25,6 +25,7 @@ import java.io.File;
 
 import org.junit.Test;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
 
 /**
  * @author Matthijs Galesloot
@@ -44,6 +45,7 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
   public void testSensor() throws Exception {
     File pomFile = new File(W3CMarkupSensor.class.getResource("/pom.xml").toURI());
     final Project project = loadProjectFromPom(pomFile);
+    project.getConfiguration().setProperty(MarkupValidatorConstants.PAUSE_BETWEEN_VALIDATIONS, "999");
 
     W3CMarkupSensor sensor = new W3CMarkupSensor(project, createStandardRulesProfile(), new MarkupRuleFinder());
 
