@@ -102,7 +102,9 @@ public final class MarkupValidator extends RemoteValidationService {
       response = executePostMethod(post);
 
       // write response to report file
-      writeResponse(response, inputfile);
+      if (response != null) {
+        writeResponse(response, inputfile);
+      }
 
     } catch (UnsupportedEncodingException e) {
       LOG.error(e);
@@ -151,7 +153,7 @@ public final class MarkupValidator extends RemoteValidationService {
   }
 
   private void writeResponse(HttpResponse response, InputFile inputfile) {
-    if (response != null && response.getStatusLine().getStatusCode() == 200) {
+    if (response.getStatusLine().getStatusCode() == 200) {
       LOG.info("Validated:" + inputfile.getRelativePath());
 
       File reportFile = reportFile(inputfile);
