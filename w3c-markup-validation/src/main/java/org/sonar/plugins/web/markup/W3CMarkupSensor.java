@@ -83,7 +83,7 @@ public final class W3CMarkupSensor implements Sensor {
   }
 
   /**
-   * Find W3C Validation Markup reports in the source tree and save violations to Sonar. The Markup reports have file extension .mur.
+   * Validate HTML files with W3C Markup Validator and save violations to Sonar.
    */
   public void analyse(Project project, SensorContext sensorContext) {
 

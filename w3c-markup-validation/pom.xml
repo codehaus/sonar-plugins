@@ -30,12 +30,12 @@
   </issueManagement>
   <ciManagement>
     <system>BAMBOO</system>
-    <url>http://ci.codehaus.org/browse/SONAR-W3C-MARKUP-VALIDATION</url>
+    <url>http://ci.codehaus.org/browse/SONAR-W3CMV</url>
   </ciManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/webscanner</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/webscanner</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/w3c-markup-validation</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/w3c-markup-validation</developerConnection>
     <url>http://svn.codehaus.org/sonar-plugins/</url>
   </scm>
 
@@ -80,11 +80,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>net.sourceforge.cssparser</groupId>
-      <artifactId>cssparser</artifactId>
-      <version>0.9.5</version>
-    </dependency>
-    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.1.1</version>
@@ -108,6 +103,13 @@
           <groupId>jdom</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <!-- commons logging is provided by sonar. -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Test dependencies -->
