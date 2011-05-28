@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.maven.execution.MavenSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -54,15 +53,10 @@ public final class W3CMarkupSensor implements Sensor {
 
   private final RulesProfile profile;
   private final RuleFinder ruleFinder;
-  private final MavenSession session;
-  private final ProjectFileManager fileManager;
 
-  public W3CMarkupSensor(MavenSession session, Project project, RulesProfile profile, RuleFinder ruleFinder) {
-    LOG.info("Profile: " + profile.getName());
-    this.session = session;
+  public W3CMarkupSensor(Project project, RulesProfile profile, RuleFinder ruleFinder) {
     this.profile = profile;
     this.ruleFinder = ruleFinder;
-    this.fileManager = new ProjectFileManager(project);
   }
 
   private void addViolation(SensorContext sensorContext, org.sonar.api.resources.File resource, MarkupMessage message, boolean error) {
@@ -87,20 +81,18 @@ public final class W3CMarkupSensor implements Sensor {
    */
   public void analyse(Project project, SensorContext sensorContext) {
 
+    LOG.info("Profile: " + profile.getName());
+
+    ProjectFileManager fileManager = new ProjectFileManager(project);
+
     // create validator
     MarkupValidator validator = new MarkupValidator(project.getConfiguration(), new File(project.getFileSystem().getBuildDir() + "/html"));
-
-    // configure proxy
-    if (session.getSettings().getActiveProxy() != null) {
-      validator.setProxyHost(session.getSettings().getActiveProxy().getHost());
-      validator.setProxyPort(session.getSettings().getActiveProxy().getPort());
-    }
 
     // start the validation
     validator.validateFiles(fileManager.getFiles());
 
     // save analysis to sonar
-    saveResults(sensorContext, validator, fileManager.getFiles());
+    saveResults(sensorContext, fileManager, validator, fileManager.getFiles());
   }
 
   private boolean hasMarkupRules() {
@@ -138,7 +130,7 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(SensorContext sensorContext, MarkupValidator validator, List<InputFile> inputfiles) {
+  private void saveResults(SensorContext sensorContext, ProjectFileManager fileManager, MarkupValidator validator, List<InputFile> inputfiles) {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {

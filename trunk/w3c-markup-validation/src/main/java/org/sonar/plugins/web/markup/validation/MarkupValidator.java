@@ -49,8 +49,6 @@ import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
  */
 public final class MarkupValidator extends RemoteValidationService {
 
-  private static final long DEFAULT_PAUSE_BETWEEN_VALIDATIONS = 1000L;
-
   private static final Logger LOG = Logger.getLogger(MarkupValidator.class);
 
   private static final String OUTPUT = "output";
@@ -67,10 +65,11 @@ public final class MarkupValidator extends RemoteValidationService {
   private final String validationUrl;
 
   public MarkupValidator(Configuration configuration, File buildDir) {
+    super(configuration);
+
     this.buildDir = buildDir;
 
     this.validationUrl = configuration.getString(MarkupValidatorConstants.VALIDATION_URL, MarkupValidatorConstants.DEFAULT_URL);
-    setWaitBetweenRequests(configuration.getLong(MarkupValidatorConstants.PAUSE_BETWEEN_VALIDATIONS, DEFAULT_PAUSE_BETWEEN_VALIDATIONS));
   }
 
   /**

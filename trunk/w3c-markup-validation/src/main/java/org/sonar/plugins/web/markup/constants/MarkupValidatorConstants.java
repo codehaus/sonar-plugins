@@ -33,4 +33,9 @@ public interface MarkupValidatorConstants {
 
   // the default URL for the online validation service
   String DEFAULT_URL = "http://validator.w3.org/check";
+
+  // PROXY HOST
+  String PROXY_HOST = "sonar.w3cmarkup.http.proxyHost";
+  // PROXY PORT
+  String PROXY_PORT = "sonar.w3cmarkup.http.proxyPort";
 }

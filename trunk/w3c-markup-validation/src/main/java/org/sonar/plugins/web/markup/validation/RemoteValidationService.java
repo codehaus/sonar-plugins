@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -34,6 +35,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
 
 /**
  * RemoteValidationService provides a framework for validators using a remote service.
@@ -43,13 +45,21 @@ import org.sonar.api.utils.SonarException;
  */
 public abstract class RemoteValidationService {
 
+  private static final long DEFAULT_PAUSE_BETWEEN_VALIDATIONS = 1000L;
+
   private static final Logger LOG = Logger.getLogger(RemoteValidationService.class);
 
   private HttpClient client;
-  private String proxyHost;
-  private int proxyPort;
 
-  private Long waitBetweenRequests; // MILLISECONDS
+  private final Configuration configuration;
+
+  private final Long waitBetweenRequests; // MILLISECONDS
+
+  public RemoteValidationService(Configuration configuration) {
+    this.configuration = configuration;
+
+    waitBetweenRequests = configuration.getLong(MarkupValidatorConstants.PAUSE_BETWEEN_VALIDATIONS, DEFAULT_PAUSE_BETWEEN_VALIDATIONS);
+  }
 
   /**
    * Execute post method to the remote validation service. On errors, the post is tried 3 times with a waiting time of 1 second.
@@ -127,26 +137,14 @@ public abstract class RemoteValidationService {
    * @return proxy host
    */
   private String getProxyHost() {
-    return proxyHost;
+    return configuration.getString(MarkupValidatorConstants.PROXY_HOST, null);
   }
 
   /**
    * Returns the proxy port.
    */
   private int getProxyPort() {
-    return proxyPort;
-  }
-
-  public void setProxyHost(String proxyHost) {
-    this.proxyHost = proxyHost;
-  }
-
-  public void setProxyPort(int proxyPort) {
-    this.proxyPort = proxyPort;
-  }
-
-  protected void setWaitBetweenRequests(Long waitBetweenRequests) {
-    this.waitBetweenRequests = waitBetweenRequests;
+    return configuration.getInt(MarkupValidatorConstants.PROXY_PORT, -1);
   }
 
   protected void sleep(long sleepInterval) {
@@ -163,10 +161,10 @@ public abstract class RemoteValidationService {
    * @return true/false
    */
   private boolean useProxy() {
-    return proxyHost != null && proxyPort > 0;
+    return getProxyHost() != null && getProxyPort() > 0;
   }
 
-  public void waitBetweenValidationRequests() {
+  protected void waitBetweenValidationRequests() {
     sleep(waitBetweenRequests);
   }
 }
