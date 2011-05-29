@@ -28,7 +28,6 @@ import org.apache.commons.io.LineIterator;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.plugins.codesize.xml.SizingMetric;
 
 class LineCounter {
 

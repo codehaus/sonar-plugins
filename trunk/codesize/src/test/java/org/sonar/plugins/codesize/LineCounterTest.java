@@ -26,7 +26,6 @@ import java.nio.charset.Charset;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
-import org.sonar.plugins.codesize.xml.SizingMetric;
 
 public class LineCounterTest {
 
@@ -34,7 +33,7 @@ public class LineCounterTest {
   public void testLineCounter() {
     LineCounter lineCounter = new LineCounter();
     lineCounter.setDefaultCharset(Charset.defaultCharset());
-    SizingMetrics sizingMetrics = new SizingMetrics(new PropertiesConfiguration());
+    SizingProfile sizingMetrics = new SizingProfile(new PropertiesConfiguration());
     for (SizingMetric sizingMetric : sizingMetrics.getSizingMetrics()) {
       int lines = lineCounter.calculateLinesOfCode(new File("."), sizingMetric);
 

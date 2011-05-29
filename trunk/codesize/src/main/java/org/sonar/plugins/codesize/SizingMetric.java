@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.codesize.xml;
+package org.sonar.plugins.codesize;
 
 import java.util.ArrayList;
 import java.util.List;

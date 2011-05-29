@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.codesize.dashboard;
+package org.sonar.plugins.codesize;
 
 import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.NavigationSection;
