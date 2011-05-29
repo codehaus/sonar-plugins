@@ -47,7 +47,7 @@ public final class SizingMetrics implements BatchExtension {
     }
   }
 
-  private final SizingProfile sizingProfile;
+  private final SizingProfile sizingProfile = new SizingProfile();
 
   public SizingMetrics(Configuration configuration) {
 
@@ -57,8 +57,7 @@ public final class SizingMetrics implements BatchExtension {
     }
 
     LOG.debug("Load codesize profile: " + codeSizeProfile);
-
-    sizingProfile = SizingProfile.fromXML(codeSizeProfile);
+    sizingProfile.parse(codeSizeProfile);
   }
 
   public List<SizingMetric> getSizingMetrics() {

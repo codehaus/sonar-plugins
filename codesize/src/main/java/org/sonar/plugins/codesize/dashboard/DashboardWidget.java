@@ -32,9 +32,9 @@ public final class DashboardWidget extends AbstractRubyTemplate implements RubyR
 
   @Override
   protected String getTemplatePath() {
-    //return "/dashboard_widget.erb";
+    return "/dashboard_widget.erb";
     // use a system filepath for prototyping:
-    return "C:/workspaces/sonar-plugins/codesize/src/main/resources/dashboard_widget.erb";
+    // return "C:/workspaces/sonar-plugins/codesize/src/main/resources/dashboard_widget.erb";
   }
 
   public String getTitle() {

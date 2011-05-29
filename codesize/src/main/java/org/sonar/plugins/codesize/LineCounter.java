@@ -37,7 +37,7 @@ class LineCounter {
   private Charset defaultCharset;
 
   public int calculateLinesOfCode(File baseDir, SizingMetric sizingMetric) {
-    List<File> files = getFiles(baseDir, new String[] { sizingMetric.getIncludes() });
+    List<File> files = getFiles(baseDir, sizingMetric.getIncludes(), sizingMetric.getExcludes());
 
     LOG.debug("Found " + files.size() + " files");
     int lines = 0;
@@ -69,12 +69,13 @@ class LineCounter {
     }
   }
 
-  private List<File> getFiles(File directory, String[] includes) {
+  private List<File> getFiles(File directory, List<String> includes, List<String> excludes) {
     List<File> result = new ArrayList<File>();
 
     DirectoryScanner scanner = new DirectoryScanner();
     scanner.setBasedir(directory);
-    scanner.setIncludes(includes);
+    scanner.setIncludes(includes.toArray(new String[includes.size()]));
+    scanner.setExcludes(excludes.toArray(new String[excludes.size()]));
     scanner.scan();
 
     for (String fileName : scanner.getIncludedFiles()) {

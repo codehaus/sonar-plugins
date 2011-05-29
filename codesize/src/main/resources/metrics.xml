@@ -1,16 +1,21 @@
-<profile>
-  <metric name="CSS" includes="src/main/webapp/**/*.css" />
-  <metric name="HTML" includes="src/main/webapp/**/*.html" />
-  <metric name="JavaScript" includes="src/main/webapp/**/*.js" />
-  <metric name="Java" includes="src/main/java/**/*.java" />
-  <metric name="SQL" includes="src/main/**/*.sql" />
-  <metric name="XHTML" includes="src/main/webapp/**/*.xhtml" />
-  <metric name="XML" includes="src/main/**/*.xml" />
-  <metric name="XSD" includes="src/main/**/*.xsd" />
-  <metric name="Generated Java" includes="src-gen/main/java/**/*.java" />
-  <metric name="Test" includes="src/main/test/**/*.java" />
-
-</profile>
-
-
+CSS
+includes=src/main/webapp/**/*.css
+HTML
+includes=src/main/webapp/**/*.html
+JavaScript
+includes=src/main/webapp/**/*.js
+Java
+includes=src/main/java/**/*.java
+SQL
+includes=src/main/**/*.sql
+XHTML
+includes=src/main/webapp/**/*.xhtml
+XML
+includes=src/main/**/*.xml  
+XSD
+includes=src/main/**/*.xsd
+Generated Java
+includes=src-gen/main/java/**/*.java
+Test
+includes=src/test/java/**/*.java
 
