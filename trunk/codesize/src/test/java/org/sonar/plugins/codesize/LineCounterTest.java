@@ -24,6 +24,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import org.sonar.plugins.codesize.xml.SizingMetric;
 
@@ -36,7 +37,9 @@ public class LineCounterTest {
     SizingMetrics sizingMetrics = new SizingMetrics(new PropertiesConfiguration());
     for (SizingMetric sizingMetric : sizingMetrics.getSizingMetrics()) {
       int lines = lineCounter.calculateLinesOfCode(new File("."), sizingMetric);
-      if (sizingMetric.getName().equals("HTML") || sizingMetric.getName().equals("Java") || sizingMetric.getName().equals("XML")) {
+
+      String[] withLines = new String[] { "HTML", "Java", "XML", "Test" };
+      if (ArrayUtils.contains(withLines, sizingMetric.getName())) {
         assertTrue(sizingMetric.getName(), lines > 0);
       } else {
         assertEquals(sizingMetric.getName(), 0, lines);

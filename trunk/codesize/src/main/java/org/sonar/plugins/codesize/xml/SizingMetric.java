@@ -17,24 +17,40 @@
  */
 package org.sonar.plugins.codesize.xml;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import java.util.ArrayList;
+import java.util.List;
 
-@XStreamAlias("metric")
+
 public class SizingMetric {
 
-  @XStreamAsAttribute
+  private final List<String> excludes = new ArrayList<String>();
+
+  private final List<String> includes = new ArrayList<String>();
+
   private String name;
 
-  @XStreamAsAttribute
-  private String includes;
+  public void addExcludes(String excludes) {
+    this.excludes.add(excludes);
+  }
+
+  public void addIncludes(String includes) {
+    this.includes.add(includes);
+  }
+
+  public List<String> getExcludes() {
+    return excludes;
+  }
+
+  public List<String> getIncludes() {
+    return includes;
+  }
 
   public String getName() {
     return name;
   }
 
-  public String getIncludes() {
-    return includes;
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override

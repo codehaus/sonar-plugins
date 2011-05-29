@@ -20,16 +20,10 @@ package org.sonar.plugins.codesize.xml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.plugins.codesize.SizingMetrics;
+import org.apache.commons.lang.StringUtils;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
-
-@XStreamAlias("profile")
 public class SizingProfile {
 
-  @XStreamImplicit
   private List<SizingMetric> sizingMetrics = new ArrayList<SizingMetric>();
 
   public List<SizingMetric> getSizingMetrics() {
@@ -40,16 +34,27 @@ public class SizingProfile {
     this.sizingMetrics = metrics;
   }
 
-  private static XStream getXStream() {
-    XStream xstream = new XStream();
-    xstream.setClassLoader(SizingMetrics.class.getClassLoader());
-    xstream.processAnnotations(SizingProfile.class);
-    xstream.processAnnotations(SizingMetric.class);
+  private static final String INCLUDES = "includes";
+  private static final String EXCLUDES = "includes";
 
-    return xstream;
-  }
-
-  public static SizingProfile fromXML(String codeSizeProfile) {
-    return (SizingProfile) getXStream().fromXML(codeSizeProfile);
+  public void parse(String codeSizeProfile) {
+    String[] lines = StringUtils.split(codeSizeProfile, "\n");
+    SizingMetric metric = null;
+    for (String line : lines) {
+      if ( !StringUtils.isBlank(line)) {
+        String[] kv = line.split("[:=]");
+        if (kv.length > 1) {
+          if (INCLUDES.contains(kv[0])) {
+            metric.addIncludes(kv[1].trim());
+          } else if (EXCLUDES.contains(kv[0])) {
+            metric.addExcludes(kv[1].trim());
+          }
+        } else {
+          metric = new SizingMetric();
+          metric.setName(line.trim());
+          getSizingMetrics().add(metric);
+        }
+      }
+    }
   }
 }
