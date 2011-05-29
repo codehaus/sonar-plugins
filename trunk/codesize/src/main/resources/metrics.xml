@@ -1,16 +1,16 @@
 <profile>
-    <metric key="css_lines" name="CSS Lines" description="CSS Lines" suffix="css" sourceDir="src/main/webapp" />
-    <metric key="html_lines" name="HTML Lines" description="HTML Lines" suffix="html" sourceDir="src/main/webapp" />
-    <metric key="javascript_lines" name="JavaScript Lines" description="JavaScript Lines" suffix="js"
-        sourceDir="src/main/webapp" />
-    <metric key="java_lines" name="Java Lines" description="Java Lines" suffix="java" sourceDir="src/main/java" />
-    <metric key="sql_lines" name="SQL Lines" description="SQL Lines" suffix="sql" sourceDir="src/main" />
-    <metric key="xhtml_lines" name="XHTML Lines" description="XHTML Lines" suffix="xhtml" sourceDir="src/main/webapp" />
-    <metric key="xml_lines" name="XML Lines" description="XML Lines" suffix="xml" sourceDir="src/main" />
-    <metric key="xsd_lines" name="XSD Lines" description="XSD Lines" suffix="xsd" sourceDir="src/main" />
-    <metric key="drl_lines" name="DRL Lines" description="DRL Lines" suffix="drl" sourceDir="src/main" />
-    <metric key="dsl_lines" name="DSL Lines" description="DSL Lines" suffix="entity" sourceDir="src/main" />
-    <metric key="generated_lines" name="Generated Java Lines" description="Generated Java Lines" suffix="java"
-        sourceDir="src-gen/main/java" />
+  <metric name="CSS" includes="src/main/webapp/**/*.css" />
+  <metric name="HTML" includes="src/main/webapp/**/*.html" />
+  <metric name="JavaScript" includes="src/main/webapp/**/*.js" />
+  <metric name="Java" includes="src/main/java/**/*.java" />
+  <metric name="SQL" includes="src/main/**/*.sql" />
+  <metric name="XHTML" includes="src/main/webapp/**/*.xhtml" />
+  <metric name="XML" includes="src/main/**/*.xml" />
+  <metric name="XSD" includes="src/main/**/*.xsd" />
+  <metric name="Generated Java" includes="src-gen/main/java/**/*.java" />
+  <metric name="Test" includes="src/main/test/**/*.java" />
 
 </profile>
+
+
+

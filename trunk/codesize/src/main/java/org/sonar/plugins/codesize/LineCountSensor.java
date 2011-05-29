@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2010 The Original Authors
+ * Codesize
+ * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sonar.plugins.codesize;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.codesize.xml.SizingMetric;
 
@@ -30,15 +32,28 @@ import org.sonar.plugins.codesize.xml.SizingMetric;
 public final class LineCountSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCountSensor.class);
+  private final SizingMetrics sizingMetrics;
+
+  public LineCountSensor(SizingMetrics sizingMetrics) {
+    this.sizingMetrics = sizingMetrics;
+  }
 
   public void analyse(Project project, SensorContext sensorContext) {
-    for (SizingMetric sizingMetric : SizingMetrics.getSizingProfile().getSizingMetrics()) {
 
-      LOG.debug("Calculating metric: " + sizingMetric.getKey());
+    PropertiesBuilder<String, Long> counters = new PropertiesBuilder<String, Long>(SummaryMetrics.CODE_COUNTERS);
 
-      LineCounter lineCounter = new LineCounter(project);
-      lineCounter.calculateLinesOfCode(sensorContext, sizingMetric);
+    for (SizingMetric sizingMetric : sizingMetrics.getSizingMetrics()) {
+
+      LOG.debug("Calculating metric: " + sizingMetric.getName());
+
+      LineCounter lineCounter = new LineCounter();
+      lineCounter.setDefaultCharset(project.getFileSystem().getSourceCharset());
+      long linesOfCode = lineCounter.calculateLinesOfCode(project.getFileSystem().getBasedir(), sizingMetric);
+
+      counters.add(sizingMetric.getName(), linesOfCode);
     }
+
+    sensorContext.saveMeasure(project, counters.build());
   }
 
   public boolean shouldExecuteOnProject(Project project) {

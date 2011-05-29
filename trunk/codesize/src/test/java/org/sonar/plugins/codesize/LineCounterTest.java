@@ -17,30 +17,30 @@
  */
 package org.sonar.plugins.codesize;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.nio.charset.Charset;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
-import org.sonar.api.resources.Project;
 import org.sonar.plugins.codesize.xml.SizingMetric;
 
-public class LineCountMetricsTest {
+public class LineCounterTest {
 
   @Test
-  public void testLineCountMetrics() {
-    Project project = new Project("test");
-    project.setConfiguration(new PropertiesConfiguration());
-
-    SizingMetrics lineCountMetrics = new SizingMetrics(project.getConfiguration());
-
-    int minExpectedMetrics = 5;
-    assertTrue(minExpectedMetrics < lineCountMetrics.getSizingMetrics().size());
-    assertTrue(minExpectedMetrics < lineCountMetrics.getSizingMetrics().size());
-
-    for (SizingMetric metric : lineCountMetrics.getSizingMetrics()) {
-      assertNotNull(metric.getName());
-      assertNotNull(metric.getIncludes());
+  public void testLineCounter() {
+    LineCounter lineCounter = new LineCounter();
+    lineCounter.setDefaultCharset(Charset.defaultCharset());
+    SizingMetrics sizingMetrics = new SizingMetrics(new PropertiesConfiguration());
+    for (SizingMetric sizingMetric : sizingMetrics.getSizingMetrics()) {
+      int lines = lineCounter.calculateLinesOfCode(new File("."), sizingMetric);
+      if (sizingMetric.getName().equals("HTML") || sizingMetric.getName().equals("Java") || sizingMetric.getName().equals("XML")) {
+        assertTrue(sizingMetric.getName(), lines > 0);
+      } else {
+        assertEquals(sizingMetric.getName(), 0, lines);
+      }
     }
   }
 }
