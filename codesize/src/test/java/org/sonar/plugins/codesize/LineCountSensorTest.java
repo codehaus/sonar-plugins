@@ -50,7 +50,7 @@ public class LineCountSensorTest {
     project.setConfiguration(new PropertiesConfiguration());
     project.setFileSystem(new MockProjectFileSystem(project));
 
-    LineCountSensor sensor = new LineCountSensor(new SizingMetrics(new PropertiesConfiguration()));
+    LineCountSensor sensor = new LineCountSensor(new SizingProfile(new PropertiesConfiguration()));
     sensor.analyse(project, sensorContext);
   }
 

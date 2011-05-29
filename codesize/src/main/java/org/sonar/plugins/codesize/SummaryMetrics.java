@@ -26,8 +26,8 @@ import org.sonar.api.measures.Metrics;
 
 public final class SummaryMetrics implements Metrics {
 
-  public static final Metric CODE_COUNTERS = new Metric("code_counters", "Code Counters", "Code Counters", Metric.ValueType.DISTRIB,
-      Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric CODE_COUNTERS = new Metric.Builder("code_counters", "Code Counters", Metric.ValueType.DISTRIB).setDomain(
+      CoreMetrics.DOMAIN_GENERAL).create();
 
   public List<Metric> getMetrics() {
     return Arrays.asList(CODE_COUNTERS);

@@ -23,7 +23,6 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.codesize.xml.SizingMetric;
 
 /**
  * @author Matthijs Galesloot
@@ -32,9 +31,9 @@ import org.sonar.plugins.codesize.xml.SizingMetric;
 public final class LineCountSensor implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCountSensor.class);
-  private final SizingMetrics sizingMetrics;
+  private final SizingProfile sizingMetrics;
 
-  public LineCountSensor(SizingMetrics sizingMetrics) {
+  public LineCountSensor(SizingProfile sizingMetrics) {
     this.sizingMetrics = sizingMetrics;
   }
 
@@ -50,7 +49,9 @@ public final class LineCountSensor implements Sensor {
       lineCounter.setDefaultCharset(project.getFileSystem().getSourceCharset());
       long linesOfCode = lineCounter.calculateLinesOfCode(project.getFileSystem().getBasedir(), sizingMetric);
 
-      counters.add(sizingMetric.getName(), linesOfCode);
+      if (linesOfCode > 0) {
+        counters.add(sizingMetric.getName(), linesOfCode);
+      }
     }
 
     sensorContext.saveMeasure(project, counters.build());

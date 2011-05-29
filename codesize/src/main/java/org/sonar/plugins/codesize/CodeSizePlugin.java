@@ -24,7 +24,6 @@ import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.plugins.codesize.dashboard.DashboardWidget;
 
 @Properties({ @Property(key = CodesizeConstants.SONAR_CODESIZE_PROFILE, name = "Codesize metrics", description = "Codesize metrics.",
     global = true, project = true) })
@@ -38,7 +37,7 @@ public class CodeSizePlugin implements Plugin {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
     list.add(LineCountSensor.class);
-    list.add(SizingMetrics.class);
+    list.add(SizingProfile.class);
     list.add(SummaryMetrics.class);
     list.add(CodeSizeDecorator.class);
     list.add(DashboardWidget.class);

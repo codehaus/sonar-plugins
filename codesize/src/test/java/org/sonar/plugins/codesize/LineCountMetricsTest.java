@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.codesize.xml.SizingMetric;
 
 public class LineCountMetricsTest {
 
@@ -32,7 +31,7 @@ public class LineCountMetricsTest {
     Project project = new Project("test");
     project.setConfiguration(new PropertiesConfiguration());
 
-    SizingMetrics lineCountMetrics = new SizingMetrics(project.getConfiguration());
+    SizingProfile lineCountMetrics = new SizingProfile(project.getConfiguration());
 
     int minExpectedMetrics = 5;
     assertTrue(minExpectedMetrics < lineCountMetrics.getSizingMetrics().size());
