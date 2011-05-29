@@ -71,6 +71,7 @@
       </activation>
       <modules>
         <module>basic-cocomo</module>
+		<module>codesize</module>
         <module>csharp</module>
         <module>debug</module>
         <module>drools</module>
