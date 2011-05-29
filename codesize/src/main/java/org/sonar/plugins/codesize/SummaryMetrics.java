@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2010 The Original Authors
+ * Codesize
+ * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sonar.plugins.codesize;
 
 import java.util.Arrays;
@@ -25,13 +26,10 @@ import org.sonar.api.measures.Metrics;
 
 public final class SummaryMetrics implements Metrics {
 
-  public static final Metric CODE_DISTRIBUTION = new Metric("code_distribution", "Code Distribution", "Code Distribution",
-      Metric.ValueType.DISTRIB, Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_GENERAL);
-
-  public static final Metric TOTAL_LINES = new Metric("total_lines", "Total Lines", "Total Lines", Metric.ValueType.INT,
-      Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_SIZE);
+  public static final Metric CODE_COUNTERS = new Metric("code_counters", "Code Counters", "Code Counters", Metric.ValueType.DISTRIB,
+      Metric.DIRECTION_NONE, false, CoreMetrics.DOMAIN_GENERAL);
 
   public List<Metric> getMetrics() {
-    return Arrays.asList(CODE_DISTRIBUTION, TOTAL_LINES);
+    return Arrays.asList(CODE_COUNTERS);
   }
 }

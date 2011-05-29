@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2010 The Original Authors
+ * Codesize
+ * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,82 +15,75 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sonar.plugins.codesize;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
-import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.DirectoryScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.Project;
 import org.sonar.plugins.codesize.xml.SizingMetric;
 
 class LineCounter {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCounter.class);
 
-  private int lines;
-  private int files;
+  private Charset defaultCharset;
 
-  private final Project project;
-
-  public LineCounter(Project project) {
-    this.project = project;
-  }
-
-  public int getFiles() {
-    return files;
-  }
-
-  private void addFile(File file) {
-
-    try {
-      LineIterator lineIterator = FileUtils.lineIterator(file, project.getFileSystem().getSourceCharset().name());
-      while (lineIterator.hasNext()) {
-        String line = lineIterator.nextLine();
-        if (!StringUtils.isEmpty(line)) {
-          lines++;
-        }
-      }
-      lineIterator.close();
-      files++;
-
-      LOG.debug(file.getName() + "(" + lines + "," + lines + ")");
-    } catch (IOException e) {
-      LOG.warn("Could not open file", e);
-    }
-  }
-
-  public void calculateLinesOfCode(SensorContext sensorContext, SizingMetric sizingMetric) {
-    File sourceDir = project.getFileSystem().resolvePath(sizingMetric.getSourceDir());
-    List<File> files = getFiles(Arrays.asList(sourceDir), new String[] {sizingMetric.getSuffix()} );
+  public int calculateLinesOfCode(File baseDir, SizingMetric sizingMetric) {
+    List<File> files = getFiles(baseDir, new String[] { sizingMetric.getIncludes() });
 
     LOG.debug("Found " + files.size() + " files");
+    int lines = 0;
     for (File file : files) {
-      addFile(file);
+      lines += countFile(file);
     }
 
-    sensorContext.saveMeasure(project, sizingMetric.getMetric(), (double) lines);
+    return lines;
   }
 
-  @SuppressWarnings("unchecked")
-  private List<File> getFiles(List<File> directories, String[] extensions) {
+  private int countFile(File file) {
+
+    try {
+      int lines = 0;
+
+      LineIterator lineIterator = FileUtils.lineIterator(file, defaultCharset.name());
+      for (; lineIterator.hasNext(); lineIterator.next()) {
+        lines++;
+      }
+      lineIterator.close();
+
+      LOG.debug(file.getName() + "(" + lines + "," + lines + ")");
+      return lines;
+
+    } catch (IOException e) {
+      LOG.warn("Could not open file", e);
+      return 0;
+
+    }
+  }
+
+  private List<File> getFiles(File directory, String[] includes) {
     List<File> result = new ArrayList<File>();
 
-    for (File dir : directories) {
-      if (dir.exists()) {
-        result.addAll(FileUtils.listFiles(dir, extensions, true));
-      }
+    DirectoryScanner scanner = new DirectoryScanner();
+    scanner.setBasedir(directory);
+    scanner.setIncludes(includes);
+    scanner.scan();
+
+    for (String fileName : scanner.getIncludedFiles()) {
+      result.add(new File(fileName));
     }
     return result;
   }
 
+  public void setDefaultCharset(Charset defaultCharset) {
+    this.defaultCharset = defaultCharset;
+  }
 }

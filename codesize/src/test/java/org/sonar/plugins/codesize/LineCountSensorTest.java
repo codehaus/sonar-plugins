@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2010 The Original Authors
+ * Codesize
+ * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +15,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sonar.plugins.codesize;
 
-import org.junit.Test;
+import java.io.File;
+import java.nio.charset.Charset;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Answers;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.DefaultProjectFileSystem;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
 
 public class LineCountSensorTest {
 
-  @Test
-  public void testLineCountSensor() {
+  @Before
+  public void initMocks() {
+    MockitoAnnotations.initMocks(this);
+  }
 
+  @Mock
+  private SensorContext sensorContext;
+
+  @Mock(answer = Answers.RETURNS_DEFAULTS)
+  private ProjectFileSystem projectFileSystem;
+
+  @Test
+  public void testSensor() {
+    Project project = new Project("test");
+    project.setConfiguration(new PropertiesConfiguration());
+    project.setFileSystem(new MockProjectFileSystem(project));
+
+    LineCountSensor sensor = new LineCountSensor(new SizingMetrics(new PropertiesConfiguration()));
+    sensor.analyse(project, sensorContext);
+  }
+
+  private static class MockProjectFileSystem extends DefaultProjectFileSystem {
+
+    public MockProjectFileSystem(Project project) {
+      super(project, null);
+    }
+
+    @Override
+    public Charset getSourceCharset() {
+      return Charset.defaultCharset();
+    }
+
+    @Override
+    public File getBasedir() {
+      return new File(".");
+    }
   }
 }

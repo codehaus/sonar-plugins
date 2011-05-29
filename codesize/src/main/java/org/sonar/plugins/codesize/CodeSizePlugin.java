@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2010 The Original Authors
+ * Codesize
+ * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sonar.plugins.codesize;
 
 import java.util.ArrayList;
@@ -21,22 +22,16 @@ import java.util.List;
 
 import org.sonar.api.Extension;
 import org.sonar.api.Plugin;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 import org.sonar.plugins.codesize.dashboard.DashboardWidget;
 
+@Properties({ @Property(key = CodesizeConstants.SONAR_CODESIZE_PROFILE, name = "Codesize metrics", description = "Codesize metrics.",
+    global = true, project = true) })
 public class CodeSizePlugin implements Plugin {
 
-  private static final String KEY = "sonar-codesize-plugin";
-
-  public String getKey() {
-    return KEY;
-  }
-
-  public String getName() {
-    return "Codesize plugin";
-  }
-
   public String getDescription() {
-    return "Provides metrics about code size";
+    return null;
   }
 
   public List<Class<? extends Extension>> getExtensions() {
@@ -49,6 +44,14 @@ public class CodeSizePlugin implements Plugin {
     list.add(DashboardWidget.class);
 
     return list;
+  }
+
+  public String getKey() {
+    return null;
+  }
+
+  public String getName() {
+    return null;
   }
 
   @Override

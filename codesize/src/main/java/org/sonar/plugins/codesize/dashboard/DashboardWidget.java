@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2010 The Original Authors
+ * Codesize
+ * Copyright (C) 2010 Matthijs Galesloot
+ * dev@sonar.codehaus.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.sonar.plugins.codesize.dashboard;
 
 import org.sonar.api.web.AbstractRubyTemplate;
@@ -31,9 +32,9 @@ public final class DashboardWidget extends AbstractRubyTemplate implements RubyR
 
   @Override
   protected String getTemplatePath() {
-    return "/dashboard_widget.erb";
+    //return "/dashboard_widget.erb";
     // use a system filepath for prototyping:
-    //return "C:/workspaces/sonar/plugins/codesize/src/main/resources/dashboard_widget.erb";
+    return "C:/workspaces/sonar-plugins/codesize/src/main/resources/dashboard_widget.erb";
   }
 
   public String getTitle() {

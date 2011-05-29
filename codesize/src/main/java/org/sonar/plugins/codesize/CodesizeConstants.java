@@ -15,30 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sonar.plugins.codesize.xml;
+package org.sonar.plugins.codesize;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+public interface CodesizeConstants {
 
-@XStreamAlias("metric")
-public class SizingMetric {
+  String SONAR_CODESIZE_PROFILE = "sonar.codesize.profile";
 
-  @XStreamAsAttribute
-  private String name;
-
-  @XStreamAsAttribute
-  private String includes;
-
-  public String getName() {
-    return name;
-  }
-
-  public String getIncludes() {
-    return includes;
-  }
-
-  @Override
-  public String toString() {
-    return name;
-  }
 }
