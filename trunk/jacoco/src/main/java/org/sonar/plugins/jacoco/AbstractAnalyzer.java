@@ -25,7 +25,6 @@ import org.jacoco.core.analysis.*;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.SessionInfoStore;
-import org.jfree.util.Log;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
@@ -86,7 +85,7 @@ public abstract class AbstractAnalyzer {
       }
     }
     if (analyzedResources == 0) {
-      Log.warn("Coverage information was not collected. Perhaps you forget to include debug information into compiled classes?");
+      JaCoCoUtils.LOG.warn("Coverage information was not collected. Perhaps you forget to include debug information into compiled classes?");
     }
   }
 
