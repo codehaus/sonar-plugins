@@ -22,11 +22,14 @@ package org.sonar.plugins.csharp.api;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.BatchExtension;
+import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.utils.Logs;
 
 import com.google.common.collect.Lists;
@@ -38,6 +41,7 @@ import com.google.common.collect.Maps;
  * <b>Important</b>: It should be used over the original {@link Configuration} as it takes care to maintain backward compatibility with the
  * previous .NET plugin parameter names.
  */
+@InstantiationStrategy(InstantiationStrategy.PER_BATCH)
 public class CSharpConfiguration implements BatchExtension {
 
   private Configuration configuration;
@@ -151,6 +155,21 @@ public class CSharpConfiguration implements BatchExtension {
     }
     // if this key wasn't used before, or if no value for was for it, use the value of the current key
     return configuration.getInt(key, defaultValue);
+  }
+
+  /**
+   * Transforms the {@link Configuration} object into a {@link Properties} one. TODO: remove this once Simon has included this mechanism in
+   * the Core.
+   * 
+   * @deprecated Used just temporarily, waiting for an improvement from Simon
+   */
+  public Properties toProperties() {
+    Properties props = new Properties();
+    for (Iterator iterator = configuration.getKeys(); iterator.hasNext();) {
+      String key = (String) iterator.next();
+      props.put(key, configuration.getString(key));
+    }
+    return props;
   }
 
   protected void logInfo(Object result, String previousKey) {

@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.codehaus.sonar-plugins.dotnet.tools</groupId>
 			<artifactId>stylecop-runner</artifactId>
-			<version>${sonar.tools}</version>
+			<version>${dotnet.tools}</version>
 		</dependency>
 		
 		<!-- sonar open-source -->
