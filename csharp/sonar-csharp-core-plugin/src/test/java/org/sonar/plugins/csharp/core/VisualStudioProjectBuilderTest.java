@@ -23,10 +23,9 @@ package org.sonar.plugins.csharp.core;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -35,21 +34,23 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.api.batch.bootstrap.ProjectDefinition;
+import org.sonar.api.batch.bootstrap.ProjectReactor;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
-public class MicrosoftWindowsEnvironmentSensorTest {
+public class VisualStudioProjectBuilderTest {
 
   private static File fakeSdkDir;
   private static File fakeSilverlightDir;
+  private ProjectReactor reactor;
+  private ProjectDefinition root;
   private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
-  private MicrosoftWindowsEnvironmentSensor sensor;
+  private VisualStudioProjectBuilder projectBuilder;
   private Configuration conf;
-  private ProjectFileSystem fileSystem;
 
   @BeforeClass
   public static void initResources() {
@@ -67,57 +68,68 @@ public class MicrosoftWindowsEnvironmentSensorTest {
   }
 
   @Before
-  public void initSensor() {
+  public void initBuilder() {
     conf = new BaseConfiguration();
+    conf.addProperty("sonar.language", "cs");
     conf.addProperty(CSharpConstants.DOTNET_4_0_SDK_DIR_KEY, fakeSdkDir.getAbsolutePath());
     conf.addProperty(CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_KEY, fakeSilverlightDir.getAbsolutePath());
-    fileSystem = mock(ProjectFileSystem.class);
-    when(fileSystem.getBasedir()).thenReturn(FileUtils.toFile(getClass().getResource("/solution/Example")));
-    sensor = new MicrosoftWindowsEnvironmentSensor(new CSharpConfiguration(conf), fileSystem, microsoftWindowsEnvironment);
+    root = new ProjectDefinition(FileUtils.toFile(getClass().getResource("/solution/Example")), new File("target/sonar/.sonar"),
+        new Properties());
+    root.setVersion("1.0");
+    root.setKey("groupId:artifactId");
+    reactor = new ProjectReactor(root);
+    projectBuilder = new VisualStudioProjectBuilder(reactor, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
   }
 
   @Test(expected = SonarException.class)
   public void testNotValidSdkDir() throws Exception {
     conf = new BaseConfiguration();
+    conf.addProperty("sonar.language", "cs");
     conf.addProperty(CSharpConstants.DOTNET_4_0_SDK_DIR_KEY, "foo");
-    fileSystem = mock(ProjectFileSystem.class);
-    sensor = new MicrosoftWindowsEnvironmentSensor(new CSharpConfiguration(conf), fileSystem, microsoftWindowsEnvironment);
-    sensor.analyse(null, null);
+    projectBuilder = new VisualStudioProjectBuilder(reactor, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
+    projectBuilder.build(reactor);
   }
 
   @Test(expected = SonarException.class)
   public void testNotValidSilverlightDir() throws Exception {
     conf = new BaseConfiguration();
+    conf.addProperty("sonar.language", "cs");
     conf.addProperty(CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_KEY, "foo");
-    fileSystem = mock(ProjectFileSystem.class);
-    sensor = new MicrosoftWindowsEnvironmentSensor(new CSharpConfiguration(conf), fileSystem, microsoftWindowsEnvironment);
-    sensor.analyse(null, null);
+    projectBuilder = new VisualStudioProjectBuilder(reactor, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
+    projectBuilder.build(reactor);
   }
 
   @Test(expected = SonarException.class)
   public void testNonExistingSlnFile() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "NonExistingFile.sln");
-    sensor.analyse(null, null);
+    projectBuilder.build(reactor);
   }
 
   @Test
   public void testCorrectlyConfiguredProject() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "Example.sln");
-    sensor.analyse(null, null);
+    projectBuilder.build(reactor);
+    // check that the configuration is OK
     assertThat(microsoftWindowsEnvironment.getDotnetVersion(), is("4.0"));
     assertThat(microsoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), is(fakeSdkDir.getAbsolutePath()));
     assertThat(microsoftWindowsEnvironment.getSilverlightVersion(), is("4"));
     assertThat(microsoftWindowsEnvironment.getSilverlightDirectory().getAbsolutePath(), is(fakeSilverlightDir.getAbsolutePath()));
+    // check that the solution is built
     VisualStudioSolution solution = microsoftWindowsEnvironment.getCurrentSolution();
     assertNotNull(solution);
     assertThat(solution.getProjects().size(), is(3));
+    // check the multi-module definition is correct
+    assertThat(reactor.getRoot().getSubProjects().size(), is(2));
+    assertThat(reactor.getRoot().getSourceFiles().size(), is(1));
+    assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Core").getSourceFiles().size(), is(6));
+    assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Application").getSourceFiles().size(), is(2));
   }
 
   @Test
   public void testNoSpecifiedSlnFileButOneFound() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "");
-    sensor = new MicrosoftWindowsEnvironmentSensor(new CSharpConfiguration(conf), fileSystem, new MicrosoftWindowsEnvironment());
-    sensor.analyse(null, null);
+    projectBuilder = new VisualStudioProjectBuilder(reactor, new CSharpConfiguration(conf), new MicrosoftWindowsEnvironment());
+    projectBuilder.build(reactor);
     assertThat(microsoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), is(fakeSdkDir.getAbsolutePath()));
     VisualStudioSolution solution = microsoftWindowsEnvironment.getCurrentSolution();
     assertNotNull(solution);
@@ -127,15 +139,15 @@ public class MicrosoftWindowsEnvironmentSensorTest {
   @Test(expected = SonarException.class)
   public void testNoSpecifiedSlnFileButNoneFound() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "");
-    when(fileSystem.getBasedir()).thenReturn(FileUtils.toFile(getClass().getResource("/solution")));
-    sensor.analyse(null, null);
+    root.setBaseDir(FileUtils.toFile(getClass().getResource("/solution")));
+    projectBuilder.build(reactor);
   }
 
   @Test(expected = SonarException.class)
   public void testNoSpecifiedSlnFileButTooManyFound() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "");
-    when(fileSystem.getBasedir()).thenReturn(FileUtils.toFile(getClass().getResource("/solution/FakeSolutionWithTwoSlnFiles")));
-    sensor.analyse(null, null);
+    root.setBaseDir(FileUtils.toFile(getClass().getResource("/solution/FakeSolutionWithTwoSlnFiles")));
+    projectBuilder.build(reactor);
   }
 
 }

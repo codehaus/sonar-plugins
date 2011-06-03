@@ -21,11 +21,16 @@
 package org.sonar.plugins.csharp.api;
 
 import java.io.File;
+import java.util.Map;
 
 import org.sonar.api.BatchExtension;
+import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.utils.SonarException;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.squid.api.SourceFile;
+
+import com.google.common.collect.Maps;
 
 /**
  * Class used to share information, between C# plugins, about Windows and Visual Studio elements, such as:
@@ -34,6 +39,7 @@ import org.sonar.squid.api.SourceFile;
  * <li>the current Visual Studio solution that is being analyzed.</li>
  * </ul>
  */
+@InstantiationStrategy(InstantiationStrategy.PER_BATCH)
 public class MicrosoftWindowsEnvironment implements BatchExtension {
 
   private boolean locked;
@@ -43,8 +49,10 @@ public class MicrosoftWindowsEnvironment implements BatchExtension {
   private String silverlightVersion;
   private File silverlightDirectory;
   private VisualStudioSolution currentSolution;
+  private Map<String, VisualStudioProject> projectsByName;
 
   public MicrosoftWindowsEnvironment() {
+    projectsByName = Maps.newHashMap();
   }
 
   /**
@@ -62,6 +70,15 @@ public class MicrosoftWindowsEnvironment implements BatchExtension {
   }
 
   /**
+   * Returns the {@link VisualStudioProject} that is under analysis and which name is the given project name.
+   * 
+   * @return the current Visual Studio project
+   */
+  public VisualStudioProject getCurrentProject(String projectName) {
+    return projectsByName.get(projectName);
+  }
+
+  /**
    * <b>Must not be used.</b>
    * 
    * @param currentSolution
@@ -70,6 +87,9 @@ public class MicrosoftWindowsEnvironment implements BatchExtension {
   public void setCurrentSolution(VisualStudioSolution currentSolution) {
     checkIfLocked();
     this.currentSolution = currentSolution;
+    for (VisualStudioProject vsProject : currentSolution.getProjects()) {
+      projectsByName.put(vsProject.getName(), vsProject);
+    }
   }
 
   /**

@@ -97,12 +97,14 @@ public class CSharpCorePlugin implements Plugin {
     extensions.add(CSharp.class);
     extensions.add(CSharpConfiguration.class);
 
-    // Utility class shared amongst all the C# plugin ecosystem through API
-    extensions.add(CSharpResourcesBridge.class);
+    // Project Builder for .NET projects
+    extensions.add(VisualStudioProjectBuilder.class);
     extensions.add(MicrosoftWindowsEnvironment.class);
 
+    // Utility class shared amongst all the C# plugin ecosystem through API
+    extensions.add(CSharpResourcesBridge.class);
+
     // Sensors
-    extensions.add(MicrosoftWindowsEnvironmentSensor.class);
     extensions.add(CSharpSourceImporter.class);
 
     return extensions;

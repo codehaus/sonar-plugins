@@ -22,8 +22,10 @@ package org.sonar.plugins.csharp.core;
 
 import org.sonar.api.batch.AbstractSourceImporter;
 import org.sonar.api.batch.DependedUpon;
+import org.sonar.api.resources.Project;
 import org.sonar.plugins.csharp.api.CSharp;
 import org.sonar.plugins.csharp.api.CSharpConstants;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 
 /**
  * Simple source code importer for C# projects.
@@ -31,7 +33,18 @@ import org.sonar.plugins.csharp.api.CSharpConstants;
 @DependedUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
 public class CSharpSourceImporter extends AbstractSourceImporter {
 
-  public CSharpSourceImporter(CSharp cSharp) {
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
+
+  public CSharpSourceImporter(CSharp cSharp, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     super(cSharp);
+    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
+  }
+
+  @Override
+  public boolean shouldExecuteOnProject(Project project) {
+    if (project.isRoot()) {
+      return false;
+    }
+    return super.shouldExecuteOnProject(project) && !microsoftWindowsEnvironment.getCurrentProject(project.getName()).isTest();
   }
 }
