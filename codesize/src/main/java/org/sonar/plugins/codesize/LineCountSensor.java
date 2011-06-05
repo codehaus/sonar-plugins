@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -17,6 +17,7 @@
  */
 package org.sonar.plugins.codesize;
 
+import org.apache.commons.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
@@ -25,45 +26,37 @@ import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Project;
 
 /**
+ * Sensor for simple line count analysis. The sensor counts multiple file types and does not make an attempt to filter for white space.
+ *
  * @author Matthijs Galesloot
  * @since 1.0
  */
-public final class LineCountSensor implements Sensor {
+public final class LineCountSensor extends CodeSizeBatchExtension implements Sensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCountSensor.class);
-  private final SizingProfile sizingMetrics;
+  private final SizingProfile profile;
 
-  public LineCountSensor(SizingProfile sizingMetrics) {
-    this.sizingMetrics = sizingMetrics;
+  public LineCountSensor(Configuration configuration) {
+    this.profile = new SizingProfile(configuration);
   }
 
   public void analyse(Project project, SensorContext sensorContext) {
 
-    PropertiesBuilder<String, Long> counters = new PropertiesBuilder<String, Long>(SummaryMetrics.CODE_COUNTERS);
+    PropertiesBuilder<String, Long> counters = new PropertiesBuilder<String, Long>(CodesizeMetrics.CODE_COUNTERS);
 
-    for (SizingMetric sizingMetric : sizingMetrics.getSizingMetrics()) {
+    for (FileSetDefinition fileSetDefinition : profile.getFileSetDefinitions()) {
 
-      LOG.debug("Calculating metric: " + sizingMetric.getName());
+      LOG.debug("Calculating linecount for: " + fileSetDefinition.getName());
 
       LineCounter lineCounter = new LineCounter();
       lineCounter.setDefaultCharset(project.getFileSystem().getSourceCharset());
-      long linesOfCode = lineCounter.calculateLinesOfCode(project.getFileSystem().getBasedir(), sizingMetric);
+      long linesOfCode = lineCounter.calculateLinesOfCode(project.getFileSystem().getBasedir(), fileSetDefinition);
 
       if (linesOfCode > 0) {
-        counters.add(sizingMetric.getName(), linesOfCode);
+        counters.add(fileSetDefinition.getName(), linesOfCode);
       }
     }
 
     sensorContext.saveMeasure(project, counters.build());
-  }
-
-  public boolean shouldExecuteOnProject(Project project) {
-    // this sensor is executed on any type of project
-    return true;
-  }
-
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
   }
 }

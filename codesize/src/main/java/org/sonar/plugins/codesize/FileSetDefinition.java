@@ -17,15 +17,44 @@
  */
 package org.sonar.plugins.codesize;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Define constants for the code size plugin.
+ * Define a set of files.
  *
  * @author Matthijs Galesloot
  * @since 1.0
  */
-public interface CodesizeConstants {
+public class FileSetDefinition {
 
-  String SONAR_CODESIZE_PROFILE = "sonar.codesize.profile";
+  private final List<String> excludes = new ArrayList<String>();
 
-  String SONAR_CODESIZE_ACTIVE = "sonar.codesize.active";
+  private final List<String> includes = new ArrayList<String>();
+
+  private final String name;
+
+  public FileSetDefinition(String name) {
+    this.name = name;
+  }
+
+  public void addExcludes(String excludes) {
+    this.excludes.add(excludes);
+  }
+
+  public void addIncludes(String includes) {
+    this.includes.add(includes);
+  }
+
+  public List<String> getExcludes() {
+    return excludes;
+  }
+
+  public List<String> getIncludes() {
+    return includes;
+  }
+
+  public String getName() {
+    return name;
+  }
 }

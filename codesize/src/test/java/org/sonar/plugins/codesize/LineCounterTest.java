@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.nio.charset.Charset;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
@@ -33,16 +34,26 @@ public class LineCounterTest {
   public void testLineCounter() {
     LineCounter lineCounter = new LineCounter();
     lineCounter.setDefaultCharset(Charset.defaultCharset());
-    SizingProfile sizingMetrics = new SizingProfile(new PropertiesConfiguration());
-    for (SizingMetric sizingMetric : sizingMetrics.getSizingMetrics()) {
-      int lines = lineCounter.calculateLinesOfCode(new File("."), sizingMetric);
+    SizingProfile profile = new SizingProfile(new PropertiesConfiguration());
+    for (FileSetDefinition fileSetDefinition : profile.getFileSetDefinitions()) {
+      int lines = lineCounter.calculateLinesOfCode(new File("."), fileSetDefinition);
 
       String[] withLines = new String[] { "HTML", "Java", "XML", "Test" };
-      if (ArrayUtils.contains(withLines, sizingMetric.getName())) {
-        assertTrue(sizingMetric.getName(), lines > 0);
+      if (ArrayUtils.contains(withLines, fileSetDefinition.getName())) {
+        assertTrue(fileSetDefinition.getName(), lines > 0);
       } else {
-        assertEquals(sizingMetric.getName(), 0, lines);
+        assertEquals(fileSetDefinition.getName(), 0, lines);
       }
     }
+  }
+
+  @Test
+  public void customProfile() {
+    LineCounter lineCounter = new LineCounter();
+    Configuration configuration = new PropertiesConfiguration();
+    configuration.setProperty(CodesizeConstants.SONAR_CODESIZE_PROFILE, "Java\nincludes=src/main/java/**/*.java\nexcludes=src/main/java/**/*.java");
+    SizingProfile profile = new SizingProfile(configuration);
+    int lines = lineCounter.calculateLinesOfCode(new File("."), profile.getFileSetDefinitions().get(0));
+    assertEquals(0, lines);
   }
 }

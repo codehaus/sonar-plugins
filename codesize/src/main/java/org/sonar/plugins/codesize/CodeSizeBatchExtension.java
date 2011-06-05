@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -17,44 +17,26 @@
  */
 package org.sonar.plugins.codesize;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang.BooleanUtils;
+import org.sonar.api.resources.Project;
 
+/**
+ * Provides generic methods for Sensors and Decorators.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
+public abstract class CodeSizeBatchExtension {
 
-public class SizingMetric {
+  public boolean shouldExecuteOnProject(Project project) {
+    String value = project.getConfiguration().getString(CodesizeConstants.SONAR_CODESIZE_ACTIVE);
 
-  private final List<String> excludes = new ArrayList<String>();
-
-  private final List<String> includes = new ArrayList<String>();
-
-  private String name;
-
-  public void addExcludes(String excludes) {
-    this.excludes.add(excludes);
-  }
-
-  public void addIncludes(String includes) {
-    this.includes.add(includes);
-  }
-
-  public List<String> getExcludes() {
-    return excludes;
-  }
-
-  public List<String> getIncludes() {
-    return includes;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+    return BooleanUtils.toBoolean(value);
   }
 
   @Override
   public String toString() {
-    return name;
+    return getClass().getSimpleName();
   }
+
 }

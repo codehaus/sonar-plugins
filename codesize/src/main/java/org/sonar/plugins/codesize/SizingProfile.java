@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -27,30 +27,23 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.BatchExtension;
 import org.sonar.api.utils.SonarException;
 
-public final class SizingProfile implements BatchExtension {
+/**
+ * Define group of files with inclusion and exclusion patterns.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
+public final class SizingProfile {
 
-  private static final String EXCLUDES = "includes";
+  private static final String EXCLUDES = "excludes";
 
   private static final String INCLUDES = "includes";
 
   private static final Logger LOG = LoggerFactory.getLogger(SizingProfile.class);
-  private static String getConfigurationFromFile() {
-    InputStream inputStream = null;
-    try {
-      inputStream = SizingProfile.class.getResourceAsStream("/metrics.xml");
 
-      return IOUtils.toString(inputStream, "UTF-8");
-    } catch (IOException e) {
-      throw new SonarException("Configuration file not found: metrics.xml", e);
-    } finally {
-      IOUtils.closeQuietly(inputStream);
-    }
-  }
-
-  private final List<SizingMetric> sizingMetrics = new ArrayList<SizingMetric>();
+  private final List<FileSetDefinition> fileSetDefinitions = new ArrayList<FileSetDefinition>();
 
   public SizingProfile(Configuration configuration) {
 
@@ -63,26 +56,38 @@ public final class SizingProfile implements BatchExtension {
     parse(codeSizeProfile);
   }
 
-  public List<SizingMetric> getSizingMetrics() {
-    return sizingMetrics;
+  private String getConfigurationFromFile() {
+    InputStream inputStream = null;
+    try {
+      inputStream = SizingProfile.class.getResourceAsStream("/metrics.xml");
+
+      return IOUtils.toString(inputStream, "UTF-8");
+    } catch (IOException e) {
+      throw new SonarException("Configuration file not found: metrics.xml", e);
+    } finally {
+      IOUtils.closeQuietly(inputStream);
+    }
   }
 
-  public void parse(String codeSizeProfile) {
-    String[] lines = StringUtils.split(codeSizeProfile, "\n");
-    SizingMetric metric = null;
+  public List<FileSetDefinition> getFileSetDefinitions() {
+    return fileSetDefinitions;
+  }
+
+  private void parse(String codeSizeProfile) {
+    String[] lines = StringUtils.split(codeSizeProfile, '\n');
+    FileSetDefinition fileSetDefinition = null;
     for (String line : lines) {
       if ( !StringUtils.isBlank(line)) {
-        String[] kv = StringUtils.stripAll(line.split("[:=]"));
+        String[] kv = StringUtils.stripAll(StringUtils.split(line, ":="));
         if (kv.length > 1) {
           if (INCLUDES.contains(kv[0])) {
-            metric.addIncludes(kv[1]);
+            fileSetDefinition.addIncludes(kv[1]);
           } else if (EXCLUDES.contains(kv[0])) {
-            metric.addExcludes(kv[1]);
+            fileSetDefinition.addExcludes(kv[1]);
           }
         } else {
-          metric = new SizingMetric();
-          metric.setName(line.trim());
-          getSizingMetrics().add(metric);
+          fileSetDefinition = new FileSetDefinition(line.trim());
+          getFileSetDefinitions().add(fileSetDefinition);
         }
       }
     }
