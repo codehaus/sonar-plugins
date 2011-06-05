@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -22,6 +22,12 @@ import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 
+/**
+ * Widget to show lines of code for all languages on the sonar dashboard.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
 @NavigationSection(NavigationSection.RESOURCE)
 @UserRole(UserRole.USER)
 public final class DashboardWidget extends AbstractRubyTemplate implements RubyRailsWidget {

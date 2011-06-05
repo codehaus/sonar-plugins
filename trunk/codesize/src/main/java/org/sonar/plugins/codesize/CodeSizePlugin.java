@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -25,8 +25,21 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
-@Properties({ @Property(key = CodesizeConstants.SONAR_CODESIZE_PROFILE, name = "Codesize metrics", description = "Codesize metrics.",
-    global = true, project = true) })
+/**
+ * Codesize Plugin calculates lines of code for all languages in a project.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
+@Properties({
+    @Property(
+        key = CodesizeConstants.SONAR_CODESIZE_PROFILE,
+        name = "Profile",
+        description = "Codesize profile. Define per group of files the include pattern and " +
+          "optionally an exclude pattern<br><br>Example: <br>Java<br>includes = src/main/java/**/*.java<br>excludes = src/main/**/*generated.java",
+        global = true, project = true),
+    @Property(key = CodesizeConstants.SONAR_CODESIZE_ACTIVE, name = "Active", description = "Should code size plugin be running.",
+        defaultValue = "true", global = true, project = true) })
 public class CodeSizePlugin implements Plugin {
 
   public String getDescription() {
@@ -37,8 +50,7 @@ public class CodeSizePlugin implements Plugin {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
     list.add(LineCountSensor.class);
-    list.add(SizingProfile.class);
-    list.add(SummaryMetrics.class);
+    list.add(CodesizeMetrics.class);
     list.add(CodeSizeDecorator.class);
     list.add(DashboardWidget.class);
 
@@ -55,6 +67,6 @@ public class CodeSizePlugin implements Plugin {
 
   @Override
   public String toString() {
-    return getKey();
+    return this.getClass().getSimpleName();
   }
 }

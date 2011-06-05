@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -24,7 +24,13 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
 
-public final class SummaryMetrics implements Metrics {
+/**
+ * Metrics for code size.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ */
+public final class CodesizeMetrics implements Metrics {
 
   public static final Metric CODE_COUNTERS = new Metric.Builder("code_counters", "Code Counters", Metric.ValueType.DISTRIB).setDomain(
       CoreMetrics.DOMAIN_GENERAL).create();

@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -17,17 +17,19 @@
  */
 package org.sonar.plugins.codesize;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.nio.charset.Charset;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Answers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.DefaultProjectFileSystem;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 
@@ -36,38 +38,27 @@ public class LineCountSensorTest {
   @Before
   public void initMocks() {
     MockitoAnnotations.initMocks(this);
+
+    Mockito.when(projectFileSystem.getSourceCharset()).thenReturn(Charset.defaultCharset());
+    Mockito.when(projectFileSystem.getBasedir()).thenReturn(new File("."));
   }
 
   @Mock
   private SensorContext sensorContext;
 
-  @Mock(answer = Answers.RETURNS_DEFAULTS)
+  @Mock
   private ProjectFileSystem projectFileSystem;
 
   @Test
   public void testSensor() {
     Project project = new Project("test");
     project.setConfiguration(new PropertiesConfiguration());
-    project.setFileSystem(new MockProjectFileSystem(project));
+    project.getConfiguration().setProperty(CodesizeConstants.SONAR_CODESIZE_ACTIVE, "yes");
+    project.setFileSystem(projectFileSystem);
 
-    LineCountSensor sensor = new LineCountSensor(new SizingProfile(new PropertiesConfiguration()));
+    LineCountSensor sensor = new LineCountSensor(new PropertiesConfiguration());
+    assertNotNull(sensor.toString());
+    assertTrue(sensor.shouldExecuteOnProject(project));
     sensor.analyse(project, sensorContext);
-  }
-
-  private static class MockProjectFileSystem extends DefaultProjectFileSystem {
-
-    public MockProjectFileSystem(Project project) {
-      super(project, null);
-    }
-
-    @Override
-    public Charset getSourceCharset() {
-      return Charset.defaultCharset();
-    }
-
-    @Override
-    public File getBasedir() {
-      return new File(".");
-    }
   }
 }

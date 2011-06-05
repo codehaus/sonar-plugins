@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -18,28 +18,41 @@
 package org.sonar.plugins.codesize;
 
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 import org.sonar.api.resources.Project;
 
-public class LineCountMetricsTest {
+public class SizingProfileTest {
 
   @Test
   public void testLineCountMetrics() {
     Project project = new Project("test");
     project.setConfiguration(new PropertiesConfiguration());
 
-    SizingProfile lineCountMetrics = new SizingProfile(project.getConfiguration());
+    SizingProfile profile = new SizingProfile(project.getConfiguration());
 
     int minExpectedMetrics = 5;
-    assertTrue(minExpectedMetrics < lineCountMetrics.getSizingMetrics().size());
-    assertTrue(minExpectedMetrics < lineCountMetrics.getSizingMetrics().size());
+    assertTrue(minExpectedMetrics < profile.getFileSetDefinitions().size());
+    assertTrue(minExpectedMetrics < profile.getFileSetDefinitions().size());
 
-    for (SizingMetric metric : lineCountMetrics.getSizingMetrics()) {
+    for (FileSetDefinition metric : profile.getFileSetDefinitions()) {
       assertNotNull(metric.getName());
       assertNotNull(metric.getIncludes());
     }
   }
+
+  @Test
+  public void profileTest() {
+    PropertiesConfiguration configuration = new PropertiesConfiguration();
+    configuration.setProperty(CodesizeConstants.SONAR_CODESIZE_PROFILE, "Java\nincludes=*\nexcludes=*");
+    SizingProfile profile = new SizingProfile(configuration);
+
+    assertEquals(1, profile.getFileSetDefinitions().size());
+    assertEquals(1, profile.getFileSetDefinitions().get(0).getIncludes().size());
+    assertEquals(1, profile.getFileSetDefinitions().get(0).getExcludes().size());
+  }
 }
+

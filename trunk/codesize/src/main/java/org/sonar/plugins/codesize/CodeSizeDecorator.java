@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -17,28 +17,25 @@
  */
 package org.sonar.plugins.codesize;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.jfree.util.Log;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
-import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.Measure;
-import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PropertiesBuilder;
-import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.utils.KeyValueFormat;
 
 /**
- * {@inheritDoc}
+ * Decorator to aggregate CODE_COUNTERS metric from subprojects.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
  */
-public final class CodeSizeDecorator implements Decorator {
+public final class CodeSizeDecorator extends CodeSizeBatchExtension implements Decorator {
 
   /**
    * {@inheritDoc}
@@ -47,24 +44,26 @@ public final class CodeSizeDecorator implements Decorator {
 
     if (ResourceUtils.isProject(resource)) {
 
-      Log.debug("Saving LOC for " + context.getResource().getName());
-
-      Collection<Measure> childMeasures = context.getChildrenMeasures(SummaryMetrics.CODE_COUNTERS);
+      Collection<Measure> childMeasures = context.getChildrenMeasures(CodesizeMetrics.CODE_COUNTERS);
 
       if (!childMeasures.isEmpty()) {
-        Measure projectMeasure = context.getMeasure(SummaryMetrics.CODE_COUNTERS);
-        final PropertiesBuilder<String, Integer> counters = new PropertiesBuilder<String, Integer>(SummaryMetrics.CODE_COUNTERS);
+        Measure projectMeasure = context.getMeasure(CodesizeMetrics.CODE_COUNTERS);
+        final PropertiesBuilder<String, Integer> counters = new PropertiesBuilder<String, Integer>(CodesizeMetrics.CODE_COUNTERS);
         if (projectMeasure != null) {
           Map<String, Integer> map = KeyValueFormat.parseStringInt(projectMeasure.getData());
           counters.addAll(map);
         }
 
-        for (Measure m : childMeasures) {
-          String data = m.getData();
-          Map<String, Integer> childcounters = KeyValueFormat.parseStringInt(data);
+        for (Measure childMeasure : childMeasures) {
+          Map<String, Integer> childcounters = KeyValueFormat.parseStringInt(childMeasure.getData());
           for (Entry<String, Integer> entry : childcounters.entrySet()) {
-            Integer value = counters.getProps().get(entry.getKey());
-            counters.add(entry.getKey(), value + entry.getValue());
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            if (counters.getProps().containsKey(key)) {
+              counters.add(key, value + counters.getProps().get(key));
+            } else {
+              counters.add(key, value);
+            }
           }
         }
 
@@ -75,17 +74,5 @@ public final class CodeSizeDecorator implements Decorator {
         }
       }
     }
-  }
-
-  @DependedUpon
-  public List<Metric> generatesMetrics() {
-    return Arrays.asList(SummaryMetrics.CODE_COUNTERS);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public boolean shouldExecuteOnProject(Project project) {
-    return true;
   }
 }

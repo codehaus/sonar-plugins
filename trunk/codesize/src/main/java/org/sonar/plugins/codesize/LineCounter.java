@@ -1,5 +1,5 @@
 /*
- * Codesize
+ * Sonar Codesize Plugin
  * Copyright (C) 2010 Matthijs Galesloot
  * dev@sonar.codehaus.org
  *
@@ -29,14 +29,21 @@ import org.codehaus.plexus.util.DirectoryScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Count lines of code in a file.
+ *
+ * @author Matthijs Galesloot
+ * @since 1.0
+ *
+ */
 class LineCounter {
 
   private static final Logger LOG = LoggerFactory.getLogger(LineCounter.class);
 
-  private Charset defaultCharset;
+  private Charset defaultCharset = Charset.defaultCharset();
 
-  public int calculateLinesOfCode(File baseDir, SizingMetric sizingMetric) {
-    List<File> files = getFiles(baseDir, sizingMetric.getIncludes(), sizingMetric.getExcludes());
+  public int calculateLinesOfCode(File baseDir, FileSetDefinition fileSetDefinition) {
+    List<File> files = getFiles(baseDir, fileSetDefinition.getIncludes(), fileSetDefinition.getExcludes());
 
     LOG.debug("Found " + files.size() + " files");
     int lines = 0;
@@ -49,38 +56,39 @@ class LineCounter {
 
   private int countFile(File file) {
 
-    try {
-      int lines = 0;
+    int lines = 0;
+    LineIterator lineIterator = null;
 
-      LineIterator lineIterator = FileUtils.lineIterator(file, defaultCharset.name());
+    try {
+      lineIterator = FileUtils.lineIterator(file, defaultCharset.name());
+
       for (; lineIterator.hasNext(); lineIterator.next()) {
         lines++;
       }
-      lineIterator.close();
-
-      LOG.debug(file.getName() + "(" + lines + "," + lines + ")");
-      return lines;
-
     } catch (IOException e) {
-      LOG.warn("Could not open file", e);
-      return 0;
-
+      LOG.error("Could not open file", e);
+    } finally {
+      LineIterator.closeQuietly(lineIterator);
     }
+    LOG.debug(file.getName() + ": " + lines);
+    return lines;
   }
 
   private List<File> getFiles(File directory, List<String> includes, List<String> excludes) {
-    List<File> result = new ArrayList<File>();
+    List<File> fileList = new ArrayList<File>();
 
+    // set up scanner
     DirectoryScanner scanner = new DirectoryScanner();
     scanner.setBasedir(directory);
     scanner.setIncludes(includes.toArray(new String[includes.size()]));
     scanner.setExcludes(excludes.toArray(new String[excludes.size()]));
     scanner.scan();
 
+    // start scan
     for (String fileName : scanner.getIncludedFiles()) {
-      result.add(new File(fileName));
+      fileList.add(new File(directory, fileName));
     }
-    return result;
+    return fileList;
   }
 
   public void setDefaultCharset(Charset defaultCharset) {
