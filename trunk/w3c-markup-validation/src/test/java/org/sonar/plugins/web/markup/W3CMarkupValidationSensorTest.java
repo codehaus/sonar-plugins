@@ -23,8 +23,14 @@ import static org.junit.Assert.assertNull;
 
 import java.io.File;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
+import org.sonar.api.rules.Violation;
 import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
 
 /**
@@ -32,8 +38,16 @@ import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
  */
 public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTester {
 
+  @Before
+  public void initMocks() {
+    MockitoAnnotations.initMocks(this);
+  }
+
+  @Mock
+  private SensorContext sensorContext;
+
   @Test
-  public void webScannerPlugin() {
+  public void markupValidationPlugin() {
     W3CMarkupValidationPlugin webscannerPlugin = new W3CMarkupValidationPlugin();
     assertNull(webscannerPlugin.getKey());
     assertNull(webscannerPlugin.getName());
@@ -51,9 +65,8 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
 
     assertTrue(sensor.shouldExecuteOnProject(project));
 
-    MockSensorContext sensorContext = new MockSensorContext();
     sensor.analyse(project, sensorContext);
 
-    assertTrue("Should have found 1 violation", sensorContext.getViolations().size() > 0);
+    Mockito.verify(sensorContext, Mockito.atLeast(1)).saveViolation((Violation) Mockito.any());
   }
 }
