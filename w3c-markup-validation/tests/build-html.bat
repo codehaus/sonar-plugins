@@ -1,7 +1,7 @@
 
 rem run this script from w3c-markup-validation folder
 
-set SONAR_HOME=D:\bin\sonar-2.8-RC2
+set SONAR_HOME=c:\bin\sonar-2.8
 set SONAR_FLAGS=-Dsonar.host.url=http://localhost:9000 -Dsonar.dynamicAnalysis=false
 set DEBUG=-X 
 
