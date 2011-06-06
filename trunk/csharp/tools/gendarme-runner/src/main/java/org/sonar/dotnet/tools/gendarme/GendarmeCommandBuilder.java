@@ -67,7 +67,7 @@ public final class GendarmeCommandBuilder {
    * 
    * @param project
    *          the VS project to analyse
-   * @return the command to complete.
+   * @return a Gendarme builder for this project
    */
   public static GendarmeCommandBuilder createBuilder(VisualStudioProject project) {
     GendarmeCommandBuilder builder = new GendarmeCommandBuilder();

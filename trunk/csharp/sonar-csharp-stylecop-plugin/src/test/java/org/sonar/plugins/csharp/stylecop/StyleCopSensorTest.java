@@ -47,6 +47,9 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 
 import com.google.common.collect.Lists;
@@ -55,18 +58,24 @@ public class StyleCopSensorTest {
 
   @Test
   public void testShouldExecuteOnProject() throws Exception {
+    VisualStudioProject vsProject = mock(VisualStudioProject.class);
+    when(vsProject.getName()).thenReturn("Project #1");
+    VisualStudioSolution solution = mock(VisualStudioSolution.class);
+    when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
+
+    MicrosoftWindowsEnvironment microsoftWindowsEnvironment = new MicrosoftWindowsEnvironment();
+    microsoftWindowsEnvironment.setCurrentSolution(solution);
+
     Configuration conf = new BaseConfiguration();
-    StyleCopSensor sensor = new StyleCopSensor(null, null, null, null, new CSharpConfiguration(conf), null);
+    StyleCopSensor sensor = new StyleCopSensor(null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Project project = mock(Project.class);
-    when(project.getLanguageKey()).thenReturn("java");
-    assertFalse(sensor.shouldExecuteOnProject(project));
-
     when(project.getLanguageKey()).thenReturn("cs");
+    when(project.getName()).thenReturn("Project #1");
     assertTrue(sensor.shouldExecuteOnProject(project));
 
     conf.addProperty(StyleCopConstants.MODE, StyleCopConstants.MODE_SKIP);
-    sensor = new StyleCopSensor(null, null, null, null, new CSharpConfiguration(conf), null);
+    sensor = new StyleCopSensor(null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
     assertFalse(sensor.shouldExecuteOnProject(project));
   }
 

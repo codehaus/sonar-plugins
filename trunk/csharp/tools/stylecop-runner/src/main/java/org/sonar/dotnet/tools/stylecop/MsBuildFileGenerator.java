@@ -24,12 +24,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
+
+import com.google.common.collect.Lists;
 
 /**
  * Class that generates MSBuild
@@ -54,14 +57,20 @@ public class MsBuildFileGenerator {
    * 
    * @param outputFolder
    *          the output folder
+   * @param vsProject
+   *          the VS project that should be analysed. May be NULL, in which case all the projects of the solution will be analysed.
    */
-  public File generateFile(File outputFolder) {
+  public File generateFile(File outputFolder, VisualStudioProject vsProject) {
     File msBuildFile = new File(outputFolder, MSBUILD_FILE);
+    List<VisualStudioProject> vsProjects = solution.getProjects();
+    if (vsProject != null) {
+      vsProjects = Lists.newArrayList(vsProject);
+    }
 
     FileWriter writer = null;
     try {
       writer = new FileWriter(msBuildFile);
-      generateContent(writer, styleCopRuleFile, reportFile);
+      generateContent(writer, styleCopRuleFile, reportFile, vsProjects);
       writer.flush();
     } catch (IOException e) {
       throw new SonarException("Error while generating the MSBuild file needed to launch StyleCop: " + msBuildFile.getAbsolutePath(), e);
@@ -72,7 +81,8 @@ public class MsBuildFileGenerator {
     return msBuildFile;
   }
 
-  protected void generateContent(Writer writer, File styleCopRuleFile, File reportFile) throws IOException {
+  protected void generateContent(Writer writer, File styleCopRuleFile, File reportFile, List<VisualStudioProject> vsProjects)
+      throws IOException {
     writer.append("<?xml version=\"1.0\" ?>\n");
     writer
         .append("<Project xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\" DefaultTargets=\"StyleCopLaunch\" ToolsVersion=\"3.5\">\n");
@@ -86,7 +96,7 @@ public class MsBuildFileGenerator {
     writer.append("    </PropertyGroup>\n");
     writer.append("    <UsingTask TaskName=\"StyleCopTask\" AssemblyFile=\"$(StyleCopRoot)\\Microsoft.StyleCop.dll\"></UsingTask>\n");
     writer.append("    <ItemGroup>\n");
-    generateProjectList(writer);
+    generateProjectList(writer, vsProjects);
     writer.append("    </ItemGroup>\n");
     writer.append("    <Target Name=\"StyleCopLaunch\">\n");
     writer.append("        <CreateItem Include=\"%(Project.RootDir)%(Project.Directory)**\\*.cs\">\n");
@@ -105,8 +115,8 @@ public class MsBuildFileGenerator {
     writer.append("</Project>");
   }
 
-  private void generateProjectList(Writer writer) throws IOException {
-    for (VisualStudioProject project : solution.getProjects()) {
+  private void generateProjectList(Writer writer, List<VisualStudioProject> vsProjects) throws IOException {
+    for (VisualStudioProject project : vsProjects) {
       writer.append("        <Project Include=\"");
       StringEscapeUtils.escapeXml(writer, project.getProjectFile().getAbsolutePath());
       writer.append("\"></Project>\n");

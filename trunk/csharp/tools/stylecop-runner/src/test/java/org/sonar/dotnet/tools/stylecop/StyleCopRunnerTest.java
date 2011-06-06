@@ -29,15 +29,19 @@ import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.test.TestUtils;
 
 public class StyleCopRunnerTest {
 
   public VisualStudioSolution solution;
+  public VisualStudioProject project;
 
   @Before
   public void initData() {
+    project = mock(VisualStudioProject.class);
+    when(project.getProjectFile()).thenReturn(new File("target/sonar/solution/project/project.csproj"));
     new File("target/sonar/solution").mkdirs();
     solution = mock(VisualStudioSolution.class);
     when(solution.getSolutionDir()).thenReturn(new File("target/sonar/solution"));
@@ -45,11 +49,22 @@ public class StyleCopRunnerTest {
   }
 
   @Test
-  public void testCreateCommandBuilder() throws Exception {
+  public void testCreateCommandBuilderForSolution() throws Exception {
     String fakeInstallDir = TestUtils.getResource("/Runner/Command").getAbsolutePath();
     StyleCopRunner runner = StyleCopRunner.create(fakeInstallDir, new File("dotnetInstallDir").getAbsolutePath(), new File(
         "target/sonar/tempFolder").getAbsolutePath());
     StyleCopCommandBuilder builder = runner.createCommandBuilder(solution);
+    builder.setConfigFile(TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"));
+    builder.setReportFile(new File("target/sonar/stylecop-report.xml"));
+    assertThat(builder.toCommand().getExecutable(), endsWith("MSBuild.exe"));
+  }
+
+  @Test
+  public void testCreateCommandBuilderForProject() throws Exception {
+    String fakeInstallDir = TestUtils.getResource("/Runner/Command").getAbsolutePath();
+    StyleCopRunner runner = StyleCopRunner.create(fakeInstallDir, new File("dotnetInstallDir").getAbsolutePath(), new File(
+        "target/sonar/tempFolder").getAbsolutePath());
+    StyleCopCommandBuilder builder = runner.createCommandBuilder(solution, project);
     builder.setConfigFile(TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"));
     builder.setReportFile(new File("target/sonar/stylecop-report.xml"));
     assertThat(builder.toCommand().getExecutable(), endsWith("MSBuild.exe"));

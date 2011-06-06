@@ -32,15 +32,19 @@ import java.io.File;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.utils.command.Command;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.test.TestUtils;
 
 public class StyleCopCommandBuilderTest {
 
   public static VisualStudioSolution solution;
+  public static VisualStudioProject project;
 
   @BeforeClass
   public static void initData() {
+    project = mock(VisualStudioProject.class);
+    when(project.getProjectFile()).thenReturn(new File("target/sonar/solution/project/project.csproj"));
     new File("target/sonar/solution").mkdirs();
     solution = mock(VisualStudioSolution.class);
     when(solution.getSolutionDir()).thenReturn(new File("target/sonar/solution"));
@@ -48,8 +52,29 @@ public class StyleCopCommandBuilderTest {
   }
 
   @Test
-  public void testToArray() throws Exception {
+  public void testToCommandForSolution() throws Exception {
     StyleCopCommandBuilder styleCopCommandBuilder = StyleCopCommandBuilder.createBuilder(solution);
+    styleCopCommandBuilder.setDotnetSdkDirectory(new File("DotnetSdkDir"));
+    styleCopCommandBuilder.setStyleCopFolder(new File("StyleCopDir"));
+    styleCopCommandBuilder.setConfigFile(TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"));
+    styleCopCommandBuilder.setReportFile(new File("target/sonar/report.xml"));
+    Command command = styleCopCommandBuilder.toCommand();
+
+    assertThat(command.getExecutable(), endsWith("MSBuild.exe"));
+    String[] commands = command.getArguments().toArray(new String[] {});
+    assertThat(commands[0], endsWith("target/sonar/solution"));
+    assertThat(commands[1], is("/target:StyleCopLaunch"));
+    assertThat(commands[2], is("/noconsolelogger"));
+    assertThat(commands[3], endsWith("stylecop-msbuild.xml"));
+
+    File report = new File("target/sonar/stylecop-msbuild.xml");
+    assertTrue(report.exists());
+    report.delete();
+  }
+
+  @Test
+  public void testToCommandForProject() throws Exception {
+    StyleCopCommandBuilder styleCopCommandBuilder = StyleCopCommandBuilder.createBuilder(solution, project);
     styleCopCommandBuilder.setDotnetSdkDirectory(new File("DotnetSdkDir"));
     styleCopCommandBuilder.setStyleCopFolder(new File("StyleCopDir"));
     styleCopCommandBuilder.setConfigFile(TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"));

@@ -20,6 +20,8 @@
 
 package org.sonar.plugins.csharp.stylecop;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -57,6 +59,7 @@ public class StyleCopResultParserTest {
   @Before
   public void init() {
     context = mock(SensorContext.class);
+    when(context.isIndexed(any(org.sonar.api.resources.File.class), anyBoolean())).thenReturn(true);
     Project project = mock(Project.class);
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
     when(fileSystem.getSourceDirs()).thenReturn(Lists.newArrayList(new File("C:\\MyProject\\src")));
@@ -73,12 +76,12 @@ public class StyleCopResultParserTest {
     parser.parse(resultFile);
 
     // Verify calls on context to save violations
-    // verify(context, times(2)).saveViolation(any(Violation.class));
+    verify(context, times(3)).saveViolation(any(Violation.class));
     Violation violation = Violation.create(uppercaseLetterRule, new org.sonar.api.resources.File("Class1.cs"));
     verify(context, times(1)).saveViolation(eq(violation));
     violation = Violation.create(parenthesisRule, new org.sonar.api.resources.File("db/Class2.cs"));
     verify(context, times(1)).saveViolation(eq(violation));
-    violation = Violation.create(uppercaseLetterRule, null);
+    violation = Violation.create(uppercaseLetterRule, new org.sonar.api.resources.File("Class3.cs"));
     verify(context, times(1)).saveViolation(eq(violation));
   }
 

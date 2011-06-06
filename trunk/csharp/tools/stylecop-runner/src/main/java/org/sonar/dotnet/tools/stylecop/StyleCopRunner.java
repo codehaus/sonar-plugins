@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.utils.command.Command;
 import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.dotnet.tools.commons.utils.ZipUtils;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
 /**
@@ -93,10 +94,29 @@ public class StyleCopRunner { // NOSONAR : can't mock it otherwise
    * Creates a pre-configured {@link StyleCopCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
    * method.
    * 
-   * @return the command to complete
+   * @param solution
+   *          the solution to analyse
+   * @return the command to complete.
    */
   public StyleCopCommandBuilder createCommandBuilder(VisualStudioSolution solution) {
     StyleCopCommandBuilder builder = StyleCopCommandBuilder.createBuilder(solution);
+    builder.setDotnetSdkDirectory(dotnetSdkFolder);
+    builder.setStyleCopFolder(styleCopFolder);
+    return builder;
+  }
+
+  /**
+   * Creates a pre-configured {@link StyleCopCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
+   * method.
+   * 
+   * @param solution
+   *          the solution that contains the VS project
+   * @param project
+   *          the VS project to analyse
+   * @return the command to complete.
+   */
+  public StyleCopCommandBuilder createCommandBuilder(VisualStudioSolution solution, VisualStudioProject project) {
+    StyleCopCommandBuilder builder = StyleCopCommandBuilder.createBuilder(solution, project);
     builder.setDotnetSdkDirectory(dotnetSdkFolder);
     builder.setStyleCopFolder(styleCopFolder);
     return builder;
