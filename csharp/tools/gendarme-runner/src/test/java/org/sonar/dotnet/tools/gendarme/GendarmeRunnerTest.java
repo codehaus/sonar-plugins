@@ -49,10 +49,20 @@ public class GendarmeRunnerTest {
   }
 
   @Test
-  public void testCreateCommandBuilder() throws Exception {
+  public void testCreateCommandBuilderForSolution() throws Exception {
     String fakeExec = TestUtils.getResource("/runner/FakeGendarmeExecutable.txt").getAbsolutePath();
     GendarmeRunner runner = GendarmeRunner.create(fakeExec, new File("target/sonar/tempFolder").getAbsolutePath());
     GendarmeCommandBuilder builder = runner.createCommandBuilder(solution);
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
+    builder.setReportFile(new File("gendarme-report.xml"));
+    assertThat(builder.toCommand().getExecutable(), is(fakeExec));
+  }
+
+  @Test
+  public void testCreateCommandBuilderForProject() throws Exception {
+    String fakeExec = TestUtils.getResource("/runner/FakeGendarmeExecutable.txt").getAbsolutePath();
+    GendarmeRunner runner = GendarmeRunner.create(fakeExec, new File("target/sonar/tempFolder").getAbsolutePath());
+    GendarmeCommandBuilder builder = runner.createCommandBuilder(project);
     builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.setReportFile(new File("gendarme-report.xml"));
     assertThat(builder.toCommand().getExecutable(), is(fakeExec));

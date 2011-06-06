@@ -39,6 +39,7 @@ public final class GendarmeCommandBuilder {
   private static final Logger LOG = LoggerFactory.getLogger(GendarmeCommandBuilder.class);
 
   private VisualStudioSolution solution;
+  private VisualStudioProject vsProject;
   private File gendarmeExecutable;
   private String gendarmeConfidence = "normal+";
   private String gendarmeSeverity = "all";
@@ -50,10 +51,27 @@ public final class GendarmeCommandBuilder {
 
   /**
    * Constructs a {@link GendarmeCommandBuilder} object for the given Visual Studio solution.
+   * 
+   * @param solution
+   *          the solution to analyse
+   * @return a Gendarme builder for this solution
    */
   public static GendarmeCommandBuilder createBuilder(VisualStudioSolution solution) {
     GendarmeCommandBuilder builder = new GendarmeCommandBuilder();
     builder.solution = solution;
+    return builder;
+  }
+
+  /**
+   * Constructs a {@link GendarmeCommandBuilder} object for the given Visual Studio project.
+   * 
+   * @param project
+   *          the VS project to analyse
+   * @return the command to complete.
+   */
+  public static GendarmeCommandBuilder createBuilder(VisualStudioProject project) {
+    GendarmeCommandBuilder builder = new GendarmeCommandBuilder();
+    builder.vsProject = project;
     return builder;
   }
 
@@ -123,7 +141,7 @@ public final class GendarmeCommandBuilder {
    * @return the Command object that represents the command to launch.
    */
   public Command toCommand() {
-    List<File> assemblyToScanFiles = findAssembliesToScan(solution);
+    List<File> assemblyToScanFiles = findAssembliesToScan();
     validate(assemblyToScanFiles);
 
     LOG.debug("- Gendarme program    : " + gendarmeExecutable);
@@ -157,19 +175,29 @@ public final class GendarmeCommandBuilder {
     return command;
   }
 
-  protected List<File> findAssembliesToScan(VisualStudioSolution solution) {
+  protected List<File> findAssembliesToScan() {
     List<File> assemblyFileList = Lists.newArrayList();
-    for (VisualStudioProject visualStudioProject : solution.getProjects()) {
-      if ( !visualStudioProject.isTest()) {
-        File assembly = visualStudioProject.getDebugArtifact() == null ? visualStudioProject.getReleaseArtifact() : visualStudioProject
-            .getDebugArtifact();
-        if (assembly != null && assembly.isFile()) {
-          LOG.debug(" - Found {}", assembly.getAbsolutePath());
-          assemblyFileList.add(assembly);
+    if (vsProject != null) {
+      addProjectAssembly(assemblyFileList, vsProject);
+    } else if (solution != null) {
+      for (VisualStudioProject visualStudioProject : solution.getProjects()) {
+        if ( !visualStudioProject.isTest()) {
+          addProjectAssembly(assemblyFileList, visualStudioProject);
         }
       }
+    } else {
+      throw new IllegalStateException("No .NET solution or project has been given to the Gendarme command builder.");
     }
     return assemblyFileList;
+  }
+
+  protected void addProjectAssembly(List<File> assemblyFileList, VisualStudioProject visualStudioProject) {
+    File assembly = visualStudioProject.getDebugArtifact() == null ? visualStudioProject.getReleaseArtifact() : visualStudioProject
+        .getDebugArtifact();
+    if (assembly != null && assembly.isFile()) {
+      LOG.debug(" - Found {}", assembly.getAbsolutePath());
+      assemblyFileList.add(assembly);
+    }
   }
 
   protected void validate(List<File> assemblyToScanFiles) {

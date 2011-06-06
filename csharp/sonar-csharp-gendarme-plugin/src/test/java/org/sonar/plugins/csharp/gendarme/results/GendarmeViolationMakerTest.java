@@ -49,12 +49,14 @@ public class GendarmeViolationMakerTest {
   private static SensorContext context;
   private static CSharpResourcesBridge resourcesBridge;
   private static Rule aRule;
-  private static Resource aFile;
+  private static Resource aFileIMoney;
+  private static Resource aFileMoney;
 
   @BeforeClass
   public static void init() {
     aRule = Rule.create("gendarme", "Rule", "Rule").setSeverity(RulePriority.BLOCKER);
-    aFile = new org.sonar.api.resources.File("Foo");
+    aFileIMoney = new org.sonar.api.resources.File("IMoney");
+    aFileMoney = new org.sonar.api.resources.File("Money");
 
     project = mock(Project.class);
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
@@ -69,9 +71,9 @@ public class GendarmeViolationMakerTest {
   public void reinitViolationMaker() {
     violationMaker.setCurrentRule(aRule);
     violationMaker.setCurrentDefaultViolationMessage("Default Message");
-    violationMaker.setCurrentTargetName("Example.Core.IMoney Example.Core.IMoney::AddMoney(Example.Core.Money)");
+    violationMaker.setCurrentTargetName("Example.Core.IMoney Example.Core.Money::AddMoney(Example.Core.Money)");
     violationMaker.setCurrentTargetAssembly("Example.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
-    violationMaker.setCurrentLocation("Example.Core.IMoney Example.Core.IMoney::AddMoney(Example.Core.Money)");
+    violationMaker.setCurrentLocation("Example.Core.IMoney Example.Core.Money::AddMoney(Example.Core.Money)");
     violationMaker.setCurrentSource("");
     violationMaker.setCurrentMessage("Message");
   }
@@ -99,7 +101,7 @@ public class GendarmeViolationMakerTest {
   public void testCreateViolationWithNoSourceInfoButLocationForMethod() throws Exception {
     violationMaker.registerRuleType(aRule, "Method");
     Violation violation = violationMaker.createViolation();
-    assertThat(violation.getResource(), is(aFile));
+    assertThat(violation.getResource(), is(aFileMoney));
     assertNull(violation.getLineId());
   }
 
@@ -108,7 +110,7 @@ public class GendarmeViolationMakerTest {
     violationMaker.registerRuleType(aRule, "Type");
     violationMaker.setCurrentLocation("Example.Core.IMoney");
     Violation violation = violationMaker.createViolation();
-    assertThat(violation.getResource(), is(aFile));
+    assertThat(violation.getResource(), is(aFileIMoney));
     assertNull(violation.getLineId());
   }
 
@@ -117,7 +119,7 @@ public class GendarmeViolationMakerTest {
     violationMaker.registerRuleType(aRule, "Method");
     violationMaker.setCurrentLocation("");
     Violation violation = violationMaker.createViolation();
-    assertThat(violation.getResource(), is(aFile));
+    assertThat(violation.getResource(), is(aFileMoney));
     assertNull(violation.getLineId());
   }
 
@@ -127,7 +129,7 @@ public class GendarmeViolationMakerTest {
     violationMaker.setCurrentLocation("");
     violationMaker.setCurrentTargetName("Example.Core.IMoney");
     Violation violation = violationMaker.createViolation();
-    assertThat(violation.getResource(), is(aFile));
+    assertThat(violation.getResource(), is(aFileIMoney));
     assertNull(violation.getLineId());
   }
 
@@ -136,7 +138,7 @@ public class GendarmeViolationMakerTest {
     violationMaker.registerRuleType(aRule, "Type");
     violationMaker.setCurrentLocation("Example.Core.IMoney/InnerClass");
     Violation violation = violationMaker.createViolation();
-    assertThat(violation.getResource(), is(aFile));
+    assertThat(violation.getResource(), is(aFileIMoney));
     assertNull(violation.getLineId());
   }
 
@@ -184,8 +186,9 @@ public class GendarmeViolationMakerTest {
 
   private static CSharpResourcesBridge createFakeBridge() {
     CSharpResourcesBridge bridge = mock(CSharpResourcesBridge.class);
-    when(bridge.getFromTypeName("Example.Core.IMoney")).thenReturn(aFile);
-    when(bridge.getFromTypeName("Example.Core.IMoney.InnerClass")).thenReturn(aFile);
+    when(bridge.getFromTypeName("Example.Core.Money")).thenReturn(aFileMoney);
+    when(bridge.getFromTypeName("Example.Core.IMoney")).thenReturn(aFileIMoney);
+    when(bridge.getFromTypeName("Example.Core.IMoney.InnerClass")).thenReturn(aFileIMoney);
     return bridge;
   }
 
