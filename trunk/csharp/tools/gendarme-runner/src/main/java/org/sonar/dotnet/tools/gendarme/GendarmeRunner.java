@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.utils.command.Command;
 import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.dotnet.tools.commons.utils.ZipUtils;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
 /**
@@ -83,10 +84,26 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
    * Creates a pre-configured {@link GendarmeCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
    * method.
    * 
+   * @param solution
+   *          the solution to analyse
    * @return the command to complete.
    */
   public GendarmeCommandBuilder createCommandBuilder(VisualStudioSolution solution) {
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(solution);
+    builder.setExecutable(gendarmeExecutable);
+    return builder;
+  }
+
+  /**
+   * Creates a pre-configured {@link GendarmeCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
+   * method.
+   * 
+   * @param project
+   *          the VS project to analyse
+   * @return the command to complete.
+   */
+  public GendarmeCommandBuilder createCommandBuilder(VisualStudioProject project) {
+    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(project);
     builder.setExecutable(gendarmeExecutable);
     return builder;
   }

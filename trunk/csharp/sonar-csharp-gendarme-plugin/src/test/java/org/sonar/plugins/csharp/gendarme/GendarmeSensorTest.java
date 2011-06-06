@@ -42,6 +42,7 @@ import java.util.List;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -62,47 +63,60 @@ import com.google.common.collect.Lists;
 
 public class GendarmeSensorTest {
 
+  private ProjectFileSystem fileSystem;
+  private VisualStudioSolution solution;
+  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
+
+  @Before
+  public void init() throws Exception {
+    fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor")));
+
+    VisualStudioProject vsProject = mock(VisualStudioProject.class);
+    when(vsProject.getName()).thenReturn("Project #1");
+    when(vsProject.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
+    solution = mock(VisualStudioSolution.class);
+    when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
+
+    microsoftWindowsEnvironment = new MicrosoftWindowsEnvironment();
+    microsoftWindowsEnvironment.setCurrentSolution(solution);
+  }
+
   @Test
   public void testLaunchGendarme() throws Exception {
-    ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
-    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor")));
-    MicrosoftWindowsEnvironment microsoftWindowsEnvironment = mock(MicrosoftWindowsEnvironment.class);
-    VisualStudioProject project = mock(VisualStudioProject.class);
-    VisualStudioSolution solution = mock(VisualStudioSolution.class);
-    when(project.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
-    when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
-    when(microsoftWindowsEnvironment.getCurrentSolution()).thenReturn(solution);
     GendarmeSensor sensor = new GendarmeSensor(fileSystem, null, null, null, new CSharpConfiguration(new BaseConfiguration()),
         microsoftWindowsEnvironment);
 
     GendarmeRunner runner = mock(GendarmeRunner.class);
-    when(runner.createCommandBuilder(any(VisualStudioSolution.class))).thenReturn(
+    when(runner.createCommandBuilder(any(VisualStudioProject.class))).thenReturn(
         GendarmeCommandBuilder.createBuilder(solution).setExecutable(new File("gendarme.exe")));
-    sensor.launchGendarme(runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeGendarmeConfigFile.xml")));
+    Project project = mock(Project.class);
+    when(project.getName()).thenReturn("Project #1");
+
+    sensor.launchGendarme(project, runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeGendarmeConfigFile.xml")));
     verify(runner).execute(any(Command.class), eq(10));
   }
 
   @Test
   public void testShouldExecuteOnProject() throws Exception {
     Configuration conf = new BaseConfiguration();
-    GendarmeSensor sensor = new GendarmeSensor(null, null, null, null, new CSharpConfiguration(conf), null);
+    GendarmeSensor sensor = new GendarmeSensor(null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Project project = mock(Project.class);
-    when(project.getLanguageKey()).thenReturn("java");
-    assertFalse(sensor.shouldExecuteOnProject(project));
-
+    when(project.getName()).thenReturn("Project #1");
     when(project.getLanguageKey()).thenReturn("cs");
     assertTrue(sensor.shouldExecuteOnProject(project));
 
     conf.addProperty(GendarmeConstants.MODE, GendarmeConstants.MODE_SKIP);
-    sensor = new GendarmeSensor(null, null, null, null, new CSharpConfiguration(conf), null);
+    sensor = new GendarmeSensor(null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
     assertFalse(sensor.shouldExecuteOnProject(project));
   }
 
   @Test
   public void testAnalyseResults() throws Exception {
     GendarmeResultParser parser = mock(GendarmeResultParser.class);
-    GendarmeSensor sensor = new GendarmeSensor(null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()), null);
+    GendarmeSensor sensor = new GendarmeSensor(null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()),
+        microsoftWindowsEnvironment);
 
     File tempFile = File.createTempFile("foo", null);
     List<File> reports = Lists.newArrayList(tempFile, new File("bar"));
@@ -116,7 +130,7 @@ public class GendarmeSensorTest {
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
     when(fileSystem.getSonarWorkingDirectory()).thenReturn(new File("target/sonar"));
     Configuration conf = new BaseConfiguration();
-    GendarmeSensor sensor = new GendarmeSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), null);
+    GendarmeSensor sensor = new GendarmeSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(1));
@@ -130,7 +144,7 @@ public class GendarmeSensorTest {
     Configuration conf = new BaseConfiguration();
     conf.addProperty(GendarmeConstants.MODE, GendarmeConstants.MODE_REUSE_REPORT);
     conf.addProperty(GendarmeConstants.REPORTS_PATH_KEY, "foo.xml,folder/bar.xml");
-    GendarmeSensor sensor = new GendarmeSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), null);
+    GendarmeSensor sensor = new GendarmeSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(2));
@@ -153,7 +167,7 @@ public class GendarmeSensorTest {
       }
     }).when(profileExporter).exportProfile((RulesProfile) anyObject(), (FileWriter) anyObject());
     GendarmeSensor sensor = new GendarmeSensor(fileSystem, null, profileExporter, null, new CSharpConfiguration(new BaseConfiguration()),
-        null);
+        microsoftWindowsEnvironment);
 
     sensor.generateConfigurationFile();
     File report = new File(sonarDir, GendarmeConstants.GENDARME_RULES_FILE);

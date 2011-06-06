@@ -29,7 +29,6 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
@@ -41,6 +40,7 @@ import org.sonar.dotnet.tools.gendarme.GendarmeRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.sensor.AbstractCSharpSensor;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
 
@@ -50,7 +50,7 @@ import com.google.common.collect.Lists;
  * Collects the Gendarme reporting into sonar.
  */
 @DependsUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
-public class GendarmeSensor implements Sensor {
+public class GendarmeSensor extends AbstractCSharpSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(GendarmeSensor.class);
 
@@ -59,7 +59,6 @@ public class GendarmeSensor implements Sensor {
   private GendarmeProfileExporter profileExporter;
   private GendarmeResultParser gendarmeResultParser;
   private CSharpConfiguration configuration;
-  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private String executionMode;
 
   /**
@@ -73,12 +72,12 @@ public class GendarmeSensor implements Sensor {
    */
   public GendarmeSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, GendarmeProfileExporter profileExporter,
       GendarmeResultParser gendarmeResultParser, CSharpConfiguration configuration, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+    super(microsoftWindowsEnvironment);
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
     this.profileExporter = profileExporter;
     this.gendarmeResultParser = gendarmeResultParser;
     this.configuration = configuration;
-    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.executionMode = configuration.getString(GendarmeConstants.MODE, "");
   }
 
@@ -90,7 +89,7 @@ public class GendarmeSensor implements Sensor {
     if (skipMode) {
       LOG.info("Gendarme plugin won't execute as it is set to 'skip' mode.");
     }
-    return project.getLanguageKey().equals("cs") && !skipMode;
+    return super.shouldExecuteOnProject(project) && !skipMode;
   }
 
   /**
@@ -109,10 +108,9 @@ public class GendarmeSensor implements Sensor {
       File gendarmeConfigFile = generateConfigurationFile();
       // run Gendarme
       try {
-        GendarmeRunner runner = GendarmeRunner.create(
-            configuration.getString(GendarmeConstants.EXECUTABLE_KEY, GendarmeConstants.EXECUTABLE_DEFVALUE),
-            fileSystem.getSonarWorkingDirectory().getAbsolutePath());
-        launchGendarme(runner, gendarmeConfigFile);
+        GendarmeRunner runner = GendarmeRunner.create(configuration.getString(GendarmeConstants.EXECUTABLE_KEY,
+            GendarmeConstants.EXECUTABLE_DEFVALUE), fileSystem.getSonarWorkingDirectory().getAbsolutePath());
+        launchGendarme(project, runner, gendarmeConfigFile);
       } catch (GendarmeException e) {
         throw new SonarException("Gendarme execution failed.", e);
       }
@@ -138,8 +136,8 @@ public class GendarmeSensor implements Sensor {
     return configFile;
   }
 
-  protected void launchGendarme(GendarmeRunner runner, File gendarmeConfigFile) throws GendarmeException {
-    GendarmeCommandBuilder builder = runner.createCommandBuilder(microsoftWindowsEnvironment.getCurrentSolution());
+  protected void launchGendarme(Project project, GendarmeRunner runner, File gendarmeConfigFile) throws GendarmeException {
+    GendarmeCommandBuilder builder = runner.createCommandBuilder(getVSProject(project));
     builder.setConfigFile(gendarmeConfigFile);
     builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), GendarmeConstants.GENDARME_REPORT_XML));
     builder.setConfidence(configuration

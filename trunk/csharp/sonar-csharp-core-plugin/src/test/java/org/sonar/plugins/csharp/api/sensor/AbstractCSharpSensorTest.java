@@ -51,17 +51,17 @@ public class AbstractCSharpSensorTest {
 
   private FakeSensor sensor;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
-  private VisualStudioProject project1;
+  private VisualStudioProject vsProject1;
 
   @Before
   public void init() {
-    project1 = mock(VisualStudioProject.class);
-    when(project1.getName()).thenReturn("Project #1");
-    VisualStudioProject project2 = mock(VisualStudioProject.class);
-    when(project2.getName()).thenReturn("Project Test");
-    when(project2.isTest()).thenReturn(true);
+    vsProject1 = mock(VisualStudioProject.class);
+    when(vsProject1.getName()).thenReturn("Project #1");
+    VisualStudioProject vsProject2 = mock(VisualStudioProject.class);
+    when(vsProject2.getName()).thenReturn("Project Test");
+    when(vsProject2.isTest()).thenReturn(true);
     VisualStudioSolution solution = mock(VisualStudioSolution.class);
-    when(solution.getProjects()).thenReturn(Lists.newArrayList(project1, project2));
+    when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject1, vsProject2));
 
     microsoftWindowsEnvironment = new MicrosoftWindowsEnvironment();
     microsoftWindowsEnvironment.setCurrentSolution(solution);
@@ -73,7 +73,7 @@ public class AbstractCSharpSensorTest {
   public void testGetVSProject() {
     Project project = mock(Project.class);
     when(project.getName()).thenReturn("Project #1");
-    assertEquals(sensor.getVSProject(project), project1);
+    assertEquals(sensor.getVSProject(project), vsProject1);
   }
 
   @Test
