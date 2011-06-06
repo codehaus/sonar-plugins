@@ -29,7 +29,6 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
@@ -41,6 +40,7 @@ import org.sonar.dotnet.tools.stylecop.StyleCopRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.sensor.AbstractCSharpSensor;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 
 import com.google.common.collect.Lists;
@@ -49,7 +49,7 @@ import com.google.common.collect.Lists;
  * Collects the StyleCop reporting into sonar.
  */
 @DependsUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
-public class StyleCopSensor implements Sensor {
+public class StyleCopSensor extends AbstractCSharpSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopSensor.class);
 
@@ -58,7 +58,6 @@ public class StyleCopSensor implements Sensor {
   private StyleCopProfileExporter profileExporter;
   private StyleCopResultParser styleCopResultParser;
   private CSharpConfiguration configuration;
-  private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private String executionMode;
 
   /**
@@ -72,12 +71,12 @@ public class StyleCopSensor implements Sensor {
    */
   public StyleCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, StyleCopProfileExporter profileExporter,
       StyleCopResultParser styleCopResultParser, CSharpConfiguration configuration, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+    super(microsoftWindowsEnvironment);
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
     this.profileExporter = profileExporter;
     this.styleCopResultParser = styleCopResultParser;
     this.configuration = configuration;
-    this.microsoftWindowsEnvironment = microsoftWindowsEnvironment;
     this.executionMode = configuration.getString(StyleCopConstants.MODE, "");
   }
 
@@ -89,7 +88,7 @@ public class StyleCopSensor implements Sensor {
     if (skipMode) {
       LOG.info("StyleCop plugin won't execute as it is set to 'skip' mode.");
     }
-    return project.getLanguageKey().equals("cs") && !skipMode;
+    return super.shouldExecuteOnProject(project) && !skipMode;
   }
 
   /**
@@ -109,9 +108,9 @@ public class StyleCopSensor implements Sensor {
       // run StyleCop
       try {
         StyleCopRunner runner = StyleCopRunner.create(configuration.getString(StyleCopConstants.INSTALL_DIR_KEY,
-            StyleCopConstants.INSTALL_DIR_DEFVALUE), microsoftWindowsEnvironment.getDotnetSdkDirectory().getAbsolutePath(), fileSystem
+            StyleCopConstants.INSTALL_DIR_DEFVALUE), getMicrosoftWindowsEnvironment().getDotnetSdkDirectory().getAbsolutePath(), fileSystem
             .getSonarWorkingDirectory().getAbsolutePath());
-        launchStyleCop(runner, styleCopConfigFile);
+        launchStyleCop(project, runner, styleCopConfigFile);
       } catch (StyleCopException e) {
         throw new SonarException("StyleCop execution failed.", e);
       }
@@ -122,8 +121,9 @@ public class StyleCopSensor implements Sensor {
     analyseResults(reportFiles);
   }
 
-  protected void launchStyleCop(StyleCopRunner runner, File styleCopConfigFile) throws StyleCopException {
-    StyleCopCommandBuilder builder = runner.createCommandBuilder(microsoftWindowsEnvironment.getCurrentSolution());
+  protected void launchStyleCop(Project project, StyleCopRunner runner, File styleCopConfigFile) throws StyleCopException {
+    StyleCopCommandBuilder builder = runner.createCommandBuilder(getMicrosoftWindowsEnvironment().getCurrentSolution(),
+        getVSProject(project));
     builder.setConfigFile(styleCopConfigFile);
     builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_REPORT_XML));
     runner.execute(builder.toCommand(),

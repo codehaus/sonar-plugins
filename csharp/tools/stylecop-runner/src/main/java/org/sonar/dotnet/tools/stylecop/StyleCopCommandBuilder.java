@@ -25,6 +25,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.utils.command.Command;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
 /**
@@ -35,6 +36,7 @@ public final class StyleCopCommandBuilder {
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopCommandBuilder.class);
 
   private VisualStudioSolution solution;
+  private VisualStudioProject vsProject;
   private File styleCopConfigFile;
   private File styleCopReportFile;
   private File dotnetSdkDirectory;
@@ -45,11 +47,30 @@ public final class StyleCopCommandBuilder {
   }
 
   /**
-   * Constructs a {@link GendarmeCommandBuilder} object for the given Visual Studio solution.
+   * Constructs a {@link StyleCopCommandBuilder} object for the given Visual Studio solution.
+   * 
+   * @param solution
+   *          the solution to analyse
+   * @return a StyleCop builder for this solution
    */
   public static StyleCopCommandBuilder createBuilder(VisualStudioSolution solution) {
     StyleCopCommandBuilder builder = new StyleCopCommandBuilder();
     builder.solution = solution;
+    return builder;
+  }
+
+  /**
+   * Constructs a {@link StyleCopCommandBuilder} object for the given Visual Studio project.
+   * 
+   * @param solution
+   *          the solution that contains the VS project
+   * @param project
+   *          the VS project to analyse
+   * @return a StyleCop builder for this project
+   */
+  public static StyleCopCommandBuilder createBuilder(VisualStudioSolution solution, VisualStudioProject project) {
+    StyleCopCommandBuilder builder = createBuilder(solution);
+    builder.vsProject = project;
     return builder;
   }
 
@@ -110,7 +131,7 @@ public final class StyleCopCommandBuilder {
   public Command toCommand() {
     validate();
     MsBuildFileGenerator msBuildFileGenerator = new MsBuildFileGenerator(solution, styleCopConfigFile, styleCopReportFile, styleCopFolder);
-    msBuildFile = msBuildFileGenerator.generateFile(styleCopReportFile.getParentFile());
+    msBuildFile = msBuildFileGenerator.generateFile(styleCopReportFile.getParentFile(), vsProject);
 
     LOG.debug("- MSBuild path          : " + dotnetSdkDirectory.getAbsolutePath());
     Command command = Command.create(new File(dotnetSdkDirectory, "MSBuild.exe").getAbsolutePath());

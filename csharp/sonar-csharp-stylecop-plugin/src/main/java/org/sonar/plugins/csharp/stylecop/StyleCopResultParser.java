@@ -127,14 +127,16 @@ public class StyleCopResultParser implements BatchExtension {
   private void createViolation(SMInputCursor violationsCursor, Rule currentRule) throws XMLStreamException {
     org.sonar.api.resources.File sonarFile = org.sonar.api.resources.File.fromIOFile(new File(violationsCursor.getAttrValue("Source")),
         project);
-    Violation violation = Violation.create(currentRule, sonarFile);
-    String lineNumber = violationsCursor.getAttrValue("LineNumber");
-    if (lineNumber != null) {
-      violation.setLineId(Integer.parseInt(lineNumber));
+    if (context.isIndexed(sonarFile, false)) {
+      Violation violation = Violation.create(currentRule, sonarFile);
+      String lineNumber = violationsCursor.getAttrValue("LineNumber");
+      if (lineNumber != null) {
+        violation.setLineId(Integer.parseInt(lineNumber));
+      }
+      violation.setMessage(violationsCursor.collectDescendantText().trim());
+      violation.setSeverity(currentRule.getSeverity());
+      context.saveViolation(violation);
     }
-    violation.setMessage(violationsCursor.collectDescendantText().trim());
-    violation.setSeverity(currentRule.getSeverity());
-    context.saveViolation(violation);
   }
 
   /**

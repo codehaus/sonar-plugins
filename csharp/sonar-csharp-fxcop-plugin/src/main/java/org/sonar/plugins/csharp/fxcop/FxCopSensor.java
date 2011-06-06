@@ -29,7 +29,6 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
@@ -37,6 +36,8 @@ import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
+import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.sensor.AbstractCSharpSensor;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
 
@@ -46,7 +47,7 @@ import com.google.common.collect.Lists;
  * Collects the FXCop reporting into sonar.
  */
 @DependsUpon(CSharpConstants.CSHARP_CORE_EXECUTED)
-public class FxCopSensor implements Sensor {
+public class FxCopSensor extends AbstractCSharpSensor {
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopSensor.class);
 
@@ -68,7 +69,9 @@ public class FxCopSensor implements Sensor {
    * @param rulesProfile
    */
   public FxCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, FxCopRunner fxCopRunner,
-      FxCopProfileExporter profileExporter, FxCopResultParser fxCopResultParser, CSharpConfiguration configuration) {
+      FxCopProfileExporter profileExporter, FxCopResultParser fxCopResultParser, CSharpConfiguration configuration,
+      MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+    super(microsoftWindowsEnvironment);
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
     this.fxCopRunner = fxCopRunner;
@@ -86,7 +89,7 @@ public class FxCopSensor implements Sensor {
     if (skipMode) {
       LOG.info("FxCop plugin won't execute as it is set to 'skip' mode.");
     }
-    return project.getLanguageKey().equals("cs") && !skipMode;
+    return super.shouldExecuteOnProject(project) && !skipMode;
   }
 
   /**

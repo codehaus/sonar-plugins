@@ -37,8 +37,8 @@ import com.google.common.collect.Lists;
 
 public class GendarmeRunnerTest {
 
-  public VisualStudioProject project;
   public VisualStudioSolution solution;
+  public VisualStudioProject project;
 
   @Before
   public void initData() {
