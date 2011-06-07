@@ -137,7 +137,7 @@ public class StyleCopRunner { // NOSONAR : can't mock it otherwise
     int exitCode = CommandExecutor.create().execute(command, timeoutMinutes * MINUTES_TO_MILLISECONDS);
     if (exitCode != 0) {
       throw new StyleCopException("StyleCop execution failed with return code '" + exitCode
-          + "'. Check StyleCopCop documentation for more information.");
+          + "'. Check StyleCop documentation for more information.");
     }
   }
 

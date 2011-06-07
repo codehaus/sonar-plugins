@@ -34,12 +34,14 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.utils.SonarException;
+import org.sonar.donet.tools.fxcop.FxCopCommandBuilder;
+import org.sonar.donet.tools.fxcop.FxCopException;
+import org.sonar.donet.tools.fxcop.FxCopRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.sensor.AbstractCSharpSensor;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
-import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
 
 import com.google.common.collect.Lists;
 
@@ -53,7 +55,6 @@ public class FxCopSensor extends AbstractCSharpSensor {
 
   private ProjectFileSystem fileSystem;
   private RulesProfile rulesProfile;
-  private FxCopRunner fxCopRunner;
   private FxCopProfileExporter profileExporter;
   private FxCopResultParser fxCopResultParser;
   private CSharpConfiguration configuration;
@@ -68,13 +69,11 @@ public class FxCopSensor extends AbstractCSharpSensor {
    * @param profileExporter
    * @param rulesProfile
    */
-  public FxCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, FxCopRunner fxCopRunner,
-      FxCopProfileExporter profileExporter, FxCopResultParser fxCopResultParser, CSharpConfiguration configuration,
-      MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
+  public FxCopSensor(ProjectFileSystem fileSystem, RulesProfile rulesProfile, FxCopProfileExporter profileExporter,
+      FxCopResultParser fxCopResultParser, CSharpConfiguration configuration, MicrosoftWindowsEnvironment microsoftWindowsEnvironment) {
     super(microsoftWindowsEnvironment);
     this.fileSystem = fileSystem;
     this.rulesProfile = rulesProfile;
-    this.fxCopRunner = fxCopRunner;
     this.profileExporter = profileExporter;
     this.fxCopResultParser = fxCopResultParser;
     this.configuration = configuration;
@@ -107,7 +106,12 @@ public class FxCopSensor extends AbstractCSharpSensor {
       // prepare config file for FxCop
       File fxCopConfigFile = generateConfigurationFile();
       // and run FxCop
-      fxCopRunner.execute(fxCopConfigFile);
+      try {
+        FxCopRunner runner = FxCopRunner.create(configuration.getString(FxCopConstants.EXECUTABLE_KEY, FxCopConstants.EXECUTABLE_DEFVALUE));
+        launchFxCop(project, runner, fxCopConfigFile);
+      } catch (FxCopException e) {
+        throw new SonarException("FxCop execution failed.", e);
+      }
     }
 
     // and analyse results
@@ -128,6 +132,19 @@ public class FxCopSensor extends AbstractCSharpSensor {
       IOUtils.closeQuietly(writer);
     }
     return configFile;
+  }
+
+  protected void launchFxCop(Project project, FxCopRunner runner, File fxCopConfigFile) throws FxCopException {
+    FxCopCommandBuilder builder = runner.createCommandBuilder(getVSProject(project));
+    builder.setConfigFile(fxCopConfigFile);
+    builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), FxCopConstants.FXCOP_REPORT_XML));
+    builder.setAssembliesToScan(configuration.getStringArray(FxCopConstants.ASSEMBLIES_TO_SCAN_KEY));
+    builder.setAssemblyDependencyDirectories(configuration.getStringArray(FxCopConstants.ASSEMBLY_DEPENDENCY_DIRECTORIES_KEY));
+    builder.setIgnoreGeneratedCode(configuration.getBoolean(FxCopConstants.IGNORE_GENERATED_CODE_KEY,
+        FxCopConstants.IGNORE_GENERATED_CODE_DEFVALUE));
+    int timeout = configuration.getInt(FxCopConstants.TIMEOUT_MINUTES_KEY, FxCopConstants.TIMEOUT_MINUTES_DEFVALUE);
+    builder.setTimeoutMinutes(timeout);
+    runner.execute(builder.toCommand(), timeout);
   }
 
   protected Collection<File> getReportFilesList() {
