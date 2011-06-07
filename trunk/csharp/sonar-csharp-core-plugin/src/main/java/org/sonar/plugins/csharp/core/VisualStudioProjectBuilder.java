@@ -88,20 +88,22 @@ public class VisualStudioProjectBuilder extends ProjectBuilder {
 
   private void createMultiProjectStructure(ProjectDefinition root) {
     VisualStudioSolution currentSolution = microsoftWindowsEnvironment.getCurrentSolution();
-    // TODO tip to remove sources from the root: should be fixed soon
-    root.addSourceFiles(currentSolution.getSolutionFile());
+    root.resetSourceDirs();
+    LOG.debug("- Root Project: {}", root.getName());
+
     for (VisualStudioProject vsProject : currentSolution.getProjects()) {
       if ( !vsProject.isTest()) {
-        ProjectDefinition subProject = new ProjectDefinition(vsProject.getDirectory(), new File(vsProject.getDirectory(), "target/.sonar"),
-            configuration.toProperties());
-        subProject.setKey(StringUtils.substringBefore(root.getKey(), ":") + ":" + StringUtils.deleteWhitespace(vsProject.getName()));
-        subProject.setVersion(root.getVersion());
-        subProject.setName(vsProject.getName());
-        subProject.setSourceDir(".");
-        subProject.addContainerExtension(microsoftWindowsEnvironment);
+        ProjectDefinition subProject = ProjectDefinition.create(configuration.toProperties()).setBaseDir(vsProject.getDirectory())
+            .setWorkDir(new File(vsProject.getDirectory(), "target/.sonar"))
+            .setKey(StringUtils.substringBefore(root.getKey(), ":") + ":" + StringUtils.deleteWhitespace(vsProject.getName()))
+            .setVersion(root.getVersion()).setName(vsProject.getName()).setSourceDirs(".")
+            .addContainerExtension(microsoftWindowsEnvironment);
+
         for (org.sonar.plugins.csharp.api.visualstudio.SourceFile sourceFile : vsProject.getSourceFiles()) {
           subProject.addSourceFiles(sourceFile.getFile());
         }
+
+        LOG.debug("  - Adding Sub Project => {}", subProject.getName());
         root.addSubProject(subProject);
       }
     }

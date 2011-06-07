@@ -73,8 +73,8 @@ public class VisualStudioProjectBuilderTest {
     conf.addProperty("sonar.language", "cs");
     conf.addProperty(CSharpConstants.DOTNET_4_0_SDK_DIR_KEY, fakeSdkDir.getAbsolutePath());
     conf.addProperty(CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_KEY, fakeSilverlightDir.getAbsolutePath());
-    root = new ProjectDefinition(FileUtils.toFile(getClass().getResource("/solution/Example")), new File("target/sonar/.sonar"),
-        new Properties());
+    root = ProjectDefinition.create(new Properties()).setBaseDir(FileUtils.toFile(getClass().getResource("/solution/Example")))
+        .setWorkDir(new File("target/sonar/.sonar"));
     root.setVersion("1.0");
     root.setKey("groupId:artifactId");
     reactor = new ProjectReactor(root);
@@ -120,7 +120,7 @@ public class VisualStudioProjectBuilderTest {
     assertThat(solution.getProjects().size(), is(3));
     // check the multi-module definition is correct
     assertThat(reactor.getRoot().getSubProjects().size(), is(2));
-    assertThat(reactor.getRoot().getSourceFiles().size(), is(1));
+    assertThat(reactor.getRoot().getSourceFiles().size(), is(0));
     assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Core").getSourceFiles().size(), is(6));
     assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Application").getSourceFiles().size(), is(2));
   }
