@@ -22,9 +22,7 @@ package org.sonar.plugins.csharp.api;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -155,21 +153,6 @@ public class CSharpConfiguration implements BatchExtension {
     }
     // if this key wasn't used before, or if no value for was for it, use the value of the current key
     return configuration.getInt(key, defaultValue);
-  }
-
-  /**
-   * Transforms the {@link Configuration} object into a {@link Properties} one. TODO: remove this once Simon has included this mechanism in
-   * the Core.
-   * 
-   * @deprecated Used just temporarily, waiting for an improvement from Simon
-   */
-  public Properties toProperties() {
-    Properties props = new Properties();
-    for (Iterator iterator = configuration.getKeys(); iterator.hasNext();) {
-      String key = (String) iterator.next();
-      props.put(key, configuration.getString(key));
-    }
-    return props;
   }
 
   protected void logInfo(Object result, String previousKey) {
