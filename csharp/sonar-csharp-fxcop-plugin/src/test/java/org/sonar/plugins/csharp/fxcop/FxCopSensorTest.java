@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -43,6 +44,7 @@ import java.util.List;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -51,27 +53,36 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.rules.ActiveRule;
+import org.sonar.api.utils.command.Command;
+import org.sonar.donet.tools.fxcop.FxCopCommandBuilder;
+import org.sonar.donet.tools.fxcop.FxCopRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
-import org.sonar.plugins.csharp.fxcop.runner.FxCopRunner;
 
 import com.google.common.collect.Lists;
 
 public class FxCopSensorTest {
 
+  private ProjectFileSystem fileSystem;
+  private VisualStudioSolution solution;
+  private VisualStudioProject vsProject1;
   private MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
 
   @Before
   public void init() {
-    VisualStudioProject vsProject1 = mock(VisualStudioProject.class);
+    fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor")));
+
+    vsProject1 = mock(VisualStudioProject.class);
     when(vsProject1.getName()).thenReturn("Project #1");
+    when(vsProject1.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
     VisualStudioProject project2 = mock(VisualStudioProject.class);
     when(project2.getName()).thenReturn("Project Test");
     when(project2.isTest()).thenReturn(true);
-    VisualStudioSolution solution = mock(VisualStudioSolution.class);
+    solution = mock(VisualStudioSolution.class);
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject1, project2));
 
     microsoftWindowsEnvironment = new MicrosoftWindowsEnvironment();
@@ -80,19 +91,35 @@ public class FxCopSensorTest {
 
   @Test
   public void testExecuteWithoutRule() throws Exception {
-    FxCopRunner runner = mock(FxCopRunner.class);
     RulesProfile rulesProfile = mock(RulesProfile.class);
     when(rulesProfile.getActiveRulesByRepository(anyString())).thenReturn(new ArrayList<ActiveRule>());
-    FxCopSensor sensor = new FxCopSensor(null, rulesProfile, runner, null, null, new CSharpConfiguration(new BaseConfiguration()),
+    FxCopSensor sensor = new FxCopSensor(null, rulesProfile, null, null, new CSharpConfiguration(new BaseConfiguration()),
         microsoftWindowsEnvironment);
-    sensor.analyse(null, null);
-    verify(runner, never()).execute(any(File.class));
+
+    Project project = mock(Project.class);
+    sensor.analyse(project, null);
+    verify(project, never()).getName();
+  }
+
+  @Test
+  public void testLaunchGendarme() throws Exception {
+    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, new CSharpConfiguration(new BaseConfiguration()),
+        microsoftWindowsEnvironment);
+
+    FxCopRunner runner = mock(FxCopRunner.class);
+    when(runner.createCommandBuilder(any(VisualStudioProject.class))).thenReturn(
+        FxCopCommandBuilder.createBuilder(vsProject1).setExecutable(new File("gendarme.exe")));
+    Project project = mock(Project.class);
+    when(project.getName()).thenReturn("Project #1");
+
+    sensor.launchFxCop(project, runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeFxCopConfigFile.xml")));
+    verify(runner).execute(any(Command.class), eq(10));
   }
 
   @Test
   public void testShouldExecuteOnProject() throws Exception {
     Configuration conf = new BaseConfiguration();
-    FxCopSensor sensor = new FxCopSensor(null, null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
+    FxCopSensor sensor = new FxCopSensor(null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Project project = mock(Project.class);
     when(project.getName()).thenReturn("Project #1");
@@ -100,14 +127,14 @@ public class FxCopSensorTest {
     assertTrue(sensor.shouldExecuteOnProject(project));
 
     conf.addProperty(FxCopConstants.MODE, FxCopConstants.MODE_SKIP);
-    sensor = new FxCopSensor(null, null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
+    sensor = new FxCopSensor(null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
     assertFalse(sensor.shouldExecuteOnProject(project));
   }
 
   @Test
   public void testAnalyseResults() throws Exception {
     FxCopResultParser parser = mock(FxCopResultParser.class);
-    FxCopSensor sensor = new FxCopSensor(null, null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()),
+    FxCopSensor sensor = new FxCopSensor(null, null, null, parser, new CSharpConfiguration(new BaseConfiguration()),
         microsoftWindowsEnvironment);
 
     File tempFile = File.createTempFile("foo", null);
@@ -122,7 +149,7 @@ public class FxCopSensorTest {
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
     when(fileSystem.getSonarWorkingDirectory()).thenReturn(new File("target/sonar"));
     Configuration conf = new BaseConfiguration();
-    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
+    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(1));
@@ -136,7 +163,7 @@ public class FxCopSensorTest {
     Configuration conf = new BaseConfiguration();
     conf.addProperty(FxCopConstants.MODE, FxCopConstants.MODE_REUSE_REPORT);
     conf.addProperty(FxCopConstants.REPORTS_PATH_KEY, "foo.xml,folder/bar.xml");
-    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
+    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, new CSharpConfiguration(conf), microsoftWindowsEnvironment);
 
     Collection<File> reportFiles = sensor.getReportFilesList();
     assertThat(reportFiles.size(), is(2));
@@ -158,7 +185,7 @@ public class FxCopSensorTest {
         return null;
       }
     }).when(profileExporter).exportProfile((RulesProfile) anyObject(), (FileWriter) anyObject());
-    FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, profileExporter, null, new CSharpConfiguration(new BaseConfiguration()),
+    FxCopSensor sensor = new FxCopSensor(fileSystem, null, profileExporter, null, new CSharpConfiguration(new BaseConfiguration()),
         microsoftWindowsEnvironment);
 
     sensor.generateConfigurationFile();
