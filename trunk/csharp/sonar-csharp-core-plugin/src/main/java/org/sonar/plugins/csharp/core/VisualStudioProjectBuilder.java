@@ -93,7 +93,7 @@ public class VisualStudioProjectBuilder extends ProjectBuilder {
 
     for (VisualStudioProject vsProject : currentSolution.getProjects()) {
       if ( !vsProject.isTest()) {
-        ProjectDefinition subProject = ProjectDefinition.create(configuration.toProperties()).setBaseDir(vsProject.getDirectory())
+        ProjectDefinition subProject = ProjectDefinition.create(root.getProperties()).setBaseDir(vsProject.getDirectory())
             .setWorkDir(new File(vsProject.getDirectory(), "target/.sonar"))
             .setKey(StringUtils.substringBefore(root.getKey(), ":") + ":" + StringUtils.deleteWhitespace(vsProject.getName()))
             .setVersion(root.getVersion()).setName(vsProject.getName()).setSourceDirs(".")
