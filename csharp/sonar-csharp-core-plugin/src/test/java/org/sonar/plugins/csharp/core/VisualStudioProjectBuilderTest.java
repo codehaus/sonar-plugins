@@ -40,15 +40,17 @@ import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 
 public class VisualStudioProjectBuilderTest {
 
   private static File fakeSdkDir;
   private static File fakeSilverlightDir;
+  private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
   private ProjectReactor reactor;
   private ProjectDefinition root;
-  private static MicrosoftWindowsEnvironment microsoftWindowsEnvironment;
+  private File solutionBaseDir;
   private VisualStudioProjectBuilder projectBuilder;
   private Configuration conf;
 
@@ -73,8 +75,8 @@ public class VisualStudioProjectBuilderTest {
     conf.addProperty("sonar.language", "cs");
     conf.addProperty(CSharpConstants.DOTNET_4_0_SDK_DIR_KEY, fakeSdkDir.getAbsolutePath());
     conf.addProperty(CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_KEY, fakeSilverlightDir.getAbsolutePath());
-    root = ProjectDefinition.create(new Properties()).setBaseDir(FileUtils.toFile(getClass().getResource("/solution/Example")))
-        .setWorkDir(new File("target/sonar/.sonar"));
+    solutionBaseDir = FileUtils.toFile(getClass().getResource("/solution/Example"));
+    root = ProjectDefinition.create(new Properties()).setBaseDir(solutionBaseDir).setWorkDir(new File(solutionBaseDir, "WORK-DIR"));
     root.setVersion("1.0");
     root.setKey("groupId:artifactId");
     reactor = new ProjectReactor(root);
@@ -118,11 +120,18 @@ public class VisualStudioProjectBuilderTest {
     VisualStudioSolution solution = microsoftWindowsEnvironment.getCurrentSolution();
     assertNotNull(solution);
     assertThat(solution.getProjects().size(), is(3));
+    assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Application").getSourceFiles().size(), is(2));
+    assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Core").getSourceFiles().size(), is(6));
     // check the multi-module definition is correct
     assertThat(reactor.getRoot().getSubProjects().size(), is(2));
     assertThat(reactor.getRoot().getSourceFiles().size(), is(0));
-    assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Core").getSourceFiles().size(), is(6));
-    assertThat(microsoftWindowsEnvironment.getCurrentProject("Example.Application").getSourceFiles().size(), is(2));
+    ProjectDefinition subProject = reactor.getRoot().getSubProjects().get(0);
+    VisualStudioProject vsProject = microsoftWindowsEnvironment.getCurrentProject("Example.Application");
+    assertThat(subProject.getName(), is("Example.Application"));
+    assertThat(subProject.getKey(), is("groupId:Example.Application"));
+    assertThat(subProject.getVersion(), is("1.0"));
+    assertThat(subProject.getBaseDir(), is(vsProject.getDirectory()));
+    assertThat(subProject.getWorkDir(), is(new File(vsProject.getDirectory(), "WORK-DIR")));
   }
 
   @Test
