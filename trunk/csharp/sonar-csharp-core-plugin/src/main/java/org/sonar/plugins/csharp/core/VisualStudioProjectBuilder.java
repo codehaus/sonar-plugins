@@ -91,11 +91,12 @@ public class VisualStudioProjectBuilder extends ProjectBuilder {
     VisualStudioSolution currentSolution = microsoftWindowsEnvironment.getCurrentSolution();
     root.resetSourceDirs();
     LOG.debug("- Root Project: {}", root.getName());
+    String workDir = root.getWorkDir().getAbsolutePath().substring(root.getBaseDir().getAbsolutePath().length() + 1);
 
     for (VisualStudioProject vsProject : currentSolution.getProjects()) {
       if ( !vsProject.isTest()) {
         ProjectDefinition subProject = ProjectDefinition.create((Properties) root.getProperties().clone())
-            .setBaseDir(vsProject.getDirectory()).setWorkDir(new File(vsProject.getDirectory(), "target/.sonar"))
+            .setBaseDir(vsProject.getDirectory()).setWorkDir(new File(vsProject.getDirectory(), workDir))
             .setKey(StringUtils.substringBefore(root.getKey(), ":") + ":" + StringUtils.deleteWhitespace(vsProject.getName()))
             .setVersion(root.getVersion()).setName(vsProject.getName()).setSourceDirs(".")
             .addContainerExtension(microsoftWindowsEnvironment);
