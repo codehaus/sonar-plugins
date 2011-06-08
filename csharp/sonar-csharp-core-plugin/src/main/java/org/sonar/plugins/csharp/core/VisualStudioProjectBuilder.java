@@ -22,6 +22,7 @@ package org.sonar.plugins.csharp.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -93,8 +94,8 @@ public class VisualStudioProjectBuilder extends ProjectBuilder {
 
     for (VisualStudioProject vsProject : currentSolution.getProjects()) {
       if ( !vsProject.isTest()) {
-        ProjectDefinition subProject = ProjectDefinition.create(root.getProperties()).setBaseDir(vsProject.getDirectory())
-            .setWorkDir(new File(vsProject.getDirectory(), "target/.sonar"))
+        ProjectDefinition subProject = ProjectDefinition.create((Properties) root.getProperties().clone())
+            .setBaseDir(vsProject.getDirectory()).setWorkDir(new File(vsProject.getDirectory(), "target/.sonar"))
             .setKey(StringUtils.substringBefore(root.getKey(), ":") + ":" + StringUtils.deleteWhitespace(vsProject.getName()))
             .setVersion(root.getVersion()).setName(vsProject.getName()).setSourceDirs(".")
             .addContainerExtension(microsoftWindowsEnvironment);
