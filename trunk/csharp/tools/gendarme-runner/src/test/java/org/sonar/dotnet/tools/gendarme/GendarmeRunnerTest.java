@@ -34,18 +34,20 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class GendarmeRunnerTest {
 
   public VisualStudioSolution solution;
-  public VisualStudioProject project;
+  public VisualStudioProject vsProject;
 
   @Before
   public void initData() {
-    project = mock(VisualStudioProject.class);
+    vsProject = mock(VisualStudioProject.class);
     solution = mock(VisualStudioSolution.class);
-    when(project.getReleaseArtifact()).thenReturn(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly"));
-    when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly")));
+    when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
   }
 
   @Test
@@ -62,7 +64,7 @@ public class GendarmeRunnerTest {
   public void testCreateCommandBuilderForProject() throws Exception {
     String fakeExec = TestUtils.getResource("/runner/FakeGendarmeExecutable.txt").getAbsolutePath();
     GendarmeRunner runner = GendarmeRunner.create(fakeExec, new File("target/sonar/tempFolder").getAbsolutePath());
-    GendarmeCommandBuilder builder = runner.createCommandBuilder(project);
+    GendarmeCommandBuilder builder = runner.createCommandBuilder(vsProject);
     builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.setReportFile(new File("gendarme-report.xml"));
     assertThat(builder.toCommand().getExecutable(), is(fakeExec));

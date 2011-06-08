@@ -36,6 +36,7 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class FxCopRunnerTest {
 
@@ -56,7 +57,8 @@ public class FxCopRunnerTest {
   public void initData() {
     solution = mock(VisualStudioSolution.class);
     vsProject = mock(VisualStudioProject.class);
-    when(vsProject.getReleaseArtifact()).thenReturn(TestUtils.getResource("/Runner/FakeAssemblies/Fake1.assembly"));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
     when(vsProject.getDirectory()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
     when(solution.getSolutionDir()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));

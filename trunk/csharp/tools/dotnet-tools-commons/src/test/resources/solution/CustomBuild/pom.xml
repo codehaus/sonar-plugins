@@ -3,17 +3,18 @@
   <groupId>org.codehaus.maven.dotnet.example</groupId>
   <artifactId>example</artifactId>
    <version>1.0-SNAPSHOT</version>
-  <name>Example Solution .Net for Maven</name>
-  <packaging>netpack</packaging>
+  <name>CustomBuild .Net for Maven</name>
+  <packaging>sln</packaging>
 
   <properties>
     <!-- NOTE : the versions and parameters may be defined as properties 
        Prefer this option to the plugin specific configuration as it may be accessible to several plugins
     -->
-    <visual.studio.solution>Example.sln</visual.studio.solution>
+    <visual.studio.solution>CustomBuild.sln</visual.studio.solution>
     <visual.test.project.pattern>*.Tests</visual.test.project.pattern>
-    <dotnet.tool.version>3.5</dotnet.tool.version>
+    <dotnet.tool.version>4.0</dotnet.tool.version>
     <sonar.language>cs</sonar.language>
+	<fxcop.directory>tata</fxcop.directory>
   </properties>
   <build>
     <plugins>
@@ -32,6 +33,9 @@
           </buildConfigurations>
         </configuration>
         -->
+		<configuration>
+			<reportFileName>ddd.xml</reportFileName>
+		</configuration>
         <extensions>true</extensions>
       </plugin>
       <plugin>

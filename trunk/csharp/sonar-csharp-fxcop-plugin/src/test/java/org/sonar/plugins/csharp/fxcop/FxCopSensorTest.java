@@ -61,8 +61,10 @@ import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
+import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class FxCopSensorTest {
 
@@ -78,7 +80,8 @@ public class FxCopSensorTest {
 
     vsProject1 = mock(VisualStudioProject.class);
     when(vsProject1.getName()).thenReturn("Project #1");
-    when(vsProject1.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
+    when(vsProject1.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
     VisualStudioProject project2 = mock(VisualStudioProject.class);
     when(project2.getName()).thenReturn("Project Test");
     when(project2.isTest()).thenReturn(true);

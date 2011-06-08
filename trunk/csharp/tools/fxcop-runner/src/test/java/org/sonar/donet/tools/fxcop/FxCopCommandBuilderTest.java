@@ -36,6 +36,7 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class FxCopCommandBuilderTest {
 
@@ -56,7 +57,8 @@ public class FxCopCommandBuilderTest {
   public void init() throws Exception {
     solution = mock(VisualStudioSolution.class);
     vsProject = mock(VisualStudioProject.class);
-    when(vsProject.getReleaseArtifact()).thenReturn(TestUtils.getResource("/Runner/FakeAssemblies/Fake1.assembly"));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
     when(vsProject.getDirectory()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
     when(solution.getSolutionDir()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));
@@ -133,26 +135,10 @@ public class FxCopCommandBuilderTest {
     assertThat(commands[4], endsWith("/gac"));
   }
 
-  @Test
-  public void testToCommandWitDebugArtifact() throws Exception {
-    when(vsProject.getDebugArtifact()).thenReturn(TestUtils.getResource("/Runner/FakeAssemblies/Fake2.assembly"));
-
-    FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(solution).setExecutable(fakeFxCopExecutable)
-        .setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile);
-
-    Command command = fxCopCommandBuilder.toCommand();
-    assertThat(toUnixStyle(command.getExecutable()), endsWith("/Runner/FakeProg/FxCopCmd.exe"));
-    String[] commands = command.getArguments().toArray(new String[] {});
-    assertThat(commands[0], endsWith("FakeFxCopConfigFile.xml"));
-    assertThat(commands[1], endsWith("fxcop-report.xml"));
-    assertThat(commands[2], endsWith("Fake2.assembly"));
-    assertThat(commands[3], endsWith("/to:600"));
-    assertThat(commands[4], endsWith("/gac"));
-  }
-
   @Test(expected = IllegalStateException.class)
   public void testToCommandWithNoConfigAndNonExistingReleseAssembly() throws Exception {
-    when(vsProject.getReleaseArtifact()).thenReturn(TestUtils.getResource("/Runner/FakeAssemblies/Unexisting.assembly"));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/Runner/FakeAssemblies/Unexisting.assembly")));
 
     FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(solution).setExecutable(fakeFxCopExecutable)
         .setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile);
