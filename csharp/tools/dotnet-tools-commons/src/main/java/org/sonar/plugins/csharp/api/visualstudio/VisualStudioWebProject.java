@@ -40,57 +40,48 @@ public class VisualStudioWebProject extends VisualStudioProject {
   }
 
   /**
-   * @return null if the project is not a web project, the generated web dlls otherwise.
+   * @return the generated web dlls
+   * 
    */
-  public Set<File> getWebAssemblies() {
-    if ( !isWebProject()) {
-      return null;
-    }
+  public Set<File> getGeneratedAssemblies(String buildConfigurations) {
     Set<File> result = new HashSet<File>();
 
     // we need to exclude all the dll files
-    // that correspond to
+    // that correspond to references
     Set<String> exclusions = new HashSet<String>();
     Set<File> references = getReferences();
     for (File file : references) {
       exclusions.add(file.getName());
     }
 
-    File[] files = getWebPrecompilationDirectory().listFiles();
-
-    for (File file : files) {
-      String name = file.getName();
-      if (StringUtils.endsWith(name, "dll") && !exclusions.contains(name)) {
-        result.add(file);
+    File precompilationDirectory = getWebPrecompilationDirectory(buildConfigurations);
+    if (precompilationDirectory != null && precompilationDirectory.isDirectory()) {
+      File[] files = precompilationDirectory.listFiles();
+      for (File file : files) {
+        String name = file.getName();
+        if (StringUtils.endsWith(name, "dll") && !exclusions.contains(name)) {
+          result.add(file);
+        }
       }
     }
+    
     return result;
   }
 
   /**
+   * @param buildConfigurations
+   *          Visual Studio build configurations used to generate the project
    * @return the directory where asp.net pages are precompiled. null for a non web project
    */
-  public File getWebPrecompilationDirectory() {
-    if ( !isWebProject()) {
-      return null;
-    }
-    final String precompilationPath;
-    if (getDebugOutputDir().list() == null || getDebugOutputDir().list().length == 0) {
-      precompilationPath = getReleaseOutputDir().getAbsolutePath() + File.separator + "bin";
-    } else {
-      precompilationPath = getDebugOutputDir().getAbsolutePath() + File.separator + "bin";
-    }
-    return new File(precompilationPath);
+  public File getWebPrecompilationDirectory(String buildConfigurations) {
+    return new File(getArtifactDirectory(buildConfigurations), "bin");
   }
 
   /**
-   * @return null if the project is not a web project, the generated web dll names otherwise.
+   * @return the generated web dll names otherwise.
    */
   public Set<String> getWebAssemblyNames() {
-    if ( !isWebProject()) {
-      return null;
-    }
-    Set<File> assemblies = getWebAssemblies();
+    Set<File> assemblies = getGeneratedAssemblies(null);
     Set<String> assemblyNames = new HashSet<String>();
 
     for (File assembly : assemblies) {
@@ -104,7 +95,7 @@ public class VisualStudioWebProject extends VisualStudioProject {
    * @return the dll files that correspond to VS references
    */
   public Set<File> getReferences() {
-    File binDirectory = new File(getDirectory(), "bin");
+    File binDirectory = new File(getDirectory(), "Bin");
     Set<File> result = new HashSet<File>();
     if (binDirectory.exists()) {
       File[] files = binDirectory.listFiles();

@@ -40,15 +40,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-import org.sonar.plugins.csharp.api.visualstudio.BinaryReference;
-import org.sonar.plugins.csharp.api.visualstudio.ModelFactory;
-import org.sonar.plugins.csharp.api.visualstudio.SourceFile;
-import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
-import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
-import org.sonar.plugins.csharp.api.visualstudio.VisualStudioWebProject;
 
 /**
  * Tests for visual studio utilities.
@@ -68,6 +61,7 @@ public class ModelFactoryTest {
   private static final String MESSY_SOLUTION_PATH = "target/test-classes/solution/MessyTestSolution/MessyTestSolution.sln";
   private static final String LINK_SOLUTION_PATH = "target/test-classes/solution/LinkTestSolution/LinkTestSolution.sln";
   private static final String SOLUTION_WITH_DUP_PATH = "target/test-classes/solution/DuplicatesExample/Example.sln";
+  private static final String SOLUTION_WITH_CUSTOM_BUILD_PATH = "target/test-classes/solution/CustomBuild/CustomBuild.sln";
 
   private static final String SILVERLIGHT_SOLUTION_PATH = "target/test-classes/solution/BlankSilverlightSolution/BlankSilverlightSolution.sln";
   private static final String SILVERLIGHT_PROJECT_PATH = "target/test-classes/solution/BlankSilverlightSolution/BlankApplication/BlankApplication.csproj";
@@ -80,6 +74,27 @@ public class ModelFactoryTest {
     List<String> files = ModelFactory.getFilesPath(file);
     log.debug("Files : " + files);
     assertEquals("Bad number of files extracted", 6, files.size());
+  }
+
+  @Test
+  public void testSolutionWithCustomBuild() throws Exception {
+    File file = new File(SOLUTION_WITH_CUSTOM_BUILD_PATH);
+    VisualStudioSolution solution = ModelFactory.getSolution(file);
+    List<String> buildConfigurations = solution.getBuildConfigurations();
+    assertEquals(3, buildConfigurations.size());
+    assertTrue(buildConfigurations.contains("Debug"));
+    assertTrue(buildConfigurations.contains("Release"));
+    assertTrue(buildConfigurations.contains("CustomCompil"));
+
+    assertEquals(1, solution.getProjects().size());
+    VisualStudioProject project = solution.getProjects().get(0);
+
+    // Debug configuration should be the preferred one
+    assertTrue(project.getArtifact("CustomCompil;Debug").getAbsolutePath().contains("Debug"));
+
+    assertTrue(project.getArtifact("CustomCompil").getAbsolutePath().contains("CustomCompil"));
+    assertTrue(project.getArtifact("CustomCompil").getAbsolutePath().endsWith(project.getName() + ".dll"));
+
   }
 
   @Test
@@ -101,6 +116,7 @@ public class ModelFactoryTest {
     assertThat(references, hasItems(systemReference));
 
     VisualStudioProject testProject = solution.getProject("Example.Core.Tests");
+    assertThat(testProject.isTest(), is(true));
     List<BinaryReference> testReferences = testProject.getBinaryReferences();
     BinaryReference nunitReference = new BinaryReference();
     nunitReference.setAssemblyName("nunit.core.interfaces");
@@ -108,6 +124,15 @@ public class ModelFactoryTest {
     nunitReference.setScope("test");
 
     assertThat(testReferences, hasItems(nunitReference));
+
+    // same test with the core nunit reference, defined a litle bit differently in
+    // the csproj file
+    BinaryReference nunitCoreReference = new BinaryReference();
+    nunitCoreReference.setAssemblyName("nunit.core");
+    nunitCoreReference.setVersion("2.4.8.0");
+    nunitCoreReference.setScope("test");
+
+    assertThat(testReferences, hasItems(nunitCoreReference));
 
   }
 
@@ -224,8 +249,12 @@ public class ModelFactoryTest {
   }
 
   @Test
-  @Ignore
   public void testWebSolution() throws Exception {
+    if ('/' == File.separatorChar) {
+      // test does not work on linux boxes
+      return;
+    }
+
     File file = new File(WEB_SOLUTION_PATH);
     VisualStudioSolution solution = ModelFactory.getSolution(file);
     log.debug("Solution : " + solution);
@@ -238,10 +267,9 @@ public class ModelFactoryTest {
       webProject = (VisualStudioWebProject) projects.get(1);
     }
     assertEquals(1, webProject.getReferences().size());
-    Set<File> webAssemblies = webProject.getWebAssemblies();
+    Set<File> webAssemblies = webProject.getGeneratedAssemblies(null);
     for (File assemblyFile : webAssemblies) {
       assertFalse("ClassLibrary.dll".equals(assemblyFile.getName()));
     }
-
   }
 }

@@ -62,8 +62,10 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.results.GendarmeResultParser;
+import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class GendarmeSensorTest {
 
@@ -78,7 +80,8 @@ public class GendarmeSensorTest {
 
     VisualStudioProject vsProject = mock(VisualStudioProject.class);
     when(vsProject.getName()).thenReturn("Project #1");
-    when(vsProject.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/Sensor/FakeAssemblies/Fake1.assembly")));
     solution = mock(VisualStudioSolution.class);
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
 

@@ -21,6 +21,7 @@ package org.sonar.donet.tools.fxcop;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -236,11 +237,12 @@ public final class FxCopCommandBuilder {
   }
 
   protected void addProjectAssembly(List<File> assemblyFileList, VisualStudioProject visualStudioProject) {
-    File assembly = visualStudioProject.getDebugArtifact() == null ? visualStudioProject.getReleaseArtifact() : visualStudioProject
-        .getDebugArtifact();
-    if (assembly != null && assembly.isFile()) {
-      LOG.debug(" - Found {}", assembly.getAbsolutePath());
-      assemblyFileList.add(assembly);
+    Set<File> assemblies = visualStudioProject.getGeneratedAssemblies("Debug");
+    for (File assembly : assemblies) {
+      if (assembly != null && assembly.isFile()) {
+        LOG.debug(" - Found {}", assembly.getAbsolutePath());
+        assemblyFileList.add(assembly);
+      }
     }
   }
 

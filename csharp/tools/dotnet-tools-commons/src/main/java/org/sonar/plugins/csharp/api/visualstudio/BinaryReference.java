@@ -61,7 +61,7 @@ public class BinaryReference {
 
   @Override
   public String toString() {
-    return assemblyName + ':' + version;
+    return assemblyName + ':' + version + ':' + scope;
   }
 
   @Override

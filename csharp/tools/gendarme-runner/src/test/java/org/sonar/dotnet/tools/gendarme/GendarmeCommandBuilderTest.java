@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.api.utils.command.Command;
@@ -37,18 +36,20 @@ import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
 import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class GendarmeCommandBuilderTest {
 
-  public static VisualStudioProject project;
+  public static VisualStudioProject vsProject;
   public static VisualStudioSolution solution;
 
   @BeforeClass
   public static void initData() {
-    project = mock(VisualStudioProject.class);
+    vsProject = mock(VisualStudioProject.class);
     solution = mock(VisualStudioSolution.class);
-    when(project.getReleaseArtifact()).thenReturn(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly"));
-    when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly")));
+    when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
   }
 
   @Test
@@ -72,7 +73,7 @@ public class GendarmeCommandBuilderTest {
 
   @Test
   public void testToCommandForProject() throws Exception {
-    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(project);
+    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(vsProject);
     builder.setExecutable(new File("gendarme.exe"));
     builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.setReportFile(new File("gendarme-report.xml"));
@@ -97,7 +98,7 @@ public class GendarmeCommandBuilderTest {
 
   @Test(expected = IllegalStateException.class)
   public void testOnlyTestProject() throws Exception {
-    when(project.isTest()).thenReturn(true);
+    when(vsProject.isTest()).thenReturn(true);
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(solution);
     builder.toCommand();
   }
@@ -110,7 +111,8 @@ public class GendarmeCommandBuilderTest {
 
   @Test(expected = IllegalStateException.class)
   public void testToArrayWithNoExistingAssembly() throws Exception {
-    when(project.getReleaseArtifact()).thenReturn(FileUtils.toFile(getClass().getResource("nothing")));
+    when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
+        Sets.newHashSet(TestUtils.getResource("/Runner/FakeAssemblies/Unexisting.assembly")));
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(solution);
     builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.toCommand();
