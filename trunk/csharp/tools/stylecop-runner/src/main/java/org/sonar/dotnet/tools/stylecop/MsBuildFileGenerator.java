@@ -117,9 +117,16 @@ public class MsBuildFileGenerator {
 
   private void generateProjectList(Writer writer, List<VisualStudioProject> vsProjects) throws IOException {
     for (VisualStudioProject project : vsProjects) {
-      writer.append("        <Project Include=\"");
-      StringEscapeUtils.escapeXml(writer, project.getProjectFile().getAbsolutePath());
-      writer.append("\"></Project>\n");
+      if (project.getProjectFile() == null) {
+        // this is a Web project without ".csproj" file, we need to add a wildcard pattern
+        writer.append("        <CSFile Include=\"");
+        StringEscapeUtils.escapeXml(writer, project.getDirectory().getAbsolutePath() + "\\**\\*.cs");
+        writer.append("\"></CSFile>\n");
+      } else {
+        writer.append("        <Project Include=\"");
+        StringEscapeUtils.escapeXml(writer, project.getProjectFile().getAbsolutePath());
+        writer.append("\"></Project>\n");
+      }
     }
   }
 
