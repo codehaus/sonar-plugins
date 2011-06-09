@@ -100,7 +100,7 @@ public class StyleCopCommandBuilderTest {
   }
 
   private String replaceSlashWithOSSeperator(String path) {
-    return path.replaceAll("\\\\", File.separator);
+    return path.replaceAll("/", File.separator);
   }
 
 }
