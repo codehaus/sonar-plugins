@@ -34,6 +34,7 @@ import org.sonar.api.batch.bootstrap.ProjectReactor;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
+import org.sonar.plugins.csharp.api.DotNetToolsException;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.visualstudio.ModelFactory;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
@@ -152,6 +153,8 @@ public class VisualStudioProjectBuilder extends ProjectBuilder {
       VisualStudioSolution solution = ModelFactory.getSolution(slnFile);
       microsoftWindowsEnvironment.setCurrentSolution(solution);
     } catch (IOException e) {
+      throw new SonarException("Error occured while reading Visual Studio files.", e);
+    } catch (DotNetToolsException e) {
       throw new SonarException("Error occured while reading Visual Studio files.", e);
     }
   }

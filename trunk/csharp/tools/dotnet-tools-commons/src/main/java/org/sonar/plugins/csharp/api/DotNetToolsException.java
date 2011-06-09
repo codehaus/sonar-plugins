@@ -1,5 +1,5 @@
 /*
- * .NET tools :: StyleCop Runner
+ * .NET tools :: Commons
  * Copyright (C) 2011 Jose Chillan, Alexandre Victoor and SonarSource
  * dev@sonar.codehaus.org
  *
@@ -17,28 +17,39 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
-package org.sonar.dotnet.tools.stylecop;
+/**
+ * 
+ */
+package org.sonar.plugins.csharp.api;
 
 /**
- * Exception generated for StyleCop execution.
+ * Exception class for the .NET Tools
+ * 
  */
-public class StyleCopException extends Exception {
+public class DotNetToolsException extends Exception {
 
-  private static final long serialVersionUID = -8744090490644930724L;
+  private static final long serialVersionUID = -2730236966462112505L;
 
   /**
-   * {@inheritDoc}
+   * Creates a {@link DotNetToolsException}
+   * 
+   * @param message
+   *          the message
+   * @param cause
+   *          the cause
    */
-  public StyleCopException(String message) {
-    super(message);
+  public DotNetToolsException(String message, Throwable cause) {
+    super(message, cause);
   }
 
   /**
-   * {@inheritDoc}
+   * Creates a {@link DotNetToolsException}
+   * 
+   * @param cause
+   *          the cause
    */
-  public StyleCopException(String message, Throwable cause) {
-    super(message, cause);
+  public DotNetToolsException(String cause) {
+    super(cause);
   }
 
 }
