@@ -6,7 +6,7 @@
     </PropertyGroup>
     <UsingTask TaskName="StyleCopTask" AssemblyFile="$(StyleCopRoot)\Microsoft.StyleCop.dll"></UsingTask>
     <ItemGroup>
-        <Project Include="PROJECT.csproj"></Project>
+        <CSFile Include="PROJECT-PATH\**\*.cs"></CSFile>
     </ItemGroup>
     <Target Name="StyleCopLaunch">
         <CreateItem Include="%(Project.RootDir)%(Project.Directory)**\*.cs">

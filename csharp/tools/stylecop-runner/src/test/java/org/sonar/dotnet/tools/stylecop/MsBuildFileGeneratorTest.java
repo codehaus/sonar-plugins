@@ -57,9 +57,11 @@ public class MsBuildFileGeneratorTest {
     when(project.getProjectFile()).thenReturn(projectFile);
     when(solution.getProjects()).thenReturn(Lists.newArrayList(project));
 
+    File styleCopDir = mock(File.class);
+    when(styleCopDir.getAbsolutePath()).thenReturn("StyleCopDir");
+
     outputFolder = new File("target/MsBuildFileGenerator");
-    generator = new MsBuildFileGenerator(solution, TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"), outputFolder, new File(
-        "/StyleCopDir"));
+    generator = new MsBuildFileGenerator(solution, TestUtils.getResource("/Runner/Command/SimpleRules.StyleCop"), outputFolder, styleCopDir);
   }
 
   @Test
@@ -83,5 +85,23 @@ public class MsBuildFileGeneratorTest {
     StringWriter writer = new StringWriter();
     generator.generateContent(writer, styleCopRuleFile, reportFile, Lists.newArrayList(project));
     TestUtils.assertSimilarXml(TestUtils.getResourceContent("/Runner/MSBuild/stylecop-msbuild_for-tests.xml"), writer.toString());
+  }
+
+  @Test
+  public void testGenerateContentForWebProject() throws Exception {
+    when(project.getProjectFile()).thenReturn(null);
+    File projectDir = mock(File.class);
+    when(projectDir.getAbsolutePath()).thenReturn("PROJECT-PATH");
+    when(project.getDirectory()).thenReturn(projectDir);
+
+    File reportFile = mock(File.class);
+    when(reportFile.getAbsolutePath()).thenReturn("REPORTFILE");
+    File styleCopRuleFile = mock(File.class);
+    when(styleCopRuleFile.getAbsolutePath()).thenReturn("STYLECOPRULEFILE");
+
+    StringWriter writer = new StringWriter();
+    generator.generateContent(writer, styleCopRuleFile, reportFile, Lists.newArrayList(project));
+    TestUtils.assertSimilarXml(TestUtils.getResourceContent("/Runner/MSBuild/stylecop-msbuild_for-tests-web-project.xml"),
+        writer.toString());
   }
 }
