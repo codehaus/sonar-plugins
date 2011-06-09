@@ -205,7 +205,21 @@ public final class FxCopCommandBuilder {
 
     command.addArgument("/gac");
 
+    if (isAspUsed()) {
+      command.addArgument("/aspnet");
+    }
+
     return command;
+  }
+
+  private boolean isAspUsed() {
+    boolean isAspUsed = false;
+    if (vsProject != null) {
+      isAspUsed = vsProject.isWebProject();
+    } else if (solution != null) {
+      isAspUsed = solution.isAspUsed();
+    }
+    return isAspUsed;
   }
 
   private List<File> getAssembliesToScan() {
@@ -220,7 +234,7 @@ public final class FxCopCommandBuilder {
     return assemblyFileList;
   }
 
-  protected List<File> findAssembliesToScan() {
+  private List<File> findAssembliesToScan() {
     List<File> assemblyFileList = Lists.newArrayList();
     if (vsProject != null) {
       addProjectAssembly(assemblyFileList, vsProject);
@@ -236,7 +250,7 @@ public final class FxCopCommandBuilder {
     return assemblyFileList;
   }
 
-  protected void addProjectAssembly(List<File> assemblyFileList, VisualStudioProject visualStudioProject) {
+  private void addProjectAssembly(List<File> assemblyFileList, VisualStudioProject visualStudioProject) {
     Set<File> assemblies = visualStudioProject.getGeneratedAssemblies("Debug");
     for (File assembly : assemblies) {
       if (assembly != null && assembly.isFile()) {
