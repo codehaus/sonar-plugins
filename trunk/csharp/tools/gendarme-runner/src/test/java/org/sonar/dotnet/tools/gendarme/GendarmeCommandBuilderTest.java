@@ -22,7 +22,10 @@ package org.sonar.dotnet.tools.gendarme;
 
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,8 +43,8 @@ import com.google.common.collect.Sets;
 
 public class GendarmeCommandBuilderTest {
 
-  public static VisualStudioProject vsProject;
-  public static VisualStudioSolution solution;
+  private static VisualStudioProject vsProject;
+  private static VisualStudioSolution solution;
 
   @BeforeClass
   public static void initData() {
@@ -49,6 +52,7 @@ public class GendarmeCommandBuilderTest {
     solution = mock(VisualStudioSolution.class);
     when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
         Sets.newHashSet(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly")));
+    when(vsProject.getArtifactDirectory("Debug")).thenReturn(TestUtils.getResource("/runner/FakeAssemblies"));
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
   }
 
@@ -88,6 +92,49 @@ public class GendarmeCommandBuilderTest {
     assertThat(commands[6], is("normal+"));
     assertThat(commands[8], is("all"));
     assertThat(commands[9], endsWith("Fake1.assembly"));
+  }
+
+  @Test
+  public void testToCommandForSilverlightProject() throws Exception {
+    when(vsProject.isSilverlightProject()).thenReturn(true);
+
+    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(vsProject);
+    builder.setExecutable(new File("gendarme.exe"));
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
+    builder.setReportFile(new File("gendarme-report.xml"));
+    builder.setSilverlightFolder(TestUtils.getResource("/runner/SilverlightFolder"));
+    builder.toCommand();
+
+    File copiedSilverlightAssembly = TestUtils.getResource("/runner/FakeAssemblies/mscorlib.dll");
+    assertThat(copiedSilverlightAssembly, notNullValue());
+    assertTrue(copiedSilverlightAssembly.isFile());
+    copiedSilverlightAssembly.delete();
+    assertFalse(copiedSilverlightAssembly.exists());
+  }
+
+  @Test(expected = GendarmeException.class)
+  public void testToCommandForSilverlightProjectWithWrongPath() throws Exception {
+    when(vsProject.isSilverlightProject()).thenReturn(true);
+
+    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(vsProject);
+    builder.setExecutable(new File("gendarme.exe"));
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
+    builder.setReportFile(new File("gendarme-report.xml"));
+    builder.setSilverlightFolder(TestUtils.getResource("/runner/UnexistingSilverlightFolder"));
+    builder.toCommand();
+  }
+
+  @Test(expected = GendarmeException.class)
+  public void testToCommandForSilverlightProjectWithWrongArtifactDirectory() throws Exception {
+    when(vsProject.isSilverlightProject()).thenReturn(true);
+    when(vsProject.getArtifactDirectory("Debug")).thenReturn(TestUtils.getResource("/runner/UnexistingDirectory"));
+
+    GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(vsProject);
+    builder.setExecutable(new File("gendarme.exe"));
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
+    builder.setReportFile(new File("gendarme-report.xml"));
+    builder.setSilverlightFolder(TestUtils.getResource("/runner/SilverlightFolder"));
+    builder.toCommand();
   }
 
   @Test(expected = IllegalStateException.class)

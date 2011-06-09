@@ -143,8 +143,8 @@ public class GendarmeSensor extends AbstractCSharpSensor {
     builder.setConfidence(configuration
         .getString(GendarmeConstants.GENDARME_CONFIDENCE_KEY, GendarmeConstants.GENDARME_CONFIDENCE_DEFVALUE));
     builder.setSeverity("all");
-    runner.execute(builder.toCommand(),
-        configuration.getInt(GendarmeConstants.TIMEOUT_MINUTES_KEY, GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE));
+    builder.setSilverlightFolder(getMicrosoftWindowsEnvironment().getSilverlightDirectory());
+    runner.execute(builder, configuration.getInt(GendarmeConstants.TIMEOUT_MINUTES_KEY, GendarmeConstants.TIMEOUT_MINUTES_DEFVALUE));
   }
 
   protected Collection<File> getReportFilesList() {

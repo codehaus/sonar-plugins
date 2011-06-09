@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
   private static final String EMBEDDED_VERSION = "2.10";
 
   private File gendarmeExecutable;
+  private VisualStudioProject vsProject;
 
   private GendarmeRunner() {
   }
@@ -103,6 +105,7 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
    * @return the command to complete.
    */
   public GendarmeCommandBuilder createCommandBuilder(VisualStudioProject project) {
+    this.vsProject = project;
     GendarmeCommandBuilder builder = GendarmeCommandBuilder.createBuilder(project);
     builder.setExecutable(gendarmeExecutable);
     return builder;
@@ -118,12 +121,24 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
    * @throws GendarmeException
    *           if Gendarme fails to execute
    */
-  public void execute(Command command, int timeoutMinutes) throws GendarmeException {
+  public void execute(GendarmeCommandBuilder gendarmeCommandBuilder, int timeoutMinutes) throws GendarmeException {
     LOG.debug("Executing Gendarme program...");
-    int exitCode = CommandExecutor.create().execute(command, timeoutMinutes * MINUTES_TO_MILLISECONDS);
-    // Gendarme returns 1 when the analysis is successful but contains violations, so 1 is valid
-    if (exitCode != 0 && exitCode != 1) {
-      throw new GendarmeException(exitCode);
+    try {
+      int exitCode = CommandExecutor.create().execute(gendarmeCommandBuilder.toCommand(), timeoutMinutes * MINUTES_TO_MILLISECONDS);
+      // Gendarme returns 1 when the analysis is successful but contains violations, so 1 is valid
+      if (exitCode != 0 && exitCode != 1) {
+        throw new GendarmeException(exitCode);
+      }
+    } finally {
+      cleanupFiles(gendarmeCommandBuilder.getBuildConfigurations());
+    }
+  }
+
+  protected void cleanupFiles(String buildConfigurations) {
+    if (vsProject != null && vsProject.isSilverlightProject()) {
+      // need to remove the Silverlight mscorlib.dll
+      LOG.debug("Delete Silverlight Mscorlib.dll file");
+      FileUtils.deleteQuietly(new File(vsProject.getArtifactDirectory(buildConfigurations), "mscorlib.dll"));
     }
   }
 
