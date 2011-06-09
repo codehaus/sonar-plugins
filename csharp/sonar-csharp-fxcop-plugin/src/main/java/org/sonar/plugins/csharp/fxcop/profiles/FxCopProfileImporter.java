@@ -51,7 +51,6 @@ public class FxCopProfileImporter extends ProfileImporter {
     this.ruleFinder = ruleFinder;
   }
 
-  // TODO This is not enough, we should look at "RuleFile ... AllRulesEnabled=True" as well.
   /**
    * {@inheritDoc}
    */

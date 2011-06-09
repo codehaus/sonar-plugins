@@ -38,6 +38,7 @@ public final class FxCopCommandBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopCommandBuilder.class);
   private static final int DEFAULT_TIMEOUT = 10;
+  private static final int MINUTES_TO_SECONDS = 60;
 
   private VisualStudioSolution solution;
   private VisualStudioProject vsProject;
@@ -229,7 +230,7 @@ public final class FxCopCommandBuilder {
       command.addArgument("/igc");
     }
 
-    command.addArgument("/to:" + timeoutMinutes * 60);
+    command.addArgument("/to:" + timeoutMinutes * MINUTES_TO_SECONDS);
 
     command.addArgument("/gac");
 
@@ -261,7 +262,7 @@ public final class FxCopCommandBuilder {
   }
 
   private List<File> getAssembliesToScan() {
-    List<File> assemblyFileList = Lists.newArrayList();
+    List<File> assemblyFileList = null;
     if (assembliesToScan.length == 0) {
       LOG.debug("No assembly specified: will look into 'csproj' files to find which should be analyzed.");
       assemblyFileList = findAssembliesToScan();

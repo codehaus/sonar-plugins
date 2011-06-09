@@ -28,11 +28,11 @@ public final class StyleCopConstants {
   private StyleCopConstants() {
   }
 
-  public static final String PLUGIN_KEY = "stylecop";
-  public static final String PLUGIN_NAME = "StyleCop";
+  public static final String PLUGIN_KEY = "csharpstylecop";
+  public static final String PLUGIN_NAME = "C# StyleCop";
 
   public static final String REPOSITORY_KEY = PLUGIN_KEY;
-  public static final String REPOSITORY_NAME = PLUGIN_NAME;
+  public static final String REPOSITORY_NAME = "StyleCop";
 
   public static final String STYLECOP_RULES_FILE = "sonar.StyleCop";
   public static final String STYLECOP_REPORT_XML = "stylecop-report.xml";

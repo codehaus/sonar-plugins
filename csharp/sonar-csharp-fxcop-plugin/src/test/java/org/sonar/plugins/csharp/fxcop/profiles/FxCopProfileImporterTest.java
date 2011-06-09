@@ -40,6 +40,7 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.plugins.csharp.fxcop.FxCopConstants;
 import org.sonar.test.TestUtils;
 
 public class FxCopProfileImporterTest {
@@ -59,9 +60,12 @@ public class FxCopProfileImporterTest {
     RulesProfile profile = importer.importProfile(reader, messages);
 
     assertThat(profile.getActiveRules().size(), is(3));
-    assertNotNull(profile.getActiveRuleByConfigKey("fxcop", "AssembliesShouldHaveValidStrongNames@$(FxCopDir)\\Rules\\DesignRules.dll"));
-    assertNotNull(profile.getActiveRuleByConfigKey("fxcop", "UsePropertiesWhereAppropriate@$(FxCopDir)\\Rules\\DesignRules.dll"));
-    assertNotNull(profile.getActiveRuleByConfigKey("fxcop", "AvoidDuplicateAccelerators@$(FxCopDir)\\Rules\\GlobalizationRules.dll"));
+    assertNotNull(profile.getActiveRuleByConfigKey(FxCopConstants.REPOSITORY_KEY,
+        "AssembliesShouldHaveValidStrongNames@$(FxCopDir)\\Rules\\DesignRules.dll"));
+    assertNotNull(profile.getActiveRuleByConfigKey(FxCopConstants.REPOSITORY_KEY,
+        "UsePropertiesWhereAppropriate@$(FxCopDir)\\Rules\\DesignRules.dll"));
+    assertNotNull(profile.getActiveRuleByConfigKey(FxCopConstants.REPOSITORY_KEY,
+        "AvoidDuplicateAccelerators@$(FxCopDir)\\Rules\\GlobalizationRules.dll"));
     assertThat(messages.hasErrors(), is(false));
   }
 

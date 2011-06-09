@@ -24,7 +24,6 @@ import java.io.File;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.utils.command.Command;
 import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
@@ -36,7 +35,7 @@ public class FxCopRunner { // NOSONAR : can't mock it otherwise
 
   private static final Logger LOG = LoggerFactory.getLogger(FxCopRunner.class);
 
-  private static final int MINUTES_TO_MILLISECONDS = 60000;
+  private static final long MINUTES_TO_MILLISECONDS = 60000;
 
   private File fxCopExecutable;
 
@@ -56,8 +55,8 @@ public class FxCopRunner { // NOSONAR : can't mock it otherwise
   }
 
   /**
-   * Creates a pre-configured {@link FxCopCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
-   * method.
+   * Creates a pre-configured {@link FxCopCommandBuilder} that needs to be completed before running the
+   * {@link #execute(FxCopCommandBuilder, int)} method.
    * 
    * @param solution
    *          the solution to analyse
@@ -70,8 +69,8 @@ public class FxCopRunner { // NOSONAR : can't mock it otherwise
   }
 
   /**
-   * Creates a pre-configured {@link FxCopCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
-   * method.
+   * Creates a pre-configured {@link FxCopCommandBuilder} that needs to be completed before running the
+   * {@link #execute(FxCopCommandBuilder, int)} method.
    * 
    * @param project
    *          the VS project to analyse

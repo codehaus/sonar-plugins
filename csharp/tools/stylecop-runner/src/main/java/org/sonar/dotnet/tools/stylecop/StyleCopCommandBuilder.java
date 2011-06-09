@@ -41,7 +41,6 @@ public final class StyleCopCommandBuilder {
   private File styleCopReportFile;
   private File dotnetSdkDirectory;
   private File styleCopFolder;
-  private File msBuildFile;
 
   private StyleCopCommandBuilder() {
   }
@@ -131,7 +130,7 @@ public final class StyleCopCommandBuilder {
   public Command toCommand() {
     validate();
     MsBuildFileGenerator msBuildFileGenerator = new MsBuildFileGenerator(solution, styleCopConfigFile, styleCopReportFile, styleCopFolder);
-    msBuildFile = msBuildFileGenerator.generateFile(styleCopReportFile.getParentFile(), vsProject);
+    File msBuildFile = msBuildFileGenerator.generateFile(styleCopReportFile.getParentFile(), vsProject);
 
     LOG.debug("- MSBuild path          : " + dotnetSdkDirectory.getAbsolutePath());
     Command command = Command.create(new File(dotnetSdkDirectory, "MSBuild.exe").getAbsolutePath());
@@ -156,7 +155,4 @@ public final class StyleCopCommandBuilder {
     }
   }
 
-  protected VisualStudioSolution getSolution() {
-    return solution;
-  }
 }

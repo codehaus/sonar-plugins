@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sonar.api.Extension;
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileImporter;
 import org.sonar.plugins.csharp.fxcop.profiles.SonarWayProfile;
@@ -52,30 +52,7 @@ import org.sonar.plugins.csharp.fxcop.profiles.SonarWayProfile;
         description = "Possible values : empty (means active), 'skip' and 'reuseReport'.", global = true, project = true),
     @Property(key = FxCopConstants.REPORTS_PATH_KEY, defaultValue = "", name = "Name of the FxCop report files",
         description = "Name of the FxCop report file used when reuse report mode is activated.", global = true, project = true) })
-public class FxCopPlugin implements Plugin {
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getKey() {
-    return FxCopConstants.PLUGIN_KEY;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getName() {
-    return FxCopConstants.PLUGIN_NAME;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getDescription() {
-    return "FxCop is an application that analyzes managed code assemblies (code that targets the .NET Framework common language runtime) "
-        + "and reports information about the assemblies, such as possible design, localization, performance, and security improvements. "
-        + "You can find more by going to the <a href='http://msdn.microsoft.com/en-us/library/bb429476(v=VS.80).aspx'>FxCop web site</a>.";
-  }
+public class FxCopPlugin extends SonarPlugin {
 
   /**
    * {@inheritDoc}
@@ -94,13 +71,5 @@ public class FxCopPlugin implements Plugin {
     list.add(FxCopResultParser.class);
 
     return list;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String toString() {
-    return getKey();
   }
 }

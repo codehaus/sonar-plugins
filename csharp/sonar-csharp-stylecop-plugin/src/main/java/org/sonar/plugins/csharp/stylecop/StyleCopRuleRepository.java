@@ -49,7 +49,8 @@ public class StyleCopRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    rules.addAll(xmlRuleParser.parse(getClass().getResourceAsStream("/org/sonar/plugins/csharp/stylecop/rules/rules.xml")));
+    rules
+        .addAll(xmlRuleParser.parse(StyleCopRuleRepository.class.getResourceAsStream("/org/sonar/plugins/csharp/stylecop/rules/rules.xml")));
     for (File userExtensionXml : fileSystem.getExtensions(StyleCopConstants.REPOSITORY_KEY, "xml")) {
       rules.addAll(xmlRuleParser.parse(userExtensionXml));
     }

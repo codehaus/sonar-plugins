@@ -143,7 +143,7 @@ public class FxCopProfileExporter extends ProfileExporter {
   }
 
   private void printIntoWriter(Writer writer, String fileName) throws IOException {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(fileName)));
+    BufferedReader reader = new BufferedReader(new InputStreamReader(FxCopProfileExporter.class.getResourceAsStream(fileName)));
     try {
       String line = reader.readLine();
       while (line != null) {

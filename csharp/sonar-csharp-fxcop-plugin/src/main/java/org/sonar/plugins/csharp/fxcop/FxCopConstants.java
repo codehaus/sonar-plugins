@@ -28,11 +28,11 @@ public final class FxCopConstants {
   private FxCopConstants() {
   }
 
-  public static final String PLUGIN_KEY = "fxcop";
-  public static final String PLUGIN_NAME = "FxCop";
+  public static final String PLUGIN_KEY = "csharpfxcop";
+  public static final String PLUGIN_NAME = "C# FxCop";
 
   public static final String REPOSITORY_KEY = PLUGIN_KEY;
-  public static final String REPOSITORY_NAME = PLUGIN_NAME;
+  public static final String REPOSITORY_NAME = "FxCop";
 
   public static final String FXCOP_RULES_FILE = "sonar.FxCop";
   public static final String FXCOP_REPORT_XML = "fxcop-report.xml";

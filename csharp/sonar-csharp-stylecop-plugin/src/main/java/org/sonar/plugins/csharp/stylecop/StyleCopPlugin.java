@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sonar.api.Extension;
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.csharp.stylecop.profiles.SonarWayProfile;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileExporter;
 import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileImporter;
@@ -45,29 +45,7 @@ import org.sonar.plugins.csharp.stylecop.profiles.StyleCopProfileImporter;
         description = "Possible values : empty (means active), 'skip' and 'reuseReport'.", global = true, project = true),
     @Property(key = StyleCopConstants.REPORTS_PATH_KEY, defaultValue = "", name = "Name of the StyleCop report files",
         description = "Name of the StyleCop report file used when reuse report mode is activated.", global = true, project = true) })
-public class StyleCopPlugin implements Plugin {
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getKey() {
-    return StyleCopConstants.PLUGIN_KEY;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getName() {
-    return StyleCopConstants.PLUGIN_NAME;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getDescription() {
-    return "StyleCop analyzes C# source code to enforce a set of style and consistency rules."
-        + "You can find more by going to the <a href='http://stylecop.codeplex.com'>StyleCop web site</a>.";
-  }
+public class StyleCopPlugin extends SonarPlugin {
 
   /**
    * {@inheritDoc}
@@ -85,13 +63,5 @@ public class StyleCopPlugin implements Plugin {
     // Running StyleCop
     list.add(StyleCopResultParser.class);
     return list;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String toString() {
-    return getKey();
   }
 }

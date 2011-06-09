@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Sets;
 
 /**
  * A dot net project extracted from a solution
@@ -189,13 +190,12 @@ public class VisualStudioProject {
    * @return a Set of the generated assembly files. If no files found, the set will be empty.
    */
   public Set<File> getGeneratedAssemblies(String buildConfigurations) {
-    Set<File> result = null;
+    Set<File> result = Sets.newHashSet();
     File assembly = getArtifact(buildConfigurations);
     if (assembly.exists()) {
-      result = Collections.singleton(assembly);
+      result.add(assembly);
     } else {
       LOG.info("Skipping the non generated assembly of project : {}", name);
-      result = Collections.EMPTY_SET;
     }
     return result;
   }
