@@ -45,15 +45,13 @@ public final class FxCopCommandBuilder {
   private File fxCopConfigFile;
   private File fxCopReportFile;
   private File silverlightFolder;
-  private String[] assembliesToScan;
-  private String[] assemblyDependencyDirectories;
+  private String[] assembliesToScan = new String[] {};
+  private String[] assemblyDependencyDirectories = new String[] {};
   private boolean ignoreGeneratedCode;
-  private int timeoutMinutes;
+  private int timeoutMinutes = DEFAULT_TIMEOUT;
+  private String buildConfigurations = "Debug";
 
   private FxCopCommandBuilder() {
-    assembliesToScan = new String[] {};
-    assemblyDependencyDirectories = new String[] {};
-    timeoutMinutes = DEFAULT_TIMEOUT;
   }
 
   /**
@@ -179,6 +177,18 @@ public final class FxCopCommandBuilder {
   }
 
   /**
+   * Sets the build configurations. By default, it is "Debug".
+   * 
+   * @param buildConfigurations
+   *          the build configurations
+   * @return the current builder
+   */
+  public FxCopCommandBuilder setBuildConfigurations(String buildConfigurations) {
+    this.buildConfigurations = buildConfigurations;
+    return this;
+  }
+
+  /**
    * Transforms this command object into a array of string that can be passed to the CommandExecutor.
    * 
    * @return the Command that represent the command to launch.
@@ -279,7 +289,7 @@ public final class FxCopCommandBuilder {
   }
 
   private void addProjectAssembly(List<File> assemblyFileList, VisualStudioProject visualStudioProject) {
-    Set<File> assemblies = visualStudioProject.getGeneratedAssemblies("Debug");
+    Set<File> assemblies = visualStudioProject.getGeneratedAssemblies(buildConfigurations);
     for (File assembly : assemblies) {
       if (assembly != null && assembly.isFile()) {
         LOG.debug(" - Found {}", assembly.getAbsolutePath());

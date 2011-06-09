@@ -21,9 +21,11 @@
 package org.sonar.dotnet.tools.gendarme;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.utils.command.Command;
@@ -42,10 +44,12 @@ public final class GendarmeCommandBuilder {
   private VisualStudioSolution solution;
   private VisualStudioProject vsProject;
   private File gendarmeExecutable;
+  private File silverlightFolder;
   private String gendarmeConfidence = "normal+";
   private String gendarmeSeverity = "all";
   private File gendarmeConfigFile;
   private File gendarmeReportFile;
+  private String buildConfigurations = "Debug";
 
   private GendarmeCommandBuilder() {
   }
@@ -113,6 +117,18 @@ public final class GendarmeCommandBuilder {
   }
 
   /**
+   * Sets the Silverlight folder
+   * 
+   * @param silverlightFolder
+   *          the Silverlight folder
+   * @return the current builder
+   */
+  public GendarmeCommandBuilder setSilverlightFolder(File silverlightFolder) {
+    this.silverlightFolder = silverlightFolder;
+    return this;
+  }
+
+  /**
    * Sets the Gendarme confidence level. By default "normal+" if nothing is specified.
    * 
    * @param gendarmeConfidence
@@ -137,11 +153,27 @@ public final class GendarmeCommandBuilder {
   }
 
   /**
+   * Sets the build configurations. By default, it is "Debug".
+   * 
+   * @param buildConfigurations
+   *          the build configurations
+   * @return the current builder
+   */
+  public GendarmeCommandBuilder setBuildConfigurations(String buildConfigurations) {
+    this.buildConfigurations = buildConfigurations;
+    return this;
+  }
+
+  protected String getBuildConfigurations() {
+    return buildConfigurations;
+  }
+
+  /**
    * Transforms this command object into a Command object that can be passed to the CommandExecutor.
    * 
    * @return the Command object that represents the command to launch.
    */
-  public Command toCommand() {
+  public Command toCommand() throws GendarmeException {
     List<File> assemblyToScanFiles = findAssembliesToScan();
     validate(assemblyToScanFiles);
 
@@ -173,7 +205,29 @@ public final class GendarmeCommandBuilder {
       command.addArgument(checkedAssembly.getAbsolutePath());
     }
 
+    if (vsProject != null && vsProject.isSilverlightProject()) {
+      copySilverlightAssembly();
+    }
+
     return command;
+  }
+
+  protected void copySilverlightAssembly() throws GendarmeException {
+    File silverlightAssembly = new File(silverlightFolder, "mscorlib.dll");
+    if (silverlightAssembly == null || !silverlightAssembly.isFile()) {
+      throw new GendarmeException("Could not find Silverlight Mscorlib.dll assembly. Please check your settings.");
+    }
+    File destinationDirectory = vsProject.getArtifactDirectory(buildConfigurations);
+    if (destinationDirectory == null) {
+      throw new GendarmeException("Impossible to copy Silverlight Mscorlib.dll as there is no existing artifact "
+          + "directory for the build configuration: " + buildConfigurations);
+    }
+    try {
+      LOG.debug("Copy Silverlight Mscorlib.dll file ");
+      FileUtils.copyFileToDirectory(silverlightAssembly, destinationDirectory);
+    } catch (IOException e) {
+      throw new GendarmeException("Cannot copy Silverlight 'mscorlib.dll' file to " + destinationDirectory, e);
+    }
   }
 
   protected List<File> findAssembliesToScan() {
@@ -193,7 +247,7 @@ public final class GendarmeCommandBuilder {
   }
 
   protected void addProjectAssembly(List<File> assemblyFileList, VisualStudioProject visualStudioProject) {
-    Set<File> assemblies = visualStudioProject.getGeneratedAssemblies("Debug");
+    Set<File> assemblies = visualStudioProject.getGeneratedAssemblies(buildConfigurations);
     for (File assembly : assemblies) {
       if (assembly != null && assembly.isFile()) {
         LOG.debug(" - Found {}", assembly.getAbsolutePath());

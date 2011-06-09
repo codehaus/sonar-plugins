@@ -53,7 +53,6 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.rules.ActiveRule;
-import org.sonar.api.utils.command.Command;
 import org.sonar.dotnet.tools.gendarme.GendarmeCommandBuilder;
 import org.sonar.dotnet.tools.gendarme.GendarmeRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
@@ -113,7 +112,7 @@ public class GendarmeSensorTest {
     when(project.getName()).thenReturn("Project #1");
 
     sensor.launchGendarme(project, runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeGendarmeConfigFile.xml")));
-    verify(runner).execute(any(Command.class), eq(10));
+    verify(runner).execute(any(GendarmeCommandBuilder.class), eq(10));
   }
 
   @Test

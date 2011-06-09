@@ -142,8 +142,8 @@ public class VisualStudioProject {
    *                            used to generate the project
    * @return
    */
-  public final File getArtifactDirectory(String buildConfigurations) {
-    final File artifactDirectory;
+  public File getArtifactDirectory(String buildConfigurations) {
+    File artifactDirectory = null;
     if (StringUtils.isNotEmpty(forcedOutputDir)) {
       // first trying to use forcedOutputDir as a relative path
       File assemblyDirectory = new File(directory, forcedOutputDir);
@@ -178,7 +178,7 @@ public class VisualStudioProject {
    * @return 
    */
   public File getArtifact(String buildConfigurations) {
-    final File artifactDirectory = getArtifactDirectory(buildConfigurations);
+    File artifactDirectory = getArtifactDirectory(buildConfigurations);
     return new File(artifactDirectory, getArtifactName());
   }
   
@@ -191,7 +191,7 @@ public class VisualStudioProject {
    * @return a Set of the generated assembly files. If no files found, the set will be empty.
    */
   public Set<File> getGeneratedAssemblies(String buildConfigurations) {
-    final Set<File> result;
+    Set<File> result  = null;
     File assembly = getArtifact(buildConfigurations);
     if (assembly.exists()) {
       result = Collections.singleton(assembly);
@@ -371,7 +371,7 @@ public class VisualStudioProject {
    * @return the extension
    */
   public String getExtension() {
-    final String result;
+    String result  = null;
     switch (type) {
       case EXECUTABLE:
         result = "exe";

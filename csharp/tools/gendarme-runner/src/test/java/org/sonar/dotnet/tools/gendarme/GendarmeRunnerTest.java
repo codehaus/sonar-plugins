@@ -21,7 +21,10 @@
 package org.sonar.dotnet.tools.gendarme;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,36 +41,55 @@ import com.google.common.collect.Sets;
 
 public class GendarmeRunnerTest {
 
-  public VisualStudioSolution solution;
-  public VisualStudioProject vsProject;
+  private VisualStudioSolution solution;
+  private VisualStudioProject vsProject;
+  private GendarmeRunner runner;
+  private String fakeExecPath;
 
   @Before
-  public void initData() {
+  public void initData() throws Exception {
     vsProject = mock(VisualStudioProject.class);
     solution = mock(VisualStudioSolution.class);
     when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
         Sets.newHashSet(TestUtils.getResource("/runner/FakeAssemblies/Fake1.assembly")));
+    when(vsProject.getArtifactDirectory("Debug")).thenReturn(TestUtils.getResource("/runner/FakeAssemblies"));
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
+
+    fakeExecPath = TestUtils.getResource("/runner/FakeGendarmeExecutable.txt").getAbsolutePath();
+    runner = GendarmeRunner.create(fakeExecPath, new File("target/sonar/tempFolder").getAbsolutePath());
   }
 
   @Test
   public void testCreateCommandBuilderForSolution() throws Exception {
-    String fakeExec = TestUtils.getResource("/runner/FakeGendarmeExecutable.txt").getAbsolutePath();
-    GendarmeRunner runner = GendarmeRunner.create(fakeExec, new File("target/sonar/tempFolder").getAbsolutePath());
     GendarmeCommandBuilder builder = runner.createCommandBuilder(solution);
     builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.setReportFile(new File("gendarme-report.xml"));
-    assertThat(builder.toCommand().getExecutable(), is(fakeExec));
+    assertThat(builder.toCommand().getExecutable(), is(fakeExecPath));
   }
 
   @Test
   public void testCreateCommandBuilderForProject() throws Exception {
-    String fakeExec = TestUtils.getResource("/runner/FakeGendarmeExecutable.txt").getAbsolutePath();
-    GendarmeRunner runner = GendarmeRunner.create(fakeExec, new File("target/sonar/tempFolder").getAbsolutePath());
     GendarmeCommandBuilder builder = runner.createCommandBuilder(vsProject);
     builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
     builder.setReportFile(new File("gendarme-report.xml"));
-    assertThat(builder.toCommand().getExecutable(), is(fakeExec));
+    assertThat(builder.toCommand().getExecutable(), is(fakeExecPath));
+  }
+
+  @Test
+  public void testDeleteSilverlightFile() throws Exception {
+    when(vsProject.isSilverlightProject()).thenReturn(true);
+    GendarmeCommandBuilder builder = runner.createCommandBuilder(vsProject);
+    builder.setConfigFile(TestUtils.getResource("/runner/FakeGendarmeConfigFile.xml"));
+    builder.setReportFile(new File("gendarme-report.xml"));
+    builder.setSilverlightFolder(TestUtils.getResource("/runner/SilverlightFolder"));
+    builder.toCommand();
+
+    File copiedSilverlightAssembly = TestUtils.getResource("/runner/FakeAssemblies/mscorlib.dll");
+    assertThat(copiedSilverlightAssembly, notNullValue());
+    assertTrue(copiedSilverlightAssembly.isFile());
+
+    runner.cleanupFiles("Debug");
+    assertFalse(copiedSilverlightAssembly.exists());
   }
 
 }
