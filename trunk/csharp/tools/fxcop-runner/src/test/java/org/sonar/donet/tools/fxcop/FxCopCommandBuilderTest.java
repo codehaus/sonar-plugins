@@ -43,6 +43,7 @@ public class FxCopCommandBuilderTest {
   private static File fakeFxCopExecutable;
   private static File fakeFxCopConfigFile;
   private static File fakeFxCopReportFile;
+  private static File silverlightFolder;
   private VisualStudioSolution solution;
   private VisualStudioProject vsProject;
 
@@ -50,6 +51,7 @@ public class FxCopCommandBuilderTest {
   public static void initStatic() throws Exception {
     fakeFxCopExecutable = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeProg/FxCopCmd.exe"));
     fakeFxCopConfigFile = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeFxCopConfigFile.xml"));
+    silverlightFolder = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/SilverlightFolder"));
     fakeFxCopReportFile = new File("target/sonar/FxCop/fxcop-report.xml");
   }
 
@@ -120,6 +122,28 @@ public class FxCopCommandBuilderTest {
 
     String[] commands = fxCopCommandBuilder.toCommand().getArguments().toArray(new String[] {});
     assertThat(commands[7], endsWith("/aspnet"));
+  }
+
+  @Test
+  public void testToCommandForSolutionUsingSilverlight() throws Exception {
+    when(solution.isSilverlightUsed()).thenReturn(true);
+    FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(solution).setExecutable(fakeFxCopExecutable)
+        .setTimeoutMinutes(10).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(true)
+        .setAssemblyDependencyDirectories("FakeDepFolder", "UnexistingFolder").setSilverlightFolder(silverlightFolder);
+
+    String[] commands = fxCopCommandBuilder.toCommand().getArguments().toArray(new String[] {});
+    assertThat(commands[4], endsWith("SilverlightFolder"));
+  }
+
+  @Test
+  public void testToCommandForSilverlightProject() throws Exception {
+    when(vsProject.isSilverlightProject()).thenReturn(true);
+    FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(vsProject).setExecutable(fakeFxCopExecutable)
+        .setTimeoutMinutes(10).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(true)
+        .setAssemblyDependencyDirectories("FakeDepFolder", "UnexistingFolder").setSilverlightFolder(silverlightFolder);
+
+    String[] commands = fxCopCommandBuilder.toCommand().getArguments().toArray(new String[] {});
+    assertThat(commands[4], endsWith("SilverlightFolder"));
   }
 
   @Test

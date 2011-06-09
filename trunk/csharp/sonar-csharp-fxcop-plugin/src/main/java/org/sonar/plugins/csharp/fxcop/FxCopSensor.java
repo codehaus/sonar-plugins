@@ -41,6 +41,7 @@ import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.sensor.AbstractCSharpSensor;
+import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.fxcop.profiles.FxCopProfileExporter;
 
 import com.google.common.collect.Lists;
@@ -135,7 +136,8 @@ public class FxCopSensor extends AbstractCSharpSensor {
   }
 
   protected void launchFxCop(Project project, FxCopRunner runner, File fxCopConfigFile) throws FxCopException {
-    FxCopCommandBuilder builder = runner.createCommandBuilder(getVSProject(project));
+    VisualStudioProject vsProject = getVSProject(project);
+    FxCopCommandBuilder builder = runner.createCommandBuilder(vsProject);
     builder.setConfigFile(fxCopConfigFile);
     builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), FxCopConstants.FXCOP_REPORT_XML));
     builder.setAssembliesToScan(configuration.getStringArray(FxCopConstants.ASSEMBLIES_TO_SCAN_KEY));
@@ -144,6 +146,9 @@ public class FxCopSensor extends AbstractCSharpSensor {
         FxCopConstants.IGNORE_GENERATED_CODE_DEFVALUE));
     int timeout = configuration.getInt(FxCopConstants.TIMEOUT_MINUTES_KEY, FxCopConstants.TIMEOUT_MINUTES_DEFVALUE);
     builder.setTimeoutMinutes(timeout);
+    if (vsProject.isSilverlightProject()) {
+      builder.setSilverlightFolder(getMicrosoftWindowsEnvironment().getSilverlightDirectory());
+    }
     runner.execute(builder.toCommand(), timeout);
   }
 

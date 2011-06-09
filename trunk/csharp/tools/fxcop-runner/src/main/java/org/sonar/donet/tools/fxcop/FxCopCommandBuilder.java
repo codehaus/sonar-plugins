@@ -44,6 +44,7 @@ public final class FxCopCommandBuilder {
   private File fxCopExecutable;
   private File fxCopConfigFile;
   private File fxCopReportFile;
+  private File silverlightFolder;
   private String[] assembliesToScan;
   private String[] assemblyDependencyDirectories;
   private boolean ignoreGeneratedCode;
@@ -114,6 +115,18 @@ public final class FxCopCommandBuilder {
    */
   public FxCopCommandBuilder setReportFile(File reportFile) {
     this.fxCopReportFile = reportFile;
+    return this;
+  }
+
+  /**
+   * Sets the Silverlight folder
+   * 
+   * @param silverlightFolder
+   *          the Silverlight folder
+   * @return the current builder
+   */
+  public FxCopCommandBuilder setSilverlightFolder(File silverlightFolder) {
+    this.silverlightFolder = silverlightFolder;
     return this;
   }
 
@@ -196,6 +209,11 @@ public final class FxCopCommandBuilder {
       command.addArgument("/d:" + assemblyDependencyDir.getAbsolutePath());
     }
 
+    if (isSilverlightUsed()) {
+      LOG.debug("   o [Silverlight] " + silverlightFolder.getAbsolutePath());
+      command.addArgument("/d:" + silverlightFolder.getAbsolutePath());
+    }
+
     if (ignoreGeneratedCode) {
       LOG.debug("- Ignoring generated code");
       command.addArgument("/igc");
@@ -220,6 +238,16 @@ public final class FxCopCommandBuilder {
       isAspUsed = solution.isAspUsed();
     }
     return isAspUsed;
+  }
+
+  private boolean isSilverlightUsed() {
+    boolean isSilverlightUsed = false;
+    if (vsProject != null) {
+      isSilverlightUsed = vsProject.isSilverlightProject();
+    } else if (solution != null) {
+      isSilverlightUsed = solution.isSilverlightUsed();
+    }
+    return isSilverlightUsed;
   }
 
   private List<File> getAssembliesToScan() {
