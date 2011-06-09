@@ -47,8 +47,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.utils.SonarException;
 import org.sonar.api.utils.WildcardPattern;
+import org.sonar.plugins.csharp.api.DotNetToolsException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -148,9 +148,9 @@ public final class ModelFactory {
    *          the solution name
    * @return the generated solution
    * @throws IOException
-   * @throws XPathExpressionException
+   * @throws DotNetToolsException
    */
-  public static VisualStudioSolution getSolution(File baseDirectory, String solutionName) throws IOException {
+  public static VisualStudioSolution getSolution(File baseDirectory, String solutionName) throws IOException, DotNetToolsException {
     File solutionFile = new File(baseDirectory, solutionName);
     return getSolution(solutionFile);
   }
@@ -160,9 +160,9 @@ public final class ModelFactory {
    *          the solution file
    * @return a new visual studio solution
    * @throws IOException
-   * @throws XPathExpressionException
+   * @throws DotNetToolsException
    */
-  public static VisualStudioSolution getSolution(File solutionFile) throws IOException {
+  public static VisualStudioSolution getSolution(File solutionFile) throws IOException, DotNetToolsException {
 
     String solutionContent = FileUtils.readFileToString(solutionFile);
     List<String> buildConfigurations = getBuildConfigurations(solutionContent);
@@ -203,10 +203,10 @@ public final class ModelFactory {
    *          the text content of the solution file
    * @return a list of projects
    * @throws IOException
-   * @throws XPathExpressionException
+   * @throws DotNetToolsException
    */
   private static List<VisualStudioProject> getProjects(File solutionFile, String solutionContent, List<String> buildConfigurations)
-      throws IOException {
+      throws IOException, DotNetToolsException {
 
     File baseDirectory = solutionFile.getParentFile();
 
@@ -264,11 +264,10 @@ public final class ModelFactory {
    * @param projectFile
    *          the project file
    * @return the visual project if possible to define
-   * @throws XPathExpressionException
-   *           if the project is invalid
+   * @throws DotNetToolsException
    * @throws FileNotFoundException
    */
-  public static VisualStudioProject getProject(File projectFile) throws FileNotFoundException {
+  public static VisualStudioProject getProject(File projectFile) throws FileNotFoundException, DotNetToolsException {
     String projectName = projectFile.getName();
     return getProject(projectFile, projectName, null);
   }
@@ -280,13 +279,12 @@ public final class ModelFactory {
    *          the project file
    * @param projectName
    *          the name of the project
-   * @throws XPathExpressionException
-   *           if the project .csproj is invalid
+   * @throws DotNetToolsException
    * @throws FileNotFoundException
    *           if the file was not found
    */
   public static VisualStudioProject getProject(File projectFile, String projectName, List<String> buildConfigurations)
-      throws FileNotFoundException {
+      throws FileNotFoundException, DotNetToolsException {
 
     VisualStudioProject project = new VisualStudioProject();
     project.setProjectFile(projectFile);
@@ -354,14 +352,14 @@ public final class ModelFactory {
 
       return project;
     } catch (XPathExpressionException xpee) {
-      throw new SonarException("Error while processing the project " + projectFile, xpee);
+      throw new DotNetToolsException("Error while processing the project " + projectFile, xpee);
     } finally {
       // Replaces the class loader after usage
       Thread.currentThread().setContextClassLoader(savedClassloader);
     }
   }
 
-  private static List<BinaryReference> getBinaryReferences(XPath xpath, File projectFile) {
+  private static List<BinaryReference> getBinaryReferences(XPath xpath, File projectFile) throws DotNetToolsException {
     List<BinaryReference> result = new ArrayList<BinaryReference>();
     try {
 
@@ -508,16 +506,16 @@ public final class ModelFactory {
    * @param expression
    * @param projectFile
    * @return
-   * @throws XPathExpressionException
+   * @throws DotNetToolsException
    * @throws FileNotFoundException
    */
-  private static String extractProjectProperty(XPathExpression expression, File projectFile) {
+  private static String extractProjectProperty(XPathExpression expression, File projectFile) throws DotNetToolsException {
     try {
       FileInputStream file = new FileInputStream(projectFile);
       InputSource source = new InputSource(file);
       return expression.evaluate(source);
     } catch (Exception e) {
-      throw new SonarException("Could not evaluate the expression " + expression + " on project " + projectFile, e);
+      throw new DotNetToolsException("Could not evaluate the expression " + expression + " on project " + projectFile, e);
     }
   }
 
@@ -536,7 +534,7 @@ public final class ModelFactory {
      */
     public String getNamespaceURI(String prefix) {
       if (prefix == null) {
-        throw new SonarException("Null prefix");
+        throw new RuntimeException("Null prefix");
       }
 
       final String result;

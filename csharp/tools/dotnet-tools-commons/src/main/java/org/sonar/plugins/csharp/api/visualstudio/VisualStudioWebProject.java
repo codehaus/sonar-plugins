@@ -64,7 +64,7 @@ public class VisualStudioWebProject extends VisualStudioProject {
         }
       }
     }
-    
+
     return result;
   }
 
