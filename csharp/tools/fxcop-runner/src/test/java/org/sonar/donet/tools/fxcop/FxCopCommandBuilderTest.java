@@ -101,6 +101,28 @@ public class FxCopCommandBuilderTest {
   }
 
   @Test
+  public void testToCommandForSolutionUsingASP() throws Exception {
+    when(solution.isAspUsed()).thenReturn(true);
+    FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(solution).setExecutable(fakeFxCopExecutable)
+        .setTimeoutMinutes(10).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(true)
+        .setAssemblyDependencyDirectories("FakeDepFolder", "UnexistingFolder");
+
+    String[] commands = fxCopCommandBuilder.toCommand().getArguments().toArray(new String[] {});
+    assertThat(commands[7], endsWith("/aspnet"));
+  }
+
+  @Test
+  public void testToCommandForWebVSProject() throws Exception {
+    when(vsProject.isWebProject()).thenReturn(true);
+    FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(vsProject).setExecutable(fakeFxCopExecutable)
+        .setTimeoutMinutes(10).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(true)
+        .setAssemblyDependencyDirectories("FakeDepFolder", "UnexistingFolder");
+
+    String[] commands = fxCopCommandBuilder.toCommand().getArguments().toArray(new String[] {});
+    assertThat(commands[7], endsWith("/aspnet"));
+  }
+
+  @Test
   public void testToCommandWithSpecifiedAssemblies() throws Exception {
     FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(vsProject).setExecutable(fakeFxCopExecutable)
         .setTimeoutMinutes(10).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(true)
