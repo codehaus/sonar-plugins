@@ -21,6 +21,7 @@
 package org.sonar.plugins.csharp.api;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,8 +42,10 @@ public class CSharpResourcesBridgeTest {
   public static void init() {
     SourceFile sourceFile = new SourceFile("/temp/Fake.cs", "Fake.cs");
     SourceType sourceType = new SourceType("MyNamespace.MyClass", "MyClass");
+    SourceType sourceTypeWithoutNamespace = new SourceType("MyClassWithoutNamespace", "MyClassWithoutNamespace");
     SourceMember sourceMember = new SourceMember(sourceType, "GetFoo", 0);
     sourceFile.addChild(sourceType);
+    sourceFile.addChild(sourceTypeWithoutNamespace);
     sourceType.addChild(sourceMember);
 
     File sonarFile = mock(File.class);
@@ -55,9 +58,18 @@ public class CSharpResourcesBridgeTest {
   @Test
   public void testGetFromType() {
     Resource<?> file = cSharpResourcesBridge.getFromTypeName("MyNamespace", "MyClass");
+    assertThat(file, notNullValue());
     assertThat(file.getName(), is("Fake.cs"));
 
     file = cSharpResourcesBridge.getFromTypeName("MyNamespace.MyClass");
+    assertThat(file, notNullValue());
+    assertThat(file.getName(), is("Fake.cs"));
+  }
+
+  @Test
+  public void testGetFromTypeWithoutNamespace() {
+    Resource<?> file = cSharpResourcesBridge.getFromTypeName("", "MyClassWithoutNamespace");
+    assertThat(file, notNullValue());
     assertThat(file.getName(), is("Fake.cs"));
   }
 

@@ -23,6 +23,9 @@ package org.sonar.plugins.csharp.api;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.resources.File;
 import org.sonar.api.resources.Resource;
@@ -39,6 +42,7 @@ import com.google.common.collect.Maps;
  */
 public class CSharpResourcesBridge implements BatchExtension {
 
+  private static final Logger LOG = LoggerFactory.getLogger(CSharpResourcesBridge.class);
   private Map<String, Resource<?>> logicalToPhysicalResourcesMap = Maps.newHashMap();
 
   private boolean canIndexFiles = true;
@@ -69,6 +73,7 @@ public class CSharpResourcesBridge implements BatchExtension {
    *           if the CSharpResourcesBridge is locked and cannot index more files
    */
   public void indexFile(SourceFile squidFile, File sonarFile) {
+    LOG.debug("C# BRIDGE is indexing {}:", squidFile.getKey());
     if (canIndexFiles) {
       indexChildren(squidFile.getChildren(), sonarFile);
     } else {
@@ -80,6 +85,7 @@ public class CSharpResourcesBridge implements BatchExtension {
   private void indexChildren(Set<SourceCode> sourceCodes, File sonarFile) {
     if (sourceCodes != null) {
       for (SourceCode children : sourceCodes) {
+        LOG.debug("  - {}", children.getKey());
         logicalToPhysicalResourcesMap.put(children.getKey(), sonarFile);
         indexChildren(children.getChildren(), sonarFile);
       }
@@ -96,7 +102,13 @@ public class CSharpResourcesBridge implements BatchExtension {
    * @return the resource that contains this type, or NULL if none
    */
   public Resource<?> getFromTypeName(String namespaceName, String typeName) {
-    return getFromTypeName(namespaceName + "." + typeName);
+    StringBuilder typeFullName = new StringBuilder();
+    if ( !StringUtils.isEmpty(namespaceName)) {
+      typeFullName.append(namespaceName);
+      typeFullName.append(".");
+    }
+    typeFullName.append(typeName);
+    return getFromTypeName(typeFullName.toString());
   }
 
   /**
