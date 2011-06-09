@@ -73,8 +73,8 @@ public class CSharpResourcesBridge implements BatchExtension {
    *           if the CSharpResourcesBridge is locked and cannot index more files
    */
   public void indexFile(SourceFile squidFile, File sonarFile) {
-    LOG.debug("C# BRIDGE is indexing {}:", squidFile.getKey());
     if (canIndexFiles) {
+      LOG.debug("C# BRIDGE is indexing {}:", squidFile.getKey());
       indexChildren(squidFile.getChildren(), sonarFile);
     } else {
       throw new IllegalStateException(
