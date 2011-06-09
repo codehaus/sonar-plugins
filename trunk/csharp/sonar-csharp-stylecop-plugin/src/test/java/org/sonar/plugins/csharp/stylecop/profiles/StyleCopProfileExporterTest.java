@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RulePriority;
+import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 import org.sonar.test.TestUtils;
 import org.xml.sax.SAXException;
 
@@ -35,10 +36,11 @@ public class StyleCopProfileExporterTest {
   @Test
   public void testSimpleStyleCopRulesToExport() throws IOException, SAXException {
     RulesProfile profile = RulesProfile.create("Sonar C# Way", "cs");
-    profile.activateRule(Rule.create("stylecop", "ElementMustBeginWithUpperCaseLetter", "Element must begin with upper case letter")
-        .setConfigKey("Microsoft.StyleCop.CSharp.NamingRules#ElementMustBeginWithUpperCaseLetter"), null);
     profile.activateRule(
-        Rule.create("stylecop", "KeywordsMustBeSpacedCorrectly", "Keywords must be spaced correctly")
+        Rule.create(StyleCopConstants.REPOSITORY_KEY, "ElementMustBeginWithUpperCaseLetter", "Element must begin with upper case letter")
+            .setConfigKey("Microsoft.StyleCop.CSharp.NamingRules#ElementMustBeginWithUpperCaseLetter"), null);
+    profile.activateRule(
+        Rule.create(StyleCopConstants.REPOSITORY_KEY, "KeywordsMustBeSpacedCorrectly", "Keywords must be spaced correctly")
             .setConfigKey("Microsoft.StyleCop.CSharp.SpacingRules#KeywordsMustBeSpacedCorrectly").setSeverity(RulePriority.MINOR), null);
 
     StringWriter writer = new StringWriter();

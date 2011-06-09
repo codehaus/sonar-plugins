@@ -40,6 +40,7 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.plugins.csharp.stylecop.StyleCopConstants;
 import org.sonar.test.TestUtils;
 
 public class StyleCopProfileImporterTest {
@@ -59,8 +60,10 @@ public class StyleCopProfileImporterTest {
     RulesProfile profile = importer.importProfile(reader, messages);
 
     assertThat(profile.getActiveRules().size(), is(2));
-    assertNotNull(profile.getActiveRuleByConfigKey("stylecop", "Microsoft.StyleCop.CSharp.NamingRules#ElementMustBeginWithUpperCaseLetter"));
-    assertNotNull(profile.getActiveRuleByConfigKey("stylecop", "Microsoft.StyleCop.CSharp.SpacingRules#KeywordsMustBeSpacedCorrectly"));
+    assertNotNull(profile.getActiveRuleByConfigKey(StyleCopConstants.REPOSITORY_KEY,
+        "Microsoft.StyleCop.CSharp.NamingRules#ElementMustBeginWithUpperCaseLetter"));
+    assertNotNull(profile.getActiveRuleByConfigKey(StyleCopConstants.REPOSITORY_KEY,
+        "Microsoft.StyleCop.CSharp.SpacingRules#KeywordsMustBeSpacedCorrectly"));
     assertThat(messages.hasErrors(), is(false));
   }
 

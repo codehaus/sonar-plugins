@@ -168,7 +168,8 @@ public class FxCopCommandBuilderTest {
   @Test
   public void testToCommandWithOtherCustomParams() throws Exception {
     FxCopCommandBuilder fxCopCommandBuilder = FxCopCommandBuilder.createBuilder(solution).setExecutable(fakeFxCopExecutable)
-        .setTimeoutMinutes(1000).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(false);
+        .setTimeoutMinutes(1000).setConfigFile(fakeFxCopConfigFile).setReportFile(fakeFxCopReportFile).setIgnoreGeneratedCode(false)
+        .setBuildConfigurations("Debug");
 
     Command command = fxCopCommandBuilder.toCommand();
     assertThat(toUnixStyle(command.getExecutable()), endsWith("/Runner/FakeProg/FxCopCmd.exe"));

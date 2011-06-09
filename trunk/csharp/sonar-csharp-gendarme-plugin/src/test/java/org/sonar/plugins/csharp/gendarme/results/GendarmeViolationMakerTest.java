@@ -42,6 +42,7 @@ import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
 
 import com.google.common.collect.Lists;
 
+@SuppressWarnings("rawtypes")
 public class GendarmeViolationMakerTest {
 
   private static GendarmeViolationMaker violationMaker;
@@ -184,6 +185,7 @@ public class GendarmeViolationMakerTest {
     assertThat(violation.getLineId(), is(56));
   }
 
+  @SuppressWarnings("unchecked")
   private static CSharpResourcesBridge createFakeBridge() {
     CSharpResourcesBridge bridge = mock(CSharpResourcesBridge.class);
     when(bridge.getFromTypeName("Example.Core.Money")).thenReturn(aFileMoney);

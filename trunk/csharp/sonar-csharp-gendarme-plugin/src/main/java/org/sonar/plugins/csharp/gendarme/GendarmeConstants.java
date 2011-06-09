@@ -28,11 +28,11 @@ public final class GendarmeConstants {
   private GendarmeConstants() {
   }
 
-  public static final String PLUGIN_KEY = "gendarme";
-  public static final String PLUGIN_NAME = "Gendarme";
+  public static final String PLUGIN_KEY = "csharpgendarme";
+  public static final String PLUGIN_NAME = "C# Gendarme";
 
   public static final String REPOSITORY_KEY = PLUGIN_KEY;
-  public static final String REPOSITORY_NAME = PLUGIN_NAME;
+  public static final String REPOSITORY_NAME = "Gendarme";
 
   public static final String GENDARME_RULES_FILE = "sonar.Gendarme";
   public static final String GENDARME_REPORT_XML = "gendarme-report.xml";

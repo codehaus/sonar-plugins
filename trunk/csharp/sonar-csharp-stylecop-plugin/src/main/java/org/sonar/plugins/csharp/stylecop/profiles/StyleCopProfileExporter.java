@@ -100,7 +100,7 @@ public class StyleCopProfileExporter extends ProfileExporter {
       activeRuleMap.put(activeRule.getRule().getKey(), activeRule);
     }
 
-    List<Rule> initialRules = new XMLRuleParser().parse(getClass()
+    List<Rule> initialRules = new XMLRuleParser().parse(StyleCopProfileExporter.class
         .getResourceAsStream("/org/sonar/plugins/csharp/stylecop/rules/rules.xml"));
     for (Rule rule : initialRules) {
       // Extracts the rule's information

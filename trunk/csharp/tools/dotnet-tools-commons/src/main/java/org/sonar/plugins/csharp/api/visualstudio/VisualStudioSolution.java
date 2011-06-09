@@ -103,12 +103,12 @@ public class VisualStudioSolution {
     for (VisualStudioProject project : projects) {
       projectMap.put(project.getName(), project);
     }
-    for (String projectName : assemblyDirectories.keySet()) {
-      VisualStudioProject project = projectMap.get(projectName);
+    for (Map.Entry<String, String> entry : assemblyDirectories.entrySet()) {
+      VisualStudioProject project = projectMap.get(entry.getKey());
       if (project == null) {
-        LOG.error("Unknown project name '" + projectName + "' used in assembly directories settings");
+        LOG.error("Unknown project name '" + entry.getKey() + "' used in assembly directories settings");
       } else {
-        project.setForcedOutputDir(assemblyDirectories.get(projectName));
+        project.setForcedOutputDir(entry.getValue());
       }
     }
   }

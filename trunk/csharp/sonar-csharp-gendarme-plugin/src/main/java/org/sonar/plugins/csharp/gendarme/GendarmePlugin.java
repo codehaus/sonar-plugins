@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sonar.api.Extension;
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileExporter;
 import org.sonar.plugins.csharp.gendarme.profiles.GendarmeProfileImporter;
 import org.sonar.plugins.csharp.gendarme.profiles.SonarWayProfile;
@@ -53,29 +53,7 @@ import org.sonar.plugins.csharp.gendarme.results.GendarmeViolationMaker;
         description = "Possible values : empty (means active), 'skip' and 'reuseReport'.", global = true, project = true),
     @Property(key = GendarmeConstants.REPORTS_PATH_KEY, defaultValue = "", name = "Name of the Gendarme report files",
         description = "Name of the Gendarme report file used when reuse report mode is activated.", global = true, project = true) })
-public class GendarmePlugin implements Plugin {
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getKey() {
-    return GendarmeConstants.PLUGIN_KEY;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getName() {
-    return GendarmeConstants.PLUGIN_NAME;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getDescription() {
-    return "Gendarme is a extensible rule-based tool to find problems in C# applications and libraries."
-        + "You can find more by going to the <a href='http://www.mono-project.com/Gendarme'>Gendarme web site</a>.";
-  }
+public class GendarmePlugin extends SonarPlugin {
 
   /**
    * {@inheritDoc}
@@ -94,13 +72,5 @@ public class GendarmePlugin implements Plugin {
     list.add(GendarmeResultParser.class);
     list.add(GendarmeViolationMaker.class);
     return list;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String toString() {
-    return getKey();
   }
 }

@@ -534,7 +534,7 @@ public final class ModelFactory {
      */
     public String getNamespaceURI(String prefix) {
       if (prefix == null) {
-        throw new RuntimeException("Null prefix");
+        throw new IllegalStateException("Null prefix");
       }
 
       final String result;

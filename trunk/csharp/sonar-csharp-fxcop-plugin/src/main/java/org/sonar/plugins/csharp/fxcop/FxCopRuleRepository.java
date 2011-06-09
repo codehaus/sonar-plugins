@@ -49,7 +49,7 @@ public class FxCopRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    rules.addAll(xmlRuleParser.parse(getClass().getResourceAsStream("/org/sonar/plugins/csharp/fxcop/rules/rules.xml")));
+    rules.addAll(xmlRuleParser.parse(FxCopRuleRepository.class.getResourceAsStream("/org/sonar/plugins/csharp/fxcop/rules/rules.xml")));
     for (File userExtensionXml : fileSystem.getExtensions(FxCopConstants.REPOSITORY_KEY, "xml")) {
       rules.addAll(xmlRuleParser.parse(userExtensionXml));
     }

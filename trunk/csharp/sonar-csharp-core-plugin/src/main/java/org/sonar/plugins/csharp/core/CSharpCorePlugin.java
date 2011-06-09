@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.sonar.api.Extension;
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.csharp.api.CSharp;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
 import org.sonar.plugins.csharp.api.CSharpConstants;
@@ -63,31 +63,7 @@ import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
         name = "Solution to analyse",
         description = "Relative path to the \".sln\" file that represents the solution to analyse. If none provided, a \".sln\" file will be searched at the root of the project.",
         global = false, project = true) })
-public class CSharpCorePlugin implements Plugin {
-
-  public static final String PLUGIN_KEY = "csharp-core";
-  public static final String PLUGIN_NAME = "C# Core";
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getKey() {
-    return PLUGIN_KEY;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getName() {
-    return PLUGIN_NAME;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getDescription() {
-    return "C# Core plugin on which every plugin of the C# ecosystem must depend.";
-  }
+public class CSharpCorePlugin extends SonarPlugin {
 
   /**
    * {@inheritDoc}

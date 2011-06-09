@@ -49,7 +49,8 @@ public class GendarmeRuleRepository extends RuleRepository {
   @Override
   public List<Rule> createRules() {
     List<Rule> rules = new ArrayList<Rule>();
-    rules.addAll(xmlRuleParser.parse(getClass().getResourceAsStream("/org/sonar/plugins/csharp/gendarme/rules/rules.xml")));
+    rules
+        .addAll(xmlRuleParser.parse(GendarmeRuleRepository.class.getResourceAsStream("/org/sonar/plugins/csharp/gendarme/rules/rules.xml")));
     for (File userExtensionXml : fileSystem.getExtensions(GendarmeConstants.REPOSITORY_KEY, "xml")) {
       rules.addAll(xmlRuleParser.parse(userExtensionXml));
     }

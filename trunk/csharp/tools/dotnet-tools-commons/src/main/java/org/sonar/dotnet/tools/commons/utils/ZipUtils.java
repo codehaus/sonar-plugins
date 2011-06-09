@@ -29,12 +29,17 @@ import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.IOUtils;
+
 /**
  * ZIP Utilities
  */
 public final class ZipUtils {
 
   private static final int BUFFER_SIZE = 2048;
+
+  private ZipUtils() {
+  }
 
   /**
    * Extracts the specified folder from the specified archive, into the supplied output directory.
@@ -54,34 +59,41 @@ public final class ZipUtils {
     File destinationFolder = new File(outputDirectory);
     destinationFolder.mkdirs();
 
-    ZipFile zip = new ZipFile(new File(archivePath));
-    Enumeration zipFileEntries = zip.entries();
-    // Process each entry
-    while (zipFileEntries.hasMoreElements()) {
-      ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
-      String currentEntry = entry.getName();
-      if (currentEntry.startsWith(folderToExtract)) {
-        File destFile = new File(destinationFolder, currentEntry);
-        destFile.getParentFile().mkdirs();
-        if ( !entry.isDirectory()) {
-          BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-          int currentByte;
-          // establish buffer for writing file
-          byte data[] = new byte[BUFFER_SIZE];
+    BufferedInputStream is = null;
+    BufferedOutputStream dest = null;
+    try {
+      ZipFile zip = new ZipFile(new File(archivePath));
+      Enumeration<?> zipFileEntries = zip.entries();
+      // Process each entry
+      while (zipFileEntries.hasMoreElements()) {
+        ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
+        String currentEntry = entry.getName();
+        if (currentEntry.startsWith(folderToExtract)) {
+          File destFile = new File(destinationFolder, currentEntry);
+          destFile.getParentFile().mkdirs();
+          if ( !entry.isDirectory()) {
+            is = new BufferedInputStream(zip.getInputStream(entry));
+            int currentByte;
+            // establish buffer for writing file
+            byte data[] = new byte[BUFFER_SIZE];
 
-          // write the current file to disk
-          FileOutputStream fos = new FileOutputStream(destFile);
-          BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE);
+            // write the current file to disk
+            FileOutputStream fos = new FileOutputStream(destFile);
+            dest = new BufferedOutputStream(fos, BUFFER_SIZE);
 
-          // read and write until last byte is encountered
-          while ((currentByte = is.read(data, 0, BUFFER_SIZE)) != -1) {
-            dest.write(data, 0, currentByte);
+            // read and write until last byte is encountered
+            while ((currentByte = is.read(data, 0, BUFFER_SIZE)) != -1) {
+              dest.write(data, 0, currentByte);
+            }
           }
-          dest.flush();
-          dest.close();
-          is.close();
         }
       }
+    } finally {
+      if (dest != null) {
+        dest.flush();
+      }
+      IOUtils.closeQuietly(dest);
+      IOUtils.closeQuietly(is);
     }
     return new File(destinationFolder, folderToExtract);
   }

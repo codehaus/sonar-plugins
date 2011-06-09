@@ -101,14 +101,13 @@ public class GendarmeProfileExporter extends ProfileExporter {
         writer.append("    <ruleset name=\"" + priority.name().toLowerCase() + "\">\n");
       }
 
-      for (String assembly : assemblyRulesMap.keySet()) {
+      for (Map.Entry<String, List<ActiveRule>> entry : assemblyRulesMap.entrySet()) {
         writer.append("        <rules include=\"");
-        List<ActiveRule> assemblyRules = assemblyRulesMap.get(assembly);
-        appendRuleList(writer, assemblyRules);
+        appendRuleList(writer, entry.getValue());
         writer.append("\" from=\"");
-        writer.append(assembly);
+        writer.append(entry.getKey());
         writer.append("\">\n");
-        appendRuleParams(writer, assemblyRules);
+        appendRuleParams(writer, entry.getValue());
         writer.append("        </rules>\n");
       }
       writer.append("    </ruleset>\n");

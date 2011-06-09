@@ -114,7 +114,7 @@ public class CSharpConfiguration implements BatchExtension {
         for (int i = 0; i < result.length; i++) {
           resultCollection.addAll(Arrays.asList(StringUtils.split(result[i], ';')));
         }
-        return resultCollection.toArray(new String[] {});
+        return resultCollection.toArray(new String[resultCollection.size()]);
       }
     }
     // if this key wasn't used before, or if no value for was for it, use the value of the current key

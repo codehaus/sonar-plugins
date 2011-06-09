@@ -41,6 +41,7 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.utils.ValidationMessages;
+import org.sonar.plugins.csharp.gendarme.GendarmeConstants;
 import org.sonar.test.TestUtils;
 
 public class GendarmeProfileImporterTest {
@@ -64,10 +65,12 @@ public class GendarmeProfileImporterTest {
     }
 
     assertThat(profile.getActiveRules().size(), is(4));
-    assertNotNull(profile.getActiveRuleByConfigKey("gendarme", "AvoidLongMethodsRule@Gendarme.Rules.Smells.dll"));
-    assertNotNull(profile.getActiveRuleByConfigKey("gendarme", "AvoidLargeClassesRule@Gendarme.Rules.Smells.dll"));
-    assertNotNull(profile.getActiveRuleByConfigKey("gendarme", "AvoidCodeDuplicatedInSameClassRule@Gendarme.Rules.Smells.dll"));
-    ActiveRule rule = profile.getActiveRuleByConfigKey("gendarme", "AvoidComplexMethodsRule@Gendarme.Rules.Smells.dll");
+    assertNotNull(profile.getActiveRuleByConfigKey(GendarmeConstants.REPOSITORY_KEY, "AvoidLongMethodsRule@Gendarme.Rules.Smells.dll"));
+    assertNotNull(profile.getActiveRuleByConfigKey(GendarmeConstants.REPOSITORY_KEY, "AvoidLargeClassesRule@Gendarme.Rules.Smells.dll"));
+    assertNotNull(profile.getActiveRuleByConfigKey(GendarmeConstants.REPOSITORY_KEY,
+        "AvoidCodeDuplicatedInSameClassRule@Gendarme.Rules.Smells.dll"));
+    ActiveRule rule = profile.getActiveRuleByConfigKey(GendarmeConstants.REPOSITORY_KEY,
+        "AvoidComplexMethodsRule@Gendarme.Rules.Smells.dll");
     assertNotNull(rule);
     assertThat(rule.getParameter("SuccessThreshold"), is("25"));
     assertThat(messages.hasErrors(), is(false));

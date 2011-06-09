@@ -27,7 +27,6 @@ import java.net.URL;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.utils.command.Command;
 import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.dotnet.tools.commons.utils.ZipUtils;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
@@ -40,7 +39,7 @@ public class StyleCopRunner { // NOSONAR : can't mock it otherwise
 
   private static final Logger LOG = LoggerFactory.getLogger(StyleCopRunner.class);
 
-  private static final int MINUTES_TO_MILLISECONDS = 60000;
+  private static final long MINUTES_TO_MILLISECONDS = 60000;
   private static final String EMBEDDED_VERSION = "4.4.0.14";
 
   private File styleCopFolder;
@@ -91,8 +90,8 @@ public class StyleCopRunner { // NOSONAR : can't mock it otherwise
   }
 
   /**
-   * Creates a pre-configured {@link StyleCopCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
-   * method.
+   * Creates a pre-configured {@link StyleCopCommandBuilder} that needs to be completed before running the
+   * {@link #execute(StyleCopCommandBuilder, int)} method.
    * 
    * @param solution
    *          the solution to analyse
@@ -106,8 +105,8 @@ public class StyleCopRunner { // NOSONAR : can't mock it otherwise
   }
 
   /**
-   * Creates a pre-configured {@link StyleCopCommandBuilder} that needs to be completed before running the {@link #execute(Command, int)}
-   * method.
+   * Creates a pre-configured {@link StyleCopCommandBuilder} that needs to be completed before running the
+   * {@link #execute(StyleCopCommandBuilder, int)} method.
    * 
    * @param solution
    *          the solution that contains the VS project
