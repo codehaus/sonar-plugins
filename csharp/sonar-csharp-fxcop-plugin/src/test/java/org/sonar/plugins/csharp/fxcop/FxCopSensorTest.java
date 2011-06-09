@@ -105,13 +105,13 @@ public class FxCopSensorTest {
   }
 
   @Test
-  public void testLaunchGendarme() throws Exception {
+  public void testLaunchFxCop() throws Exception {
     FxCopSensor sensor = new FxCopSensor(fileSystem, null, null, null, new CSharpConfiguration(new BaseConfiguration()),
         microsoftWindowsEnvironment);
 
     FxCopRunner runner = mock(FxCopRunner.class);
     when(runner.createCommandBuilder(any(VisualStudioProject.class))).thenReturn(
-        FxCopCommandBuilder.createBuilder(vsProject1).setExecutable(new File("gendarme.exe")));
+        FxCopCommandBuilder.createBuilder(vsProject1).setExecutable(new File("FxCopCmd.exe")));
     Project project = mock(Project.class);
     when(project.getName()).thenReturn("Project #1");
 
