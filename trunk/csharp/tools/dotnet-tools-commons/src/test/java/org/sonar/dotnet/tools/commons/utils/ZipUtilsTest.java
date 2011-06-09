@@ -25,14 +25,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+import org.sonar.test.TestUtils;
 
 public class ZipUtilsTest {
 
   @Test
   public void testExtractEmbeddedExecutable() throws Exception {
-    String fakeJar = FileUtils.toFile(getClass().getResource("/zip-utils/Fake-Gendarme-JAR.jar")).getAbsolutePath();
+    String fakeJar = TestUtils.getResource("/zip-utils/Fake-Gendarme-JAR.jar").getAbsolutePath();
     File temp = new File("target/sonar/extract-jar");
     temp.mkdirs();
 

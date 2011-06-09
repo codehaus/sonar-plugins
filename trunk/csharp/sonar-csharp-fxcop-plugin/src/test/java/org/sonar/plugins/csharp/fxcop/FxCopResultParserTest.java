@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.nio.charset.Charset;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +42,7 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.rules.Violation;
 import org.sonar.plugins.csharp.api.CSharpResourcesBridge;
+import org.sonar.test.TestUtils;
 
 public class FxCopResultParserTest {
 
@@ -66,7 +66,7 @@ public class FxCopResultParserTest {
 
   @Test
   public void testParseFile1() throws Exception {
-    resultFile = FileUtils.toFile(getClass().getResource("/Results/fxcop-report-1.xml"));
+    resultFile = TestUtils.getResource("/Results/fxcop-report-1.xml");
     parser.parse(resultFile);
 
     // Verify calls on C# Resource bridge
@@ -78,7 +78,7 @@ public class FxCopResultParserTest {
 
   @Test
   public void testParseFile2() throws Exception {
-    resultFile = FileUtils.toFile(getClass().getResource("/Results/fxcop-report-2.xml"));
+    resultFile = TestUtils.getResource("/Results/fxcop-report-2.xml");
     parser.parse(resultFile);
 
     // Verify calls on C# Resource bridge

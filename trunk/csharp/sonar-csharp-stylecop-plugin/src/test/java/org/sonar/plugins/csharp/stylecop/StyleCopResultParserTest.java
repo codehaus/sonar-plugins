@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.nio.charset.Charset;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +44,7 @@ import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
 import org.sonar.api.rules.Violation;
+import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Lists;
 
@@ -68,7 +68,7 @@ public class StyleCopResultParserTest {
     parser = new StyleCopResultParser(project, context, newRuleFinder());
     parser.setEncoding(Charset.forName("UTF-8"));
 
-    resultFile = FileUtils.toFile(getClass().getResource("/Results/stylecop-report.xml"));
+    resultFile = TestUtils.getResource("/Results/stylecop-report.xml");
   }
 
   @Test

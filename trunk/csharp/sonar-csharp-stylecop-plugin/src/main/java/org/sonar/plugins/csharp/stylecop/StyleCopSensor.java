@@ -126,8 +126,7 @@ public class StyleCopSensor extends AbstractCSharpSensor {
         getVSProject(project));
     builder.setConfigFile(styleCopConfigFile);
     builder.setReportFile(new File(fileSystem.getSonarWorkingDirectory(), StyleCopConstants.STYLECOP_REPORT_XML));
-    runner.execute(builder.toCommand(),
-        configuration.getInt(StyleCopConstants.TIMEOUT_MINUTES_KEY, StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE));
+    runner.execute(builder, configuration.getInt(StyleCopConstants.TIMEOUT_MINUTES_KEY, StyleCopConstants.TIMEOUT_MINUTES_DEFVALUE));
   }
 
   protected File generateConfigurationFile() {

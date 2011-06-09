@@ -114,8 +114,8 @@ public class GendarmeRunner { // NOSONAR : can't mock it otherwise
   /**
    * Executes the given Gendarme command.
    * 
-   * @param command
-   *          the command
+   * @param gendarmeCommandBuilder
+   *          the gendarmeCommandBuilder
    * @param timeoutMinutes
    *          the timeout for the command
    * @throws GendarmeException

@@ -44,7 +44,6 @@ import java.util.List;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -53,7 +52,6 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.rules.ActiveRule;
-import org.sonar.api.utils.command.Command;
 import org.sonar.donet.tools.fxcop.FxCopCommandBuilder;
 import org.sonar.donet.tools.fxcop.FxCopRunner;
 import org.sonar.plugins.csharp.api.CSharpConfiguration;
@@ -76,7 +74,7 @@ public class FxCopSensorTest {
   @Before
   public void init() {
     fileSystem = mock(ProjectFileSystem.class);
-    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor")));
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(TestUtils.getResource("/Sensor"));
 
     vsProject1 = mock(VisualStudioProject.class);
     when(vsProject1.getName()).thenReturn("Project #1");
@@ -115,8 +113,8 @@ public class FxCopSensorTest {
     Project project = mock(Project.class);
     when(project.getName()).thenReturn("Project #1");
 
-    sensor.launchFxCop(project, runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeFxCopConfigFile.xml")));
-    verify(runner).execute(any(Command.class), eq(10));
+    sensor.launchFxCop(project, runner, TestUtils.getResource("/Sensor/FakeFxCopConfigFile.xml"));
+    verify(runner).execute(any(FxCopCommandBuilder.class), eq(10));
   }
 
   @Test

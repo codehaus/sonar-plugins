@@ -32,7 +32,6 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -40,6 +39,7 @@ import org.mockito.stubbing.Answer;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.rules.RuleQuery;
+import org.sonar.test.TestUtils;
 
 import com.google.common.collect.Maps;
 
@@ -56,7 +56,7 @@ public class GendarmeResultParserTest {
 
     parser = new GendarmeResultParser(newRuleFinder(), violationMaker);
     parser.setEncoding(Charset.forName("UTF-8"));
-    resultFile = FileUtils.toFile(getClass().getResource("/Results/gendarme-report.xml"));
+    resultFile = TestUtils.getResource("/Results/gendarme-report.xml");
   }
 
   @Test

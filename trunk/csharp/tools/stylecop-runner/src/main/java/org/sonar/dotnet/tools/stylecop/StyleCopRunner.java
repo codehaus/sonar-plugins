@@ -125,16 +125,16 @@ public class StyleCopRunner { // NOSONAR : can't mock it otherwise
   /**
    * Executes the given StyleCop command.
    * 
-   * @param command
-   *          the command
+   * @param styleCopCommandBuilder
+   *          the styleCopCommandBuilder
    * @param timeoutMinutes
    *          the timeout for the command
    * @throws StyleCopException
    *           if StyleCop fails to execute
    */
-  public void execute(Command command, int timeoutMinutes) throws StyleCopException {
+  public void execute(StyleCopCommandBuilder styleCopCommandBuilder, int timeoutMinutes) throws StyleCopException {
     LOG.debug("Executing StyleCop program...");
-    int exitCode = CommandExecutor.create().execute(command, timeoutMinutes * MINUTES_TO_MILLISECONDS);
+    int exitCode = CommandExecutor.create().execute(styleCopCommandBuilder.toCommand(), timeoutMinutes * MINUTES_TO_MILLISECONDS);
     if (exitCode != 0) {
       throw new StyleCopException("StyleCop execution failed with return code '" + exitCode
           + "'. Check StyleCop documentation for more information.");

@@ -55,7 +55,7 @@
 			<artifactId>stylecop-runner</artifactId>
 			<version>${dotnet.tools}</version>
 		</dependency>
-		
+
 		<!-- sonar open-source -->
 		<dependency>
 			<groupId>org.codehaus.sonar-plugins.csharp</groupId>
@@ -69,39 +69,6 @@
 		<dependency>
 			<groupId>org.codehaus.sonar</groupId>
 			<artifactId>sonar-duplications</artifactId>
-		</dependency>
-
-		<!-- Unit tests -->
-		<dependency>
-			<groupId>org.codehaus.sonar</groupId>
-			<artifactId>sonar-testing-harness</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-core</artifactId>
-			<version>3.0</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
