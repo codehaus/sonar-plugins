@@ -44,7 +44,6 @@ import java.util.List;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -75,7 +74,7 @@ public class GendarmeSensorTest {
   @Before
   public void init() throws Exception {
     fileSystem = mock(ProjectFileSystem.class);
-    when(fileSystem.getSonarWorkingDirectory()).thenReturn(FileUtils.toFile(getClass().getResource("/Sensor")));
+    when(fileSystem.getSonarWorkingDirectory()).thenReturn(TestUtils.getResource("/Sensor"));
 
     VisualStudioProject vsProject = mock(VisualStudioProject.class);
     when(vsProject.getName()).thenReturn("Project #1");
@@ -111,7 +110,7 @@ public class GendarmeSensorTest {
     Project project = mock(Project.class);
     when(project.getName()).thenReturn("Project #1");
 
-    sensor.launchGendarme(project, runner, FileUtils.toFile(getClass().getResource("/Sensor/FakeGendarmeConfigFile.xml")));
+    sensor.launchGendarme(project, runner, TestUtils.getResource("/Sensor/FakeGendarmeConfigFile.xml"));
     verify(runner).execute(any(GendarmeCommandBuilder.class), eq(10));
   }
 

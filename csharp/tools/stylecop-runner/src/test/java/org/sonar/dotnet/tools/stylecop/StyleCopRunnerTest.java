@@ -35,8 +35,8 @@ import org.sonar.test.TestUtils;
 
 public class StyleCopRunnerTest {
 
-  public VisualStudioSolution solution;
-  public VisualStudioProject project;
+  private VisualStudioSolution solution;
+  private VisualStudioProject project;
 
   @Before
   public void initData() {

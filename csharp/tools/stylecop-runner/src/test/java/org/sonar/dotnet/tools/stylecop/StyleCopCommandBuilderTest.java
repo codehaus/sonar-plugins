@@ -38,8 +38,8 @@ import org.sonar.test.TestUtils;
 
 public class StyleCopCommandBuilderTest {
 
-  public static VisualStudioSolution solution;
-  public static VisualStudioProject project;
+  private static VisualStudioSolution solution;
+  private static VisualStudioProject project;
 
   @BeforeClass
   public static void initData() {
@@ -62,7 +62,7 @@ public class StyleCopCommandBuilderTest {
 
     assertThat(command.getExecutable(), endsWith("MSBuild.exe"));
     String[] commands = command.getArguments().toArray(new String[] {});
-    assertThat(commands[0], endsWith(replaceSlashWithOSSeperator("target/sonar/solution")));
+    assertThat(commands[0], endsWith("solution"));
     assertThat(commands[1], is("/target:StyleCopLaunch"));
     assertThat(commands[2], is("/noconsolelogger"));
     assertThat(commands[3], endsWith("stylecop-msbuild.xml"));
@@ -83,7 +83,7 @@ public class StyleCopCommandBuilderTest {
 
     assertThat(command.getExecutable(), endsWith("MSBuild.exe"));
     String[] commands = command.getArguments().toArray(new String[] {});
-    assertThat(commands[0], endsWith(replaceSlashWithOSSeperator("target/sonar/solution")));
+    assertThat(commands[0], endsWith("solution"));
     assertThat(commands[1], is("/target:StyleCopLaunch"));
     assertThat(commands[2], is("/noconsolelogger"));
     assertThat(commands[3], endsWith("stylecop-msbuild.xml"));
@@ -97,10 +97,6 @@ public class StyleCopCommandBuilderTest {
   public void testWithUnexistingStyleCopConfigFile() throws Exception {
     StyleCopCommandBuilder styleCopCommandBuilder = StyleCopCommandBuilder.createBuilder(solution);
     styleCopCommandBuilder.toCommand();
-  }
-
-  private String replaceSlashWithOSSeperator(String path) {
-    return path.replaceAll("/", File.separator);
   }
 
 }

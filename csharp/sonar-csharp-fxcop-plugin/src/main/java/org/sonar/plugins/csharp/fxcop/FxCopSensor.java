@@ -147,7 +147,7 @@ public class FxCopSensor extends AbstractCSharpSensor {
     int timeout = configuration.getInt(FxCopConstants.TIMEOUT_MINUTES_KEY, FxCopConstants.TIMEOUT_MINUTES_DEFVALUE);
     builder.setTimeoutMinutes(timeout);
     builder.setSilverlightFolder(getMicrosoftWindowsEnvironment().getSilverlightDirectory());
-    runner.execute(builder.toCommand(), timeout);
+    runner.execute(builder, timeout);
   }
 
   protected Collection<File> getReportFilesList() {

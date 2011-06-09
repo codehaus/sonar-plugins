@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,9 +48,9 @@ public class FxCopCommandBuilderTest {
 
   @BeforeClass
   public static void initStatic() throws Exception {
-    fakeFxCopExecutable = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeProg/FxCopCmd.exe"));
-    fakeFxCopConfigFile = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/FakeFxCopConfigFile.xml"));
-    silverlightFolder = FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner/SilverlightFolder"));
+    fakeFxCopExecutable = TestUtils.getResource("/Runner/FakeProg/FxCopCmd.exe");
+    fakeFxCopConfigFile = TestUtils.getResource("/Runner/FakeFxCopConfigFile.xml");
+    silverlightFolder = TestUtils.getResource("/Runner/SilverlightFolder");
     fakeFxCopReportFile = new File("target/sonar/FxCop/fxcop-report.xml");
   }
 
@@ -61,9 +60,9 @@ public class FxCopCommandBuilderTest {
     vsProject = mock(VisualStudioProject.class);
     when(vsProject.getGeneratedAssemblies("Debug")).thenReturn(
         Sets.newHashSet(TestUtils.getResource("/Runner/FakeAssemblies/Fake1.assembly")));
-    when(vsProject.getDirectory()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));
+    when(vsProject.getDirectory()).thenReturn(TestUtils.getResource("/Runner"));
     when(solution.getProjects()).thenReturn(Lists.newArrayList(vsProject));
-    when(solution.getSolutionDir()).thenReturn(FileUtils.toFile(FxCopCommandBuilderTest.class.getResource("/Runner")));
+    when(solution.getSolutionDir()).thenReturn(TestUtils.getResource("/Runner"));
   }
 
   @Test

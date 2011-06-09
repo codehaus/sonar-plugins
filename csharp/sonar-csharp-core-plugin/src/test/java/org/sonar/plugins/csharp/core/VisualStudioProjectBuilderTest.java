@@ -29,7 +29,6 @@ import java.util.Properties;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,6 +41,7 @@ import org.sonar.plugins.csharp.api.CSharpConstants;
 import org.sonar.plugins.csharp.api.MicrosoftWindowsEnvironment;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioProject;
 import org.sonar.plugins.csharp.api.visualstudio.VisualStudioSolution;
+import org.sonar.test.TestUtils;
 
 public class VisualStudioProjectBuilderTest {
 
@@ -75,7 +75,7 @@ public class VisualStudioProjectBuilderTest {
     conf.addProperty("sonar.language", "cs");
     conf.addProperty(CSharpConstants.DOTNET_4_0_SDK_DIR_KEY, fakeSdkDir.getAbsolutePath());
     conf.addProperty(CSharpConstants.SILVERLIGHT_4_MSCORLIB_LOCATION_KEY, fakeSilverlightDir.getAbsolutePath());
-    solutionBaseDir = FileUtils.toFile(getClass().getResource("/solution/Example"));
+    solutionBaseDir = TestUtils.getResource("/solution/Example");
     root = ProjectDefinition.create(new Properties()).setBaseDir(solutionBaseDir).setWorkDir(new File(solutionBaseDir, "WORK-DIR"));
     root.setVersion("1.0");
     root.setKey("groupId:artifactId");
@@ -148,14 +148,14 @@ public class VisualStudioProjectBuilderTest {
   @Test(expected = SonarException.class)
   public void testNoSpecifiedSlnFileButNoneFound() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "");
-    root.setBaseDir(FileUtils.toFile(getClass().getResource("/solution")));
+    root.setBaseDir(TestUtils.getResource("/solution"));
     projectBuilder.build(reactor);
   }
 
   @Test(expected = SonarException.class)
   public void testNoSpecifiedSlnFileButTooManyFound() throws Exception {
     conf.addProperty(CSharpConstants.SOLUTION_FILE_KEY, "");
-    root.setBaseDir(FileUtils.toFile(getClass().getResource("/solution/FakeSolutionWithTwoSlnFiles")));
+    root.setBaseDir(TestUtils.getResource("/solution/FakeSolutionWithTwoSlnFiles"));
     projectBuilder.build(reactor);
   }
 
