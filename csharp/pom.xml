@@ -13,7 +13,7 @@
 	<groupId>org.codehaus.sonar-plugins.csharp</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.7-SNAPSHOT</version>
+	<version>0.7</version>
 
 	<name>Sonar C# Plugin</name>
 	<inceptionYear>2010</inceptionYear>
@@ -66,7 +66,7 @@
 		<license.owner>Jose Chillan, Alexandre Victoor and SonarSource</license.owner>
 		<jdk.min.version>1.5</jdk.min.version>
 		<sonar.buildVersion>2.9-SNAPSHOT</sonar.buildVersion>
-		<dotnet.tools>0.1-SNAPSHOT</dotnet.tools>
+		<dotnet.tools>0.1</dotnet.tools>
 	</properties>
 
 	<dependencies>
