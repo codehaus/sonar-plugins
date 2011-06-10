@@ -13,7 +13,7 @@
 	<groupId>org.codehaus.sonar-plugins.dotnet.tools</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 
 	<name>.NET tools</name>
 	<inceptionYear>2011</inceptionYear>
