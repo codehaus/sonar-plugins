@@ -31,7 +31,7 @@ import java.util.List;
     @Property(
         key = EmmaPlugin.REPORT_PATH_PROPERTY,
         name = "Report file",
-        description = "Path (absolute or relative) to Emma XML report. Do not set value in order to use default maven settings.",
+        description = "Path (absolute or relative) of directory where the .ec and the .em Emma files are generated. Do not set value when using default maven settings.",
         module = true,
         project = true,
         global = false
