@@ -84,9 +84,10 @@ public class JacocoConfigurationTest {
   public void shouldSetIncludesAndExcludes() {
     configuration.setProperty(JacocoConfiguration.INCLUDES_PROPERTY, "org.sonar.*");
     configuration.setProperty(JacocoConfiguration.EXCLUDES_PROPERTY, "org.sonar.api.*");
+    configuration.setProperty(JacocoConfiguration.EXCLCLASSLOADER_PROPERTY, "sun.reflect.DelegatingClassLoader");
 
     assertThat(jacocoConfiguration.getJvmArgument(),
-        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*"));
+        is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec,includes=org.sonar.*,excludes=org.sonar.api.*,exclclassloader=sun.reflect.DelegatingClassLoader"));
   }
 
 }

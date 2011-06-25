@@ -33,6 +33,7 @@ public class JacocoConfiguration implements BatchExtension {
   public static final String IT_REPORT_PATH_DEFAULT_VALUE = "";
   public static final String INCLUDES_PROPERTY = "sonar.jacoco.includes";
   public static final String EXCLUDES_PROPERTY = "sonar.jacoco.excludes";
+  public static final String EXCLCLASSLOADER_PROPERTY = "sonar.jacoco.exclclassloader";
   public static final String ANT_TARGETS_PROPERTY = "sonar.jacoco.antTargets";
   public static final String ANT_TARGETS_DEFAULT_VALUE = "";
 
@@ -62,6 +63,10 @@ public class JacocoConfiguration implements BatchExtension {
     String excludes = configuration.getString(EXCLUDES_PROPERTY);
     if (StringUtils.isNotBlank(excludes)) {
       options.setExcludes(excludes);
+    }
+    String exclclassloader = configuration.getString(EXCLCLASSLOADER_PROPERTY);
+    if (StringUtils.isNotBlank(exclclassloader)) {
+      options.setExclClassloader(exclclassloader);
     }
     return options.getVMArgument(downloader.getAgentJarFile());
   }
