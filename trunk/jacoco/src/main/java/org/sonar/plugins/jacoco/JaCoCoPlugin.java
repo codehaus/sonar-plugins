@@ -46,7 +46,7 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
         key = JacocoConfiguration.INCLUDES_PROPERTY,
         name = "Includes",
         description = "A list of class names that should be included in execution analysis." +
-            " The list entries are separated by a vertical bar (|) and may use wildcard characters (* and ?)." +
+            " The list entries are separated by a colon (:) and may use wildcard characters (* and ?)." +
             " Except for performance optimization or technical corner cases this option is normally not required.",
         global = false,
         project = true,
@@ -56,8 +56,19 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
         key = JacocoConfiguration.EXCLUDES_PROPERTY,
         name = "Excludes",
         description = "A list of class names that should be excluded from execution analysis." +
-            " The list entries are separated by a vertical bar (|) and may use wildcard characters (* and ?)." +
+            " The list entries are separated by a colon (:) and may use wildcard characters (* and ?)." +
             " Except for performance optimization or technical corner cases this option is normally not required.",
+        global = false,
+        project = true,
+        module = true
+    ),
+    @Property(
+        key = JacocoConfiguration.EXCLCLASSLOADER_PROPERTY,
+        name = "Excluded class loaders",
+        description = "A list of class loader names that should be excluded from execution analysis." +
+            " The list entries are separated by a colon (:) and may use wildcard characters (* and ?)." +
+            " This option might be required in case of special frameworks that conflict with JaCoCo code" +
+            " instrumentation, in particular class loaders that do not have access to the Java runtime classes.",
         global = false,
         project = true,
         module = true
