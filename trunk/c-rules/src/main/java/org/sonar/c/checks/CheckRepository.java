@@ -38,7 +38,6 @@ import com.sonarsource.c.plugin.CCheckRepository;
  * 
  * @deprecated
  */
-@Deprecated
 public class CheckRepository implements CCheckRepository {
 
   public Collection<Class<? extends CCheck>> getCheckClasses() {
@@ -47,8 +46,8 @@ public class CheckRepository implements CCheckRepository {
     checks.add(FunctionComplexityCheck.class);
     checks.add(EmptyBlockCheck.class);
     checks.add(SwitchStatementWithoutDefaultCheck.class);
-    checks.add(NestedIfDepthCheck.class);
     checks.add(BooleanExpressionComplexityCheck.class);
+    checks.add(NestedIfDepthCheck.class);
     checks.add(FunctionLocCheck.class);
     checks.add(FileLocCheck.class);
     checks.add(IfStatementWithoutBracesCheck.class);
@@ -58,6 +57,9 @@ public class CheckRepository implements CCheckRepository {
     checks.add(ExcessiveParameterListCheck.class);
     checks.add(FunctionNameCheck.class);
     checks.add(FileNameCheck.class);
+    checks.add(BreakCheck.class);
+    checks.add(ContinueCheck.class);
+    checks.add(GotoCheck.class);
     return checks;
   }
 }
