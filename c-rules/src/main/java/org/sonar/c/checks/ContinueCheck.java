@@ -31,7 +31,7 @@ import com.sonarsource.c.plugin.CCheck;
 
 @Rule(key = "C.DoNotUseContinue", name = "Continue statement must not be used", isoCategory = IsoCategory.Usability, priority = Priority.MAJOR,
 	    description = "<p>Avoid using keyword continue.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+//@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 
 public class ContinueCheck extends CCheck
 {

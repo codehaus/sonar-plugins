@@ -30,7 +30,7 @@ import com.sonarsource.c.plugin.CCheck;
 
 @Rule(key = "C.DoNotUseGoto", name = "Goto statement must not be used", isoCategory = IsoCategory.Usability, priority = Priority.MAJOR,
 	    description = "<p>Avoid using keyword goto.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+//@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 	
 public class GotoCheck extends CCheck
 {
