@@ -50,7 +50,7 @@
   </ciManagement>
 
   <properties>
-    <jacoco.version>0.5.2.20110519202509</jacoco.version>
+    <jacoco.version>0.5.3.201107060350</jacoco.version>
 
     <sonar.version>2.7</sonar.version>
     <sonar.pluginName>JaCoCo</sonar.pluginName>
@@ -67,17 +67,6 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <version>${jacoco.version}</version>
-    </dependency>
-    <!-- Next two dependencies should be provided transitively from org.jacoco.core - see SONARPLUGINS-897 -->
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>3.2</version>
-    </dependency>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm-commons</artifactId>
-      <version>3.2</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
@@ -237,19 +226,4 @@
       </repositories>
     </profile>
   </profiles>
-
-  <repositories>
-    <repository>
-      <!-- for jacoco -->
-      <id>sonar</id>
-      <name>Sonar</name>
-      <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 </project>
