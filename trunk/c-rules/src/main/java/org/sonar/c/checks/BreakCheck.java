@@ -31,7 +31,7 @@ import com.sonarsource.c.plugin.CCheck;
 
 @Rule(key = "C.DoNotUseBreak", name = "Break statement must be used only inside a switch block", isoCategory = IsoCategory.Usability, priority = Priority.MAJOR,
 	    description = "<p>Avoid using keyword break outside a switch block.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+//@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 
 public class BreakCheck extends CCheck
 {
