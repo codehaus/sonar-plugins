@@ -43,7 +43,6 @@ public class EmmaPlugin implements Plugin {
   public static final String META_DATA = "coverage.em";
   public static final String COVERAGE_DATA = "coverage-0.ec";
 
-
   public String getKey() {
     return "emma";
   }
@@ -58,10 +57,7 @@ public class EmmaPlugin implements Plugin {
   }
 
   public List getExtensions() {
-    return Arrays.asList(
-        EmmaSensor.class,
-        EmmaMavenPluginHandler.class
-    );
+    return Arrays.asList(EmmaMavenInitializer.class, EmmaMavenPluginHandler.class, EmmaSensor.class);
   }
 
   @Override
