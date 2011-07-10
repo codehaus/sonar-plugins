@@ -20,88 +20,39 @@
 
 package org.sonar.plugins.emma;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.Plugins;
-import org.sonar.api.batch.AbstractCoverageExtension;
+import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.maven.DependsUponMavenPlugin;
-import org.sonar.api.batch.maven.MavenPlugin;
-import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.resources.Project;
+import org.sonar.api.utils.Logs;
 
 import java.io.File;
 
-public class EmmaSensor extends AbstractCoverageExtension implements Sensor, DependsUponMavenPlugin {
-  private EmmaMavenPluginHandler pluginHandler;
-  Logger logger = LoggerFactory.getLogger(getClass());
+public class EmmaSensor implements Sensor, CoverageExtension {
 
-
-  public EmmaSensor(Plugins plugins, EmmaMavenPluginHandler pluginHandler) {
-    super(plugins);
-    this.pluginHandler = pluginHandler;
-  }
-
-  @Override
   public boolean shouldExecuteOnProject(Project project) {
-    return super.shouldExecuteOnProject(project) && project.getFileSystem().hasJavaSourceFiles();
+    return project.getFileSystem().hasJavaSourceFiles();
   }
 
   public void analyse(Project project, SensorContext context) {
-    File reportsPath = getReport(project);
-    if (reportsPath != null) {
-      EmmaProcessor processor = new EmmaProcessor(reportsPath, context);
-      processor.process();
-    }
-  }
-
-  public MavenPluginHandler getMavenPluginHandler(Project project) {
-    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
-      return pluginHandler;
-    }
-    return null;
-  }
-
-
-  protected File getReport(Project project) {
-    File report = getReportFromProperty(project);
-    if (report == null) {
-      report = getReportFromPluginConfiguration(project);
-    }
-    if (report == null) {
-      report = getReportFromDefaultPath(project);
-    }
-
-    if (report == null || !report.exists() || !report.isDirectory()) {
-      logger.warn("Emma reports not found in {}", report);
-      report = null;
-    }
-
-    return report;
-  }
-
-  private File getReportFromProperty(Project project) {
     String path = (String) project.getProperty(EmmaPlugin.REPORT_PATH_PROPERTY);
-    if (path != null) {
-      return project.getFileSystem().resolvePath(path);
+    if (path == null) {
+      // wasn't configured - skip
+      return;
     }
-    return null;
+    File reportsPath = project.getFileSystem().resolvePath(path);
+    if (!reportsPath.exists() || !reportsPath.isDirectory()) {
+      Logs.INFO.warn("Emma reports not found in {}", reportsPath);
+      return;
+    }
+
+    EmmaProcessor processor = new EmmaProcessor(reportsPath, context);
+    processor.process();
   }
 
-  private File getReportFromPluginConfiguration(Project project) {
-    MavenPlugin mavenPlugin = MavenPlugin.getPlugin(project.getPom(), EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
-    if (mavenPlugin != null) {
-      String path = mavenPlugin.getParameter("outputDirectory");
-      if (path != null) {
-        return project.getFileSystem().resolvePath(path);
-      }
-    }
-    return null;
-  }
-
-  private File getReportFromDefaultPath(Project project) {
-    return project.getFileSystem().getBuildDir();
+  @Override
+  public String toString() {
+    return getClass().getSimpleName();
   }
 
 }
