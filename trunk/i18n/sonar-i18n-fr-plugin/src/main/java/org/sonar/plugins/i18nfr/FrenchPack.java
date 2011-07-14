@@ -20,16 +20,16 @@
 
 package org.sonar.plugins.i18nfr;
 
-import org.sonar.api.i18n.LanguagePack;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import org.sonar.api.i18n.LanguagePack;
+
 public class FrenchPack extends LanguagePack {
 
   public List<String> getPluginKeys() {
-    return Arrays.asList("core", "design");
+    return Arrays.asList("core", "design", "squidjava");
   }
 
   public List<Locale> getLocales() {
