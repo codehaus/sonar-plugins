@@ -35,7 +35,6 @@
         <module>jacoco</module>
         <module>javascript</module>
         <module>jira</module>
-        <module>jmeter</module>
         <module>ldap</module>
         <module>mantis</module>
         <module>maven-report</module>
@@ -70,13 +69,13 @@
       </activation>
       <modules>
         <module>basic-cocomo</module>
-		<module>codesize</module>
+        <module>codesize</module>
         <module>debug</module>
         <module>drools</module>
         <module>profiler</module>
         <module>sonargraph</module>
         <module>testability-explorer</module>
-		<module>w3c-markup-validation</module>
+        <module>w3c-markup-validation</module>
       </modules>
     </profile>
     <profile>
@@ -94,6 +93,8 @@
     <profile>
       <id>unstableProjects</id>
       <modules>
+        <!-- Not a SNAPSHOT version in trunk -->
+        <module>jmeter</module>
         <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
         <module>codereview</module>
         <module>php</module>
