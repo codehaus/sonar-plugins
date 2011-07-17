@@ -20,13 +20,10 @@
 
 package org.sonar.plugins.email;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.mail.Email;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
@@ -35,49 +32,51 @@ import org.sonar.api.resources.Project;
 import org.sonar.plugins.email.EmailPublisher.SonarEmail;
 
 public class EmailPublisherTest {
+  private SensorContext context;
   private EmailPublisher publisher;
   private Project project;
   private Configuration configuration;
+  private SonarEmail email;
 
   @Before
   public void setUp() {
+    context = mock(SensorContext.class);
+
     Server server = mock(Server.class);
     when(server.getURL()).thenReturn("http://localhost:9000");
-    publisher = new EmailPublisher(server);
+    publisher = spy(new EmailPublisher(server));
+    email = mock(SonarEmail.class);
+    doReturn(email).when(publisher).newEmail();
+
     project = new Project("org.example:foo", "", "Foo");
+
     configuration = new BaseConfiguration();
+    configuration.setProperty(EmailPublisher.FROM_PROPERTY, "sonar@domain"); // TODO it's mandatory property now - see SONARPLUGINS-968
     project.setConfiguration(configuration);
   }
 
   @Test
-  public void multipleRecipients() throws Exception {
-    configuration.setProperty(EmailPublisher.FROM_PROPERTY, "sonar@domain");
+  public void defaultConfiguration() throws Exception {
     configuration.setProperty(EmailPublisher.TO_PROPERTY, "1@domain;2@domain\r\n3@domain 4@domain");
 
-    Email email = publisher.getEmail(project);
+    publisher.getEmail(project);
 
-    assertThat(email.getToAddresses().size(), is(4));
-  }
-
-  @Test
-  public void defaultConfiguration() throws Exception {
-    configuration.setProperty(EmailPublisher.FROM_PROPERTY, "sonar@domain"); // TODO it's mandatory property now - see SONARPLUGINS-968
-
-    Email email = publisher.getEmail(project);
-
-    assertThat(email.getHostName(), is("localhost"));
-    assertThat(email.isTLS(), is(false));
-    assertThat(email.getFromAddress().getAddress(), is("sonar@domain"));
-    assertThat(email.getToAddresses().size(), is(0));
+    verify(email).setHostName("localhost");
+    verify(email).setSmtpPort("25");
+    verify(email).setTLS(false);
+    verify(email).setFrom("sonar@domain");
+    verify(email).addTo("1@domain");
+    verify(email).addTo("2@domain");
+    verify(email).addTo("3@domain");
+    verify(email).addTo("4@domain");
+    verify(email).setSubject("Sonar analysis of Foo");
+    verify(email).setMsg("Sonar analysis of Foo available http://localhost:9000/project/index/org.example:foo");
+    verifyNoMoreInteractions(email);
   }
 
   @Test
   public void enabled() throws Exception {
     configuration.setProperty(EmailPublisher.ENABLED_PROPERTY, true);
-    SensorContext context = mock(SensorContext.class);
-    publisher = spy(publisher);
-    SonarEmail email = mock(SonarEmail.class);
-    doReturn(email).when(publisher).getEmail(project);
 
     publisher.executeOn(project, context);
 
@@ -86,19 +85,28 @@ public class EmailPublisherTest {
 
   @Test
   public void disabled() throws Exception {
-    SensorContext context = mock(SensorContext.class);
-    publisher = spy(publisher);
-    SonarEmail email = mock(SonarEmail.class);
-    doReturn(email).when(publisher).getEmail(project);
-
     publisher.executeOn(project, context);
 
     verify(email, never()).send();
   }
 
   @Test
-  public void test() {
-    assertThat(publisher.getSubject(project), is("Sonar analysis of Foo"));
-    assertThat(publisher.getMessage(project), is("Sonar analysis of Foo available http://localhost:9000/project/index/org.example:foo"));
+  public void shouldSetAuthentication() throws Exception {
+    configuration.setProperty(EmailPublisher.USERNAME_PROPERTY, "user");
+    configuration.setProperty(EmailPublisher.PASSWORD_PROPERTY, "password");
+    publisher.getEmail(project);
+
+    configuration.setProperty(EmailPublisher.USERNAME_PROPERTY, "user");
+    configuration.setProperty(EmailPublisher.PASSWORD_PROPERTY, "");
+    publisher.getEmail(project);
+
+    configuration.setProperty(EmailPublisher.USERNAME_PROPERTY, "");
+    configuration.setProperty(EmailPublisher.PASSWORD_PROPERTY, "password");
+    publisher.getEmail(project);
+
+    verify(email).setAuthentication("user", "password");
+    verify(email).setAuthentication("", "password");
+    verify(email).setAuthentication("user", "");
   }
+
 }
