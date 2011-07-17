@@ -66,7 +66,7 @@ public class EmailPublisher implements PostJob {
 
   Email getEmail(Project project) throws EmailException {
     Configuration configuration = project.getConfiguration();
-    SonarEmail email = new SonarEmail();
+    SonarEmail email = newEmail();
     String host = configuration.getString(HOST_PROPERTY, SMTP_HOST_DEFAULT_VALUE);
     String port = configuration.getString(PORT_PROPERTY, PORT_DEFAULT_VALUE);
     String username = configuration.getString(USERNAME_PROPERTY);
@@ -88,8 +88,8 @@ public class EmailPublisher implements PostJob {
       email.addTo(addr);
     }
 
-    email.setSubject(getSubject(project));
-    email.setMsg(getMessage(project));
+    email.setSubject(String.format("Sonar analysis of %s", project.getName()));
+    email.setMsg(String.format("Sonar analysis of %s available %s%s%s", project.getName(), server.getURL(), PROJECT_INDEX_URI, project.getKey()));
 
     return email;
   }
@@ -105,13 +105,8 @@ public class EmailPublisher implements PostJob {
     }
   }
 
-  String getSubject(Project project) {
-    return String.format("Sonar analysis of %s", project.getName());
-  }
-
-  String getMessage(Project project) {
-    StringBuilder url = new StringBuilder(server.getURL()).append(PROJECT_INDEX_URI).append(project.getKey());
-    return String.format("Sonar analysis of %s available %s", project.getName(), url);
+  SonarEmail newEmail() {
+    return new SonarEmail();
   }
 
   static class SonarEmail extends SimpleEmail {
