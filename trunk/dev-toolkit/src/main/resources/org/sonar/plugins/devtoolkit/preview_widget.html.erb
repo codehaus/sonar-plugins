@@ -24,7 +24,5 @@
   <%= widget_body -%>
 <% end %>
 <script type="text/javascript">
-  if (Prototype.Browser.Gecko) {
-    $('note-<%= widget.id -%>').update('Firefox is badly supported');
-  }
+  $('preview-<%= widget.id -%>').enable();
 </script>
