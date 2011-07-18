@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>parent</artifactId>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <version>10</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>sonar-dev-toolkit-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>0.1-SNAPSHOT</version>
+
+  <name>Sonar Developer Toolkit Plugin</name>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <email>simon.brandhof@sonarsource.com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/dev-toolkit</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/dev-toolkit</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
+  <properties>
+    <sonar.version>2.8</sonar.version>
+    <sonar.pluginName>Dev Toolkit</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.devtoolkit.DevToolkitPlugin</sonar.pluginClass>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
