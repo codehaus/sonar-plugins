@@ -5,7 +5,7 @@
 <form action="<%= ApplicationController.root_context -%>/api/properties" method="post"
       onsubmit="new Ajax.Request('<%= ApplicationController.root_context -%>/api/properties', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this), onLoading:function(request){$('preview-<%= widget.id -%>').disable()}, onComplete:function(request){window.location.reload()}}); return false;">
   <input type="hidden" name="id" value="<%= property_key -%>"/>
-  <textarea rows="<%= widget_properties['rows'] -%>" cols="<%= widget_properties['cols'] -%>" name="value"><%= code -%></textarea>
+  <textarea rows="<%= widget_properties['rows'] -%>" name="value" class="width100"><%= code -%></textarea>
   <br/>
 
   <div>

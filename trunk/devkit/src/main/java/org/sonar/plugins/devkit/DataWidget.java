@@ -1,5 +1,5 @@
 /*
- * Sonar Developer Toolkit Plugin
+ * Sonar Development Kit Plugin
  * Copyright (C) 2011 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,36 +18,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.devtoolkit;
+package org.sonar.plugins.devkit;
 
 import org.sonar.api.web.*;
 
-@WidgetCategory({"Development"})
-@Description("Code & Preview widget")
+@WidgetCategory({"Devkit"})
+@Description("List available data")
 @UserRole("admin")
-@WidgetProperties({
-    @WidgetProperty(key = "rows",
-        description = "Default number of rows",
-        type = WidgetPropertyType.INTEGER,
-        defaultValue = "10"
-    ),
-    @WidgetProperty(key = "cols",
-        description = "Default number of columns",
-        type = WidgetPropertyType.INTEGER,
-        defaultValue = "40"
-    )
-})
-public class PreviewWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+public class DataWidget extends AbstractRubyTemplate implements RubyRailsWidget {
   public String getId() {
-    return "preview";
+    return "devkit-data";
   }
 
   public String getTitle() {
-    return "Widget Preview";
+    return "Debug Data";
   }
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/devtoolkit/preview_widget.html.erb";
+    return "/org/sonar/plugins/devkit/data_widget.html.erb";
   }
 }

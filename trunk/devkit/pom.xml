@@ -8,11 +8,11 @@
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>sonar-dev-toolkit-plugin</artifactId>
+  <artifactId>sonar-devkit-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>0.1-SNAPSHOT</version>
 
-  <name>Sonar Developer Toolkit Plugin</name>
+  <name>Sonar Development Kit Plugin</name>
   <inceptionYear>2011</inceptionYear>
   <organization>
     <name>SonarSource</name>
@@ -34,14 +34,14 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/dev-toolkit</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/dev-toolkit</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/devkit</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/devkit</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
   <properties>
     <sonar.version>2.8</sonar.version>
-    <sonar.pluginName>Dev Toolkit</sonar.pluginName>
-    <sonar.pluginClass>org.sonar.plugins.devtoolkit.DevToolkitPlugin</sonar.pluginClass>
+    <sonar.pluginName>Development Kit</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.devkit.DevkitPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
