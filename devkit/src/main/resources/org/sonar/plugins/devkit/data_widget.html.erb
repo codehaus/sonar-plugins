@@ -1,0 +1,125 @@
+<table class="width100">
+  <tr>
+    <td width="50%" valign="top">
+      <table class="width100 data small">
+        <thead>
+        <tr>
+          <th colspan="2">Resource</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="even">
+          <td>Id</td>
+          <td><%= @resource.id -%></td>
+        </tr>
+        <tr class="odd">
+          <td>Root id</td>
+          <td><%= @resource.root_id -%></td>
+        </tr>
+        <tr class="even">
+          <td>Scope</td>
+          <td><%= @resource.scope -%></td>
+        </tr>
+        <tr class="odd">
+          <td>Qualifier</td>
+          <td><%= @resource.qualifier -%></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <td width=10></td>
+    <td valign="top">
+      <table class="width100 data small">
+        <thead>
+        <tr>
+          <th colspan="2">Snapshot</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="even">
+          <td>Id</td>
+          <td><%= @snapshot.id -%></td>
+        </tr>
+        <tr class="odd">
+          <td>Created</td>
+          <td><%= @snapshot.created_at -%></td>
+        </tr>
+        <tr class="even">
+          <td>Path</td>
+          <td><%= @snapshot.path -%></td>
+        </tr>
+        <tr class="odd">
+          <td>Depth</td>
+          <td><%= @snapshot.depth -%></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>
+<br/>
+<table class="width100 data small">
+  <thead>
+  <tr>
+    <th colspan="2">Variations</th>
+    <th>Param</th>
+    <th>Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% for index in 1..5 do %>
+    <tr class="<%= cycle('even', 'odd', :name => 'devkit-var') -%>">
+      <td><%= index -%></td>
+      <td><%= @snapshot.send "period#{index}_mode" -%></td>
+      <td><%= @snapshot.send "period#{index}_param" -%></td>
+      <td><%= @snapshot.send "period#{index}_date" -%></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<br/>
+<table class="width100 data small">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Metric</th>
+    <th align="right">Text</th>
+    <th align="right">Val.</th>
+    <th align="right">Var1</th>
+    <th align="right">Var2</th>
+    <th align="right">Var3</th>
+    <th align="right">Var4</th>
+    <th align="right">Var5</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% Metric.all.sort.each do |metric|
+    measures = @snapshot.measures.select { |m| m.metric_id==metric.id }
+    if measures.empty?
+      measures=[ProjectMeasure.new]
+    end
+    measures.each do |measure|
+  %>
+      <tr class="<%= cycle('even', 'odd', :name => 'devkit_metrics') -%>">
+        <td><%= measure.id -%></td>
+        <td align="left">
+          <%= metric.key -%>
+          <% if measure.characteristic %>
+          / <%= measure.characteristic.name -%>
+          <% end %>
+        </td>
+        <td align="right">
+          <% if measure.text_value %>
+            <a rel="<%= h(measure.text_value) -%>">more</a>
+          <% end %></td>
+        <td align="right"><%= measure.value -%></td>
+        <td align="right"><%= measure.variation_value_1 -%></td>
+        <td align="right"><%= measure.variation_value_2 -%></td>
+        <td align="right"><%= measure.variation_value_3 -%></td>
+        <td align="right"><%= measure.variation_value_4 -%></td>
+        <td align="right"><%= measure.variation_value_5 -%></td>
+      </tr>
+    <% end
+       end %>
+  </tbody>
+</table>

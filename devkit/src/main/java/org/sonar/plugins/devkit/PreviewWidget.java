@@ -1,5 +1,5 @@
 /*
- * Sonar Developer Toolkit Plugin
+ * Sonar Development Kit Plugin
  * Copyright (C) 2011 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -18,16 +18,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.devtoolkit;
+package org.sonar.plugins.devkit;
 
-import org.sonar.api.SonarPlugin;
+import org.sonar.api.web.*;
 
-import java.util.Arrays;
-import java.util.List;
+@WidgetCategory({"Devkit"})
+@Description("Code & Preview widget")
+@UserRole("admin")
+@WidgetProperties({
+    @WidgetProperty(key = "rows",
+        description = "Default number of rows",
+        type = WidgetPropertyType.INTEGER,
+        defaultValue = "10"
+    )
+})
+public class PreviewWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+  public String getId() {
+    return "devkit-preview";
+  }
 
-public final class DevToolkitPlugin extends SonarPlugin {
+  public String getTitle() {
+    return "Widget Preview";
+  }
 
-  public List getExtensions() {
-    return Arrays.asList(PreviewWidget.class);
+  @Override
+  protected String getTemplatePath() {
+    return "/org/sonar/plugins/devkit/preview_widget.html.erb";
   }
 }
