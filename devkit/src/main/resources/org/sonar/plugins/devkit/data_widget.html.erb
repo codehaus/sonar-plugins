@@ -70,9 +70,9 @@
   <% for index in 1..5 do %>
     <tr class="<%= cycle('even', 'odd', :name => 'devkit-var') -%>">
       <td><%= index -%></td>
-      <td><%= @snapshot.send "period#{index}_mode" -%></td>
-      <td><%= @snapshot.send "period#{index}_param" -%></td>
-      <td><%= @snapshot.send "period#{index}_date" -%></td>
+      <td><%= @snapshot.project_snapshot.send "period#{index}_mode" -%></td>
+      <td><%= @snapshot.project_snapshot.send "period#{index}_param" -%></td>
+      <td><%= @snapshot.project_snapshot.send "period#{index}_date" -%></td>
     </tr>
   <% end %>
   </tbody>
