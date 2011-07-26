@@ -24,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -81,15 +82,18 @@ public class TaglistIT {
   }
 
   private Measure getFileMeasure(String metricKey) {
-    return sonar.find(ResourceQuery.createForMetrics(FILE, metricKey)).getMeasure(metricKey);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(FILE, metricKey));
+    return resource!=null ? resource.getMeasure(metricKey) : null;
   }
 
   private Measure getPackageMeasure(String metricKey) {
-    return sonar.find(ResourceQuery.createForMetrics(PACKAGE, metricKey)).getMeasure(metricKey);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(PACKAGE, metricKey));
+    return resource!=null ? resource.getMeasure(metricKey) : null;
   }
 
   private Measure getProjectMeasure(String metricKey) {
-    return sonar.find(ResourceQuery.createForMetrics(PROJECT, metricKey)).getMeasure(metricKey);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(PROJECT, metricKey));
+    return resource!=null ? resource.getMeasure(metricKey) : null;
   }
 
 }
