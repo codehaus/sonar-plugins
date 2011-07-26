@@ -78,7 +78,6 @@ public class CommonsCollectionsIT {
   public void filesMetrics() {
     assertThat(getFileMeasure("technical_debt").getValue(), is(6.3));
     assertThat(getFileMeasure("technical_debt_ratio").getValue(), is(0.5));
-    assertNull(getFileMeasure("technical_debt_days"));
     assertThat(getFileMeasure("technical_debt_repart").getData(), is("Violations=100.0"));
   }
 
