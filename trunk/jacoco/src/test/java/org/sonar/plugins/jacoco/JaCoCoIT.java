@@ -114,7 +114,6 @@ public class JaCoCoIT {
     assertThat(getElModuleMeasure("uncovered_conditions").getValue(), is(3320.0));
 
     assertThat(getElModuleMeasure("tests").getValue(), is(0.0));
-    assertNull(getElModuleMeasure("test_success_density"));
   }
 
   @Test
@@ -163,8 +162,6 @@ public class JaCoCoIT {
     assertThat(coveredConditions.get("228"), is("1"));
     assertThat(coveredConditions.get("258"), is("3"));
 
-    assertNull(getFileMeasure("tests"));
-    assertNull(getFileMeasure("test_success_density"));
   }
 
   private Measure getFileMeasure(String metricKey) {
