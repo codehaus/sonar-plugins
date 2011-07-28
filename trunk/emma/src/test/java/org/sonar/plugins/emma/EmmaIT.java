@@ -24,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
+import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 import static junit.framework.Assert.assertNull;
@@ -117,7 +118,10 @@ public class EmmaIT {
   }
 
   private Measure getFileMeasure(String metricKey) {
-    return sonar.find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey)).getMeasure(metricKey);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey));
+    Measure measure = resource!=null ? resource.getMeasure(metricKey) : null;
+
+    return measure;
   }
 
   private Measure getPackageMeasure(String metricKey) {
@@ -129,7 +133,10 @@ public class EmmaIT {
   }
 
   private Measure getElModuleMeasure(String metricKey) {
-    return sonar.find(ResourceQuery.createForMetrics(MODULE_EL, metricKey)).getMeasure(metricKey);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(MODULE_EL, metricKey));
+    Measure measure = resource!=null ? resource.getMeasure(metricKey) : null;
+
+    return measure;
   }
 
   private Measure getProjectMeasure(String metricKey) {
