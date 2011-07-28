@@ -27,6 +27,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 import org.sonar.wsclient.Sonar;
+import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 import org.sonar.wsclient.services.Measure;
 import static junit.framework.Assert.assertNull;
@@ -97,7 +98,10 @@ public class StrutsIT {
   }
 
   private Measure getFileMeasure(String metricKey) {
-    return sonar.find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey)).getMeasure(metricKey);
+    Resource resource = sonar.find(ResourceQuery.createForMetrics(FILE_ACTION, metricKey));
+    Measure measure = resource!=null ? resource.getMeasure(metricKey) : null;
+
+    return measure;
   }
 
   private Measure getPackageMeasure(String metricKey) {
