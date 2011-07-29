@@ -18,16 +18,16 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.i18nfr;
+package org.sonar.plugins.l10n;
 
 import org.sonar.api.SonarPlugin;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class FrenchPackPlugin extends SonarPlugin {
+public final class FrenchPackPlugin extends SonarPlugin {
 
   public List getExtensions() {
-    return Arrays.asList(FrenchPack.class);
+    return Collections.emptyList();
   }
 }
