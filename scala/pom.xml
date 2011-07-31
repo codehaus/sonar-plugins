@@ -54,6 +54,8 @@
     <sonar.pluginClass>org.sonar.plugins.scala.ScalaPlugin</sonar.pluginClass>
 
     <license.mailto>felix.mueller.berlin@googlemail.com</license.mailto>
+
+    <scala.version>2.9.0-1</scala.version>
   </properties>
 
   <dependencies>
@@ -62,6 +64,16 @@
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
 
     <!-- unit tests -->
     <dependency>
@@ -69,5 +81,65 @@
       <artifactId>sonar-testing-harness</artifactId>
       <version>${sonar.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_2.9.0</artifactId>
+      <version>1.6.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <phase>test-compile</phase>
+          </execution>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.9.0</version>
+        <configuration>
+          <includes>
+            <include>src/main/java/**</include>
+            <include>src/test/java/**</include>
+            <include>src/main/scala/**</include>
+            <include>src/test/scala/**</include>
+          </includes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <includes>
+            <include>**/*Spec.class</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
