@@ -17,24 +17,32 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.compiler
+package org.sonar.plugins.scala.language;
 
-import scala.tools.nsc.ast.parser.Tokens._
-import org.junit.runner.RunWith
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.junit.JUnitRunner
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertThat;
 
-@RunWith(classOf[JUnitRunner])
-class CompilerSpec extends FlatSpec with ShouldMatchers {
+import org.junit.Test;
 
-  private val compiler = new Compiler()
-  private val simpleDeclrationOfValue = "val a = 1"
+public class ScalaTest {
 
-  "A compiler" should "tokenize a simple declaration of a value" in {
-    val tokens = compiler.getTokens(simpleDeclrationOfValue)
-    tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
+  @Test
+  public void shouldHaveScalaLanguageKey() {
+    assertThat(new Scala().getKey(), equalTo("scala"));
+    assertThat(Scala.INSTANCE.getKey(), equalTo("scala"));
   }
 
-  // TODO add more specs for Compiler
+  @Test
+  public void shouldHaveScalaLanguageName() {
+    assertThat(new Scala().getName(), equalTo("Scala"));
+    assertThat(Scala.INSTANCE.getName(), equalTo("Scala"));
+  }
+
+  @Test
+  public void shouldHaveScalaFileSuffixes() {
+    String[] suffixes = new String[] { "scala" };
+    assertArrayEquals(new Scala().getFileSuffixes(), suffixes);
+    assertArrayEquals(Scala.INSTANCE.getFileSuffixes(), suffixes);
+  }
 }

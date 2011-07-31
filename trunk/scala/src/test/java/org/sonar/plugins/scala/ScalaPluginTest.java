@@ -17,24 +17,17 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.compiler
+package org.sonar.plugins.scala;
 
-import scala.tools.nsc.ast.parser.Tokens._
-import org.junit.runner.RunWith
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.junit.JUnitRunner
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
 
-@RunWith(classOf[JUnitRunner])
-class CompilerSpec extends FlatSpec with ShouldMatchers {
+import org.junit.Test;
 
-  private val compiler = new Compiler()
-  private val simpleDeclrationOfValue = "val a = 1"
+public class ScalaPluginTest {
 
-  "A compiler" should "tokenize a simple declaration of a value" in {
-    val tokens = compiler.getTokens(simpleDeclrationOfValue)
-    tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
+  @Test
+  public void shouldHaveExtensions() {
+    assertThat(new ScalaPlugin().getExtensions().size(), greaterThan(0));
   }
-
-  // TODO add more specs for Compiler
 }

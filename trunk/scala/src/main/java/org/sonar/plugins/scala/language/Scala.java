@@ -17,24 +17,25 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.compiler
+package org.sonar.plugins.scala.language;
 
-import scala.tools.nsc.ast.parser.Tokens._
-import org.junit.runner.RunWith
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.junit.JUnitRunner
+import org.sonar.api.resources.AbstractLanguage;
 
-@RunWith(classOf[JUnitRunner])
-class CompilerSpec extends FlatSpec with ShouldMatchers {
+/**
+ * This class implements Scala as a language for Sonar.
+ *
+ * @author Felix Müller
+ * @since 0.1
+ */
+public class Scala extends AbstractLanguage {
 
-  private val compiler = new Compiler()
-  private val simpleDeclrationOfValue = "val a = 1"
+  public static final Scala INSTANCE = new Scala();
 
-  "A compiler" should "tokenize a simple declaration of a value" in {
-    val tokens = compiler.getTokens(simpleDeclrationOfValue)
-    tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
+  public Scala() {
+    super("scala", "Scala");
   }
 
-  // TODO add more specs for Compiler
+  public String[] getFileSuffixes() {
+    return new String[] { "scala" };
+  }
 }
