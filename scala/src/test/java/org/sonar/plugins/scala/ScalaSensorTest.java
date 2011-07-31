@@ -19,28 +19,34 @@
  */
 package org.sonar.plugins.scala;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.sonar.api.SonarPlugin;
+import org.junit.Before;
+import org.junit.Test;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
 import org.sonar.plugins.scala.language.Scala;
 
-/**
- * This class is the entry point for all extensions made by the
- * Sonar Scala Plugin.
- *
- * @author Felix Müller
- * @since 0.1
- */
-public class ScalaPlugin extends SonarPlugin {
+public class ScalaSensorTest {
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public List getExtensions() {
-    return Arrays.asList(Scala.class, ScalaSensor.class);
+  private ScalaSensor scalaSensor;
+
+  @Before
+  public void setUp() {
+    scalaSensor = new ScalaSensor(Scala.INSTANCE);
   }
 
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
+  @Test
+  public void shouldOnlyExecuteOnScalaProjects() {
+    Project scalaProject = mock(Project.class);
+    when(scalaProject.getLanguage()).thenReturn(Scala.INSTANCE);
+    Project javaProject = mock(Project.class);
+    when(javaProject.getLanguage()).thenReturn(Java.INSTANCE);
+
+    assertThat(scalaSensor.shouldExecuteOnProject(scalaProject), is(true));
+    assertThat(scalaSensor.shouldExecuteOnProject(javaProject), is(false));
   }
 }

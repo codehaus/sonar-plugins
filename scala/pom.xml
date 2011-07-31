@@ -87,6 +87,12 @@
       <version>1.6.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.maven</groupId>
+    	<artifactId>maven-project</artifactId>
+    	<version>2.2.1</version>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -129,6 +135,10 @@
             <include>src/main/scala/**</include>
             <include>src/test/scala/**</include>
           </includes>
+          <mapping>
+            <java>SLASHSTAR_STYLE</java>
+            <scala>SLASHSTAR_STYLE</scala>
+          </mapping>
         </configuration>
       </plugin>
       <plugin>
@@ -137,6 +147,7 @@
         <configuration>
           <includes>
             <include>**/*Spec.class</include>
+            <include>**/*Test.class</include>
           </includes>
         </configuration>
       </plugin>

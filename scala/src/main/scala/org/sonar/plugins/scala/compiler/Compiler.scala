@@ -1,4 +1,4 @@
-/**
+/*
  * Sonar Scala Plugin
  * Copyright (C) 2011 Felix Müller
  * felix.mueller.berlin@googlemail.com
@@ -28,6 +28,7 @@ import io.AbstractFile
  * the compiler from Java in a more convenient way.
  *
  * @author Felix Müller
+ * @since 0.1
  */
 class Compiler extends Global(new Settings()) {
 
