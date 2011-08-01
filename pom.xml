@@ -36,6 +36,7 @@
         <module>javascript</module>
         <module>jira</module>
         <module>jmeter</module>
+        <module>l10n/fr</module>
         <module>ldap</module>
         <module>mantis</module>
         <module>maven-report</module>
