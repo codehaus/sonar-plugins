@@ -12,7 +12,7 @@
   <artifactId>sonar-l10n-fr-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>Sonar French Pack</name>
+  <name>L10n :: French Pack</name>
   <inceptionYear>2011</inceptionYear>
 
   <organization>
@@ -68,6 +68,7 @@
         <extensions>true</extensions>
         <configuration>
           <basePlugin>l10nen</basePlugin>
+          <pluginName>French Pack</pluginName>
         </configuration>
       </plugin>
 
