@@ -17,11 +17,22 @@
     new code/changes only. This way previous phases of the project will not impact the analysis.</description>
 
   <url>http://docs.codehaus.org/display/SONAR/Cutoff+Plugin</url>
+
   <inceptionYear>2010</inceptionYear>
+
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com/</url>
   </organization>
+
+  <developers>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <organizationUrl>http://sonarsource.com</organizationUrl>
+    </developer>
+  </developers>
+
   <licenses>
     <license>
       <name>GNU LGPL 3</name>
