@@ -19,22 +19,42 @@
  */
 package org.sonar.plugins.scala.compiler
 
-import java.io.File
-import scala.tools.nsc._
+import tools.nsc._
 import io.AbstractFile
+import compiler._
 
 /**
- * This is a package object that wraps the Scala compiler. It is used to access
- * the compiler from the {@code Lexer} and {@code Parser} in a more convenient way.
+ * This class is a wrapper for accessing the lexer of the Scala compiler
+ * from Java in a more convenient way. It also offers some utility methods.
  *
  * @author Felix Müller
  * @since 0.1
  */
-package object compiler extends Global(new Settings()) {
+class Lexer {
 
-  // for initialization purpose
-  settings.classpath.value += File.pathSeparator + System.getProperty("java.class.path")
-  new Run
+  def getTokens(code: String) : Seq[Int] = {
+    val unit = new CompilationUnit(new util.BatchSourceFile("", code.toCharArray))
+    tokenize(unit)
+  }
 
-  override def forScaladoc = true
+  def getTokensOfFile(path: String) : Seq[Int] = {
+    val unit = new CompilationUnit(new util.BatchSourceFile(AbstractFile.getFile(path)))
+    tokenize(unit)
+  }
+
+  private def tokenize(unit: CompilationUnit) = {
+    // TODO override foundComment and foundDocComment properly to tokenize comments
+    val scanner = new syntaxAnalyzer.UnitScanner(unit)
+
+    import collection.mutable.ListBuffer
+    val tokens = ListBuffer[Int]()
+
+    scanner.init()
+    while (scanner.token != scala.tools.nsc.ast.parser.Tokens.EOF) {
+      tokens += scanner.token
+      scanner.nextToken()
+    }
+
+    tokens
+  }
 }

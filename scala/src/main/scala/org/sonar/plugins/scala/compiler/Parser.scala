@@ -17,33 +17,30 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala;
+package org.sonar.plugins.scala.compiler
 
-import org.sonar.api.batch.Sensor;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.Project;
-import org.sonar.plugins.scala.language.Scala;
+import tools.nsc._
+import io.AbstractFile
+import compiler._
 
 /**
- * This is the main sensor of the Scala plugin. It computes the
- * base metrics for Scala resources.
+ * This class is a wrapper for accessing the parser of the Scala compiler
+ * from Java in a more convenient way. It also offers some utility methods.
  *
  * @author Felix Müller
  * @since 0.1
  */
-public class ScalaSensor implements Sensor {
+class Parser {
 
-  private final Scala scala;
-
-  public ScalaSensor(Scala scala) {
-    this.scala = scala;
+  def parse(code: String) = {
+    val sourceFile = new util.BatchSourceFile("", code.toCharArray)
+    val parser = new syntaxAnalyzer.UnitParser(new CompilationUnit(sourceFile))
+    parser.smartParse()
   }
 
-  public boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(scala);
-  }
-
-  public void analyse(Project project, SensorContext context) {
-    // TODO add computation of base metrics
+  def parseFile(path: String) = {
+    val sourceFile = new util.BatchSourceFile(AbstractFile.getFile(path))
+    val parser = new syntaxAnalyzer.UnitParser(new CompilationUnit(sourceFile))
+    parser.smartParse()
   }
 }

@@ -17,24 +17,30 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.compiler
+package org.sonar.plugins.scala.language;
 
-import scala.tools.nsc.ast.parser.Tokens._
-import org.junit.runner.RunWith
-import org.scalatest.FlatSpec
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.junit.JUnitRunner
+import org.sonar.api.batch.Sensor;
+import org.sonar.api.resources.Project;
 
-@RunWith(classOf[JUnitRunner])
-class CompilerSpec extends FlatSpec with ShouldMatchers {
+/**
+ * This is a helper base class for sensors that should only be executed on Scala projects.
+ *
+ * @author Felix Müller
+ * @since 0.1
+ */
+public abstract class AbstractScalaSensor implements Sensor {
 
-  private val compiler = new Compiler()
-  private val simpleDeclrationOfValue = "val a = 1"
+  private final Scala scala;
 
-  "A compiler" should "tokenize a simple declaration of a value" in {
-    val tokens = compiler.getTokens(simpleDeclrationOfValue)
-    tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
+  protected AbstractScalaSensor(Scala scala) {
+    this.scala = scala;
   }
 
-  // TODO add more specs for Compiler
+  public final boolean shouldExecuteOnProject(Project project) {
+    return project.getLanguage().equals(scala);
+  }
+
+  protected final Scala getScala() {
+    return scala;
+  }
 }
