@@ -17,32 +17,24 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala;
+package org.sonar.plugins.scala.compiler
 
-import java.util.Arrays;
-import java.util.List;
+import scala.tools.nsc.ast.parser.Tokens._
+import org.junit.runner.RunWith
+import org.scalatest.FlatSpec
+import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.junit.JUnitRunner
 
-import org.sonar.api.SonarPlugin;
-import org.sonar.plugins.scala.language.BaseMetricsSensor;
-import org.sonar.plugins.scala.language.Scala;
-import org.sonar.plugins.scala.language.ScalaSourceImporterSensor;
+@RunWith(classOf[JUnitRunner])
+class LexerSpec extends FlatSpec with ShouldMatchers {
 
-/**
- * This class is the entry point for all extensions made by the
- * Sonar Scala Plugin.
- *
- * @author Felix Müller
- * @since 0.1
- */
-public class ScalaPlugin extends SonarPlugin {
+  private val lexer = new Lexer();
+  private val simpleDeclarationOfValue = "val a = 1"
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public List getExtensions() {
-    return Arrays.asList(Scala.class, ScalaSourceImporterSensor.class, BaseMetricsSensor.class);
+  "A lexer" should "tokenize a simple declaration of a value" in {
+    val tokens = lexer.getTokens(simpleDeclarationOfValue)
+    tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
   }
 
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
-  }
+  // TODO add more specs for lexer
 }

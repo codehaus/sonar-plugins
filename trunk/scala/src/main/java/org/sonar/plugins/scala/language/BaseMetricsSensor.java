@@ -17,28 +17,35 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala;
+package org.sonar.plugins.scala.language;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.sonar.api.SonarPlugin;
-import org.sonar.plugins.scala.language.BaseMetricsSensor;
-import org.sonar.plugins.scala.language.Scala;
-import org.sonar.plugins.scala.language.ScalaSourceImporterSensor;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.InputFile;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
 
 /**
- * This class is the entry point for all extensions made by the
- * Sonar Scala Plugin.
+ * This is the main sensor of the Scala plugin. It computes the
+ * base metrics for Scala resources.
  *
  * @author Felix Müller
  * @since 0.1
  */
-public class ScalaPlugin extends SonarPlugin {
+public class BaseMetricsSensor extends AbstractScalaSensor {
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public List getExtensions() {
-    return Arrays.asList(Scala.class, ScalaSourceImporterSensor.class, BaseMetricsSensor.class);
+  public BaseMetricsSensor(Scala scala) {
+    super(scala);
+  }
+
+  public void analyse(Project project, SensorContext sensorContext) {
+    ProjectFileSystem fileSystem = project.getFileSystem();
+    for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
+      ScalaFile resource = ScalaFile.fromInputFile(inputFile);
+
+      sensorContext.saveMeasure(resource, CoreMetrics.FILES, 1.0);
+      // TODO add computation of base metrics: count of classes, lines, ncloc, comments...
+    }
   }
 
   @Override
