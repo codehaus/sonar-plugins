@@ -37,31 +37,7 @@ public class ScalaFile extends Resource<ScalaPackage> {
   private final boolean isUnitTest;
   private final String filename;
   private final String longName;
-
-  private String packageKey;
-  private ScalaPackage parent = null;
-
-  public ScalaFile(String key) {
-    this(key, false);
-  }
-
-  public ScalaFile(String key, boolean isUnitTest) {
-    super();
-    this.isUnitTest = isUnitTest;
-
-    String realKey = StringUtils.trim(key);
-    if (realKey.contains(".")) {
-      longName = realKey;
-      filename = StringUtils.substringAfterLast(realKey, ".");
-      packageKey = StringUtils.substringBeforeLast(realKey, ".");
-    } else {
-      longName = realKey;
-      filename = realKey;
-      packageKey = ScalaPackage.DEFAULT_PACKAGE_NAME;
-      realKey = new StringBuilder().append(ScalaPackage.DEFAULT_PACKAGE_NAME).append(".").append(realKey).toString();
-    }
-    setKey(realKey);
-  }
+  private final ScalaPackage parent;
 
   public ScalaFile(String packageKey, String className, boolean isUnitTest) {
     super();
@@ -70,14 +46,15 @@ public class ScalaFile extends Resource<ScalaPackage> {
 
     String key;
     if (StringUtils.isBlank(packageKey)) {
-      this.packageKey = ScalaPackage.DEFAULT_PACKAGE_NAME;
-      key = new StringBuilder().append(this.packageKey).append(".").append(this.filename).toString();
+      packageKey = ScalaPackage.DEFAULT_PACKAGE_NAME;
+      key = new StringBuilder().append(packageKey).append(".").append(this.filename).toString();
       longName = filename;
     } else {
-      this.packageKey = packageKey.trim();
-      key = new StringBuilder().append(this.packageKey).append(".").append(this.filename).toString();
+      packageKey = packageKey.trim();
+      key = new StringBuilder().append(packageKey).append(".").append(this.filename).toString();
       longName = key;
     }
+    parent = new ScalaPackage(packageKey);
     setKey(key);
   }
 
@@ -113,10 +90,6 @@ public class ScalaFile extends Resource<ScalaPackage> {
 
   @Override
   public ScalaPackage getParent() {
-    if (parent == null) {
-      // TODO in Scala the path is not necessarily the package name, here the Parser should be used
-      parent = new ScalaPackage(packageKey);
-    }
     return parent;
   }
 
@@ -148,16 +121,16 @@ public class ScalaFile extends Resource<ScalaPackage> {
       return null;
     }
 
-    String packageName = null;
-    String classname = inputFile.getRelativePath();
+    String packageName = PackageResolver.resolvePackageNameOfFile(inputFile.getFile().getAbsolutePath());
+    String className = resolveClassName(inputFile);
+    return new ScalaFile(packageName, className, isUnitTest);
+  }
 
+  private static String resolveClassName(InputFile inputFile) {
+    String classname = inputFile.getRelativePath();
     if (inputFile.getRelativePath().indexOf('/') >= 0) {
-      packageName = StringUtils.substringBeforeLast(inputFile.getRelativePath(), "/");
-      packageName = StringUtils.replace(packageName, "/", ".");
       classname = StringUtils.substringAfterLast(inputFile.getRelativePath(), "/");
     }
-
-    classname = StringUtils.substringBeforeLast(classname, ".");
-    return new ScalaFile(packageName, classname, isUnitTest);
+    return StringUtils.substringBeforeLast(classname, ".");
   }
 }

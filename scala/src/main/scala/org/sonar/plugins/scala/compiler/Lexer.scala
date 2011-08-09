@@ -21,16 +21,17 @@ package org.sonar.plugins.scala.compiler
 
 import tools.nsc._
 import io.AbstractFile
-import compiler._
 
 /**
  * This class is a wrapper for accessing the lexer of the Scala compiler
- * from Java in a more convenient way. It also offers some utility methods.
+ * from Java in a more convenient way.
  *
  * @author Felix Müller
  * @since 0.1
  */
 class Lexer {
+
+  import Compiler._
 
   def getTokens(code: String) : Seq[Int] = {
     val unit = new CompilationUnit(new util.BatchSourceFile("", code.toCharArray))
