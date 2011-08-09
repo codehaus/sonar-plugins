@@ -24,16 +24,14 @@ import scala.tools.nsc._
 import io.AbstractFile
 
 /**
- * This is a package object that wraps the Scala compiler. It is used to access
- * the compiler from the {@code Lexer} and {@code Parser} in a more convenient way.
+ * This is a wrapper for the Scala compiler. It is used to access
+ * the compiler in a more convenient way.
  *
  * @author Felix Müller
  * @since 0.1
  */
-package object compiler extends Global(new Settings()) {
+object Compiler extends Global(new Settings()) {
 
-  // for initialization purpose
-  settings.classpath.value += File.pathSeparator + System.getProperty("java.class.path")
   new Run
 
   override def forScaladoc = true

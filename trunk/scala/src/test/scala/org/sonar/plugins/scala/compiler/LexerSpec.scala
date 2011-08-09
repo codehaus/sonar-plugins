@@ -29,10 +29,9 @@ import org.scalatest.junit.JUnitRunner
 class LexerSpec extends FlatSpec with ShouldMatchers {
 
   private val lexer = new Lexer();
-  private val simpleDeclarationOfValue = "val a = 1"
 
   "A lexer" should "tokenize a simple declaration of a value" in {
-    val tokens = lexer.getTokens(simpleDeclarationOfValue)
+    val tokens = lexer.getTokens("val a = 1")
     tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
   }
 

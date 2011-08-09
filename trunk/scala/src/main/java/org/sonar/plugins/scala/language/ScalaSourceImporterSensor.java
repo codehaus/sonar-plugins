@@ -30,6 +30,7 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.scala.AbstractScalaSensor;
 
 /**
  * This Sensor imports all Scala files into Sonar.
@@ -61,21 +62,20 @@ public class ScalaSourceImporterSensor extends AbstractScalaSensor {
 
   private void addFileToSonar(SensorContext sensorContext, InputFile inputFile,
       boolean isUnitTest, String charset) {
-    ScalaFile resource = ScalaFile.fromInputFile(inputFile, isUnitTest);
-
     try {
       String source = FileUtils.readFileToString(inputFile.getFile(), charset);
-
-      if (LOGGER.isDebugEnabled()) {
-        if (isUnitTest) {
-          LOGGER.debug("Add Scala test file to Sonar: " + inputFile.getFile().getAbsolutePath());
-        } else {
-          LOGGER.debug("Add Scala source file to Sonar: " + inputFile.getFile().getAbsolutePath());
-        }
-      }
+      ScalaFile resource = ScalaFile.fromInputFile(inputFile, isUnitTest);
 
       sensorContext.index(resource);
       sensorContext.saveSource(resource, source);
+
+      if (LOGGER.isDebugEnabled()) {
+        if (isUnitTest) {
+          LOGGER.debug("Added Scala test file to Sonar: " + inputFile.getFile().getAbsolutePath());
+        } else {
+          LOGGER.debug("Added Scala source file to Sonar: " + inputFile.getFile().getAbsolutePath());
+        }
+      }
     } catch (IOException ioe) {
       LOGGER.error("Could not read the file: " + inputFile.getFile().getAbsolutePath(), ioe);
     }

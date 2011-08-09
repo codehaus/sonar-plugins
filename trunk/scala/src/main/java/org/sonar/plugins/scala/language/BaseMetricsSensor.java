@@ -24,6 +24,7 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.scala.AbstractScalaSensor;
 
 /**
  * This is the main sensor of the Scala plugin. It computes the
