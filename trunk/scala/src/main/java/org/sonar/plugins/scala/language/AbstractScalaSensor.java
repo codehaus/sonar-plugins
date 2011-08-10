@@ -19,37 +19,28 @@
  */
 package org.sonar.plugins.scala.language;
 
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.resources.InputFile;
+import org.sonar.api.batch.Sensor;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.ProjectFileSystem;
 
 /**
- * This is the main sensor of the Scala plugin. It computes the
- * base metrics for Scala resources.
+ * This is a helper base class for sensors that should only be executed on Scala projects.
  *
  * @author Felix Müller
  * @since 0.1
  */
-public class BaseMetricsSensor extends AbstractScalaSensor {
+public abstract class AbstractScalaSensor implements Sensor {
 
-  public BaseMetricsSensor(Scala scala) {
-    super(scala);
+  private final Scala scala;
+
+  protected AbstractScalaSensor(Scala scala) {
+    this.scala = scala;
   }
 
-  public void analyse(Project project, SensorContext sensorContext) {
-    ProjectFileSystem fileSystem = project.getFileSystem();
-    for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
-      ScalaFile resource = ScalaFile.fromInputFile(inputFile);
-
-      sensorContext.saveMeasure(resource, CoreMetrics.FILES, 1.0);
-      // TODO add computation of base metrics: count of classes, lines, ncloc, comments...
-    }
+  public final boolean shouldExecuteOnProject(Project project) {
+    return project.getLanguage().equals(scala);
   }
 
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
+  protected final Scala getScala() {
+    return scala;
   }
 }

@@ -17,31 +17,25 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala;
+package org.sonar.plugins.scala.language;
 
-import org.sonar.api.batch.Sensor;
-import org.sonar.api.resources.Project;
-import org.sonar.plugins.scala.language.Scala;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-/**
- * This is a helper base class for sensors that should only be executed on Scala projects.
- *
- * @author Felix Müller
- * @since 0.1
- */
-public abstract class AbstractScalaSensor implements Sensor {
+import org.junit.Test;
+import org.sonar.api.resources.Qualifiers;
 
-  private final Scala scala;
+public class ScalaFileTest {
 
-  protected AbstractScalaSensor(Scala scala) {
-    this.scala = scala;
+  @Test
+  public void shouldHaveFileQualifierForSourceFile() {
+    assertThat(new ScalaFile("package", "Class", false).getQualifier(),
+        equalTo(Qualifiers.FILE));
   }
 
-  public final boolean shouldExecuteOnProject(Project project) {
-    return project.getLanguage().equals(scala);
-  }
-
-  protected final Scala getScala() {
-    return scala;
+  @Test
+  public void shouldHaveTestFileQualifierForTestFile() {
+    assertThat(new ScalaFile("package", "Class", true).getQualifier(),
+        equalTo(Qualifiers.UNIT_TEST_FILE));
   }
 }
