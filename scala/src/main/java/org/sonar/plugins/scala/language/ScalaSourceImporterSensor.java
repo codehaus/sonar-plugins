@@ -30,7 +30,6 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.scala.AbstractScalaSensor;
 
 /**
  * This Sensor imports all Scala files into Sonar.
