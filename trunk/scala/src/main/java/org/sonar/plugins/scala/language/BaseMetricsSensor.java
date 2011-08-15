@@ -19,6 +19,13 @@
  */
 package org.sonar.plugins.scala.language;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.InputFile;
@@ -26,13 +33,15 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 
 /**
- * This is the main sensor of the Scala plugin. It computes the
- * base metrics for Scala resources.
+ * This is the main sensor of the Scala plugin. It gathers all results
+ * of the computation of base metrics for all Scala resources.
  *
  * @author Felix Müller
  * @since 0.1
  */
 public class BaseMetricsSensor extends AbstractScalaSensor {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(BaseMetricsSensor.class);
 
   public BaseMetricsSensor(Scala scala) {
     super(scala);
@@ -40,11 +49,27 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
 
   public void analyse(Project project, SensorContext sensorContext) {
     ProjectFileSystem fileSystem = project.getFileSystem();
-    for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
-      ScalaFile resource = ScalaFile.fromInputFile(inputFile);
+    String charset = fileSystem.getSourceCharset().toString();
+    Set<ScalaPackage> packages = new HashSet<ScalaPackage>();
 
-      sensorContext.saveMeasure(resource, CoreMetrics.FILES, 1.0);
-      // TODO add computation of base metrics: count of classes, lines, ncloc, comments...
+    for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
+      ScalaFile scalaFile = ScalaFile.fromInputFile(inputFile);
+      packages.add(scalaFile.getParent());
+      sensorContext.saveMeasure(scalaFile, CoreMetrics.FILES, 1.0);
+
+      try {
+        String source = FileUtils.readFileToString(inputFile.getFile(), charset);
+        LinesAnalyzer linesAnalyzer = new LinesAnalyzer(source);
+
+        sensorContext.saveMeasure(scalaFile, CoreMetrics.LINES, (double) linesAnalyzer.countLines());
+        sensorContext.saveMeasure(scalaFile, CoreMetrics.NCLOC, (double) linesAnalyzer.countLinesOfCode());
+      } catch (IOException ioe) {
+        LOGGER.error("Could not read the file: " + inputFile.getFile().getAbsolutePath(), ioe);
+      }
+    }
+
+    for (ScalaPackage currentPackage : packages) {
+      sensorContext.saveMeasure(currentPackage, CoreMetrics.PACKAGES, 1.0);
     }
   }
 
