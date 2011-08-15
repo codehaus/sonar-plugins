@@ -93,7 +93,7 @@
   </tr>
   </thead>
   <tbody>
-  <% Metric.all.sort.each do |metric|
+  <% Metric.all.sort_by{|m| m.key}.each do |metric|
     measures = @snapshot.measures.select { |m| m.metric_id==metric.id }
     if measures.empty?
       measures=[ProjectMeasure.new]
