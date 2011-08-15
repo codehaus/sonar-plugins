@@ -31,8 +31,6 @@ import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.scala.language.AbstractScalaSensor;
-import org.sonar.plugins.scala.language.Scala;
 
 public class AbstractScalaSensorTest {
 
@@ -43,7 +41,7 @@ public class AbstractScalaSensorTest {
     abstractScalaSensor = new AbstractScalaSensor(Scala.INSTANCE) {
 
       public void analyse(Project project, SensorContext context) {
-        // dummy
+        // dummy implementation, never called in this test
       }
     };
   }
@@ -60,7 +58,7 @@ public class AbstractScalaSensorTest {
   }
 
   @Test
-  public void shouldReturnScalaAsLanguage() {
+  public void shouldHaveScalaAsLanguage() {
     assertThat(abstractScalaSensor.getScala(), equalTo(new Scala()));
   }
 }
