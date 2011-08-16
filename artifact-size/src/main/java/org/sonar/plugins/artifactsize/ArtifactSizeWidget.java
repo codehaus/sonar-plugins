@@ -20,23 +20,21 @@
 
 package org.sonar.plugins.artifactsize;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWidget;
 
-public class ArtifactSizeWidget extends AbstractDashboardWidget {
+public class ArtifactSizeWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-  // For tests purposes
-  /*public String getTemplate() {
-      try {
-          return org.apache.commons.io.FileUtils.readFileToString(new java.io.File("c:/Windows/Temp/toto.erb"), "UTF-8");
+  public String getId() {
+    return "artifact_size";
+  }
 
-      } catch (java.io.IOException e) {
-          throw new RuntimeException("Can not load the file");
-      }
-  } */
+  public String getTitle() {
+    return "Artifact Size";
+  }
 
   @Override
   protected String getTemplatePath() {
     return "/org/sonar/plugins/artifactsize/artifactSizeWidget.erb";
   }
-
 }
