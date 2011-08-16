@@ -20,6 +20,10 @@
 
 package org.sonar.plugins.artifactsize;
 
+import java.io.File;
+
+import org.apache.commons.configuration.Configuration;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +34,6 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.apache.commons.configuration.Configuration;
-import org.apache.maven.project.MavenProject;
-
-import java.io.File;
 
 public class ArtifactSizeSensor implements Sensor {
 
@@ -53,9 +53,8 @@ public class ArtifactSizeSensor implements Sensor {
     File file = searchArtifactFile(project.getPom(), project.getFileSystem(), project.getConfiguration());
 
     final Logger logger = LoggerFactory.getLogger(ArtifactSizeSensor.class);
-    if (!file.exists()) {
+    if (file == null || !file.exists()) {
       logger.info("The file {} does not exist", file);
-
     } else {
       logger.info("Checking the size of the file {}", file);
       double size = getSize(file);
@@ -71,7 +70,7 @@ public class ArtifactSizeSensor implements Sensor {
 
     if (StringUtils.isNotEmpty(artifactPath)) {
       file = buildPathFromConfig(fileSystem, artifactPath);
-    } else if (pom != null && pom.getBuild()!=null) {
+    } else if (pom != null && pom.getBuild() != null) {
       String filename = pom.getBuild().getFinalName() + "." + pom.getPackaging();
       file = buildPathFromPom(fileSystem, filename);
     }
