@@ -66,14 +66,12 @@ public class ArtifactSizeSensor implements Sensor {
   }
 
   protected File searchArtifactFile(MavenProject pom, ProjectFileSystem fileSystem, Configuration configuration) {
-    File file;
+    File file = null;
     String artifactPath = configuration.getString(ArtifactSizePlugin.ARTIFACT_PATH);
 
     if (StringUtils.isNotEmpty(artifactPath)) {
       file = buildPathFromConfig(fileSystem, artifactPath);
-
-    }
-    else {
+    } else if (pom != null && pom.getBuild()!=null) {
       String filename = pom.getBuild().getFinalName() + "." + pom.getPackaging();
       file = buildPathFromPom(fileSystem, filename);
     }
