@@ -20,23 +20,34 @@
 
 package org.sonar.plugins.emma;
 
-import com.vladium.emma.data.DataFactory;
-import com.vladium.emma.data.ICoverageData;
-import com.vladium.emma.data.IMergeable;
-import com.vladium.emma.data.IMetaData;
-import com.vladium.emma.report.*;
-import com.vladium.util.IntObjectMap;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Properties;
+
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.JavaFile;
+import org.sonar.api.utils.Logs;
 import org.sonar.api.utils.SonarException;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
+import com.vladium.emma.data.CoverageOptionsFactory;
+import com.vladium.emma.data.DataFactory;
+import com.vladium.emma.data.ICoverageData;
+import com.vladium.emma.data.IMergeable;
+import com.vladium.emma.data.IMetaData;
+import com.vladium.emma.report.AbstractItemVisitor;
+import com.vladium.emma.report.AllItem;
+import com.vladium.emma.report.IItem;
+import com.vladium.emma.report.IReportDataModel;
+import com.vladium.emma.report.IReportDataView;
+import com.vladium.emma.report.PackageItem;
+import com.vladium.emma.report.SrcFileItem;
+import com.vladium.util.IntObjectMap;
 
 /**
  * @author Evgeny Mandrikov
@@ -50,16 +61,38 @@ public class EmmaProcessor {
 
   public EmmaProcessor(File buildDir, SensorContext context) {
     try {
-      File coverageFile = new File(buildDir, EmmaPlugin.COVERAGE_DATA);
-      final ICoverageData coverageData;
-      if (coverageFile.exists()) {
-        IMergeable[] mergeableCoverageData = DataFactory.load(coverageFile);
-        coverageData = (ICoverageData) mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA];
+      // Merge all files with coverage extension
+      ICoverageData coverageData = DataFactory.newCoverageData();
+      File[] coverageDataFiles = buildDir.listFiles(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+          return name.endsWith(EmmaPlugin.COVERAGE_DATA_SUFFIX);
+        }
+      });
+      if (coverageDataFiles != null && coverageDataFiles.length > 0) {
+        for (File coverageDataFile : coverageDataFiles) {
+          IMergeable[] mergeableCoverageData = DataFactory.load(coverageDataFile);
+          coverageData.merge(mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA]);
+        }
       } else {
-        coverageData = DataFactory.newCoverageData();
+        Logs.INFO.warn("No coverage (*.ec) file found in {}", buildDir);
       }
-      IMergeable[] mergeableMetadata = DataFactory.load(new File(buildDir, EmmaPlugin.META_DATA));
-      IMetaData metaData = (IMetaData) mergeableMetadata[DataFactory.TYPE_METADATA];
+      
+      // Merge all files with meta-data extension
+      IMetaData metaData = DataFactory.newMetaData(CoverageOptionsFactory.create(new Properties()));
+      File[] metaDataFiles = buildDir.listFiles(new FilenameFilter() {
+        public boolean accept(File dir, String name) {
+          return name.endsWith(EmmaPlugin.META_DATA_SUFFIX);
+        }
+      });
+      if (metaDataFiles != null && metaDataFiles.length > 0) {
+        for (File metaDataFile : metaDataFiles) {
+          IMergeable[] mergeableMetadata = DataFactory.load(metaDataFile);
+          metaData.merge(mergeableMetadata[DataFactory.TYPE_METADATA]);
+        }
+      } else {
+        Logs.INFO.warn("No metadata (*.em) file found in {}", buildDir);
+      }
+      
       this.model = IReportDataModel.Factory.create(metaData, coverageData);
       this.context = context;
     } catch (IOException e) {

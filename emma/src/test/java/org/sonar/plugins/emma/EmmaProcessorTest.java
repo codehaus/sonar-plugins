@@ -23,7 +23,9 @@ package org.sonar.plugins.emma;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.Scopes;
 import org.sonar.api.test.IsResource;
 import org.sonar.test.TestUtils;
 
@@ -40,7 +42,7 @@ import static org.mockito.Mockito.verify;
 public class EmmaProcessorTest {
 
   @Test
-  public void test() throws Exception {
+  public void testSingleData() throws Exception {
     File dir = TestUtils.getResource(getClass(), "data");
     SensorContext context = mock(SensorContext.class);
     new EmmaProcessor(dir, context).process();
@@ -64,4 +66,19 @@ public class EmmaProcessorTest {
         eq(39d));
   }
 
+  // Test for multiple coverage files based on extensions only (SONARPLUGINS-1318)
+  @Test
+  public void testMultipleData() throws Exception {
+      File dir = TestUtils.getResource(getClass(), "multipleData");
+      SensorContext context = mock(SensorContext.class);
+      new EmmaProcessor(dir, context).process();
+      verify(context).saveMeasure(
+          argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "sep.sample.business.GreetingService")),
+          eq(CoreMetrics.LINES_TO_COVER),
+          eq(10d));
+      verify(context).saveMeasure(
+          argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "sep.sample.business.GreetingService")),
+          eq(CoreMetrics.UNCOVERED_LINES),
+          eq(0d));
+  }
 }
