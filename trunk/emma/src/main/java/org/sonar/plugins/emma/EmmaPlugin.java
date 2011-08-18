@@ -40,8 +40,8 @@ import java.util.List;
 public class EmmaPlugin implements Plugin {
 
   public static final String REPORT_PATH_PROPERTY = "sonar.emma.reportPath";
-  public static final String META_DATA = "coverage.em";
-  public static final String COVERAGE_DATA = "coverage-0.ec";
+  public static final String META_DATA_SUFFIX = ".em";
+  public static final String COVERAGE_DATA_SUFFIX = ".ec";
 
   public String getKey() {
     return "emma";
