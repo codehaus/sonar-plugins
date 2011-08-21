@@ -86,13 +86,13 @@ public final class W3CMarkupSensor implements Sensor {
     ProjectFileManager fileManager = new ProjectFileManager(project);
 
     // create validator
-    MarkupValidator validator = new MarkupValidator(project.getConfiguration(), new File(project.getFileSystem().getBuildDir() + "/html"));
+    MarkupValidator validator = new MarkupValidator(project.getConfiguration(), new File(project.getFileSystem().getBuildDir() + "/" + project.getArtifactId()));
 
     // start the validation
     validator.validateFiles(fileManager.getFiles());
 
     // save analysis to sonar
-    saveResults(sensorContext, fileManager, validator, fileManager.getFiles());
+    saveResults(project, sensorContext, fileManager, validator, fileManager.getFiles());
   }
 
   private boolean hasMarkupRules() {
@@ -130,7 +130,7 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(SensorContext sensorContext, ProjectFileManager fileManager, MarkupValidator validator, List<InputFile> inputfiles) {
+  private void saveResults(Project project, SensorContext sensorContext, ProjectFileManager fileManager, MarkupValidator validator, List<InputFile> inputfiles) {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
@@ -146,7 +146,7 @@ public final class W3CMarkupSensor implements Sensor {
       }
     }
 
-    new MarkupReportBuilder().buildReports(reportFiles);
+    new MarkupReportBuilder().buildReports(project.getArtifactId(), reportFiles);
   }
 
   /**
