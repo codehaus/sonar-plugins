@@ -70,15 +70,15 @@ public final class MarkupReportBuilder {
     public String messageId;
   }
 
-  public void buildReports(Collection<File> reportFiles) {
+  public void buildReports(String key, Collection<File> reportFiles) {
     List<MarkupReport> reports = new ArrayList<MarkupReport>();
     for (File reportFile : reportFiles) {
       MarkupReport report = MarkupReport.fromXml(reportFile);
       reports.add(report);
     }
 
-    createHtmlReport(new File("target/markup-report.html"), reports, false);
-    createHtmlReport(new File("target/markup-report-details.html"), reports, true);
+    createHtmlReport(new File("target/" + key + "/markup-report.html"), reports, false);
+    createHtmlReport(new File("target/" + key + "/markup-report-details.html"), reports, true);
   }
 
   private Violation findViolation(List<Violation> violations, String messageId) {
