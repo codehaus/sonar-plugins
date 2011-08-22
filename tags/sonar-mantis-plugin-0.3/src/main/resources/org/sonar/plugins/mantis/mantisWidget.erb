@@ -1,0 +1,52 @@
+<%
+   priorities_measure = measure('mantis_issues_priorities')
+   status_measure = measure('mantis_issues_status')
+
+   if priorities_measure
+%>
+  <div class="yui-g">
+    <div class="yui-u first">
+      <div class="dashbox">
+        <p class="title">Mantis Issues</p>
+        <span class="big">
+          <p>
+            <%= format_measure(priorities_measure, {:url => priorities_measure.url}) -%>
+            <%= dashboard_configuration.selected_period? ? format_variation(priorities_measure) : trend_icon(priorities_measure) -%>
+          </p>
+        </span>
+        <p class="title">By Priority</p>
+        <table>
+          <% priorities_measure.data.split(";").each do |priority_with_size|
+            priority_with_size_array = priority_with_size.split("=") %>
+            <tr>
+              <td align="left">
+                <%= priority_with_size_array[0] -%>
+              </td>
+              <td align="right" style="padding-left: 10px;">
+                <%= priority_with_size_array[1] -%>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+    <div class="yui-u">
+      <div class="dashbox">
+        <p class="title">By Status</p>
+        <table>
+          <% status_measure.data.split(";").each do |status_with_size|
+            status_with_size_array = status_with_size.split("=") %>
+            <tr>
+              <td align="left">
+                <%= status_with_size_array[0] -%>
+              </td>
+              <td align="right" style="padding-left: 10px;">
+                <%= status_with_size_array[1] -%>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>
