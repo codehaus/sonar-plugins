@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.metrics;
+package org.sonar.plugins.scala.sensor;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -32,10 +32,11 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
-import org.sonar.plugins.scala.language.AbstractScalaSensor;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaFile;
 import org.sonar.plugins.scala.language.ScalaPackage;
+import org.sonar.plugins.scala.metrics.CommentsAnalyzer;
+import org.sonar.plugins.scala.metrics.LinesAnalyzer;
 import org.sonar.plugins.scala.util.StringUtils;
 
 /**

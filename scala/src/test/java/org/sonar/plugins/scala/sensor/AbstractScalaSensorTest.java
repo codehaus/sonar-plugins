@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.sensor;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertFalse;
@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.scala.language.Scala;
 
 public class AbstractScalaSensorTest {
 

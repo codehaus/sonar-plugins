@@ -17,10 +17,11 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.sensor;
 
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.scala.language.Scala;
 
 /**
  * This is a helper base class for sensors that should only be executed on Scala projects.
