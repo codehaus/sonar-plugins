@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.sensor;
 
 import java.io.IOException;
 
@@ -30,6 +30,8 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.scala.language.Scala;
+import org.sonar.plugins.scala.language.ScalaFile;
 
 /**
  * This Sensor imports all Scala files into Sonar.
