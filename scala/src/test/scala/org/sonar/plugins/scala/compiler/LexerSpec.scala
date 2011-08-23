@@ -19,7 +19,9 @@
  */
 package org.sonar.plugins.scala.compiler
 
-import scala.tools.nsc.ast.parser.Tokens._
+import tools.nsc.ast.parser.Tokens._
+
+import java.util.Arrays
 import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
@@ -32,7 +34,7 @@ class LexerSpec extends FlatSpec with ShouldMatchers {
 
   "A lexer" should "tokenize a simple declaration of a value" in {
     val tokens = lexer.getTokens("val a = 1")
-    tokens should equal (List(VAL, IDENTIFIER, EQUALS, INTLIT))
+    tokens should equal (Arrays.asList(VAL, IDENTIFIER, EQUALS, INTLIT))
   }
 
   // TODO add more specs for lexer

@@ -17,33 +17,22 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.util;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import org.sonar.plugins.scala.language.ScalaFile;
 
-import org.junit.Test;
+public class DummyScalaFile extends ScalaFile {
 
-public class LinesAnalyzerTest {
-
-  @Test
-  public void shouldCountOneLine() {
-    LinesAnalyzer fileMetrics = new LinesAnalyzer("val i = 0");
-    assertThat(fileMetrics.countLines(), is(1));
+  public DummyScalaFile(boolean isUnitTest) {
+    super("", "", isUnitTest);
   }
 
-  @Test
-  public void shouldCountAllNumberOfLines() {
-    LinesAnalyzer fileMetrics = new LinesAnalyzer("val i = 0\r\n"
-        + "println(\"Hallo\")\r\n"
-        + "\r\n"
-        + "i = 2");
-    assertThat(fileMetrics.countLines(), is(4));
-  }
-
-  @Test
-  public void shouldGiveZeroNumberOfLinesForEmptySource() {
-    LinesAnalyzer fileMetrics = new LinesAnalyzer("");
-    assertThat(fileMetrics.countLines(), is(0));
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof ScalaFile)) {
+      return false;
+    }
+    ScalaFile other = (ScalaFile) obj;
+    return isUnitTest() == other.isUnitTest();
   }
 }

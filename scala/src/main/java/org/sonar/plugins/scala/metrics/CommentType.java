@@ -17,20 +17,18 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.metrics;
 
-public class DummyScalaFile extends ScalaFile {
+/**
+ * This enum is a helper to distinguish between the
+ * different types of comments in Sonar.
+ *
+ * @author Felix Müller
+ * @since 0.1
+ */
+public enum CommentType {
 
-  public DummyScalaFile(boolean isUnitTest) {
-    super("", "", isUnitTest);
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof ScalaFile)) {
-      return false;
-    }
-    ScalaFile other = (ScalaFile) obj;
-    return isUnitTest() == other.isUnitTest();
-  }
+  NORMAL,
+  DOC,
+  HEADER;
 }

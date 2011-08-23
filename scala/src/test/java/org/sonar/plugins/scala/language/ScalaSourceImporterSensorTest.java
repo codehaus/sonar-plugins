@@ -41,6 +41,7 @@ import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.scala.util.FileTestUtils;
 
 public class ScalaSourceImporterSensorTest {
 

@@ -23,9 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.sonar.api.SonarPlugin;
-import org.sonar.plugins.scala.language.BaseMetricsSensor;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaSourceImporterSensor;
+import org.sonar.plugins.scala.metrics.BaseMetricsSensor;
 
 /**
  * This class is the entry point for all extensions made by the

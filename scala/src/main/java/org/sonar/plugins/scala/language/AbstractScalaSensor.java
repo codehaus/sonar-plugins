@@ -40,7 +40,7 @@ public abstract class AbstractScalaSensor implements Sensor {
     return project.getLanguage().equals(scala);
   }
 
-  protected final Scala getScala() {
+  public final Scala getScala() {
     return scala;
   }
 }

@@ -19,8 +19,12 @@
  */
 package org.sonar.plugins.scala.compiler
 
+import collection.JavaConversions._
+import collection.mutable.ListBuffer
 import tools.nsc._
 import io.AbstractFile
+
+import org.sonar.plugins.scala.metrics.{ Comment, CommentType }
 
 /**
  * This class is a wrapper for accessing the lexer of the Scala compiler
@@ -33,21 +37,18 @@ class Lexer {
 
   import Compiler._
 
-  def getTokens(code: String) : Seq[Int] = {
+  def getTokens(code: String) : java.util.List[Int] = {
     val unit = new CompilationUnit(new util.BatchSourceFile("", code.toCharArray))
     tokenize(unit)
   }
 
-  def getTokensOfFile(path: String) : Seq[Int] = {
+  def getTokensOfFile(path: String) : java.util.List[Int] = {
     val unit = new CompilationUnit(new util.BatchSourceFile(AbstractFile.getFile(path)))
     tokenize(unit)
   }
 
-  private def tokenize(unit: CompilationUnit) = {
-    // TODO override foundComment and foundDocComment properly to tokenize comments
+  private def tokenize(unit: CompilationUnit) : java.util.List[Int] = {
     val scanner = new syntaxAnalyzer.UnitScanner(unit)
-
-    import collection.mutable.ListBuffer
     val tokens = ListBuffer[Int]()
 
     scanner.init()
@@ -55,7 +56,51 @@ class Lexer {
       tokens += scanner.token
       scanner.nextToken()
     }
-
     tokens
+  }
+
+  def getComments(code: String) : java.util.List[Comment] = {
+    val unit = new CompilationUnit(new util.BatchSourceFile("", code.toCharArray))
+    tokenizeComments(unit)
+  }
+
+  def getCommentsOfFile(path: String) : java.util.List[Comment] = {
+    val unit = new CompilationUnit(new util.BatchSourceFile(AbstractFile.getFile(path)))
+    tokenizeComments(unit)
+  }
+
+  def tokenizeComments(unit: CompilationUnit) : java.util.List[Comment] = {
+    val comments = ListBuffer[Comment]()
+    val scanner = new syntaxAnalyzer.UnitScanner(unit) {
+
+      private var lastDocCommentRange: Option[Range] = None
+
+      override def foundComment(value: String, start: Int, end: Int) = {
+        super.foundComment(value, start, end)
+
+        // TODO add detection of header comments
+        lastDocCommentRange match {
+          case Some(r: Range) => {
+            if (r.start != start || r.end != end) {
+              comments += new Comment(value, CommentType.NORMAL)
+            }
+          }
+          case None => comments += new Comment(value, CommentType.NORMAL)
+        }
+      }
+
+      override def foundDocComment(value: String, start: Int, end: Int) = {
+        super.foundDocComment(value, start, end)
+        comments += new Comment(value, CommentType.DOC)
+        lastDocCommentRange = Some(Range(start, end))
+      }
+    }
+
+    scanner.init()
+    while (scanner.token != scala.tools.nsc.ast.parser.Tokens.EOF) {
+      scanner.nextToken()
+    }
+
+    comments
   }
 }
