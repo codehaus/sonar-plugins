@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.InputFileUtils;
+import org.sonar.plugins.scala.language.ScalaFile;
 
 public final class FileTestUtils {
 

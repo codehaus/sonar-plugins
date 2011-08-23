@@ -23,7 +23,7 @@ import collection.mutable.ListBuffer
 import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
 
 /**
- * This class is a helper class for resolving the package name of
+ * This object is a helper object for resolving the package name of
  * a given Scala file.
  *
  * @author Felix Müller

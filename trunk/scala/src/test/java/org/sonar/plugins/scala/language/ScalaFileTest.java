@@ -31,6 +31,7 @@ import java.io.File;
 import org.junit.Test;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Qualifiers;
+import org.sonar.plugins.scala.util.FileTestUtils;
 
 public class ScalaFileTest {
 

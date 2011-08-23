@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.language;
+package org.sonar.plugins.scala.metrics;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -35,6 +35,9 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.scala.language.Scala;
+import org.sonar.plugins.scala.language.ScalaPackage;
+import org.sonar.plugins.scala.util.FileTestUtils;
 
 public class BaseMetricsSensorTest {
 
