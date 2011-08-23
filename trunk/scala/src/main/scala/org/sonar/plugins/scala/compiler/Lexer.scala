@@ -24,7 +24,7 @@ import collection.mutable.ListBuffer
 import tools.nsc._
 import io.AbstractFile
 
-import org.sonar.plugins.scala.metrics.{ Comment, CommentType }
+import org.sonar.plugins.scala.language.{ Comment, CommentType }
 
 /**
  * This class is a wrapper for accessing the lexer of the Scala compiler
