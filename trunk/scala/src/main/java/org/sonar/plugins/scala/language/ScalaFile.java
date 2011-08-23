@@ -25,6 +25,7 @@ import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Scopes;
+import org.sonar.api.utils.WildcardPattern;
 
 /**
  * This class implements a Scala source file for Sonar.
@@ -95,7 +96,9 @@ public class ScalaFile extends Resource<ScalaPackage> {
 
   @Override
   public boolean matchFilePattern(String antPattern) {
-    return false;
+    String patternWithoutFileSuffix = StringUtils.substringBeforeLast(antPattern, ".");
+    WildcardPattern matcher = WildcardPattern.create(patternWithoutFileSuffix, ".");
+    return matcher.match(getKey());
   }
 
   public boolean isUnitTest() {
