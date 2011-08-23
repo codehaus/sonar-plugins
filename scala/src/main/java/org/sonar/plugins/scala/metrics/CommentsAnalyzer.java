@@ -22,6 +22,7 @@ package org.sonar.plugins.scala.metrics;
 import java.util.List;
 
 import org.sonar.plugins.scala.compiler.Lexer;
+import org.sonar.plugins.scala.language.Comment;
 
 /**
  * This class implements the computation of basic
