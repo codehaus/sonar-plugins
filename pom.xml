@@ -14,6 +14,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module></module>
         <module>ant-task</module>
         <module>artifact-size</module>
         <module>branding</module>
@@ -51,6 +52,7 @@
         <module>scm-activity</module>
         <module>security-rules</module>
         <module>sigmm</module>
+        <module>sonargraph</module>
         <module>sonar-runner</module>
         <module>switch-off-violations</module>
         <module>taglist</module>
@@ -70,14 +72,20 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>ada</module>
         <module>basic-cocomo</module>
         <module>codesize</module>
+        <module>cql</module>
+        <module>cxx</module>
         <module>debug</module>
+        <module>devkit</module>
         <module>drools</module>
         <module>profiler</module>
-        <module>sonargraph</module>
+        <module>scala</module>
         <module>testability-explorer</module>
+        <module>violation-density</module>
         <module>w3c-markup-validation</module>
+        <module>webscanner</module>
       </modules>
     </profile>
     <profile>
