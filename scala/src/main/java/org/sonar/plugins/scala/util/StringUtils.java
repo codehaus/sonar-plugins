@@ -38,7 +38,7 @@ public final class StringUtils {
   }
 
   public static List<String> convertStringToListOfLines(String string) throws IOException {
-    List<String> lines = new ArrayList<String>();
+    final List<String> lines = new ArrayList<String>();
     BufferedReader reader = null;
     try {
       reader = new BufferedReader(new StringReader(string));
