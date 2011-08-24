@@ -22,7 +22,6 @@ package org.sonar.plugins.scala.metrics;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.sonar.plugins.scala.language.ScalaFile;
 
 /**
  * This class implements the computation of basic

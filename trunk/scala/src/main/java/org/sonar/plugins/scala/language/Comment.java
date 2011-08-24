@@ -53,8 +53,7 @@ public class Comment {
   }
 
   public int getNumberOfLines() {
-    int numberOfLines = lines.size();
-    return numberOfLines - getNumberOfBlankLines() - getNumberOfCommentedOutLinesOfCode();
+    return lines.size() - getNumberOfBlankLines() - getNumberOfCommentedOutLinesOfCode();
   }
 
   public int getNumberOfBlankLines() {
@@ -62,11 +61,10 @@ public class Comment {
     for (String comment : lines) {
       boolean isBlank = true;
 
-      for (int i = 0; i < comment.length(); i++) {
+      for (int i = 0; isBlank && i < comment.length(); i++) {
         char character = comment.charAt(i);
         if (!Character.isWhitespace(character) && character != '*' && character != '/') {
           isBlank = false;
-          break;
         }
       }
 
