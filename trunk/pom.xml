@@ -74,7 +74,6 @@
         <module>ada</module>
         <module>basic-cocomo</module>
         <module>codesize</module>
-        <module>cql</module>
         <module>cxx</module>
         <module>debug</module>
         <module>devkit</module>
@@ -90,6 +89,7 @@
     <profile>
       <id>unmaintained</id>
       <modules>
+        <module>cql</module>
         <module>hammurapi</module>
         <module>jlint</module>
         <module>jtest</module>
