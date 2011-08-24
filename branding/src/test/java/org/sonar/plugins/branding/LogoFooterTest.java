@@ -46,8 +46,30 @@ public class LogoFooterTest {
   }
 
   @Test
-  public void shouldCreateFooter() {
+  public void shouldCreateFooterDefaultLocation() {
     conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://example.org/logo.png");
+    assertThat(footer.getHtml(), containsString("div[id=\"error\"]"));
     assertThat(footer.getHtml(), containsString("http://example.org/logo.png"));
+  }
+
+  @Test
+  public void shouldCreateFooterTopLocation() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://example.org/logo.png");
+    conf.setProperty(BrandingPlugin.LOGO_LOCATION_PROPERTY, "TOP");
+    assertThat(footer.getHtml(), containsString("div[id=\"error\"]"));
+  }
+
+  @Test
+  public void shouldCreateFooterMenuLocation() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://example.org/logo.png");
+    conf.setProperty(BrandingPlugin.LOGO_LOCATION_PROPERTY, "MENU");
+    assertThat(footer.getHtml(), containsString("img[title=\"Embrace Quality\"]"));
+  }
+
+  @Test
+  public void shouldCreateFooterInvalidLocation() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://example.org/logo.png");
+    conf.setProperty(BrandingPlugin.LOGO_LOCATION_PROPERTY, "foo");
+    assertThat(footer.getHtml(), containsString("div[id=\"error\"]"));
   }
 }

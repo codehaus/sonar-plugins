@@ -27,12 +27,17 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 
-@Properties({ @Property(key = BrandingPlugin.IMAGE_PROPERTY,
+@Properties({ 
+    @Property(key = BrandingPlugin.IMAGE_PROPERTY,
     name = "Image URL",
-    description = "You need to restart server to changes take effect. Example : http://www.codehaus.org/codehaus-small.gif") })
+    description = "You need to restart server to changes take effect. Example : http://www.codehaus.org/codehaus-small.gif"),
+    @Property(key = BrandingPlugin.LOGO_LOCATION_PROPERTY,
+            name = "Logo location in Sonar UI",
+            description = "Possible values: TOP, MENU", defaultValue="TOP")})
 public class BrandingPlugin implements Plugin {
 
   public static final String IMAGE_PROPERTY = "sonar.branding.image";
+  public static final String LOGO_LOCATION_PROPERTY = "sonar.branding.logo.location";
 
   public String getKey() {
     return "branding";

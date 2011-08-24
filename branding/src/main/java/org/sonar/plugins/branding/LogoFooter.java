@@ -22,9 +22,13 @@ package org.sonar.plugins.branding;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.web.Footer;
 
 public class LogoFooter implements Footer {
+
+  private final Logger logger = LoggerFactory.getLogger(LogoFooter.class);
 
   private final Configuration configuration;
   private String html;
@@ -35,6 +39,18 @@ public class LogoFooter implements Footer {
 
   private String getImageUrl() {
     return configuration.getString(BrandingPlugin.IMAGE_PROPERTY, "");
+  }
+  
+  private LogoLocation getLogoLocation() {
+    String locationStr = configuration.getString(BrandingPlugin.LOGO_LOCATION_PROPERTY, "TOP");
+    LogoLocation location;
+    try {
+      location = LogoLocation.valueOf(locationStr);
+    } catch (IllegalArgumentException e) {
+      logger.warn("Invalid value for property " + BrandingPlugin.LOGO_LOCATION_PROPERTY + ". Using TOP as default.");
+      location = LogoLocation.TOP;  
+    }
+    return location;
   }
 
   private void createHtml() {
@@ -53,9 +69,19 @@ public class LogoFooter implements Footer {
     sb.append("        companyLogo.setAttribute('alt', 'Company Logo');\n");
     sb.append("        companyLogo.setAttribute('title', 'Company');\n");
 
-    sb.append("        var sonarContent = $$('div[id=\"error\"]').first().parentNode;\n");
-    sb.append("        sonarContent.insertBefore(companyLogo, sonarContent.firstChild);\n");
-
+    switch (getLogoLocation()) {
+      case TOP :
+        sb.append("        var sonarContent = $$('div[id=\"error\"]').first().parentNode;\n");
+        sb.append("        sonarContent.insertBefore(companyLogo, sonarContent.firstChild);\n");
+        break;
+      case MENU :
+        sb.append("        var sonarLogo = $$('img[title=\"Embrace Quality\"]').first();\n");
+        sb.append("        var center = $($(sonarLogo.parentNode).parentNode);\n");
+        sb.append("        center.appendChild(companyLogo);\n");
+        break;
+      default:
+        logger.warn("Location no supported");
+    }
     sb.append("    });\n");
     sb.append("</script>\n");
     html = sb.toString();
