@@ -14,7 +14,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module></module>
         <module>ant-task</module>
         <module>artifact-size</module>
         <module>branding</module>
