@@ -19,9 +19,8 @@
  */
 package org.sonar.plugins.scala.compiler
 
-import java.io.File
-import scala.tools.nsc._
-import io.AbstractFile
+import tools.nsc._
+import tools.util.PathResolver._
 
 /**
  * This is a wrapper for the Scala compiler. It is used to access
@@ -32,6 +31,7 @@ import io.AbstractFile
  */
 object Compiler extends Global(new Settings()) {
 
+  settings.classpath.value += ";" + Environment.javaUserClassPath
   new Run
 
   override def forScaladoc = true
