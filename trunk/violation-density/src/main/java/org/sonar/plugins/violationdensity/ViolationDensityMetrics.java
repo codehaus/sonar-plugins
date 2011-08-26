@@ -28,7 +28,7 @@ import org.sonar.api.measures.Metrics;
 
 public class ViolationDensityMetrics implements Metrics {
 
-  public static final String VIOLATION_DENSITY_KEY = "violation_density";
+  public static final String VIOLATION_DENSITY_KEY = "violation_index";
   public static final Metric VIOLATION_DENSITY = new Metric.Builder(VIOLATION_DENSITY_KEY, "Violation Density", Metric.ValueType.PERCENT)
       .setDescription("Violation Density").setDirection(Metric.DIRECTION_BETTER).setQualitative(false)
       .setDomain(CoreMetrics.DOMAIN_GENERAL).create();
