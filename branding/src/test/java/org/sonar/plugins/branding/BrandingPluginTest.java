@@ -20,13 +20,11 @@
 
 package org.sonar.plugins.branding;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
 
 public class BrandingPluginTest {
 
@@ -40,17 +38,6 @@ public class BrandingPluginTest {
   @Test
   public void testPluginDefinition() {
     assertThat(plugin.getExtensions().size(), greaterThan(0));
-  }
-
-  /**
-   * see SONAR-1898
-   */
-  @Test
-  public void testDeprecatedMethods() {
-    // Compatibility with Sonar 1.12
-    assertThat(plugin.getKey(), is("branding"));
-    assertThat(plugin.getName(), is("Branding"));
-    assertThat(plugin.getDescription(), notNullValue());
   }
 
 }
