@@ -22,34 +22,21 @@ package org.sonar.plugins.branding;
 
 import java.util.Arrays;
 import java.util.List;
-
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 
 @Properties({ 
     @Property(key = BrandingPlugin.IMAGE_PROPERTY,
     name = "Image URL",
-    description = "You need to restart server to changes take effect. Example : http://www.codehaus.org/codehaus-small.gif"),
+    description = "Example : http://www.codehaus.org/codehaus-small.gif"),
     @Property(key = BrandingPlugin.LOGO_LOCATION_PROPERTY,
             name = "Logo location in Sonar UI",
             description = "Possible values: TOP, MENU", defaultValue="TOP")})
-public class BrandingPlugin implements Plugin {
+public class BrandingPlugin extends SonarPlugin {
 
   public static final String IMAGE_PROPERTY = "sonar.branding.image";
   public static final String LOGO_LOCATION_PROPERTY = "sonar.branding.logo.location";
-
-  public String getKey() {
-    return "branding";
-  }
-
-  public String getName() {
-    return "Branding";
-  }
-
-  public String getDescription() {
-    return "Allows to add your own logo to the Sonar UI.";
-  }
 
   public List getExtensions() {
     return Arrays.asList(LogoFooter.class, ProjectLogoWidget.class);
