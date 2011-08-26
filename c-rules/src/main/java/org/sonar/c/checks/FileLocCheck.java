@@ -37,7 +37,7 @@ import com.sonarsource.c.plugin.CCheck;
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class FileLocCheck extends CCheck implements AstAndTokenVisitor {
 
-  private final static int DEFAULT_MAXIMUM_FILE_LOC_THRESHOLD = 100;
+  private final static int DEFAULT_MAXIMUM_FILE_LOC_THRESHOLD = 1000;
 
   @RuleProperty(key = "maximumFileLocThreshold", description = "The maximum authorized lines of code.", defaultValue = ""
       + DEFAULT_MAXIMUM_FILE_LOC_THRESHOLD)
