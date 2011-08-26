@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
- 
+
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
@@ -29,20 +29,35 @@ import com.sonar.c.api.CKeyword;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.DoNotUseContinue", name = "Continue statement must not be used", isoCategory = IsoCategory.Usability, priority = Priority.MAJOR,
-	    description = "<p>Avoid using keyword continue.</p>")
-//@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+@Rule(
+    key = "C.DoNotUseContinue",
+    name = "Avoid using 'continue' branching statement ",
+    isoCategory = IsoCategory.Usability,
+    priority = Priority.MAJOR,
+    description = "<p>The use of the 'continue' branching statement increase the "
+        + "essential complexity of the source code and so prevent any refactoring of this source code to replace "
+        + "all well structured control structures with a single statement.</p>"
+        + "<p>For instance, in the following java program fragment, it's not possible to apply the 'extract method' refactoring pattern :</p> "
+        + "<pre>" + 
+        "mylabel : for(int i = 0 ; i< 3; i++) {\n" + 
+        "  for (int j = 0; j < 4 ; j++) {\n" + 
+        "    doSomething();\n" + 
+        "    if (checkSomething()) {\n" + 
+        "      continue mylabel;\n" + "    " +
+        "    }\n" + 
+        "  }\n" + 
+        "}\n" + "</pre>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+public class ContinueCheck extends CCheck {
 
-public class ContinueCheck extends CCheck
-{
-    @Override
-    public void init() {
-        subscribeTo(getCGrammar().jumpStatement);
-    }
+  @Override
+  public void init() {
+    subscribeTo(getCGrammar().jumpStatement);
+  }
 
-    public void visitNode(AstNode node) {
-        if (node.hasChildren(CKeyword.CONTINUE)) {
-            log("Avoid using keyword continue.", node);
-        }
+  public void visitNode(AstNode node) {
+    if (node.hasChildren(CKeyword.CONTINUE)) {
+      log("The 'continue' branching statement prevent refactoring the source code to reduce the complexity.", node);
     }
+  }
 }
