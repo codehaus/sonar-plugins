@@ -20,27 +20,20 @@
 
 package org.sonar.c.checks;
 
-import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
-import org.sonar.check.Priority;
-import org.sonar.check.Rule;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-import com.sonar.sslr.api.AstNode;
-import com.sonarsource.c.plugin.CCheck;
+import org.junit.Test;
+import org.sonar.squid.api.CheckMessage;
 
-@Rule(key = "C.DoNotUseGoto", name = "Goto statement must not be used", isoCategory = IsoCategory.Usability, priority = Priority.MAJOR,
-    description = "<p>Avoid using goto statement.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
-public class GotoCheck extends CCheck {
+public class GotoCheckTest {
 
-  @Override
-  public void init() {
-    subscribeTo(getCGrammar().gotoStatement);
-  }
+  @Test
+  public void testCheck() {
+    CheckMessage message = CheckUtils.extractViolation("/checks/goto.c", new GotoCheck());
 
-  public void visitNode(AstNode node) {
-    if (node.is(getCGrammar().gotoStatement)) {
-      log("Avoid using goto statement.", node);
-    }
+    assertThat(message.getLine(), is(10));
+    assertThat(message.formatDefaultMessage(), containsString("Avoid using goto statement."));
   }
 }
