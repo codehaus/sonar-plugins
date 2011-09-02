@@ -1,131 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+    Sonar JMeter Plugin, open source plugin for Sonar 
+    Copyright (C) 2010 eXcentia 
+    
+    Sonar JMeter Plugin is free software; you can redistribute it and/or 
+    modify it under the terms of the GNU Lesser General Public 
+    License as published by the Free Software Foundation; either 
+    version 3 of the License, or (at your option) any later version. 
+    
+    Sonar is distributed in the hope that it will be useful, 
+    but WITHOUT ANY WARRANTY; without even the implied warranty of 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    
+    See the GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public
+    License along with Sonar; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02 
+  -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>10</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <groupId>org.codehaus.sonar-plugins.jmeter</groupId>
+  <artifactId>parent</artifactId>
+  <version>0.2</version>
   <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>c-rules</module>
-        <module>cutoff</module>
-        <module>dotnet</module>
-        <module>email</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>jacoco</module>
-        <module>javascript</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>l10n</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>radiator</module>
-        <module>rules-meter</module>
-        <module>scm-activity</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>sonar-runner</module>
-        <module>switch-off-violations</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>twitter</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>debug</module>
-        <module>devkit</module>
-        <module>drools</module>
-        <module>profiler</module>
-        <module>scala</module>
-        <module>testability-explorer</module>
-        <module>violation-density</module>
-        <module>w3c-markup-validation</module>
-        <module>webscanner</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>cql</module>
-        <module>cxx</module>
-        <module>hammurapi</module>
-        <module>jlint</module>
-        <module>jtest</module>
-        <module>sonar-replay</module>
-        <module>sonar-squid-cli</module>
-        <module>sonar-squid-gui</module>
-        <module>sonarj</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-        <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-        <module>codereview</module>
-        <module>php</module>
-      </modules>
-    </profile>
-  </profiles>
+  <name>Sonar JMeter Plugin (parent)</name>
+  <description>Sonar JMeter plugin, JMeter Report Server and JMeter Report Client</description>
 
-  <build>
-    <plugins>
-      <!-- See http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <url>http://docs.codehaus.org/display/SONAR/JMeter+Plugin</url>
+
+  <organization>
+    <name>eXcentia</name>
+    <url>http://www.excentia.es</url>
+  </organization>
+
+  <inceptionYear>2010</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>cfillol</id>
+      <name>Carlos Fillol Sendra</name>
+      <email>cfillol@excentia.es</email>
+      <organization>eXcentia</organization>
+      <organizationUrl>www.excentia.es</organizationUrl>
+    </developer>
+    <developer>
+      <id>acalero</id>
+      <name>Antonio Calero</name>
+      <email>acalero@excentia.es</email>
+      <organization>eXcentia</organization>
+      <organizationUrl>www.excentia.es</organizationUrl>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>jmeter-report-client</module>
+    <module>jmeter-report-server</module>
+    <module>sonar-jmeter-plugin</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-jmeter-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-jmeter-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-jmeter-plugin-0.2</url>
+  </scm>
+
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14592</url>
+  </issueManagement>
+
+
+  <properties>
+    <sonar.version>2.4</sonar.version>
+  </properties>
+
 </project>
