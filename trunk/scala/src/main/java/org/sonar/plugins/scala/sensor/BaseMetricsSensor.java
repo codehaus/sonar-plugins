@@ -32,6 +32,8 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
+import org.sonar.plugins.scala.compiler.Lexer;
+import org.sonar.plugins.scala.language.Comment;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaFile;
 import org.sonar.plugins.scala.language.ScalaPackage;
@@ -66,17 +68,16 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
 
       try {
         String source = FileUtils.readFileToString(inputFile.getFile(), charset);
-        List<String> listOfLines = StringUtils.convertStringToListOfLines(source);
-        CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(source);
-        LinesAnalyzer linesAnalyzer = new LinesAnalyzer(listOfLines, commentsAnalyzer);
+        List<String> lines = StringUtils.convertStringToListOfLines(source);
+        List<Comment> comments = new Lexer().getComments(source);
+        CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(comments);
+        LinesAnalyzer linesAnalyzer = new LinesAnalyzer(lines, commentsAnalyzer);
 
         sensorContext.saveMeasure(scalaFile, CoreMetrics.LINES, (double) linesAnalyzer.countLines());
         sensorContext.saveMeasure(scalaFile, CoreMetrics.NCLOC, (double) linesAnalyzer.countLinesOfCode());
 
         sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENT_LINES,
             (double) commentsAnalyzer.countCommentLines());
-        sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENT_BLANK_LINES,
-            (double) commentsAnalyzer.countCommentBlankLines());
         sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENTED_OUT_CODE_LINES,
             (double) commentsAnalyzer.countCommentedOutLinesOfCode());
       } catch (IOException ioe) {

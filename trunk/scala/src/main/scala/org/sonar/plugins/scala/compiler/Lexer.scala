@@ -69,7 +69,7 @@ class Lexer {
     tokenizeComments(unit)
   }
 
-  def tokenizeComments(unit: CompilationUnit) : java.util.List[Comment] = {
+  private def tokenizeComments(unit: CompilationUnit) : java.util.List[Comment] = {
     val comments = ListBuffer[Comment]()
     val scanner = new syntaxAnalyzer.UnitScanner(unit) {
 

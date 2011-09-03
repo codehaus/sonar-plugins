@@ -22,70 +22,47 @@ package org.sonar.plugins.scala.metrics;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Collections;
+
 import org.junit.Ignore;
 import org.junit.Test;
+import org.sonar.plugins.scala.language.Comment;
 
 public class CommentsAnalyzerTest {
 
+  @Ignore
   @Test
-  public void shouldCountOneSingleLineComment() {
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer("// This is a comment...");
-    assertThat(commentsAnalyzer.countCommentLines(), is(1));
-  }
-
-  @Test
-  public void shouldCountAllSingleLineComments() {
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer("val i = 0\r\n"
-        + "//comment1\r\n"
-        + "\r\n"
-        + "//comment 2// c = 3\r\n"
-        + "\r\n"
-        + "i = 78"
-        + "\r\n"
-        + "//comment 3");
-    assertThat(commentsAnalyzer.countCommentLines(), is(3));
-  }
-
-  @Test
-  public void shouldCountOneMultiLineComments() {
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(" /* This is a multi-line comment\r\n"
-        + "* comment1\r\n"
-        + "*/");
-    assertThat(commentsAnalyzer.countCommentLines(), is(2));
-  }
-
-  @Test
-  public void shouldCountAllMultiLineComments() {
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer("/* This is a multi-line comment\r\n"
-        + "*comment1\r\n"
-        + "*/\r\n"
-        + "\r\n"
-        + "val c = 3\r\n"
-        + "val i = 78\r\n"
-        + "/* \r\n"
-        + "* And another multi-line comment\r\n"
-        + "* with two lines\r\n"
-        + "*/");
-    assertThat(commentsAnalyzer.countCommentLines(), is(4));
+  public void shouldCountAllCommentLines() {
+    // TODO add implementation
   }
 
   @Ignore
   @Test
-  public void shouldCountAllCommentLinesWithoutCommentedOutLinesOfCode() {
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer("//val i = 0\r\n"
-        + "//comment1\r\n"
-        + "\r\n"
-        + "// c = 3\r\n"
-        + "\r\n"
-        + "i = 78"
-        + "\r\n"
-        + "//comment 3");
-    assertThat(commentsAnalyzer.countCommentLines(), is(2));
+  public void shouldCountAllHeaderCommentLines() {
+    // TODO add implementation
+  }
+
+  @Ignore
+  @Test
+  public void shouldCountAllCommentedOutLinesOfCode() {
+    // TODO add implementation
   }
 
   @Test
-  public void shouldGiveZeroCommentLinesForEmptySource() {
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer("");
-    assertThat(commentsAnalyzer.countCommentLines(), is(0));
+  public void shouldCountZeroCommentLinesForEmptyCommentsList() {
+    CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(Collections.<Comment>emptyList());
+    assertThat(commentAnalyzer.countCommentLines(), is(0));
+  }
+
+  @Test
+  public void shouldCountZeroHeaderCommentLinesForEmptyCommentsList() {
+    CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(Collections.<Comment>emptyList());
+    assertThat(commentAnalyzer.countHeaderCommentLines(), is(0));
+  }
+
+  @Test
+  public void shouldCountZeroCommentedOutLinesOfCodeForEmptyCommentsList() {
+    CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(Collections.<Comment>emptyList());
+    assertThat(commentAnalyzer.countCommentedOutLinesOfCode(), is(0));
   }
 }
