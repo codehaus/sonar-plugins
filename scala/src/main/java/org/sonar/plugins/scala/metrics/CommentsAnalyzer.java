@@ -21,7 +21,6 @@ package org.sonar.plugins.scala.metrics;
 
 import java.util.List;
 
-import org.sonar.plugins.scala.compiler.Lexer;
 import org.sonar.plugins.scala.language.Comment;
 
 /**
@@ -35,8 +34,8 @@ public class CommentsAnalyzer {
 
   private final List<Comment> comments;
 
-  public CommentsAnalyzer(String source) {
-    comments = new Lexer().getComments(source);
+  public CommentsAnalyzer(List<Comment> comments) {
+    this.comments = comments;
   }
 
   public int countCommentLines() {
@@ -47,16 +46,6 @@ public class CommentsAnalyzer {
       }
     }
     return commentLines;
-  }
-
-  public int countCommentBlankLines() {
-    int commentBlankLines = 0;
-    for (Comment comment : comments) {
-      if (!comment.isHeaderComment()) {
-        commentBlankLines += comment.getNumberOfBlankLines();
-      }
-    }
-    return commentBlankLines;
   }
 
   public int countHeaderCommentLines() {
@@ -72,9 +61,7 @@ public class CommentsAnalyzer {
   public int countCommentedOutLinesOfCode() {
     int commentedOutLinesOfCode = 0;
     for (Comment comment : comments) {
-      if (!comment.isHeaderComment()) {
         commentedOutLinesOfCode += comment.getNumberOfCommentedOutLinesOfCode();
-      }
     }
     return commentedOutLinesOfCode;
   }

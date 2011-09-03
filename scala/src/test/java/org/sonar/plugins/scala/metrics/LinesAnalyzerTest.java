@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
+import org.sonar.plugins.scala.compiler.Lexer;
+import org.sonar.plugins.scala.language.Comment;
 import org.sonar.plugins.scala.util.StringUtils;
 
 public class LinesAnalyzerTest {
@@ -51,9 +53,12 @@ public class LinesAnalyzerTest {
     assertThat(linesAnalyzer.countLines(), is(0));
   }
 
+  // TODO add tests for lines of code
+
   private LinesAnalyzer getLinesAnalyzer(String source) throws IOException {
     List<String> lines = StringUtils.convertStringToListOfLines(source);
-    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(source);
+    List<Comment> comments = new Lexer().getComments(source);
+    CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(comments);
     return new LinesAnalyzer(lines, commentsAnalyzer);
   }
 }

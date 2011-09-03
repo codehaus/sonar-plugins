@@ -38,25 +38,16 @@ public class Comment {
   private final List<String> lines;
 
   public Comment(String content, CommentType type) throws IOException {
-    super();
     this.content = content;
     this.type = type;
     lines = StringUtils.convertStringToListOfLines(content);
-  }
-
-  public String getContent() {
-    return content;
-  }
-
-  public CommentType getType() {
-    return type;
   }
 
   public int getNumberOfLines() {
     return lines.size() - getNumberOfBlankLines() - getNumberOfCommentedOutLinesOfCode();
   }
 
-  public int getNumberOfBlankLines() {
+  private int getNumberOfBlankLines() {
     int numberOfBlankLines = 0;
     for (String comment : lines) {
       boolean isBlank = true;
@@ -76,8 +67,18 @@ public class Comment {
   }
 
   public int getNumberOfCommentedOutLinesOfCode() {
-    // TODO add implementation
-    return 0;
+    if (isDocComment()) {
+      return 0;
+    }
+
+    int numberOfCommentedOutLinesOfCode = 0;
+    for (String line : lines) {
+      String strippedLine = org.apache.commons.lang.StringUtils.stripStart(line, " /*");
+      if (CodeDetector.hasDetectedCode(strippedLine)) {
+        numberOfCommentedOutLinesOfCode++;
+      }
+    }
+    return numberOfCommentedOutLinesOfCode;
   }
 
   public boolean isDocComment() {
