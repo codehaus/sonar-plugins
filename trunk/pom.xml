@@ -90,12 +90,8 @@
       <modules>
         <module>cql</module>
         <module>cxx</module>
-        <module>hammurapi</module>
         <module>jlint</module>
-        <module>jtest</module>
         <module>sonar-replay</module>
-        <module>sonar-squid-cli</module>
-        <module>sonar-squid-gui</module>
         <module>sonarj</module>
       </modules>
     </profile>
@@ -103,7 +99,6 @@
       <id>unstableProjects</id>
       <modules>
         <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
-        <module>codereview</module>
         <module>php</module>
       </modules>
     </profile>
