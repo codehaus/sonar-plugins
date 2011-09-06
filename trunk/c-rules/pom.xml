@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>sonar-c-rules-plugin</artifactId>
-	<version>0.4</version>
+	<version>0.5-SNAPSHOT</version>
 	<packaging>sonar-plugin</packaging>
 	<description>
 	   Provide a C rule engine. This C-Rules plugin requires the C plugin to be installed in order to work.
@@ -32,9 +32,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.4</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.4</developerConnection>
-		<url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-c-rules-plugin-0.4</url>
+		<connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/c-rules</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/c-rules</developerConnection>
+		<url>http://svn.sonar-plugins.codehaus.org</url>
 	</scm>
 
 	<properties>
