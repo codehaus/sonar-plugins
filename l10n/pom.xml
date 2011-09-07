@@ -5,12 +5,13 @@
   <artifactId>l10n</artifactId>
   <packaging>pom</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>All l10n bundles</name>
+  <name>L10n</name>
 
   <modules>
     <module>fr</module>
     <module>es</module>
   </modules>
+  
   <build>
     <plugins>
       <plugin>
