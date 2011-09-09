@@ -98,7 +98,6 @@
     <profile>
       <id>unstableProjects</id>
       <modules>
-        <!-- Uses dependency on org.codehaus.sonar.plugins:sonar-plugin-core:jar:1.10.1 which is not published -->
         <module>php</module>
       </modules>
     </profile>
