@@ -20,9 +20,9 @@
 package org.sonar.plugins.scala.language
 
 import collection.JavaConversions._
-import tools.nsc.ast.parser.Tokens
+import scala.tools.nsc.symtab.StdNames
 
-import org.sonar.plugins.scala.compiler.Lexer
+import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
 
 /**
  * This object is a helper object for detecting valid Scala code
@@ -33,9 +33,27 @@ import org.sonar.plugins.scala.compiler.Lexer
  */
 object CodeDetector {
 
+  import Compiler._
+
+  private lazy val parser = new Parser()
+
   def hasDetectedCode(code: String) = {
-    val lexer = new Lexer()
-    lexer.getTokens(code).exists(t => Tokens.isKeyword(t))
-    // TODO detect method calls
+
+    def lookingForSyntaxTreesWithCode(tree: Tree) : Boolean = tree match {
+
+      case PackageDef(identifier: RefTree, content) => {
+        if (!identifier.name.equals(nme.EMPTY_PACKAGE_NAME)) true
+        else content.exists(lookingForSyntaxTreesWithCode)
+      }
+
+      case Apply(function, args) => args.exists(lookingForSyntaxTreesWithCode)
+
+      case ClassDef(_, _, _, _) | ModuleDef(_, _, _) | ValDef(_, _, _, _)
+        | DefDef(_, _, _, _, _, _) | Function(_ , _) | Assign(_, _) => true
+
+      case _ => false
+    }
+
+    lookingForSyntaxTreesWithCode(parser.parse(code))
   }
 }

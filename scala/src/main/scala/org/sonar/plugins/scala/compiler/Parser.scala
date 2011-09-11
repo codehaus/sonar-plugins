@@ -33,15 +33,30 @@ class Parser {
 
   import Compiler._
 
-  def parse(code: String) = {
-    val sourceFile = new util.BatchSourceFile("", code.toCharArray)
-    val parser = new syntaxAnalyzer.UnitParser(new CompilationUnit(sourceFile))
-    parser.smartParse()
+  def parse(code: String) : Tree = {
+    val batchSourceFile = new util.BatchSourceFile("", code.toCharArray)
+    parse(batchSourceFile, code.toCharArray)
   }
 
   def parseFile(path: String) = {
-    val sourceFile = new util.BatchSourceFile(AbstractFile.getFile(path))
-    val parser = new syntaxAnalyzer.UnitParser(new CompilationUnit(sourceFile))
-    parser.smartParse()
+    val batchSourceFile = new util.BatchSourceFile(AbstractFile.getFile(path))
+    parse(batchSourceFile, batchSourceFile.content.array)
+  }
+
+  private def parse(batchSourceFile: util.BatchSourceFile, code: Array[Char]) = {
+    val scriptSourceFile = new util.ScriptSourceFile(batchSourceFile, code, 0)
+    try {
+      val parser = new syntaxAnalyzer.SourceFileParser(scriptSourceFile)
+      val tree = parser.templateStatSeq(false)._2
+      parser.makePackaging(0, parser.atPos(0, 0, 0)(Ident(nme.EMPTY_PACKAGE_NAME)), tree)
+    } catch {
+      case _ => {
+        val unit = new CompilationUnit(batchSourceFile)
+        val unitParser = new syntaxAnalyzer.UnitParser(unit) {
+          override def showSyntaxErrors() { }
+        }
+        unitParser.smartParse()
+      }
+    }
   }
 }

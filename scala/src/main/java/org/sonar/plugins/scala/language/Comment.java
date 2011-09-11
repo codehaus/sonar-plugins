@@ -73,7 +73,7 @@ public class Comment {
 
     int numberOfCommentedOutLinesOfCode = 0;
     for (String line : lines) {
-      String strippedLine = org.apache.commons.lang.StringUtils.stripStart(line, " /*");
+      String strippedLine = org.apache.commons.lang.StringUtils.strip(line, " /*");
       if (CodeDetector.hasDetectedCode(strippedLine)) {
         numberOfCommentedOutLinesOfCode++;
       }

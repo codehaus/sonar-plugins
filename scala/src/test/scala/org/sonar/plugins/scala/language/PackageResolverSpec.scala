@@ -51,8 +51,6 @@ class PackageResolverSpec extends FlatSpec with ShouldMatchers {
         "four.five.six.seven.eight")
   }
 
-  // TODO add test for default package
-
   private def getPackageNameOf(fileName: String) = {
     val file = getClass().getResource("/packageResolver/" + fileName + ".txt").getFile()
     PackageResolver.resolvePackageNameOfFile(file)
