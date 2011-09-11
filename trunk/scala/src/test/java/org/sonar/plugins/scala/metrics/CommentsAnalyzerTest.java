@@ -22,30 +22,50 @@ package org.sonar.plugins.scala.metrics;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.plugins.scala.language.Comment;
+import org.sonar.plugins.scala.language.CommentType;
+
+import scala.actors.threadpool.Arrays;
 
 public class CommentsAnalyzerTest {
 
-  @Ignore
   @Test
-  public void shouldCountAllCommentLines() {
-    // TODO add implementation
+  public void shouldCountAllCommentLines() throws IOException {
+    List<String> comments = Arrays.asList(new String[] {
+        "// this a normal comment",
+        "/* this is a normal multiline coment\r\n* last line of this comment */",
+        "// also a normal comment"
+      });
+    CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(asCommentList(comments, CommentType.NORMAL));
+    assertThat(commentAnalyzer.countCommentLines(), is(4));
   }
 
-  @Ignore
   @Test
-  public void shouldCountAllHeaderCommentLines() {
-    // TODO add implementation
+  public void shouldCountAllHeaderCommentLines() throws IOException {
+    List<String> comments = Arrays.asList(new String[] {
+        "/* this is an one line header comment */",
+        "/* this is a normal multiline header coment\r\n* last line of this comment */",
+        "/* also a normal header comment */"
+      });
+    CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(asCommentList(comments, CommentType.HEADER));
+    assertThat(commentAnalyzer.countHeaderCommentLines(), is(4));
   }
 
-  @Ignore
   @Test
-  public void shouldCountAllCommentedOutLinesOfCode() {
-    // TODO add implementation
+  public void shouldCountAllCommentedOutLinesOfCode() throws IOException {
+    List<String> comments = Arrays.asList(new String[] {
+        "// val a = 12",
+        "/* list.foreach(println(_))\r\n* def inc(x: Int) = x + 1 */",
+        "// this a normal comment"
+      });
+    CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(asCommentList(comments, CommentType.NORMAL));
+    assertThat(commentAnalyzer.countCommentedOutLinesOfCode(), is(3));
   }
 
   @Test
@@ -64,5 +84,13 @@ public class CommentsAnalyzerTest {
   public void shouldCountZeroCommentedOutLinesOfCodeForEmptyCommentsList() {
     CommentsAnalyzer commentAnalyzer = new CommentsAnalyzer(Collections.<Comment>emptyList());
     assertThat(commentAnalyzer.countCommentedOutLinesOfCode(), is(0));
+  }
+
+  private List<Comment> asCommentList(List<String> commentsContent, CommentType type) throws IOException {
+    List<Comment> comments = new ArrayList<Comment>();
+    for (String comment : commentsContent) {
+      comments.add(new Comment(comment, type));
+    }
+    return comments;
   }
 }
