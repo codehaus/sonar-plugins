@@ -33,14 +33,12 @@ import org.sonar.plugins.scala.util.StringUtils;
  */
 public class Comment {
 
-  private final String content;
   private final CommentType type;
   private final List<String> lines;
 
   public Comment(String content, CommentType type) throws IOException {
-    this.content = content;
-    this.type = type;
     lines = StringUtils.convertStringToListOfLines(content);
+    this.type = type;
   }
 
   public int getNumberOfLines() {

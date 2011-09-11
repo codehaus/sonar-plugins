@@ -48,4 +48,53 @@ public class CommentTest {
     Comment comment = new Comment("", CommentType.NORMAL);
     assertThat(comment.getNumberOfLines(), is(0));
   }
+
+  @Test
+  public void shouldCountOneCommentedOutLineOfCode() throws IOException {
+    Comment comment = new Comment("// val a = 1", CommentType.NORMAL);
+    assertThat(comment.getNumberOfCommentedOutLinesOfCode(), is(1));
+  }
+
+  @Test
+  public void shouldCountAllCommentedOutLinesOfCode() throws IOException {
+    Comment comment = new Comment("/* object Hello {\r\n"
+          + "*   val b = 1 } */",
+        CommentType.NORMAL);
+    assertThat(comment.getNumberOfCommentedOutLinesOfCode(), is(2));
+  }
+
+  @Test
+  public void shouldCountZeorCommentedOutLinesOfCodeIfCommentIsEmpty() throws IOException {
+    Comment comment = new Comment("", CommentType.NORMAL);
+    assertThat(comment.getNumberOfCommentedOutLinesOfCode(), is(0));
+  }
+
+  @Test
+  public void shouldNotCountAnyCommentedOutLinesOfCodeForDocComments() throws IOException {
+    Comment comment = new Comment("/** This is a doc comment with some code\r\n"
+        + "* package hello.world\r\n"
+        + "* class Test { val a = 1 } */", CommentType.DOC);
+    assertThat(comment.getNumberOfCommentedOutLinesOfCode(), is(0));
+  }
+
+  @Test
+  public void shouldBeNormalComment() throws IOException {
+    Comment comment = new Comment("", CommentType.NORMAL);
+    assertThat(comment.isDocComment(), is(false));
+    assertThat(comment.isHeaderComment(), is(false));
+  }
+
+  @Test
+  public void shouldBeDocComment() throws IOException {
+    Comment comment = new Comment("", CommentType.DOC);
+    assertThat(comment.isDocComment(), is(true));
+    assertThat(comment.isHeaderComment(), is(false));
+  }
+
+  @Test
+  public void shouldBeHeaderComment() throws IOException {
+    Comment comment = new Comment("", CommentType.HEADER);
+    assertThat(comment.isDocComment(), is(false));
+    assertThat(comment.isHeaderComment(), is(true));
+  }
 }

@@ -70,21 +70,34 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         String source = FileUtils.readFileToString(inputFile.getFile(), charset);
         List<String> lines = StringUtils.convertStringToListOfLines(source);
         List<Comment> comments = new Lexer().getComments(source);
+
         CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(comments);
         LinesAnalyzer linesAnalyzer = new LinesAnalyzer(lines, commentsAnalyzer);
 
-        sensorContext.saveMeasure(scalaFile, CoreMetrics.LINES, (double) linesAnalyzer.countLines());
-        sensorContext.saveMeasure(scalaFile, CoreMetrics.NCLOC, (double) linesAnalyzer.countLinesOfCode());
-
-        sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENT_LINES,
-            (double) commentsAnalyzer.countCommentLines());
-        sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENTED_OUT_CODE_LINES,
-            (double) commentsAnalyzer.countCommentedOutLinesOfCode());
+        addLineMetrics(sensorContext, scalaFile, linesAnalyzer);
+        addCommentMetrics(sensorContext, scalaFile, commentsAnalyzer);
       } catch (IOException ioe) {
         LOGGER.error("Could not read the file: " + inputFile.getFile().getAbsolutePath(), ioe);
       }
     }
 
+    computePackagesMetric(sensorContext, packages);
+  }
+
+  private void addLineMetrics(SensorContext sensorContext, ScalaFile scalaFile, LinesAnalyzer linesAnalyzer) {
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.LINES, (double) linesAnalyzer.countLines());
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.NCLOC, (double) linesAnalyzer.countLinesOfCode());
+  }
+
+  private void addCommentMetrics(SensorContext sensorContext, ScalaFile scalaFile,
+      CommentsAnalyzer commentsAnalyzer) {
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENT_LINES,
+        (double) commentsAnalyzer.countCommentLines());
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENTED_OUT_CODE_LINES,
+        (double) commentsAnalyzer.countCommentedOutLinesOfCode());
+  }
+
+  private void computePackagesMetric(SensorContext sensorContext, Set<ScalaPackage> packages) {
     for (ScalaPackage currentPackage : packages) {
       sensorContext.saveMeasure(currentPackage, CoreMetrics.PACKAGES, 1.0);
     }
