@@ -52,7 +52,7 @@ public class W3CMarkupValidationSensorTest extends AbstractWebScannerPluginTeste
     assertNull(webscannerPlugin.getKey());
     assertNull(webscannerPlugin.getName());
     assertNull(webscannerPlugin.getDescription());
-    assertEquals(3, webscannerPlugin.getExtensions().size());
+    assertEquals(5, webscannerPlugin.getExtensions().size());
   }
 
   @Test

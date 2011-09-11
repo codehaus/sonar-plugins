@@ -18,14 +18,18 @@
 package org.sonar.plugins.web.markup;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
@@ -86,7 +90,8 @@ public final class W3CMarkupSensor implements Sensor {
     ProjectFileManager fileManager = new ProjectFileManager(project);
 
     // create validator
-    MarkupValidator validator = new MarkupValidator(project.getConfiguration(), new File(project.getFileSystem().getBuildDir() + "/" + project.getArtifactId()));
+    MarkupValidator validator = new MarkupValidator(project.getConfiguration(), new File(project.getFileSystem().getBuildDir() + "/"
+        + project.getArtifactId()));
 
     // start the validation
     validator.validateFiles(fileManager.getFiles());
@@ -130,7 +135,8 @@ public final class W3CMarkupSensor implements Sensor {
     return report.isValid();
   }
 
-  private void saveResults(Project project, SensorContext sensorContext, ProjectFileManager fileManager, MarkupValidator validator, List<InputFile> inputfiles) {
+  private void saveResults(Project project, SensorContext sensorContext, ProjectFileManager fileManager, MarkupValidator validator,
+      List<InputFile> inputfiles) {
     List<File> reportFiles = new ArrayList<File>();
 
     for (InputFile inputfile : inputfiles) {
@@ -144,9 +150,41 @@ public final class W3CMarkupSensor implements Sensor {
       } else {
         LOG.warn("Missing reportfile for file " + inputfile.getRelativePath());
       }
+
+      File propsFile = new File(inputfile.getFile().getPath() + ".txt");
+      if (propsFile.exists()) {
+        LOG.info("Save properties");
+        Properties properties = new Properties();
+        try {
+          properties.load(new FileInputStream(propsFile));
+          String measure = format(properties);
+          LOG.info("Save measure:" + measure);
+          sensorContext.saveMeasure(htmlFile, new Measure(PageMetrics.PAGE, measure));
+        } catch (Exception e) {
+          LOG.error("Could not save measure", e);
+        }
+      }
     }
 
     new MarkupReportBuilder().buildReports(project.getArtifactId(), reportFiles);
+  }
+
+  private String format(Properties properties) {
+    StringBuilder sb = new StringBuilder();
+    boolean first = true;
+
+    List<String> keys = new ArrayList(properties.keySet());
+    Collections.sort(keys);
+    for (String key : keys) {
+      if ( !first) {
+        sb.append('\n');
+      }
+      sb.append(key);
+      sb.append('=');
+      sb.append(properties.get(key));
+      first = false;
+    }
+    return sb.toString();
   }
 
   /**
