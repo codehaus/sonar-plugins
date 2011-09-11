@@ -25,6 +25,7 @@ import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.plugins.web.markup.constants.MarkupValidatorConstants;
+import org.sonar.plugins.web.markup.resourcetab.GwtPageTab;
 import org.sonar.plugins.web.markup.rules.DefaultMarkupProfile;
 import org.sonar.plugins.web.markup.rules.MarkupRuleRepository;
 
@@ -54,6 +55,9 @@ public final class W3CMarkupValidationPlugin implements Plugin {
     list.add(MarkupRuleRepository.class);
     list.add(DefaultMarkupProfile.class);
     list.add(W3CMarkupSensor.class);
+
+    list.add(PageMetrics.class);
+    list.add(GwtPageTab.class);
 
     return list;
   }

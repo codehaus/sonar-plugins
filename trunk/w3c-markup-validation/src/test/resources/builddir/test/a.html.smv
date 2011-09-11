@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope">
+<env:Body>
+<m:markupvalidationresponse env:encodingStyle="http://www.w3.org/2003/05/soap-encoding" xmlns:m="http://www.w3.org/2005/10/markup-validator">
+    
+    <m:uri>a.html</m:uri>
+    <m:checkedby>http://validator.w3.org/</m:checkedby>
+    <m:doctype></m:doctype>
+    <m:charset>utf-8</m:charset>
+    <m:validity>false</m:validity>
+    <m:errors>
+        <m:errorcount>2</m:errorcount>
+        <m:errorlist>
+          
+            <m:error>
+                <m:line>1</m:line>
+                <m:col>1</m:col>
+                <m:message>no document type declaration; implying &quot;&lt;!DOCTYPE HTML SYSTEM&gt;&quot;</m:message>
+                <m:messageid>344</m:messageid>
+                <m:explanation>  <![CDATA[
+                      <p class="helpwanted">
+      <a
+        href="feedback.html?uri=;errmsg_id=344#errormsg"
+	title="Suggest improvements on this error message through our feedback channels" 
+      >&#x2709;</a>
+    </p>
+
+    <div class="ve mid-344">
+    <p>
+	The checked page did not contain a document type ("DOCTYPE") declaration.
+	The Validator has tried to validate with a fallback DTD,
+        but this is quite likely to be incorrect and will generate a large number
+        of incorrect error messages. It is highly recommended that you insert the
+	proper DOCTYPE declaration in your document -- instructions for doing this
+	are given above -- and it is necessary to have this declaration before the
+ 	page can be declared to be valid.
+    </p>
+  </div>
+
+                  ]]>
+                </m:explanation>
+                <m:source><![CDATA[<strong title="Position where error was detected.">&#60;</strong>html&#62;]]></m:source>
+            </m:error>
+           
+            <m:error>
+                <m:line>2</m:line>
+                <m:col>7</m:col>
+                <m:message>end tag for &quot;HTML&quot; which is not finished</m:message>
+                <m:messageid>73</m:messageid>
+                <m:explanation>  <![CDATA[
+                      <p class="helpwanted">
+      <a
+        href="feedback.html?uri=;errmsg_id=73#errormsg"
+	title="Suggest improvements on this error message through our feedback channels" 
+      >&#x2709;</a>
+    </p>
+
+    <div class="ve mid-73">
+    <p>
+      Most likely, you nested tags and closed them in the wrong order. For 
+      example &lt;p&gt;&lt;em&gt;...&lt;/p&gt; is not acceptable, as &lt;em&gt;
+      must be closed before &lt;p&gt;. Acceptable nesting is: 
+      &lt;p&gt;&lt;em&gt;...&lt;/em&gt;&lt;/p&gt;  
+    </p>
+    <p>
+      Another possibility is that you used an element which requires
+      a child element that you did not include. Hence the parent element
+      is "not finished", not complete. For instance, in HTML the &lt;head&gt;
+      element must contain a &lt;title&gt; child element, lists require
+      appropriate list items (&lt;ul&gt; and &lt;ol&gt; require &lt;li&gt;;
+      &lt;dl&gt; requires &lt;dt&gt; and &lt;dd&gt;), and so on.
+    </p>
+  </div>
+
+                  ]]>
+                </m:explanation>
+                <m:source><![CDATA[&#60;/html<strong title="Position where error was detected.">&#62;</strong>]]></m:source>
+            </m:error>
+           
+        </m:errorlist>
+    </m:errors>
+    <m:warnings>
+        <m:warningcount>3</m:warningcount>
+        <m:warninglist>
+        
+
+
+
+
+
+  <m:warning><m:messageid>W06</m:messageid><m:message>Unable to Determine Parse Mode!</m:message></m:warning>
+
+
+
+
+  <m:warning><m:messageid>W09</m:messageid><m:message>No DOCTYPE found! Attempting validation with HTML 4.01 Transitional.</m:message></m:warning>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <m:warning><m:messageid>W27</m:messageid><m:message>No Character encoding declared at document level</m:message></m:warning>
+
+
+
+
+
+
+
+        
+        </m:warninglist>
+    </m:warnings>
+</m:markupvalidationresponse>
+</env:Body>
+</env:Envelope>

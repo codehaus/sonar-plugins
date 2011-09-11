@@ -5,11 +5,11 @@ set SONAR_HOME=c:\bin\sonar-2.8
 set SONAR_FLAGS=-Dsonar.host.url=http://localhost:9000 -Dsonar.dynamicAnalysis=false
 set DEBUG=-X 
 
-call mvn install -Dmaven.test.skip
-call xcopy /Y target\*.jar %SONAR_HOME%\extensions\plugins
-call xcopy /Y ..\web\target\*.jar %SONAR_HOME%\extensions\plugins
+rem call mvn install  -Dmaven.test.skip
+rem call xcopy /Y target\*.jar %SONAR_HOME%\extensions\plugins
+rem call xcopy /Y ..\web\target\*.jar %SONAR_HOME%\extensions\plugins
 
-start "Sonar Server" /MIN %SONAR_HOME%\bin\windows-x86-64\StartSonar.bat 
+rem start "Sonar Server" /MIN %SONAR_HOME%\bin\windows-x86-64\StartSonar.bat 
 
 set mvncommand=mvn sonar:sonar
 
