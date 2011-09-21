@@ -49,7 +49,7 @@ object CodeDetector {
       case Apply(function, args) => args.exists(lookingForSyntaxTreesWithCode)
 
       case ClassDef(_, _, _, _) | ModuleDef(_, _, _) | ValDef(_, _, _, _)
-        | DefDef(_, _, _, _, _, _) | Function(_ , _) | Assign(_, _) => true
+        | DefDef(_, _, _, _, _, _) | Function(_ , _) | Assign(_, _) | LabelDef(_, _, _) => true
 
       case _ => false
     }
