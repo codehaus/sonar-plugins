@@ -50,4 +50,12 @@ class CodeDetectorSpec extends FlatSpec with ShouldMatchers {
   it should "not detect any code in a normal comment text" in {
     CodeDetector.hasDetectedCode("// this is a normal comment") should be (false)
   }
+
+  it should "detect a while loop" in {
+    CodeDetector.hasDetectedCode("while (i == 2) { println(i); }") should be (true)
+  }
+
+  it should "detect a for loop" in {
+    CodeDetector.hasDetectedCode("for (i <- 1 to 10) { println(i); }") should be (true)
+  }
 }
