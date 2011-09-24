@@ -22,6 +22,9 @@ package org.sonar.plugins.scala.language;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sonar.plugins.scala.util.StringUtils;
 
 /**
@@ -85,5 +88,32 @@ public class Comment {
 
   public boolean isHeaderComment() {
     return type == CommentType.HEADER;
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(type).append(lines).toHashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Comment)) {
+      return false;
+    }
+
+    Comment other = (Comment) obj;
+    return new EqualsBuilder().append(type, other.type).append(lines, other.lines).isEquals();
+  }
+
+  @Override
+  public String toString() {
+    final String firstLine = !lines.isEmpty() ? lines.get(0) : "";
+    final String lastLine = !lines.isEmpty() ? lines.get(lines.size() - 1) : "";
+    return new ToStringBuilder(this).append("type", type)
+        .append("firstLine", firstLine)
+        .append("lastLine", lastLine)
+        .append("numberOfLines", getNumberOfLines())
+        .append("numberOfCommentedOutLinesOfCode", getNumberOfCommentedOutLinesOfCode())
+        .toString();
   }
 }
