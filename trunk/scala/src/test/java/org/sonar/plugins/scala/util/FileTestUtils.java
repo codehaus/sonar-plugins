@@ -44,6 +44,10 @@ public final class FileTestUtils {
     // to prevent instantiation
   }
 
+  public static String getRelativePath(String path) {
+    return FileTestUtils.class.getResource(path).getFile();
+  }
+
   public static List<InputFile> getInputFiles(String path, String fileNameBase, int numberOfFiles) {
     return getInputFiles(path, fileNameBase, "scala", numberOfFiles);
   }

@@ -24,6 +24,8 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.junit.JUnitRunner
 
+import org.sonar.plugins.scala.util.FileTestUtils;
+
 @RunWith(classOf[JUnitRunner])
 class PackageResolverSpec extends FlatSpec with ShouldMatchers {
 
@@ -52,7 +54,7 @@ class PackageResolverSpec extends FlatSpec with ShouldMatchers {
   }
 
   private def getPackageNameOf(fileName: String) = {
-    val file = getClass().getResource("/packageResolver/" + fileName + ".txt").getFile()
-    PackageResolver.resolvePackageNameOfFile(file)
+    val path = FileTestUtils.getRelativePath("/packageResolver/" + fileName + ".txt")
+    PackageResolver.resolvePackageNameOfFile(path)
   }
 }

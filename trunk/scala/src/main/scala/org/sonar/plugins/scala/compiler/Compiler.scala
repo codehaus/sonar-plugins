@@ -32,7 +32,7 @@ import tools.util.PathResolver._
 object Compiler extends Global(new Settings()) {
 
   // TODO only add the path to the scala-library.jar, not the whole javaUserClassPath
-  settings.classpath.value += ";" + Environment.javaUserClassPath
+  settings.classpath.append(Environment.javaUserClassPath)
   new Run
 
   override def forScaladoc = true

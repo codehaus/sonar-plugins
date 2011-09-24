@@ -27,6 +27,9 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.junit.JUnitRunner
 
+import org.sonar.plugins.scala.language.{ Comment, CommentType }
+import org.sonar.plugins.scala.util.FileTestUtils;
+
 @RunWith(classOf[JUnitRunner])
 class LexerSpec extends FlatSpec with ShouldMatchers {
 
@@ -37,5 +40,16 @@ class LexerSpec extends FlatSpec with ShouldMatchers {
     tokens should equal (Arrays.asList(VAL, IDENTIFIER, EQUALS, INTLIT))
   }
 
+  it should "tokenize a doc comment" in {
+    val comments = getCommentsOf("DocComment1")
+    comments should have size(1)
+    comments should contain (new Comment("/** Hello World */", CommentType.DOC))
+  }
+
   // TODO add more specs for lexer
+
+  private def getCommentsOf(fileName: String) = {
+    val path = FileTestUtils.getRelativePath("/lexer/" + fileName + ".txt")
+    lexer.getCommentsOfFile(path)
+  }
 }
