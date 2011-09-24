@@ -33,7 +33,10 @@ import org.sonar.plugins.scala.util.FileTestUtils;
 @RunWith(classOf[JUnitRunner])
 class LexerSpec extends FlatSpec with ShouldMatchers {
 
-  private val lexer = new Lexer();
+  private val lexer = new Lexer()
+
+  private val headerComment = "/*\r\n * This comment describes the\r\n" +
+      " * content of the file.\r\n */"
 
   "A lexer" should "tokenize a simple declaration of a value" in {
     val tokens = lexer.getTokens("val a = 1")
@@ -44,6 +47,32 @@ class LexerSpec extends FlatSpec with ShouldMatchers {
     val comments = getCommentsOf("DocComment1")
     comments should have size(1)
     comments should contain (new Comment("/** Hello World */", CommentType.DOC))
+  }
+
+  it should "tokenize a header comment" in {
+    val comments = getCommentsOf("SimpleHeaderComment")
+    comments should have size(1)
+    comments should contain (new Comment(headerComment, CommentType.HEADER))
+  }
+
+  it should "not tokenize a header comment when it is not the first comment" in {
+    val comments = getCommentsOf("NormalCommentWithHeaderComment")
+    comments should have size(2)
+    comments should contain (new Comment("// Just a test", CommentType.NORMAL))
+    comments should contain (new Comment(headerComment, CommentType.NORMAL))
+  }
+
+  it should "not tokenize a header comment when it is not starting with /*" in {
+    val comments = getCommentsOf("HeaderCommentWithWrongStart")
+    comments should have size(1)
+    comments should contain (new Comment("/**\r\n * This comment describes the\r\n" +
+      " * content of the file.\r\n */", CommentType.DOC))
+  }
+
+  it should "not tokenize a header comment when there was code before" in {
+    val comments = getCommentsOf("HeaderCommentWithCodeBefore")
+    comments should have size(1)
+    comments should contain (new Comment(headerComment, CommentType.NORMAL))
   }
 
   // TODO add more specs for lexer
