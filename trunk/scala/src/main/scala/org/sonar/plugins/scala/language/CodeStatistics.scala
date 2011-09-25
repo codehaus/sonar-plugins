@@ -19,7 +19,10 @@
  */
 package org.sonar.plugins.scala.language
 
-import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
+import collection.JavaConversions._
+import scala.tools.nsc.ast.parser.Tokens._
+
+import org.sonar.plugins.scala.compiler.{ Compiler, Lexer, Parser }
 
 /**
  * This object is a helper object for computing several statistics
@@ -38,26 +41,96 @@ object CodeStatistics {
   def countTypes(source: String) = {
 
     def countTypeTrees(tree: Tree, foundTypes: Int = 0) : Int = tree match {
-      case PackageDef(_, content) => foundTypes + countTypeTreesInList(content)
-      case Template(_, _, content) => foundTypes + countTypeTreesInList(content)
+      // recursive descent until found a syntax tree with countable type declaration
+      case PackageDef(_, content) => foundTypes + onList(content, countTypeTrees(_, 0))
+      case Template(_, _, content) => foundTypes + onList(content, countTypeTrees(_, 0))
       case DocDef(_, content) => countTypeTrees(content, foundTypes)
       case DefDef(_, _, _, _, _, content) => countTypeTrees(content, foundTypes)
       case ValDef(_, _, _, content) => countTypeTrees(content, foundTypes)
       case Assign(_, rhs) => countTypeTrees(rhs, foundTypes)
       case LabelDef(_, _, rhs) => countTypeTrees(rhs, foundTypes)
-      case If(cond, thenBlock, elseBlock) => foundTypes + countTypeTrees(cond)
-          + countTypeTrees(thenBlock) + countTypeTrees(elseBlock)
-      case Block(stats, expr) => foundTypes + countTypeTreesInList(stats) + countTypeTrees(expr)
+      case If(cond, thenBlock, elseBlock) => foundTypes + countTypeTrees(cond) +
+          countTypeTrees(thenBlock) + countTypeTrees(elseBlock)
+      case Block(stats, expr) => foundTypes + onList(stats, countTypeTrees(_, 0)) + countTypeTrees(expr)
+
+      /*
+       * Countable type declarations are classes, traits and objects.
+       * ClassDef represents classes and traits.
+       * ModuleDef is the syntax tree for object declarations.
+       */
+
       case ClassDef(_, _, _, content) => countTypeTrees(content, foundTypes + 1)
       case ModuleDef(_, _, content) => countTypeTrees(content, foundTypes + 1)
+
       case _ => foundTypes
     }
 
-    def countTypeTreesInList(trees: List[Tree]) : Int = {
-        trees.map(countTypeTrees(_)).foldLeft(0)(_ + _)
+    countTypeTrees(parser.parse(source))
+  }
+
+  // TODO improve counting statements
+  def countStatements(source: String) = {
+
+    def countStatementTrees(tree: Tree, foundStatements: Int = 0) : Int = tree match {
+
+      // recursive descent until found a syntax tree with countable statements
+      case PackageDef(_, content) => foundStatements + onList(content, countStatementTrees(_, 0))
+      case Template(_, _, content) => foundStatements + onList(content, countStatementTrees(_, 0))
+      case DocDef(_, content) => countStatementTrees(content, foundStatements)
+      case DefDef(_, _, _, _, _, content) => countStatementTrees(content, foundStatements)
+      case ValDef(_, _, _, content) => countStatementTrees(content, foundStatements)
+      case Function(_, body) =>  countStatementTrees(body, foundStatements)
+      case Block(stats, expr) => foundStatements + onList(stats, countStatementTrees(_, 0)) + countStatementTrees(expr)
+      case ClassDef(_, _, _, content) => countStatementTrees(content, foundStatements)
+      case ModuleDef(_, _, content) => countStatementTrees(content, foundStatements)
+
+      /*
+       * Countable statements are expressions, if, else, try, finally, throw, match and
+       * while/for loops.
+       */
+
+      case Apply(fun, args) => foundStatements + 1 + countStatementTrees(fun) +
+          onList(args, countStatementTrees(_, 0))
+
+      case Assign(_, rhs) => countStatementTrees(rhs, foundStatements + 1)
+
+      // TODO try to improve this, subtraction by 3 seems to be an ugly hack imho (felix)
+      // because condition block is an If tree, we need to subtract it by 3
+      case LabelDef(_, _, rhs) => countStatementTrees(rhs, foundStatements + 1) - 3
+
+      case If(cond, thenBlock, elseBlock) => foundStatements + 1 + countStatementTrees(cond) +
+          countStatementTrees(thenBlock) + countStatementTrees(elseBlock)
+
+      case Match(selector, cases) => foundStatements + 1 + countStatementTrees(selector) +
+          onList(cases, countStatementTrees(_, 0))
+
+      case CaseDef(pat, guard, body) => foundStatements + countStatementTrees(pat) +
+          countStatementTrees(guard) + countStatementTrees(body)
+
+      case Try(block, catches, finalizer) => {
+        val statementsInTry = foundStatements + 1 + countStatementTrees(block) +
+            onList(catches, countStatementTrees(_, 0))
+
+        if (!finalizer.isEmpty) {
+          statementsInTry + 1 + countStatementTrees(finalizer)
+        } else {
+          statementsInTry
+        }
+      }
+
+      case Throw(expr) => countStatementTrees(expr, foundStatements + 1)
+
+      case _ => foundStatements
     }
 
-//    Compiler.treeBrowser.browse(parser.parse(source))
-    countTypeTrees(parser.parse(source))
+    countStatementTrees(parser.parse(source))
+  }
+
+  /**
+   * Helper method which applies a function on every AST in a given list and
+   * sums up the results.
+   */
+  private def onList(trees: List[Tree], treeFunction: Tree => Int) = {
+    trees.map(treeFunction).foldLeft(0)(_ + _)
   }
 }
