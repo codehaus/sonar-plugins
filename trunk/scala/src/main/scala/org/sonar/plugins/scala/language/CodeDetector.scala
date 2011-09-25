@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.scala.language
 
-import collection.JavaConversions._
 import scala.tools.nsc.symtab.StdNames
 
 import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
