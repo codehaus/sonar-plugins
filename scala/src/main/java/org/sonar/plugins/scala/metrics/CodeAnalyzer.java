@@ -39,4 +39,8 @@ public class CodeAnalyzer {
   public int countTypes() {
     return CodeStatistics.countTypes(source);
   }
+
+  public int countStatements() {
+    return CodeStatistics.countStatements(source);
+  }
 }

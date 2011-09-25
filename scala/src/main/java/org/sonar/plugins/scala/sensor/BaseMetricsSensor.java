@@ -102,6 +102,7 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
   private void addCodeMetrics(SensorContext sensorContext, ScalaFile scalaFile, String source) {
     CodeAnalyzer codeAnalyzer = new CodeAnalyzer(source);
     sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES, (double) codeAnalyzer.countTypes());
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS, (double) codeAnalyzer.countStatements());
   }
 
   private void computePackagesMetric(SensorContext sensorContext, Set<ScalaPackage> packages) {

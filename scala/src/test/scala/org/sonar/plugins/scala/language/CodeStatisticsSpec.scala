@@ -118,4 +118,42 @@ class CodeStatisticsSpec extends FlatSpec with ShouldMatchers {
         "class B { val a = 1 } }"
     CodeStatistics.countTypes(source) should be (1)
   }
+
+  it should "count a simple assignment as a statement" in {
+    CodeStatistics.countStatements("a = 1") should be (1)
+  }
+
+  it should "count a simple method call as a statement" in {
+    CodeStatistics.countStatements("println(123)") should be (1)
+  }
+
+  it should "count a simple function call as a statement" in {
+    CodeStatistics.countStatements("val a = inc(3)") should be (1)
+  }
+
+  it should "not count a simple variable as a statement" in {
+    CodeStatistics.countStatements("var a") should be (0)
+  }
+
+  it should "count a while loop as a statement" in {
+    CodeStatistics.countStatements("while (1 == 1) {}") should be (1)
+  }
+
+  it should "count a for loop as a statement" in {
+    CodeStatistics.countStatements("for (i <- 1 to 10) {}") should be (1)
+  }
+
+  it should "count a while loop as a statement and all statements in loop body" in {
+    val source = "while (1 == 1) {\r\n" +
+    		"val a = inc(2)\r\n" +
+    		"}"
+    CodeStatistics.countStatements(source) should be (2)
+  }
+
+  it should "count a for loop as a statement and all statements in loop body" in {
+    val source = "for (i <- 1 to 10) {\r\n" +
+    		"val a = inc(2)\r\n" +
+    		"}"
+    CodeStatistics.countStatements(source) should be (2)
+  }
 }
