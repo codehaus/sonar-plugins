@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.scala.language
 
-import collection.mutable.ListBuffer
 import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
 
 /**
@@ -53,7 +52,7 @@ object PackageResolver {
       case _ => Nil
     }
 
-    val packageName = traversePackageDefs(parser.parseFile(path)).foldLeft("")((a, b) => a + "." + b)
+    val packageName = traversePackageDefs(parser.parseFile(path)).foldLeft("")(_ + "." + _)
     if (packageName.length() > 0) packageName.substring(1) else packageName
   }
 }

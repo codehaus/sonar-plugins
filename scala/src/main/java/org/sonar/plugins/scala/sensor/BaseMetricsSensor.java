@@ -37,6 +37,7 @@ import org.sonar.plugins.scala.language.Comment;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaFile;
 import org.sonar.plugins.scala.language.ScalaPackage;
+import org.sonar.plugins.scala.metrics.CodeAnalyzer;
 import org.sonar.plugins.scala.metrics.CommentsAnalyzer;
 import org.sonar.plugins.scala.metrics.LinesAnalyzer;
 import org.sonar.plugins.scala.util.StringUtils;
@@ -76,6 +77,7 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
 
         addLineMetrics(sensorContext, scalaFile, linesAnalyzer);
         addCommentMetrics(sensorContext, scalaFile, commentsAnalyzer);
+        addCodeMetrics(sensorContext, scalaFile, source);
       } catch (IOException ioe) {
         LOGGER.error("Could not read the file: " + inputFile.getFile().getAbsolutePath(), ioe);
       }
@@ -95,6 +97,11 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         (double) commentsAnalyzer.countCommentLines());
     sensorContext.saveMeasure(scalaFile, CoreMetrics.COMMENTED_OUT_CODE_LINES,
         (double) commentsAnalyzer.countCommentedOutLinesOfCode());
+  }
+
+  private void addCodeMetrics(SensorContext sensorContext, ScalaFile scalaFile, String source) {
+    CodeAnalyzer codeAnalyzer = new CodeAnalyzer(source);
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES, (double) codeAnalyzer.countTypes());
   }
 
   private void computePackagesMetric(SensorContext sensorContext, Set<ScalaPackage> packages) {
