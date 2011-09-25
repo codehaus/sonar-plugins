@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.scala;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
@@ -29,5 +30,10 @@ public class ScalaPluginTest {
   @Test
   public void shouldHaveExtensions() {
     assertThat(new ScalaPlugin().getExtensions().size(), greaterThan(0));
+  }
+
+  @Test
+  public void shouldGetPathToDependencies() {
+    assertThat(ScalaPlugin.getPathToScalaLibrary(), containsString("scala-library"));
   }
 }

@@ -45,4 +45,18 @@ public class ScalaPlugin extends SonarPlugin {
   public String toString() {
     return getClass().getSimpleName();
   }
+
+  public static String getPathToScalaLibrary() {
+    return getPathByResource("scala/package.class");
+  }
+
+  /**
+   * Godin: during execution of Sonar Batch all dependencies of a plugin are downloaded and
+   * available locally as JAR-files, so we can use this kind of hack to locate JARs.
+   */
+  private static String getPathByResource(String name) {
+    String path = ScalaPlugin.class.getClassLoader().getResource(name).getPath();
+    return path.substring("file:".length(), path.lastIndexOf("!"));
+  }
+
 }
