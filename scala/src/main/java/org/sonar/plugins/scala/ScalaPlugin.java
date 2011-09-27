@@ -19,10 +19,12 @@
  */
 package org.sonar.plugins.scala;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.sonar.api.Extension;
 import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.scala.colorization.ScalaColorizerFormat;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.sensor.BaseMetricsSensor;
 import org.sonar.plugins.scala.sensor.ScalaSourceImporterSensor;
@@ -36,9 +38,13 @@ import org.sonar.plugins.scala.sensor.ScalaSourceImporterSensor;
  */
 public class ScalaPlugin extends SonarPlugin {
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public List getExtensions() {
-    return Arrays.asList(Scala.class, ScalaSourceImporterSensor.class, BaseMetricsSensor.class);
+  public List<Class<? extends Extension>> getExtensions() {
+    final List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
+    extensions.add(Scala.class);
+    extensions.add(ScalaSourceImporterSensor.class);
+    extensions.add(ScalaColorizerFormat.class);
+    extensions.add(BaseMetricsSensor.class);
+    return extensions;
   }
 
   @Override
