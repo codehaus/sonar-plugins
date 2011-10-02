@@ -152,8 +152,49 @@ class CodeStatisticsSpec extends FlatSpec with ShouldMatchers {
 
   it should "count a for loop as a statement and all statements in loop body" in {
     val source = "for (i <- 1 to 10) {\r\n" +
-    		"val a = inc(2)\r\n" +
-    		"}"
+        "val a = inc(2)\r\n" +
+        "}"
     CodeStatistics.countStatements(source) should be (2)
+  }
+
+  it should "count an if block as a statement and all statements in its body" in {
+    val source = "if (1+2 < 4) {\r\n" +
+        "val a = inc(2)\r\n" +
+        "println(\"Hello World\")\r\n" +
+        "def test = 1 + 2\r\n" +
+        "}"
+    CodeStatistics.countStatements(source) should be (4)
+  }
+
+  it should "count an if else block as a statement and all statements in its body" in {
+    val source = "if (1+2 < 4) {\r\n" +
+        "val a = inc(2)\r\n" +
+        "println(\"Hello World\")\r\n" +
+        "def test = 1 + 2\r\n" +
+        "} else {\r\n" +
+        "def test2 = 1\r\n" +
+        "val b = test2\r\n" +
+        "}"
+    CodeStatistics.countStatements(source) should be (5)
+  }
+
+  it should "count all statements in body of a function definition" in {
+   val source = "def test(i: Int) = {\r\n" +
+        "val a = i + 42\r\n" +
+        "println(a)\r\n" +
+        "println(i + 42)\r\n" +
+        "a" +
+        "}"
+    CodeStatistics.countStatements(source) should be (4)
+  }
+
+  it should "count all statements in body of a value definition" in {
+   val source = "val test = {\r\n" +
+        "val a = i + 42\r\n" +
+        "println(a)\r\n" +
+        "println(i + 42)\r\n" +
+        "a" +
+        "}"
+    CodeStatistics.countStatements(source) should be (4)
   }
 }
