@@ -43,4 +43,8 @@ public class CodeAnalyzer {
   public int countStatements() {
     return CodeStatistics.countStatements(source);
   }
+
+  public int countFunctions() {
+    return CodeStatistics.countFunctions(source);
+  }
 }

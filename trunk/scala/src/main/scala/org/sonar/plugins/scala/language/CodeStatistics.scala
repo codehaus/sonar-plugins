@@ -20,6 +20,7 @@
 package org.sonar.plugins.scala.language
 
 import tools.nsc.ast.parser.Tokens._
+import tools.nsc.symtab.StdNames
 
 import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
 
@@ -70,17 +71,6 @@ object CodeStatistics {
   // TODO improve counting statements
   def countStatements(source: String) = {
 
-    def isBlockEmpty(block: Tree) = block match {
-      case literal: Literal => {
-        val isEmptyConstant = literal.value match {
-          case Constant(value) => value.toString().equals("()")
-          case _ => false
-        }
-        literal.isEmpty || isEmptyConstant
-      }
-      case _ => block.isEmpty
-    }
-
     def countStatementTrees(tree: Tree, foundStatements: Int = 0) : Int = tree match {
 
       // recursive descent until found a syntax tree with countable statements
@@ -108,7 +98,7 @@ object CodeStatistics {
 
       case If(_, thenBlock, elseBlock) => {
         val statementsInIf = foundStatements + 1 + countStatementTrees(thenBlock)
-        if (isBlockEmpty(elseBlock)) {
+        if (isEmptyBlock(elseBlock)) {
           statementsInIf
         } else {
           statementsInIf + 1 + countStatementTrees(elseBlock)
@@ -138,6 +128,86 @@ object CodeStatistics {
     }
 
     countStatementTrees(parser.parse(source))
+  }
+
+  // TODO improve counting functions
+  def countFunctions(source: String) = {
+
+    def isEmptyConstructor(constructor: DefDef) = {
+      if (constructor.name.startsWith(nme.CONSTRUCTOR) ||
+            constructor.name.startsWith(nme.MIXIN_CONSTRUCTOR)) {
+
+        constructor.rhs match {
+
+          case Block(stats, expr) => {
+            if (stats.size == 0) {
+              true
+            } else {
+              stats.size == 1 &&
+                  (stats(0).toString().equals("super." + nme.CONSTRUCTOR + "()") ||
+                      stats(0).toString().equals("super." + nme.MIXIN_CONSTRUCTOR + "()")) &&
+                  isEmptyBlock(expr)
+            }
+          }
+
+          case _ => constructor.isEmpty
+        }
+      } else {
+        false
+      }
+    }
+
+    def countFunctionTrees(tree: Tree, foundFunctions: Int = 0) : Int = tree match {
+      // recursive descent until found a syntax tree with countable functions
+      case PackageDef(_, content) => foundFunctions + onList(content, countFunctionTrees(_, 0))
+      case Template(_, _, content) => foundFunctions + onList(content, countFunctionTrees(_, 0))
+      case ClassDef(_, _, _, content) => countFunctionTrees(content, foundFunctions)
+      case ModuleDef(_, _, content) => countFunctionTrees(content, foundFunctions)
+      case DocDef(_, content) => countFunctionTrees(content, foundFunctions)
+      case ValDef(_, _, _, content) => countFunctionTrees(content, foundFunctions)
+      case Block(stats, expr) => foundFunctions + onList(stats, countFunctionTrees(_, 0)) + countFunctionTrees(expr)
+      case Apply(_, args) => foundFunctions + onList(args, countFunctionTrees(_, 0))
+      case Assign(_, rhs) => countFunctionTrees(rhs, foundFunctions)
+      case LabelDef(_, _, rhs) => countFunctionTrees(rhs, foundFunctions)
+      case If(cond, thenBlock, elseBlock) => foundFunctions + countFunctionTrees(cond) +
+          countFunctionTrees(thenBlock) + countFunctionTrees(elseBlock)
+      case Match(selector, cases) => foundFunctions + countFunctionTrees(selector) +
+          onList(cases, countFunctionTrees(_, 0))
+      case CaseDef(pat, guard, body) => foundFunctions + countFunctionTrees(pat) +
+          countFunctionTrees(guard) + countFunctionTrees(body)
+      case Try(block, catches, finalizer) => foundFunctions + countFunctionTrees(block) +
+            onList(catches, countFunctionTrees(_, 0))
+      case Throw(expr) => countFunctionTrees(expr, foundFunctions)
+
+      /*
+       * Countable function declarations are functions, methods and closures.
+       */
+
+      case defDef: DefDef => {
+        if (isEmptyConstructor(defDef)) {
+          countFunctionTrees(defDef.rhs, foundFunctions)
+        } else {
+          countFunctionTrees(defDef.rhs, foundFunctions + 1)
+        }
+      }
+
+      case Function(_, body) => countFunctionTrees(body, foundFunctions + 1)
+
+      case _ => foundFunctions
+    }
+
+    countFunctionTrees(parser.parse(source))
+  }
+
+  private def isEmptyBlock(block: Tree) = block match {
+    case literal: Literal => {
+      val isEmptyConstant = literal.value match {
+        case Constant(value) => value.toString().equals("()")
+        case _ => false
+      }
+      literal.isEmpty || isEmptyConstant
+    }
+    case _ => block.isEmpty
   }
 
   /**
