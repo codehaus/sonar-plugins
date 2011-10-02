@@ -19,10 +19,9 @@
  */
 package org.sonar.plugins.scala.language
 
-import collection.JavaConversions._
-import scala.tools.nsc.ast.parser.Tokens._
+import tools.nsc.ast.parser.Tokens._
 
-import org.sonar.plugins.scala.compiler.{ Compiler, Lexer, Parser }
+import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
 
 /**
  * This object is a helper object for computing several statistics
@@ -71,6 +70,17 @@ object CodeStatistics {
   // TODO improve counting statements
   def countStatements(source: String) = {
 
+    def isBlockEmpty(block: Tree) = block match {
+      case literal: Literal => {
+        val isEmptyConstant = literal.value match {
+          case Constant(value) => value.toString().equals("()")
+          case _ => false
+        }
+        literal.isEmpty || isEmptyConstant
+      }
+      case _ => block.isEmpty
+    }
+
     def countStatementTrees(tree: Tree, foundStatements: Int = 0) : Int = tree match {
 
       // recursive descent until found a syntax tree with countable statements
@@ -89,17 +99,21 @@ object CodeStatistics {
        * while/for loops.
        */
 
-      case Apply(fun, args) => foundStatements + 1 + countStatementTrees(fun) +
-          onList(args, countStatementTrees(_, 0))
+      case Apply(_, args) => foundStatements + 1 + onList(args, countStatementTrees(_, 0))
 
       case Assign(_, rhs) => countStatementTrees(rhs, foundStatements + 1)
 
-      // TODO try to improve this, subtraction by 3 seems to be an ugly hack imho (felix)
-      // because condition block is an If tree, we need to subtract it by 3
-      case LabelDef(_, _, rhs) => countStatementTrees(rhs, foundStatements + 1) - 3
+      // TODO try to improve this, subtraction by 2 seems to be an ugly hack imho (felix)
+      case LabelDef(_, _, rhs) => countStatementTrees(rhs, foundStatements + 1) - 2
 
-      case If(cond, thenBlock, elseBlock) => foundStatements + 1 + countStatementTrees(cond) +
-          countStatementTrees(thenBlock) + countStatementTrees(elseBlock)
+      case If(_, thenBlock, elseBlock) => {
+        val statementsInIf = foundStatements + 1 + countStatementTrees(thenBlock)
+        if (isBlockEmpty(elseBlock)) {
+          statementsInIf
+        } else {
+          statementsInIf + 1 + countStatementTrees(elseBlock)
+        }
+      }
 
       case Match(selector, cases) => foundStatements + 1 + countStatementTrees(selector) +
           onList(cases, countStatementTrees(_, 0))
