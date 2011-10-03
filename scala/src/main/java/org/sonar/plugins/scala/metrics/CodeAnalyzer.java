@@ -19,7 +19,9 @@
  */
 package org.sonar.plugins.scala.metrics;
 
-import org.sonar.plugins.scala.language.CodeStatistics;
+import org.sonar.plugins.scala.language.FunctionCounter;
+import org.sonar.plugins.scala.language.StatementCounter;
+import org.sonar.plugins.scala.language.TypeCounter;
 
 /**
  * This class implements the computation of basic
@@ -37,14 +39,14 @@ public class CodeAnalyzer {
   }
 
   public int countTypes() {
-    return CodeStatistics.countTypes(source);
+    return TypeCounter.countTypes(source);
   }
 
   public int countStatements() {
-    return CodeStatistics.countStatements(source);
+    return StatementCounter.countStatements(source);
   }
 
   public int countFunctions() {
-    return CodeStatistics.countFunctions(source);
+    return FunctionCounter.countFunctions(source);
   }
 }
