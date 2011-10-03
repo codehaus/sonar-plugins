@@ -25,44 +25,44 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class CodeStatisticsStatementCounterSpec extends FlatSpec with ShouldMatchers {
+class StatementCounterSpec extends FlatSpec with ShouldMatchers {
 
   "A code statistic" should "count a simple assignment as a statement" in {
-    CodeStatistics.countStatements("a = 1") should be (1)
+    StatementCounter.countStatements("a = 1") should be (1)
   }
 
   it should "count a simple method call as a statement" in {
-    CodeStatistics.countStatements("println(123)") should be (1)
+    StatementCounter.countStatements("println(123)") should be (1)
   }
 
   it should "count a simple function call as a statement" in {
-    CodeStatistics.countStatements("val a = inc(3)") should be (1)
+    StatementCounter.countStatements("val a = inc(3)") should be (1)
   }
 
   it should "not count a simple variable as a statement" in {
-    CodeStatistics.countStatements("var a") should be (0)
+    StatementCounter.countStatements("var a") should be (0)
   }
 
   it should "count a while loop as a statement" in {
-    CodeStatistics.countStatements("while (1 == 1) {}") should be (1)
+    StatementCounter.countStatements("while (1 == 1) {}") should be (1)
   }
 
   it should "count a for loop as a statement" in {
-    CodeStatistics.countStatements("for (i <- 1 to 10) {}") should be (1)
+    StatementCounter.countStatements("for (i <- 1 to 10) {}") should be (1)
   }
 
   it should "count a while loop as a statement and all statements in loop body" in {
     val source = "while (1 == 1) {\r\n" +
     		"val a = inc(2)\r\n" +
     		"}"
-    CodeStatistics.countStatements(source) should be (2)
+    StatementCounter.countStatements(source) should be (2)
   }
 
   it should "count a for loop as a statement and all statements in loop body" in {
     val source = "for (i <- 1 to 10) {\r\n" +
         "val a = inc(2)\r\n" +
         "}"
-    CodeStatistics.countStatements(source) should be (2)
+    StatementCounter.countStatements(source) should be (2)
   }
 
   it should "count an if block as a statement and all statements in its body" in {
@@ -71,7 +71,7 @@ class CodeStatisticsStatementCounterSpec extends FlatSpec with ShouldMatchers {
         "println(\"Hello World\")\r\n" +
         "def test = 1 + 2\r\n" +
         "}"
-    CodeStatistics.countStatements(source) should be (4)
+    StatementCounter.countStatements(source) should be (4)
   }
 
   it should "count an if else block as a statement and all statements in its body" in {
@@ -83,7 +83,7 @@ class CodeStatisticsStatementCounterSpec extends FlatSpec with ShouldMatchers {
         "def test2 = 1\r\n" +
         "val b = test2\r\n" +
         "}"
-    CodeStatistics.countStatements(source) should be (5)
+    StatementCounter.countStatements(source) should be (5)
   }
 
   it should "count all statements in body of a function definition" in {
@@ -93,7 +93,7 @@ class CodeStatisticsStatementCounterSpec extends FlatSpec with ShouldMatchers {
         "println(i + 42)\r\n" +
         "a" +
         "}"
-    CodeStatistics.countStatements(source) should be (4)
+    StatementCounter.countStatements(source) should be (4)
   }
 
   it should "count all statements in body of a value definition" in {
@@ -103,6 +103,6 @@ class CodeStatisticsStatementCounterSpec extends FlatSpec with ShouldMatchers {
         "println(i + 42)\r\n" +
         "a" +
         "}"
-    CodeStatistics.countStatements(source) should be (4)
+    StatementCounter.countStatements(source) should be (4)
   }
 }
