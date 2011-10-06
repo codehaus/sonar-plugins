@@ -65,7 +65,9 @@
         <module>twitter</module>
         <module>useless-code-tracker</module>
         <module>web</module>
+        <!--
         <module>xml</module>
+        -->
       </modules>
     </profile>
     <profile>
