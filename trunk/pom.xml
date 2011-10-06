@@ -24,9 +24,7 @@
         <module>crowd</module>
         <module>c-rules</module>
         <module>cutoff</module>
-        <!--
         <module>dotnet</module>
-        -->
         <module>email</module>
         <module>emma</module>
         <module>fb-contrib</module>
@@ -65,9 +63,7 @@
         <module>twitter</module>
         <module>useless-code-tracker</module>
         <module>web</module>
-        <!--
         <module>xml</module>
-        -->
       </modules>
     </profile>
     <profile>
