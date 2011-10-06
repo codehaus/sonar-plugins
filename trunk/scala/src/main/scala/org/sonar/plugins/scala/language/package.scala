@@ -36,8 +36,8 @@ package object language {
             true
           } else {
             stats.size == 1 &&
-                (stats(0).toString().equals("super." + nme.CONSTRUCTOR + "()") ||
-                    stats(0).toString().equals("super." + nme.MIXIN_CONSTRUCTOR + "()")) &&
+                (stats(0).toString().startsWith("super." + nme.CONSTRUCTOR) ||
+                    stats(0).toString().startsWith("super." + nme.MIXIN_CONSTRUCTOR)) &&
                 isEmptyBlock(expr)
           }
         }
