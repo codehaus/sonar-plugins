@@ -10,6 +10,7 @@
   <modules>
     <module>fr</module>
     <module>es</module>
+    <module>el</module>
   </modules>
   
   <build>
