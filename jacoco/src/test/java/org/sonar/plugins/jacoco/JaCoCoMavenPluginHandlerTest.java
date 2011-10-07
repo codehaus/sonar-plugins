@@ -27,6 +27,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +36,6 @@ import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
-
-import java.io.File;
 
 /**
  * @author Evgeny Mandrikov
@@ -74,6 +74,7 @@ public class JaCoCoMavenPluginHandlerTest {
 
     verify(configuration).getJvmArgument();
     assertThat(plugin.getParameter("argLine"), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec"));
+    assertThat(plugin.getParameter("testFailureIgnore"), is("true"));
   }
 
   @Test
@@ -85,6 +86,7 @@ public class JaCoCoMavenPluginHandlerTest {
 
     verify(configuration).getJvmArgument();
     assertThat(plugin.getParameter("argLine"), is("-javaagent:jacocoagent.jar=destfile=target/jacoco.exec -esa"));
+    assertThat(plugin.getParameter("testFailureIgnore"), is("true"));
   }
 
 }

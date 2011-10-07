@@ -35,6 +35,7 @@ import org.sonar.api.utils.SonarException;
 public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
 
   private static final String ARG_LINE_PARAMETER = "argLine";
+  private static final String TEST_FAILURE_IGNORE_PARAMETER = "testFailureIgnore";
 
   private final String groupId;
   private final String artifactId;
@@ -86,6 +87,8 @@ public class JaCoCoMavenPluginHandler implements MavenPluginHandler {
     argLine = StringUtils.isBlank(argLine) ? argument : argument + " " + argLine;
     JaCoCoUtils.LOG.info("JVM options: {}", argLine);
     plugin.setParameter(ARG_LINE_PARAMETER, argLine);
+
+    plugin.setParameter(TEST_FAILURE_IGNORE_PARAMETER, "true");
   }
 
 }
