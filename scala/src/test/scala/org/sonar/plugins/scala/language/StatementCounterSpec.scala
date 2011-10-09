@@ -35,12 +35,12 @@ class StatementCounterSpec extends FlatSpec with ShouldMatchers {
     StatementCounter.countStatements("println(123)") should be (1)
   }
 
-  it should "count a simple function call as a statement" in {
-    StatementCounter.countStatements("val a = inc(3)") should be (1)
+  it should "not count a simple variable declaration as a statement" in {
+    StatementCounter.countStatements("var a") should be (0)
   }
 
-  it should "not count a simple variable as a statement" in {
-    StatementCounter.countStatements("var a") should be (0)
+  it should "count a simple variable declaration with assignment as a statement" in {
+    StatementCounter.countStatements("var a = 2") should be (1)
   }
 
   it should "count a while loop as a statement" in {
@@ -65,12 +65,25 @@ class StatementCounterSpec extends FlatSpec with ShouldMatchers {
     StatementCounter.countStatements(source) should be (2)
   }
 
+
+  it should "count if as a statement" in {
+    StatementCounter.countStatements("if (1 == 1)\r\nprintln()") should be (2)
+  }
+
   it should "count an if block as a statement and all statements in its body" in {
     val source = "if (1+2 < 4) {\r\n" +
         "val a = inc(2)\r\n" +
-        "println(\"Hello World\")\r\n" +
-        "def test = 1 + 2\r\n" +
+        "println(3)\r\n" +
+        "def test = { 1 + 2 }\r\n" +
         "}"
+    StatementCounter.countStatements(source) should be (4)
+  }
+
+  it should "count a simple if else block as a statement" in {
+    val source = "if (1+2 < 4)\r\n" +
+        "println(\"Hello World\")\r\n" +
+        "else\r\n" +
+        "println(\"123\")"
     StatementCounter.countStatements(source) should be (4)
   }
 
@@ -83,7 +96,7 @@ class StatementCounterSpec extends FlatSpec with ShouldMatchers {
         "def test2 = 1\r\n" +
         "val b = test2\r\n" +
         "}"
-    StatementCounter.countStatements(source) should be (5)
+    StatementCounter.countStatements(source) should be (7)
   }
 
   it should "count all statements in body of a function definition" in {
@@ -104,5 +117,46 @@ class StatementCounterSpec extends FlatSpec with ShouldMatchers {
         "a" +
         "}"
     StatementCounter.countStatements(source) should be (4)
+  }
+
+  it should "count for comprehension with yield statement" in {
+    val source = "for (x <- List(1, 2, 3, 4, 5) if (x % 2 != 0))\r\nyield x"
+    StatementCounter.countStatements(source) should be (2)
+  }
+
+  it should "count for comprehension with more complex yield statement" in {
+    val source = "for (x <- List(1, 2, 3, 4, 5) if (x % 2 != 0)) yield x + inc(x)"
+    StatementCounter.countStatements(source) should be (2)
+  }
+
+  it should "count for comprehension with yield statement where return value is only a literal" in {
+    val source = "for (x <- List(1, 2, 3, 4, 5) if (x % 2 != 0))\r\nyield 2"
+    StatementCounter.countStatements(source) should be (2)
+  }
+
+  it should "count foreach function call on a list as a statement" in {
+    val source = "myList.foreach {i =>" +
+    		"println(i)\r\n" +
+        "val a = i + 1\r\n" +
+        "println(\"inc: \" + i)\r\n" +
+    		"}"
+    StatementCounter.countStatements(source) should be (4)
+  }
+
+  it should "count foreach function call and all statements in its body" in {
+    val source = "def foo() = {\r\n" +
+        "List(\"Hello\", \"World\", \"!\").foreach(word =>\r\n" +
+        "if (find(By(name, word)).isEmpty)\r\n" +
+        "create.name(word).save\r\n" +
+        ")\r\n" +
+        "}"
+    StatementCounter.countStatements(source) should be (3)
+  }
+
+  it should "count function call in a function definition nested in an object" in {
+    val source = "object name extends MappedPoliteString(this, 100) {\r\n" +
+        "override def validations = valMinLen(1, S.?(\"attributeName\")) _ :: Nil\r\n" +
+        "}"
+    StatementCounter.countStatements(source) should be (2)
   }
 }
