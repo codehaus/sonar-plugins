@@ -40,17 +40,27 @@ object CodeDetector {
 
     def lookingForSyntaxTreesWithCode(tree: Tree) : Boolean = tree match {
 
-      case PackageDef(identifier: RefTree, content) => {
-        if (!identifier.name.equals(nme.EMPTY_PACKAGE_NAME)) true
-        else content.exists(lookingForSyntaxTreesWithCode)
-      }
+      case PackageDef(identifier: RefTree, content) =>
+        if (!identifier.name.equals(nme.EMPTY_PACKAGE_NAME)) {
+          true
+        } else {
+          content.exists(lookingForSyntaxTreesWithCode)
+        }
 
-      case Apply(function, args) => args.exists(lookingForSyntaxTreesWithCode)
+      case Apply(function, args) =>
+        args.exists(lookingForSyntaxTreesWithCode)
 
-      case ClassDef(_, _, _, _) | ModuleDef(_, _, _) | ValDef(_, _, _, _)
-        | DefDef(_, _, _, _, _, _) | Function(_ , _) | Assign(_, _) | LabelDef(_, _, _) => true
+      case ClassDef(_, _, _, _)
+        | ModuleDef(_, _, _)
+        | ValDef(_, _, _, _)
+        | DefDef(_, _, _, _, _, _)
+        | Function(_ , _)
+        | Assign(_, _)
+        | LabelDef(_, _, _) =>
+          true
 
-      case _ => false
+      case _ =>
+        false
     }
 
     lookingForSyntaxTreesWithCode(parser.parse(code))

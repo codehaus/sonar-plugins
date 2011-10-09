@@ -43,16 +43,34 @@ object PackageResolver {
   def resolvePackageNameOfFile(path: String) : String = {
 
     def traversePackageDefs(tree: Tree) : Seq[String] = tree match {
-      case PackageDef(Ident(name), List(p: PackageDef)) => List(name.toString()) ++ traversePackageDefs(p)
-      case PackageDef(s: Select, List(p: PackageDef)) => traversePackageDefs(s) ++ traversePackageDefs(p)
-      case PackageDef(Ident(name), _) => List(name.toString())
-      case PackageDef(s: Select, _) => traversePackageDefs(s)
-      case Select(Ident(identName), name) => List(identName.toString(), name.toString())
-      case Select(qualifiers, name) => traversePackageDefs(qualifiers) ++ List(name.toString())
-      case _ => Nil
+
+      case PackageDef(Ident(name), List(p: PackageDef)) =>
+        List(name.toString()) ++ traversePackageDefs(p)
+
+      case PackageDef(s: Select, List(p: PackageDef)) =>
+        traversePackageDefs(s) ++ traversePackageDefs(p)
+
+      case PackageDef(Ident(name), _) =>
+        List(name.toString())
+
+      case PackageDef(s: Select, _) =>
+        traversePackageDefs(s)
+
+      case Select(Ident(identName), name) =>
+        List(identName.toString(), name.toString())
+
+      case Select(qualifiers, name) =>
+        traversePackageDefs(qualifiers) ++ List(name.toString())
+
+      case _ =>
+        Nil
     }
 
     val packageName = traversePackageDefs(parser.parseFile(path)).foldLeft("")(_ + "." + _)
-    if (packageName.length() > 0) packageName.substring(1) else packageName
+    if (packageName.length() > 0) {
+      packageName.substring(1)
+    } else {
+      packageName
+    }
   }
 }
