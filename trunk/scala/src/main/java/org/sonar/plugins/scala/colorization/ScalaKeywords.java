@@ -34,9 +34,10 @@ public final class ScalaKeywords {
 
   private static final Set<String> KEYWORDS = new HashSet<String>(Arrays.asList(
       "abstract", "assert", "case", "catch", "class", "def", "do", "else", "extends", "false",
-      "final", "finally", "for", "forSome", "if", "import", "lazy", "match", "new", "null",
-      "object", "override", "package", "private", "protected", "return", "sealed", "super",
-      "this", "throw", "trait", "true", "try", "type", "val", "var", "while", "with", "yield"
+      "final", "finally", "for", "forSome", "if", "implicit", "import", "lazy", "match", "new",
+      "null", "object", "override", "package", "private", "protected", "requires", "return",
+      "sealed", "super", "this", "throw", "trait", "true", "try", "type", "val", "var", "while",
+      "with", "yield", "_", ":", "=", "=>", "<-", "<:", "<%", ">:", "#", "@"
     ));
 
   private ScalaKeywords() {
