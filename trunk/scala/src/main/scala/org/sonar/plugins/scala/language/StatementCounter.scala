@@ -19,7 +19,8 @@
  */
 package org.sonar.plugins.scala.language
 
-import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
+import scalariform.lexer.ScalaLexer
+import scalariform.parser._
 
 /**
  * This object is a helper object for counting all statements
@@ -30,91 +31,87 @@ import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
  */
 object StatementCounter {
 
-  import Compiler._
-
-  private lazy val parser = new Parser()
-
-  // TODO improve counting statements
   def countStatements(source: String) = {
 
-    def countStatementTrees(tree: Tree, foundStatements: Int = 0) : Int = tree match {
-
-      // recursive descent until found a syntax tree with countable statements
-      case PackageDef(_, content) =>
-        foundStatements + onList(content, countStatementTrees(_, 0))
-
-      case Template(_, _, content) =>
-        foundStatements + onList(content, countStatementTrees(_, 0))
-
-      case DocDef(_, content) =>
-        countStatementTrees(content, foundStatements)
-
-      case DefDef(_, _, _, _, _, content) =>
-        countStatementTrees(content, foundStatements)
-
-      case ValDef(_, _, _, content) =>
-        countStatementTrees(content, foundStatements)
-
-      case Function(_, body) =>
-        countStatementTrees(body, foundStatements)
-
-      case Block(stats, expr) =>
-        foundStatements + onList(stats, countStatementTrees(_, 0)) + countStatementTrees(expr)
-
-      case ClassDef(_, _, _, content) =>
-        countStatementTrees(content, foundStatements)
-
-      case ModuleDef(_, _, content) =>
-        countStatementTrees(content, foundStatements)
-
-      /*
-       * Countable statements are expressions, if, else, try, finally, throw, match and
-       * while/for loops.
-       */
-
-      case Apply(_, args) =>
-        foundStatements + 1 + onList(args, countStatementTrees(_, 0))
-
-      case Assign(_, rhs) =>
-        countStatementTrees(rhs, foundStatements + 1)
-
-      // TODO try to improve this, subtraction by 2 seems to be an ugly hack imho (felix)
-      case LabelDef(_, _, rhs) =>
-        countStatementTrees(rhs, foundStatements + 1) - 2
-
-      case If(_, thenBlock, elseBlock) => {
-        val statementsInIf = foundStatements + 1 + countStatementTrees(thenBlock)
-        if (isEmptyBlock(elseBlock)) {
-          statementsInIf
-        } else {
-          statementsInIf + 1 + countStatementTrees(elseBlock)
-        }
-      }
-
-      case Match(selector, cases) =>
-        foundStatements + 1 + countStatementTrees(selector) + onList(cases, countStatementTrees(_, 0))
-
-      case CaseDef(pat, guard, body) =>
-        foundStatements + countStatementTrees(pat) + countStatementTrees(guard) + countStatementTrees(body)
-
-      case Try(block, catches, finalizer) => {
-        val statementsInTry = foundStatements + 1 + countStatementTrees(block) +
-            onList(catches, countStatementTrees(_, 0))
-
-        if (!finalizer.isEmpty) {
-          statementsInTry + 1 + countStatementTrees(finalizer)
-        } else {
-          statementsInTry
-        }
-      }
-
-      case Throw(expr) =>
-        countStatementTrees(expr, foundStatements + 1)
-
-      case _ =>
-        foundStatements
+    def countStatementTreesOnList(trees: List[AstNode]) : Int = {
+      trees.map(countStatementTrees(_)).foldLeft(0)(_ + _)
     }
 
-    countStatementTrees(parser.parse(source))
+    def countStatementsOfDefOrDcl(body: AstNode) : Int = {
+      val bodyStatementCount = countStatementTrees(body)
+      if (bodyStatementCount == 0) {
+        1
+      } else {
+        bodyStatementCount
+      }
+    }
+
+    def countStatementTrees(tree: AstNode, foundStatements: Int = 0) : Int = tree match {
+
+      case AnonymousFunction(_, _, body) =>
+        foundStatements + countStatementTreesOnList(body)
+
+      case FunDefOrDcl(_, _, _, _, _, funBodyOption, _) =>
+        funBodyOption match {
+          case Some(funBody) =>
+            foundStatements + countStatementsOfDefOrDcl(funBody)
+          case _ =>
+            foundStatements
+        }
+
+      case PatDefOrDcl(_, _, _, _, equalsClauseOption) =>
+        equalsClauseOption match {
+          case Some(equalsClause) =>
+            foundStatements + countStatementsOfDefOrDcl(equalsClause._2)
+          case _ =>
+            foundStatements
+        }
+
+      case ForExpr(_, _, _, _, _, yieldOption, body) =>
+        val bodyStatementCount = countStatementTrees(body)
+        yieldOption match {
+          case Some(_) =>
+            if (bodyStatementCount == 0) {
+              foundStatements + 2
+            } else {
+              foundStatements + bodyStatementCount + 1
+            }
+
+          case _ =>
+            foundStatements + bodyStatementCount + 1
+        }
+
+      case IfExpr(_, _, newLinesOption, body, elseClauseOption) =>
+        elseClauseOption match {
+          case Some(elseClause) =>
+            foundStatements + 1 + countStatementTrees(body) + countStatementTrees(elseClause)
+          case _ =>
+            foundStatements + 1 + countStatementTrees(body)
+        }
+
+      case ElseClause(_, _, elseBody) =>
+        countStatementTrees(elseBody, foundStatements + 1)
+
+      case CallExpr(exprDotOpt, _, _, newLineOptsAndArgumentExpr, _) =>
+        val bodyStatementCount = countStatementTreesOnList(newLineOptsAndArgumentExpr.map(_._2))
+        if (bodyStatementCount > 1) {
+          foundStatements + 1 + bodyStatementCount
+        } else {
+          foundStatements + 1
+        }
+
+      case InfixExpr(_, _, _, _) | PostfixExpr(_, _) =>
+        foundStatements + 1
+
+      case _ =>
+        foundStatements + countStatementTreesOnList(tree.immediateChildren)
+    }
+
+    countStatementTrees(parse(source))
+  }
+
+  private def parse(source: String) : AstNode = {
+    val tokens = ScalaLexer.tokeniseFull(source, forgiveErrors = true)._2.toArray
+    new ScalaParser(tokens).compilationUnitOrScript
   }
 }
