@@ -29,9 +29,6 @@ import org.sonar.api.Property;
 import org.sonar.plugins.jacoco.itcoverage.*;
 import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
 
-/**
- * @author Evgeny Mandrikov
- */
 @Properties({
     @Property(
         key = JacocoConfiguration.REPORT_PATH_PROPERTY,
@@ -48,7 +45,7 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
         description = "A list of class names that should be included in execution analysis." +
             " The list entries are separated by a colon (:) and may use wildcard characters (* and ?)." +
             " Except for performance optimization or technical corner cases this option is normally not required.",
-        global = false,
+        global = true,
         project = true,
         module = true
     ),
@@ -58,7 +55,7 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
         description = "A list of class names that should be excluded from execution analysis." +
             " The list entries are separated by a colon (:) and may use wildcard characters (* and ?)." +
             " Except for performance optimization or technical corner cases this option is normally not required.",
-        global = false,
+        global = true,
         project = true,
         module = true
     ),
@@ -69,7 +66,7 @@ import org.sonar.plugins.jacoco.itcoverage.viewer.CoverageViewerDefinition;
             " The list entries are separated by a colon (:) and may use wildcard characters (* and ?)." +
             " This option might be required in case of special frameworks that conflict with JaCoCo code" +
             " instrumentation, in particular class loaders that do not have access to the Java runtime classes.",
-        global = false,
+        global = true,
         project = true,
         module = true
     ),
