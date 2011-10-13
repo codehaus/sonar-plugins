@@ -11,6 +11,7 @@
     <module>fr</module>
     <module>es</module>
     <module>el</module>
+    <module>ru</module>
   </modules>
   
   <build>
