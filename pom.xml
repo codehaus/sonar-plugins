@@ -1,123 +1,140 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>10</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>c-rules</module>
-        <module>cutoff</module>
-        <module>dotnet</module>
-        <module>email</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>google-analytics</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>javascript</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>l10n</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>php</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>radiator</module>
-        <module>rules-meter</module>
-        <module>scm-activity</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>sonar-runner</module>
-        <module>switch-off-violations</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>twitter</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>debug</module>
-        <module>devkit</module>
-        <module>drools</module>
-        <module>profiler</module>
-        <module>scala</module>
-        <module>testability-explorer</module>
-        <module>violation-density</module>
-        <module>w3c-markup-validation</module>
-        <module>webscanner</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>cql</module>
-        <module>cxx</module>
-        <module>jlint</module>
-        <module>sonar-replay</module>
-        <module>sonarj</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-      </modules>
-    </profile>
-  </profiles>
+  <groupId>org.codehaus.sonar-plugins</groupId>
+  <artifactId>sonar-sonargraph-plugin</artifactId>
+  <packaging>sonar-plugin</packaging>
+  <version>3.0.1</version>
+  
+  <name>Sonar Sonargraph Plugin</name>
+  <description>Provides architecture governance features accompanied by metrics about cyclic dependencies and other structural aspects.</description>
+  <url>http://docs.codehaus.org/display/SONAR/Sonargraph+Plugin</url>
+  
+  <inceptionYear>2009, 2010, 2011</inceptionYear>
+  <organization>
+    <name>hello2morrow</name>
+    <url>http://www.hello2morrow.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Apache License 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <id>hello2morrow</id>
+      <name>Alexander von Zitzewitz</name>
+    </developer>
+    <developer>
+      <id>nwe_h2m</id>
+      <name>Norman Wenzel</name>
+    </developer>
+  </developers>
+  
+  <issueManagement>
+  	<system>JIRA</system>
+  	<url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14211</url>
+  </issueManagement>
+
+  <properties>
+    <sonar.plugin.class>com.hello2morrow.sonarplugin.SonargraphPlugin</sonar.plugin.class>
+    <sonar.version>2.10</sonar.version>
+    <license.name>AL2</license.name>
+    <license.owner>hello2morrow GmbH</license.owner>
+    <license.mailto>mailto: info AT hello2morrow DOT com</license.mailto>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.15</version>
+     <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>hello2morrow.maven.repository</id>
+      <url>http://maven.hello2morrow.com/repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-sonargraph-plugin-3.0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sonargraph-plugin-3.0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-sonargraph-plugin-3.0.1</url>
+  </scm>
 
   <build>
     <plugins>
-      <!-- See http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
         <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
         <configuration>
-          <skip>true</skip>
+          <pluginKey>Sonargraph</pluginKey>
+          <pluginName>Sonargraph</pluginName>
+          <pluginClass>${sonar.plugin.class}</pluginClass>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <packageName>com.hello2morrow.sonarplugin.xsd</packageName> 
         </configuration>
       </plugin>
     </plugins>
