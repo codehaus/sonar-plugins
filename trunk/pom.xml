@@ -33,7 +33,6 @@
         <module>google-calendar</module>
         <module>greenpepper</module>
         <module>groovy</module>
-        <module>jacoco</module>
         <module>javascript</module>
         <module>jira</module>
         <module>jmeter</module>
