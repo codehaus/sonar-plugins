@@ -76,4 +76,28 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>native2ascii-maven-plugin</artifactId>
+        <version>1.0-alpha-1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>native2ascii</goal>
+            </goals>
+            <!-- specific configurations -->
+            <configuration>
+              <encoding>UTF8</encoding>
+              <src>${basedir}/src/main/resources</src>
+              <dest>${project.build.outputDirectory}</dest>
+              <includes>**/*.properties</includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
