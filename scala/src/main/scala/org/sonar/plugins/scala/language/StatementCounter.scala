@@ -107,11 +107,9 @@ object StatementCounter {
         foundStatements + countStatementTreesOnList(tree.immediateChildren)
     }
 
-    countStatementTrees(parse(source))
-  }
-
-  private def parse(source: String) : AstNode = {
-    val tokens = ScalaLexer.tokeniseFull(source, forgiveErrors = true)._2.toArray
-    new ScalaParser(tokens).compilationUnitOrScript
+    ScalaParser.parse(source) match {
+      case Some(ast) => countStatementTrees(ast)
+      case _ => 0
+    }
   }
 }
