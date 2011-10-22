@@ -49,7 +49,7 @@ object StatementCounter {
     def countStatementTrees(tree: AstNode, foundStatements: Int = 0) : Int = tree match {
 
       case AnonymousFunction(_, _, body) =>
-        foundStatements + countStatementTreesOnList(body)
+        foundStatements + countStatementTrees(body)
 
       case FunDefOrDcl(_, _, _, _, _, funBodyOption, _) =>
         funBodyOption match {
