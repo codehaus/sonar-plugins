@@ -81,7 +81,7 @@ object StatementCounter {
             foundStatements + bodyStatementCount + 1
         }
 
-      case IfExpr(_, _, newLinesOption, body, elseClauseOption) =>
+      case IfExpr(_, _, _, body, elseClauseOption) =>
         elseClauseOption match {
           case Some(elseClause) =>
             foundStatements + 1 + countStatementTrees(body) + countStatementTrees(elseClause)

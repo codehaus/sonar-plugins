@@ -44,27 +44,41 @@ class TypeCounterSpec extends FlatSpec with ShouldMatchers {
   }
 
   it should "count type of a simple class declaration nested in a package" in {
-    TypeCounter.countTypes("package a.b\r\nclass A {}") should be (1)
+    val source = """
+      package a.b
+      class A {}"""
+    TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple class declaration nested in a package with imports" in {
-    TypeCounter.countTypes("package a.b\r\nimport java.util.List\r\nclass A {}") should be (1)
+    val source = """
+      package a.b
+      import java.util.List
+      class A {}"""
+    TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple class declaration nested in a package with import and doc comment" in {
-    val source ="package a.b\r\n" +
-        "import java.util.List\r\n" +
-        "/** Doc comment... */\r\n" +
-    		"class A {}"
+    val source = """
+      package a.b
+      import java.util.List
+      /** Doc comment... */
+      class A {}"""
     TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple object declaration nested in a package" in {
-    TypeCounter.countTypes("package a.b\r\nobject A {}") should be (1)
+    val source = """
+      package a.b
+      object A {}"""
+    TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count types of a simple class declarations" in {
-    TypeCounter.countTypes("class A {}\r\nclass B {}") should be (2)
+    val source = """
+      class A {}
+      class B {}"""
+    TypeCounter.countTypes(source) should be (2)
   }
 
   it should "count type of a simple class declaration nested in a class" in {
@@ -84,38 +98,48 @@ class TypeCounterSpec extends FlatSpec with ShouldMatchers {
   }
 
   it should "count type of a simple class declaration nested in a function" in {
-    val source = "def fooBar(i: Int) = {\r\n" +
-        "class B { val a = 1 }\r\n" +
-        "i + new B().a }"
+    val source = """
+      def fooBar(i: Int) = {
+        class B { val a = 1 }
+        i + new B().a
+      }"""
     TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple class declaration nested in a value definition" in {
-    val source = "val fooBar = {\r\n" +
-        "class B { val a = 1 }\r\n" +
-        "1 + new B().a }"
+    val source = """
+      val fooBar = {
+        class B { val a = 1 }
+        1 + new B().a
+      }"""
     TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple class declaration nested in an assignment" in {
-    val source = "fooBar = {\r\n" +
-        "class B { val a = 1 }\r\n" +
-        "1 + new B().a }"
+    val source = """
+      fooBar = {
+        class B { val a = 1 }
+        1 + new B().a
+      }"""
     TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple class declaration nested in a code block" in {
-    val source = "{\r\n" +
-        "1 + new B().a\r\n" +
-        "class B { val a = 1 } }"
+    val source = """
+      {
+        1 + new B().a
+        class B { val a = 1 }
+      }"""
     TypeCounter.countTypes(source) should be (1)
   }
 
   it should "count type of a simple class declaration nested in a loop" in {
-    val source = "var i = 0\r\n" +
-    		"while (i == 2) {\r\n" +
-        "i = i + new B().a\r\n" +
-        "class B { val a = 1 } }"
+    val source = """
+      var i = 0
+      while (i == 2) {
+        i = i + new B().a
+        class B { val a = 1 }
+      }"""
     TypeCounter.countTypes(source) should be (1)
   }
 }
