@@ -142,4 +142,24 @@ class TypeCounterSpec extends FlatSpec with ShouldMatchers {
       }"""
     TypeCounter.countTypes(source) should be (1)
   }
+
+  it should "count type of a simple class declaration nested in a match statement" in {
+    val source = """
+      var i = 0
+      i match {
+        case 0 => class B { val a = 1 }
+        case _ =>
+      }"""
+    TypeCounter.countTypes(source) should be (1)
+  }
+
+  it should "count type of a simple class declaration nested in a try statement" in {
+    val source = """
+      try {
+        class B { val a = 1 }
+      } catch {
+        case _ =>
+      }"""
+    TypeCounter.countTypes(source) should be (1)
+  }
 }
