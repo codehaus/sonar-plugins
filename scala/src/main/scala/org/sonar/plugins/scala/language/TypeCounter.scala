@@ -34,7 +34,6 @@ object TypeCounter {
 
   private lazy val parser = new Parser()
 
-  // TODO add traversing of match, try, case and other code blocks
   def countTypes(source: String) = {
 
     def countTypeTrees(tree: Tree, foundTypes: Int = 0) : Int = tree match {
@@ -48,6 +47,9 @@ object TypeCounter {
 
       case DocDef(_, content) =>
         countTypeTrees(content, foundTypes)
+
+      case CaseDef(pat, guard, body) =>
+        foundTypes + countTypeTrees(pat) + countTypeTrees(guard) + countTypeTrees(body)
 
       case DefDef(_, _, _, _, _, content) =>
         countTypeTrees(content, foundTypes)
@@ -66,6 +68,12 @@ object TypeCounter {
 
       case Block(stats, expr) =>
         foundTypes + onList(stats, countTypeTrees(_, 0)) + countTypeTrees(expr)
+
+      case Match(selector, cases) =>
+        foundTypes + countTypeTrees(selector) + onList(cases, countTypeTrees(_, 0))
+
+      case Try(block, catches, finalizer) =>
+        foundTypes + countTypeTrees(block) + onList(catches, countTypeTrees(_, 0)) + countTypeTrees(finalizer)
 
       /*
        * Countable type declarations are classes, traits and objects.
