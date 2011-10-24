@@ -1,2 +1,0 @@
-# only 2 fields instead of 3
-*;foo
