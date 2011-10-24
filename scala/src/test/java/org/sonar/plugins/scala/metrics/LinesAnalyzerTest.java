@@ -53,7 +53,38 @@ public class LinesAnalyzerTest {
     assertThat(linesAnalyzer.countLines(), is(0));
   }
 
-  // TODO add tests for lines of code
+  @Test
+  public void shouldCountOneLineOfCode() throws IOException {
+    LinesAnalyzer linesAnalyzer = getLinesAnalyzer("val i = 0");
+    assertThat(linesAnalyzer.countLinesOfCode(), is(1));
+  }
+
+  @Test
+  public void shouldNotCountBlankLinesAsLinesOfCode() throws IOException {
+    LinesAnalyzer linesAnalyzer = getLinesAnalyzer("val i = 0\r\n" +
+        "\r\n" +
+        " \t  \r\n" +
+        "val b = 2");
+    assertThat(linesAnalyzer.countLinesOfCode(), is(2));
+  }
+
+  @Test
+  public void shouldNotCountCommentLinesAsLinesOfCode() throws IOException {
+    LinesAnalyzer linesAnalyzer = getLinesAnalyzer("val i = 0\r\n" +
+        "// this is comment...\r\n" +
+        "// test\r\n" +
+        "val b = 2");
+    assertThat(linesAnalyzer.countLinesOfCode(), is(2));
+  }
+
+  @Test
+  public void shouldNotCountHeaderCommentLinesAsLinesOfCode() throws IOException {
+    LinesAnalyzer linesAnalyzer = getLinesAnalyzer("/**\r\n" +
+        "* this is a header comment...\r\n" +
+        "*/\r\n" +
+        "val b = 2");
+    assertThat(linesAnalyzer.countLinesOfCode(), is(1));
+  }
 
   private LinesAnalyzer getLinesAnalyzer(String source) throws IOException {
     List<String> lines = StringUtils.convertStringToListOfLines(source);

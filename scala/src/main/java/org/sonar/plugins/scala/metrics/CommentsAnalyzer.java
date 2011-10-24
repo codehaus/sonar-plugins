@@ -65,4 +65,12 @@ public class CommentsAnalyzer {
     }
     return commentedOutLinesOfCode;
   }
+
+  public int countBlankCommentLines() {
+    int blankCommentLines = 0;
+    for (Comment comment : comments) {
+      blankCommentLines += comment.getNumberOfBlankLines();
+    }
+    return blankCommentLines;
+  }
 }

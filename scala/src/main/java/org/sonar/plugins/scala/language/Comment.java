@@ -48,7 +48,7 @@ public class Comment {
     return lines.size() - getNumberOfBlankLines() - getNumberOfCommentedOutLinesOfCode();
   }
 
-  private int getNumberOfBlankLines() {
+  public int getNumberOfBlankLines() {
     int numberOfBlankLines = 0;
     for (String comment : lines) {
       boolean isBlank = true;

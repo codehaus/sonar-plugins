@@ -78,6 +78,15 @@ public class CommentTest {
   }
 
   @Test
+  public void shouldCountAllBlankCommentLines() throws IOException {
+    Comment comment = new Comment("/*\r\n"
+    		+ "* this is a multi line comment with some blank lines\r\n"
+        + "* \t \t  \r\n"
+        + "*/", CommentType.NORMAL);
+    assertThat(comment.getNumberOfBlankLines(), is(3));
+  }
+
+  @Test
   public void shouldBeNormalComment() throws IOException {
     Comment comment = new Comment("", CommentType.NORMAL);
     assertThat(comment.isDocComment(), is(false));
