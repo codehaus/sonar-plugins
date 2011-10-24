@@ -46,7 +46,7 @@ public class LinesAnalyzer {
 
   public int countLinesOfCode() {
     return countLines() - countBlankLines() - commentsAnalyzer.countCommentLines()
-        - commentsAnalyzer.countHeaderCommentLines();
+        - commentsAnalyzer.countHeaderCommentLines() - commentsAnalyzer.countBlankCommentLines();
   }
 
   private int countBlankLines() {
