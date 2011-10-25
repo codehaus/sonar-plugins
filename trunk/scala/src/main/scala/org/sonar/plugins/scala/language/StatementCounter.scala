@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.scala.language
 
-import scalariform.lexer.ScalaLexer
 import scalariform.parser._
 
 /**
