@@ -27,7 +27,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class TypeCounterSpec extends FlatSpec with ShouldMatchers {
 
-  "A code statistic" should "count type of a simple class declaration" in {
+  "A type counter" should "count type of a simple class declaration" in {
     TypeCounter.countTypes("class A {}") should be (1)
   }
 

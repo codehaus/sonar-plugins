@@ -27,7 +27,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class FunctionCounterSpec extends FlatSpec with ShouldMatchers {
 
-  "A code statistic" should "count a simple function declaration" in {
+  "A function counter" should "count a simple function declaration" in {
     FunctionCounter.countFunctions("def test = 42") should be (1)
   }
 

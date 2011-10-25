@@ -27,7 +27,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class StatementCounterSpec extends FlatSpec with ShouldMatchers {
 
-  "A code statistic" should "count a simple assignment as a statement" in {
+  "A statement counter" should "count a simple assignment as a statement" in {
     StatementCounter.countStatements("a = 1") should be (1)
   }
 
