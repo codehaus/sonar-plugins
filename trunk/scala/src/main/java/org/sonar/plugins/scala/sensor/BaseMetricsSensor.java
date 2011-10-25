@@ -34,10 +34,12 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.scala.compiler.Lexer;
 import org.sonar.plugins.scala.language.Comment;
+import org.sonar.plugins.scala.language.FunctionCounter;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaFile;
 import org.sonar.plugins.scala.language.ScalaPackage;
-import org.sonar.plugins.scala.metrics.CodeAnalyzer;
+import org.sonar.plugins.scala.language.StatementCounter;
+import org.sonar.plugins.scala.language.TypeCounter;
 import org.sonar.plugins.scala.metrics.CommentsAnalyzer;
 import org.sonar.plugins.scala.metrics.LinesAnalyzer;
 import org.sonar.plugins.scala.util.StringUtils;
@@ -100,10 +102,9 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
   }
 
   private void addCodeMetrics(SensorContext sensorContext, ScalaFile scalaFile, String source) {
-    CodeAnalyzer codeAnalyzer = new CodeAnalyzer(source);
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES, (double) codeAnalyzer.countTypes());
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS, (double) codeAnalyzer.countStatements());
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.FUNCTIONS, (double) codeAnalyzer.countFunctions());
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES, (double) TypeCounter.countTypes(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS, (double) StatementCounter.countStatements(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.FUNCTIONS, (double) FunctionCounter.countFunctions(source));
   }
 
   private void computePackagesMetric(SensorContext sensorContext, Set<ScalaPackage> packages) {
