@@ -27,15 +27,15 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
 
-  "A complexity calculator" should "count complexity of if expression" in {
+  "A complexity calculator" should "calculate complexity of if expression" in {
     ComplexityCalculator.measureComplexity("if (2 == 3) println(123)") should be (1)
   }
 
-  it should "count complexity of for loop" in {
+  it should "calculate complexity of for loop" in {
     ComplexityCalculator.measureComplexity("for (i <- 1 to 10) println(i)") should be (1)
   }
 
-  it should "count complexity of while loop" in {
+  it should "calculate complexity of while loop" in {
     val source = """var i = 0
       while (i < 10) {
         println(i)
@@ -44,12 +44,27 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
     ComplexityCalculator.measureComplexity(source) should be (1)
   }
 
-  it should "count complexity of do loop" in {
+  it should "calculate complexity of do loop" in {
     val source = """var i = 0
       do {
         println(i)
         i += 1
       } while  (i < 10)"""
     ComplexityCalculator.measureComplexity(source) should be (1)
+  }
+
+  it should "calculate complexity of throw expression" in {
+    ComplexityCalculator.measureComplexity("throw new RuntimeException()") should be (1)
+  }
+
+  it should "calculate complexity of while loop with an if condition and throw expression" in {
+    val source = """var i = 0
+      while (i < 10) {
+        println(i)
+        i += 1
+        if (i == 9)
+          throw new RuntimeException()
+      }"""
+    ComplexityCalculator.measureComplexity(source) should be (3)
   }
 }
