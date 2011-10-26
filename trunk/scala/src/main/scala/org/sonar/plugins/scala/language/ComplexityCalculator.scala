@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.scala.language
 
+import scalariform.lexer.Tokens._
 import scalariform.parser._
 
 /**
@@ -43,6 +44,10 @@ object ComplexityCalculator {
             | IfExpr(_, _, _, _, _)
             | WhileExpr(_, _, _, _) =>
           complexity += 1
+
+        case expr: Expr =>
+          if (expr.tokens.head.tokenType == THROW)
+            complexity += 1
 
         case _ =>
       }
