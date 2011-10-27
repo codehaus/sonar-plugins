@@ -34,6 +34,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.scala.compiler.Lexer;
 import org.sonar.plugins.scala.language.Comment;
+import org.sonar.plugins.scala.language.ComplexityCalculator;
 import org.sonar.plugins.scala.language.FunctionCounter;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaFile;
@@ -105,6 +106,7 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
     sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES, (double) TypeCounter.countTypes(source));
     sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS, (double) StatementCounter.countStatements(source));
     sensorContext.saveMeasure(scalaFile, CoreMetrics.FUNCTIONS, (double) FunctionCounter.countFunctions(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.COMPLEXITY, (double) ComplexityCalculator.measureComplexity(source));
   }
 
   private void computePackagesMetric(SensorContext sensorContext, Set<ScalaPackage> packages) {
