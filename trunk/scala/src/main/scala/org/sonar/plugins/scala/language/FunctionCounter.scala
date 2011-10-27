@@ -120,8 +120,11 @@ object FunctionCounter {
       case Throw(expr) =>
         countFunctionTrees(expr, foundFunctions)
 
+      case Function(_, body) =>
+        countFunctionTrees(body, foundFunctions)
+
       /*
-       * Countable function declarations are functions, methods and closures.
+       * Countable function declarations are functions and methods.
        */
 
       case defDef: DefDef =>
@@ -130,9 +133,6 @@ object FunctionCounter {
         } else {
           countFunctionTrees(defDef.rhs, foundFunctions + 1)
         }
-
-      case Function(_, body) =>
-        countFunctionTrees(body, foundFunctions + 1)
 
       case _ =>
         foundFunctions
