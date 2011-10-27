@@ -35,8 +35,8 @@ class FunctionCounterSpec extends FlatSpec with ShouldMatchers {
     FunctionCounter.countFunctions("def test { println(42) }") should be (1)
   }
 
-  it should "count a simple function declared as a function literal" in {
-    FunctionCounter.countFunctions("(i: Int) => i + 1") should be (1)
+  it should "not count a simple function declared as a function literal" in {
+    FunctionCounter.countFunctions("(i: Int) => i + 1") should be (0)
   }
 
   it should "count a simple function declaration nested in another function" in {
