@@ -41,13 +41,15 @@ object ComplexityCalculator {
         case CaseClause(_, _)
             | DoExpr(_, _, _, _, _)
             | ForExpr(_, _, _, _, _, _, _)
+            | FunDefOrDcl(_, _, _, _, _, _, _)
             | IfExpr(_, _, _, _, _)
             | WhileExpr(_, _, _, _) =>
           complexity += 1
 
         case expr: Expr =>
-          if (expr.tokens.head.tokenType == THROW)
+          if (expr.tokens.head.tokenType == THROW) {
             complexity += 1
+          }
 
         case _ =>
       }
