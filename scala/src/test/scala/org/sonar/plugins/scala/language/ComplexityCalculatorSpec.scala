@@ -67,4 +67,34 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
       }"""
     ComplexityCalculator.measureComplexity(source) should be (3)
   }
+
+  it should "calculate complexity of function definition" in {
+    ComplexityCalculator.measureComplexity("def inc(i: Int) = i + 1") should be (1)
+  }
+
+  it should "calculate complexity of function definition with an if condition" in {
+    val source = """def inc(i: Int) = {
+        if (i == 0) {
+          i + 2
+        } else {
+          i + 1
+        }
+      }"""
+    ComplexityCalculator.measureComplexity(source) should be (2)
+  }
+
+  it should "calculate complexity of function definition and its whole body" in {
+    val source = """def inc(i: Int) = {
+        if (i == 0) {
+          i + 2
+        } else {
+          while (i < 10) {
+            if (i == 9)
+              throw new RuntimeException()
+            i + 1
+          }
+        }
+      }"""
+    ComplexityCalculator.measureComplexity(source) should be (5)
+  }
 }
