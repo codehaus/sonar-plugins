@@ -43,6 +43,7 @@ import org.sonar.plugins.scala.language.StatementCounter;
 import org.sonar.plugins.scala.language.TypeCounter;
 import org.sonar.plugins.scala.metrics.CommentsAnalyzer;
 import org.sonar.plugins.scala.metrics.LinesAnalyzer;
+import org.sonar.plugins.scala.util.MetricDistribution;
 import org.sonar.plugins.scala.util.StringUtils;
 
 /**
@@ -65,6 +66,9 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
     String charset = fileSystem.getSourceCharset().toString();
     Set<ScalaPackage> packages = new HashSet<ScalaPackage>();
 
+    MetricDistribution complexityOfClasses = new MetricDistribution(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION);
+    MetricDistribution complexityOfFunctions = new MetricDistribution(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
+
     for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
       ScalaFile scalaFile = ScalaFile.fromInputFile(inputFile);
       packages.add(scalaFile.getParent());
@@ -81,10 +85,18 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         addLineMetrics(sensorContext, scalaFile, linesAnalyzer);
         addCommentMetrics(sensorContext, scalaFile, commentsAnalyzer);
         addCodeMetrics(sensorContext, scalaFile, source);
+
+        complexityOfClasses.add(ComplexityCalculator.measureComplexityOfClasses(source));
+        complexityOfFunctions.add(ComplexityCalculator.measureComplexityOfFunctions(source));
+
       } catch (IOException ioe) {
         LOGGER.error("Could not read the file: " + inputFile.getFile().getAbsolutePath(), ioe);
       }
     }
+
+    // TODO convert MetricDistribution to RangeDistributionBuilder
+    sensorContext.saveMeasure(complexityOfClasses.getMeasure());
+    sensorContext.saveMeasure(complexityOfFunctions.getMeasure());
 
     computePackagesMetric(sensorContext, packages);
   }
