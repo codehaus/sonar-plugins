@@ -31,7 +31,6 @@ public class LogoFooter implements Footer {
   private final Logger logger = LoggerFactory.getLogger(LogoFooter.class);
 
   private final Configuration configuration;
-  private String html;
 
   public LogoFooter(Configuration configuration) {
     this.configuration = configuration;
@@ -40,7 +39,7 @@ public class LogoFooter implements Footer {
   private String getImageUrl() {
     return configuration.getString(BrandingPlugin.IMAGE_PROPERTY, "");
   }
-  
+
   private LogoLocation getLogoLocation() {
     String locationStr = configuration.getString(BrandingPlugin.LOGO_LOCATION_PROPERTY, "TOP");
     LogoLocation location;
@@ -48,16 +47,15 @@ public class LogoFooter implements Footer {
       location = LogoLocation.valueOf(locationStr);
     } catch (IllegalArgumentException e) {
       logger.warn("Invalid value for property " + BrandingPlugin.LOGO_LOCATION_PROPERTY + ". Using TOP as default.");
-      location = LogoLocation.TOP;  
+      location = LogoLocation.TOP;
     }
     return location;
   }
 
-  private void createHtml() {
-    html = "";
+  public String getHtml() {
     String imageUrl = getImageUrl();
     if (StringUtils.isEmpty(imageUrl)) {
-      return;
+      return "";
     }
 
     StringBuffer sb = new StringBuffer();
@@ -84,14 +82,7 @@ public class LogoFooter implements Footer {
     }
     sb.append("    });\n");
     sb.append("</script>\n");
-    html = sb.toString();
-  }
-
-  public String getHtml() {
-    if (html == null) {
-      createHtml();
-    }
-    return html;
+    return sb.toString();
   }
 
 }

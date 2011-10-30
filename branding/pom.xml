@@ -12,8 +12,7 @@
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Branding Plugin</name>
-  <description>Allows to add your own logo to the Sonar UI. 
- The Sonar server must be restarted to take any configuration change into account.</description>
+  <description>Allows to add your own logo to the Sonar UI.</description>
   <url>http://docs.codehaus.org/display/SONAR/Branding+Plugin</url>
   <inceptionYear>2011</inceptionYear>
   <organization>
