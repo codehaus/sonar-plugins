@@ -26,13 +26,13 @@ import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
-@Properties({ 
+@Properties({
     @Property(key = BrandingPlugin.IMAGE_PROPERTY,
     name = "Image URL",
     description = "Example : http://www.codehaus.org/codehaus-small.gif"),
-    @Property(key = BrandingPlugin.LOGO_LOCATION_PROPERTY,
-            name = "Logo location in Sonar UI",
-            description = "Possible values: TOP, MENU", defaultValue="TOP")})
+@Property(key = BrandingPlugin.LOGO_LOCATION_PROPERTY,
+    name = "Logo location in Sonar UI",
+    description = "Possible values: TOP, MENU", defaultValue="TOP")})
 public class BrandingPlugin extends SonarPlugin {
 
   public static final String IMAGE_PROPERTY = "sonar.branding.image";
