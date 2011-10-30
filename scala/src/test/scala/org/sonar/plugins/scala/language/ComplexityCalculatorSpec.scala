@@ -97,4 +97,109 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
       }"""
     ComplexityCalculator.measureComplexity(source) should be (5)
   }
+
+  it should "calculate complexity distribution of one function" in {
+    val source = """def inc(i: Int) = {
+        if (i == 0) {
+          i + 2
+        } else {
+          i + 1
+        }
+      }"""
+
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("2=1")
+  }
+
+  it should "calculate complexity distribution of two functions" in {
+    val source = """def inc(i: Int) = {
+        if (i == 0) {
+          i + 2
+        } else {
+          i + 1
+        }
+      }
+
+      def dec(i: Int) = i - 1"""
+
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("1=1;2=1")
+  }
+
+  it should "calculate complexity distribution of all functions" in {
+    val source = """def inc(i: Int) = {
+        if (i == 0) {
+          i + 2
+        } else {
+          i + 1
+        }
+      }
+
+      def dec(i: Int) = i - 1
+      def dec2(i: Int) = i - 2
+      def dec3(i: Int) = i - 3"""
+
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("1=3;2=1")
+  }
+
+  it should "calculate complexity distribution of all functions nested in a class" in {
+    val source = """class A {
+        def inc(i: Int) = {
+          if (i == 0) {
+            i + 2
+          } else {
+            i + 1
+          }
+        }
+
+        def dec(i: Int) = i - 1
+        def dec2(i: Int) = i - 2
+        def dec3(i: Int) = i - 3
+      }"""
+
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("1=3;2=1")
+  }
+
+  it should "calculate complexity distribution of one class" in {
+    val source = """class A {
+        def inc(i: Int) = {
+          if (i == 0) {
+            i + 2
+          } else {
+            i + 1
+          }
+        }
+      }"""
+
+    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should be ("2=1")
+  }
+
+  it should "calculate complexity distribution of two classes" in {
+    val source = """package abc
+      class A {
+        def inc(i: Int) = {
+          if (i == 0) {
+            i + 2
+          } else {
+            i + 1
+          }
+        }
+
+        def dec(i: Int) = i - 1
+      }
+
+      class B {
+        def inc(i: Int) = {
+          if (i == 0) {
+            i + 2
+          } else {
+            i + 1
+          }
+        }
+
+        def dec(i: Int) = i - 1
+        def dec2(i: Int) = i - 2
+        def dec3(i: Int) = i - 3
+      }"""
+
+    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should be ("3=1;5=1")
+  }
 }

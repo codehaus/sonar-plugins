@@ -19,6 +19,11 @@
  */
 package org.sonar.plugins.scala.language
 
+import collection.mutable.{ ListBuffer, HashMap }
+
+import org.sonar.api.measures.{ CoreMetrics, Measure, Metric }
+import org.sonar.plugins.scala.util.MetricDistribution
+
 import scalariform.lexer.Tokens._
 import scalariform.parser._
 
@@ -31,10 +36,37 @@ import scalariform.parser._
  */
 object ComplexityCalculator {
 
-  def measureComplexity(source: String) : Int = {
+  def measureComplexity(source: String) : Int = ScalaParser.parse(source) match {
+    case Some(ast) => measureComplexity(ast)
+    case _ => 0
+  }
 
+  def measureComplexityOfClasses(source: String) : MetricDistribution = {
+    measureComplexityDistribution(source, CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION, classOf[TmplDef]);
+  }
+
+  def measureComplexityOfFunctions(source: String) : MetricDistribution = {
+    measureComplexityDistribution(source, CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, classOf[FunDefOrDcl]);
+  }
+
+  private def measureComplexityDistribution(source: String, metric: Metric, typeOfTree: Class[_ <: AstNode]) : MetricDistribution = {
+
+    def allTreesIn(source: String) : Seq[AstNode] = ScalaParser.parse(source) match {
+      case Some(ast) => collectTrees(ast, typeOfTree)
+      case _ => Nil
+    }
+
+    val distribution = MetricDistribution(metric)
+    allTreesIn(source).foreach(ast => distribution.add(measureComplexity(ast)))
+    distribution
+  }
+
+  private def measureComplexity(ast: AstNode) : Int = {
     var complexity = 0
 
+    // TODO measure complexity of return statements
+    // TODO howto handle nested classes and functions? should
+    //      surrounding function complexity consist of inner function and its own or only it own one?
     def measureComplexityOfTree(tree: AstNode) {
       tree match {
 
@@ -57,11 +89,21 @@ object ComplexityCalculator {
       tree.immediateChildren.foreach(measureComplexityOfTree)
     }
 
-    ScalaParser.parse(source) match {
-      case Some(ast) => measureComplexityOfTree(ast)
-      case _ =>
+    measureComplexityOfTree(ast)
+    complexity
+  }
+
+  private def collectTrees(ast: AstNode, typeOfTree: Class[_ <: AstNode]) : Seq[AstNode] = {
+    val nodes = ListBuffer[AstNode]()
+
+    def collectTreesOfSpecificType(tree: AstNode) {
+      if (tree.getClass == typeOfTree) {
+        nodes += tree
+      }
+      tree.immediateChildren.foreach(collectTreesOfSpecificType)
     }
 
-    complexity
+    collectTreesOfSpecificType(ast)
+    nodes
   }
 }
