@@ -40,6 +40,10 @@ public class LogoFooter implements Footer {
     return configuration.getString(BrandingPlugin.IMAGE_PROPERTY, "");
   }
 
+  private String getLinkUrl() {
+    return configuration.getString(BrandingPlugin.LINK_PROPERTY, "");
+  }
+
   private LogoLocation getLogoLocation() {
     String locationStr = configuration.getString(BrandingPlugin.LOGO_LOCATION_PROPERTY, "TOP");
     LogoLocation location;
@@ -66,6 +70,14 @@ public class LogoFooter implements Footer {
     sb.append("        companyLogo.setAttribute('src', '").append(imageUrl).append("');\n");
     sb.append("        companyLogo.setAttribute('alt', 'Company Logo');\n");
     sb.append("        companyLogo.setAttribute('title', 'Company');\n");
+
+    String linkUrl = getLinkUrl();
+    if (!StringUtils.isEmpty(linkUrl)) {
+      sb.append("        var companyUrl = document.createElement('a');\n");
+      sb.append("        companyUrl.setAttribute('href', '").append(linkUrl).append("');\n");
+      sb.append("        companyUrl.appendChild(companyLogo);\n");
+      sb.append("        companyLogo = companyUrl;\n");
+    }
 
     switch (getLogoLocation()) {
       case TOP :

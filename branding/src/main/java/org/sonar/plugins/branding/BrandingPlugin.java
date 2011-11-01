@@ -27,15 +27,19 @@ import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 
 @Properties({
-    @Property(key = BrandingPlugin.IMAGE_PROPERTY,
+  @Property(key = BrandingPlugin.IMAGE_PROPERTY,
     name = "Image URL",
-    description = "Example : http://www.codehaus.org/codehaus-small.gif"),
-@Property(key = BrandingPlugin.LOGO_LOCATION_PROPERTY,
+    description = "Example : http://codehaus.org/codehaus-small.gif"),
+  @Property(key = BrandingPlugin.LINK_PROPERTY,
+    name = "Link URL",
+    description = "Example : http://codehaus.org/"),
+  @Property(key = BrandingPlugin.LOGO_LOCATION_PROPERTY,
     name = "Logo location in Sonar UI",
-    description = "Possible values: TOP, MENU", defaultValue="TOP")})
+    description = "Possible values: TOP, MENU", defaultValue = "TOP") })
 public class BrandingPlugin extends SonarPlugin {
 
   public static final String IMAGE_PROPERTY = "sonar.branding.image";
+  public static final String LINK_PROPERTY = "sonar.branding.link";
   public static final String LOGO_LOCATION_PROPERTY = "sonar.branding.logo.location";
 
   public List getExtensions() {
