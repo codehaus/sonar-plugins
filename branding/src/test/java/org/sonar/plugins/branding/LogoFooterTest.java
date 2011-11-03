@@ -48,8 +48,9 @@ public class LogoFooterTest {
   @Test
   public void shouldCreateFooterDefaultLocation() {
     conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://example.org/logo.png");
-    assertThat(footer.getHtml(), containsString("div[id=\"error\"]"));
-    assertThat(footer.getHtml(), containsString("http://example.org/logo.png"));
+    String html = footer.getHtml();
+    assertThat(html, containsString("div[id=\"error\"]"));
+    assertThat(html, containsString("http://example.org/logo.png"));
   }
 
   @Test
@@ -72,4 +73,14 @@ public class LogoFooterTest {
     conf.setProperty(BrandingPlugin.LOGO_LOCATION_PROPERTY, "foo");
     assertThat(footer.getHtml(), containsString("div[id=\"error\"]"));
   }
+
+  @Test
+  public void shouldCreateCompanyLogoWithLink() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://images.example.org/logo.png");
+    conf.setProperty(BrandingPlugin.LINK_PROPERTY, "http://example.org/");
+    String html = footer.getHtml();
+    assertThat(html, containsString("companyUrl"));
+    assertThat(html, containsString("http://example.org/"));
+  }
+
 }
