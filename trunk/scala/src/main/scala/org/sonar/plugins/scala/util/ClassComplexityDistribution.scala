@@ -19,24 +19,16 @@
  */
 package org.sonar.plugins.scala.util
 
-import collection.immutable.TreeMap
+import org.sonar.api.measures.CoreMetrics
 
-import org.sonar.api.measures.Metric
+class ClassComplexityDistribution extends MetricDistribution(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION) with MeasureProducer {
 
-class MetricDistribution(val metric: Metric) {
-
-  var distribution = TreeMap[Double, Int]()
-
-  def add(value: Double) {
-    add(value, 1)
+  override def getMeasure() = {
+    convertMapToRangeDistribution(distribution, ClassComplexityDistribution.ranges, metric)
   }
+}
 
-  def add(value: Double, count: Int) {
-    val oldValue = distribution.getOrElse(value, 0)
-    distribution = distribution.updated(value, oldValue + count)
-  }
+object ClassComplexityDistribution {
 
-  def add(metricDistribution: MetricDistribution) {
-    metricDistribution.distribution.foreach(entry => add(entry._1, entry._2))
-  }
+  private lazy val ranges = Array[Number](0, 5, 10, 20, 30, 60, 90)
 }

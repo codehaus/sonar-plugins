@@ -43,7 +43,8 @@ import org.sonar.plugins.scala.language.StatementCounter;
 import org.sonar.plugins.scala.language.TypeCounter;
 import org.sonar.plugins.scala.metrics.CommentsAnalyzer;
 import org.sonar.plugins.scala.metrics.LinesAnalyzer;
-import org.sonar.plugins.scala.util.MetricDistribution;
+import org.sonar.plugins.scala.util.ClassComplexityDistribution;
+import org.sonar.plugins.scala.util.FunctionComplexityDistribution;
 import org.sonar.plugins.scala.util.StringUtils;
 
 /**
@@ -66,8 +67,8 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
     String charset = fileSystem.getSourceCharset().toString();
     Set<ScalaPackage> packages = new HashSet<ScalaPackage>();
 
-    MetricDistribution complexityOfClasses = new MetricDistribution(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION);
-    MetricDistribution complexityOfFunctions = new MetricDistribution(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION);
+    ClassComplexityDistribution complexityOfClasses = new ClassComplexityDistribution();
+    FunctionComplexityDistribution complexityOfFunctions = new FunctionComplexityDistribution();
 
     for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
       ScalaFile scalaFile = ScalaFile.fromInputFile(inputFile);
@@ -94,7 +95,6 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
       }
     }
 
-    // TODO convert MetricDistribution to RangeDistributionBuilder
     sensorContext.saveMeasure(complexityOfClasses.getMeasure());
     sensorContext.saveMeasure(complexityOfFunctions.getMeasure());
 

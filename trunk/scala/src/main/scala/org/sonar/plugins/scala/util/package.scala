@@ -17,26 +17,16 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.scala.util
+package org.sonar.plugins.scala
 
-import collection.immutable.TreeMap
+import org.sonar.api.measures.{ Measure, Metric, RangeDistributionBuilder }
 
-import org.sonar.api.measures.Metric
+package object util {
 
-class MetricDistribution(val metric: Metric) {
-
-  var distribution = TreeMap[Double, Int]()
-
-  def add(value: Double) {
-    add(value, 1)
-  }
-
-  def add(value: Double, count: Int) {
-    val oldValue = distribution.getOrElse(value, 0)
-    distribution = distribution.updated(value, oldValue + count)
-  }
-
-  def add(metricDistribution: MetricDistribution) {
-    metricDistribution.distribution.foreach(entry => add(entry._1, entry._2))
+  def convertMapToRangeDistribution(distribution: Map[Double, Int], ranges: Array[Number],
+      metric: Metric) : Measure = {
+    val rangeDistribution = new RangeDistributionBuilder(metric, ranges)
+    distribution.foreach(entry => rangeDistribution.add(entry._1, entry._2))
+    rangeDistribution.build
   }
 }

@@ -107,7 +107,7 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
         }
       }"""
 
-    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("2=1")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("2=1")
   }
 
   it should "calculate complexity distribution of two functions" in {
@@ -121,7 +121,8 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
 
       def dec(i: Int) = i - 1"""
 
-    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("1=1;2=1")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("1=1")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("2=1")
   }
 
   it should "calculate complexity distribution of all functions" in {
@@ -137,7 +138,8 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
       def dec2(i: Int) = i - 2
       def dec3(i: Int) = i - 3"""
 
-    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("1=3;2=1")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("1=3")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("2=1")
   }
 
   it should "calculate complexity distribution of all functions nested in a class" in {
@@ -155,7 +157,8 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
         def dec3(i: Int) = i - 3
       }"""
 
-    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should be ("1=3;2=1")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("1=3")
+    ComplexityCalculator.measureComplexityOfFunctions(source).getMeasure.getData should include ("2=1")
   }
 
   it should "calculate complexity distribution of one class" in {
@@ -169,7 +172,7 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
         }
       }"""
 
-    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should be ("2=1")
+    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should include ("0=1")
   }
 
   it should "calculate complexity distribution of two classes" in {
@@ -200,6 +203,7 @@ class ComplexityCalculatorSpec extends FlatSpec with ShouldMatchers {
         def dec3(i: Int) = i - 3
       }"""
 
-    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should be ("3=1;5=1")
+    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should include ("0=1")
+    ComplexityCalculator.measureComplexityOfClasses(source).getMeasure.getData should include ("5=1")
   }
 }
