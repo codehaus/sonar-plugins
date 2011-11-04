@@ -22,7 +22,7 @@ package org.sonar.plugins.scala.language
 import collection.mutable.{ ListBuffer, HashMap }
 
 import org.sonar.api.measures.{ CoreMetrics, Measure, Metric }
-import org.sonar.plugins.scala.util.MetricDistribution
+import org.sonar.plugins.scala.util.{ ClassComplexityDistribution, FunctionComplexityDistribution, MetricDistribution }
 
 import scalariform.lexer.Tokens._
 import scalariform.parser._
@@ -41,24 +41,27 @@ object ComplexityCalculator {
     case _ => 0
   }
 
-  def measureComplexityOfClasses(source: String) : MetricDistribution = {
-    measureComplexityDistribution(source, CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION, classOf[TmplDef]);
+  def measureComplexityOfClasses(source: String) : ClassComplexityDistribution = {
+    val distribution = new ClassComplexityDistribution()
+    measureComplexityDistribution(source, distribution, classOf[TmplDef])
+    distribution
   }
 
-  def measureComplexityOfFunctions(source: String) : MetricDistribution = {
-    measureComplexityDistribution(source, CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION, classOf[FunDefOrDcl]);
+  def measureComplexityOfFunctions(source: String) : FunctionComplexityDistribution = {
+    val distribution = new FunctionComplexityDistribution()
+    measureComplexityDistribution(source, distribution, classOf[FunDefOrDcl])
+    distribution
   }
 
-  private def measureComplexityDistribution(source: String, metric: Metric, typeOfTree: Class[_ <: AstNode]) : MetricDistribution = {
+  private def measureComplexityDistribution(source: String, distribution: MetricDistribution,
+      typeOfTree: Class[_ <: AstNode]) {
 
     def allTreesIn(source: String) : Seq[AstNode] = ScalaParser.parse(source) match {
       case Some(ast) => collectTrees(ast, typeOfTree)
       case _ => Nil
     }
 
-    val distribution = MetricDistribution(metric)
     allTreesIn(source).foreach(ast => distribution.add(measureComplexity(ast)))
-    distribution
   }
 
   private def measureComplexity(ast: AstNode) : Int = {

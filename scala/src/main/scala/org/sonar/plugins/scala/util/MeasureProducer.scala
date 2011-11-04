@@ -19,24 +19,9 @@
  */
 package org.sonar.plugins.scala.util
 
-import collection.immutable.TreeMap
+import org.sonar.api.measures.Measure
 
-import org.sonar.api.measures.Metric
+trait MeasureProducer {
 
-class MetricDistribution(val metric: Metric) {
-
-  var distribution = TreeMap[Double, Int]()
-
-  def add(value: Double) {
-    add(value, 1)
-  }
-
-  def add(value: Double, count: Int) {
-    val oldValue = distribution.getOrElse(value, 0)
-    distribution = distribution.updated(value, oldValue + count)
-  }
-
-  def add(metricDistribution: MetricDistribution) {
-    metricDistribution.distribution.foreach(entry => add(entry._1, entry._2))
-  }
+  def getMeasure() : Measure
 }
