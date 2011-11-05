@@ -21,9 +21,9 @@ package org.sonar.plugins.scala.util
 
 import collection.immutable.TreeMap
 
-import org.sonar.api.measures.Metric
+import org.sonar.api.measures.{ Metric, RangeDistributionBuilder }
 
-class MetricDistribution(val metric: Metric) {
+class MetricDistribution(metric: Metric, ranges: Array[Number]) {
 
   var distribution = TreeMap[Double, Int]()
 
@@ -38,5 +38,11 @@ class MetricDistribution(val metric: Metric) {
 
   def add(metricDistribution: MetricDistribution) {
     metricDistribution.distribution.foreach(entry => add(entry._1, entry._2))
+  }
+
+  def getMeasure() = {
+    val rangeDistribution = new RangeDistributionBuilder(metric, ranges)
+    distribution.foreach(entry => rangeDistribution.add(entry._1, entry._2))
+    rangeDistribution.build
   }
 }
