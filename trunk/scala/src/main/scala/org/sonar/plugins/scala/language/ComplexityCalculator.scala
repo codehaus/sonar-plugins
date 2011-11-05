@@ -22,7 +22,7 @@ package org.sonar.plugins.scala.language
 import collection.mutable.{ ListBuffer, HashMap }
 
 import org.sonar.api.measures.{ CoreMetrics, Measure, Metric }
-import org.sonar.plugins.scala.util.{ ClassComplexityDistribution, FunctionComplexityDistribution, MetricDistribution }
+import org.sonar.plugins.scala.util.MetricDistribution
 
 import scalariform.lexer.Tokens._
 import scalariform.parser._
@@ -36,32 +36,35 @@ import scalariform.parser._
  */
 object ComplexityCalculator {
 
+  private lazy val classComplexityRanges = Array[Number](0, 5, 10, 20, 30, 60, 90)
+  private lazy val functionComplexityRanges = Array[Number](1, 2, 4, 6, 8, 10, 12)
+
   def measureComplexity(source: String) : Int = ScalaParser.parse(source) match {
     case Some(ast) => measureComplexity(ast)
     case _ => 0
   }
 
-  def measureComplexityOfClasses(source: String) : ClassComplexityDistribution = {
-    val distribution = new ClassComplexityDistribution()
-    measureComplexityDistribution(source, distribution, classOf[TmplDef])
-    distribution
+  def measureComplexityOfClasses(source: String) : MetricDistribution = {
+    measureComplexityDistribution(source, CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION,
+        classComplexityRanges, classOf[TmplDef])
   }
 
-  def measureComplexityOfFunctions(source: String) : FunctionComplexityDistribution = {
-    val distribution = new FunctionComplexityDistribution()
-    measureComplexityDistribution(source, distribution, classOf[FunDefOrDcl])
-    distribution
+  def measureComplexityOfFunctions(source: String) : MetricDistribution = {
+    measureComplexityDistribution(source, CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
+        functionComplexityRanges, classOf[FunDefOrDcl])
   }
 
-  private def measureComplexityDistribution(source: String, distribution: MetricDistribution,
-      typeOfTree: Class[_ <: AstNode]) {
+  private def measureComplexityDistribution(source: String, metric: Metric, ranges: Array[Number],
+      typeOfTree: Class[_ <: AstNode]) = {
 
     def allTreesIn(source: String) : Seq[AstNode] = ScalaParser.parse(source) match {
       case Some(ast) => collectTrees(ast, typeOfTree)
       case _ => Nil
     }
 
+    val distribution = new MetricDistribution(metric, ranges)
     allTreesIn(source).foreach(ast => distribution.add(measureComplexity(ast)))
+    distribution
   }
 
   private def measureComplexity(ast: AstNode) : Int = {

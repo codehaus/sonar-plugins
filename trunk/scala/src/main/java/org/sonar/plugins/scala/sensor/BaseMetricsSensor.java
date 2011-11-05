@@ -43,8 +43,7 @@ import org.sonar.plugins.scala.language.StatementCounter;
 import org.sonar.plugins.scala.language.TypeCounter;
 import org.sonar.plugins.scala.metrics.CommentsAnalyzer;
 import org.sonar.plugins.scala.metrics.LinesAnalyzer;
-import org.sonar.plugins.scala.util.ClassComplexityDistribution;
-import org.sonar.plugins.scala.util.FunctionComplexityDistribution;
+import org.sonar.plugins.scala.util.MetricDistribution;
 import org.sonar.plugins.scala.util.StringUtils;
 
 /**
@@ -67,8 +66,8 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
     String charset = fileSystem.getSourceCharset().toString();
     Set<ScalaPackage> packages = new HashSet<ScalaPackage>();
 
-    ClassComplexityDistribution complexityOfClasses = new ClassComplexityDistribution();
-    FunctionComplexityDistribution complexityOfFunctions = new FunctionComplexityDistribution();
+    MetricDistribution complexityOfClasses = null;
+    MetricDistribution complexityOfFunctions = null;
 
     for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
       ScalaFile scalaFile = ScalaFile.fromInputFile(inputFile);
@@ -87,8 +86,11 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         addCommentMetrics(sensorContext, scalaFile, commentsAnalyzer);
         addCodeMetrics(sensorContext, scalaFile, source);
 
-        complexityOfClasses.add(ComplexityCalculator.measureComplexityOfClasses(source));
-        complexityOfFunctions.add(ComplexityCalculator.measureComplexityOfFunctions(source));
+        complexityOfClasses = generateNewMetricDistribution(complexityOfClasses,
+            ComplexityCalculator.measureComplexityOfClasses(source));
+
+        complexityOfFunctions = generateNewMetricDistribution(complexityOfFunctions,
+            ComplexityCalculator.measureComplexityOfFunctions(source));
 
       } catch (IOException ioe) {
         LOGGER.error("Could not read the file: " + inputFile.getFile().getAbsolutePath(), ioe);
@@ -119,6 +121,16 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
     sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS, (double) StatementCounter.countStatements(source));
     sensorContext.saveMeasure(scalaFile, CoreMetrics.FUNCTIONS, (double) FunctionCounter.countFunctions(source));
     sensorContext.saveMeasure(scalaFile, CoreMetrics.COMPLEXITY, (double) ComplexityCalculator.measureComplexity(source));
+  }
+
+  private MetricDistribution generateNewMetricDistribution(MetricDistribution oldDistribution,
+      MetricDistribution newDistribution) {
+    if (oldDistribution == null) {
+      return newDistribution;
+    }
+
+    oldDistribution.add(newDistribution);
+    return oldDistribution;
   }
 
   private void computePackagesMetric(SensorContext sensorContext, Set<ScalaPackage> packages) {
