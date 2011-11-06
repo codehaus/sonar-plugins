@@ -28,11 +28,15 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.scala.language.Scala;
@@ -40,6 +44,8 @@ import org.sonar.plugins.scala.language.ScalaPackage;
 import org.sonar.plugins.scala.util.FileTestUtils;
 
 public class BaseMetricsSensorTest {
+
+  private static final int NUMBER_OF_FILES = 3;
 
   private BaseMetricsSensor baseMetricsSensor;
 
@@ -63,29 +69,113 @@ public class BaseMetricsSensorTest {
   @Test
   public void shouldIncrementFileMetricForOneScalaFile() {
     analyseOneScalaFile();
-    verify(sensorContext, times(1)).saveMeasure(
-        eq(FileTestUtils.SCALA_SOURCE_FILE), eq(CoreMetrics.FILES), eq(1.0));
-  }
-
-  @Test
-  public void shouldIncrementPackageMetricForOneScalaFile() {
-    analyseOneScalaFile();
-    verify(sensorContext, times(1)).saveMeasure(
-        any(ScalaPackage.class), eq(CoreMetrics.PACKAGES), eq(1.0));
+    verifyMeasuring(CoreMetrics.FILES, 1.0);
   }
 
   @Test
   public void shouldIncreaseFileMetricForAllScalaFiles() throws IOException {
     analyseAllScalaFiles();
-    verify(sensorContext, times(3)).saveMeasure(
-        eq(FileTestUtils.SCALA_SOURCE_FILE), eq(CoreMetrics.FILES), eq(1.0));
+    verifyMeasuring(CoreMetrics.FILES, NUMBER_OF_FILES, 1.0);
+  }
+
+  @Test
+  public void shouldIncrementPackageMetricForOneScalaFile() {
+    analyseOneScalaFile();
+    verify(sensorContext).saveMeasure(any(ScalaPackage.class), eq(CoreMetrics.PACKAGES), eq(1.0));
   }
 
   @Test
   public void shouldIncreasePackageMetricForAllScalaFiles() {
     analyseAllScalaFiles();
-    verify(sensorContext, times(2)).saveMeasure(
-        any(ScalaPackage.class), eq(CoreMetrics.PACKAGES), eq(1.0));
+    verify(sensorContext, times(2)).saveMeasure(any(ScalaPackage.class), eq(CoreMetrics.PACKAGES), eq(1.0));
+  }
+
+  @Test
+  public void shouldMeasureClassComplexityDistributionForOneScalaFileOnlyOnce() {
+    analyseOneScalaFile();
+    verify(sensorContext).saveMeasure(eq(new Measure(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION)));
+  }
+
+  @Test
+  public void shouldMeasureClassComplexityDistributionForAllScalaFilesOnlyOnce() {
+    analyseAllScalaFiles();
+    verify(sensorContext).saveMeasure(eq(new Measure(CoreMetrics.CLASS_COMPLEXITY_DISTRIBUTION)));
+  }
+
+  @Test
+  public void shouldMeasureFunctionComplexityDistributionForOneScalaFileOnlyOnce() {
+    analyseOneScalaFile();
+    verify(sensorContext).saveMeasure(eq(new Measure(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION)));
+  }
+
+  @Test
+  public void shouldMeasureFunctionComplexityDistributionForAllScalaFilesOnlyOnce() {
+    analyseAllScalaFiles();
+    verify(sensorContext).saveMeasure(eq(new Measure(CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION)));
+  }
+
+  @Test
+  public void shouldMeasureLineMetricsForOneScalaFile() {
+    analyseOneScalaFile();
+    verifyMeasuring(CoreMetrics.LINES);
+    verifyMeasuring(CoreMetrics.NCLOC);
+  }
+
+  @Test
+  public void shouldMeasureLineMetricsForAllScalaFiles() {
+    analyseAllScalaFiles();
+    verifyMeasuring(CoreMetrics.LINES, NUMBER_OF_FILES);
+    verifyMeasuring(CoreMetrics.NCLOC, NUMBER_OF_FILES);
+  }
+
+  @Test
+  public void shouldMeasureCommentMetricsForOneScalaFile() {
+    analyseOneScalaFile();
+    verifyMeasuring(CoreMetrics.COMMENT_LINES);
+    verifyMeasuring(CoreMetrics.COMMENTED_OUT_CODE_LINES);
+  }
+
+  @Test
+  public void shouldMeasureCommentMetricsForAllScalaFiles() {
+    analyseAllScalaFiles();
+    verifyMeasuring(CoreMetrics.COMMENT_LINES, NUMBER_OF_FILES);
+    verifyMeasuring(CoreMetrics.COMMENTED_OUT_CODE_LINES, NUMBER_OF_FILES);
+  }
+
+  @Test
+  public void shouldMeasureCodeMetricsForOneScalaFile() {
+    analyseOneScalaFile();
+    verifyMeasuring(CoreMetrics.CLASSES);
+    verifyMeasuring(CoreMetrics.STATEMENTS);
+    verifyMeasuring(CoreMetrics.FUNCTIONS);
+    verifyMeasuring(CoreMetrics.COMPLEXITY);
+  }
+
+  @Test
+  public void shouldMeasureCodeMetricsForAllScalaFiles() {
+    analyseAllScalaFiles();
+    verifyMeasuring(CoreMetrics.CLASSES, NUMBER_OF_FILES);
+    verifyMeasuring(CoreMetrics.STATEMENTS, NUMBER_OF_FILES);
+    verifyMeasuring(CoreMetrics.FUNCTIONS, NUMBER_OF_FILES);
+    verifyMeasuring(CoreMetrics.COMPLEXITY, NUMBER_OF_FILES);
+  }
+
+  private void verifyMeasuring(Metric metric) {
+    verifyMeasuring(metric, 1);
+  }
+
+  private void verifyMeasuring(Metric metric, int numberOfCalls) {
+    verify(sensorContext, times(numberOfCalls)).saveMeasure(eq(FileTestUtils.SCALA_SOURCE_FILE),
+        eq(metric), any(Double.class));
+  }
+
+  private void verifyMeasuring(Metric metric, double value) {
+    verifyMeasuring(metric, 1, value);
+  }
+
+  private void verifyMeasuring(Metric metric, int numberOfCalls, double value) {
+    verify(sensorContext, times(numberOfCalls)).saveMeasure(eq(FileTestUtils.SCALA_SOURCE_FILE),
+        eq(metric), eq(value));
   }
 
   private void analyseOneScalaFile() {
@@ -93,7 +183,7 @@ public class BaseMetricsSensorTest {
   }
 
   private void analyseAllScalaFiles() {
-    analyseScalaFiles(3);
+    analyseScalaFiles(NUMBER_OF_FILES);
   }
 
   private void analyseScalaFiles(int numberOfFiles) {
