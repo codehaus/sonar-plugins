@@ -68,8 +68,8 @@ public class LogoFooter implements Footer {
 
     sb.append("        var companyLogo = document.createElement('img');\n");
     sb.append("        companyLogo.setAttribute('src', '").append(imageUrl).append("');\n");
-    sb.append("        companyLogo.setAttribute('alt', 'Company Logo');\n");
-    sb.append("        companyLogo.setAttribute('title', 'Company');\n");
+    sb.append("        companyLogo.setAttribute('alt', '');\n");
+    sb.append("        companyLogo.setAttribute('title', '');\n");
 
     String linkUrl = getLinkUrl();
     if (!StringUtils.isEmpty(linkUrl)) {
