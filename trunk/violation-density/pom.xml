@@ -9,7 +9,7 @@
   </parent>
   <artifactId>sonar-violationdensity-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <name>Sonar Violation Density Plugin</name>
   <description>This plugin is used to compute a real violation density metric. 0% is good. 100% or more is bad.</description>
   <url>http://docs.codehaus.org/display/SONAR/Violation+Density+Plugin</url>
@@ -38,9 +38,9 @@
   </ciManagement>
   
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/violation-density</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/violation-density</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-violationdensity-plugin-1.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-violationdensity-plugin-1.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-violationdensity-plugin-1.1</url>
   </scm>
 
   <developers>
