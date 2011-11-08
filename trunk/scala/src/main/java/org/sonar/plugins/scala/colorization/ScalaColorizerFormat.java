@@ -41,13 +41,15 @@ import org.sonar.plugins.scala.language.Scala;
  */
 public class ScalaColorizerFormat extends CodeColorizerFormat {
 
+  private static final String endSpanTag = "</span>";
+
   private static final List<Tokenizer> TOKENIZERS = Arrays.asList(
-      new LiteralTokenizer("<span class=\"s\">", "</span>"),
-      new KeywordsTokenizer("<span class=\"k\">", "</span>", ScalaKeywords.getAllKeywords()),
-      new CDocTokenizer("<span class=\"cd\">", "</span>"),
-      new CppDocTokenizer("<span class=\"cppd\">", "</span>"),
-      new JavadocTokenizer("<span class=\"j\">", "</span>"),
-      new JavaAnnotationTokenizer("<span class=\"a\">", "</span>"));
+      new LiteralTokenizer("<span class=\"s\">", endSpanTag),
+      new KeywordsTokenizer("<span class=\"k\">", endSpanTag, ScalaKeywords.getAllKeywords()),
+      new CDocTokenizer("<span class=\"cd\">", endSpanTag),
+      new CppDocTokenizer("<span class=\"cppd\">", endSpanTag),
+      new JavadocTokenizer("<span class=\"j\">", endSpanTag),
+      new JavaAnnotationTokenizer("<span class=\"a\">", endSpanTag));
 
   public ScalaColorizerFormat() {
     super(Scala.INSTANCE.getKey());

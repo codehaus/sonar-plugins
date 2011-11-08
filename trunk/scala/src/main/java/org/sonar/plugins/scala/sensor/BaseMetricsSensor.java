@@ -62,25 +62,25 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
   }
 
   public void analyse(Project project, SensorContext sensorContext) {
-    ProjectFileSystem fileSystem = project.getFileSystem();
-    String charset = fileSystem.getSourceCharset().toString();
-    Set<ScalaPackage> packages = new HashSet<ScalaPackage>();
+    final ProjectFileSystem fileSystem = project.getFileSystem();
+    final String charset = fileSystem.getSourceCharset().toString();
+    final Set<ScalaPackage> packages = new HashSet<ScalaPackage>();
 
     MetricDistribution complexityOfClasses = null;
     MetricDistribution complexityOfFunctions = null;
 
     for (InputFile inputFile : fileSystem.mainFiles(getScala().getKey())) {
-      ScalaFile scalaFile = ScalaFile.fromInputFile(inputFile);
+      final ScalaFile scalaFile = ScalaFile.fromInputFile(inputFile);
       packages.add(scalaFile.getParent());
       sensorContext.saveMeasure(scalaFile, CoreMetrics.FILES, 1.0);
 
       try {
-        String source = FileUtils.readFileToString(inputFile.getFile(), charset);
-        List<String> lines = StringUtils.convertStringToListOfLines(source);
-        List<Comment> comments = new Lexer().getComments(source);
+        final String source = FileUtils.readFileToString(inputFile.getFile(), charset);
+        final  List<String> lines = StringUtils.convertStringToListOfLines(source);
+        final List<Comment> comments = new Lexer().getComments(source);
 
-        CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(comments);
-        LinesAnalyzer linesAnalyzer = new LinesAnalyzer(lines, commentsAnalyzer);
+        final CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(comments);
+        final LinesAnalyzer linesAnalyzer = new LinesAnalyzer(lines, commentsAnalyzer);
 
         addLineMetrics(sensorContext, scalaFile, linesAnalyzer);
         addCommentMetrics(sensorContext, scalaFile, commentsAnalyzer);
@@ -117,10 +117,14 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
   }
 
   private void addCodeMetrics(SensorContext sensorContext, ScalaFile scalaFile, String source) {
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES, (double) TypeCounter.countTypes(source));
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS, (double) StatementCounter.countStatements(source));
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.FUNCTIONS, (double) FunctionCounter.countFunctions(source));
-    sensorContext.saveMeasure(scalaFile, CoreMetrics.COMPLEXITY, (double) ComplexityCalculator.measureComplexity(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.CLASSES,
+        (double) TypeCounter.countTypes(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.STATEMENTS,
+        (double) StatementCounter.countStatements(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.FUNCTIONS,
+        (double) FunctionCounter.countFunctions(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.COMPLEXITY,
+        (double) ComplexityCalculator.measureComplexity(source));
   }
 
   private MetricDistribution generateNewMetricDistribution(MetricDistribution oldDistribution,

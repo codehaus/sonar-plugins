@@ -61,7 +61,7 @@ public class CommentsAnalyzer {
   public int countCommentedOutLinesOfCode() {
     int commentedOutLinesOfCode = 0;
     for (Comment comment : comments) {
-        commentedOutLinesOfCode += comment.getNumberOfCommentedOutLinesOfCode();
+      commentedOutLinesOfCode += comment.getNumberOfCommentedOutLinesOfCode();
     }
     return commentedOutLinesOfCode;
   }

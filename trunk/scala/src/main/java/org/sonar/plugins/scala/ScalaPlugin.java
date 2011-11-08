@@ -62,7 +62,6 @@ public class ScalaPlugin extends SonarPlugin {
    */
   private static String getPathByResource(String name) {
     String path = ScalaPlugin.class.getClassLoader().getResource(name).getPath();
-    return path.substring("file:".length(), path.lastIndexOf("!"));
+    return path.substring("file:".length(), path.lastIndexOf('!'));
   }
-
 }

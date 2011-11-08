@@ -96,8 +96,8 @@ public class ScalaFile extends Resource<ScalaPackage> {
 
   @Override
   public boolean matchFilePattern(String antPattern) {
-    String patternWithoutFileSuffix = StringUtils.substringBeforeLast(antPattern, ".");
-    WildcardPattern matcher = WildcardPattern.create(patternWithoutFileSuffix, ".");
+    final String patternWithoutFileSuffix = StringUtils.substringBeforeLast(antPattern, ".");
+    final WildcardPattern matcher = WildcardPattern.create(patternWithoutFileSuffix, ".");
     return matcher.match(getKey());
   }
 
@@ -124,8 +124,9 @@ public class ScalaFile extends Resource<ScalaPackage> {
       return null;
     }
 
-    String packageName = PackageResolver.resolvePackageNameOfFile(inputFile.getFile().getAbsolutePath());
-    String className = resolveClassName(inputFile);
+    final String packageName = PackageResolver.resolvePackageNameOfFile(
+        inputFile.getFile().getAbsolutePath());
+    final String className = resolveClassName(inputFile);
     return new ScalaFile(packageName, className, isUnitTest);
   }
 

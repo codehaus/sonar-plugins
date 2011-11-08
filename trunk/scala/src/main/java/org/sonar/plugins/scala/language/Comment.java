@@ -107,8 +107,8 @@ public class Comment {
 
   @Override
   public String toString() {
-    final String firstLine = !lines.isEmpty() ? lines.get(0) : "";
-    final String lastLine = !lines.isEmpty() ? lines.get(lines.size() - 1) : "";
+    final String firstLine = lines.isEmpty() ? "" : lines.get(0);
+    final String lastLine = lines.isEmpty() ? "" : lines.get(lines.size() - 1);
     return new ToStringBuilder(this).append("type", type)
         .append("firstLine", firstLine)
         .append("lastLine", lastLine)
