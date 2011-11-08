@@ -38,7 +38,7 @@ public final class ScalaKeywords {
       "null", "object", "override", "package", "private", "protected", "requires", "return",
       "sealed", "super", "this", "throw", "trait", "true", "try", "type", "val", "var", "while",
       "with", "yield", "_", ":", "=", "=>", "<-", "<:", "<%", ">:", "#", "@"
-    ));
+  ));
 
   private ScalaKeywords() {
     // to prevent instantiation
