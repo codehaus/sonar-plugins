@@ -76,7 +76,7 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
 
       try {
         final String source = FileUtils.readFileToString(inputFile.getFile(), charset);
-        final  List<String> lines = StringUtils.convertStringToListOfLines(source);
+        final List<String> lines = StringUtils.convertStringToListOfLines(source);
         final List<Comment> comments = new Lexer().getComments(source);
 
         final CommentsAnalyzer commentsAnalyzer = new CommentsAnalyzer(comments);
