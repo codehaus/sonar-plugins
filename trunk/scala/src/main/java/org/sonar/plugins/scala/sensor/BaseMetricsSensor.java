@@ -36,6 +36,7 @@ import org.sonar.plugins.scala.compiler.Lexer;
 import org.sonar.plugins.scala.language.Comment;
 import org.sonar.plugins.scala.language.ComplexityCalculator;
 import org.sonar.plugins.scala.language.FunctionCounter;
+import org.sonar.plugins.scala.language.PublicApiCounter;
 import org.sonar.plugins.scala.language.Scala;
 import org.sonar.plugins.scala.language.ScalaFile;
 import org.sonar.plugins.scala.language.ScalaPackage;
@@ -85,6 +86,7 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         addLineMetrics(sensorContext, scalaFile, linesAnalyzer);
         addCommentMetrics(sensorContext, scalaFile, commentsAnalyzer);
         addCodeMetrics(sensorContext, scalaFile, source);
+        addPublicApiMetrics(sensorContext, scalaFile, source);
 
         complexityOfClasses = generateNewMetricDistribution(complexityOfClasses,
             ComplexityCalculator.measureComplexityOfClasses(source));
@@ -125,6 +127,13 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         (double) FunctionCounter.countFunctions(source));
     sensorContext.saveMeasure(scalaFile, CoreMetrics.COMPLEXITY,
         (double) ComplexityCalculator.measureComplexity(source));
+  }
+
+  private void addPublicApiMetrics(SensorContext sensorContext, ScalaFile scalaFile, String source) {
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.PUBLIC_API,
+        (double) PublicApiCounter.countPublicApi(source));
+    sensorContext.saveMeasure(scalaFile, CoreMetrics.PUBLIC_UNDOCUMENTED_API,
+        (double) PublicApiCounter.countUndocumentedPublicApi(source));
   }
 
   private MetricDistribution generateNewMetricDistribution(MetricDistribution oldDistribution,

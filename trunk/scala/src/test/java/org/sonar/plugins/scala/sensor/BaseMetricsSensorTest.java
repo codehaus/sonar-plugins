@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +35,6 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.plugins.scala.language.Scala;
@@ -158,6 +156,20 @@ public class BaseMetricsSensorTest {
     verifyMeasuring(CoreMetrics.STATEMENTS, NUMBER_OF_FILES);
     verifyMeasuring(CoreMetrics.FUNCTIONS, NUMBER_OF_FILES);
     verifyMeasuring(CoreMetrics.COMPLEXITY, NUMBER_OF_FILES);
+  }
+
+  @Test
+  public void shouldMeasurePublicApiMetricsForOneScalaFile() {
+    analyseOneScalaFile();
+    verifyMeasuring(CoreMetrics.PUBLIC_API);
+    verifyMeasuring(CoreMetrics.PUBLIC_UNDOCUMENTED_API);
+  }
+
+  @Test
+  public void shouldMeasurePublicApiMetricsForAllScalaFiles() {
+    analyseAllScalaFiles();
+    verifyMeasuring(CoreMetrics.PUBLIC_API, NUMBER_OF_FILES);
+    verifyMeasuring(CoreMetrics.PUBLIC_UNDOCUMENTED_API, NUMBER_OF_FILES);
   }
 
   private void verifyMeasuring(Metric metric) {
