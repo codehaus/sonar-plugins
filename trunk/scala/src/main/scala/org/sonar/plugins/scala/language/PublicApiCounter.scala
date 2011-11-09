@@ -23,7 +23,7 @@ import reflect.generic.ModifierFlags
 import org.sonar.plugins.scala.compiler.{ Compiler, Parser }
 
 /**
- * This object is a helper object for TODO
+ * This object is a helper object for counting public api members.
  *
  * @author Felix Müller
  * @since 0.1
@@ -45,12 +45,6 @@ object PublicApiCounter {
       case Template(_, _, content) =>
         foundPublicApiMembers + onList(content, countPublicApiTrees(_, 0))
 
-      case ClassDef(_, _, _, content) =>
-        countPublicApiTrees(content, foundPublicApiMembers)
-
-      case ModuleDef(_, _, content) =>
-        countPublicApiTrees(content, foundPublicApiMembers)
-
       case DocDef(_, content) =>
         countPublicApiTrees(content, foundPublicApiMembers)
 
@@ -61,12 +55,24 @@ object PublicApiCounter {
         foundPublicApiMembers + onList(args, countPublicApiTrees(_, 0))
 
       /*
-       * Countable public api declarations are functions and methods with public access.
+       * Countable public api declarations are classes, objects, traits, functions and
+       * methods with public access.
        */
 
-      case defDef: DefDef if (isEmptyConstructor(defDef)
-          || defDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+      case classDef: ClassDef if (classDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+        countPublicApiTrees(classDef.impl, foundPublicApiMembers)
+
+      case moduleDef: ModuleDef if (moduleDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+        countPublicApiTrees(moduleDef.impl, foundPublicApiMembers)
+
+      case defDef: DefDef if (isEmptyConstructor(defDef) || defDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
         countPublicApiTrees(defDef.rhs, foundPublicApiMembers)
+
+      case ClassDef(_, _, _, impl) =>
+        countPublicApiTrees(impl, foundPublicApiMembers + 1)
+
+      case ModuleDef(_, _, impl) =>
+        countPublicApiTrees(impl, foundPublicApiMembers + 1)
 
       case defDef: DefDef =>
         countPublicApiTrees(defDef.rhs, foundPublicApiMembers + 1)
