@@ -35,7 +35,53 @@ class PublicApiCounterSpec extends FlatSpec with ShouldMatchers {
     PublicApiCounter.countPublicApi("def test { println(42) }") should be (1)
   }
 
-  it should "not count a private function declared" in {
+  it should "not count a private function declaration" in {
     PublicApiCounter.countPublicApi("private def test = 42") should be (0)
+  }
+
+  it should "not count a private method declaration" in {
+    PublicApiCounter.countPublicApi("private def test { println(42) }") should be (0)
+  }
+
+  it should "count a class declaration" in {
+    val source = """class A {
+        val b = "test"
+      }"""
+    PublicApiCounter.countPublicApi(source) should be (1)
+  }
+
+  it should "count an object declaration" in {
+    val source = """object A {
+        val b = "test"
+      }"""
+    PublicApiCounter.countPublicApi(source) should be (1)
+  }
+
+  it should "count a trait declaration" in {
+    val source = """trait A {
+        val b = "test"
+      }"""
+    PublicApiCounter.countPublicApi(source) should be (1)
+  }
+
+  it should "not count a private class declaration" in {
+    val source = """private class A {
+        val b = "test"
+      }"""
+    PublicApiCounter.countPublicApi(source) should be (0)
+  }
+
+  it should "not count a private object declaration" in {
+    val source = """private object A {
+        val b = "test"
+      }"""
+    PublicApiCounter.countPublicApi(source) should be (0)
+  }
+
+  it should "not count a private trait declaration" in {
+    val source = """private trait A {
+        val b = "test"
+      }"""
+    PublicApiCounter.countPublicApi(source) should be (0)
   }
 }
