@@ -20,14 +20,10 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.FileLocCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class FileLocCheckTest {
 
@@ -35,9 +31,9 @@ public class FileLocCheckTest {
   public void testCheck() {
     FileLocCheck check = new FileLocCheck();
     check.setMaximumFileLocThreshold(4);
-    CheckMessage message = CheckUtils.extractViolation("/checks/fileLoc.c", check);
 
-    assertThat(message.getLine(), is(1));
-    assertThat(message.formatDefaultMessage(), containsString("File has 9 lines of code which is greater than 4 authorized."));
+    setCurrentSourceFile(scanFile("/checks/fileLoc.c", check));
+    
+    assertOnlyOneViolation().atLine(1).withMessage("File has 9 lines of code which is greater than 4 authorized.");
   }
 }

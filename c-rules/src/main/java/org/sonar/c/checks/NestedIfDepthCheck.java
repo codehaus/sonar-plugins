@@ -23,7 +23,6 @@ package org.sonar.c.checks;
 import java.util.Stack;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
@@ -31,7 +30,7 @@ import org.sonar.check.RuleProperty;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.NestedIfDepth", name = "Nested if depth", isoCategory = IsoCategory.Maintainability, priority = Priority.MAJOR,
+@Rule(key = "C.NestedIfDepth", name = "Nested if depth", priority = Priority.MAJOR,
     description = "<p>Restricts nested if-else blocks to a specified depth.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class NestedIfDepthCheck extends CCheck {

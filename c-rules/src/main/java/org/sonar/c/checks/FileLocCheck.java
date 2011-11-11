@@ -21,7 +21,6 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
@@ -31,7 +30,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Token;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.FileLoc", name = "Avoid file with too many lines of code", isoCategory = IsoCategory.Maintainability,
+@Rule(key = "C.FileLoc", name = "Avoid file with too many lines of code",
     priority = Priority.MAJOR, description = "<p>Violations of this rule usually indicate that the file is doing too much. "
         + "Try to reduce the file size by splitting it into several other ones.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)

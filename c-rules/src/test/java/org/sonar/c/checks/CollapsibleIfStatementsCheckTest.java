@@ -20,22 +20,17 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.CollapsibleIfStatementsCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class CollapsibleIfStatementsCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/collapsibleIfStatements.c", new CollapsibleIfStatementsCheck());
-    
-    assertThat(message.getLine(), is(15));
-    assertThat(message.formatDefaultMessage(), containsString("Those two 'if' statements can be consolidated."));
+    setCurrentSourceFile(scanFile("/checks/collapsibleIfStatements.c", new CollapsibleIfStatementsCheck()));
+
+    assertOnlyOneViolation().atLine(15).withMessage("Those two 'if' statements can be consolidated.");
   }
 }

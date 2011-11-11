@@ -21,7 +21,6 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
@@ -29,7 +28,7 @@ import org.sonar.check.RuleProperty;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.ExcessiveParameterList", name = "Avoid function with too many parameters", isoCategory = IsoCategory.Maintainability,
+@Rule(key = "C.ExcessiveParameterList", name = "Avoid function with too many parameters",
     priority = Priority.MAJOR, description = "<p>Long parameter lists can indicate that a new structure should be created "
         + "to wrap the numerous parameters or that the function is doing to many things.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)

@@ -20,14 +20,10 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.NestedIfDepthCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class NestedIfDepthCheckTest {
 
@@ -36,9 +32,8 @@ public class NestedIfDepthCheckTest {
     NestedIfDepthCheck check = new NestedIfDepthCheck();
     check.setMaximumNestedIfLevel(2);
 
-    CheckMessage message = CheckUtils.extractViolation("/checks/nestedIfDepth.c", check);
-
-    assertThat(message.getLine(), is(13));
-    assertThat(message.formatDefaultMessage(), containsString("There should not be more than 2 nested if statements."));
+    setCurrentSourceFile(scanFile("/checks/nestedIfDepth.c", check));
+    
+    assertOnlyOneViolation().atLine(13).withMessage("There should not be more than 2 nested if statements.");
   }
 }

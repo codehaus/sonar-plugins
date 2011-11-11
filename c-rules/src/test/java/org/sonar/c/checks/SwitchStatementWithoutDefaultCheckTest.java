@@ -20,22 +20,17 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.SwitchStatementWithoutDefaultCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class SwitchStatementWithoutDefaultCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/switchStatementWithoutDefault.c", new SwitchStatementWithoutDefaultCheck());
-
-    assertThat(message.getLine(), is(5));
-    assertThat(message.formatDefaultMessage(), containsString("Avoid switch statement without a \"default\" clause."));
+    setCurrentSourceFile(scanFile("/checks/switchStatementWithoutDefault.c", new SwitchStatementWithoutDefaultCheck()));
+    
+    assertOnlyOneViolation().atLine(5).withMessage("Avoid switch statement without a \"default\" clause.");
   }
 }

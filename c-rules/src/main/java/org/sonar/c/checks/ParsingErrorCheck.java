@@ -23,7 +23,6 @@ package org.sonar.c.checks;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
@@ -31,7 +30,7 @@ import com.sonar.sslr.api.AuditListener;
 import com.sonar.sslr.api.RecognitionException;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.ParsingError", name = "C parser failure", isoCategory = IsoCategory.Maintainability, priority = Priority.MAJOR,
+@Rule(key = "C.ParsingError", name = "C parser failure", priority = Priority.MAJOR,
     description = "<p>When the C parser fails, it is possible to record the failure as a violation on the file. This way, "
         + "not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.</p>")
 public class ParsingErrorCheck extends CCheck implements AuditListener {

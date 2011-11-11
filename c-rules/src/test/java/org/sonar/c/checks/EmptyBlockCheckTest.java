@@ -20,22 +20,17 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.EmptyBlockCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class EmptyBlockCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/emptyBlock.c", new EmptyBlockCheck());
-
-    assertThat(message.getLine(), is(10));
-    assertThat(message.formatDefaultMessage(), containsString("Avoid empty block."));
+    setCurrentSourceFile(scanFile("/checks/emptyBlock.c", new EmptyBlockCheck()));
+    
+    assertOnlyOneViolation().atLine(10).withMessage("Avoid empty block.");
   }
 }

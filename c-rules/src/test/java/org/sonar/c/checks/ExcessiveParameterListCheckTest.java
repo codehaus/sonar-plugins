@@ -20,14 +20,10 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.ExcessiveParameterListCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class ExcessiveParameterListCheckTest {
 
@@ -35,9 +31,9 @@ public class ExcessiveParameterListCheckTest {
   public void testCheck() {
     ExcessiveParameterListCheck check = new ExcessiveParameterListCheck();
     check.setMaximumFunctionParameters(2);
-    CheckMessage message = CheckUtils.extractViolation("/checks/excessiveParameterList.c", check);
-
-    assertThat(message.getLine(), is(12));
-    assertThat(message.formatDefaultMessage(), containsString("Function has 3 parameters which is greater than 2 authorized."));
+    
+    setCurrentSourceFile(scanFile("/checks/excessiveParameterList.c", check));
+    
+    assertOnlyOneViolation().atLine(12).withMessage("Function has 3 parameters which is greater than 2 authorized.");
   }
 }

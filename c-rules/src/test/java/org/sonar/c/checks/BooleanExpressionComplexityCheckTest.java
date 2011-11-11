@@ -20,14 +20,10 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.BooleanExpressionComplexityCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class BooleanExpressionComplexityCheckTest {
 
@@ -36,9 +32,8 @@ public class BooleanExpressionComplexityCheckTest {
     BooleanExpressionComplexityCheck check = new BooleanExpressionComplexityCheck();
     check.setMaximumNestedBooleanOperators(2);
 
-    CheckMessage message = CheckUtils.extractViolation("/checks/booleanExpressionComplexity.c", check);
+    setCurrentSourceFile(scanFile("/checks/booleanExpressionComplexity.c", check));
 
-    assertThat(message.getLine(), is(11));
-    assertThat(message.formatDefaultMessage(), containsString("There should not be more than 2 nested boolean operators."));
+    assertOnlyOneViolation().atLine(11).withMessage("There should not be more than 2 nested boolean operators.");
   }
 }

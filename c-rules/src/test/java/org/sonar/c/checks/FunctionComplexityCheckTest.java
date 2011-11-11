@@ -20,14 +20,10 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.FunctionComplexityCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class FunctionComplexityCheckTest {
 
@@ -35,9 +31,9 @@ public class FunctionComplexityCheckTest {
   public void testCheck() {
     FunctionComplexityCheck check = new FunctionComplexityCheck();
     check.setMaximumFunctionComplexityThreshold(2);
-    CheckMessage message = CheckUtils.extractViolation("/checks/functionComplexity.c", check);
-
-    assertThat(message.getLine(), is(8));
-    assertThat(message.formatDefaultMessage(), containsString("Function has a complexity of 3 which is greater than 2 authorized."));
+    
+    setCurrentSourceFile(scanFile("/checks/functionComplexity.c", check));
+    
+    assertOnlyOneViolation().atLine(8).withMessage("Function has a complexity of 3 which is greater than 2 authorized.");
   }
 }

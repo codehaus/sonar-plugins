@@ -21,7 +21,6 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
@@ -32,7 +31,6 @@ import com.sonarsource.c.plugin.CCheck;
 @Rule(
     key = "C.DoNotUseContinue",
     name = "Avoid using 'continue' branching statement ",
-    isoCategory = IsoCategory.Usability,
     priority = Priority.MAJOR,
     description = "<p>The use of the 'continue' branching statement increase the "
         + "essential complexity of the source code and so prevent any refactoring of this source code to replace "
