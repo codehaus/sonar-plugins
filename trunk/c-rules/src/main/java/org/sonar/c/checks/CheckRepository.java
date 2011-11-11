@@ -36,8 +36,9 @@ import com.sonarsource.c.plugin.CCheckRepository;
  * and this class should then be removed.
  * </b>
  * 
- * @deprecated
+ * @deprecated This mechanism should not be used anymore once it is possible to group plugins classloaders, and this class should then be removed.
  */
+@Deprecated
 public class CheckRepository implements CCheckRepository {
 
   public Collection<Class<? extends CCheck>> getCheckClasses() {

@@ -21,14 +21,13 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.EmptyBlock", name = "Avoid empty block", isoCategory = IsoCategory.Reliability, priority = Priority.MAJOR,
+@Rule(key = "C.EmptyBlock", name = "Avoid empty block", priority = Priority.MAJOR,
     description = "<p>In most case, en empty block represents a missing implementation.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class EmptyBlockCheck extends CCheck {

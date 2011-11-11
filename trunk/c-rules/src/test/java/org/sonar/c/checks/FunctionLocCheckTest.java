@@ -20,14 +20,10 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.FunctionLocCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class FunctionLocCheckTest {
 
@@ -35,9 +31,9 @@ public class FunctionLocCheckTest {
   public void testCheck() {
     FunctionLocCheck check = new FunctionLocCheck();
     check.setMaximumFunctionLocThreshold(3);
-    CheckMessage message = CheckUtils.extractViolation("/checks/functionLoc.c", check);
 
-    assertThat(message.getLine(), is(8));
-    assertThat(message.formatDefaultMessage(), containsString("Function has 4 lines of code which is greater than 3 authorized."));
+    setCurrentSourceFile(scanFile("/checks/functionLoc.c", check));
+    
+    assertOnlyOneViolation().atLine(8).withMessage("Function has 4 lines of code which is greater than 3 authorized.");
   }
 }

@@ -20,22 +20,17 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.WhileLoopWithoutBracesCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class WhileLoopsWithoutBracesCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/whileLoopsWithoutBraces.c", new WhileLoopWithoutBracesCheck());
-
-    assertThat(message.getLine(), is(13));
-    assertThat(message.formatDefaultMessage(), containsString("While and Do/While loops must use braces."));
+    setCurrentSourceFile(scanFile("/checks/whileLoopsWithoutBraces.c", new WhileLoopWithoutBracesCheck()));
+    
+    assertOnlyOneViolation().atLine(13).withMessage("While and Do/While loops must use braces.");
   }
 }

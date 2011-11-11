@@ -20,32 +20,30 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.FunctionNameCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class FunctionNameCheckTest {
 
   @Test
   public void testCheckWithDefaultSettings() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/functionName.c", new FunctionNameCheck());
-
-    assertThat(message.getLine(), is(3));
-    assertThat(message.formatDefaultMessage(), containsString("The function name does not conform to the specified format"));
+    setCurrentSourceFile(scanFile("/checks/functionName.c", new FunctionNameCheck()));
+    
+    assertOnlyOneViolation().atLine(3).withMessage("The function name does not conform to the specified format: ^[a-z][a-zA-Z0-9]*$");
   }
 
   @Test
   public void testCheckWithSpecificFormat() {
     FunctionNameCheck check = new FunctionNameCheck();
     check.setFunctionNameFormat("^[0-9][a-zA-Z0-9]*$");
-    CheckMessage message = CheckUtils.extractViolation("/checks/functionName.c", check);
-
-    assertThat(message.getLine(), is(3));
-    assertThat(message.formatDefaultMessage(), containsString("The function name does not conform to the specified format"));
+    
+    setCurrentSourceFile(scanFile("/checks/functionName.c", check));
+    
+    assertNumberOfViolations(2);
+    
+    assertViolation().atLine(3).withMessage("The function name does not conform to the specified format: ^[0-9][a-zA-Z0-9]*$");
+    assertViolation().atLine(8).withMessage("The function name does not conform to the specified format: ^[0-9][a-zA-Z0-9]*$");
   }
 }

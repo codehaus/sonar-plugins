@@ -20,20 +20,17 @@
 
 package org.sonar.c.checks;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
-import org.sonar.squid.api.CheckMessage;
 
 public class GotoCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/goto.c", new GotoCheck());
-
-    assertThat(message.getLine(), is(10));
-    assertThat(message.formatDefaultMessage(), containsString("Avoid using goto statement."));
+    setCurrentSourceFile(scanFile("/checks/goto.c", new GotoCheck()));
+    
+    assertOnlyOneViolation().atLine(10).withMessage("Avoid using goto statement.");
   }
 }

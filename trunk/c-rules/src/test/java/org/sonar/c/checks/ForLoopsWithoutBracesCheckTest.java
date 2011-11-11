@@ -20,22 +20,17 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.ForLoopWithoutBracesCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class ForLoopsWithoutBracesCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/forLoopsWithoutBraces.c", new ForLoopWithoutBracesCheck());
-
-    assertThat(message.getLine(), is(9));
-    assertThat(message.formatDefaultMessage(), containsString("For loops must use braces."));
+    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopWithoutBracesCheck()));
+    
+    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
   }
 }

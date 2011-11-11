@@ -20,20 +20,17 @@
 
 package org.sonar.c.checks;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
-import org.sonar.squid.api.CheckMessage;
 
 public class ContinueCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/continue.c", new ContinueCheck());
-
-    assertThat(message.getLine(), is(8));
-    assertThat(message.formatDefaultMessage(), containsString("The 'continue' branching statement prevent refactoring the source code to reduce the complexity."));
+    setCurrentSourceFile(scanFile("/checks/continue.c", new ContinueCheck()));
+    
+    assertOnlyOneViolation().atLine(8).withMessage("The 'continue' branching statement prevent refactoring the source code to reduce the complexity.");
   }
 }

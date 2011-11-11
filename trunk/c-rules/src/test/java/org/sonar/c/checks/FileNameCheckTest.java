@@ -20,31 +20,27 @@
 
 package org.sonar.c.checks;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
-import org.sonar.c.checks.FileNameCheck;
-import org.sonar.squid.api.CheckMessage;
 
 public class FileNameCheckTest {
 
   @Test
   public void testCheckWithDefaultSettings() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/fileName.cc", new FileNameCheck());
-
-    assertThat(message.getLine(), nullValue());
-    assertThat(message.formatDefaultMessage(), containsString("The file name does not conform to the specified format"));
+    setCurrentSourceFile(scanFile("/checks/fileName.cc", new FileNameCheck()));
+    
+    assertOnlyOneViolation().withMessage("The file name does not conform to the specified format: ^([a-z0-9]|-|_)*\\.(c|h)$");
   }
 
   @Test
   public void testCheckWithSpecificFormat() {
     FileNameCheck check = new FileNameCheck();
     check.setFileNameFormat("^[a-zA-Z0-9]*\\.cpp$");
-    CheckMessage message = CheckUtils.extractViolation("/checks/fileName.cc", check);
-
-    assertThat(message.getLine(), nullValue());
-    assertThat(message.formatDefaultMessage(), containsString("The file name does not conform to the specified format"));
+    
+    setCurrentSourceFile(scanFile("/checks/fileName.cc", check));
+    
+    assertOnlyOneViolation().withMessage("The file name does not conform to the specified format: ^[a-zA-Z0-9]*\\.cpp$");
   }
 }

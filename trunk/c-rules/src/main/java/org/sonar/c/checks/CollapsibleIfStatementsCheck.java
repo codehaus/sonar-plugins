@@ -21,7 +21,6 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
@@ -31,7 +30,6 @@ import com.sonarsource.c.plugin.CCheck;
 @Rule(
     key = "C.CollapsibleIfStatement",
     name = "Collapsible If statements",
-    isoCategory = IsoCategory.Usability,
     priority = Priority.MAJOR,
     description = "<p>Several 'if' statements can be consolidated by separating their conditions with a boolean short-circuit operator.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)

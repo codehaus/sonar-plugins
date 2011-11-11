@@ -21,7 +21,6 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
@@ -31,7 +30,7 @@ import com.sonar.c.api.metric.CMetric;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.FunctionComplexity", name = "Avoid too complex function", isoCategory = IsoCategory.Maintainability,
+@Rule(key = "C.FunctionComplexity", name = "Avoid too complex function",
     priority = Priority.MAJOR, description = "<p>The cyclomatic complexity of a function should not exceed a defined threshold. "
         + "Complex code can perform poorly and will in any case be difficult to understand and therefore to maintain.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)

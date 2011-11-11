@@ -20,22 +20,17 @@
 
 package org.sonar.c.checks;
 
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.IfStatementWithoutBracesCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class IfStatementWithoutBracesCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/ifStatementWithoutBraces.c", new IfStatementWithoutBracesCheck());
-
-    assertThat(message.getLine(), is(9));
-    assertThat(message.formatDefaultMessage(), containsString("If statement must use braces."));
+    setCurrentSourceFile(scanFile("/checks/ifStatementWithoutBraces.c", new IfStatementWithoutBracesCheck()));
+    
+    assertOnlyOneViolation().atLine(9).withMessage("If statement must use braces.");
   }
 }

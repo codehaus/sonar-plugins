@@ -23,23 +23,11 @@ package org.sonar.c.checks;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sonar.api.Plugin;
+import org.sonar.api.SonarPlugin;
 
 import com.sonarsource.c.plugin.CCheck;
 
-public class CCheckPlugin implements Plugin {
-
-  public String getKey() {
-    return CChecksConstants.PLUGIN_KEY;
-  }
-
-  public String getName() {
-    return CChecksConstants.PLUGIN_NAME;
-  }
-
-  public String getDescription() {
-    return "Provide a C rule engine. This C-Rules plugin requires the C plugin to be installed in order to work.";
-  }
+public class CCheckPlugin extends SonarPlugin {
 
   public List getExtensions() {
     List<Class<? extends CCheck>> extensions = new ArrayList<Class<? extends CCheck>>();

@@ -22,10 +22,8 @@ package org.sonar.c.checks;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.sonar.squid.api.CheckMessage;
 import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceCodeTreeDecorator;
 import org.sonar.squid.api.SourceFile;
@@ -40,7 +38,7 @@ import com.sonar.c.api.metric.CMetric;
 
 public class CheckUtils {
 
-  public static Set<CheckMessage> extractViolations(String cFilePath, CAstVisitor... visitors) {
+  public static SourceFile scanFile(String cFilePath, CAstVisitor... visitors) {
     SourceProject project = new SourceProject("cProject");
     SquidIndex index = new SquidIndex();
     index.index(project);
@@ -61,8 +59,8 @@ public class CheckUtils {
     if (sources.size() != 1) {
       throw new AssertionError("Only one SourceFile was expected whereas " + sources.size() + " has been returned.");
     } else {
-      SourceFile file = (SourceFile) sources.iterator().next();
-      return file.getCheckMessages();
+      SourceFile file = (SourceFile)sources.iterator().next();
+      return file;
     }
   }
 
@@ -82,18 +80,5 @@ public class CheckUtils {
       }
     }
   }
-
-  public static CheckMessage extractViolation(String cFilePath, CAstVisitor... visitors) {
-    Set<CheckMessage> violations = extractViolations(cFilePath, visitors);
-    if (violations.size() != 1) {
-      StringBuilder logMessage = new StringBuilder();
-      logMessage.append("Only one violation was expected whereas " + violations.size() + " have been generated.");
-      for (CheckMessage violation : violations) {
-        logMessage.append("\n" + "Line " + violation.getLine() + " : " + violation.formatDefaultMessage());
-      }
-      throw new AssertionError(logMessage.toString());
-    } else {
-      return violations.iterator().next();
-    }
-  }
+  
 }

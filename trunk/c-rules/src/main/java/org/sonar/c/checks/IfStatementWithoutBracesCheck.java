@@ -21,14 +21,13 @@
 package org.sonar.c.checks;
 
 import org.sonar.check.BelongsToProfile;
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.IfStatementWithoutBraces", name = "If statement must use braces", isoCategory = IsoCategory.Usability,
+@Rule(key = "C.IfStatementWithoutBraces", name = "If statement must use braces",
     priority = Priority.MAJOR, description = "<p>Avoid using if statements without using curly braces.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class IfStatementWithoutBracesCheck extends CCheck {

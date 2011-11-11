@@ -22,7 +22,6 @@ package org.sonar.c.checks;
 
 import java.util.regex.Pattern;
 
-import org.sonar.check.IsoCategory;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
@@ -30,7 +29,7 @@ import org.sonar.check.RuleProperty;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.FunctionName", name = "Function name", isoCategory = IsoCategory.Usability, priority = Priority.MAJOR,
+@Rule(key = "C.FunctionName", name = "Function name", priority = Priority.MAJOR,
     description = "<p>Checks that function names conform to a format specified by the format property.</p>")
 public class FunctionNameCheck extends CCheck {
 

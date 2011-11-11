@@ -20,22 +20,18 @@
 
 package org.sonar.c.checks;
 
+import static org.hamcrest.Matchers.*;
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
+
 import org.junit.Test;
-import org.sonar.c.checks.ParsingErrorCheck;
-import org.sonar.squid.api.CheckMessage;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-
-import static org.junit.Assert.assertThat;
 
 public class ParsingErrorCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/parsingError.c", new ParsingErrorCheck());
-
-    assertThat(message.getLine(), is(15));
-    assertThat(message.getDefaultMessage(), containsString("<LPARENTHESIS type> but was : <; [SEMICOLON]>"));
+    setCurrentSourceFile(scanFile("/checks/parsingError.c", new ParsingErrorCheck()));
+    
+    assertOnlyOneViolation().atLine(15).withMessage(containsString("<LPARENTHESIS type> but was : <; [SEMICOLON]>"));
   }
 }

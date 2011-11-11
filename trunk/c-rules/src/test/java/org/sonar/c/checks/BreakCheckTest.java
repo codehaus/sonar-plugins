@@ -20,20 +20,17 @@
 
 package org.sonar.c.checks;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.sonar.c.checks.CheckMatchers.*;
+import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
-import org.sonar.squid.api.CheckMessage;
 
 public class BreakCheckTest {
 
   @Test
   public void testCheck() {
-    CheckMessage message = CheckUtils.extractViolation("/checks/break.c", new BreakCheck());
+    setCurrentSourceFile(scanFile("/checks/break.c", new BreakCheck()));
 
-    assertThat(message.getLine(), is(5));
-    assertThat(message.formatDefaultMessage(), containsString("Keyword break only allowed inside a switch block."));
+    assertOnlyOneViolation().atLine(5).withMessage("Keyword break only allowed inside a switch block.");
   }
 }
