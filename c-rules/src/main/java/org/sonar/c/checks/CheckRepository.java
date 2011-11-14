@@ -66,6 +66,7 @@ public class CheckRepository implements CCheckRepository {
     checks.add(FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck.class);
     checks.add(IfElseConstructsShallBeTerminatedWithAnElseCheck.class);
     checks.add(TrigraphsShallNotBeUsedCheck.class);
+    checks.add(OctalConstantsAndEscapesShallNotBeUsedCheck.class);
     return checks;
   }
 }

@@ -20,12 +20,12 @@
 
 package org.sonar.c.checks;
 
+import static com.sonar.sslr.api.GenericTokenType.*;
+
 import org.apache.commons.lang.StringUtils;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-
-import static com.sonar.sslr.api.GenericTokenType.LITERAL;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
