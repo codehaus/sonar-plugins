@@ -43,18 +43,21 @@ public class TrigraphsShallNotBeUsedCheck extends CCheck {
   }
 
   public void visitNode(AstNode node) {
-    if (containsAny(node.getTokenValue(), TRIGRAPHS)) {
+    if (containsAnyTrigraph(node.getTokenValue())) {
       log("Trigraphs shall not be used.", node);
     }
   }
   
-  private boolean containsAny(String subject, String[] searchList) {
-    String[] emptyReplacementList = new String[searchList.length];
-    for (int i = 0; i < emptyReplacementList.length; i++) {
-      emptyReplacementList[i] = "";
+  private static boolean containsAnyTrigraph(String subject) {
+    if (subject.contains("??")) {
+      for (String trigraph: TRIGRAPHS) {
+        if (subject.contains(trigraph)) {
+          return true;
+        }
+      }
     }
     
-    return subject.length() != StringUtils.replaceEach(subject, searchList, emptyReplacementList).length();
+    return false;
   }
 
 }
