@@ -60,14 +60,15 @@ public class OctalConstantsAndEscapesShallNotBeUsedCheck extends CCheck {
     int indexOfSlash = 0;
     
     do {
-      indexOfSlash = value.indexOf('\\', indexOfSlash) + 1; 
-      if (indexOfSlash == 0 || indexOfSlash == value.length()) {
-        break;
-      }
+      indexOfSlash = value.indexOf('\\', indexOfSlash) + 1;
       
-      char characterAfterSlash = value.charAt(indexOfSlash);
-      if (characterAfterSlash >= '0' && characterAfterSlash <= '8') {
-        return true;
+      if (indexOfSlash != 0 && indexOfSlash != value.length()) {
+        char characterAfterSlash = value.charAt(indexOfSlash);
+        if (characterAfterSlash >= '0' && characterAfterSlash <= '8') {
+          return true;
+        }
+      } else {
+        break;
       }
     } while (true);
     
