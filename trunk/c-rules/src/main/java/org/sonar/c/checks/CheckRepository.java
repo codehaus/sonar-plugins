@@ -61,6 +61,10 @@ public class CheckRepository implements CCheckRepository {
     checks.add(BreakCheck.class);
     checks.add(ContinueCheck.class);
     checks.add(GotoCheck.class);
+    checks.add(CommaOperatorShallNotBeUsedCheck.class);
+    checks.add(FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck.class);
+    checks.add(FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck.class);
+    checks.add(IfElseConstructsShallBeTerminatedWithAnElseCheck.class);
     return checks;
   }
 }
