@@ -65,6 +65,7 @@ public class CheckRepository implements CCheckRepository {
     checks.add(FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck.class);
     checks.add(FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck.class);
     checks.add(IfElseConstructsShallBeTerminatedWithAnElseCheck.class);
+    checks.add(TrigraphsShallNotBeUsedCheck.class);
     return checks;
   }
 }
