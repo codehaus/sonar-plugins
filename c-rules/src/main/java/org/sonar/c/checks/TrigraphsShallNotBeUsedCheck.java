@@ -34,8 +34,6 @@ import com.sonarsource.c.plugin.CCheck;
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class TrigraphsShallNotBeUsedCheck extends CCheck {
   
-  private static final String[] TRIGRAPHS = new String[] { "??=", "??/", "??'", "??(", "??)", "??!", "??<", "??>", "??-" };
-  
   @Override
   public void init() {
     subscribeTo(LITERAL);
@@ -47,14 +45,30 @@ public class TrigraphsShallNotBeUsedCheck extends CCheck {
     }
   }
   
-  private static boolean containsAnyTrigraph(String subject) {
-    if (subject.contains("??")) {
-      for (String trigraph: TRIGRAPHS) {
-        if (subject.contains(trigraph)) {
-          return true;
-        }
+  private static boolean containsAnyTrigraph(String value) {
+    int indexAfterInterrogations = 0;
+    
+    do {
+      int i = value.indexOf("??", indexAfterInterrogations);
+      indexAfterInterrogations = i + 2;
+      if (i == -1 || indexAfterInterrogations >= value.length()) {
+        break;
       }
-    }
+      
+      char characterAfterInterrogations = value.charAt(indexAfterInterrogations);
+      switch (characterAfterInterrogations) {
+        case '=':
+        case '/':
+        case '\'':
+        case '(':
+        case ')':
+        case '!':
+        case '<':
+        case '>':
+        case '-':
+          return true;
+      }
+    } while (true);
     
     return false;
   }

@@ -47,8 +47,7 @@ public class FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck extend
   
   private boolean hasVariableNumberOfArguments(AstNode node) {
     AstNode parameterTypeList = node.findFirstDirectChild(getCGrammar().parameterTypeList);
-    if (parameterTypeList == null) return false;
-    return parameterTypeList.hasChildren(ELLIPSIS);
+    return (parameterTypeList == null) ? false : parameterTypeList.hasChildren(ELLIPSIS);
   }
 
 }
