@@ -57,18 +57,18 @@ public class OctalConstantsAndEscapesShallNotBeUsedCheck extends CCheck {
   }
   
   private boolean containsOctalEscape(String value) {
-    int indexOfSlash = 0;
+    int indexAfterSlash = 0;
     
     do {
-      indexOfSlash = value.indexOf('\\', indexOfSlash) + 1;
-      
-      if (indexOfSlash != 0 && indexOfSlash != value.length()) {
-        char characterAfterSlash = value.charAt(indexOfSlash);
-        if (characterAfterSlash >= '0' && characterAfterSlash <= '8') {
-          return true;
-        }
-      } else {
+      int i = value.indexOf('\\', indexAfterSlash);
+      indexAfterSlash = i + 1;
+      if (i == -1 || indexAfterSlash >= value.length()) {
         break;
+      }
+      
+      char characterAfterSlash = value.charAt(indexAfterSlash);
+      if (characterAfterSlash >= '0' && characterAfterSlash <= '8') {
+        return true;
       }
     } while (true);
     
@@ -76,7 +76,7 @@ public class OctalConstantsAndEscapesShallNotBeUsedCheck extends CCheck {
   }
   
   private boolean isNonZeroOctalConstant(AstNode node) {
-    return node.getType() == OCTAL_CONSTANT && !node.getTokenValue().equals("0");
+    return node.getType() == OCTAL_CONSTANT && !"0".equals(node.getTokenValue());
   }
 
 }

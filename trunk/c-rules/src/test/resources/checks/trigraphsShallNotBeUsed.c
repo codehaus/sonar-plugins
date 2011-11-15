@@ -13,4 +13,5 @@ int main(int argc, char* argv[])
   printf("??<\n"); // NOK
   printf("??>\n"); // NOK
   printf("??-\n"); // NOK
+  printf("??"); // OK, not a trigraph
 }
