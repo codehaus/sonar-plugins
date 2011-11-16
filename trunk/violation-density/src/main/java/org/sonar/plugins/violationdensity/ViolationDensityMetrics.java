@@ -30,8 +30,11 @@ public class ViolationDensityMetrics implements Metrics {
 
   public static final String VIOLATION_DENSITY_KEY = "violation_index";
   public static final Metric VIOLATION_DENSITY = new Metric.Builder(VIOLATION_DENSITY_KEY, "Violation Density", Metric.ValueType.PERCENT)
-      .setDescription("Violation Density").setDirection(Metric.DIRECTION_BETTER).setQualitative(false)
-      .setDomain(CoreMetrics.DOMAIN_RULES).create();
+      .setDescription("Violation Density")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_RULES)
+      .create();
 
   public List<Metric> getMetrics() {
     return Arrays.asList(VIOLATION_DENSITY);
