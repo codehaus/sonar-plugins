@@ -29,7 +29,7 @@ public class IfElseConstructsShallBeTerminatedWithAnElseCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/IfElseConstructsShallBeTerminatedWithAnElse.c", new IfElseConstructsShallBeTerminatedWithAnElseCheck()));
+    setCurrentSourceFile(scanFile("/checks/ifElseConstructsShallBeTerminatedWithAnElse.c", new IfElseConstructsShallBeTerminatedWithAnElseCheck()));
     
     assertNumberOfViolations(2);
     
