@@ -67,6 +67,7 @@ public class CheckRepository implements CCheckRepository {
     checks.add(IfElseConstructsShallBeTerminatedWithAnElseCheck.class);
     checks.add(TrigraphsShallNotBeUsedCheck.class);
     checks.add(OctalConstantsAndEscapesShallNotBeUsedCheck.class);
+    checks.add(NamesShallBeGivenForAllParametersInFunctionPrototypeCheck.class);
     return checks;
   }
 }
