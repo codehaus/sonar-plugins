@@ -67,6 +67,8 @@ public class TrigraphsShallNotBeUsedCheck extends CCheck {
         case '>':
         case '-':
           return true;
+        default:
+          // Not a trigraph
       }
     } while (true);
     

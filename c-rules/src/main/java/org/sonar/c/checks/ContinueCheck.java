@@ -35,27 +35,25 @@ import com.sonarsource.c.plugin.CCheck;
     description = "<p>The use of the 'continue' branching statement increase the "
         + "essential complexity of the source code and so prevent any refactoring of this source code to replace "
         + "all well structured control structures with a single statement.</p>"
-        + "<p>For instance, in the following java program fragment, it's not possible to apply the 'extract method' refactoring pattern :</p> "
+        + "<p>For instance, in the following C program fragment, it's not possible to apply the 'extract method' refactoring pattern :</p> "
         + "<pre>" + 
-        "mylabel : for(int i = 0 ; i< 3; i++) {\n" + 
-        "  for (int j = 0; j < 4 ; j++) {\n" + 
-        "    doSomething();\n" + 
-        "    if (checkSomething()) {\n" + 
-        "      continue mylabel;\n" + "    " +
-        "    }\n" + 
-        "  }\n" + 
+        "while ( i-- > 0 )\n" +
+        "{\n" +
+        "  x = f( i );\n" +
+        "  if ( x == 1 )\n" +
+        "  {" +
+        "    continue mylabel;\n" +
+        "  }\n" +
         "}\n" + "</pre>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class ContinueCheck extends CCheck {
 
   @Override
   public void init() {
-    subscribeTo(getCGrammar().jumpStatement);
+    subscribeTo(CKeyword.CONTINUE);
   }
 
   public void visitNode(AstNode node) {
-    if (node.hasChildren(CKeyword.CONTINUE)) {
-      log("The 'continue' branching statement prevent refactoring the source code to reduce the complexity.", node);
-    }
+    log("The 'continue' branching statement prevent refactoring the source code to reduce the complexity.", node);
   }
 }
