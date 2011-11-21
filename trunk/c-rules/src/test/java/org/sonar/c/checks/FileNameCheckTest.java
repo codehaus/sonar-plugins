@@ -43,4 +43,15 @@ public class FileNameCheckTest {
     
     assertOnlyOneViolation().withMessage("The file name does not conform to the specified format: ^[a-zA-Z0-9]*\\.cpp$");
   }
+  
+  @Test
+  public void testCheckWithSpecificFormatOk() {
+    FileNameCheck check = new FileNameCheck();
+    check.setFileNameFormat("^[a-zA-Z0-9]*\\.c$");
+    
+    setCurrentSourceFile(scanFile("/checks/fileName.c", check));
+    
+    assertNoViolation();
+  }
+  
 }
