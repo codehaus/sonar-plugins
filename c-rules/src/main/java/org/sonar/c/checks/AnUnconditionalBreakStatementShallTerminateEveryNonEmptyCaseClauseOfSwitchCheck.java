@@ -30,8 +30,8 @@ import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
 @Rule(key = "C.AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitch", name = "An unconditional break statement shall terminate every non-empty case clause of a switch.",
-    priority = Priority.MAJOR, description = "<p>An unconditional break statement shall terminate every non-empty case clause of a switch.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+    priority = Priority.MINOR, description = "<p>An unconditional break statement shall terminate every non-empty case clause of a switch.</p>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MINOR)
 public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck extends CCheck {
   
   @Override
