@@ -42,7 +42,7 @@ import com.sonarsource.c.plugin.CCheck;
         "  x = f( i );\n" +
         "  if ( x == 1 )\n" +
         "  {" +
-        "    continue mylabel;\n" +
+        "    continue;\n" +
         "  }\n" +
         "}\n" + "</pre>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
