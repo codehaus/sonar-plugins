@@ -69,6 +69,7 @@ public class CheckRepository implements CCheckRepository {
     checks.add(OctalConstantsAndEscapesShallNotBeUsedCheck.class);
     checks.add(NamesShallBeGivenForAllParametersInFunctionPrototypeCheck.class);
     checks.add(AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck.class);
+    checks.add(SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck.class);
     return checks;
   }
 }
