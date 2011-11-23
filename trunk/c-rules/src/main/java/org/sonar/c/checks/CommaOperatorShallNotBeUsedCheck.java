@@ -31,7 +31,7 @@ import com.sonarsource.c.plugin.CCheck;
     priority = Priority.MAJOR, description = "<p>The comma operator shall not be used.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class CommaOperatorShallNotBeUsedCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(getCGrammar().expression);

@@ -30,7 +30,7 @@ public class FunctionNameCheckTest {
   @Test
   public void testCheckWithDefaultSettings() {
     setCurrentSourceFile(scanFile("/checks/functionName.c", new FunctionNameCheck()));
-    
+
     assertOnlyOneViolation().atLine(3).withMessage("The function name does not conform to the specified format: ^[a-z][a-zA-Z0-9]*$");
   }
 
@@ -38,11 +38,11 @@ public class FunctionNameCheckTest {
   public void testCheckWithSpecificFormat() {
     FunctionNameCheck check = new FunctionNameCheck();
     check.setFunctionNameFormat("^[0-9][a-zA-Z0-9]*$");
-    
+
     setCurrentSourceFile(scanFile("/checks/functionName.c", check));
-    
+
     assertNumberOfViolations(2);
-    
+
     assertViolation().atLine(3).withMessage("The function name does not conform to the specified format: ^[0-9][a-zA-Z0-9]*$");
     assertViolation().atLine(8).withMessage("The function name does not conform to the specified format: ^[0-9][a-zA-Z0-9]*$");
   }

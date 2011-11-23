@@ -27,11 +27,12 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.NamesShallBeGivenForAllParametersInFunctionPrototype", name = "Names shall be given for all parameters in function prototype.",
+@Rule(key = "C.NamesShallBeGivenForAllParametersInFunctionPrototype",
+    name = "Names shall be given for all parameters in function prototype.",
     priority = Priority.MAJOR, description = "<p>Names shall be given for all parameters in function prototype.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class NamesShallBeGivenForAllParametersInFunctionPrototypeCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(getCGrammar().functionDeclarator);
@@ -42,7 +43,7 @@ public class NamesShallBeGivenForAllParametersInFunctionPrototypeCheck extends C
       log("Names shall be given for all parameters in function prototype.", node);
     }
   }
-  
+
   private boolean hasNameLessParameters(AstNode functionDeclaratorNode) {
     AstNode parametersList = functionDeclaratorNode.findFirstDirectChild(getCGrammar().parameterTypeList);
     return (parametersList == null) ? false : parametersList.hasChildren(getCGrammar().abstractDeclarator);

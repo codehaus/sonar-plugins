@@ -36,7 +36,7 @@ import com.sonarsource.c.plugin.CCheck;
         + "essential complexity of the source code and so prevent any refactoring of this source code to replace "
         + "all well structured control structures with a single statement.</p>"
         + "<p>For instance, in the following C program fragment, it's not possible to apply the 'extract method' refactoring pattern :</p> "
-        + "<pre>" + 
+        + "<pre>" +
         "while ( i-- > 0 )\n" +
         "{\n" +
         "  x = f( i );\n" +

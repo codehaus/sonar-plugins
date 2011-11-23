@@ -30,9 +30,9 @@ public class CommaOperatorShallNotBeUsedCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/commaOperatorShallNotBeUsed.c", new CommaOperatorShallNotBeUsedCheck()));
-    
+
     assertNumberOfViolations(8);
-    
+
     assertViolation().atLine(5).withMessage("The comma operator shall not be used.");
     assertViolation().atLine(6);
     assertViolation().atLine(9);

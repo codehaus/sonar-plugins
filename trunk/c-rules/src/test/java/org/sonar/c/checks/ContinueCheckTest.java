@@ -30,7 +30,8 @@ public class ContinueCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/continue.c", new ContinueCheck()));
-    
-    assertOnlyOneViolation().atLine(8).withMessage("The 'continue' branching statement prevent refactoring the source code to reduce the complexity.");
+
+    assertOnlyOneViolation().atLine(8).withMessage(
+        "The 'continue' branching statement prevent refactoring the source code to reduce the complexity.");
   }
 }

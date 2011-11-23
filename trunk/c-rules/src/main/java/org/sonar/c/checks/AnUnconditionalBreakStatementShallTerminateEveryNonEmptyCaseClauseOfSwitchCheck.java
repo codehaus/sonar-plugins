@@ -29,11 +29,13 @@ import com.sonar.c.api.CPunctuator;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitch", name = "An unconditional break statement shall terminate every non-empty case clause of a switch.",
-    priority = Priority.MAJOR, description = "<p>An unconditional break statement shall terminate every non-empty case clause of a switch.</p>")
+@Rule(key = "C.AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitch",
+    name = "An unconditional break statement shall terminate every non-empty case clause of a switch.",
+    priority = Priority.MAJOR,
+    description = "<p>An unconditional break statement shall terminate every non-empty case clause of a switch.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(getCGrammar().switchStatement);
@@ -48,37 +50,37 @@ public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseO
   private boolean hasMissingUnconditionalBreak(AstNode switchStatementNode) {
     AstNode compoundStatementNode = switchStatementNode.findFirstDirectChild(getCGrammar().compoundStatement);
     if (compoundStatementNode != null) {
-      for (AstNode labeledStatement: compoundStatementNode.findDirectChildren(getCGrammar().labeledStatement)) {
-        if (!hasBreak(labeledStatement)) {
+      for (AstNode labeledStatement : compoundStatementNode.findDirectChildren(getCGrammar().labeledStatement)) {
+        if ( !hasBreak(labeledStatement)) {
           return true;
         }
       }
     }
-    
+
     return false;
   }
-  
+
   private boolean hasBreak(AstNode labeledStatement) {
     return isBreakStatement(getInnerStatement(labeledStatement)) || isBreakStatement(getLastSiblingStatement(labeledStatement));
   }
-  
+
   private AstNode getInnerStatement(AstNode labeledStatement) {
     AstNode statement = labeledStatement.getLastChild();
     return (statement.getType() == getCGrammar().labeledStatement) ? getInnerStatement(statement) : statement;
   }
-  
+
   private AstNode getLastSiblingStatement(AstNode labeledStatement) {
     AstNode siblingStatement = labeledStatement;
     AstNode nextSibling;
-    
+
     do {
       siblingStatement = siblingStatement.nextSibling();
       nextSibling = siblingStatement.nextSibling();
     } while (nextSibling != null && nextSibling.getType() != CPunctuator.RCURLYBRACE);
-    
+
     return (labeledStatement.equals(siblingStatement)) ? null : siblingStatement;
   }
-  
+
   private boolean isBreakStatement(AstNode statement) {
     return statement != null && statement.getType() == getCGrammar().jumpStatement && statement.hasDirectChildren(CKeyword.BREAK);
   }

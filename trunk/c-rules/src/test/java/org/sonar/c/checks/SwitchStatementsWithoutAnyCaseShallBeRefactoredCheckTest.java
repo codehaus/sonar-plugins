@@ -29,10 +29,11 @@ public class SwitchStatementsWithoutAnyCaseShallBeRefactoredCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/switchStatementsWithoutAnyCaseShallBeRefactored.c", new SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck()));
-    
+    setCurrentSourceFile(scanFile("/checks/switchStatementsWithoutAnyCaseShallBeRefactored.c",
+        new SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck()));
+
     assertNumberOfViolations(4);
-    
+
     assertViolation().atLine(5).withMessage("Switch statements without any \"case\" shall be refactored.");
     assertViolation().atLine(7);
     assertViolation().atLine(13);

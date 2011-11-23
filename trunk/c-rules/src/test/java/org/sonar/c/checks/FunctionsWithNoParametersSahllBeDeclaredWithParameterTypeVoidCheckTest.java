@@ -29,10 +29,11 @@ public class FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheckT
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/functionsWithNoParametersSahllBeDeclaredWithParameterTypeVoid.c", new FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck()));
+    setCurrentSourceFile(scanFile("/checks/functionsWithNoParametersSahllBeDeclaredWithParameterTypeVoid.c",
+        new FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck()));
 
     assertNumberOfViolations(2);
-    
+
     assertViolation().atLine(1).withMessage("Functions with no parameters shall be declared with parameter type void.");
     assertViolation().atLine(4);
   }

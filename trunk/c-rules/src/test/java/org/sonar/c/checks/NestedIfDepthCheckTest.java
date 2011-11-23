@@ -33,7 +33,7 @@ public class NestedIfDepthCheckTest {
     check.setMaximumNestedIfLevel(2);
 
     setCurrentSourceFile(scanFile("/checks/nestedIfDepth.c", check));
-    
+
     assertOnlyOneViolation().atLine(13).withMessage("There should not be more than 2 nested if statements.");
   }
 }

@@ -30,7 +30,7 @@ public class SwitchStatementWithoutDefaultCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/switchStatementWithoutDefault.c", new SwitchStatementWithoutDefaultCheck()));
-    
+
     assertOnlyOneViolation().atLine(5).withMessage("Avoid switch statement without a \"default\" clause.");
   }
 }

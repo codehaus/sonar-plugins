@@ -30,7 +30,7 @@ public class ForLoopsWithoutBracesCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopWithoutBracesCheck()));
-    
+
     assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
   }
 }

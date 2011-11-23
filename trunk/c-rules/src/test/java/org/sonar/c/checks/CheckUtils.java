@@ -59,7 +59,7 @@ public class CheckUtils {
     if (sources.size() != 1) {
       throw new AssertionError("Only one SourceFile was expected whereas " + sources.size() + " has been returned.");
     } else {
-      SourceFile file = (SourceFile)sources.iterator().next();
+      SourceFile file = (SourceFile) sources.iterator().next();
       return file;
     }
   }
@@ -80,5 +80,5 @@ public class CheckUtils {
       }
     }
   }
-  
+
 }

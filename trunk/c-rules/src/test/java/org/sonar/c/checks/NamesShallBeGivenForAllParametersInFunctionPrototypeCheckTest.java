@@ -29,12 +29,13 @@ public class NamesShallBeGivenForAllParametersInFunctionPrototypeCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/namesShallBeGivenForAllParametersInFunctionPrototype.c", new NamesShallBeGivenForAllParametersInFunctionPrototypeCheck()));
-    
+    setCurrentSourceFile(scanFile("/checks/namesShallBeGivenForAllParametersInFunctionPrototype.c",
+        new NamesShallBeGivenForAllParametersInFunctionPrototypeCheck()));
+
     assertNumberOfViolations(2);
-    
+
     assertViolation().atLine(3).withMessage("Names shall be given for all parameters in function prototype.");
     assertViolation().atLine(7);
   }
-  
+
 }

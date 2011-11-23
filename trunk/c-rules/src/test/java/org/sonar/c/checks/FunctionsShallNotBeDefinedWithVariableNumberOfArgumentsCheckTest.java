@@ -29,10 +29,11 @@ public class FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/functionsShallNotBeDefinedWithVariableNumberOfArguments.c", new FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck()));
-    
+    setCurrentSourceFile(scanFile("/checks/functionsShallNotBeDefinedWithVariableNumberOfArguments.c",
+        new FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck()));
+
     assertNumberOfViolations(2);
-    
+
     assertViolation().atLine(5).withMessage("Functions shall not be defined with a variable number of arguments.");
     assertViolation().atLine(7);
   }

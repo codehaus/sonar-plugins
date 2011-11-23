@@ -30,9 +30,9 @@ public class OctalConstantsAndEscapesShallNotBeUsedCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/octalConstantsAndEscapesShallNotBeUsed.c", new OctalConstantsAndEscapesShallNotBeUsedCheck()));
-    
+
     assertNumberOfViolations(6);
-    
+
     assertViolation().atLine(6).withMessage("Octal constants (other than zero) and octal escape sequences shall not be used.");
     assertViolation().atLine(8);
     assertViolation().atLine(9);

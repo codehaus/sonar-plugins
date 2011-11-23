@@ -29,10 +29,11 @@ public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseO
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/anUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitch.c", new AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck()));
-    
+    setCurrentSourceFile(scanFile("/checks/anUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitch.c",
+        new AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck()));
+
     assertNumberOfViolations(5);
-    
+
     assertViolation().atLine(22).withMessage("An unconditional break statement shall terminate every non-empty case clause of a switch.");
     assertViolation().atLine(32);
     assertViolation().atLine(41);

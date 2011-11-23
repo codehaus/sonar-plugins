@@ -30,7 +30,7 @@ public class IfStatementWithoutBracesCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/ifStatementWithoutBraces.c", new IfStatementWithoutBracesCheck()));
-    
+
     assertOnlyOneViolation().atLine(9).withMessage("If statement must use braces.");
   }
 }
