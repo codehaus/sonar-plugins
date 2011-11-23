@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>sonar-c-rules-plugin</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>sonar-plugin</packaging>
 	<description>
 	   Provide a C rule engine. This C-Rules plugin requires the C plugin to be installed in order to work.
