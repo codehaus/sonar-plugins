@@ -41,6 +41,7 @@ public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseO
     subscribeTo(getCGrammar().switchStatement);
   }
 
+  @Override
   public void visitNode(AstNode switchStatementNode) {
     if (hasMissingUnconditionalBreak(switchStatementNode)) {
       log("An unconditional break statement shall terminate every non-empty case clause of a switch.", switchStatementNode);
@@ -66,7 +67,7 @@ public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseO
 
   private AstNode getInnerStatement(AstNode labeledStatement) {
     AstNode statement = labeledStatement.getLastChild();
-    return (statement.getType() == getCGrammar().labeledStatement) ? getInnerStatement(statement) : statement;
+    return statement.getType() == getCGrammar().labeledStatement ? getInnerStatement(statement) : statement;
   }
 
   private AstNode getLastSiblingStatement(AstNode labeledStatement) {
@@ -78,7 +79,7 @@ public class AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseO
       nextSibling = siblingStatement.nextSibling();
     } while (nextSibling != null && nextSibling.getType() != CPunctuator.RCURLYBRACE);
 
-    return (labeledStatement.equals(siblingStatement)) ? null : siblingStatement;
+    return labeledStatement.equals(siblingStatement) ? null : siblingStatement;
   }
 
   private boolean isBreakStatement(AstNode statement) {

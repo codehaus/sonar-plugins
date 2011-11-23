@@ -43,6 +43,7 @@ public class OctalConstantsAndEscapesShallNotBeUsedCheck extends CCheck {
     subscribeTo(OCTAL_CONSTANT);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (isQuotedLiteralAndContainsOctalEscape(node) || isNonZeroOctalConstant(node)) {
       log("Octal constants (other than zero) and octal escape sequences shall not be used.", node);

@@ -45,11 +45,13 @@ public class FileLocCheck extends CCheck implements AstAndTokenVisitor {
   private int numberOfLoc = 0;
   private int lastTokenLine = -1;
 
+  @Override
   public void visitFile(AstNode node) {
     numberOfLoc = 0;
     lastTokenLine = -1;
   }
 
+  @Override
   public void leaveFile(AstNode node) {
     if (numberOfLoc > maximumFileLocThreshold) {
       log("File has {0,number,integer} lines of code which is greater than {1,number,integer} authorized.", 1, numberOfLoc,

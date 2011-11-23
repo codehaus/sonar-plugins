@@ -37,6 +37,7 @@ public class EmptyBlockCheck extends CCheck {
     subscribeTo(getCGrammar().compoundStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (node.getNumberOfChildren() == 2) { // An empty compoundStatement contains only a left and a right curly braces
       log("Avoid empty block.", node);

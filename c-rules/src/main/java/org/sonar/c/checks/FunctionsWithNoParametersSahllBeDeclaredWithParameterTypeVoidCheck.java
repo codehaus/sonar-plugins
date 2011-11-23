@@ -38,6 +38,7 @@ public class FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck 
     subscribeTo(getCGrammar().functionDeclarator);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (hasNoParameters(node)) {
       log("Functions with no parameters shall be declared with parameter type void.", node);

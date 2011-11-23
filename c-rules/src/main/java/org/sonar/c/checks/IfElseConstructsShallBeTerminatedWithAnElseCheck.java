@@ -37,6 +37,7 @@ public class IfElseConstructsShallBeTerminatedWithAnElseCheck extends CCheck {
     subscribeTo(getCGrammar().ifStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if ( !isElseIf(node)) {
       AstNode innerNode = getInnerMostIfOrElse(node);

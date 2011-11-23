@@ -27,19 +27,46 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.IfStatementWithoutBraces", name = "If statement must use braces",
-    priority = Priority.MAJOR, description = "<p>Avoid using if statements without using curly braces.</p>")
+@Rule(key = "C.IfStatementWithoutBraces", name = "If-else statement must use braces",
+    priority = Priority.MAJOR, description = "<p>Avoid using if-else statements without using curly braces.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class IfStatementWithoutBracesCheck extends CCheck {
 
   @Override
   public void init() {
     subscribeTo(getCGrammar().ifStatement);
+    subscribeTo(getCGrammar().elseStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
-    if ( !node.hasDirectChildren(getCGrammar().compoundStatement)) {
-      log("If statement must use braces.", node);
+    if (isIfWithoutBraces(node) || isElseAndNotElseIfWithoutBraces(node)) {
+      log("If-else statements must use braces.", node);
     }
   }
+
+  private boolean isIfWithoutBraces(AstNode node) {
+    return isIf(node) && !hasBraces(node);
+  }
+
+  private boolean isElseAndNotElseIfWithoutBraces(AstNode node) {
+    return isElse(node) && !isElseIf(node) && !hasBraces(node);
+  }
+
+  private boolean isIf(AstNode node) {
+    return node != null && node.getType() == getCGrammar().ifStatement;
+  }
+
+  private boolean isElse(AstNode node) {
+    return node != null && node.getType() == getCGrammar().elseStatement;
+  }
+
+  private boolean isElseIf(AstNode node) {
+    return isElse(node) && node.hasDirectChildren(getCGrammar().ifStatement);
+  }
+
+  private boolean hasBraces(AstNode node) {
+    return node.hasDirectChildren(getCGrammar().compoundStatement);
+  }
+
 }

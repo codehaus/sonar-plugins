@@ -37,6 +37,7 @@ public class CommaOperatorShallNotBeUsedCheck extends CCheck {
     subscribeTo(getCGrammar().expression);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (node.getNumberOfChildren() == 3) {
       AstNode commaNode = node.getChild(1);

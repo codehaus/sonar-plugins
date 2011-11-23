@@ -38,6 +38,7 @@ public class NamesShallBeGivenForAllParametersInFunctionPrototypeCheck extends C
     subscribeTo(getCGrammar().functionDeclarator);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (hasNameLessParameters(node)) {
       log("Names shall be given for all parameters in function prototype.", node);
@@ -46,7 +47,7 @@ public class NamesShallBeGivenForAllParametersInFunctionPrototypeCheck extends C
 
   private boolean hasNameLessParameters(AstNode functionDeclaratorNode) {
     AstNode parametersList = functionDeclaratorNode.findFirstDirectChild(getCGrammar().parameterTypeList);
-    return (parametersList == null) ? false : parametersList.hasChildren(getCGrammar().abstractDeclarator);
+    return parametersList == null ? false : parametersList.hasChildren(getCGrammar().abstractDeclarator);
   }
 
 }

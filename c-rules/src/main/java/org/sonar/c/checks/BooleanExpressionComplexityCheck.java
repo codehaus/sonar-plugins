@@ -41,17 +41,20 @@ public class BooleanExpressionComplexityCheck extends CCheck {
   private int nestedExpressions = 0;
   private int nestedBooleanOperators = 0;
 
+  @Override
   public void init() {
     subscribeTo(getCGrammar().assignmentExpression, getCGrammar().logicalAndExpression, getCGrammar().logicalOrExpression,
         getCGrammar().exclusiveOrExpression, getCGrammar().inclusiveOrExpression, getCGrammar().andExpression,
         getCGrammar().equalityExpression, getCGrammar().relationalExpression);
   }
 
+  @Override
   public void visitFile(AstNode node) {
     nestedExpressions = 0;
     nestedBooleanOperators = 0;
   }
 
+  @Override
   public void visitNode(AstNode astNode) {
     if (astNode.is(getCGrammar().assignmentExpression)) {
       nestedExpressions++;
@@ -63,6 +66,7 @@ public class BooleanExpressionComplexityCheck extends CCheck {
     }
   }
 
+  @Override
   public void leaveNode(AstNode astNode) {
     if (astNode.is(getCGrammar().assignmentExpression)) {
       nestedExpressions--;

@@ -45,6 +45,7 @@ public class ExcessiveParameterListCheck extends CCheck {
     subscribeTo(getCGrammar().functionDeclarator);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     int numberOfParameters = getNumberOfParameters(node);
     if (numberOfParameters > maximumFunctionParameters) {

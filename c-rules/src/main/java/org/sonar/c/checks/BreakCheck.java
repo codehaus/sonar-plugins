@@ -38,8 +38,9 @@ public class BreakCheck extends CCheck {
     subscribeTo(getCGrammar().jumpStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
-    if (( !node.hasParents(getCGrammar().switchStatement)) && (node.hasChildren(CKeyword.BREAK))) {
+    if ( !node.hasParents(getCGrammar().switchStatement) && node.hasChildren(CKeyword.BREAK)) {
       log("Keyword break only allowed inside a switch block.", node);
     }
   }

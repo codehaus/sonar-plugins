@@ -53,6 +53,7 @@ public class ContinueCheck extends CCheck {
     subscribeTo(CKeyword.CONTINUE);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     log("The 'continue' branching statement prevent refactoring the source code to reduce the complexity.", node);
   }

@@ -39,6 +39,7 @@ public class TrigraphsShallNotBeUsedCheck extends CCheck {
     subscribeTo(LITERAL);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (containsAnyTrigraph(node.getTokenValue())) {
       log("Trigraphs shall not be used.", node);

@@ -47,6 +47,7 @@ public class FunctionLocCheck extends CCheck {
     subscribeTo(getCGrammar().functionDefinition);
   }
 
+  @Override
   public void leaveNode(AstNode node) {
     SourceFunction function = (SourceFunction) peekSourceCode();
     if (function.getInt(CMetric.LINES_OF_CODE) > maximumFunctionLocThreshold) {
