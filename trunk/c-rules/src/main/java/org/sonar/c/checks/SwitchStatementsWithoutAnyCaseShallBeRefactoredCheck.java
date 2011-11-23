@@ -55,7 +55,9 @@ public class SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck extends CCheck
       }
     }
 
-    return false;
+    AstNode labeledStatementNode = switchStatementNode.findFirstDirectChild(getCGrammar().labeledStatement);
+
+    return labeledStatementNode != null && hasCaseInLabeledStatement(labeledStatementNode);
   }
 
   private boolean hasCaseInLabeledStatement(AstNode labeledStatement) {
