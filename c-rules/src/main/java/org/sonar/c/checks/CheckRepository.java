@@ -28,15 +28,14 @@ import com.sonarsource.c.plugin.CCheck;
 import com.sonarsource.c.plugin.CCheckRepository;
 
 /**
- * This class is declared in the manifest and used by the C Plugin to find out which checks do exist in this module. 
+ * This class is declared in the manifest and used by the C Plugin to find out which checks do exist in this module.
  * 
  * <br>
- * <b>
- * Note: This mechanism should not be used anymore once it is possible to group plugins classloaders,
- * and this class should then be removed.
- * </b>
+ * <b> Note: This mechanism should not be used anymore once it is possible to group plugins classloaders, and this class should then be
+ * removed. </b>
  * 
- * @deprecated This mechanism should not be used anymore once it is possible to group plugins classloaders, and this class should then be removed.
+ * @deprecated This mechanism should not be used anymore once it is possible to group plugins classloaders, and this class should then be
+ *             removed.
  */
 @Deprecated
 public class CheckRepository implements CCheckRepository {

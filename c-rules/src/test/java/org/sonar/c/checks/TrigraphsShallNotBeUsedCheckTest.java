@@ -30,9 +30,9 @@ public class TrigraphsShallNotBeUsedCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/trigraphsShallNotBeUsed.c", new TrigraphsShallNotBeUsedCheck()));
-    
+
     assertNumberOfViolations(9);
-    
+
     assertViolation().atLine(7).withMessage("Trigraphs shall not be used.");
     assertViolation().atLine(8);
     assertViolation().atLine(9);

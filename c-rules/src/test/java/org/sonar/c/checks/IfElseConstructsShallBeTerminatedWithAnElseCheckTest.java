@@ -29,10 +29,11 @@ public class IfElseConstructsShallBeTerminatedWithAnElseCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/ifElseConstructsShallBeTerminatedWithAnElse.c", new IfElseConstructsShallBeTerminatedWithAnElseCheck()));
-    
+    setCurrentSourceFile(scanFile("/checks/ifElseConstructsShallBeTerminatedWithAnElse.c",
+        new IfElseConstructsShallBeTerminatedWithAnElseCheck()));
+
     assertNumberOfViolations(2);
-    
+
     assertViolation().atLine(22).withMessage("If ... else if constructs shall be terminated with an else clause.");
     assertViolation().atLine(32);
   }

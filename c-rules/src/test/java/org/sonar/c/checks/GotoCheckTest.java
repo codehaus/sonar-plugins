@@ -30,7 +30,7 @@ public class GotoCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/goto.c", new GotoCheck()));
-    
+
     assertOnlyOneViolation().atLine(10).withMessage("Avoid using goto statement.");
   }
 }

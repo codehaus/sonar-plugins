@@ -30,11 +30,12 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.OctalConstantsAndEscapesShallNotBeUsed", name = "Octal constants (other than zero) and octal escape sequences shall not be used.",
+@Rule(key = "C.OctalConstantsAndEscapesShallNotBeUsed",
+    name = "Octal constants (other than zero) and octal escape sequences shall not be used.",
     priority = Priority.MAJOR, description = "<p>Octal constants (other than zero) and octal escape sequences shall not be used.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class OctalConstantsAndEscapesShallNotBeUsedCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(LITERAL);
@@ -47,34 +48,34 @@ public class OctalConstantsAndEscapesShallNotBeUsedCheck extends CCheck {
       log("Octal constants (other than zero) and octal escape sequences shall not be used.", node);
     }
   }
-  
+
   private boolean isQuotedLiteralAndContainsOctalEscape(AstNode node) {
     return isQuotedLiteral(node) && containsOctalEscape(node.getTokenValue());
   }
-  
+
   private boolean isQuotedLiteral(AstNode node) {
     return node.getType() == LITERAL || node.getType() == CHARACTER_CONSTANT;
   }
-  
+
   private boolean containsOctalEscape(String value) {
     int indexAfterSlash = 0;
-    
+
     do {
       int i = value.indexOf('\\', indexAfterSlash);
       indexAfterSlash = i + 1;
       if (i == -1 || indexAfterSlash >= value.length()) {
         break;
       }
-      
+
       char characterAfterSlash = value.charAt(indexAfterSlash);
       if (characterAfterSlash >= '0' && characterAfterSlash <= '8') {
         return true;
       }
     } while (true);
-    
+
     return false;
   }
-  
+
   private boolean isNonZeroOctalConstant(AstNode node) {
     return node.getType() == OCTAL_CONSTANT && !"0".equals(node.getTokenValue());
   }

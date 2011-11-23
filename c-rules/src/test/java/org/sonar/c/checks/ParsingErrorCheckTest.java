@@ -31,7 +31,7 @@ public class ParsingErrorCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/parsingError.c", new ParsingErrorCheck()));
-    
+
     assertOnlyOneViolation().atLine(15).withMessage(containsString("<LPARENTHESIS type> but was : <; [SEMICOLON]>"));
   }
 }

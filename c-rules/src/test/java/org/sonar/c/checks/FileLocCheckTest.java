@@ -33,7 +33,7 @@ public class FileLocCheckTest {
     check.setMaximumFileLocThreshold(4);
 
     setCurrentSourceFile(scanFile("/checks/fileLoc.c", check));
-    
+
     assertOnlyOneViolation().atLine(1).withMessage("File has 9 lines of code which is greater than 4 authorized.");
   }
 }

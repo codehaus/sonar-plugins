@@ -32,40 +32,43 @@ import com.sonarsource.c.plugin.CCheck;
     priority = Priority.MAJOR, description = "<p>Switch statements without any \"case\" shall be refactored.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(getCGrammar().switchStatement);
   }
 
+  @Override
   public void visitNode(AstNode switchStatementNode) {
-    if (!hasCaseInSwitch(switchStatementNode)) {
+    if ( !hasCaseInSwitch(switchStatementNode)) {
       log("Switch statements without any \"case\" shall be refactored.", switchStatementNode);
     }
   }
-  
+
   private boolean hasCaseInSwitch(AstNode switchStatementNode) {
     AstNode compoundStatementNode = switchStatementNode.findFirstDirectChild(getCGrammar().compoundStatement);
     if (compoundStatementNode != null) {
-      for (AstNode labeledStatement: compoundStatementNode.findDirectChildren(getCGrammar().labeledStatement)) {
+      for (AstNode labeledStatement : compoundStatementNode.findDirectChildren(getCGrammar().labeledStatement)) {
         if (hasCaseInLabeledStatement(labeledStatement)) {
           return true;
         }
       }
     }
-    
+
     return false;
   }
-  
+
   private boolean hasCaseInLabeledStatement(AstNode labeledStatement) {
-    if (labeledStatement.hasDirectChildren(CKeyword.CASE)) return true;
+    if (labeledStatement.hasDirectChildren(CKeyword.CASE)) {
+      return true;
+    }
     AstNode innerLabeledStatement = getInnerLabeledStatement(labeledStatement);
-    return (innerLabeledStatement == null) ? false : hasCaseInLabeledStatement(innerLabeledStatement);
+    return innerLabeledStatement == null ? false : hasCaseInLabeledStatement(innerLabeledStatement);
   }
-  
+
   private AstNode getInnerLabeledStatement(AstNode labeledStatement) {
     AstNode statement = labeledStatement.getLastChild();
-    return (statement.getType() == getCGrammar().labeledStatement) ? statement : null;
+    return statement.getType() == getCGrammar().labeledStatement ? statement : null;
   }
 
 }

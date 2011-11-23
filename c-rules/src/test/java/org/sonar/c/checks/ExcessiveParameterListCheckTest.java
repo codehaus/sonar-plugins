@@ -31,9 +31,9 @@ public class ExcessiveParameterListCheckTest {
   public void testCheck() {
     ExcessiveParameterListCheck check = new ExcessiveParameterListCheck();
     check.setMaximumFunctionParameters(2);
-    
+
     setCurrentSourceFile(scanFile("/checks/excessiveParameterList.c", check));
-    
+
     assertOnlyOneViolation().atLine(12).withMessage("Function has 3 parameters which is greater than 2 authorized.");
   }
 }

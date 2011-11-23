@@ -33,7 +33,7 @@ import com.sonarsource.c.plugin.CCheck;
     priority = Priority.MAJOR, description = "<p>Trigraphs shall not be used.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class TrigraphsShallNotBeUsedCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(LITERAL);
@@ -44,17 +44,17 @@ public class TrigraphsShallNotBeUsedCheck extends CCheck {
       log("Trigraphs shall not be used.", node);
     }
   }
-  
+
   private static boolean containsAnyTrigraph(String value) {
     int indexAfterInterrogations = 0;
-    
+
     do {
       int i = value.indexOf("??", indexAfterInterrogations);
       indexAfterInterrogations = i + 2;
       if (i == -1 || indexAfterInterrogations >= value.length()) {
         break;
       }
-      
+
       char characterAfterInterrogations = value.charAt(indexAfterInterrogations);
       switch (characterAfterInterrogations) {
         case '=':
@@ -71,7 +71,7 @@ public class TrigraphsShallNotBeUsedCheck extends CCheck {
           // Not a trigraph
       }
     } while (true);
-    
+
     return false;
   }
 

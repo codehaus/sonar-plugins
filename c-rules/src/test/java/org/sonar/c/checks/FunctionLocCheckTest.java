@@ -33,7 +33,7 @@ public class FunctionLocCheckTest {
     check.setMaximumFunctionLocThreshold(3);
 
     setCurrentSourceFile(scanFile("/checks/functionLoc.c", check));
-    
+
     assertOnlyOneViolation().atLine(8).withMessage("Function has 4 lines of code which is greater than 3 authorized.");
   }
 }

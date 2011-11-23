@@ -31,33 +31,33 @@ import com.sonarsource.c.plugin.CCheck;
     priority = Priority.MAJOR, description = "<p>If ... else if constructs shall be terminated with an else clause.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class IfElseConstructsShallBeTerminatedWithAnElseCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(getCGrammar().ifStatement);
   }
 
   public void visitNode(AstNode node) {
-    if (!isElseIf(node)) {
+    if ( !isElseIf(node)) {
       AstNode innerNode = getInnerMostIfOrElse(node);
-      if (!innerNode.equals(node) && !isElse(innerNode)) {
+      if ( !innerNode.equals(node) && !isElse(innerNode)) {
         log("If ... else if constructs shall be terminated with an else clause.", node);
       }
     }
   }
-  
+
   private boolean isElseIf(AstNode node) {
     return isElse(node.getParent());
   }
-  
+
   private AstNode getInnerMostIfOrElse(AstNode node) {
     AstNode currentNode = node;
     AstNode returnNode;
-    
+
     // Walk down the if-else chain
     do {
       returnNode = currentNode;
-      
+
       if (isIf(currentNode)) {
         // Look for an else
         currentNode = currentNode.findFirstDirectChild(getCGrammar().elseStatement);
@@ -66,14 +66,14 @@ public class IfElseConstructsShallBeTerminatedWithAnElseCheck extends CCheck {
         currentNode = currentNode.findFirstDirectChild(getCGrammar().ifStatement);
       }
     } while (isIf(currentNode) || isElse(currentNode));
-    
+
     return returnNode;
   }
-  
+
   private boolean isIf(AstNode node) {
     return node != null && node.getType() == getCGrammar().ifStatement;
   }
-  
+
   private boolean isElse(AstNode node) {
     return node != null && node.getType() == getCGrammar().elseStatement;
   }

@@ -31,9 +31,9 @@ public class FunctionComplexityCheckTest {
   public void testCheck() {
     FunctionComplexityCheck check = new FunctionComplexityCheck();
     check.setMaximumFunctionComplexityThreshold(2);
-    
+
     setCurrentSourceFile(scanFile("/checks/functionComplexity.c", check));
-    
+
     assertOnlyOneViolation().atLine(8).withMessage("Function has a complexity of 3 which is greater than 2 authorized.");
   }
 }

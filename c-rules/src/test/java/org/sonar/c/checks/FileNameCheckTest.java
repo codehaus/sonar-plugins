@@ -30,7 +30,7 @@ public class FileNameCheckTest {
   @Test
   public void testCheckWithDefaultSettings() {
     setCurrentSourceFile(scanFile("/checks/fileName.cc", new FileNameCheck()));
-    
+
     assertOnlyOneViolation().withMessage("The file name does not conform to the specified format: ^([a-z0-9]|-|_)*\\.(c|h)$");
   }
 
@@ -38,20 +38,20 @@ public class FileNameCheckTest {
   public void testCheckWithSpecificFormat() {
     FileNameCheck check = new FileNameCheck();
     check.setFileNameFormat("^[a-zA-Z0-9]*\\.cpp$");
-    
+
     setCurrentSourceFile(scanFile("/checks/fileName.cc", check));
-    
+
     assertOnlyOneViolation().withMessage("The file name does not conform to the specified format: ^[a-zA-Z0-9]*\\.cpp$");
   }
-  
+
   @Test
   public void testCheckWithSpecificFormatOk() {
     FileNameCheck check = new FileNameCheck();
     check.setFileNameFormat("^[a-zA-Z0-9]*\\.c$");
-    
+
     setCurrentSourceFile(scanFile("/checks/fileName.c", check));
-    
+
     assertNoViolation();
   }
-  
+
 }

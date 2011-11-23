@@ -29,11 +29,12 @@ import static com.sonar.c.api.CPunctuator.*;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.FunctionsShallNotBeDefinedWithVariableNumberOfArguments", name = "Functions shall not be defined with a variable number of arguments.",
+@Rule(key = "C.FunctionsShallNotBeDefinedWithVariableNumberOfArguments",
+    name = "Functions shall not be defined with a variable number of arguments.",
     priority = Priority.BLOCKER, description = "<p>Functions shall not be defined with a variable number of arguments.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.BLOCKER)
 public class FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck extends CCheck {
-  
+
   @Override
   public void init() {
     subscribeTo(getCGrammar().functionDeclarator);
@@ -44,7 +45,7 @@ public class FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck extend
       log("Functions shall not be defined with a variable number of arguments.", node);
     }
   }
-  
+
   private boolean hasVariableNumberOfArguments(AstNode node) {
     AstNode parameterTypeList = node.findFirstDirectChild(getCGrammar().parameterTypeList);
     return (parameterTypeList == null) ? false : parameterTypeList.hasChildren(ELLIPSIS);

@@ -30,7 +30,7 @@ public class EmptyBlockCheckTest {
   @Test
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/emptyBlock.c", new EmptyBlockCheck()));
-    
+
     assertOnlyOneViolation().atLine(10).withMessage("Avoid empty block.");
   }
 }
