@@ -37,6 +37,7 @@ public class ForLoopWithoutBracesCheck extends CCheck {
     subscribeTo(getCGrammar().forStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if ( !node.hasDirectChildren(getCGrammar().compoundStatement)) {
       log("For loops must use braces.", node);

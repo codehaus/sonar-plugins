@@ -42,14 +42,17 @@ public class NestedIfDepthCheck extends CCheck {
 
   private Stack<AstNode> nestedIf = new Stack<AstNode>();
 
+  @Override
   public void init() {
     subscribeTo(getCGrammar().ifStatement);
   }
 
+  @Override
   public void visitFile(AstNode node) {
     nestedIf = new Stack<AstNode>();
   }
 
+  @Override
   public void visitNode(AstNode astNode) {
     nestedIf.add(astNode);
     if (nestedIf.size() == maximumNestedIfLevel + 1) {
@@ -57,6 +60,7 @@ public class NestedIfDepthCheck extends CCheck {
     }
   }
 
+  @Override
   public void leaveNode(AstNode astNode) {
     nestedIf.pop();
   }

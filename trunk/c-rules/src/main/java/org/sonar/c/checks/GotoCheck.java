@@ -37,6 +37,7 @@ public class GotoCheck extends CCheck {
     subscribeTo(getCGrammar().gotoStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     log("Avoid using goto statement.", node);
   }

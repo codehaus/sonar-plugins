@@ -47,6 +47,7 @@ public class FunctionComplexityCheck extends CCheck {
     subscribeTo(getCGrammar().functionDefinition);
   }
 
+  @Override
   public void leaveNode(AstNode node) {
     SourceFunction function = (SourceFunction) peekSourceCode();
     if (function.getInt(CMetric.COMPLEXITY) > maximumFunctionComplexityThreshold) {

@@ -41,6 +41,7 @@ public class SwitchStatementWithoutDefaultCheck extends CCheck {
     subscribeTo(getCGrammar().switchStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if ( !node.hasChildren(CKeyword.DEFAULT)) {
       log("Avoid switch statement without a \"default\" clause.", node);

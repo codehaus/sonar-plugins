@@ -40,6 +40,7 @@ public class CollapsibleIfStatementsCheck extends CCheck {
     subscribeTo(getCGrammar().ifStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (node.hasDirectChildren(getCGrammar().compoundStatement)
         && containsOnlyOneIfStatement(node.findFirstChild(getCGrammar().compoundStatement))) {

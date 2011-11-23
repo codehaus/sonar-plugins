@@ -20,11 +20,11 @@
 
 package org.sonar.c.checks;
 
+import static com.sonar.c.api.CPunctuator.*;
+
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-
-import static com.sonar.c.api.CPunctuator.*;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
@@ -40,6 +40,7 @@ public class FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck extend
     subscribeTo(getCGrammar().functionDeclarator);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if (hasVariableNumberOfArguments(node)) {
       log("Functions shall not be defined with a variable number of arguments.", node);
@@ -48,7 +49,7 @@ public class FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck extend
 
   private boolean hasVariableNumberOfArguments(AstNode node) {
     AstNode parameterTypeList = node.findFirstDirectChild(getCGrammar().parameterTypeList);
-    return (parameterTypeList == null) ? false : parameterTypeList.hasChildren(ELLIPSIS);
+    return parameterTypeList == null ? false : parameterTypeList.hasChildren(ELLIPSIS);
   }
 
 }

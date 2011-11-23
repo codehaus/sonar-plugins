@@ -31,6 +31,12 @@ public class IfStatementWithoutBracesCheckTest {
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/ifStatementWithoutBraces.c", new IfStatementWithoutBracesCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("If statement must use braces.");
+    assertNumberOfViolations(5);
+
+    assertViolation().atLine(7).withMessage("If-else statements must use braces.");
+    assertViolation().atLine(18);
+    assertViolation().atLine(33);
+    assertViolation().atLine(44);
+    assertViolation().atLine(50);
   }
 }

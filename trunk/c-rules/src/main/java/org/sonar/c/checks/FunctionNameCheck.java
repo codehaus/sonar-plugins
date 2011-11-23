@@ -47,6 +47,7 @@ public class FunctionNameCheck extends CCheck {
     functionNamePattern = Pattern.compile(functionNameFormat);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     String functionName = node.getTokenValue();
     if ( !functionNamePattern.matcher(functionName).matches()) {

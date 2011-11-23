@@ -37,6 +37,7 @@ public class WhileLoopWithoutBracesCheck extends CCheck {
     subscribeTo(getCGrammar().whileStatement, getCGrammar().doWhileStatement);
   }
 
+  @Override
   public void visitNode(AstNode node) {
     if ( !node.hasDirectChildren(getCGrammar().compoundStatement)) {
       log("While and Do/While loops must use braces.", node);
