@@ -40,6 +40,8 @@ int main(int argc, char* argv[])
       printf("Case 1\n");
       break;
   }
+  
+  switch (0) case 0: printf("0\n");
 
   return 0;
 }
