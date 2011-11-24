@@ -25,12 +25,12 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheckTest {
+public class FunctionsWithNoParametersShallBeDeclaredWithParameterTypeVoidCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/functionsWithNoParametersSahllBeDeclaredWithParameterTypeVoid.c",
-        new FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck()));
+    setCurrentSourceFile(scanFile("/checks/functionsWithNoParametersShallBeDeclaredWithParameterTypeVoid.c",
+        new FunctionsWithNoParametersShallBeDeclaredWithParameterTypeVoidCheck()));
 
     assertNumberOfViolations(2);
 

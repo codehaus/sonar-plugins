@@ -27,11 +27,11 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoid",
+@Rule(key = "C.FunctionsWithNoParametersShallBeDeclaredWithParameterTypeVoid",
     name = "Functions with no parameters shall be declared with parameter type void.",
     priority = Priority.MINOR, description = "<p>Functions with no parameters shall be declared with parameter type void.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MINOR)
-public class FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck extends CCheck {
+public class FunctionsWithNoParametersShallBeDeclaredWithParameterTypeVoidCheck extends CCheck {
 
   @Override
   public void init() {
