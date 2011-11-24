@@ -51,7 +51,7 @@ public class CCheckPlugin extends SonarPlugin {
     extensions.add(ContinueCheck.class);
     extensions.add(GotoCheck.class);
     extensions.add(CommaOperatorShallNotBeUsedCheck.class);
-    extensions.add(FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck.class);
+    extensions.add(FunctionsWithNoParametersShallBeDeclaredWithParameterTypeVoidCheck.class);
     extensions.add(FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck.class);
     extensions.add(IfElseConstructsShallBeTerminatedWithAnElseCheck.class);
     extensions.add(TrigraphsShallNotBeUsedCheck.class);
@@ -60,6 +60,7 @@ public class CCheckPlugin extends SonarPlugin {
     extensions.add(AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck.class);
     extensions.add(SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck.class);
     extensions.add(SwitchWithoutBracesCheck.class);
+    extensions.add(MixIncrementAndDecrementWithOtherOperatorsCheck.class);
 
     return extensions;
   }
