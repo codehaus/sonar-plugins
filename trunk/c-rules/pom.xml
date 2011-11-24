@@ -82,17 +82,6 @@
 
 	<build>
 		<plugins>
-			<!-- Remove this later when it is possible to groupe plugin classloaders -->
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<C-CheckRepository-Class>org.sonar.c.checks.CheckRepository</C-CheckRepository-Class>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.sonar</groupId>
 				<artifactId>sonar-packaging-maven-plugin</artifactId>
