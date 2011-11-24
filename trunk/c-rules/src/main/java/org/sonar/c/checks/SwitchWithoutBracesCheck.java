@@ -28,7 +28,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
 @Rule(key = "C.SwitchWithoutBraces", name = "Switch statements must use braces",
-    priority = Priority.BLOCKER, description = "<p>Avoid using switch statements without using curly braces.</p>")
+    priority = Priority.MAJOR, description = "<p>Avoid using switch statements without using curly braces.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class SwitchWithoutBracesCheck extends CCheck {
 
