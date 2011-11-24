@@ -31,9 +31,36 @@ public class CCheckPlugin extends SonarPlugin {
 
   public List getExtensions() {
     List<Class<? extends CCheck>> extensions = new ArrayList<Class<? extends CCheck>>();
-    for (Class<? extends CCheck> cCheckClass : new CheckRepository().getCheckClasses()) {
-      extensions.add(cCheckClass);
-    }
+
+    extensions.add(ParsingErrorCheck.class);
+    extensions.add(FunctionComplexityCheck.class);
+    extensions.add(EmptyBlockCheck.class);
+    extensions.add(SwitchStatementWithoutDefaultCheck.class);
+    extensions.add(BooleanExpressionComplexityCheck.class);
+    extensions.add(NestedIfDepthCheck.class);
+    extensions.add(FunctionLocCheck.class);
+    extensions.add(FileLocCheck.class);
+    extensions.add(IfStatementWithoutBracesCheck.class);
+    extensions.add(WhileLoopWithoutBracesCheck.class);
+    extensions.add(ForLoopWithoutBracesCheck.class);
+    extensions.add(CollapsibleIfStatementsCheck.class);
+    extensions.add(ExcessiveParameterListCheck.class);
+    extensions.add(FunctionNameCheck.class);
+    extensions.add(FileNameCheck.class);
+    extensions.add(BreakCheck.class);
+    extensions.add(ContinueCheck.class);
+    extensions.add(GotoCheck.class);
+    extensions.add(CommaOperatorShallNotBeUsedCheck.class);
+    extensions.add(FunctionsWithNoParametersSahllBeDeclaredWithParameterTypeVoidCheck.class);
+    extensions.add(FunctionsShallNotBeDefinedWithVariableNumberOfArgumentsCheck.class);
+    extensions.add(IfElseConstructsShallBeTerminatedWithAnElseCheck.class);
+    extensions.add(TrigraphsShallNotBeUsedCheck.class);
+    extensions.add(OctalConstantsAndEscapesShallNotBeUsedCheck.class);
+    extensions.add(NamesShallBeGivenForAllParametersInFunctionPrototypeCheck.class);
+    extensions.add(AnUnconditionalBreakStatementShallTerminateEveryNonEmptyCaseClauseOfSwitchCheck.class);
+    extensions.add(SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck.class);
+    extensions.add(SwitchWithoutBracesCheck.class);
+
     return extensions;
   }
 }
