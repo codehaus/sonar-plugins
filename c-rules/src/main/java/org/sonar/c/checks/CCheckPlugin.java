@@ -63,6 +63,7 @@ public class CCheckPlugin extends SonarPlugin {
     extensions.add(MixIncrementAndDecrementWithOtherOperatorsCheck.class);
     extensions.add(HiddenIdentifiersCheck.class);
     extensions.add(LineLengthCheck.class);
+    extensions.add(C99CommentsCheck.class);
 
     return extensions;
   }
