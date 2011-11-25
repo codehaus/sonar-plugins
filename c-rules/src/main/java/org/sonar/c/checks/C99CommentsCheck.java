@@ -28,7 +28,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Token;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.C99CommentsCheck", name = "C99/C++ single line comments (//...) shall not be used.",
+@Rule(key = "C.C99Comments", name = "C99/C++ single line comments (//...) shall not be used.",
     priority = Priority.MINOR, description = "<p>C99/C++ single line comments (//...) shall not be used.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MINOR)
 public class C99CommentsCheck extends CCheck {
