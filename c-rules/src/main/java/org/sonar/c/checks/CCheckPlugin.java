@@ -61,6 +61,7 @@ public class CCheckPlugin extends SonarPlugin {
     extensions.add(SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck.class);
     extensions.add(SwitchWithoutBracesCheck.class);
     extensions.add(MixIncrementAndDecrementWithOtherOperatorsCheck.class);
+    extensions.add(HiddenIdentifiersCheck.class);
 
     return extensions;
   }
