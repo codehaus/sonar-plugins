@@ -26,11 +26,7 @@ import java.util.List;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 
-/**
- * @deprecated Upgrade to a newer version of SSLR to have those methods available on AstNode, and see
- *             http://jira.sonarsource.com/browse/SSLR-99
- */
-@Deprecated
+// TODO Upgrade to a newer version of SSLR to have those methods available on AstNode, and see http://jira.sonarsource.com/browse/SSLR-99
 public final class AstNodeHelper {
 
   private AstNodeHelper() {
