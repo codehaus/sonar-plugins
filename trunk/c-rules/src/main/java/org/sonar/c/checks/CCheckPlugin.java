@@ -62,6 +62,7 @@ public class CCheckPlugin extends SonarPlugin {
     extensions.add(SwitchWithoutBracesCheck.class);
     extensions.add(MixIncrementAndDecrementWithOtherOperatorsCheck.class);
     extensions.add(HiddenIdentifiersCheck.class);
+    extensions.add(LineLengthCheck.class);
 
     return extensions;
   }
