@@ -26,8 +26,15 @@ import java.util.List;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 
+/**
+ * @deprecated Upgrade to a newer version of SSLR to have those methods available on AstNode, and see
+ *             http://jira.sonarsource.com/browse/SSLR-99
+ */
 @Deprecated
 public final class AstNodeHelper {
+
+  private AstNodeHelper() {
+  }
 
   /**
    * Find the all children having the requested type. Be careful, this method searches among all children whatever is their depth.
@@ -36,13 +43,13 @@ public final class AstNodeHelper {
    *          the node type
    * @return the list of matching children
    */
-  public static final List<AstNode> findChildren(AstNode node, AstNodeType... nodeTypes) {
+  public static List<AstNode> findChildren(AstNode node, AstNodeType... nodeTypes) {
     List<AstNode> nodes = new ArrayList<AstNode>();
     findChildren(node, nodes, nodeTypes);
     return nodes;
   }
 
-  private static final void findChildren(AstNode node, List<AstNode> result, AstNodeType... nodeTypes) {
+  private static void findChildren(AstNode node, List<AstNode> result, AstNodeType... nodeTypes) {
     for (AstNodeType nodeType : nodeTypes) {
       if (node.is(nodeType)) {
         result.add(node);
