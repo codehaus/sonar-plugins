@@ -33,7 +33,7 @@ import org.sonar.check.Rule;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.HiddenVariables", name = "Identifiers in an inner scope shall not hide outer scope ones by reusing the same name.",
+@Rule(key = "C.HiddenIdentifiers", name = "Identifiers in an inner scope shall not hide outer scope ones by reusing the same name.",
     priority = Priority.MAJOR,
     description = "<p>Identifiers in an inner scope shall not hide outer scope ones by reusing the same name.</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
