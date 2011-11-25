@@ -42,7 +42,7 @@ public class C99CommentsCheck extends CCheck {
     }
   }
 
-  private static final boolean isC99Comment(String comment) {
+  private static boolean isC99Comment(String comment) {
     return comment.startsWith("//");
   }
 
