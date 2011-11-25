@@ -42,7 +42,7 @@ public class ContainsInnerC99CommentsCheck extends CCheck {
     }
   }
 
-  private static final boolean containsInnerComment(String comment) {
+  private static boolean containsInnerComment(String comment) {
     return comment.substring(2).contains("//");
   }
 
