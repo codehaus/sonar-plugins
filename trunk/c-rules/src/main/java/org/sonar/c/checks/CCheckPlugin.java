@@ -65,6 +65,7 @@ public class CCheckPlugin extends SonarPlugin {
     extensions.add(LineLengthCheck.class);
     extensions.add(C99CommentsCheck.class);
     extensions.add(ContainsInnerC89CommentsCheck.class);
+    extensions.add(ContainsInnerC99CommentsCheck.class);
 
     return extensions;
   }
