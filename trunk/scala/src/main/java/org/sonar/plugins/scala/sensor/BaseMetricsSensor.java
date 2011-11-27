@@ -88,10 +88,10 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         addCodeMetrics(sensorContext, scalaFile, source);
         addPublicApiMetrics(sensorContext, scalaFile, source);
 
-        complexityOfClasses = generateNewMetricDistribution(complexityOfClasses,
+        complexityOfClasses = sumUpMetricDistributions(complexityOfClasses,
             ComplexityCalculator.measureComplexityOfClasses(source));
 
-        complexityOfFunctions = generateNewMetricDistribution(complexityOfFunctions,
+        complexityOfFunctions = sumUpMetricDistributions(complexityOfFunctions,
             ComplexityCalculator.measureComplexityOfFunctions(source));
 
       } catch (IOException ioe) {
@@ -136,7 +136,7 @@ public class BaseMetricsSensor extends AbstractScalaSensor {
         (double) PublicApiCounter.countUndocumentedPublicApi(source));
   }
 
-  private MetricDistribution generateNewMetricDistribution(MetricDistribution oldDistribution,
+  private MetricDistribution sumUpMetricDistributions(MetricDistribution oldDistribution,
       MetricDistribution newDistribution) {
     if (oldDistribution == null) {
       return newDistribution;
