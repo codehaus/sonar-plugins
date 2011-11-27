@@ -35,6 +35,14 @@ class PublicApiCounterSpec extends FlatSpec with ShouldMatchers {
     PublicApiCounter.countPublicApi("def test { println(42) }") should be (1)
   }
 
+  it should "count a simple value declaration" in {
+    PublicApiCounter.countPublicApi("val maybeImportantNumber = 42") should be (1)
+  }
+
+  it should "not count a private value declaration" in {
+    PublicApiCounter.countPublicApi("private val maybeImportantNumber = 42") should be (0)
+  }
+
   it should "not count a private function declaration" in {
     PublicApiCounter.countPublicApi("private def test = 42") should be (0)
   }
@@ -44,44 +52,99 @@ class PublicApiCounterSpec extends FlatSpec with ShouldMatchers {
   }
 
   it should "count a class declaration" in {
-    val source = """class A {
-        val b = "test"
-      }"""
-    PublicApiCounter.countPublicApi(source) should be (1)
+    PublicApiCounter.countPublicApi("class A {}") should be (1)
   }
 
   it should "count an object declaration" in {
-    val source = """object A {
-        val b = "test"
-      }"""
-    PublicApiCounter.countPublicApi(source) should be (1)
+    PublicApiCounter.countPublicApi("object A {}") should be (1)
   }
 
   it should "count a trait declaration" in {
-    val source = """trait A {
+    PublicApiCounter.countPublicApi("trait A {}") should be (1)
+  }
+
+  it should "not count a private class declaration" in {
+    PublicApiCounter.countPublicApi("private class A {}") should be (0)
+  }
+
+  it should "not count a private object declaration" in {
+    PublicApiCounter.countPublicApi("private object A {}") should be (0)
+  }
+
+  it should "not count a private trait declaration" in {
+    PublicApiCounter.countPublicApi("private trait A {}") should be (0)
+  }
+
+  it should "count an undocumented class declaration" in {
+    PublicApiCounter.countUndocumentedPublicApi("class A {}") should be (1)
+  }
+
+  it should "not count a documented class declaration as undocumented one" in {
+    val source = """/**
+       * This is a comment of a public api member.
+       */
+      class A {}"""
+    PublicApiCounter.countUndocumentedPublicApi(source) should be (0)
+  }
+
+  it should "count an undocumented class declaration with package declaration before" in {
+    val source = """package a.b.c
+
+      class A {}"""
+    PublicApiCounter.countUndocumentedPublicApi(source) should be (1)
+  }
+
+  it should "not count a documented class declaration with package declaration before as undocumented one" in {
+    val source = """package a.b.c
+
+      /**
+       * This is a comment of a public api member.
+       */
+      class A {}"""
+    PublicApiCounter.countUndocumentedPublicApi(source) should be (0)
+  }
+
+  it should "count all public api members of class and its undocumented ones" in {
+    val source = """package a.b.c
+
+      /**
+       * This is a comment of a public api member.
+       */
+      class A {
+
+        /**
+         * Well, don't panic. ;-)
+         */
+        val meaningOfLife = 42
+
         val b = "test"
+
+        def helloWorld { printString("Hello World!") }
+
+        private def printString(str: String) { println(str) }
+      }"""
+
+    PublicApiCounter.countPublicApi(source) should be (4)
+    PublicApiCounter.countUndocumentedPublicApi(source) should be (2)
+  }
+
+  it should "not count nested function and method declarations" in {
+    val source ="""def test = {
+        def a = 12 + 1
+        def b = 13 + 1
+
+        a + b + 42
       }"""
     PublicApiCounter.countPublicApi(source) should be (1)
   }
 
-  it should "not count a private class declaration" in {
-    val source = """private class A {
-        val b = "test"
-      }"""
-    PublicApiCounter.countPublicApi(source) should be (0)
-  }
+  it should "not count nested value declarations" in {
+    val source ="""val test = {
+        def a = 12 + 1
+        def b = 13 + 1
 
-  it should "not count a private object declaration" in {
-    val source = """private object A {
-        val b = "test"
+        a + b + 42
       }"""
-    PublicApiCounter.countPublicApi(source) should be (0)
-  }
-
-  it should "not count a private trait declaration" in {
-    val source = """private trait A {
-        val b = "test"
-      }"""
-    PublicApiCounter.countPublicApi(source) should be (0)
+    PublicApiCounter.countPublicApi(source) should be (1)
   }
 }
