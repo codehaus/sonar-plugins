@@ -15,7 +15,7 @@
 
   <name>Sonar Scala Plugin</name>
   <description>Enables analysis of Scala projects into Sonar.</description>
-  <!-- TODO add url to wiki here <url> ... </url> -->
+  <url>http://docs.codehaus.org/display/SONAR/Scala+Plugin</url>
   <inceptionYear>2011</inceptionYear>
   <organization>
     <name>Felix Müller</name>
