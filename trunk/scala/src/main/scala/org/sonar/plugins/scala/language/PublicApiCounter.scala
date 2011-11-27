@@ -34,58 +34,65 @@ object PublicApiCounter {
 
   private lazy val parser = new Parser()
 
+  private case class PublicApi(isDocumented: Boolean)
+
   def countPublicApi(source: String) = {
-
-    def countPublicApiTrees(tree: Tree, foundPublicApiMembers: Int = 0) : Int = tree match {
-
-      // recursive descent until found a syntax tree with countable public api declarations
-      case PackageDef(_, content) =>
-        foundPublicApiMembers + onList(content, countPublicApiTrees(_, 0))
-
-      case Template(_, _, content) =>
-        foundPublicApiMembers + onList(content, countPublicApiTrees(_, 0))
-
-      case DocDef(_, content) =>
-        countPublicApiTrees(content, foundPublicApiMembers)
-
-      case Block(stats, expr) =>
-        foundPublicApiMembers + onList(stats, countPublicApiTrees(_, 0)) + countPublicApiTrees(expr)
-
-      case Apply(_, args) =>
-        foundPublicApiMembers + onList(args, countPublicApiTrees(_, 0))
-
-      /*
-       * Countable public api declarations are classes, objects, traits, functions and
-       * methods with public access.
-       */
-
-      case classDef: ClassDef if (classDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
-        countPublicApiTrees(classDef.impl, foundPublicApiMembers)
-
-      case moduleDef: ModuleDef if (moduleDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
-        countPublicApiTrees(moduleDef.impl, foundPublicApiMembers)
-
-      case defDef: DefDef if (isEmptyConstructor(defDef) || defDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
-        countPublicApiTrees(defDef.rhs, foundPublicApiMembers)
-
-      case ClassDef(_, _, _, impl) =>
-        countPublicApiTrees(impl, foundPublicApiMembers + 1)
-
-      case ModuleDef(_, _, impl) =>
-        countPublicApiTrees(impl, foundPublicApiMembers + 1)
-
-      case defDef: DefDef =>
-        countPublicApiTrees(defDef.rhs, foundPublicApiMembers + 1)
-
-      case _ =>
-        foundPublicApiMembers
-    }
-
-    countPublicApiTrees(parser.parse(source))
+    countPublicApiTrees(parser.parse(source)).size
   }
 
   def countUndocumentedPublicApi(source: String) = {
-    // TODO add implementation
-    0
+    countPublicApiTrees(parser.parse(source)).count(!_.isDocumented)
+  }
+
+  private def countPublicApiTrees(tree: Tree, wasDocDefBefore: Boolean = false,
+      foundPublicApiMembers: List[PublicApi] = Nil) : List[PublicApi] = tree match {
+
+    // recursive descent until found a syntax tree with countable public api declarations
+    case PackageDef(_, content) =>
+      foundPublicApiMembers ++ content.flatMap(countPublicApiTrees(_, false, Nil))
+
+    case Template(_, _, content) =>
+      foundPublicApiMembers ++ content.flatMap(countPublicApiTrees(_, false, Nil))
+
+    case DocDef(_, content) =>
+      countPublicApiTrees(content, true, foundPublicApiMembers)
+
+    case Block(stats, expr) =>
+      foundPublicApiMembers ++ stats.flatMap(countPublicApiTrees(_, false, Nil)) ++ countPublicApiTrees(expr)
+
+    case Apply(_, args) =>
+      foundPublicApiMembers ++ args.flatMap(countPublicApiTrees(_, false, Nil))
+
+    case classDef: ClassDef if (classDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+      countPublicApiTrees(classDef.impl, false, foundPublicApiMembers)
+
+    case moduleDef: ModuleDef if (moduleDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+      countPublicApiTrees(moduleDef.impl, false, foundPublicApiMembers)
+
+    case defDef: DefDef if (isEmptyConstructor(defDef) || defDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+      countPublicApiTrees(defDef.rhs, false, foundPublicApiMembers)
+
+    case valDef: ValDef if (valDef.mods.hasFlag(ModifierFlags.PRIVATE)) =>
+      countPublicApiTrees(valDef.rhs, false, foundPublicApiMembers)
+
+    /*
+     * Countable public api declarations are classes, objects, traits, functions,
+     * methods and attributes with public access.
+     */
+
+    case ClassDef(_, _, _, impl) =>
+      countPublicApiTrees(impl, false, foundPublicApiMembers ++ List(PublicApi(wasDocDefBefore)))
+
+    case ModuleDef(_, _, impl) =>
+      countPublicApiTrees(impl, false, foundPublicApiMembers ++ List(PublicApi(wasDocDefBefore)))
+
+    case defDef: DefDef =>
+      foundPublicApiMembers ++ List(PublicApi(wasDocDefBefore))
+
+    case valDef: ValDef =>
+      foundPublicApiMembers ++ List(PublicApi(wasDocDefBefore))
+
+    case _ =>
+      foundPublicApiMembers
   }
 }
