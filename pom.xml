@@ -25,7 +25,6 @@
         <module>c-rules</module>
         <module>cutoff</module>
         <module>dotnet</module>
-        <module>email</module>
         <module>emma</module>
         <module>fb-contrib</module>
         <module>flex</module>
@@ -48,7 +47,6 @@
         <module>piwik</module>
         <module>quality-index</module>
         <module>radiator</module>
-        <module>rules-meter</module>
         <module>scm-activity</module>
         <module>security-rules</module>
         <module>sigmm</module>
@@ -60,7 +58,6 @@
         <module>timeline</module>
         <module>total-quality</module>
         <module>trac</module>
-        <module>twitter</module>
         <module>useless-code-tracker</module>
         <module>web</module>
         <module>xml</module>
