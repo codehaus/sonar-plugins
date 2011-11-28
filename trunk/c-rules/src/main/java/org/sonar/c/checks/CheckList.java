@@ -69,6 +69,7 @@ public final class CheckList {
     checks.add(ContainsInnerC99CommentsCheck.class);
     checks.add(IdentifierTooLongCheck.class);
     checks.add(CommentedCodeCheck.class);
+    checks.add(FunctionDeclarationsAtFileScopeCheck.class);
 
     return checks;
   }
