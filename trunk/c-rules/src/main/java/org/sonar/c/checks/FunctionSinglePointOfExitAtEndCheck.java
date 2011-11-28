@@ -32,17 +32,28 @@ import com.sonarsource.c.plugin.CCheck;
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.INFO)
 public class FunctionSinglePointOfExitAtEndCheck extends CCheck {
 
+  private int returnStatements;
+
   @Override
   public void init() {
-    subscribeTo(getCGrammar().functionDefinition);
+    subscribeTo(getCGrammar().functionDefinition, getCGrammar().returnStatement);
   }
 
   @Override
-  public void visitNode(AstNode functionDefinitionNode) {
-    int returnStatements = AstNodeHelper.findChildren(functionDefinitionNode, getCGrammar().returnStatement).size();
+  public void visitNode(AstNode node) {
+    if (node.is(getCGrammar().functionDefinition)) {
+      returnStatements = 0;
+    } else if (node.is(getCGrammar().returnStatement)) {
+      returnStatements++;
+    }
+  }
 
-    if (returnStatements != 0 && (returnStatements > 1 || !hasReturnAtEnd(functionDefinitionNode))) {
-      log("A function shall have a single point of exit at the end of the function.", functionDefinitionNode);
+  @Override
+  public void leaveNode(AstNode node) {
+    if (node.is(getCGrammar().functionDefinition)) {
+      if (returnStatements != 0 && (returnStatements > 1 || !hasReturnAtEnd(node))) {
+        log("A function shall have a single point of exit at the end of the function.", node);
+      }
     }
   }
 
