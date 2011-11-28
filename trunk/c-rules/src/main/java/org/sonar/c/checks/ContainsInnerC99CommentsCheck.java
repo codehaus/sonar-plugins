@@ -28,8 +28,8 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Token;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.ContainsInnerC99Comments", name = "A comment shall not contains the string \"//\".",
-    priority = Priority.MINOR, description = "<p>A comment shall not contains the string \"//\".</p>")
+@Rule(key = "C.ContainsInnerC99Comments", name = "A comment shall not contains the string \"//\".", priority = Priority.MINOR,
+    description = "<p>A comment shall not contains the string \"//\".</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MINOR)
 public class ContainsInnerC99CommentsCheck extends CCheck {
 
@@ -43,7 +43,6 @@ public class ContainsInnerC99CommentsCheck extends CCheck {
   }
 
   private static boolean containsInnerComment(String comment) {
-    return comment.substring(2).contains("//");
+    return comment.indexOf("//", 2) > -1;
   }
-
 }
