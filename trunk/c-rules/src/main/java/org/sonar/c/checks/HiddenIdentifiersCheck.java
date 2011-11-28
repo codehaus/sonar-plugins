@@ -43,6 +43,8 @@ public class HiddenIdentifiersCheck extends CCheck {
 
   private final Stack<Scope> scopes = new Stack<Scope>();
   private int structOrUnionNestedLevel;
+  private boolean inFunctionDefinition;
+  private boolean inFunctionPrototype;
 
   private static class Scope {
 
@@ -69,7 +71,7 @@ public class HiddenIdentifiersCheck extends CCheck {
   @Override
   public void init() {
     subscribeTo(getCGrammar().forStatement, getCGrammar().compoundStatement, getCGrammar().functionDefinition,
-        getCGrammar().directDeclarator, getCGrammar().structOrUnionSpecifier);
+        getCGrammar().directDeclarator, getCGrammar().structOrUnionSpecifier, getCGrammar().functionDeclarator);
   }
 
   @Override
@@ -77,11 +79,13 @@ public class HiddenIdentifiersCheck extends CCheck {
     scopes.clear();
     pushNewScope();
     structOrUnionNestedLevel = 0;
+    inFunctionDefinition = false;
+    inFunctionPrototype = false;
   }
 
   @Override
   public void visitNode(AstNode node) {
-    if (checkEnterWithinStructOrUnion(node)) {
+    if (checkEnterWithinFunctionPrototype(node) || checkEnterWithinStructOrUnion(node)) {
       return;
     }
 
@@ -102,7 +106,7 @@ public class HiddenIdentifiersCheck extends CCheck {
 
   @Override
   public void leaveNode(AstNode node) {
-    if (checkExitOfStructOrUnion(node)) {
+    if (checExitWithinFunctionPrototype(node) || checkExitOfStructOrUnion(node)) {
       return;
     }
 
@@ -122,13 +126,40 @@ public class HiddenIdentifiersCheck extends CCheck {
   }
 
   private boolean checkExitOfStructOrUnion(AstNode node) {
+    int oldStructOrUnionNestedLevel = structOrUnionNestedLevel;
+
     structOrUnionNestedLevel -= node.is(getCGrammar().structOrUnionSpecifier) ? 1 : 0;
 
     if (structOrUnionNestedLevel < 0) {
       throw new IllegalStateException("structOrUnionNestedLevel < 0");
     }
 
-    return structOrUnionNestedLevel > 0;
+    return oldStructOrUnionNestedLevel > 0;
+  }
+
+  private boolean checkEnterWithinFunctionPrototype(AstNode node) {
+    if (node.is(getCGrammar().functionDefinition)) {
+      inFunctionDefinition = true;
+    }
+    else if (node.is(getCGrammar().functionDeclarator)) {
+      if ( !inFunctionDefinition) {
+        inFunctionPrototype = true;
+      } else {
+        inFunctionDefinition = false;
+      }
+    }
+
+    return inFunctionPrototype;
+  }
+
+  private boolean checExitWithinFunctionPrototype(AstNode node) {
+    boolean oldInFunctionPrototype = inFunctionPrototype;
+
+    if (inFunctionPrototype && node.is(getCGrammar().functionDeclarator)) {
+      inFunctionPrototype = false;
+    }
+
+    return oldInFunctionPrototype;
   }
 
   private void pushNewScope() {

@@ -15,8 +15,14 @@ void my_function(int fileA) /* NOK, fileA at 11 */
 
 }
 
+void function_prototype_1(int arg1, int arg2);
+void function_prototype_2(int arg1, int arg2);
+
 int main(int argc, char* argv[])
 {
+  void function_prototype_3(int arg1, int arg2);
+  void function_prototype_4(int arg1, int arg2);
+
   int a;
   int b;
   
@@ -53,7 +59,7 @@ int main(int argc, char* argv[])
   {
     struct {
       int my_int;
-    } a; /* NOK, a at 20 */
+    } a; /* NOK, a at 26 */
     
     a.my_int = 12;
     
@@ -62,7 +68,7 @@ int main(int argc, char* argv[])
   }
   
   {
-    int a; /* NOK, a at 20 */
+    int a; /* NOK, a at 26 */
     int fileA; /* NOK, fileA at 11 */
   }
   
@@ -71,7 +77,7 @@ int main(int argc, char* argv[])
     int x = 123; /* x is not initialized (unreachable code), but it *is* declared! */
     case 0:
       printf("case 0, x = %d\n", x); /* x is visible here, but uninitialized */
-      int b; /* NOK, C99, b at 21 */
+      int b; /* NOK, C99, b at 27 */
       int c;
   }
   
@@ -85,7 +91,7 @@ int main(int argc, char* argv[])
   
   for (int i = 0; i < 3; i++)
   {
-    int i = 0; /* NOK, i at 86 */ /* THIS IS NOT A REDECLARATION! The for loop creates a scope, and the compound statement an inner one */
+    int i = 0; /* NOK, i at 92 */ /* THIS IS NOT A REDECLARATION! The for loop creates a scope, and the compound statement an inner one */
     break;
   }
   
@@ -99,7 +105,7 @@ int main(int argc, char* argv[])
   a = 0;
   while (a < 3)
   {
-    int a; /* NOK, a at 99 */
+    int a; /* NOK, a at 26 */
     int z;
     printf("a = %d\n", a);
     a++;
