@@ -39,7 +39,9 @@ public class CommentedCodeCheck extends CCheck {
 
   private static final double THRESHOLD = 0.8;
 
-  private final CodeRecognizer codeRecognizer = new CodeRecognizer(THRESHOLD, new LanguageFootprint() {
+  private final CodeRecognizer codeRecognizer = new CodeRecognizer(THRESHOLD, new CRecognizer());
+
+  private static class CRecognizer implements LanguageFootprint {
 
     public Set<Detector> getDetectors() {
       Set<Detector> detectors = Sets.newHashSet();
@@ -52,7 +54,8 @@ public class CommentedCodeCheck extends CCheck {
 
       return detectors;
     }
-  });
+
+  }
 
   @Override
   public void leaveFile(AstNode node) {

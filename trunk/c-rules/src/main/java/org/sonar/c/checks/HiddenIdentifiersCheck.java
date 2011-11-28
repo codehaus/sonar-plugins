@@ -44,7 +44,7 @@ public class HiddenIdentifiersCheck extends CCheck {
   private final Stack<Scope> scopes = new Stack<Scope>();
   private int structOrUnionNestedLevel;
 
-  private class Scope {
+  private static class Scope {
 
     private final Map<String, Integer> declarations = new HashMap<String, Integer>();
 
