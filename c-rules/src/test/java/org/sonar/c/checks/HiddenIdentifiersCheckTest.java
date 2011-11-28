@@ -40,19 +40,19 @@ public class HiddenIdentifiersCheckTest {
     assertNumberOfViolations(15);
 
     assertViolation().atLine(13).withMessage(getFormattedMessage("fileA", 11));
-    assertViolation().atLine(23).withMessage(getFormattedMessage("errno", 10));
-    assertViolation().atLine(26).withMessage(getFormattedMessage("fileA", 11));
-    assertViolation().atLine(37).withMessage(getFormattedMessage("fileA", 11));
-    assertViolation().atLine(40).withMessage(getFormattedMessage("a", 20));
-    assertViolation().atLine(48).withMessage(getFormattedMessage("a", 20));
-    assertViolation().atLine(51).withMessage(getFormattedMessage("foobar", 8));
-    assertViolation().atLine(56).withMessage(getFormattedMessage("a", 20));
-    assertViolation().atLine(60).withMessage(getFormattedMessage("foobar", 8));
-    assertViolation().atLine(61).withMessage(getFormattedMessage("fileA", 11));
-    assertViolation().atLine(65).withMessage(getFormattedMessage("a", 20));
-    assertViolation().atLine(66).withMessage(getFormattedMessage("fileA", 11));
-    assertViolation().atLine(74).withMessage(getFormattedMessage("b", 21));
-    assertViolation().atLine(88).withMessage(getFormattedMessage("i", 86));
-    assertViolation().atLine(102).withMessage(getFormattedMessage("a", 20));
+    assertViolation().atLine(29).withMessage(getFormattedMessage("errno", 10));
+    assertViolation().atLine(32).withMessage(getFormattedMessage("fileA", 11));
+    assertViolation().atLine(43).withMessage(getFormattedMessage("fileA", 11));
+    assertViolation().atLine(46).withMessage(getFormattedMessage("a", 26));
+    assertViolation().atLine(54).withMessage(getFormattedMessage("a", 26));
+    assertViolation().atLine(57).withMessage(getFormattedMessage("foobar", 8));
+    assertViolation().atLine(62).withMessage(getFormattedMessage("a", 26));
+    assertViolation().atLine(66).withMessage(getFormattedMessage("foobar", 8));
+    assertViolation().atLine(67).withMessage(getFormattedMessage("fileA", 11));
+    assertViolation().atLine(71).withMessage(getFormattedMessage("a", 26));
+    assertViolation().atLine(72).withMessage(getFormattedMessage("fileA", 11));
+    assertViolation().atLine(80).withMessage(getFormattedMessage("b", 27));
+    assertViolation().atLine(94).withMessage(getFormattedMessage("i", 92));
+    assertViolation().atLine(108).withMessage(getFormattedMessage("a", 26));
   }
 }
