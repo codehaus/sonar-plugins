@@ -21,25 +21,32 @@
 package org.sonar.c.checks;
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.squid.recognizer.*;
+import org.sonar.squid.recognizer.CodeRecognizer;
+import org.sonar.squid.recognizer.ContainsDetector;
+import org.sonar.squid.recognizer.Detector;
+import org.sonar.squid.recognizer.EndWithDetector;
+import org.sonar.squid.recognizer.KeywordsDetector;
+import org.sonar.squid.recognizer.LanguageFootprint;
 
 import com.google.common.collect.Sets;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Token;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.CommentedCode", name = "Sections of code should not be \"commented out\".",
-    priority = Priority.BLOCKER, description = "<p>Sections of code should not be \"commented out\".</p>")
+@Rule(key = "C.CommentedCode", name = "Sections of code should not be \"commented out\".", priority = Priority.BLOCKER,
+    description = "<p>Sections of code should not be \"commented out\".</p>")
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.BLOCKER)
 public class CommentedCodeCheck extends CCheck {
 
-  private static final double THRESHOLD = 0.8;
+  private static final double THRESHOLD = 0.9;
 
   private final CodeRecognizer codeRecognizer = new CodeRecognizer(THRESHOLD, new CRecognizer());
+  private final Pattern regexpToDivideStringByLine = Pattern.compile("(\r?\n)|(\r)");
 
   private static class CRecognizer implements LanguageFootprint {
 
@@ -60,11 +67,12 @@ public class CommentedCodeCheck extends CCheck {
   @Override
   public void leaveFile(AstNode node) {
     for (Token comment : getComments()) {
-      String lines[] = splitLines(extractComment(comment.getValue()));
+      String lines[] = regexpToDivideStringByLine.split(extractComment(comment.getValue()));
 
       for (int lineOffset = 0; lineOffset < lines.length; lineOffset++) {
         if (codeRecognizer.isLineOfCode(lines[lineOffset])) {
           log("Sections of code should not be \"commented out\".", comment.getLine() + lineOffset);
+          break;
         }
       }
     }
@@ -72,9 +80,5 @@ public class CommentedCodeCheck extends CCheck {
 
   private static String extractComment(String string) {
     return "/*".equals(string.substring(0, 2)) ? string.substring(2, string.length() - 2) : string.substring(2);
-  }
-
-  private static String[] splitLines(String string) {
-    return string.replace("\r\n", "\n").replace('\r', '\n').split("\n", -1);
   }
 }
