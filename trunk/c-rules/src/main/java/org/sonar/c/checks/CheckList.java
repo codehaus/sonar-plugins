@@ -62,7 +62,7 @@ public final class CheckList {
     checks.add(SwitchStatementsWithoutAnyCaseShallBeRefactoredCheck.class);
     checks.add(SwitchWithoutBracesCheck.class);
     checks.add(MixIncrementAndDecrementWithOtherOperatorsCheck.class);
-    //checks.add(HiddenIdentifiersCheck.class);
+    checks.add(HiddenIdentifiersCheck.class);
     checks.add(LineLengthCheck.class);
     checks.add(C99CommentsCheck.class);
     checks.add(ContainsInnerC89CommentsCheck.class);
