@@ -70,6 +70,7 @@ public final class CheckList {
     checks.add(IdentifierTooLongCheck.class);
     checks.add(CommentedCodeCheck.class);
     checks.add(FunctionDeclarationsAtFileScopeCheck.class);
+    checks.add(FunctionSinglePointOfExitAtEndCheck.class);
 
     return checks;
   }
