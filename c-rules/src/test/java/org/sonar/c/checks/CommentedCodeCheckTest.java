@@ -20,8 +20,10 @@
 
 package org.sonar.c.checks;
 
-import static org.sonar.c.checks.CheckMatchers.*;
-import static org.sonar.c.checks.CheckUtils.*;
+import static org.sonar.c.checks.CheckMatchers.assertNumberOfViolations;
+import static org.sonar.c.checks.CheckMatchers.assertViolation;
+import static org.sonar.c.checks.CheckMatchers.setCurrentSourceFile;
+import static org.sonar.c.checks.CheckUtils.scanFile;
 
 import org.junit.Test;
 
@@ -31,10 +33,9 @@ public class CommentedCodeCheckTest {
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/commentedCode.c", new CommentedCodeCheck()));
 
-    assertNumberOfViolations(3);
+    assertNumberOfViolations(2);
 
     assertViolation().atLine(6).withMessage("Sections of code should not be \"commented out\".");
-    assertViolation().atLine(10);
     assertViolation().atLine(13);
   }
 }
