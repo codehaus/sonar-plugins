@@ -112,5 +112,9 @@ int main(int argc, char* argv[])
     if (a > 10) break; /* the condition of the while is evaluated using the outer a */
   }
   
+  /* The 2 following lines are actually failing, limitation of our solution */
+  int argc; /* NOK, argc at 25 */
+  int argv; /* NOK, argv at 25 */
+  
   return 0;
 }
