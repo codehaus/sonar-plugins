@@ -50,10 +50,8 @@ public class FunctionSinglePointOfExitAtEndCheck extends CCheck {
 
   @Override
   public void leaveNode(AstNode node) {
-    if (node.is(getCGrammar().functionDefinition)) {
-      if (returnStatements != 0 && (returnStatements > 1 || !hasReturnAtEnd(node))) {
-        log("A function shall have a single point of exit at the end of the function.", node);
-      }
+    if (node.is(getCGrammar().functionDefinition) && returnStatements != 0 && (returnStatements > 1 || !hasReturnAtEnd(node))) {
+      log("A function shall have a single point of exit at the end of the function.", node);
     }
   }
 
