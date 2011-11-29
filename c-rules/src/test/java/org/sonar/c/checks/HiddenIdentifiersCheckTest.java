@@ -37,7 +37,7 @@ public class HiddenIdentifiersCheckTest {
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/hiddenIdentifiers.c", new HiddenIdentifiersCheck()));
 
-    assertNumberOfViolations(15);
+    assertNumberOfViolations(17);
 
     assertViolation().atLine(13).withMessage(getFormattedMessage("fileA", 11));
     assertViolation().atLine(29).withMessage(getFormattedMessage("errno", 10));
@@ -54,5 +54,7 @@ public class HiddenIdentifiersCheckTest {
     assertViolation().atLine(80).withMessage(getFormattedMessage("b", 27));
     assertViolation().atLine(94).withMessage(getFormattedMessage("i", 92));
     assertViolation().atLine(108).withMessage(getFormattedMessage("a", 26));
+    assertViolation().atLine(116).withMessage(getFormattedMessage("argc", 21));
+    assertViolation().atLine(117).withMessage(getFormattedMessage("argv", 21));
   }
 }
