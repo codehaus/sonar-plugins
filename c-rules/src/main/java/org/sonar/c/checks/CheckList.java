@@ -71,6 +71,7 @@ public final class CheckList {
     checks.add(CommentedCodeCheck.class);
     checks.add(FunctionDeclarationsAtFileScopeCheck.class);
     checks.add(FunctionSinglePointOfExitAtEndCheck.class);
+    checks.add(ForLoopExpressionsConcernedOnlyWithLoopControlCheck.class);
 
     return checks;
   }
