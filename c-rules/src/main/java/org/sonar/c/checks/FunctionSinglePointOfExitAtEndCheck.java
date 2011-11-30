@@ -28,8 +28,8 @@ import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
 @Rule(key = "C.FunctionSinglePointOfExitAtEnd", name = "A function shall have a single point of exit at the end of the function.",
-    priority = Priority.INFO, description = "<p>A function shall have a single point of exit at the end of the function.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.INFO)
+    priority = Priority.MINOR, description = "<p>A function shall have a single point of exit at the end of the function.</p>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MINOR)
 public class FunctionSinglePointOfExitAtEndCheck extends CCheck {
 
   private int returnStatements;
