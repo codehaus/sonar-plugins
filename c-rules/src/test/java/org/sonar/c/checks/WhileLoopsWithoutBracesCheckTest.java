@@ -29,7 +29,7 @@ public class WhileLoopsWithoutBracesCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/whileLoopsWithoutBraces.c", new WhileLoopWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/whileLoopsWithoutBraces.c", new WhileLoopsWithoutBracesCheck()));
 
     assertOnlyOneViolation().atLine(13).withMessage("While and Do/While loops must use braces.");
   }

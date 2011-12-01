@@ -20,17 +20,25 @@
 
 package org.sonar.c.checks;
 
-import static org.sonar.c.checks.CheckMatchers.*;
-import static org.sonar.c.checks.CheckUtils.*;
+import org.sonar.check.BelongsToProfile;
+import org.sonar.check.Priority;
+import org.sonar.check.Rule;
 
-import org.junit.Test;
+import com.sonar.sslr.api.AstNode;
+import com.sonarsource.c.plugin.CCheck;
 
-public class ForLoopsWithoutBracesCheckTest {
+@Rule(key = "C.DoNotUseGoto", name = "Goto statement must not be used", priority = Priority.MAJOR,
+    description = "<p>Avoid using goto statement.</p>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+public class DoNotUseGotoCheck extends CCheck {
 
-  @Test
-  public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+  @Override
+  public void init() {
+    subscribeTo(getCGrammar().gotoStatement);
+  }
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+  @Override
+  public void visitNode(AstNode node) {
+    log("Avoid using goto statement.", node);
   }
 }

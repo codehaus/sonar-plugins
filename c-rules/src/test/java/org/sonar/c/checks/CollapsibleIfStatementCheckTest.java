@@ -25,12 +25,12 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class CollapsibleIfStatementCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/collapsibleIfStatement.c", new CollapsibleIfStatementCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertOnlyOneViolation().atLine(15).withMessage("Those two 'if' statements can be consolidated.");
   }
 }

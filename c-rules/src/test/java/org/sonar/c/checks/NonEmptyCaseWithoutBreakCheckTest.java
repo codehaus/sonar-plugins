@@ -25,12 +25,18 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class NonEmptyCaseWithoutBreakCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/nonEmptyCaseWithoutBreak.c",
+        new NonEmptyCaseWithoutBreakCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(5);
+
+    assertViolation().atLine(22).withMessage("An unconditional break statement shall terminate every non-empty case clause of a switch.");
+    assertViolation().atLine(32);
+    assertViolation().atLine(41);
+    assertViolation().atLine(51);
   }
 }

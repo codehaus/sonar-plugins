@@ -25,12 +25,12 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class SwitchWithoutDefaultCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/switchWithoutDefaultCheck.c", new SwitchWithoutDefaultCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertOnlyOneViolation().atLine(5).withMessage("Avoid switch statement without a \"default\" clause.");
   }
 }

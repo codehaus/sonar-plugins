@@ -25,12 +25,12 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class DoNotUseGotoCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/doNotUseGoto.c", new DoNotUseGotoCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertOnlyOneViolation().atLine(10).withMessage("Avoid using goto statement.");
   }
 }

@@ -25,12 +25,21 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class CommaOperatorCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/commaOperator.c", new CommaOperatorCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(8);
+
+    assertViolation().atLine(5).withMessage("The comma operator shall not be used.");
+    assertViolation().atLine(6);
+    assertViolation().atLine(9);
+    assertViolation().atLine(12);
+    assertViolation().atLine(13);
+    assertViolation().atLine(13);
+    assertViolation().atLine(14);
+    assertViolation().atLine(14);
   }
 }
