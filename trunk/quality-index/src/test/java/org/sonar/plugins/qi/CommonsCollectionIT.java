@@ -62,7 +62,7 @@ public class CommonsCollectionIT {
     // DUe to new rule added
     assertThat(getProjectMeasure("qi-coding-weighted-violations").getIntValue(), anyOf(is(1295), is(1277)));
     assertThat(getProjectMeasure("qi-style-violations").getValue(), is(0.0));
-    assertThat(getProjectMeasure("qi-style-weighted-violations").getIntValue(), is(2431));
+    assertThat(getProjectMeasure("qi-style-weighted-violations").getIntValue(), anyOf(is(2431), is(2433)));
     assertThat(getProjectMeasure("qi-test-coverage").getValue(), is(0.4));
     assertThat(getProjectMeasure("qi-complexity").getValue(), is(0.2));
     assertThat(getProjectMeasure("qi-complexity-factor").getValue(), anyOf(is(0.6), is(0.7))); // < 2.6, >= 2.6
