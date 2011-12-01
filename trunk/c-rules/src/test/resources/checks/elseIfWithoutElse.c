@@ -59,4 +59,9 @@ int main(int argc, char* argv[])
   {
     /* This is the final else clause */
   }
+  
+  if (x == 0) printf("this does not require an else!\n");
+  
+  if (x == 0) printf("x == 0\n"); /* NOK */
+  else if (x == 1) printf("an else is required!\n");
 }

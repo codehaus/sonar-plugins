@@ -45,6 +45,8 @@ public class HiddenIdentifiersCheck extends CCheck {
   private int structOrUnionNestedLevel;
   private boolean inFunctionDefinition;
   private boolean inFunctionPrototype;
+  private boolean inCompoundDirectDeclaration;
+  private AstNode compoundDirectDeclaration;
 
   private static class Scope {
 
@@ -53,12 +55,10 @@ public class HiddenIdentifiersCheck extends CCheck {
     public void declare(String identifier, int line) {
       int declaredLine = getDeclarationLine(identifier);
 
-      if (declaredLine != NOT_DECLARED) {
-        throw new IllegalStateException("Identifier \"" + identifier + "\" already declared in scope at line " + declaredLine
-            + ", cannot redeclare at line " + line + "!");
+      // TODO Disallow redeclaration of variables at the same scope
+      if (declaredLine == NOT_DECLARED) {
+        declarations.put(identifier, line);
       }
-
-      declarations.put(identifier, line);
     }
 
     public int getDeclarationLine(String identifier) {
@@ -81,11 +81,12 @@ public class HiddenIdentifiersCheck extends CCheck {
     structOrUnionNestedLevel = 0;
     inFunctionDefinition = false;
     inFunctionPrototype = false;
+    inCompoundDirectDeclaration = false;
   }
 
   @Override
   public void visitNode(AstNode node) {
-    if (checkEnterWithinFunctionPrototype(node) || checkEnterWithinStructOrUnion(node)) {
+    if (checkEnterWithinFunctionPrototype(node) || checkEnterWithinStructOrUnion(node) || checkEnterCompoundDirectDeclaration(node)) {
       return;
     }
 
@@ -106,7 +107,7 @@ public class HiddenIdentifiersCheck extends CCheck {
 
   @Override
   public void leaveNode(AstNode node) {
-    if (checExitWithinFunctionPrototype(node) || checkExitOfStructOrUnion(node)) {
+    if (checExitWithinFunctionPrototype(node) || checkExitOfStructOrUnion(node) || checkExitCompoundDirectDeclaration(node)) {
       return;
     }
 
@@ -162,6 +163,26 @@ public class HiddenIdentifiersCheck extends CCheck {
     return oldInFunctionPrototype;
   }
 
+  private boolean checkEnterCompoundDirectDeclaration(AstNode node) {
+    if ( !inCompoundDirectDeclaration && node.is(getCGrammar().directDeclarator) && !node.hasDirectChildren(IDENTIFIER)) {
+      inCompoundDirectDeclaration = true;
+      compoundDirectDeclaration = node;
+
+      return true;
+    }
+
+    return inCompoundDirectDeclaration;
+  }
+
+  private boolean checkExitCompoundDirectDeclaration(AstNode node) {
+    if (inCompoundDirectDeclaration && node.equals(compoundDirectDeclaration)) {
+      inCompoundDirectDeclaration = false;
+      compoundDirectDeclaration = null;
+    }
+
+    return inCompoundDirectDeclaration;
+  }
+
   private void pushNewScope() {
     scopes.push(new Scope());
   }
@@ -193,7 +214,7 @@ public class HiddenIdentifiersCheck extends CCheck {
   }
 
   private boolean hasDeclaration(AstNode node) {
-    return node.is(getCGrammar().directDeclarator);
+    return node.is(getCGrammar().directDeclarator) && node.hasDirectChildren(IDENTIFIER);
   }
 
   private AstNode getDeclaredIdentifierNode(AstNode node) {
