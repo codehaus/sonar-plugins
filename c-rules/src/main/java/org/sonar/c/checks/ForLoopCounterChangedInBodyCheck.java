@@ -66,7 +66,7 @@ public class ForLoopCounterChangedInBodyCheck extends CCheck {
       delayedLoopCounterTillRightParenthesis = ForLoopHelper.getLoopCounterVariable(getCGrammar(), node);
       loopCountersStack.push(delayedLoopCounterTillRightParenthesis);
       skipTillRightParenthesis = true;
-    } else if ( !node.is(RPARENTHESIS) && loopCountersSet.size() > 0) {
+    } else if ( !node.is(RPARENTHESIS) && !loopCountersSet.isEmpty()) {
       String changedVariable = getChangedVariable(node);
       if (changedVariable != null && loopCountersSet.contains(changedVariable)) {
         log("Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.", node);
