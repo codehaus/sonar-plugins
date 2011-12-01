@@ -31,7 +31,7 @@ public class OctalCheckTest {
   public void testCheck() {
     setCurrentSourceFile(scanFile("/checks/octal.c", new OctalCheck()));
 
-    assertNumberOfViolations(6);
+    assertNumberOfViolations(8);
 
     assertViolation().atLine(6).withMessage("Octal constants (other than zero) and octal escape sequences shall not be used.");
     assertViolation().atLine(8);
@@ -39,5 +39,7 @@ public class OctalCheckTest {
     assertViolation().atLine(15);
     assertViolation().atLine(16);
     assertViolation().atLine(17);
+    assertViolation().atLine(23);
+    assertViolation().atLine(24);
   }
 }

@@ -45,20 +45,20 @@ public class OctalCheck extends CCheck {
 
   @Override
   public void visitNode(AstNode node) {
-    if (isQuotedLiteralAndContainsOctalEscape(node) || isNonZeroOctalConstant(node)) {
+    if (isQuotedLiteralAndContainsNonZeroOctalEscape(node) || isNonZeroOctalConstant(node)) {
       log("Octal constants (other than zero) and octal escape sequences shall not be used.", node);
     }
   }
 
-  private boolean isQuotedLiteralAndContainsOctalEscape(AstNode node) {
-    return isQuotedLiteral(node) && containsOctalEscape(node.getTokenValue());
+  private boolean isQuotedLiteralAndContainsNonZeroOctalEscape(AstNode node) {
+    return isQuotedLiteral(node) && containsNonZeroOctalEscape(node.getTokenValue());
   }
 
   private boolean isQuotedLiteral(AstNode node) {
     return node.getType() == LITERAL || node.getType() == CHARACTER_CONSTANT;
   }
 
-  private boolean containsOctalEscape(String value) {
+  private boolean containsNonZeroOctalEscape(String value) {
     int indexAfterSlash = 0;
 
     do {
@@ -69,7 +69,13 @@ public class OctalCheck extends CCheck {
       }
 
       char characterAfterSlash = value.charAt(indexAfterSlash);
-      if (characterAfterSlash >= '0' && characterAfterSlash <= '8') {
+      if (characterAfterSlash == '0' && indexAfterSlash + 1 < value.length()) {
+        char characterAfterCharacter = value.charAt(indexAfterSlash + 1);
+        if (characterAfterCharacter >= '0' && characterAfterCharacter <= '9') {
+          return true;
+        }
+      }
+      else if (characterAfterSlash >= '1' && characterAfterSlash <= '8') {
         return true;
       }
     } while (true);

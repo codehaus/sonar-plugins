@@ -16,4 +16,10 @@ int main(int argc, char* argv[])
   printf("\100\n"); // NOK
   printf("\50x\51\n"); // NOK
   printf("hello world\n"); // NOK
+  
+  printf("\0");
+  char z = '\0';
+  
+  printf("\01"); // NOK
+  printf("\00"); // NOK
 }

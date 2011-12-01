@@ -12,6 +12,11 @@ int main(int argc, char* argv[])
   i = a += 2, a + b;      /* increases a by 2, then stores a = 5 into i     ... a=5, b=2, c=3, i=5 */
   i = a, b, c;            /* stores a into i                                ... a=5, b=2, c=3, i=5 */
   i = (a, b, c);          /* stores c into i                                ... a=5, b=2, c=3, i=3 */
+  
+  if (0)
+  {
+    main(0, NULL);
+  }
 
   return 0;
 }
