@@ -30,9 +30,9 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Token;
 import com.sonarsource.c.plugin.CCheck;
 
-@Rule(key = "C.LineLength", name = "The maximum authorized line length.",
-    priority = Priority.MAJOR, description = "<p>The maximum authorized line length.</p>")
-@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+@Rule(key = "C.LineLength", name = "Maximum authorized line length exceeded.",
+    priority = Priority.MINOR, description = "<p>Maximum authorized line length exceeded.</p>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MINOR)
 public class LineLengthCheck extends CCheck implements AstAndTokenVisitor {
 
   private final static int DEFAULT_MAXIMUM_LINE_LENHGTH = 80;
