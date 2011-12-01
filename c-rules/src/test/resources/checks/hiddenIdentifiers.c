@@ -18,6 +18,26 @@ void my_function(int fileA) /* NOK, fileA at 11 */
 void function_prototype_1(int arg1, int arg2);
 void function_prototype_2(int arg1, int arg2);
 
+typedef void (*my_function_type1)(int, float[6]);
+typedef void (*my_function_type2)(int a, int fileA);
+typedef void (*my_function_type3)(int a, int fileA);
+
+void my_function_4(int my_function_type1) { return; } /* NOK, my_function_type1 at 18, BUT NOT YET SUPPORTED */
+
+int my_adder_function(int a, int b)
+{
+  return a + b;
+}
+
+void my_function_5(
+  int a,
+  int b,
+  int (add)(int a, int operandB)
+)
+{
+  printf("a + b = %d + %d = %d\n", a, b, add(a, b));
+}
+
 int main(int argc, char* argv[])
 {
   void function_prototype_3(int arg1, int arg2);
@@ -43,7 +63,7 @@ int main(int argc, char* argv[])
   } fileA; /* NOK, fileA at 11 */
   
   {
-    union my_union a; /* NOK, a at 20 */
+    union my_union a; /* NOK, a at 46 */
   }
   
   {
@@ -51,7 +71,7 @@ int main(int argc, char* argv[])
     {
       HAHAHA,
       LOOOOO
-    } a; /* NOK, a at 20 */
+    } a; /* NOK, a at 46 */
   }    
   
   struct my_struct_struct foobar; /* NOK, foobar at 8 */
@@ -59,7 +79,7 @@ int main(int argc, char* argv[])
   {
     struct {
       int my_int;
-    } a; /* NOK, a at 26 */
+    } a; /* NOK, a at 46 */
     
     a.my_int = 12;
     
@@ -68,7 +88,7 @@ int main(int argc, char* argv[])
   }
   
   {
-    int a; /* NOK, a at 26 */
+    int a; /* NOK, a at 46 */
     int fileA; /* NOK, fileA at 11 */
   }
   
@@ -77,7 +97,7 @@ int main(int argc, char* argv[])
     int x = 123; /* x is not initialized (unreachable code), but it *is* declared! */
     case 0:
       printf("case 0, x = %d\n", x); /* x is visible here, but uninitialized */
-      int b; /* NOK, C99, b at 27 */
+      int b; /* NOK, C99, b at 47 */
       int c;
   }
   
@@ -91,7 +111,7 @@ int main(int argc, char* argv[])
   
   for (int i = 0; i < 3; i++)
   {
-    int i = 0; /* NOK, i at 92 */ /* THIS IS NOT A REDECLARATION! The for loop creates a scope, and the compound statement an inner one */
+    int i = 0; /* NOK, i at 112 */ /* THIS IS NOT A REDECLARATION! The for loop creates a scope, and the compound statement an inner one, unlike functions */
     break;
   }
   
@@ -105,7 +125,7 @@ int main(int argc, char* argv[])
   a = 0;
   while (a < 3)
   {
-    int a; /* NOK, a at 26 */
+    int a; /* NOK, a at 46 */
     int z;
     printf("a = %d\n", a);
     a++;
@@ -113,8 +133,10 @@ int main(int argc, char* argv[])
   }
   
   /* The 2 following lines are actually failing, limitation of our solution */
-  int argc; /* NOK, argc at 25 */
-  int argv; /* NOK, argv at 25 */
+  int argc; /* NOK, argc at 41 */
+  int argv; /* NOK, argv at 41 */
+  
+  my_function_5(10, 7, my_adder_function);
   
   return 0;
 }

@@ -32,9 +32,10 @@ public class ElseIfWithoutElseCheckTest {
     setCurrentSourceFile(scanFile("/checks/elseIfWithoutElse.c",
         new ElseIfWithoutElseCheck()));
 
-    assertNumberOfViolations(2);
+    assertNumberOfViolations(3);
 
     assertViolation().atLine(22).withMessage("If ... else if constructs shall be terminated with an else clause.");
     assertViolation().atLine(32);
+    assertViolation().atLine(65);
   }
 }
