@@ -20,17 +20,29 @@
 
 package org.sonar.c.checks;
 
-import static org.sonar.c.checks.CheckMatchers.*;
-import static org.sonar.c.checks.CheckUtils.*;
+import org.sonar.check.BelongsToProfile;
+import org.sonar.check.Priority;
+import org.sonar.check.Rule;
 
-import org.junit.Test;
+import com.sonar.sslr.api.AstNode;
+import com.sonarsource.c.plugin.CCheck;
 
-public class ForLoopsWithoutBracesCheckTest {
+@Rule(key = "C.CommaOperator", name = "The comma operator shall not be used.",
+    priority = Priority.MAJOR, description = "<p>The comma operator shall not be used.</p>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+public class CommaOperatorCheck extends CCheck {
 
-  @Test
-  public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
-
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+  @Override
+  public void init() {
+    subscribeTo(getCGrammar().expression);
   }
+
+  @Override
+  public void visitNode(AstNode node) {
+    if (node.getNumberOfChildren() == 3) {
+      AstNode commaNode = node.getChild(1);
+      log("The comma operator shall not be used.", commaNode);
+    }
+  }
+
 }

@@ -25,12 +25,19 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class OctalCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/octal.c", new OctalCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(6);
+
+    assertViolation().atLine(6).withMessage("Octal constants (other than zero) and octal escape sequences shall not be used.");
+    assertViolation().atLine(8);
+    assertViolation().atLine(9);
+    assertViolation().atLine(15);
+    assertViolation().atLine(16);
+    assertViolation().atLine(17);
   }
 }

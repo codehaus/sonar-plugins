@@ -20,17 +20,27 @@
 
 package org.sonar.c.checks;
 
-import static org.sonar.c.checks.CheckMatchers.*;
-import static org.sonar.c.checks.CheckUtils.*;
+import org.sonar.check.BelongsToProfile;
+import org.sonar.check.Priority;
+import org.sonar.check.Rule;
 
-import org.junit.Test;
+import com.sonar.sslr.api.AstNode;
+import com.sonarsource.c.plugin.CCheck;
 
-public class ForLoopsWithoutBracesCheckTest {
+@Rule(key = "C.ForLoopsWithoutBraces", name = "For loops must use braces", priority = Priority.MAJOR,
+    description = "<p>Avoid using For loops without using curly braces.</p>")
+@BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
+public class ForLoopsWithoutBracesCheck extends CCheck {
 
-  @Test
-  public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+  @Override
+  public void init() {
+    subscribeTo(getCGrammar().forStatement);
+  }
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+  @Override
+  public void visitNode(AstNode node) {
+    if ( !node.hasDirectChildren(getCGrammar().compoundStatement)) {
+      log("For loops must use braces.", node);
+    }
   }
 }

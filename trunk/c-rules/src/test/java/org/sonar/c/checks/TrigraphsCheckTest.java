@@ -25,12 +25,22 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class TrigraphsCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/trigraphs.c", new TrigraphsCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(9);
+
+    assertViolation().atLine(7).withMessage("Trigraphs shall not be used.");
+    assertViolation().atLine(8);
+    assertViolation().atLine(9);
+    assertViolation().atLine(10);
+    assertViolation().atLine(11);
+    assertViolation().atLine(12);
+    assertViolation().atLine(13);
+    assertViolation().atLine(14);
+    assertViolation().atLine(15);
   }
 }

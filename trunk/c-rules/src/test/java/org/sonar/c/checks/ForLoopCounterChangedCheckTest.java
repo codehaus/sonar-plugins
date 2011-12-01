@@ -25,12 +25,26 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class ForLoopCounterChangedCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/forLoopCounterChanged.c", new ForLoopCounterChangedCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(12);
+
+    assertViolation().atLine(14).withMessage(
+        "Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.");
+    assertViolation().atLine(19);
+    assertViolation().atLine(24);
+    assertViolation().atLine(29);
+    assertViolation().atLine(34);
+    assertViolation().atLine(40);
+    assertViolation().atLine(45);
+    assertViolation().atLine(51);
+    assertViolation().atLine(56);
+    assertViolation().atLine(64);
+    assertViolation().atLine(72);
+    assertViolation().atLine(88);
   }
 }

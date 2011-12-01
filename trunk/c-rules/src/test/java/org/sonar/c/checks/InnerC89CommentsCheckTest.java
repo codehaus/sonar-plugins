@@ -25,12 +25,15 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class InnerC89CommentsCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/innerC89Comments.c", new InnerC89CommentsCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(2);
+
+    assertViolation().atLine(5).withMessage("A comment shall not contains the string \"/*\".");
+    assertViolation().atLine(6);
   }
 }

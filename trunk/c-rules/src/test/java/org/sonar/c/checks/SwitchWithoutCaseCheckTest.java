@@ -25,12 +25,18 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class SwitchWithoutCaseCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/switchWithoutCase.c",
+        new SwitchWithoutCaseCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(4);
+
+    assertViolation().atLine(5).withMessage("Switch statements without any \"case\" shall be refactored.");
+    assertViolation().atLine(7);
+    assertViolation().atLine(13);
+    assertViolation().atLine(19);
   }
 }

@@ -25,12 +25,16 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class ElseIfWithoutElseCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/elseIfWithoutElse.c",
+        new ElseIfWithoutElseCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(2);
+
+    assertViolation().atLine(22).withMessage("If ... else if constructs shall be terminated with an else clause.");
+    assertViolation().atLine(32);
   }
 }

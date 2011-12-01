@@ -25,12 +25,13 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class DoNotUseContinueCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/doNotUseContinue.c", new DotNotUseContinueCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertOnlyOneViolation().atLine(8).withMessage(
+        "The 'continue' branching statement prevent refactoring the source code to reduce the complexity.");
   }
 }

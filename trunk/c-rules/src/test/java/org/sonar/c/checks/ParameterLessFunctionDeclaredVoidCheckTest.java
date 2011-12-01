@@ -25,12 +25,16 @@ import static org.sonar.c.checks.CheckUtils.*;
 
 import org.junit.Test;
 
-public class ForLoopsWithoutBracesCheckTest {
+public class ParameterLessFunctionDeclaredVoidCheckTest {
 
   @Test
   public void testCheck() {
-    setCurrentSourceFile(scanFile("/checks/forLoopsWithoutBraces.c", new ForLoopsWithoutBracesCheck()));
+    setCurrentSourceFile(scanFile("/checks/parameterLessFunctionDeclaredVoid.c",
+        new ParameterLessFunctionDeclaredVoidCheck()));
 
-    assertOnlyOneViolation().atLine(9).withMessage("For loops must use braces.");
+    assertNumberOfViolations(2);
+
+    assertViolation().atLine(1).withMessage("Functions with no parameters shall be declared with parameter type void.");
+    assertViolation().atLine(4);
   }
 }
