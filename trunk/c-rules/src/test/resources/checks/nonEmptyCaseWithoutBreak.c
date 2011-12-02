@@ -19,9 +19,9 @@ int main(int argc, char* argv[])
 
   switch (1) printf("unreachable code!\n");
 
-  switch (0) /* NOK */
+  switch (0)
   {
-    case 0:
+    case 0: /* NOK */
      printf("non-empty case, not terminated by a break.\n");
     case 1:
     case 2:
@@ -29,18 +29,18 @@ int main(int argc, char* argv[])
       break;    
   }
   
-  switch (0) /* NOK */
+  switch (0)
   {
-    case 0:
+    case 0: /* NOK */
     case 1:
     case 2:
     default:
       printf("non-empty case, not terminated by a break.\n");
   }
   
-  switch (0) /* NOK */
+  switch (0)
   {
-    case 0:
+    case 0: /* NOK */
     case 1:
       printf("non-empty case, not terminated by a break.\n");
     case 2:
@@ -48,9 +48,9 @@ int main(int argc, char* argv[])
       break;
   }
   
-  switch (0) /* NOK */
+  switch (0)
   {
-    case 0:
+    case 0: /* NOK */
      printf("non-empty case, not terminated by an unconditional break.\n");
      if (0)
      {
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
     default:
       break;    
   }
-  
+
   switch (0)
   {
     case 0:
@@ -89,6 +89,36 @@ int main(int argc, char* argv[])
       printf("Hello 2!\n");
       break;    
   }
+  
+  switch (0)
+  {
+    default: /* NOK */
+      printf("default\n");
+  }
+
+  int x;
+
+  switch (0)
+  {
+    case 3:
+      if (0)
+      {
+
+      }
+      break;
+    default:
+      break;
+  }
+  
+  switch (0)
+    case 0:
+    case 1:
+      break;
+  
+  switch (0)
+    case 0: /* NOK */
+    case 1:
+      printf("hello\n");
 
   return 0;
 }

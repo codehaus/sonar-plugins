@@ -32,11 +32,13 @@ public class NonEmptyCaseWithoutBreakCheckTest {
     setCurrentSourceFile(scanFile("/checks/nonEmptyCaseWithoutBreak.c",
         new NonEmptyCaseWithoutBreakCheck()));
 
-    assertNumberOfViolations(5);
+    assertNumberOfViolations(6);
 
-    assertViolation().atLine(22).withMessage("An unconditional break statement shall terminate every non-empty case clause of a switch.");
-    assertViolation().atLine(32);
-    assertViolation().atLine(41);
-    assertViolation().atLine(51);
+    assertViolation().atLine(24).withMessage("An unconditional break statement shall terminate every non-empty case clause of a switch.");
+    assertViolation().atLine(34);
+    assertViolation().atLine(43);
+    assertViolation().atLine(53);
+    assertViolation().atLine(95);
+    assertViolation().atLine(119);
   }
 }

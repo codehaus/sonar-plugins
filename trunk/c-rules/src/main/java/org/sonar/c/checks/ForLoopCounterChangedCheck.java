@@ -42,7 +42,19 @@ import com.sonarsource.c.plugin.CCheck;
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class ForLoopCounterChangedCheck extends CCheck {
 
-  private final Stack<String> loopCountersStack = new Stack<String>();
+  private static class LoopCounterDeclaration {
+
+    private final String loopCounter;
+    private final int line;
+
+    private LoopCounterDeclaration(String loopCounter, int line) {
+      this.loopCounter = loopCounter;
+      this.line = line;
+    }
+
+  }
+
+  private final Stack<LoopCounterDeclaration> loopCountersStack = new Stack<LoopCounterDeclaration>();
   private final Set<String> loopCountersSet = new HashSet<String>();
   private boolean skipTillRightParenthesis;
   private String delayedLoopCounterTillRightParenthesis;
@@ -64,12 +76,14 @@ public class ForLoopCounterChangedCheck extends CCheck {
   public void visitNode(AstNode node) {
     if (node.is(getCGrammar().forStatement)) {
       delayedLoopCounterTillRightParenthesis = ForLoopHelper.getLoopCounterVariable(getCGrammar(), node);
-      loopCountersStack.push(delayedLoopCounterTillRightParenthesis);
+      loopCountersStack.push(new LoopCounterDeclaration(delayedLoopCounterTillRightParenthesis, node.getTokenLine()));
       skipTillRightParenthesis = true;
     } else if ( !node.is(RPARENTHESIS) && !loopCountersSet.isEmpty()) {
       String changedVariable = getChangedVariable(node);
+
       if (changedVariable != null && loopCountersSet.contains(changedVariable)) {
-        log("Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.", node);
+        log("The loop counter variable \"{0}\" defined at line {1} shall not be changed in the loop body.", node, changedVariable,
+            getFirstDeclaration(changedVariable));
       }
     } else if (skipTillRightParenthesis
         && node.is(RPARENTHESIS)
@@ -79,6 +93,7 @@ public class ForLoopCounterChangedCheck extends CCheck {
       if (delayedLoopCounterTillRightParenthesis != null) {
         loopCountersSet.add(delayedLoopCounterTillRightParenthesis);
       }
+
       skipTillRightParenthesis = false;
     }
   }
@@ -86,9 +101,9 @@ public class ForLoopCounterChangedCheck extends CCheck {
   @Override
   public void leaveNode(AstNode node) {
     if (node.is(getCGrammar().forStatement)) {
-      String loopCounter = loopCountersStack.pop();
-      if (loopCounter != null) {
-        loopCountersSet.remove(loopCounter);
+      LoopCounterDeclaration loopCounterDeclaration = loopCountersStack.pop();
+      if (loopCounterDeclaration.loopCounter != null) {
+        loopCountersSet.remove(loopCounterDeclaration.loopCounter);
       }
     }
   }
@@ -114,4 +129,15 @@ public class ForLoopCounterChangedCheck extends CCheck {
 
     return null;
   }
+
+  private int getFirstDeclaration(String loopCounter) {
+    for (LoopCounterDeclaration loopCounterDeclaration : loopCountersStack) {
+      if (loopCounterDeclaration.loopCounter.equals(loopCounter)) {
+        return loopCounterDeclaration.line;
+      }
+    }
+
+    throw new IllegalArgumentException("Unable to find the declaration of the loop counter \"" + loopCounter + "\"");
+  }
+
 }
