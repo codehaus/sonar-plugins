@@ -32,10 +32,11 @@ public class NamedParametersCheckTest {
     setCurrentSourceFile(scanFile("/checks/namedParameters.c",
         new NamedParametersCheck()));
 
-    assertNumberOfViolations(2);
+    assertNumberOfViolations(3);
 
     assertViolation().atLine(3).withMessage("Names shall be given for all parameters in function prototype.");
     assertViolation().atLine(7);
+    assertViolation().atLine(21);
   }
 
 }

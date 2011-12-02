@@ -40,9 +40,18 @@ public class NamedParametersCheck extends CCheck {
 
   @Override
   public void visitNode(AstNode node) {
-    if (hasNameLessParameters(node)) {
+    if (isNotVoid(node) && hasNameLessParameters(node)) {
       log("Names shall be given for all parameters in function prototype.", node);
     }
+  }
+
+  private boolean isNotVoid(AstNode functionDeclaratorNode) {
+    AstNode parametersList = functionDeclaratorNode.findFirstDirectChild(getCGrammar().parameterTypeList);
+    if (parametersList == null) {
+      return false;
+    }
+
+    return !parametersList.getTokenValue().equals("void") || parametersList.getToIndex() - parametersList.getFromIndex() != 1;
   }
 
   private boolean hasNameLessParameters(AstNode functionDeclaratorNode) {
