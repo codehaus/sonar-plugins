@@ -20,12 +20,13 @@
 
 package org.sonar.c.checks;
 
+import static com.sonar.c.api.CPunctuator.*;
+
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 
 import com.sonar.c.api.CKeyword;
-import com.sonar.c.api.CPunctuator;
 import com.sonar.sslr.api.AstNode;
 import com.sonarsource.c.plugin.CCheck;
 
@@ -43,22 +44,28 @@ public class NonEmptyCaseWithoutBreakCheck extends CCheck {
 
   @Override
   public void visitNode(AstNode switchStatementNode) {
-    if (hasMissingUnconditionalBreak(switchStatementNode)) {
-      log("An unconditional break statement shall terminate every non-empty case clause of a switch.", switchStatementNode);
+    checkMissingUnconditionalBreak(switchStatementNode);
+  }
+
+  private void checkMissingUnconditionalBreak(AstNode switchStatementNode) {
+    AstNode statementNode = switchStatementNode.getChild(4);
+    if (statementNode.is(getCGrammar().compoundStatement)) {
+      AstNode compoundStatementNode = statementNode;
+
+      for (AstNode labeledStatement : compoundStatementNode.findDirectChildren(getCGrammar().labeledStatement)) {
+        checkLabeledStatement(labeledStatement);
+      }
+    } else if (statementNode.is(getCGrammar().labeledStatement)) {
+      AstNode labeledStatement = statementNode;
+
+      checkLabeledStatement(labeledStatement);
     }
   }
 
-  private boolean hasMissingUnconditionalBreak(AstNode switchStatementNode) {
-    AstNode compoundStatementNode = switchStatementNode.findFirstDirectChild(getCGrammar().compoundStatement);
-    if (compoundStatementNode != null) {
-      for (AstNode labeledStatement : compoundStatementNode.findDirectChildren(getCGrammar().labeledStatement)) {
-        if ( !hasBreak(labeledStatement)) {
-          return true;
-        }
-      }
+  private void checkLabeledStatement(AstNode labeledStatement) {
+    if ( !hasBreak(labeledStatement)) {
+      log("An unconditional break statement shall terminate every non-empty case clause of a switch.", labeledStatement);
     }
-
-    return false;
   }
 
   private boolean hasBreak(AstNode labeledStatement) {
@@ -72,12 +79,11 @@ public class NonEmptyCaseWithoutBreakCheck extends CCheck {
 
   private AstNode getLastSiblingStatement(AstNode labeledStatement) {
     AstNode siblingStatement = labeledStatement;
-    AstNode nextSibling;
 
-    do {
-      siblingStatement = siblingStatement.nextSibling();
-      nextSibling = siblingStatement.nextSibling();
-    } while (nextSibling != null && nextSibling.getType() != CPunctuator.RCURLYBRACE);
+    for (AstNode nextSibling = siblingStatement.nextSibling(); nextSibling != null && !nextSibling.is(getCGrammar().labeledStatement)
+        && !nextSibling.is(RCURLYBRACE); nextSibling = nextSibling.nextSibling()) {
+      siblingStatement = nextSibling;
+    }
 
     return labeledStatement.equals(siblingStatement) ? null : siblingStatement;
   }

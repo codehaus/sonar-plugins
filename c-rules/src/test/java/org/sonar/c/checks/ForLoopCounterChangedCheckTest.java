@@ -33,18 +33,22 @@ public class ForLoopCounterChangedCheckTest {
 
     assertNumberOfViolations(12);
 
-    assertViolation().atLine(14).withMessage(
-        "Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.");
-    assertViolation().atLine(19);
-    assertViolation().atLine(24);
-    assertViolation().atLine(29);
-    assertViolation().atLine(34);
-    assertViolation().atLine(40);
-    assertViolation().atLine(45);
-    assertViolation().atLine(51);
-    assertViolation().atLine(56);
-    assertViolation().atLine(64);
-    assertViolation().atLine(72);
-    assertViolation().atLine(88);
+    assertViolation().atLine(14).withMessage(getFormattedMessage("x", 12));
+    assertViolation().atLine(19).withMessage(getFormattedMessage("x", 17));
+    assertViolation().atLine(24).withMessage(getFormattedMessage("x", 22));
+    assertViolation().atLine(29).withMessage(getFormattedMessage("x", 27));
+    assertViolation().atLine(34).withMessage(getFormattedMessage("x", 32));
+    assertViolation().atLine(40).withMessage(getFormattedMessage("x", 38));
+    assertViolation().atLine(45).withMessage(getFormattedMessage("x", 43));
+    assertViolation().atLine(51).withMessage(getFormattedMessage("x", 49));
+    assertViolation().atLine(56).withMessage(getFormattedMessage("x", 54));
+    assertViolation().atLine(64).withMessage(getFormattedMessage("y", 62));
+    assertViolation().atLine(72).withMessage(getFormattedMessage("x", 68));
+    assertViolation().atLine(88).withMessage(getFormattedMessage("x", 86));
   }
+
+  private String getFormattedMessage(String loopCounter, int line) {
+    return "The loop counter variable \"" + loopCounter + "\" defined at line " + line + " shall not be changed in the loop body.";
+  }
+
 }
