@@ -132,7 +132,7 @@ public class ForLoopCounterChangedCheck extends CCheck {
 
   private int getFirstDeclaration(String loopCounter) {
     for (LoopCounterDeclaration loopCounterDeclaration : loopCountersStack) {
-      if (loopCounterDeclaration.loopCounter.equals(loopCounter)) {
+      if (loopCounter.equals(loopCounterDeclaration.loopCounter)) {
         return loopCounterDeclaration.line;
       }
     }
