@@ -10,3 +10,12 @@ int main(int argc, char* argv[])
 {
   return 0;
 }
+
+void my_void_function(void);
+
+void my_void_function(void)
+{
+
+}
+
+void my_voidptr_function(void*);
