@@ -51,7 +51,7 @@ public class NamedParametersCheck extends CCheck {
       return false;
     }
 
-    return !parametersList.getTokenValue().equals("void") || parametersList.getToIndex() - parametersList.getFromIndex() != 1;
+    return !"void".equals(parametersList.getTokenValue()) || parametersList.getToIndex() - parametersList.getFromIndex() != 1;
   }
 
   private boolean hasNameLessParameters(AstNode functionDeclaratorNode) {

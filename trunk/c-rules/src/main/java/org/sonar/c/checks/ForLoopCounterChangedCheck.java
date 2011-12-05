@@ -42,7 +42,7 @@ import com.sonarsource.c.plugin.CCheck;
 @BelongsToProfile(title = CChecksConstants.SONAR_C_WAY_PROFILE_KEY, priority = Priority.MAJOR)
 public class ForLoopCounterChangedCheck extends CCheck {
 
-  private static class LoopCounterDeclaration {
+  private final static class LoopCounterDeclaration {
 
     private final String loopCounter;
     private final int line;
