@@ -30,6 +30,8 @@ import org.scalatest.junit.JUnitRunner
 import org.sonar.plugins.scala.language.{ Comment, CommentType }
 import org.sonar.plugins.scala.util.FileTestUtils;
 
+import collection.JavaConversions._
+
 @RunWith(classOf[JUnitRunner])
 class LexerSpec extends FlatSpec with ShouldMatchers {
 
@@ -39,8 +41,8 @@ class LexerSpec extends FlatSpec with ShouldMatchers {
       " * content of the file.\r\n */"
 
   "A lexer" should "tokenize a simple declaration of a value" in {
-    val tokens = lexer.getTokens("val a = 1")
-    tokens should equal (Arrays.asList(VAL, IDENTIFIER, EQUALS, INTLIT))
+    val tokens = lexer.getTokens("val a = " + "\r\n" + "42")
+    tokens should equal (Arrays.asList(Token(VAL, 1), Token(IDENTIFIER, 1), Token(EQUALS, 1), Token(INTLIT, 2)))
   }
 
   it should "tokenize a doc comment" in {

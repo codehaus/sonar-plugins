@@ -37,23 +37,23 @@ class Lexer {
 
   import Compiler._
 
-  def getTokens(code: String) : java.util.List[Int] = {
+  def getTokens(code: String) : java.util.List[Token] = {
     val unit = new CompilationUnit(new util.BatchSourceFile("", code.toCharArray))
     tokenize(unit)
   }
 
-  def getTokensOfFile(path: String) : java.util.List[Int] = {
+  def getTokensOfFile(path: String) : java.util.List[Token] = {
     val unit = new CompilationUnit(new util.BatchSourceFile(AbstractFile.getFile(path)))
     tokenize(unit)
   }
 
-  private def tokenize(unit: CompilationUnit) : java.util.List[Int] = {
+  private def tokenize(unit: CompilationUnit) : java.util.List[Token] = {
     val scanner = new syntaxAnalyzer.UnitScanner(unit)
-    val tokens = ListBuffer[Int]()
+    val tokens = ListBuffer[Token]()
 
     scanner.init()
     while (scanner.token != scala.tools.nsc.ast.parser.Tokens.EOF) {
-      tokens += scanner.token
+      tokens += Token(scanner.token, scanner.parensAnalyzer.line(scanner.offset) + 1)
       scanner.nextToken()
     }
     tokens
