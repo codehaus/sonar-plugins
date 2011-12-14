@@ -1,30 +1,30 @@
 <div>
 
-<form method="GET" action="<%= ApplicationController.root_context-%>/api/plugins/CsvExportWebService/index">
-  <input type="hidden" name="resource" value="<%= @project.id -%>">
-  <input type="hidden" name="qualifiers" value="FIL,CLA">
-  <span class="note">Metrics</span><br/>
-  <select name="metrics[]" multiple="multiple" size="10">
-    <%
-      selected_metrics=['ncloc', 'function_complexity', 'violations', 'duplication_lines', 'coverage']
-      metrics_by_domain={}
-      Metric.all.select{|m| m.display? && m.domain}.sort_by{|m| m.short_name}.each do |metric|
-        metrics_by_domain[metric.domain]||=[]
-        metrics_by_domain[metric.domain]<<metric
-      end
-      metrics_by_domain.keys.sort.each do |domain|
-        metrics=metrics_by_domain[domain]
-    %>
-      <optgroup label="<%= domain -%>">
-        <% metrics.each do |metric| %>
-          <option value="<%= metric.name -%>" <%= 'selected' if selected_metrics.include?(metric.name) -%>><%= metric.description -%></option>
-        <% end %>
-      </optgroup>
-    <% end %>
-  </select>
-<br/><br/>
-<input id="includerules" type="checkbox"name="includerules" value="true"> <span class="note"><label for="includerules">Include number of violations per rule</label></span>
-<br/><br/>
-<input type="submit" value="Download CSV" />
-</form>
+  <form method="GET" action="<%= ApplicationController.root_context -%>/api/plugins/CsvExportWebService/index">
+    <input type="hidden" name="resource" value="<%= @project.id -%>">
+    <input type="hidden" name="qualifiers" value="FIL,CLA">
+    <span class="note">Metrics</span><br/>
+    <select name="metrics[]" multiple="multiple" size="10">
+      <%
+         selected_metrics=['ncloc', 'function_complexity', 'violations', 'duplication_lines', 'coverage']
+         metrics_by_domain={}
+         Metric.all.select { |m| m.display? && m.domain && !m.name.start_with?('new_') }.sort_by { |m| m.short_name }.each do |metric|
+           metrics_by_domain[metric.domain]||=[]
+           metrics_by_domain[metric.domain]<<metric
+         end
+         metrics_by_domain.keys.sort.each do |domain|
+           metrics=metrics_by_domain[domain]
+      %>
+        <optgroup label="<%= domain -%>">
+          <% metrics.each do |metric| %>
+            <option value="<%= metric.name -%>" <%= 'selected' if selected_metrics.include?(metric.name) -%>><%= metric.description -%></option>
+          <% end %>
+        </optgroup>
+      <% end %>
+    </select>
+    <br/><br/>
+    <input id="includerules" type="checkbox" name="includerules" value="true"> <span class="note"><label for="includerules">Include number of violations per rule</label></span>
+    <br/><br/>
+    <input type="submit" value="Download CSV"/>
+  </form>
 </div>
