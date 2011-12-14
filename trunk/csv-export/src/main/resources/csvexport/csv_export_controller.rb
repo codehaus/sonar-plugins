@@ -24,11 +24,13 @@ class Api::CsvExportWebServiceController < Api::ApiController
   # GET /api/csv_export?resource=<resource>&qualifiers=<qualifiers>&metrics=<metrics>&includerules=<true|false>
   def index
     resource=Project.by_key(params[:resource])
-    snapshot=resource.last_snapshot
-    @includerules=(params[:includerules]=='true')
-    # TODO check security
-    # TODO check presence of resource/snapshot
+    not_found('Resource not found') unless resource
 
+    snapshot=resource.last_snapshot
+    not_found('Snapshot not found') unless snapshot
+    access_denied unless has_role?(:user, snapshot)
+
+    @includerules=(params[:includerules]=='true')
     if params[:qualifiers].present?
       # load descendants
       snapshot_conditions=['snapshots.islast=:islast']
@@ -73,12 +75,12 @@ class Api::CsvExportWebServiceController < Api::ApiController
       else
         measure_conditions<<'project_measures.rule_id IS NULL AND project_measures.rule_priority IS NULL'
       end
-      measure_values[:metrics]=@metrics.select{|m| m.id}
+      measure_values[:metrics]=@metrics.select { |m| m.id }
 
       measures=ProjectMeasure.find(:all,
-          :joins => :snapshot,
-          :select => select_columns_for_measures(),
-          :conditions => [ (snapshot_conditions + measure_conditions).join(' AND '), snapshot_values.merge(measure_values)])
+                                   :joins => :snapshot,
+                                   :select => select_columns_for_measures(),
+                                   :conditions => [(snapshot_conditions + measure_conditions).join(' AND '), snapshot_values.merge(measure_values)])
 
       measures.each do |measure|
         if measure.rule_id
@@ -94,10 +96,10 @@ class Api::CsvExportWebServiceController < Api::ApiController
     @rules=[]
     if @includerules
       profile_measure=snapshot.root_snapshot.measure('profile')
-      profile=Profile.find(:first, :include => {:active_rules => :rule}, :conditions => ['id=?',profile_measure.value.to_i]) if profile_measure && profile_measure.value
+      profile=Profile.find(:first, :include => {:active_rules => :rule}, :conditions => ['id=?', profile_measure.value.to_i]) if profile_measure && profile_measure.value
 
       if profile
-        @rules=profile.active_rules.map{|ar| ar.rule}.sort_by{|r| r.name}
+        @rules=profile.active_rules.map { |ar| ar.rule }.sort_by { |r| r.name }
       end
     end
 
