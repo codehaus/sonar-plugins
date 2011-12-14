@@ -24,7 +24,7 @@ import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.RubyRailsPage;
 import org.sonar.api.web.UserRole;
 
-@NavigationSection({NavigationSection.RESOURCE})
+@NavigationSection(NavigationSection.RESOURCE)
 @UserRole(UserRole.USER)
 public final class CsvExportPage extends AbstractRubyTemplate implements RubyRailsPage {
 
