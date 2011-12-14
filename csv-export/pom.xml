@@ -14,7 +14,7 @@
   <packaging>sonar-plugin</packaging>
   <version>1.2-SNAPSHOT</version>
   <name>Sonar CSV Export</name>
-  <description>Add the export to CSV of measures</description>
+  <description>CSV export of measures</description>
   <url>http://docs.codehaus.org/display/SONAR/CSV+Export+Plugin</url>
   <inceptionYear>2009</inceptionYear>
 
@@ -34,7 +34,7 @@
   <properties>
     <sonar.buildVersion>2.12</sonar.buildVersion>
     <sonar.pluginName>CSV Export</sonar.pluginName>
-    <sonar.pluginClass>org.sonar.csvexport.CsvExportPlugin</sonar.pluginClass>
+    <sonar.pluginClass>org.sonar.plugins.csvexport.CsvExportPlugin</sonar.pluginClass>
   </properties>
 
   <scm>

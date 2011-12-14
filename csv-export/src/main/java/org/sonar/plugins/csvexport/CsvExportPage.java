@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.csvexport;
+package org.sonar.plugins.csvexport;
 
 import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.NavigationSection;
@@ -38,6 +38,6 @@ public final class CsvExportPage extends AbstractRubyTemplate implements RubyRai
   }
 
   public String getTitle() {
-    return "Export";
+    return "CSV Export";
   }
 }
