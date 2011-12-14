@@ -17,16 +17,20 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.csvexport;
+package org.sonar.plugins.csvexport;
 
-import org.sonar.api.SonarPlugin;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWebservice;
 
-import java.util.Arrays;
-import java.util.List;
+public final class CsvExportWebService extends AbstractRubyTemplate implements RubyRailsWebservice {
 
-public class CsvExportPlugin extends SonarPlugin {
-
-  public List getExtensions() {
-    return Arrays.asList(CsvExportWebService.class, CsvExportPage.class);
+  @Override
+  public String getTemplatePath() {
+    return "/csvexport/csv_export_controller.rb";
   }
+
+  public String getId() {
+    return "CsvExportWebService";
+  }
+
 }
