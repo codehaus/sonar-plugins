@@ -19,24 +19,12 @@
  */
 package org.sonar.csvexport;
 
-import org.sonar.api.Plugin;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class CsvExportPlugin implements Plugin {
-
-  public String getKey() {
-    return "csvexport";
-  }
-
-  public String getName() {
-    return "CSV Export";
-  }
-
-  public String getDescription() {
-    return "";
-  }
+public class CsvExportPlugin extends SonarPlugin {
 
   public List getExtensions() {
     return Arrays.asList(CsvExportWebService.class, CsvExportPage.class);

@@ -1,8 +1,8 @@
 <div>
 
 <form method="GET" action="<%= ApplicationController.root_context-%>/api/plugins/CsvExportWebService/index">
-  <input type="hidden" name="resource" value="<%= @project.id -%>"></input>
-  <input type="hidden" name="qualifiers" value="FIL,CLA"></input>
+  <input type="hidden" name="resource" value="<%= @project.id -%>">
+  <input type="hidden" name="qualifiers" value="FIL,CLA">
   <span class="note">Metrics</span><br/>
   <select name="metrics[]" multiple="multiple" size="10">
     <%
@@ -23,7 +23,7 @@
     <% end %>
   </select>
 <br/><br/>
-<input id="includerules" type="checkbox"name="includerules" value="true"></input> <span class="note"><label for="includerules">Include number of violations per rule</label></span>
+<input id="includerules" type="checkbox"name="includerules" value="true"> <span class="note"><label for="includerules">Include number of violations per rule</label></span>
 <br/><br/>
 <input type="submit" value="Download CSV" />
 </form>
