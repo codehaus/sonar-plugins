@@ -24,9 +24,38 @@ import org.sonar.api.Plugin;
 
 import java.util.Arrays;
 import java.util.List;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 
+@Properties({
+    @Property(key = "sonar.radiator.defaultSizeMetric",
+        description = "See <a href='http://docs.codehaus.org/display/SONAR/Metric+definitions' target='_blank'>available metrics</a>.",
+        name = "Default Size Metric",
+        defaultValue = "ncloc",
+        global = true, project = false, module = false),
+    @Property(key = "sonar.radiator.defaultColorMetric",
+        description = "See <a href='http://docs.codehaus.org/display/SONAR/Metric+definitions' target='_blank'>available metrics</a>.",
+        name = "Default Color Metric",
+        defaultValue = "violations_density",
+        global = true, project = false, module = false),
+    @Property(key = "sonar.radiator.minColor",
+        name = "Min Color",
+        defaultValue = "EE0000",
+        global = true, project = false, module = false),
+    @Property(key = "sonar.radiator.meanColor",
+        name = "Mean Color",
+        defaultValue = "FFEE00",
+        global = true, project = false, module = false),
+    @Property(key = "sonar.radiator.maxColor",
+        name = "Max Color",
+        defaultValue = "00AA00",
+        global = true, project = false, module = false),
+    @Property(key = "sonar.radiator.customThresholds",
+        description = "Usage: metric_key1:worst_threshold1:best_threshold1,metric_key2:worst_threshold2:best_threshold2,...<br/>Example: violations_density:50:100,duplicated_lines_density:0:20",
+        name = "Custom Thresholds",
+        global = true, project = false, module = false)})
 public final class RadiatorPlugin implements Plugin {
-
+    
   public String getKey() {
     return "radiator";
   }
@@ -40,7 +69,7 @@ public final class RadiatorPlugin implements Plugin {
   }
 
   public List getExtensions() {
-    return Arrays.asList(RadiatorPage.class, RadiatorWidget.class, RadiatorWebService.class);
+    return Arrays.asList(RadiatorPage.class, RadiatorWidget.class, RadiatorWebService.class, RadiatorGradientWebService.class);
   }
 
   @Override

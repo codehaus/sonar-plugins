@@ -1,82 +1,114 @@
 <%
 # http://thejit.org
-# The 1.1.3 jit script need to be modified with the following code
-# line 8138 makes tree map anchors work :
-# var from = e.target || e.srcElement;
-# if (from.nodeName.toLowerCase() == 'a') {
-# 	// event originated form an anchor link, returning
-# 	return;
-# }
 #
-# line 7606 (replace jit tip css class name on tip elements by sonar tooltip css class name) :
-# tip.className = 'tooltip';
+# The jit-minimum.compiled.js only embeds the JIT BarChart and TreeMap objects.
+#
+# line 55 (replace jit tip css class name on tip elements by sonar tooltip css class name):
+# a.className="tooltip"; instead of a.className="tip";
 %>
-<%= javascript_include_tag 'jit-yc' %>
+<script type="text/javascript" src="<%=ApplicationController.root_context-%>/static/radiator/jit-minimum.compiled.js"></script>
+<!--[if IE]><script type="text/javascript" src="<%=ApplicationController.root_context-%>/static/radiator/excanvas.compiled.js"></script><![endif]-->
+
 <style type="text/css">
 #radiatorroot {
     position: relative;
-    height:600px;
-    width:100%;
-    margin:auto;
-    overflow:hidden;
+    height: 600px;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
 }
 #radiatorroot div {
-    position:absolute;
-    overflow:hidden;
+    position: absolute;
+    overflow: hidden;
     padding: 0px;
-}
-#radiatorroot .content {
-    background-color:white;
-}
-#radiatorroot .head {
-    color:white;
-    background-color:#444;
-}
-#radiatorroot .body {
-    background-color:white;
-    padding: 0;
-}
-#radiatorroot .over-content {
-    background-color: #9FD4FF;
+    align: middle;
 }
 #radiatorroot .leaf {
-  padding: 3px 0 0 3px;
-  border:1px solid #fff;
+  padding: 4px 0 0 4px;
+  font-weight: bold;
+  color: white;
+  z-index:200;
+}
+#radiatorroot a {
+    text-decoration:none;
+    color: white;
+}
+div.gradient_parent {
+    position: relative;
+    height: 16px;
+    width: 150px;
+    overflow: hidden;
+}
+div.gradient {
+    position: absolute;
+    top: 0px;
+    left: 16px;
+    height: 18px;
+    width: 100px;
+    overflow: hidden;
+    z-index:1;
+}
+div.gradient_threshold {
+    position: absolute;
+    height: 16px;
+    width: 25px;
+    overflow: hidden;
+    font-weight: bold;
+    z-index:2;
+}
+div#gradient_max {
+    top: 0px;
+    left: 0px;
+    text-align: right;
+}
+div#gradient_min {
+    top: 0px;
+    left: 120px;
+    text-align: left;
 }
 </style>
+
 <%= render :partial => '/project/snapshot_title' %>
+
 <form name="tm_controls" >
-	<table>
-		<tr>
-      <td>
-        <span class="note">Size:</span>
-        <%= select_tag 'size_metric', options_from_collection_for_select(
-          Sonar::TreemapBuilder.size_metrics, :key, :short_name, Sonar::TreemapBuilder.default_size_metric.key),
-          :id => 'select_size_metric', :class => 'small',:onchange => "load_treemap(current_resource_key);" %>
-      </td>
-      <td width="15px"> </td>
-      <td>
-        <span class="note">Color:</span>
-        <%= select_tag 'color_metric', options_from_collection_for_select(
-            Sonar::TreemapBuilder.color_metrics, :key, :short_name, Sonar::TreemapBuilder.default_color_metric.key),
-            :id => 'select_color_metric', :class => 'small', :onchange => "load_treemap(current_resource_key);" %>
-      </td>
-      <td width="15px"> </td>
-      <td>
-         <%= image_tag('loading.gif', {:id => "tm_loading"}) %>
-      </td>
-		</tr>
-	</table>
+    <table>
+        <tr>
+            <td>
+                 <span class="note"><%= message('radiator.metricSize') -%>:</span>
+                 <%= select_tag 'size_metric', options_from_collection_for_select(
+                  Sonar::TreemapBuilder.size_metrics, :key, :short_name, Api::RadiatorWebServiceController.default_size_metric),
+                  :id => 'select_size_metric', :class => 'small',:onchange => "loseFocusOnSelect();load_treemap(current_resource_key);" %>
+            </td>
+            <td width="15px">&nbsp;</td>
+            <td>
+                <span class="note"><%= message('radiator.metricColor') -%>:</span>
+                <%= select_tag 'color_metric', options_from_collection_for_select(
+                    Sonar::TreemapBuilder.color_metrics, :key, :short_name, Api::RadiatorWebServiceController.default_color_metric),
+                    :id => 'select_color_metric', :class => 'small', :onchange => "loseFocusOnSelect();load_treemap(current_resource_key);load_gradient(current_resource_key);" %>
+            </td>
+            <td width="15px">&nbsp;</td>
+            <td><span class="note"><%= message('radiator.scale') -%>:</span></td>
+            <td>
+                <div class="gradient_parent">
+                    <div id="gradient_max" class="gradient_threshold"></div>
+                    <div id="gradient" class="gradient"></div>
+                    <div id="gradient_min" class="gradient_threshold"></div>
+                </div>
+            </td>
+            <td width="15px">&nbsp;</td>
+            <td><%= image_tag('loading.gif', {:id => "tm_loading"}) %></td>
+	</tr>
+    </table>
 </form>
 
-<div id="radiatorroot"> </div>
+<div id="radiatorroot"></div>
 <div id="nodata" style="display:none; vertical-align:top">
-  <p>No data</p>
+    <p><%= message('radiator.noData') -%></p>
 </div>
-
+ 
 <div class="notes" style="margin: 5px 0 0 0">
-  <div style="float: right"><span>Left click to zoom in. Right click to zoom out.</span></div>
-  <div id="radiator-breadcrumb">&nbsp;&#187;&nbsp;</div>
+    <div style="float: right"><span><%= message('radiator.navigation') -%></span></div>
+    <div id="radiator-breadcrumb">&nbsp;&#187;&nbsp;</div>
 </div>
 
 <%
@@ -84,149 +116,177 @@
    if (!layout)
 %>
 <div class="right">
-  <%= image_tag 'links/external.png' %> <%= link_to('New window', {:layout => layout.to_s, :page => params[:page]}, :target => 'radiator', :class => 'note') %>
+    <%= image_tag 'links/external.png' %> <%= link_to(message('radiator.newWindow'), {:layout => layout.to_s, :page => params[:page]}, :target => 'radiator', :class => 'note') %>
 </div>
 <% end %>
 
 <script language="javascript">
-	var treemap = null;
-	var all_projects_radiator = <%= @project.nil? ? 'true' : 'false' %>;
-	var current_resource_key = null;
-	var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
-	var size_metric, color_metric = null;
-	var breadcrumbs = [];
 
-	TM.Squarified.implement({
-       onLeftClick: function(elem) {
-          isFile = Element.readAttribute(elem, 'isFile');
-          if (isFile == 'false') {
-       	  	breadcrumbs[breadcrumbs.length] = Element.readAttribute(elem, 'name');
-          	load_treemap(elem.parentNode.id);
-          } else {
-          	open_resource_viewer(elem.parentNode.id);
-          }
-       },
-       onRightClick: function() {
-		 load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
-		 if (load) {
-		    breadcrumbs[breadcrumbs.length-1] = null;
-		    breadcrumbs = breadcrumbs.compact();
-         	load_treemap(parent_resource_key);
-         }
-       },
-       leafBox: function(json, coord) {
-			var config = this.config;
-			var backgroundColor = config.Color.allow && this.setColor(json),
-			offst = config.offset,
-			width = coord.width - offst,
-			height = coord.height - offst;
-			var c = {
-			  'top':   (offst / 2)  + "px",
-			  'height': height + "px",
-			  'width': width + "px",
-			  'left': (offst / 2) + "px",
-			  'cursor': 'pointer'
-			};
-			if(backgroundColor) c['background-color'] = backgroundColor;
-			div_content = "<div isFile=\"" + json.is_file + "\" name=\"" + json.name + "\" class=\"leaf\" style=\"" + this.toStyle(c) + "\">";
-			div_content += json.is_file ? json.name : "<a href=\"" + dashboard_url(json.id) + "\">" + json.name + "</a>";
-			return div_content + "</div>";
-        },
-        headBox: function(json, coord) {
-        	return "<div></div>";
-        },
-        setColor: function(json) {
-          return json.data.$color;
-        }
-	});
+var treemap = null;
+var all_projects_radiator = <%= @project.nil? ? 'true' : 'false' %>;
+var current_resource_key = null;
+var parent_resource_key = <%= @project.nil? ? 'null' : "'#{@project.key}'" %>;
+var size_metric, color_metric = null;
+var breadcrumbs = new Array();
 
-	function dashboard_url(resource_key) {
-		return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
-	}
+function dashboard_url(resource_key) {
+    return '<%=ApplicationController.root_context-%>/project/index/' + resource_key;
+}
 
-	function open_resource_viewer(resource_key) {
-	    href='<%=ApplicationController.root_context-%>/resource/index/' + resource_key;
-	    window.open(href,'resource','height=800,width=900,scrollbars=1,resizable=1');
-	}
+function open_resource_viewer(resource_key) {
+    href='<%=ApplicationController.root_context-%>/resource/index/' + resource_key;
+    window.open(href,'resource','height=800,width=900,scrollbars=1,resizable=1');
+}
 
-	function instanciate_treemap(color_metric_direction) {
+function display_breadcrumbs() {
+    var output = "&nbsp;&#187;&nbsp;";
+    breadcrumbs.each(function(bc) { output += bc + "&nbsp;&#187;&nbsp;"});
+    $('radiator-breadcrumb').innerHTML = output;
+}
 
-		return new TM.Squarified({
-		     rootId: 'radiatorroot',
-		     titleHeight: 1,
-		     offset: 6,
-		     addLeftClickHandler: true,
-		     addRightClickHandler: true,
-		     selectPathOnHover: true,
-		     Color: {
-		         allow: true
-		     },
-		     Tips: {
-		       allow: true,
-		       offsetX: 20,
-		       offsetY: 20,
-		       onShow: function(tip, node, isLeaf, domElement) {
-		           tip.innerHTML = "<div class=\"title\">" + node.name + "</div><div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";
-		       },
-		       makeHTMLFromData: function(data){
-		           var html = '<table><tr><td align="left">' + size_metric + '</td><td align="right"><b>' + data.size_frmt +
-		           '</b></td></tr><tr><td align="left">' + color_metric + '</td><td align="right"><b>' +data.color_frmt + '</b></td></tr></table>';
-		           return html;
-		       }
-		     },
-		     onDestroyElement: function(content, tree, isLeaf, leaf) {
-		         if (leaf.clearAttributes) leaf.clearAttributes();
-		     }
-	 	});
+function display_thresholds(json) {
+    $('gradient_min').innerHTML = json['min'];
+    $('gradient_max').innerHTML = json['max'];
+    $('gradient_min').style.color = json['min_color'];
+    $('gradient_max').style.color = json['max_color'];
+}
+
+function instanciate_treemap(json) {
+    return new $jit.TM.Squarified({
+         injectInto: 'radiatorroot',
+         titleHeight: 0,
+         offset: 4,
+         Events: {
+            enable: true,
+            onClick: function(node) {
+                if (node.data.is_file) {
+                    open_resource_viewer(node.data.project_id);
+                } else {
+                    breadcrumbs.push(node.name);
+                    load_treemap(node.data.project_id);                      
+                }
+            },
+            onRightClick: function(node) {
+                load = (all_projects_radiator && parent_resource_key == null) || parent_resource_key != null;
+                if (load) {
+                    breadcrumbs.pop();
+                    load_treemap(parent_resource_key);
+                }
+            }
+         },
+         Color: {
+             enable: true
+         },
+         Tips: {
+           enable: true,
+           offsetX: 20,
+           offsetY: 20,
+           onShow: function(tip, node, isLeaf, domElement) {
+               tip.innerHTML = "<div class=\"title\">" + node.name + "</div><div class=\"content\">" + this.makeHTMLFromData(node.data) + "</div>";
+           },
+           makeHTMLFromData: function(data){
+               var html = '<table><tr><td align="left">' + size_metric + '</td><td align="right"><b>' + data.size_frmt +
+               '</b></td></tr><tr><td align="left">' + color_metric + '</td><td align="right"><b>' + data.color_frmt + '</b></td></tr></table>';
+               return html;
+           }
+         },
+         onCreateLabel: function(domElement, node){  
+            if (!node.data.is_file) {
+                domElement.innerHTML = "<div class='leaf'><a href='"+ dashboard_url(node.data.project_id) + "'>" + node.name + "</a></div>";
+            
+            } else {
+                domElement.innerHTML = "<div class='leaf' style='cursor:pointer'>" + node.name + "</div>";
+            }
+          }   
+    });
+}
+
+function load_treemap(resource_key) {
+    if (treemap != null) {
+        treemap = null;
     }
+    $('tm_loading').show();
+    url = '<%=ApplicationController.root_context-%>/api/plugins/RadiatorWebService';
+    current_resource_key = resource_key;
+    url += resource_key != null ? '?resource=' + resource_key + '&' : '?';
+    new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemap_ajax_cb',
+      {
+        method: 'get',
+        requestHeaders: {Accept: 'application/json'},
+        onSuccess: function(transport) {
+          eval(transport.responseText);
+        },
+        onFailure: function(response){ error(response.responseText) }
+      });
+}
 
-    function display_breadcrumbs() {
-      var output = "&nbsp;&#187;&nbsp;";
-      breadcrumbs.each(function(bc) { output += bc + "&nbsp;&#187;&nbsp;"});
-	  $('radiator-breadcrumb').innerHTML=output;
-	}
+function treemap_ajax_cb(json) {
+    $('radiatorroot').innerHTML = '';
+    $('tm_loading').hide();
+    if (current_resource_key == null && json.children.length == 0) {
+        $('radiatorroot').hide();
+        try { $('_tooltip').hide(); } catch (ex) {} // Workaround for IE
+        $('nodata').show();
+        $('select_color_metric').disabled = true;
+    } else {
+        $('radiatorroot').show();
+        $('nodata').hide();
+        $('select_color_metric').disabled = false;
+        render_treemap(json);
+    }
+}
 
-	function load_treemap(resource_key) {
-	    if (treemap != null) {
-	    	treemap.empty();
-	    	treemap = null;
-	    }
-	    $('tm_loading').show();
+function render_treemap(json) {
+    treemap = instanciate_treemap(json['color_metric_direction']);
+    parent_resource_key = json['parent'];
+    size_metric = json['size_metric'];
+    color_metric = json['color_metric'];
+    display_breadcrumbs();
+    display_thresholds(json);
+    treemap.loadJSON(json);
+    treemap.refresh();
+}
 
-	    url = '<%=ApplicationController.root_context-%>/api/plugins/RadiatorWebService';
-	    current_resource_key = resource_key;
-	    url += resource_key != null ? '?resource=' + resource_key + '&' : '?';
-		new Ajax.Request(url + 'size=' + $F('select_size_metric') + '&color=' + $F('select_color_metric') + '&callback=treemap_ajax_cb',
-		  {
-		    method: 'get',
-		    requestHeaders: {Accept: 'application/json'},
-		    onSuccess: function(transport) {
-		      eval(transport.responseText);
-		    },
-		    onFailure: function(response){ error(response.responseText) }
-		  });
-	}
+function load_gradient(resource_key) {	    
+    url = '<%=ApplicationController.root_context-%>/api/plugins/RadiatorGradientWebService';
+    url += resource_key != null ? '?resource=' + resource_key + '&' : '?';
+    new Ajax.Request(url + '&color=' + $F('select_color_metric') + '&callback=gradient_ajax_cb',
+      {
+        method: 'get',
+        requestHeaders: {Accept: 'application/json'},
+        onSuccess: function(transport) {
+          eval(transport.responseText);
+        },
+        onFailure: function(response){ error(response.responseText) }
+      });
+}
 
-	function treemap_ajax_cb(json) {
-		$('tm_loading').hide();
-		if (current_resource_key==null &&json.children.length==0) {
-			$('radiatorroot').hide();
-			$('select_color_metric').disable();
-			$('select_size_metric').disable();
-			$('nodata').show();
-		} else {
-			render_treemap(json);
-		}
-	}
+function gradient_ajax_cb(json) {
+    $('gradient').innerHTML = "";
+    render_gradient(json);
+}
 
-	function render_treemap(json) {
-		treemap = instanciate_treemap(json['color_metric_direction']);
-		parent_resource_key = json['parent'];
-		size_metric = json['size_metric'];
-		color_metric = json['color_metric'];
-		display_breadcrumbs();
-		treemap.loadJSON(json);
-	}
+function render_gradient(json) {
+    var barChart = new $jit.BarChart({
+        injectInto: 'gradient',
+        animate: false,
+        showAggregates: false,
+        showLabels: false
+    });
+    barChart.loadJSON(json);
+}
 
-	Event.observe(window, "load", new function() { load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>); } );
+<% 
+    # Workaround for IE to make the list box (size or color) lose the focus,
+    # so it does not take two clicks to zoom in and out on the radiator.
+%>
+function loseFocusOnSelect() {
+    try {
+        $('radiatorroot').focus();
+    } catch (ex) {
+    }
+}
+
+Event.observe(window, "load", new function() { load_treemap(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>); load_gradient(<%= @project.nil? ? 'null' : "'#{@project.key}'" %>); } );
+
 </script>

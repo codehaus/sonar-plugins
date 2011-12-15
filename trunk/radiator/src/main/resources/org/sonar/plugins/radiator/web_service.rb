@@ -19,13 +19,21 @@
 #
 require "json"
 class Api::RadiatorWebServiceController < Api::RestController
-
+ 
   def initialize()
     @min = 0
     @max = 100
-    @min_color = Color::RGB.from_html("DF0000")   # red
-    @mean_color = Color::RGB.from_html("FFB000")   # orange
-    @max_color = Color::RGB.from_html("00DF00")   # green
+    @min_color = Color::RGB.from_html(Property.value('sonar.radiator.minColor', nil, 'EE0000'))
+    @mean_color = Color::RGB.from_html(Property.value('sonar.radiator.meanColor', nil, 'FFEE00'))
+    @max_color = Color::RGB.from_html(Property.value('sonar.radiator.maxColor', nil, '00AA00'))
+  end
+  
+  def self.default_size_metric
+    Property.value('sonar.radiator.defaultSizeMetric', nil, Sonar::TreemapBuilder.default_size_metric.key)
+  end
+
+  def self.default_color_metric
+    Property.value('sonar.radiator.defaultColorMetric', nil, Sonar::TreemapBuilder.default_color_metric.key)
   end
 
   private
@@ -47,8 +55,8 @@ class Api::RadiatorWebServiceController < Api::RestController
 
     snapshots=select_authorized(:user, snapshots)
 
-    size_metric = Metric.by_key(params[:size]) || Sonar::TreemapBuilder.default_size_metric
-    color_metric = Metric.by_key(params[:color]) || Sonar::TreemapBuilder.default_color_metric
+    size_metric = Metric.by_key(params[:size]) || @default_size_metric
+    color_metric = Metric.by_key(params[:color]) || @default_color_metric
 
     if snapshots.empty?
       measures = []
@@ -84,16 +92,23 @@ class Api::RadiatorWebServiceController < Api::RestController
         if size
           resource = snapshot.project
           is_file = resource.entity? && resource.copy_resource_id.nil?
+          if resource.copy_resource_id
+            link_id = resource.copy_resource_id
+          else
+            link_id = resource.id
+          end
+          # Workaround for JIT:
+          # :id => rand.to_s: to render twice the same object in the same page, each node id as to be unique
           children << {:children => [], :data => {'$color' => get_hex_color(color, color_metric), '$area' => get_measure_value(size),
-                                                    :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color)}, 
-                                        :id => snapshot.project_id , :name => snapshot.project.name, :is_file => is_file}
+                                                    :size_frmt => get_measure_value_frmt(size), :color_frmt => get_measure_value_frmt(color), :is_file => is_file, :project_id => link_id}, 
+                                        :id => rand.to_s, :name => resource.name}
           area = area + get_measure_value(size)
         end
       end
     end
-    
-    JSON({:children => children, :data => { '$area' => area }, :id => "radiator", :name => "Radiator", :parent => parent_resource_key, 
-      :min => @min, :max => @max, :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction})
+       
+    JSON({:children => children, :data => { '$area' => area }, :id => rand.to_s, :name => "Radiator", :parent => parent_resource_key, 
+      :min => get_custom_min_max(color_metric)[0], :max => get_custom_min_max(color_metric)[1], :size_metric => size_metric.short_name, :color_metric => color_metric.short_name, :color_metric_direction => color_metric.direction, :min_color => @min_color.html, :max_color => @max_color.html})
   end
   
   def get_measure(metric, measures)
@@ -123,7 +138,20 @@ class Api::RadiatorWebServiceController < Api::RestController
   end
   
   def get_hex_color(measure, color_metric)
-    MeasureColor.color(measure).html
+     MeasureColor.color(measure, :min => get_custom_min_max(color_metric)[0], :max => get_custom_min_max(color_metric)[1], :min_color => @min_color, :mean_color => @mean_color, :max_color => @max_color).html
   end
-  
+
+  def get_custom_min_max(color_metric) 
+    custom_threshold = Property.value('sonar.radiator.customThresholds')
+    if custom_threshold
+        custom_threshold.split(",").each do |custom_threshold|
+            custom_threshold_array = custom_threshold.split(":")
+            if custom_threshold_array[0] == color_metric.key
+                return custom_threshold_array[1], custom_threshold_array[2]
+            end
+        end
+    end
+    return color_metric.worst_value, color_metric.best_value
+  end
+
 end

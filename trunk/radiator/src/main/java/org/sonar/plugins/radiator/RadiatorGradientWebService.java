@@ -20,16 +20,18 @@
 
 package org.sonar.plugins.radiator;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWebservice;
 
-import org.junit.Ignore;
-import org.junit.Test;
+public class RadiatorGradientWebService extends AbstractRubyTemplate implements RubyRailsWebservice {
 
-@Ignore
-public class RadiatorPageTest {
-  @Test
-  public void test() {
-    assertThat(getClass().getResource(new RadiatorPage().getTemplatePath()), notNullValue());
+  public String getId() {
+    return "RadiatorGradientWebService";
   }
+
+  @Override
+  protected String getTemplatePath() {
+    return "/org/sonar/plugins/radiator/gradient_web_service.rb";
+  }
+
 }
