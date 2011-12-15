@@ -24,9 +24,20 @@ import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.Description;
 import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
+import org.sonar.api.web.WidgetCategory;
+import org.sonar.api.web.WidgetProperties;
+import org.sonar.api.web.WidgetProperty;
+import org.sonar.api.web.WidgetPropertyType;
 
 @UserRole(UserRole.USER)
 @Description("Radiator of components")
+@WidgetCategory("Reporting")
+@WidgetProperties(
+    {
+        @WidgetProperty(key = "defaultSize", type = WidgetPropertyType.METRIC),
+        @WidgetProperty(key = "defaultColor", type = WidgetPropertyType.METRIC)
+    }
+)
 public final class RadiatorWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   public String getId() {
