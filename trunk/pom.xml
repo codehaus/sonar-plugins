@@ -26,7 +26,7 @@
         <module>cutoff</module>
         <module>dotnet</module>
         <module>emma</module>
-        <module>cvs-export</module>
+        <module>csv-export</module>
         <module>fb-contrib</module>
         <module>flex</module>
         <module>google-analytics</module>
