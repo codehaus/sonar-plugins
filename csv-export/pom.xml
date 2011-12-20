@@ -37,8 +37,8 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonar-csv-export</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonar-csv-export</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/csv-export</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/csv-export</developerConnection>
     <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk</url>
   </scm>
 
