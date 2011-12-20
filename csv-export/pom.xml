@@ -11,7 +11,7 @@
 
   <artifactId>sonar-csv-export-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.2</version>
+  <version>1.2-SNAPSHOT</version>
   <name>Sonar CSV Export</name>
   <description>CSV export of measures</description>
   <url>http://docs.codehaus.org/display/SONAR/CSV+Export+Plugin</url>
@@ -37,9 +37,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-csv-export-plugin-1.2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-csv-export-plugin-1.2</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-csv-export-plugin-1.2</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/sonar-csv-export</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/sonar-csv-export</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk</url>
   </scm>
 
   <dependencies>
