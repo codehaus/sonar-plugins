@@ -1,122 +1,124 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>10</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <artifactId>sonar-runner</artifactId>
+  <version>1.2</version>
+  <name>Sonar Standalone Runner</name>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>c-rules</module>
-        <module>cutoff</module>
-        <module>dotnet</module>
-        <module>emma</module>
-        <module>csv-export</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>google-analytics</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>javascript</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>l10n</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>php</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>radiator</module>
-        <module>scm-activity</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>sonar-runner</module>
-        <module>switch-off-violations</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>debug</module>
-        <module>devkit</module>
-        <module>drools</module>
-        <module>profiler</module>
-        <module>scala</module>
-        <module>testability-explorer</module>
-        <module>violation-density</module>
-        <module>w3c-markup-validation</module>
-        <module>webscanner</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>cql</module>
-        <module>cxx</module>
-        <module>jlint</module>
-        <module>sonar-replay</module>
-        <module>sonarj</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-      </modules>
-    </profile>
-  </profiles>
+  <url>http://docs.codehaus.org/display/SONAR/Sonar+Standalone+Runner</url>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+      <timezone>+3</timezone>
+    </developer>
+    <developer>
+      <id>simon.brandhof</id>
+      <name>Simon Brandhof</name>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-runner-1.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-runner-1.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-runner-1.2</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14640</url>
+  </issueManagement>
+  <ciManagement>
+  </ciManagement>
+
+  <properties>
+    <sonar.buildVersion>2.6</sonar.buildVersion>
+  </properties>
+
+  <dependencies>
+    <!-- Would be embedded in final JAR -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-batch-bootstrapper</artifactId>
+      <version>${sonar.buildVersion}</version>
+    </dependency>
+    <!-- Would be available after bootstrapping -->
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.15</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-batch</artifactId>
+      <version>${sonar.buildVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.buildVersion}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
-      <!-- See http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <descriptors>
+                <descriptor>${basedir}/assembly.xml</descriptor>
+              </descriptors>
+              <!-- TODO archiverConfig should be declared in parent POM - http://jira.codehaus.org/browse/SONARPLUGINS-1374 -->
+              <archiverConfig>
+                <!-- Workaround for http://jira.codehaus.org/browse/MASSEMBLY-422 -->
+                <!-- 420(dec) = 644(oct) -->
+                <fileMode>420</fileMode>
+                <!-- 493(dec) = 755(oct) -->
+                <directoryMode>493</directoryMode>
+                <defaultDirectoryMode>493</defaultDirectoryMode>
+              </archiverConfig>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
