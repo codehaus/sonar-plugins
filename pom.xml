@@ -52,7 +52,6 @@
         <module>sigmm</module>
         <module>sonargraph</module>
         <module>sonar-runner</module>
-        <module>csv-export</module>
         <module>switch-off-violations</module>
         <module>taglist</module>
         <module>technical-debt</module>
