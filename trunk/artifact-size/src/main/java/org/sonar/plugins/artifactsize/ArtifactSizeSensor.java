@@ -24,7 +24,7 @@ import java.io.File;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DependedUpon;
