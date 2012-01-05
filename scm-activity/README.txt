@@ -1,1 +1,1 @@
-Sonar SCM Activity plugin source code is hosted here : https://github.com/SonarSourceEcosystem/scm-activity
+Sonar SCM Activity Plugin source code is hosted here : https://github.com/SonarCommunity/scm-activity
