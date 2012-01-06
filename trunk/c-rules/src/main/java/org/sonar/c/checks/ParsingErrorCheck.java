@@ -35,13 +35,14 @@ import com.sonarsource.c.plugin.CCheck;
         + "not only it is possible to track the number of files that do not parse but also to easily find out why they do not parse.</p>")
 public class ParsingErrorCheck extends CCheck implements AuditListener {
 
-  public void addException(Exception e) {
+  public void processException(Exception e) {
     StringWriter exception = new StringWriter();
     e.printStackTrace(new PrintWriter(exception));
     log(exception.toString(), 1);
   }
 
-  public void addRecognitionException(RecognitionException e) {
+  public void processRecognitionException(RecognitionException e) {
     log(e.getMessage(), e.getLine());
   }
+
 }
