@@ -75,9 +75,8 @@
         <module>debug</module>
         <module>devkit</module>
         <module>drools</module>
-        <module>profiler</module>
+        <module>python</module>
         <module>scala</module>
-        <module>testability-explorer</module>
         <module>violation-density</module>
         <module>w3c-markup-validation</module>
         <module>webscanner</module>
@@ -89,8 +88,10 @@
         <module>cql</module>
         <module>cxx</module>
         <module>jlint</module>
+        <module>profiler</module>
         <module>sonar-replay</module>
         <module>sonarj</module>
+        <module>testability-explorer</module>
       </modules>
     </profile>
     <profile>
