@@ -22,7 +22,6 @@
         <module>clirr</module>
         <module>clover</module>
         <module>crowd</module>
-        <module>c-rules</module>
         <module>cutoff</module>
         <module>dotnet</module>
         <module>emma</module>
@@ -97,6 +96,7 @@
     <profile>
       <id>unstableProjects</id>
       <modules>
+        <module>c-rules</module>
       </modules>
     </profile>
   </profiles>
