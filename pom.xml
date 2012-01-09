@@ -36,7 +36,6 @@
         <module>jira</module>
         <module>jmeter</module>
         <module>l10n</module>
-        <module>ldap</module>
         <module>mantis</module>
         <module>maven-report</module>
         <module>motion-chart</module>
@@ -96,6 +95,7 @@
     <profile>
       <id>unstableProjects</id>
       <modules>
+        <module>ldap</module>
         <module>c-rules</module>
       </modules>
     </profile>
