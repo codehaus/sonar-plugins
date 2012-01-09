@@ -21,7 +21,7 @@ package org.sonar.plugins.scala
 
 import org.sonar.plugins.scala.compiler.Compiler._
 
-package object language {
+package object metrics {
 
   def isEmptyBlock(block: Tree) = block match {
     case literal: Literal =>
