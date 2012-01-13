@@ -1,0 +1,23 @@
+<%
+  security_violations=measure('security-violations')
+  if security_violations
+    security_index=measure('security-rci')
+%>
+<div>
+  <div class="dashbox">
+    <h3><%= metric('security-violations').short_name -%></h3>
+    <p>
+      <span class="big"><%= format_measure(security_violations, :url => url_for_drilldown(security_violations))%></span>
+      <%= dashboard_configuration.selected_period? ? format_variation(security_violations) : trend_icon(security_violations) -%>
+    </p>
+    <p>
+      <span"><%= format_measure(security_index, :suffix => ' compliance', :url => url_for_drilldown(security_index)) %></span>
+      <%= dashboard_configuration.selected_period? ? format_variation(security_index) : trend_icon(security_index) -%>
+    </p>
+    <div class="note small"><%= security_violations.description %>  rules activated</div>
+  </div>
+  <div class="dashbox">
+    <%= piechart(measure('security-violations-distribution'), { :size => "242x70"}) -%>
+  </div>
+</div>
+<% end %>
