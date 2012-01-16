@@ -20,33 +20,15 @@
 
 package org.sonar.plugins.radiator;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
 import org.junit.Test;
 
-public class RadiatorPluginTest {
-  private RadiatorPlugin plugin;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
 
-  @Before
-  public void setUp() {
-    plugin = new RadiatorPlugin();
-  }
+public class RadiatorPluginTest {
 
   @Test
   public void testPluginDefinition() {
-    assertThat(plugin.getExtensions().size(), greaterThan(0));
-  }
-
-  /**
-   * See SONAR-1898
-   */
-  @Test
-  public void testDeprecatedMethods() {
-    assertThat(plugin.getKey(), notNullValue());
-    assertThat(plugin.getName(), notNullValue());
-    assertThat(plugin.getDescription(), notNullValue());
+    assertThat(new RadiatorPlugin().getExtensions().size(), greaterThan(0));
   }
 }

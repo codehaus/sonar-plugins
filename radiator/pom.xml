@@ -44,6 +44,11 @@
       <email>simon.brandhof@sonarsource.com</email>
       <timezone>+1</timezone>
     </developer>
+    <developer>
+      <id>racodond</id>
+      <name>David Racodon</name>
+    </developer>
+
   </developers>
  
   <scm>
