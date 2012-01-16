@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>sonar-cutoff-plugin</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.1.1</version>
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Cutoff Plugin</name>
@@ -42,9 +42,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/cutoff</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/cutoff</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-cutoff-plugin-0.1.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-cutoff-plugin-0.1.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-cutoff-plugin-0.1.1</url>
   </scm>
 
   <issueManagement>
