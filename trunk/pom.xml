@@ -71,6 +71,7 @@
         <module>basic-cocomo</module>
         <module>codesize</module>
         <module>debug</module>
+        <module>delphi</module>
         <module>devkit</module>
         <module>drools</module>
         <module>python</module>
