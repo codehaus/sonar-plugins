@@ -73,6 +73,7 @@
         <module>codesize</module>
         <module>debug</module>
         <module>devkit</module>
+        <module>doxygen</module>
         <module>drools</module>
         <module>python</module>
         <module>scala</module>
