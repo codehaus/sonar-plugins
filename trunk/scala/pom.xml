@@ -70,7 +70,7 @@
 
     <license.mailto>felix.mueller.berlin@googlemail.com</license.mailto>
 
-    <scala.version>2.9.0-1</scala.version>
+    <scala.version>2.9.1</scala.version>
   </properties>
 
   <dependencies>
@@ -91,7 +91,7 @@
     </dependency>
     <dependency>
       <groupId>org.scalariform</groupId>
-      <artifactId>scalariform_2.9.0</artifactId>
+      <artifactId>scalariform_${scala.version}</artifactId>
       <version>0.1.1</version>
     </dependency>
 
@@ -103,7 +103,7 @@
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.9.0</artifactId>
+      <artifactId>scalatest_${scala.version}</artifactId>
       <version>1.6.1</version>
       <scope>test</scope>
     </dependency>
