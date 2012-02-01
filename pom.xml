@@ -72,7 +72,6 @@
         <module>basic-cocomo</module>
         <module>codesize</module>
         <module>debug</module>
-        <module>delphi</module>
         <module>devkit</module>
         <module>doxygen</module>
         <module>drools</module>
@@ -99,6 +98,7 @@
       <id>unstableProjects</id>
       <modules>
         <module>c-rules</module>
+        <module>delphi</module>
       </modules>
     </profile>
   </profiles>
