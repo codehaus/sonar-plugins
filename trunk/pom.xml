@@ -23,7 +23,6 @@
         <module>clover</module>
         <module>crowd</module>
         <module>cutoff</module>
-        <module>dotnet</module>
         <module>emma</module>
         <module>csv-export</module>
         <module>fb-contrib</module>
@@ -63,6 +62,15 @@
       </modules>
     </profile>
     <profile>
+      <id>stableProjects-jdk6</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>dotnet</module>
+      </modules>
+    </profile>    
+    <profile>
       <id>unreleased</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -100,6 +108,39 @@
         <module>c-rules</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>sanity-checks</id>
+      <activation>
+        <jdk>[1.6,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <!-- check compatibility with Java 5 -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>animal-sniffer-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-java-api-compatibility</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <signature>
+                    <groupId>org.codehaus.mojo.signature</groupId>
+                    <artifactId>java15</artifactId>
+                    <version>1.0</version>
+                  </signature>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 
   <build>
