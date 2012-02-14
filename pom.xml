@@ -58,7 +58,6 @@
         <module>trac</module>
         <module>useless-code-tracker</module>
         <module>web</module>
-        <module>xml</module>
       </modules>
     </profile>
     <profile>
@@ -68,6 +67,7 @@
       </activation>
       <modules>
         <module>dotnet</module>
+        <module>xml</module>
       </modules>
     </profile>    
     <profile>
