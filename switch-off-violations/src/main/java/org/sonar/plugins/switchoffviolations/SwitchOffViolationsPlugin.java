@@ -20,11 +20,28 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import org.sonar.api.Plugin;
-
 import java.util.Arrays;
 import java.util.List;
 
+import org.sonar.api.Plugin;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
+
+@Properties({
+  @Property(
+    key = Constants.PATTERNS_PARAMETER_KEY,
+    defaultValue = "",
+    name = "Exclusion patterns",
+    description = "Patterns used to identify which violations to switch off.<br/>Each pattern must be defined on a new line. "
+      +
+      "Comments start with #. Blank lines are allowed. A line defines 3 fields: resource key, rule key and range of lines.<br/><br/>"
+      +
+      "Example:<br/><pre># exclude a specific rule on a specific file on specific lines\ncom.foo.Bar;pmd:AvoidPrintStackTrace;[10,25,90]</pre>"
+      +
+      "<br/>More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/><br/>",
+    project = true,
+    global = true)
+})
 public final class SwitchOffViolationsPlugin implements Plugin {
   public String getKey() {
     return Constants.PLUGIN_KEY;
@@ -38,6 +55,7 @@ public final class SwitchOffViolationsPlugin implements Plugin {
     return "";
   }
 
+  @SuppressWarnings({"rawtypes", "unchecked"})
   public List getExtensions() {
     return Arrays.asList(SwitchOffViolationsFilter.class);
   }

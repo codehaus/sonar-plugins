@@ -20,6 +20,9 @@
 
 package org.sonar.plugins.switchoffviolations;
 
+import java.io.File;
+import java.util.List;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -29,8 +32,7 @@ import org.sonar.api.rules.ViolationFilter;
 import org.sonar.api.utils.Logs;
 import org.sonar.api.utils.SonarException;
 
-import java.io.File;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public final class SwitchOffViolationsFilter implements ViolationFilter {
   private static final Logger LOG = LoggerFactory.getLogger(SwitchOffViolationsFilter.class);
@@ -38,16 +40,17 @@ public final class SwitchOffViolationsFilter implements ViolationFilter {
   private Pattern[] patterns;
 
   public SwitchOffViolationsFilter(Configuration conf) {
-    String fileLocation = conf.getString(Constants.LOCATION_PARAMETER);
-    if (StringUtils.isNotBlank(fileLocation)) {
+    String patternConf = conf.getString(Constants.PATTERNS_PARAMETER_KEY);
+    String fileLocation = conf.getString(Constants.LOCATION_PARAMETER_KEY);
+    List<Pattern> list = Lists.newArrayList();
+    if (StringUtils.isNotBlank(patternConf)) {
+      list = new PatternDecoder().decode(patternConf);
+    } else if (StringUtils.isNotBlank(fileLocation)) {
       File file = locateFile(fileLocation);
       logConfiguration(file);
-      List<Pattern> list = new PatternDecoder().decodeFile(file);
-      patterns = list.toArray(new Pattern[list.size()]);
-
-    } else {
-      patterns = new Pattern[0];
+      list = new PatternDecoder().decode(file);
     }
+    patterns = list.toArray(new Pattern[list.size()]);
   }
 
   Pattern[] getPatterns() {
@@ -61,7 +64,7 @@ public final class SwitchOffViolationsFilter implements ViolationFilter {
   File locateFile(String location) {
     File file = new File(location);
     if (!file.exists() || !file.isFile()) {
-      throw new SonarException("File not found. Please check the parameter " + Constants.LOCATION_PARAMETER + ": " + location);
+      throw new SonarException("File not found. Please check the parameter " + Constants.LOCATION_PARAMETER_KEY + ": " + location);
     }
 
     return file;

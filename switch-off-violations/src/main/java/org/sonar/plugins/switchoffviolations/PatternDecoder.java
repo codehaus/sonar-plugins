@@ -20,14 +20,15 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.utils.SonarException;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 final class PatternDecoder {
 
@@ -39,6 +40,15 @@ final class PatternDecoder {
     }
 
     String[] fields = StringUtils.split(line, ';');
+    checkLineConstraints(line, fields);
+
+    Pattern pattern = new Pattern(StringUtils.trim(fields[0]), StringUtils.trim(fields[1]));
+    decodeRangeOfLines(pattern, fields[2]);
+
+    return pattern;
+  }
+
+  void checkLineConstraints(String line, String[] fields) {
     if (fields.length != 3) {
       throw new SonarException("Unvalid format. The following line does not define 3 fields separated by comma: " + line);
     }
@@ -52,11 +62,6 @@ final class PatternDecoder {
     if (!isLinesRange(fields[2])) {
       throw new SonarException("Unvalid format. The third field does not define a range of lines: " + line);
     }
-
-    Pattern pattern = new Pattern(StringUtils.trim(fields[0]), StringUtils.trim(fields[1]));
-    decodeRangeOfLines(pattern, fields[2]);
-
-    return pattern;
   }
 
   void decodeRangeOfLines(Pattern pattern, String field) {
@@ -93,8 +98,21 @@ final class PatternDecoder {
     return StringUtils.isNotBlank(field);
   }
 
-  List<Pattern> decodeFile(File file) {
+  List<Pattern> decode(String patternsList) {
+    List<Pattern> patterns = Lists.newLinkedList();
+    String[] patternsLines = StringUtils.split(patternsList, "\n");
+    for (String patternLine : patternsLines) {
+      Pattern pattern = decodeLine(patternLine.trim());
+      if (pattern != null) {
+        patterns.add(pattern);
+      }
+    }
+    return patterns;
+  }
+
+  List<Pattern> decode(File file) {
     try {
+      @SuppressWarnings("unchecked")
       List<String> lines = FileUtils.readLines(file);
       List<Pattern> patterns = Lists.newLinkedList();
       for (String line : lines) {
