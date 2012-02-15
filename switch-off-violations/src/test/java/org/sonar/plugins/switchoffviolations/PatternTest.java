@@ -20,17 +20,16 @@
 
 package org.sonar.plugins.switchoffviolations;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.hasItems;
+
 import org.junit.Test;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.rules.Rule;
-import org.sonar.plugins.switchoffviolations.Pattern;
-
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
 
 public class PatternTest {
-  
+
   @Test(expected = IllegalArgumentException.class)
   public void lineRangeShouldBeOrdered() {
     new Pattern.LineRange(25, 12);
@@ -51,7 +50,7 @@ public class PatternTest {
     assertThat(range.in(13), is(true));
     assertThat(range.in(14), is(true));
     assertThat(range.in(15), is(true));
-    assertThat(range.in(16), is(false));    
+    assertThat(range.in(16), is(false));
   }
 
   @Test
@@ -91,7 +90,7 @@ public class PatternTest {
 
     assertThat(new Pattern("*", "pmd:IllegalRegexp").matchRule(rule), is(false));
     assertThat(new Pattern("*", "pmd:*").matchRule(rule), is(false));
-    assertThat(new Pattern("*", "*:Foo*IllegalRegexp").matchRule(rule), is(false));  
+    assertThat(new Pattern("*", "*:Foo*IllegalRegexp").matchRule(rule), is(false));
 
   }
 }
