@@ -20,23 +20,21 @@
 
 package org.sonar.plugins.switchoffviolations;
 
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.switchoffviolations.Constants;
-import org.sonar.plugins.switchoffviolations.SwitchOffViolationsFilter;
 import org.sonar.test.TestUtils;
-
-import java.io.File;
-import java.io.IOException;
-
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 
 public class SwitchOffViolationsFilterTest {
 
@@ -51,21 +49,46 @@ public class SwitchOffViolationsFilterTest {
   }
 
   @Test
-  public void shouldLoadConfigurationFile() throws IOException {
-    File file = TestUtils.getResource(getClass(), "filter.txt");
-
+  public void shouldUsePatternsPluginParameter() throws IOException {
+    String patternsList = "org.foo.Bar;*;*\norg.foo.Hello;checkstyle:MagicNumber;[15-200]";
     PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(Constants.LOCATION_PARAMETER, file.getCanonicalPath());
+    conf.setProperty(Constants.PATTERNS_PARAMETER_KEY, patternsList);
 
     SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(conf);
     assertThat(filter.getPatterns().length, is(2));
     assertTrue(filter.isIgnored(Violation.create(CHECKSTYLE_RULE, JAVA_FILE).setLineId(150)));
   }
 
+  @Test
+  public void shouldLoadConfigurationFile() throws IOException {
+    File file = TestUtils.getResource(getClass(), "filter.txt");
+
+    PropertiesConfiguration conf = new PropertiesConfiguration();
+    conf.setProperty(Constants.LOCATION_PARAMETER_KEY, file.getCanonicalPath());
+
+    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(conf);
+    assertThat(filter.getPatterns().length, is(2));
+    assertTrue(filter.isIgnored(Violation.create(CHECKSTYLE_RULE, JAVA_FILE).setLineId(150)));
+  }
+
+  @Test
+  public void shouldUsePatternsPluginParameterBeforeConfigurationFile() throws IOException {
+    PropertiesConfiguration conf = new PropertiesConfiguration();
+    // filter.txt defines 2 patterns
+    File file = TestUtils.getResource(getClass(), "filter.txt");
+    conf.setProperty(Constants.LOCATION_PARAMETER_KEY, file.getCanonicalPath());
+    // but there's actually only 1 pattern defined directly via the plugin parameter
+    String patternsList = "org.foo.Bar;*;*";
+    conf.setProperty(Constants.PATTERNS_PARAMETER_KEY, patternsList);
+
+    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(conf);
+    assertThat(filter.getPatterns().length, is(1));
+  }
+
   @Test(expected = SonarException.class)
   public void shouldFailIfFileNotFound() {
     PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(Constants.LOCATION_PARAMETER, "/path/to/unknown/file");
+    conf.setProperty(Constants.LOCATION_PARAMETER_KEY, "/path/to/unknown/file");
     new SwitchOffViolationsFilter(conf);
   }
 }

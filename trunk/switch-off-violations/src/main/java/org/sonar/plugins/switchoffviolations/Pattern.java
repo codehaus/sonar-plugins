@@ -104,7 +104,7 @@ final class Pattern {
     return false;
   }
 
-  boolean matchResource(Resource resource) {
+  boolean matchResource(Resource<?> resource) {
     return resource != null && resource.getKey() != null && resourcePattern.match(resource.getKey());
   }
 

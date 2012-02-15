@@ -20,16 +20,16 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import org.junit.Test;
-import org.sonar.api.utils.SonarException;
-import org.sonar.test.TestUtils;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
 
 import java.io.File;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
+import org.junit.Test;
+import org.sonar.api.utils.SonarException;
+import org.sonar.test.TestUtils;
 
 public class PatternDecoderTest {
 
@@ -38,13 +38,35 @@ public class PatternDecoderTest {
   @Test(expected = SonarException.class)
   public void shouldFailIfNotValid() {
     File file = TestUtils.getResource(getClass(), "unvalid.txt");
-    decoder.decodeFile(file);
+    decoder.decode(file);
+  }
+
+  @Test(expected = SonarException.class)
+  public void shouldFailIfUnexistingFile() {
+    decoder.decode(new File("foo"));
   }
 
   @Test
   public void shouldReadFile() {
     File file = TestUtils.getResource(getClass(), "valid.txt");
-    List<Pattern> patterns = decoder.decodeFile(file);
+    List<Pattern> patterns = decoder.decode(file);
+    assertThat(patterns.size(), is(5));
+  }
+
+  @Test
+  public void shouldReadString() {
+    String patternsList = "# a comment followed by a blank line\n\n" +
+      "# suppress all violations\n" +
+      "*;*;*\n\n" +
+      "# exclude a Java file\n" +
+      "com.foo.Bar;*;*\n\n" +
+      "# exclude a Java package\n" +
+      "com.foo.*;*;*\n\n" +
+      "# exclude a specific rule\n" +
+      "*;checkstyle:IllegalRegexp;*\n\n" +
+      "# exclude a specific rule on a specific file\n" +
+      "com.foo.Bar;checkstyle:IllegalRegexp;*\n";
+    List<Pattern> patterns = decoder.decode(patternsList);
     assertThat(patterns.size(), is(5));
   }
 
