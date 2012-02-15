@@ -20,13 +20,12 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import org.junit.Test;
-import org.sonar.plugins.switchoffviolations.SwitchOffViolationsPlugin;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
 
 public class SwitchOffViolationsPluginTest {
   @Test

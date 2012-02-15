@@ -20,18 +20,18 @@
 
 package org.sonar.plugins.switchoffviolations;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.number.OrderingComparisons.greaterThan;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Violation;
 import org.sonar.wsclient.services.ViolationQuery;
-
-import java.util.List;
-
-import static org.hamcrest.number.OrderingComparisons.greaterThan;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 
 public class SampleIT {
   static final String WITH_VIOLATIONS_KEY = "org.sonar.switchoffviolations:sample:foo.WithViolations";
@@ -63,7 +63,6 @@ public class SampleIT {
     List<Violation> violations = client.findAll(ViolationQuery.createForResource(SOME_IGNORED_VIOLATIONS_KEY));
     assertThat(count(violations, "checkstyle"), greaterThan(0));
   }
-  
 
   private void assertHasViolations(List<Violation> violations, String repositoryKey) {
     int count = count(violations, repositoryKey);
@@ -79,6 +78,5 @@ public class SampleIT {
     }
     return count;
   }
-
 
 }

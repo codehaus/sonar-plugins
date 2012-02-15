@@ -20,13 +20,14 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.WildcardPattern;
 
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 final class Pattern {
 

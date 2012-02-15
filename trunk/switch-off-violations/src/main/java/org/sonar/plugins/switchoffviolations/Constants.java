@@ -23,9 +23,9 @@ package org.sonar.plugins.switchoffviolations;
 public interface Constants {
   String PLUGIN_KEY = "switchoffviolations";
   String PLUGIN_NAME = "Switch Off Violations";
-  
+
   // Properties
   String LOCATION_PARAMETER_KEY = "sonar.switchoffviolations.configFile";
-  
-  String PATTERNS_PARAMETER_KEY = "sonar.switchoffviolations.patterns"; 
+
+  String PATTERNS_PARAMETER_KEY = "sonar.switchoffviolations.patterns";
 }
