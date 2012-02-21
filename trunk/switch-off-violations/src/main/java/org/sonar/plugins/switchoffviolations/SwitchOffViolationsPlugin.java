@@ -40,7 +40,14 @@ import org.sonar.api.Property;
       +
       "<br/>More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/><br/>",
     project = true,
-    global = true)
+    global = true),
+  @Property(
+      key = Constants.LOCATION_PARAMETER_KEY,
+      defaultValue = "",
+      name = "Configuration file for exclusion patterns",
+      description = "Location of a file that would contain the exclusion patterns and that would be store along with the source code.",
+      project = true,
+      global = true)
 })
 public final class SwitchOffViolationsPlugin implements Plugin {
   public String getKey() {
