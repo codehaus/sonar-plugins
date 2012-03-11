@@ -1,2 +1,0 @@
-foo.SomeIgnoredViolations;pmd:*;[1,2,3-500]
-org.other.package.*;*;*
