@@ -23,6 +23,7 @@
         <module>clover</module>
         <module>crowd</module>
         <module>cutoff</module>
+        <module>dotnet</module>
         <module>emma</module>
         <module>csv-export</module>
         <module>fb-contrib</module>
@@ -58,18 +59,9 @@
         <module>trac</module>
         <module>useless-code-tracker</module>
         <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>stableProjects-jdk6</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>dotnet</module>
         <module>xml</module>
       </modules>
-    </profile>    
+    </profile>
     <profile>
       <id>unreleased</id>
       <activation>

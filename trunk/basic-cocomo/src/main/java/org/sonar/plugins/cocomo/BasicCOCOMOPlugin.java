@@ -55,7 +55,7 @@ public class BasicCOCOMOPlugin implements Plugin {
   public static final String CCM_MONTHLY_RATE_DEFAULT = "10000";
 
   public static final String CCM_CURRENCY_SYMBOL = "cocomo.currency.symbol";
-  public static final String CCM_CURRENCY_SYMBOL_DEFAULT = "€";
+  public static final String CCM_CURRENCY_SYMBOL_DEFAULT = "â‚¬";
 
   /** {@inheritDoc} */
   public final String getDescription() {
