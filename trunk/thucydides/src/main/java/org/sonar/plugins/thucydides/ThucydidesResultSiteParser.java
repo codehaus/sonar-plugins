@@ -20,14 +20,16 @@
 
 package org.sonar.plugins.thucydides;
 
+import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
-import org.sonar.api.batch.SensorContext;
 
 public class ThucydidesResultSiteParser implements BatchExtension {
   private static final Logger LOG = LoggerFactory.getLogger(ThucydidesResultSiteParser.class);
-  public ThucydidesResultSiteParser(SensorContext context) {
-    LOG.debug("Site Parser constructor!");
-  }  
+
+  public void parseThucydidesReportFile (File reportFile){
+    LOG.debug("Parsing " + reportFile.getName());
+    
+  }
 }
