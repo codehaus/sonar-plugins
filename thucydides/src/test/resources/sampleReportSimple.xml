@@ -1,0 +1,5 @@
+<acceptance-test-run title="Searching by ambiguious keyword should display the disambiguation page" name="searching_by_ambiguious_keyword_should_display_the_disambiguation_page" steps="0" successful="0" failures="0" skipped="0" ignored="0" pending="0" result="PENDING">
+  <user-story id="org.patros.requirements.Application.Search.SearchByKeyword" name="Search by keyword">
+    <feature id="org.patros.requirements.Application.Search" name="Search"/>
+  </user-story>
+</acceptance-test-run>

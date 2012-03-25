@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.thucydides.model;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "acceptance-test-run")
@@ -33,6 +34,7 @@ public class AcceptanceTestRun extends AbstractThucydidesBaseObject{
   private Integer succesful;
   private Integer steps;
   private UserStory userStory;
+  private List<TestGroup> testGroups;
 
   public Integer getFailures() {
     return failures;
@@ -96,6 +98,14 @@ public class AcceptanceTestRun extends AbstractThucydidesBaseObject{
 
   public void setUserStory(UserStory userStory) {
     this.userStory = userStory;
+  }
+
+  public List<TestGroup> getTestGroups() {
+    return testGroups;
+  }
+
+  public void setTestGroups(List<TestGroup> testGroups) {
+    this.testGroups = testGroups;
   }
   
 }

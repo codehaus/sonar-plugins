@@ -27,15 +27,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TestGroup{
   
   private String result;
-  private String description;
-  private List<ScreenShot> screenShots;
+  private String name;
+  private List<ScreenShot> screenshots;
+  private List<TestStep> testSteps;
 
-  public String getDescription() {
-    return description;
+  public String getName() {
+    return name;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getResult() {
@@ -46,12 +47,19 @@ public class TestGroup{
     this.result = result;
   }
 
-  public List<ScreenShot> getScreenShots() {
-    return screenShots;
+  public List<ScreenShot> getScreenshots() {
+    return screenshots;
   }
 
-  public void setScreenShots(List<ScreenShot> screenShots) {
-    this.screenShots = screenShots;
+  public void setScreenshots(List<ScreenShot> screenShots) {
+    this.screenshots = screenShots;
   }
-  
+
+  public List<TestStep> getTestSteps() {
+    return testSteps;
+  }
+
+  public void setTestSteps(List<TestStep> testSteps) {
+    this.testSteps = testSteps;
+  }
 }

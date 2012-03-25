@@ -30,7 +30,12 @@ import org.sonar.api.utils.SonarException;
 
 public class ThucydidesSensor implements Sensor {
 
+  private ThucydidesResultSiteParser resultsSiteParser;
   private static final Logger LOG = LoggerFactory.getLogger(ThucydidesSensor.class);
+
+  public ThucydidesSensor(ThucydidesResultSiteParser parser) {
+    this.resultsSiteParser = parser;
+  }
 
   @Override
   public boolean shouldExecuteOnProject(Project project) {
@@ -42,15 +47,15 @@ public class ThucydidesSensor implements Sensor {
   public void analyse(Project project, SensorContext context) {
 
     File reportsPath = project.getFileSystem().resolvePath("target/site/thucydides");
-    LOG.debug( reportsPath.getAbsolutePath());
-   
+    LOG.debug(reportsPath.getAbsolutePath());
+
     if (!reportsPath.exists() || !reportsPath.isDirectory()) {
       LOG.warn("Thucidides reports not found in {}", reportsPath);
-      throw new SonarException("Thucidides reports not found");
-    }else{
-      File[] listOfFiles = reportsPath.listFiles(new XmlFileFilter()); 
-      for (File file:listOfFiles){
+    } else {
+      File[] listOfFiles = reportsPath.listFiles(new XmlFileFilter());
+      for (File file : listOfFiles) {
         LOG.debug(file.getName());
+        resultsSiteParser.parseThucydidesReportFile(reportsPath);
       }
     }
 

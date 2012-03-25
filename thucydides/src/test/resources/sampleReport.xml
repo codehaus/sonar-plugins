@@ -1,0 +1,52 @@
+<acceptance-test-run title="Looking up the definition of &apos;apple&apos;" name="Looking up the definition of &apos;apple&apos;" steps="4" successful="4" failures="0" skipped="0" ignored="0" pending="0" result="SUCCESS">
+  <user-story id="org.patros.requirements.Application.Search.SearchByKeyword" name="Search by keyword">
+    <feature id="org.patros.requirements.Application.Search" name="Search"/>
+  </user-story>
+  <test-group name="Given the user is on the Wikionary home page" result="SUCCESS">
+    <screenshots>
+      <screenshot image="screenshot-1d7423cacdd08b678934e84ffcc1b642.png" source="screenshot-1d7423cacdd08b678934e84ffcc1b642.html"/>
+    </screenshots>
+    <test-step result="SUCCESS">
+      <screenshots>
+        <screenshot image="screenshot-1d7423cacdd08b678934e84ffcc1b641.png" source="screenshot-1d7423cacdd08b678934e84ffcc1b641.html"/>
+      </screenshots>
+      <description>Is the home page</description>
+    </test-step>
+  </test-group>
+  <test-group name="When the end user looks up the definition of the word &apos;apple&apos;" result="SUCCESS">
+    <screenshots>
+      <screenshot image="screenshot-77be96f8b5f31c4715879caf28f6faf113.png" source="screenshot-77be96f8b5f31c4715879caf28f6faf113.html"/>
+    </screenshots>
+    <test-group name="Looks for: &lt;span class=&apos;single-parameter&apos;&gt;apple&lt;/span&gt;" result="SUCCESS">
+      <screenshots>
+        <screenshot image="screenshot-77be96f8b5f31c4715879caf28f6faf13.png" source="screenshot-77be96f8b5f31c4715879caf28f6faf13.html"/>
+        <screenshot image="screenshot-1a6adb61bc6dce86cd297e8ba3a45b12.png" source="screenshot-1a6adb61bc6dce86cd297e8ba3a45b12.html"/>
+      </screenshots>
+      <test-step result="SUCCESS">
+        <screenshots>
+          <screenshot image="screenshot-df26f325c795b0d5ed62b0f4a135f8d84.png" source="screenshot-df26f325c795b0d5ed62b0f4a135f8d84.html"/>
+          <screenshot image="screenshot-df26f325c795b0d5ed62b0f4a135f8d86.png" source="screenshot-df26f325c795b0d5ed62b0f4a135f8d86.html"/>
+        </screenshots>
+        <description>Enters: &lt;span class=&apos;single-parameter&apos;&gt;apple&lt;/span&gt;</description>
+      </test-step>
+      <test-step result="SUCCESS">
+        <screenshots>
+          <screenshot image="screenshot-1a6adb61bc6dce86cd297e8ba3a45b8.png" source="screenshot-1a6adb61bc6dce86cd297e8ba3a45b8.html"/>
+          <screenshot image="screenshot-1a6adb61bc6dce86cd297e8ba3a45b10.png" source="screenshot-1a6adb61bc6dce86cd297e8ba3a45b10.html"/>
+        </screenshots>
+        <description>Starts search</description>
+      </test-step>
+    </test-group>
+  </test-group>
+  <test-group name="Then they should see the definition of &apos;apple" result="SUCCESS">
+    <screenshots>
+      <screenshot image="screenshot-f9987dfaf49d07d9284f6b14166461416.png" source="screenshot-f9987dfaf49d07d9284f6b14166461416.html"/>
+    </screenshots>
+    <test-step result="SUCCESS">
+      <screenshots>
+        <screenshot image="screenshot-f9987dfaf49d07d9284f6b14166461414.png" source="screenshot-f9987dfaf49d07d9284f6b14166461414.html"/>
+      </screenshots>
+      <description>Should see definition containing words: &lt;span class=&apos;single-parameter&apos;&gt;A common, round fruit&lt;/span&gt;</description>
+    </test-step>
+  </test-group>
+</acceptance-test-run>

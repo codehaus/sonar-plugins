@@ -28,7 +28,7 @@ public class TestStep{
   
   private String result;
   private String description;
-  private List<ScreenShot> screenShots;
+  private List<ScreenShot> screenshots;
 
   public String getDescription() {
     return description;
@@ -46,12 +46,12 @@ public class TestStep{
     this.result = result;
   }
 
-  public List<ScreenShot> getScreenShots() {
-    return screenShots;
+  public List<ScreenShot> getScreenshots() {
+    return screenshots;
   }
 
-  public void setScreenShots(List<ScreenShot> screenShots) {
-    this.screenShots = screenShots;
+  public void setScreenshots(List<ScreenShot> screenShots) {
+    this.screenshots = screenShots;
   }
   
 }
