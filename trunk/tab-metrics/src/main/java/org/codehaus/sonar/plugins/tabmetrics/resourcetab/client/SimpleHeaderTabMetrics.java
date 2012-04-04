@@ -23,8 +23,6 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Panel;
 
 /**
  * Load measures to show and print information with an structure
@@ -33,7 +31,6 @@ import com.google.gwt.user.client.ui.Panel;
 public class SimpleHeaderTabMetrics extends Composite {
 
   private final FlowPanel headerTabMetrics;
-  private static final int BUFFERSIZE = 512;
 
   /**
    * Constructor
@@ -74,52 +71,21 @@ public class SimpleHeaderTabMetrics extends Composite {
 
     // TITLE
     String titleHtml = "<h3>" + domainName + "</h3>";
-    addCell(headerTabMetrics, titleHtml);
+    TabUtil.addCell(headerTabMetrics, titleHtml);
 
-    StringBuffer buffer = new StringBuffer(BUFFERSIZE);
+    StringBuffer buffer = new StringBuffer(TabUtil.BUFFERSIZE);
 
     // TABLE with all metrics
     buffer.append("<table width=\"100%\"><tbody>");
 
     for (int i = 0; i < metricsList.size(); i++) {
       buffer.append("<tr><td nowrap width=\"25%\">");
-      buffer.append(createCell(metricsList.get(i)));
+      buffer.append(TabUtil.createCell(metricsList.get(i)));
       buffer.append("</td><td width=\"75%\"><span style=\"font-style:italic\">" + metricsList.get(i).getDescription() + "</span></td></tr>");
     }
 
     buffer.append("</tbody></table>");
 
-    addCell(headerTabMetrics, buffer.toString());
-  }
-
-  /**
-   * Returns HTML code for metric's name and its value
-   * 
-   * @param metricTab
-   */
-  protected final String createCell(MetricTab metricTab) {
-    StringBuffer buffer = new StringBuffer(BUFFERSIZE);
-
-    // Name
-    buffer.append(metricTab.getName());
-
-    // Value with bold type
-    buffer.append(": <b>");
-    buffer.append(metricTab.getValue());
-    buffer.append("</b>");
-
-    return buffer.toString();
-  }
-
-  /**
-   * Add HTML code in a cell
-   * 
-   * @param panel
-   * @param html
-   *          HTML code
-   */
-  protected final void addCell(Panel panel, String html) {
-    HTML htmlDiv = new HTML(html);
-    panel.add(htmlDiv);
+    TabUtil.addCell(headerTabMetrics, buffer.toString());
   }
 }

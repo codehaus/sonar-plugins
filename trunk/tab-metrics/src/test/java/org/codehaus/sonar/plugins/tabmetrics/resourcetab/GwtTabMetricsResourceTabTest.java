@@ -29,7 +29,7 @@ import org.junit.Test;
 public class GwtTabMetricsResourceTabTest {
 
   @Test
-  public void testGetExtensions() {
+  public void testGwtTab() {
     GwtTabMetricsResourceTab gwtTabMetrics = new GwtTabMetricsResourceTab();
 
     assertEquals(gwtTabMetrics.getTitle(), "All");
