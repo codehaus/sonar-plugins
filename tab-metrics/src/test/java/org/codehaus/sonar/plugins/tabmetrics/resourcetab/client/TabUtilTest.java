@@ -20,22 +20,20 @@
 package org.codehaus.sonar.plugins.tabmetrics.resourcetab.client;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 /**
- * MetricTab Test
+ * Tab Util Test
  */
-public class MetricTabTest {
+public class TabUtilTest {
 
   @Test
-  public void testMetricTab() {
-    MetricTab metricTab = new MetricTab("nloc", "Code lines", "Number of code lines", 100.0);
+  public void testCreateCell() {
+    MetricTab metricTab = new MetricTab("nloc", "Code lines", "Number of code lines", 230.0);
 
-    assertEquals(metricTab.getKey(), "nloc");
-    assertEquals(metricTab.getName(), "Code lines");
-    assertEquals(metricTab.getDescription(), "Number of code lines");
-    assertTrue(metricTab.getValue().equals(100.0));
+    String htmlCell = TabUtil.createCell(metricTab);
+
+    assertEquals(htmlCell, "Code lines: <b>230</b>");
   }
 }
