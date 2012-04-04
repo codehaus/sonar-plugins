@@ -78,6 +78,7 @@
         <module>drools</module>
         <module>python</module>
         <module>scala</module>
+        <module>tab-metrics</module>
         <module>violation-density</module>
         <module>w3c-markup-validation</module>
       </modules>
