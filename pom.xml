@@ -14,7 +14,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>ant-task</module>
+        <module>abacus</module>
+		<module>ant-task</module>
         <module>artifact-size</module>
         <module>branding</module>
         <module>build-breaker</module>
