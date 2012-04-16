@@ -59,15 +59,17 @@ public class CxxCppParser {
     IASTTranslationUnit ast = generateAst(inputFile, fileCode);
     return new CxxCppParsedFile(inputFile, ast, fileCode);
   }
-  
+
   private IASTTranslationUnit generateAst(InputFile inputFile, String fileCode) throws CxxCppParserException {
     String filePath = inputFile.getFile().getAbsolutePath();
     IASTTranslationUnit translationUnit = null;    
+    String[] includeDirectories = {"."};
+
     try {
       IParserLogService log = ParserFactory.createDefaultLogService();
       FileContent fileContent = FileContent.create(filePath, fileCode.toCharArray() );
-      IScannerInfo info = new ScannerInfo(new HashMap<String, String>(), new String[0]);
-      IncludeFileContentProvider includeProvider = IncludeFileContentProvider.getEmptyFilesProvider();
+      IScannerInfo info = new ScannerInfo(new HashMap<String, String>(), includeDirectories);
+      IncludeFileContentProvider includeProvider = new CxxCppIncludeFileContentProvider();
       translationUnit = GPPLanguage.getDefault().getASTTranslationUnit(fileContent, info, includeProvider, null, 0, log);
     } catch (CoreException e) {
       throw new CxxCppParserException("Error while parsing " + filePath + ": " + e.getMessage());
@@ -87,11 +89,11 @@ public class CxxCppParser {
     if(inputFile == null) {
       throw new CxxCppParserException("No input file was provided");
     }
-    
+
     File file = inputFile.getFile();
     if(file == null || !file.exists()) {
       throw new CxxCppParserException("File not found for parsing: " + CxxUtils.fileToAbsolutePath(file) );
     }
   }
-    
+
 }
