@@ -169,7 +169,7 @@
                     <include>**/*.jar</include>
                   </includes>
                   <excludes>
-                    <exclude>**/*_sources.jar</exclude>
+                    <exclude>**/*.source_*.jar</exclude>
                   </excludes>
                 </resource>
               </resources>

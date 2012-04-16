@@ -1,3 +1,4 @@
+#include "extern/ExternHeader.h"
 #include "ClassTest.h"
 
 /**

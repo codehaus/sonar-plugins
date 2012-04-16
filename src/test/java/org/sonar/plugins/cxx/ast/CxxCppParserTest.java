@@ -31,9 +31,7 @@ import java.net.URISyntaxException;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.cdt.core.dom.ast.ExpansionOverlapsBoundaryException;
-import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
-import org.eclipse.cdt.core.parser.IToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.InputFile;
@@ -42,8 +40,8 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
 
 public class CxxCppParserTest {
 
-  private static final int CLASS_TEST_CPP_STATEMENTS_COUNT = 1;
-  private static final int CLASS_TEST_CPP_DECL_COUNT = 5;
+  private static final int CLASS_TEST_CPP_STATEMENTS_COUNT = 5;
+  private static final int CLASS_TEST_CPP_DECL_COUNT = 7;
   private static final int CLASS_TEST_CPP_COMMENTS_COUNT = 2;
   private static final String CLASS_TEST_CPP_PATH = "/org/sonar/plugins/cxx/ast/ClassTest.cpp";
 
@@ -99,26 +97,7 @@ public class CxxCppParserTest {
         
     assertEquals(CLASS_TEST_CPP_COMMENTS_COUNT, ast.getComments().length);
     assertEquals(CLASS_TEST_CPP_DECL_COUNT, ast.getDeclarations().length);
-    assertEquals(CLASS_TEST_CPP_STATEMENTS_COUNT, ast.getAllPreprocessorStatements().length);
-    printChildren(ast, 0);    
-  }
-  
-  //TODO remove
-  private void printChildren(IASTNode parent, int indent) throws ExpansionOverlapsBoundaryException {
-    String spaces = "";
-    for(int i = 0; i < indent; ++i) {
-      spaces += "~";
-    }
-
-    System.out.println(spaces + parent.getClass().getSimpleName());
-
-    IToken token = parent.getSyntax();
-    System.out.println(spaces + "Token img: " + token.getImage());
-    System.out.println(spaces + "Token type: " + token.getType());
-    
-    for(IASTNode child : parent.getChildren()) {
-      printChildren(child, indent+2);
-    }
+    assertEquals(CLASS_TEST_CPP_STATEMENTS_COUNT, ast.getAllPreprocessorStatements().length);    
   }
 
 }
