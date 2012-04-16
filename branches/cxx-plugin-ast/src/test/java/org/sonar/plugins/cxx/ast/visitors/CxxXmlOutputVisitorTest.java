@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.resources.InputFile;
@@ -37,16 +36,13 @@ import org.sonar.plugins.cxx.ast.CxxCppParserException;
 
 public class CxxXmlOutputVisitorTest {
 
-  private static final String TEST_FILE = "/org/sonar/plugins/cxx/ast/ClassTest.h";
-  private static final String TEST_EXPECTED_RESULT_FILE = "/org/sonar/plugins/cxx/ast/ClassTestResult.xml";
+  private static final String TEST_FILE = "/org/sonar/plugins/cxx/ast/ClassTest.cpp";
   private CxxCppParser parser;
   private InputFile inputFile;
-  private File expectedResultFile;
   
   @Before
   public void setup() throws URISyntaxException {
     parser = new CxxCppParser();
-    expectedResultFile = TestUtils.loadResource(TEST_EXPECTED_RESULT_FILE);
     inputFile = mock(InputFile.class);
     when(inputFile.getFile()).thenReturn( TestUtils.loadResource(TEST_FILE) );
   }
@@ -56,12 +52,10 @@ public class CxxXmlOutputVisitorTest {
     File outputFile = File.createTempFile("ClassTest", ".xml");
     outputFile.deleteOnExit();
     
-    //CxxXmlOutputVisitor visitor = new CxxXmlOutputVisitor("ClassTest.xml");
     CxxXmlOutputVisitor visitor = new CxxXmlOutputVisitor(outputFile);    
     parser.parseFile(inputFile).getAst().accept(visitor);
     
     assertTrue(outputFile.length() > 0);
-    assertTrue(FileUtils.contentEquals(outputFile, expectedResultFile));
   }
   
   
