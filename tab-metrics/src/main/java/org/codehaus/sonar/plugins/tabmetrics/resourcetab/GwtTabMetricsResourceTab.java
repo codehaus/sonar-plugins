@@ -21,14 +21,11 @@ package org.codehaus.sonar.plugins.tabmetrics.resourcetab;
 
 import org.sonar.api.web.GwtPage;
 import org.sonar.api.web.NavigationSection;
-import org.sonar.api.web.ResourceQualifier;
 import org.sonar.api.web.UserRole;
-import org.sonar.wsclient.services.Resource;
 
 /**
  * Gwt TabMetrics Resource Tab
  */
-@ResourceQualifier({ Resource.QUALIFIER_FILE, Resource.QUALIFIER_CLASS, Resource.QUALIFIER_PACKAGE, Resource.QUALIFIER_PROJECT, Resource.QUALIFIER_MODULE })
 @NavigationSection(NavigationSection.RESOURCE_TAB)
 @UserRole(UserRole.USER)
 public class GwtTabMetricsResourceTab extends GwtPage {
@@ -37,7 +34,7 @@ public class GwtTabMetricsResourceTab extends GwtPage {
    * Gets the TabMetrics Tab Title
    */
   public final String getTitle() {
-    return "All";
+    return "Metrics";
   }
 
   /**

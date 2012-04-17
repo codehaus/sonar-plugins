@@ -37,5 +37,9 @@ public class MetricTabTest {
     assertEquals(metricTab.getName(), "Code lines");
     assertEquals(metricTab.getDescription(), "Number of code lines");
     assertTrue(metricTab.getValue().equals(100.0));
+
+    metricTab = new MetricTab(null, null, null, null);
+
+    assertEquals(metricTab.getDescription(), "");
   }
 }

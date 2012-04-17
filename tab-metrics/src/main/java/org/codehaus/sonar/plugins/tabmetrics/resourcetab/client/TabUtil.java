@@ -45,7 +45,7 @@ public final class TabUtil {
    * 
    * @return: the instance
    */
-  public TabUtil getInstance() {
+  public static TabUtil getInstance() {
     return instance;
   }
 
@@ -62,7 +62,7 @@ public final class TabUtil {
 
     // Value with bold type
     buffer.append(": <b>");
-    buffer.append(metricTab.getValue().intValue());
+    buffer.append(metricTab.getValue());
     buffer.append("</b>");
 
     return buffer.toString();

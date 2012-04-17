@@ -32,7 +32,7 @@ public class GwtTabMetricsResourceTabTest {
   public void testGwtTab() {
     GwtTabMetricsResourceTab gwtTabMetrics = new GwtTabMetricsResourceTab();
 
-    assertEquals(gwtTabMetrics.getTitle(), "All");
+    assertEquals(gwtTabMetrics.getTitle(), "Metrics");
     assertEquals(gwtTabMetrics.getGwtId(), "org.codehaus.sonar.plugins.tabmetrics.resourcetab.TabMetricsPluginTab");
   }
 }
