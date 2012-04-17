@@ -19,6 +19,7 @@
  */
 package org.codehaus.sonar.plugins.tabmetrics.resourcetab.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Composite;
@@ -31,6 +32,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 public class SimpleHeaderTabMetrics extends Composite {
 
   private final FlowPanel headerTabMetrics;
+  private List<MetricTab> metricsList;
+  private final String domainName;
 
   /**
    * Constructor
@@ -38,8 +41,11 @@ public class SimpleHeaderTabMetrics extends Composite {
    * @param domainName
    * @param metricsList
    */
-  public SimpleHeaderTabMetrics(String domainName, List<MetricTab> metricsList) {
+  public SimpleHeaderTabMetrics(String domainName) {
     super();
+
+    this.domainName = domainName;
+    this.metricsList = new ArrayList<MetricTab>();
 
     headerTabMetrics = new FlowPanel();
     headerTabMetrics.setStyleName("gwt-ViewerHeader");
@@ -49,9 +55,6 @@ public class SimpleHeaderTabMetrics extends Composite {
 
     // Change the style (Sonar style).
     headerTabMetrics.setStyleName("tab_header");
-
-    // Show data in the tab
-    printData(domainName, metricsList);
   }
 
   /**
@@ -62,12 +65,34 @@ public class SimpleHeaderTabMetrics extends Composite {
   }
 
   /**
+   * @return the metricsList
+   */
+  public final List<MetricTab> getMetricsList() {
+    return metricsList;
+  }
+
+  /**
+   * @param metricsList
+   *          the metricsList to set
+   */
+  public final void setMetricsList(List<MetricTab> metricsList) {
+    this.metricsList = metricsList;
+  }
+
+  /**
+   * @return the domainName
+   */
+  public final String getDomainName() {
+    return domainName;
+  }
+
+  /**
    * Show data in the tab
    * 
    * @param domainName
    * @param metricsList
    */
-  private void printData(String domainName, List<MetricTab> metricsList) {
+  public final void printData() {
 
     // TITLE
     String titleHtml = "<h3>" + domainName + "</h3>";

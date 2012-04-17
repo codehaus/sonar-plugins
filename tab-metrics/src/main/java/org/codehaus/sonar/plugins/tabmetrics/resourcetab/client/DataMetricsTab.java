@@ -47,6 +47,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 public class DataMetricsTab {
 
   private final SortedMap<String, List<MetricTab>> data;
+  private final Map<String, SimpleHeaderTabMetrics> domainPanels;
   private final Resource resource;
   private final FlowPanel panel;
 
@@ -58,6 +59,7 @@ public class DataMetricsTab {
    */
   public DataMetricsTab(Resource resource, FlowPanel panel) {
     data = new TreeMap<String, List<MetricTab>>();
+    domainPanels = new HashMap<String, SimpleHeaderTabMetrics>();
     this.resource = resource;
     this.panel = panel;
 
@@ -70,6 +72,13 @@ public class DataMetricsTab {
    */
   public final Map<String, List<MetricTab>> getData() {
     return data;
+  }
+
+  /**
+   * @return the domainPanels
+   */
+  public final Map<String, SimpleHeaderTabMetrics> getDomainPanels() {
+    return domainPanels;
   }
 
   /**
@@ -134,12 +143,19 @@ public class DataMetricsTab {
 
       for (Entry<String, List<Metric>> entry : orderedMetrics.entrySet()) {
 
+        // DOMAIN
         String domainName = entry.getKey();
 
         data.put(domainName, new ArrayList<MetricTab>());
 
+        // Creates the domain panel
+        SimpleHeaderTabMetrics domainPanel = new SimpleHeaderTabMetrics(domainName);
+        domainPanels.put(domainName, domainPanel);
+        panel.add(domainPanel);
+
         List<Metric> metricsList = entry.getValue();
 
+        // Creating the callback
         TabMetricsCallback callback = new TabMetricsCallback(domainName, metricsList);
 
         // elements in a part
@@ -235,9 +251,14 @@ public class DataMetricsTab {
         }
       });
 
-      // add panel
-      if ( !metrics.isEmpty()) {
-        panel.add(new SimpleHeaderTabMetrics(domainName, metrics));
+      SimpleHeaderTabMetrics dPanel = domainPanels.get(domainName);
+
+      // print panel
+      if (metrics.isEmpty()) {
+        panel.remove(dPanel);
+      } else {
+        dPanel.setMetricsList(metrics);
+        dPanel.printData();
       }
     }
   }
