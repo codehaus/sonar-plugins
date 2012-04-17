@@ -115,7 +115,7 @@ public class DataMetricsTab {
         String domain = metric.getDomain();
 
         // Null or empty domain
-        if (domain == null || domain.isEmpty()) {
+        if (domain == null || domain.length() == 0) {
           domain = "Other";
         }
 
