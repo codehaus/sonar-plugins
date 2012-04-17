@@ -20,11 +20,13 @@
 package org.codehaus.sonar.plugins.tabmetrics.resourcetab.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.sonar.wsclient.gwt.AbstractCallback;
@@ -44,7 +46,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
  */
 public class DataMetricsTab {
 
-  private final Map<String, List<MetricTab>> data;
+  private final SortedMap<String, List<MetricTab>> data;
   private final Resource resource;
   private final FlowPanel panel;
 
@@ -55,7 +57,7 @@ public class DataMetricsTab {
    * @param panel
    */
   public DataMetricsTab(Resource resource, FlowPanel panel) {
-    data = new HashMap<String, List<MetricTab>>();
+    data = new TreeMap<String, List<MetricTab>>();
     this.resource = resource;
     this.panel = panel;
 
@@ -103,6 +105,11 @@ public class DataMetricsTab {
       for (Metric metric : metrics) {
         String domain = metric.getDomain();
 
+        // Null or empty domain
+        if (domain == null || domain.isEmpty()) {
+          domain = "Other";
+        }
+
         if (domainMetrics.containsKey(domain)) {
           List<Metric> auxMetrics = domainMetrics.get(domain);
           auxMetrics.add(metric);
@@ -121,14 +128,11 @@ public class DataMetricsTab {
 
       // Associaties domain with metrics
       Map<String, List<Metric>> domainMetrics = obtainDomainMetrics(result);
-      
-      // Order map
-      TreeMap<String, List<Metric>> orderDomainMetrics = new TreeMap<String, List<Metric>>(domainMetrics);
-      
-      // Entry Set
-      Set<Entry<String, List<Metric>>> entries = orderDomainMetrics.entrySet();
 
-      for (Entry<String, List<Metric>> entry : entries) {
+      // Order map
+      SortedMap<String, List<Metric>> orderedMetrics = new TreeMap<String, List<Metric>>(domainMetrics);
+
+      for (Entry<String, List<Metric>> entry : orderedMetrics.entrySet()) {
 
         String domainName = entry.getKey();
 
@@ -221,6 +225,15 @@ public class DataMetricsTab {
           }
         }
       }
+
+      // Sort metrics
+      Collections.sort(metrics, new Comparator<MetricTab>() {
+
+        @Override
+        public final int compare(MetricTab mTab1, MetricTab mTab2) {
+          return mTab1.getName().compareTo(mTab2.getName());
+        }
+      });
 
       // add panel
       if ( !metrics.isEmpty()) {

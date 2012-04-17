@@ -41,7 +41,7 @@ public class MetricTab {
   public MetricTab(String key, String name, String description, Double value) {
     this.key = key;
     this.name = name;
-    this.description = description;
+    this.description = (description == null) ? "" : description;
     this.value = value;
   }
 

@@ -34,6 +34,11 @@ public class TabUtilTest {
 
     String htmlCell = TabUtil.createCell(metricTab);
 
-    assertEquals(htmlCell, "Code lines: <b>230</b>");
+    assertEquals(htmlCell, "Code lines: <b>230.0</b>");
+  }
+  
+  @Test
+  public void testGetInstance() {
+    assertEquals(TabUtil.getInstance().getClass(), TabUtil.class);
   }
 }
