@@ -244,8 +244,6 @@ public class DataMetricsTab {
 
       // Sort metrics
       Collections.sort(metrics, new Comparator<MetricTab>() {
-
-        @Override
         public final int compare(MetricTab mTab1, MetricTab mTab2) {
           return mTab1.getName().compareTo(mTab2.getName());
         }
