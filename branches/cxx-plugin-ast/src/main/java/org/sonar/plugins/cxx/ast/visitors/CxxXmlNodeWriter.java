@@ -58,26 +58,28 @@ public class CxxXmlNodeWriter {
     return output != null;
   }
   
-  public int writeNodeWithToken(String nodeName, String tokenValue, boolean isClosingNode) {
-    Map<String, String> attributes = new HashMap<String, String>();
-    attributes.put("token", tokenValue);
-    return writeNode(nodeName, isClosingNode, attributes);
+  public int openNode(String nodeName, String tokenValue) {
+    try {
+      tabCount += TAB_INCREMENT;
+      writeTabs(tabCount);
+      output.write("<" + nodeName);
+      output.write(" token" + "=" + QUOTE_CHAR + tokenValue + QUOTE_CHAR);
+      output.write(">");
+      output.newLine();
+    } catch (IOException e) {
+      CxxUtils.LOG.error(e.getMessage());
+      return ASTVisitor.PROCESS_ABORT;
+    }
+        
+    return ASTVisitor.PROCESS_CONTINUE;
   }
     
-  public int writeNode(String nodeName, boolean isClosingNode, Map<String, String> attributes) {
+  public int closeNode(String nodeName) {
     try {
-      tabCount = isClosingNode ? tabCount - TAB_INCREMENT : tabCount;
-      String closing = isClosingNode ? "</" : "<";
       writeTabs(tabCount);
-      
-      if(attributes == null) {
-        output.write(closing + nodeName + ">");
-      } else {
-        writeNodeWithAttributes(nodeName, attributes);
-      }
-      
+      output.write("</" + nodeName + ">");
       output.newLine();
-      tabCount = isClosingNode ? tabCount : tabCount + TAB_INCREMENT;
+      tabCount -= TAB_INCREMENT;
     } catch (IOException e) {
       CxxUtils.LOG.error(e.getMessage());
       return ASTVisitor.PROCESS_ABORT;
@@ -85,14 +87,6 @@ public class CxxXmlNodeWriter {
     return ASTVisitor.PROCESS_CONTINUE;
   }
   
-  private void writeNodeWithAttributes(String nodeName, Map<String, String> attributes) throws IOException {
-    output.write("<" + nodeName);
-    for(Map.Entry<String, String> e : attributes.entrySet()) {
-     output.write(" " + e.getKey() + "=" + QUOTE_CHAR + e.getValue() + QUOTE_CHAR);
-    }
-    output.write(">");    
-  }
-
   private void writeTabs(int numberOfTabs) throws IOException {
     for(int i = 0; i < numberOfTabs; ++i) {
      output.write("\t"); 

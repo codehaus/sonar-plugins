@@ -21,8 +21,6 @@ package org.sonar.plugins.cxx.ast.visitors;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.ExpansionOverlapsBoundaryException;
@@ -30,6 +28,7 @@ import org.eclipse.cdt.core.dom.ast.IASTArrayModifier;
 import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
 import org.eclipse.cdt.core.dom.ast.IASTDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
+import org.eclipse.cdt.core.dom.ast.IASTEnumerationSpecifier.IASTEnumerator;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.ast.IASTInitializer;
 import org.eclipse.cdt.core.dom.ast.IASTName;
@@ -40,12 +39,11 @@ import org.eclipse.cdt.core.dom.ast.IASTProblem;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.eclipse.cdt.core.dom.ast.IASTTypeId;
-import org.eclipse.cdt.core.dom.ast.IASTEnumerationSpecifier.IASTEnumerator;
 import org.eclipse.cdt.core.dom.ast.c.ICASTDesignator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCapture;
+import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamespaceDefinition;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
-import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
 /**
@@ -57,6 +55,25 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
 
   private CxxXmlNodeWriter nodeWriter = null;
 
+  //TODO erase, for testing only
+/*  public static void main(String args[]) {
+    InputFile inputFile = mock(InputFile.class);
+    when(inputFile.getFile()).thenReturn( new File("C:/Source.cpp") );
+    
+    File outputFile = new File("C:/SourceCpp.xml");
+      
+    CxxXmlOutputVisitor visitor = new CxxXmlOutputVisitor(outputFile);    
+    CxxCppParser parser = new CxxCppParser();
+  
+    try {
+      parser.parseFile(inputFile).getAst().accept(visitor);
+    } catch (CxxCppParserException e) {
+      System.out.println(e.getMessage());
+      e.printStackTrace();
+    }
+  }
+ */ 
+  
   /**
    * Ctor
    * @param file  output file
@@ -79,20 +96,90 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
     }
   }
 
-  @Override
+  //visit methods
   public int visit(IASTTranslationUnit node) {
     if(!nodeWriter.isValid()) {
       return ASTVisitor.PROCESS_ABORT;
     }
-    Map<String, String> attribs = new HashMap<String, String>();
-    attribs.put("fileName", node.getFilePath());
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), false, attribs);
+    return nodeWriter.openNode(node.getClass().getSimpleName(), node.getFilePath());
   }
 
-  @Override
+  public int visit(IASTName node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTDeclaration node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTInitializer node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTParameterDeclaration node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTDeclarator node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTDeclSpecifier node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTArrayModifier node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTPointerOperator node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTExpression node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTStatement node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTTypeId node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(IASTEnumerator node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+  
+  public int visit( IASTProblem node ){
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(ICPPASTBaseSpecifier node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(ICPPASTNamespaceDefinition node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(ICPPASTTemplateParameter node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(ICPPASTCapture node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+
+  public int visit(ICASTDesignator node) {
+    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+  }
+  
+  //leave methods
   public int leave(IASTTranslationUnit node) {
     try {
-      nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+      nodeWriter.closeNode(node.getClass().getSimpleName());
       nodeWriter.saveToFile();
     } catch (IOException e) {
       CxxUtils.LOG.error(e.getMessage());  
@@ -100,151 +187,77 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
     }
     return ASTVisitor.PROCESS_CONTINUE;
   }
-
-  public int visit(IASTName node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTDeclaration node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTInitializer node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTParameterDeclaration node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTDeclarator node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTDeclSpecifier node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTArrayModifier node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTPointerOperator node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTExpression node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTStatement node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTTypeId node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(IASTEnumerator node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
   
-  public int visit( IASTProblem node ){
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(ICPPASTBaseSpecifier node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(ICPPASTNamespaceDefinition node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(ICPPASTTemplateParameter node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(ICPPASTCapture node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-
-  public int visit(ICASTDesignator node) {
-    return nodeWriter.writeNodeWithToken(node.getClass().getSimpleName(), getNodeToken(node), false);
-  }
-  
-  //leave methods
-
   public int leave(IASTName node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTDeclaration node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTInitializer node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTParameterDeclaration node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTDeclarator node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTDeclSpecifier node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTArrayModifier node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTPointerOperator node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTExpression node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTStatement node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTTypeId node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(IASTEnumerator node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
   
   public int leave(IASTProblem node){
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
   
   public int leave(ICPPASTBaseSpecifier node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(ICPPASTNamespaceDefinition node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(ICPPASTTemplateParameter node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(ICPPASTCapture node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
 
   public int leave(ICASTDesignator node) {
-    return nodeWriter.writeNode(node.getClass().getSimpleName(), true, null);
+    return nodeWriter.closeNode(node.getClass().getSimpleName());
   }
   
   private String getNodeToken(IASTNode node) {
@@ -253,7 +266,10 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
     } catch (ExpansionOverlapsBoundaryException e) {
       CxxUtils.LOG.error(e.getMessage());
       return "";
+    } catch(NullPointerException e) {
+      return "";
     }
+    
   }
 
 }
