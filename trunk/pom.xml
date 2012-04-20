@@ -15,7 +15,7 @@
       </activation>
       <modules>
         <module>abacus</module>
-		<module>ant-task</module>
+        <module>ant-task</module>
         <module>artifact-size</module>
         <module>branding</module>
         <module>build-breaker</module>
@@ -46,6 +46,7 @@
         <module>php</module>
         <module>piwik</module>
         <module>quality-index</module>
+        <module>python</module>
         <module>radiator</module>
         <module>security-rules</module>
         <module>sigmm</module>
@@ -80,12 +81,12 @@
         <module>ada</module>
         <module>basic-cocomo</module>
         <module>codesize</module>
+        <module>cxx</module>
         <module>debug</module>
         <module>delphi</module>
         <module>devkit</module>
         <module>doxygen</module>
         <module>drools</module>
-        <module>python</module>
         <module>scala</module>
         <module>tab-metrics</module>
         <module>violation-density</module>
@@ -96,7 +97,6 @@
       <id>unmaintained</id>
       <modules>
         <module>cql</module>
-        <module>cxx</module>
         <module>jlint</module>
         <module>profiler</module>
         <module>sonar-replay</module>
