@@ -17,25 +17,32 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonType;
 
 public class CppClassMemberTest {
 
   @Test
   public void getNameTest() {
-    CppClassMember member = new CppClassMember("member", "int");
+    CommonType member = new CppClassMember("member", "int");
     assertEquals("member", member.getName());
   }
   
   @Test
+  public void getFullNameTest() {
+    CommonType member = new CppClassMember("member", "int");
+    assertEquals("member:int", member.getFullName());
+  }
+  
+  @Test
   public void getTypeTest() {
-    CppClassMember member = new CppClassMember("member", "int");
+    CommonType member = new CppClassMember("member", "int");
     assertEquals("int", member.getType());
   }
   
@@ -61,11 +68,11 @@ public class CppClassMemberTest {
   
   @Test
   public void equalsTest() {
-    CppClassMember member1 = new CppClassMember("member1", "int");
-    CppClassMember member2 = new CppClassMember("member1", "int");
-    CppClassMember member3 = new CppClassMember("member2", "int");
-    CppClassMember member4 = new CppClassMember("member2", "float");
-    CppClassMember member5 = new CppClassMember("member2", "Float");
+    CommonType member1 = new CppClassMember("member1", "int");
+    CommonType member2 = new CppClassMember("member1", "int");
+    CommonType member3 = new CppClassMember("member2", "int");
+    CommonType member4 = new CppClassMember("member2", "float");
+    CommonType member5 = new CppClassMember("member2", "Float");
     
     assertTrue(member1.equals(member2));
     assertFalse(member1.equals(member3));

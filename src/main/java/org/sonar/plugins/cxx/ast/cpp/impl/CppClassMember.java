@@ -17,59 +17,45 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
-import org.apache.commons.lang.StringUtils;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMember;
+import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonType;
 
 /**
  * Class member
  * @author Przemyslaw Kociolek
  */
-public class CppClassMember {
+public class CppClassMember extends CommonType implements CxxClassMember {
 
-  private String memberName;
-  private String memberType;
-  
   /**
    * Ctor
    * @param name  member name
    */
   public CppClassMember(String name, String type) {
-    if(StringUtils.isEmpty(name) || StringUtils.isEmpty(type)) {
-      throw new IllegalArgumentException("Class member name and type must not be empty!");
-    }
-    this.memberName = name;
-    this.memberType = type;
+    super(name, type);
   }
-  
+    
   /**
-   * @return member name
+   * @return member full name with type - "memberName:memberType"
    */
-  public String getName() {
-    return memberName;
-  }
-
-  
-  /**
-   * @return member type
-   */
-  public String getType() {
-    return memberType;
+  public String getFullName() {
+    return getName()+":"+getType();
   }
   
   @Override
   public boolean equals(Object o) {
-    if(!(o instanceof CppClassMember)) {
+    if(!(o instanceof CxxClassMember)) {
       return false;
     }
     
-    CppClassMember another = (CppClassMember)o;
-    return another.getName().equals(memberName) && another.getType().equals(memberType);
+    CxxClassMember another = (CxxClassMember)o;
+    return another.getFullName().equals(getFullName());
   }
   
   @Override
   public int hashCode() {
-    return (memberType+":"+memberName).hashCode();
+    return getFullName().hashCode();
   }
-    
+  
 }

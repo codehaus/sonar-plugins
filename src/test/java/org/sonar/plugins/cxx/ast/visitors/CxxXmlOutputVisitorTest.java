@@ -48,7 +48,7 @@ public class CxxXmlOutputVisitorTest {
   }
   
   @Test
-  public void produceXmmlOutputTest() throws CxxCppParserException, IOException {
+  public void produceXmlOutputTest() throws CxxCppParserException, IOException {
     File outputFile = File.createTempFile("ClassTest", ".xml");
     outputFile.deleteOnExit();
     

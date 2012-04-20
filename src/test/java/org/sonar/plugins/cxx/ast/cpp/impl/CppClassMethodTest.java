@@ -17,18 +17,21 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
+import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 
 public class CppClassMethodTest {
   
-  private CppClass sampleClass;
-  private CppClassMethod sampleMethod;
+  private CxxClass sampleClass;
+  private CxxClassMethod sampleMethod;
   
   @Before
   public void setup() {
@@ -68,10 +71,19 @@ public class CppClassMethodTest {
   @Test
   public void equalsTest() {
     CppClassMethod sampleMethod2 = new CppClassMethod(sampleClass, "myMethod");
+    assertTrue(sampleMethod.equals(sampleMethod2));
     
-    //assertTrue(sampleMethod.equals(sampleMethod2));
+    sampleMethod.addArgument( new CppMethodArgument("var", "int") );
+    assertFalse(sampleMethod.equals(sampleMethod2));
     
+    sampleMethod2.addArgument( new CppMethodArgument("var", "int") );
+    assertTrue(sampleMethod.equals(sampleMethod2));
     
+    sampleMethod2.addArgument( new CppMethodArgument("VAR", "int") );
+    assertFalse(sampleMethod.equals(sampleMethod2));
+    
+    sampleMethod.addArgument( new CppMethodArgument("var", "int") );
+    assertFalse(sampleMethod.equals(sampleMethod2));
   }
   
   @Test(expected = IllegalArgumentException.class)

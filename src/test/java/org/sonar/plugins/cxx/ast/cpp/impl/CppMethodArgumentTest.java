@@ -17,9 +17,11 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -35,6 +37,22 @@ public class CppMethodArgumentTest {
   public void getTypeTest() {
     CppMethodArgument arg = new CppMethodArgument("var", "int");
     assertEquals("int", arg.getType());
+  }
+  
+  @Test
+  public void getFullNameTest() {
+    CppMethodArgument arg = new CppMethodArgument("var", "int");
+    assertEquals("var:int", arg.getFullName());
+  }
+  
+  @Test
+  public void equalsTest() {
+    CppMethodArgument arg1 = new CppMethodArgument("var", "int");
+    CppMethodArgument arg2 = new CppMethodArgument("var", "int");
+    CppMethodArgument arg3 = new CppMethodArgument("var", "Int");
+    
+    assertTrue(arg1.equals(arg2));
+    assertFalse(arg1.equals(arg3));
   }
   
   @Test(expected = IllegalArgumentException.class)

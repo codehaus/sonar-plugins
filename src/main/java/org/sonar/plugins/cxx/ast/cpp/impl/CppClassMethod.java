@@ -17,45 +17,39 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
+import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.CxxMethodArgument;
+import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonName;
 
 /**
  * Cpp class method
  * @author Przemyslaw Kociolek
  */
-public class CppClassMethod {
+public class CppClassMethod extends CommonName implements CxxClassMethod {
 
-  private String methodName;
-  private CppClass ownerClass;
-  private List<CppMethodArgument> arguments = new ArrayList<CppMethodArgument>();
+  private CxxClass ownerClass;
+  private List<CxxMethodArgument> arguments = new ArrayList<CxxMethodArgument>();
 
   /**
    * Ctor
    * @param ownerClass cpp class that owns this method
    * @param methodName  method name
    */
-  public CppClassMethod(CppClass ownerClass, String methodName) {
-    validateArguments(ownerClass, methodName);
-    this.methodName = methodName;
-    this.ownerClass = ownerClass;
-  }
-
-  /**
-   * @return method name
-   */
-  public String getName() {
-    return methodName;
+  public CppClassMethod(CxxClass ownerClass, String methodName) {
+    super(methodName);
+    this.ownerClass = validateClass(ownerClass);
   }
 
   /**
    * @return class that owns this method
    */
-  public CppClass getOwnerClass() {
+  public CxxClass getOwnerClass() {
     return ownerClass;
   }
 
@@ -63,13 +57,13 @@ public class CppClassMethod {
    * @return  full name, with namespaces
    */
   public String getFullName() {
-    return ownerClass.getFullName() + CppNamespace.SEPARATOR + methodName;
+    return ownerClass.getFullName() + CppNamespace.SEPARATOR + getName();
   }  
 
   /**
    * @return  method argument list
    */
-  public List<CppMethodArgument> getArguments() {
+  public List<CxxMethodArgument> getArguments() {
     return arguments;
   }
 
@@ -77,19 +71,42 @@ public class CppClassMethod {
    * Adds method argument
    * @param argument new method argument
    */
-  public void addArgument(CppMethodArgument argument) {
+  public void addArgument(CxxMethodArgument argument) {
     if(argument != null) {
       arguments.add(argument);
     }
   }
 
-  private void validateArguments(CppClass ownerClass, String methodName) {
-    if(StringUtils.isEmpty( StringUtils.trimToEmpty(methodName) )) {
-      throw new IllegalArgumentException("Method name can't be null or empty.");
+  @Override
+  public boolean equals(Object o) {
+    if(!(o instanceof CxxClassMethod)) {
+      return false;
     }
+    
+    CxxClassMethod another = (CxxClassMethod)o;
+    if(another.getArguments().size() != arguments.size()) {
+      return false;
+    }
+    
+    for(int i = 0; i < arguments.size(); ++i) {
+      if(!another.getArguments().get(i).equals(arguments.get(i))) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+  
+  @Override
+  public int hashCode() {
+    return getFullName().hashCode();
+  }
+  
+  private CxxClass validateClass(CxxClass ownerClass) {
     if(ownerClass == null) {
       throw new IllegalArgumentException("Method owner class can't be null.");
     }
-  }    
+    return ownerClass;
+  }
 
 }
