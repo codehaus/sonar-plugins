@@ -17,19 +17,23 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
+import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonName;
+import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonNamespace;
 
 public class CppClassTest {
 
   @Test
   public void addMemberTest() {
-    CppClass myClass = new CppClass();
+    CxxClass myClass = new CppClass();
     assertEquals(0, myClass.getMembers().size());
     
     myClass.addMember(null);
@@ -47,9 +51,9 @@ public class CppClassTest {
   
   @Test
   public void getNamespaceTest() {
-    CppNamespace namespace = new CppNamespace("MyNamespace");
-    CppClass class1 = new CppClass(namespace, "MyClass");
-    CppClass defaultClass = new CppClass();
+    CxxNamespace namespace = new CppNamespace("MyNamespace");
+    CxxClass class1 = new CppClass(namespace, "MyClass");
+    CxxClass defaultClass = new CppClass();
     
     assertEquals(CppNamespace.DEFAULT_NAMESPACE, defaultClass.getNamespace());
     assertEquals(namespace, class1.getNamespace());
@@ -57,13 +61,13 @@ public class CppClassTest {
   
   @Test
   public void setNamespaceTest() {
-    CppNamespace namespace = new CppNamespace("MyNamespace");
+    CxxNamespace namespace = new CppNamespace("MyNamespace");
     
-    CppClass myClass = new CppClass();
+    CxxClass myClass = new CppClass();
     assertEquals(CppNamespace.DEFAULT_NAMESPACE, myClass.getNamespace());
     
     myClass.setNamespace(null);
-    assertEquals(CppNamespace.DEFAULT_NAMESPACE, myClass.getNamespace());
+    assertEquals(null, myClass.getNamespace());
     
     myClass.setNamespace(namespace);
     assertEquals(namespace, myClass.getNamespace());
@@ -71,50 +75,43 @@ public class CppClassTest {
   
   @Test
   public void getFullNameTest() {
-    CppNamespace myNamespace = new CppNamespace("myNamespace");
-    CppNamespace myParentNamespace = new CppNamespace("myParentNamespace");
+    CxxNamespace myNamespace = new CppNamespace("myNamespace");
+    CxxNamespace myParentNamespace = new CppNamespace("myParentNamespace");
     
-    CppClass myClass = new CppClass();
-    assertEquals(CppNamespace.DEFAULT_NAME + CppNamespace.SEPARATOR + myClass.getClassName(), myClass.getFullName());
+    CxxClass myClass = new CppClass();
+    assertEquals(CppNamespace.DEFAULT_NAME + CppNamespace.SEPARATOR + myClass.getName(), myClass.getFullName());
     
     myClass.setNamespace(myNamespace);
-    assertEquals(myNamespace.getName() + CppNamespace.SEPARATOR + myClass.getClassName(), myClass.getFullName());
+    assertEquals(myNamespace.getName() + CppNamespace.SEPARATOR + myClass.getName(), myClass.getFullName());
     
-    myNamespace.setParent(myParentNamespace);
+    myNamespace.setNamespace(myParentNamespace);
     assertEquals(myParentNamespace.getName() + CppNamespace.SEPARATOR + myNamespace.getName() 
-                 + CppNamespace.SEPARATOR + myClass.getClassName(), myClass.getFullName());
+                 + CppNamespace.SEPARATOR + myClass.getName(), myClass.getFullName());
   }
-  
   
   @Test
   public void getClassNameTest() {
-    CppClass defaultClass = new CppClass();
-    CppClass namedClass = new CppClass("MyClass");
-    assertEquals(CppClass.DEFAULT_NAME, defaultClass.getClassName());
-    assertEquals("MyClass", namedClass.getClassName());
+    CxxClass defaultClass = new CppClass();
+    CxxClass namedClass = new CppClass("MyClass");
+    assertEquals(CppClass.DEFAULT_NAME, defaultClass.getName());
+    assertEquals("MyClass", namedClass.getName());
   }
   
   @Test
   public void setClassNameTest() {
-    CppClass cppClass = new CppClass();
-    assertEquals(CppClass.DEFAULT_NAME, cppClass.getClassName());
-    
-    cppClass.setClassName(null);
-    assertEquals(CppClass.DEFAULT_NAME, cppClass.getClassName());
-    
-    cppClass.setClassName(" ");
-    assertEquals(CppClass.DEFAULT_NAME, cppClass.getClassName());
-    
-    cppClass.setClassName("  NewName  ");
-    assertEquals("NewName", cppClass.getClassName());
+    CxxClass cppClass = new CppClass();
+    assertEquals(CppClass.DEFAULT_NAME, cppClass.getName());
+        
+    cppClass.setName("  NewName  ");
+    assertEquals("NewName", cppClass.getName());
   }
-  
+    
   @Test
   public void equalsTest() {
-    CppClass class1 = new CppClass();
-    CppClass class2 = new CppClass("MyClass");
-    CppClass class3 = new CppClass("   MyClass   ");
-    CppClass class4 = new CppClass("myclass");
+    CxxClass class1 = new CppClass();
+    CxxClass class2 = new CppClass("MyClass");
+    CxxClass class3 = new CppClass("   MyClass   ");
+    CxxClass class4 = new CppClass("myclass");
     
     assertFalse(class4.equals(class2));
     assertFalse(class1.equals(class2));
@@ -122,6 +119,18 @@ public class CppClassTest {
     assertFalse(class1.equals(class4));
     assertTrue(class2.equals(class3));
     assertTrue(class1.equals(new CppClass()));
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowWhenSettingNullNameTest() {
+    CxxClass cppClass = new CppClass();
+    cppClass.setName(null);
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowWhenSettingEmptyNameTest() {
+    CxxClass cppClass = new CppClass();
+    cppClass.setName(" ");
   }
   
 }

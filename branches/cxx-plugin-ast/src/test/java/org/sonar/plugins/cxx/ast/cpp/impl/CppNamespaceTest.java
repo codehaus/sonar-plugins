@@ -17,30 +17,31 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
 
 public class CppNamespaceTest {
     
   @Test
   public void getFullNameTest() {
-    CppNamespace namespace = new CppNamespace("MyNamespace");
-    CppNamespace fatherNamespace = new CppNamespace("FatherNamespace");
-    CppNamespace grandfatherNamespace = new CppNamespace("GrandfatherNamespace");
+    CxxNamespace namespace = new CppNamespace("MyNamespace");
+    CxxNamespace fatherNamespace = new CppNamespace("FatherNamespace");
+    CxxNamespace grandfatherNamespace = new CppNamespace("GrandfatherNamespace");
     
     assertEquals("MyNamespace", namespace.getFullName());
     assertEquals("FatherNamespace", fatherNamespace.getFullName());
     assertEquals("GrandfatherNamespace", grandfatherNamespace.getFullName());
     
-    namespace.setParent(fatherNamespace);
+    namespace.setNamespace(fatherNamespace);
     assertEquals("FatherNamespace::MyNamespace", namespace.getFullName());
     assertEquals("FatherNamespace", fatherNamespace.getFullName());
     assertEquals("GrandfatherNamespace", grandfatherNamespace.getFullName());
     
-    fatherNamespace.setParent(grandfatherNamespace);
+    fatherNamespace.setNamespace(grandfatherNamespace);
     assertEquals("GrandfatherNamespace::FatherNamespace::MyNamespace", namespace.getFullName());
     assertEquals("GrandfatherNamespace::FatherNamespace", fatherNamespace.getFullName());
     assertEquals("GrandfatherNamespace", grandfatherNamespace.getFullName());
@@ -49,29 +50,29 @@ public class CppNamespaceTest {
   
   @Test
   public void getParentTest() {
-    CppNamespace namespace = new CppNamespace();
-    assertEquals(null, namespace.getParent());
+    CxxNamespace namespace = new CppNamespace();
+    assertEquals(null, namespace.getNamespace());
   }
   
   @Test(expected = IllegalArgumentException.class)
   public void setParentTest() {
-    CppNamespace parentNamespace = new CppNamespace("ParentNamespace");
+    CxxNamespace parentNamespace = new CppNamespace("ParentNamespace");
     
-    CppNamespace namespace = new CppNamespace();    
-    assertEquals(null, namespace.getParent());
+    CxxNamespace namespace = new CppNamespace();    
+    assertEquals(null, namespace.getNamespace());
     
-    namespace.setParent(parentNamespace);
-    assertEquals(parentNamespace, namespace.getParent());
+    namespace.setNamespace(parentNamespace);
+    assertEquals(parentNamespace, namespace.getNamespace());
     
-    namespace.setParent(null);
-    assertEquals(null, namespace.getParent());
+    namespace.setNamespace(null);
+    assertEquals(null, namespace.getNamespace());
     
-    namespace.setParent(namespace); //throws
+    namespace.setNamespace(namespace); //throws
   }
   
   @Test
   public void addClassTest() {
-    CppNamespace namespace = new CppNamespace();    
+    CxxNamespace namespace = new CppNamespace();    
     assertEquals(0, namespace.getClasses().size());
   
     namespace.addClass( new CppClass() );
@@ -86,10 +87,10 @@ public class CppNamespaceTest {
   
   @Test
   public void getNameTest() {
-    CppNamespace defaultNamespace     = new CppNamespace();
-    CppNamespace notNamedNamespace    = new CppNamespace(null);
-    CppNamespace emptyNamedNamespace  = new CppNamespace("  ");
-    CppNamespace namedNamespace       = new CppNamespace("MyNamespace");
+    CxxNamespace defaultNamespace     = new CppNamespace();
+    CxxNamespace notNamedNamespace    = new CppNamespace(null);
+    CxxNamespace emptyNamedNamespace  = new CppNamespace("  ");
+    CxxNamespace namedNamespace       = new CppNamespace("MyNamespace");
     
     assertEquals("MyNamespace", namedNamespace.getName());
     assertEquals(CppNamespace.DEFAULT_NAME, defaultNamespace.getName());
@@ -99,13 +100,7 @@ public class CppNamespaceTest {
   
   @Test
   public void setNameTest() {
-    CppNamespace namespace = new CppNamespace();
-    assertEquals(CppNamespace.DEFAULT_NAME, namespace.getName());
-    
-    namespace.setName(null);
-    assertEquals(CppNamespace.DEFAULT_NAME, namespace.getName());
-    
-    namespace.setName(" ");
+    CxxNamespace namespace = new CppNamespace();
     assertEquals(CppNamespace.DEFAULT_NAME, namespace.getName());
     
     namespace.setName(" MyNamespace ");
@@ -114,15 +109,31 @@ public class CppNamespaceTest {
   
   @Test
   public void equalsTest() {
-    CppNamespace namespace1 = new CppNamespace("myNamespace");
-    CppNamespace namespace2 = new CppNamespace(" myNamespace  ");
-    CppNamespace namespace3 = new CppNamespace("mynamespace");
-    CppNamespace namespace4 = new CppNamespace();
+    CxxNamespace namespace1 = new CppNamespace("myNamespace");
+    CxxNamespace namespace2 = new CppNamespace(" myNamespace  ");
+    CxxNamespace namespace3 = new CppNamespace("mynamespace");
+    CxxNamespace namespace4 = new CppNamespace();
     
     assertFalse(namespace1.equals(namespace3));
     assertFalse(namespace1.equals(namespace4));
     assertTrue(namespace1.equals(namespace2));
     assertTrue(new CppNamespace().equals(namespace4));
+    
+    namespace1.setNamespace(namespace4);
+    assertFalse(namespace1.equals(namespace2));
   }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowWhenSettingNullNameTest() {
+    CxxNamespace namespace = new CppNamespace();
+    namespace.setName(null);
+  }
+  
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowWhenSettingEmptyNameTest() {
+    CxxNamespace namespace = new CppNamespace();
+    namespace.setName(" ");
+  }  
+  
   
 }

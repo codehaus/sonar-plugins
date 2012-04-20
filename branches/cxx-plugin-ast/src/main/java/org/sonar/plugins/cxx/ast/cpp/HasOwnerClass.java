@@ -19,50 +19,8 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
-import org.apache.commons.lang.StringUtils;
+public interface HasOwnerClass {
 
-/**
- * Cpp method argument
- * @author Przemyslaw Kociolek
- */
-public class CppMethodArgument {
-
-  private String name;
-  private String type;
-
-  /**
-   * Ctor
-   * @param name  argument name
-   * @param type  argument type
-   */
-  public CppMethodArgument(String name, String type) {
-    validate(name, type);
-    this.name = name;
-    this.type = type;
-  }
-
-  /**
-   * @return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  
-  /**
-   * @return the type
-   */
-  public String getType() {
-    return type;
-  }
-  
-  private void validate(String name, String type) {
-    if( StringUtils.isEmpty( StringUtils.trimToEmpty(name)) ) {
-      throw new IllegalArgumentException("Method argument name can't be null or empty");
-    }
-    if( StringUtils.isEmpty( StringUtils.trimToEmpty(type)) ) {
-      throw new IllegalArgumentException("Method argument type can't be null or empty");
-    }
-  }
+  CxxClass getOwnerClass();
   
 }
