@@ -46,10 +46,9 @@ import org.sonar.plugins.cxx.ast.cpp.impl.CppMethodArgument;
 
 public class CxxCppTranslationUnitVisitorTest {
   
-  private static final String               TEST_FILE             = "/org/sonar/plugins/cxx/ast/VisitorTest.cpp";
-  private static final int                  TEST_FILE_CLASS_COUNT = 4;
-  private static final Map<String, CxxClass> TEST_CLASSES         = new HashMap<String, CxxClass>();
-  
+  private static final String                 TEST_FILE             = "/org/sonar/plugins/cxx/ast/VisitorTest.cpp";
+  private static final int                    TEST_FILE_CLASS_COUNT = 4;
+  private static final Map<String, CxxClass>  TEST_CLASSES         = new HashMap<String, CxxClass>();
   
   private CxxCppParser parser;
   private InputFile inputFile;
