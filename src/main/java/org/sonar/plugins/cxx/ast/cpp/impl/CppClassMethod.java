@@ -25,6 +25,7 @@ import java.util.List;
 import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxMethodArgument;
+import org.sonar.plugins.cxx.ast.cpp.CxxMethodBody;
 import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonName;
 
 /**
@@ -35,6 +36,7 @@ public class CppClassMethod extends CommonName implements CxxClassMethod {
 
   private CxxClass ownerClass;
   private List<CxxMethodArgument> arguments = new ArrayList<CxxMethodArgument>();
+  private CxxMethodBody methodBody  = new CppMethodBody();
 
   /**
    * Ctor
@@ -76,6 +78,10 @@ public class CppClassMethod extends CommonName implements CxxClassMethod {
       arguments.add(argument);
     }
   }
+  
+  public CxxMethodBody getBody() {
+    return methodBody;
+  }
 
   @Override
   public boolean equals(Object o) {
@@ -94,7 +100,7 @@ public class CppClassMethod extends CommonName implements CxxClassMethod {
       }
     }
     
-    return true;
+    return another.getBody().equals(methodBody);
   }
   
   @Override

@@ -48,7 +48,7 @@ public class CxxCppTranslationUnitVisitorTest {
   
   private static final String                 TEST_FILE             = "/org/sonar/plugins/cxx/ast/VisitorTest.cpp";
   private static final int                    TEST_FILE_CLASS_COUNT = 4;
-  private static final Map<String, CxxClass>  TEST_CLASSES         = new HashMap<String, CxxClass>();
+  private static final Map<String, CxxClass>  TEST_CLASSES          = new HashMap<String, CxxClass>();
   
   private CxxCppParser parser;
   private InputFile inputFile;
@@ -64,10 +64,13 @@ public class CxxCppTranslationUnitVisitorTest {
     firstClass.addMember( new CppClassMember("member2", "float") );
     firstClass.addMember( new CppClassMember("member3", "MyStruct") );
     firstClass.addMethod( new CppClassMethod(firstClass, "calculate") );
-    firstClass.addMethod( new CppClassMethod(firstClass, "getMember") );
+    CxxClassMethod getMember = new CppClassMethod(firstClass, "getMember");
+    getMember.getBody().addDetectedName("member1");
+    firstClass.addMethod(getMember);
     
     CxxClassMethod setMember = new CppClassMethod(firstClass, "setMember");
     setMember.addArgument( new CppMethodArgument("value", "int") );
+    setMember.getBody().addDetectedName("member1").addDetectedName("value");
     firstClass.addMethod(setMember);
     
     CxxClass secondClass = new CppClass("SecondClass");

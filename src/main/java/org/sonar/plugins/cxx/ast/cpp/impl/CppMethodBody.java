@@ -17,16 +17,44 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.sonar.plugins.cxx.ast.cpp.CxxMethodBody;
 
 /**
  * @author Przemyslaw Kociolek
  */
-public interface CxxClassMethod extends HasOwnerClass, HasFullName, HasArguments {
+public class CppMethodBody implements CxxMethodBody {
   
-  /**
-   * @return  method body
-   */
-  CxxMethodBody getBody();
+  private List<String> detectedNames = new ArrayList<String>();
 
+  public List<String> getDetectedNames() {
+    return detectedNames;
+  }
+
+  public CxxMethodBody addDetectedName(String name) {
+    if(!StringUtils.isEmpty( StringUtils.trimToEmpty(name) )) {
+      detectedNames.add(name);
+    }
+    return this;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if(!(o instanceof CxxMethodBody)) {
+      return false;
+    }
+    
+    return ((CxxMethodBody)o).getDetectedNames().equals(detectedNames);
+  }
+  
+  @Override
+  public int hashCode() {
+    return detectedNames.hashCode();
+  }
+  
 }
