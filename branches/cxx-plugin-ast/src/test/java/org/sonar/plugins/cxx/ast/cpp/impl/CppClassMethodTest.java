@@ -40,6 +40,11 @@ public class CppClassMethodTest {
   }
   
   @Test
+  public void getMethodBodyTest() {
+    assertEquals(0, sampleMethod.getBody().getDetectedNames().size());
+  }
+  
+  @Test
   public void getNameTest() {
     assertEquals("myMethod", sampleMethod.getName());
   }
@@ -77,6 +82,12 @@ public class CppClassMethodTest {
     assertFalse(sampleMethod.equals(sampleMethod2));
     
     sampleMethod2.addArgument( new CppMethodArgument("var", "int") );
+    assertTrue(sampleMethod.equals(sampleMethod2));
+    
+    sampleMethod2.getBody().addDetectedName("name");
+    assertFalse(sampleMethod.equals(sampleMethod2));
+    
+    sampleMethod.getBody().addDetectedName("name");
     assertTrue(sampleMethod.equals(sampleMethod2));
     
     sampleMethod2.addArgument( new CppMethodArgument("VAR", "int") );

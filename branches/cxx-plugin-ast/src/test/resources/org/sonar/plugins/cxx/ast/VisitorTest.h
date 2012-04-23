@@ -1,7 +1,7 @@
 #ifndef VISITOR_TEST_H
 #define VISITOR_TEST_H
 
-//struct MyStruct;	//forward declaration
+struct MyStruct;	//forward declaration
 
 class FirstClass
 {

@@ -19,14 +19,22 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
+import java.util.List;
+
 /**
  * @author Przemyslaw Kociolek
  */
-public interface CxxClassMethod extends HasOwnerClass, HasFullName, HasArguments {
-  
-  /**
-   * @return  method body
-   */
-  CxxMethodBody getBody();
+public interface CxxMethodBody {
 
+  /**
+   * @return names used in method body, or empty list
+   */
+  List<String> getDetectedNames();
+
+  /**
+   * @param string  detected name
+   * @return  this, so the method could be chained
+   */
+  CxxMethodBody addDetectedName(String string);
+  
 }

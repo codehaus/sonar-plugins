@@ -17,16 +17,32 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.visitors;
+
+import org.eclipse.cdt.core.dom.ast.ASTVisitor;
+import org.eclipse.cdt.core.dom.ast.IASTName;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 
 /**
+ * Visits method body node and collects used names
  * @author Przemyslaw Kociolek
  */
-public interface CxxClassMethod extends HasOwnerClass, HasFullName, HasArguments {
-  
-  /**
-   * @return  method body
-   */
-  CxxMethodBody getBody();
+public class CxxCppMethodBodyVisitor extends ASTVisitor {
 
+  private CxxClassMethod visitedMethod;
+
+  public CxxCppMethodBodyVisitor(CxxClassMethod visitedMethod) {
+    if(visitedMethod == null) {
+      throw new IllegalArgumentException("Can't visit null method.");
+    }
+    this.visitedMethod = visitedMethod;
+    this.shouldVisitNames = true;
+  }
+  
+  public int visit(IASTName node) {
+    String detectedName = node.getRawSignature();
+    visitedMethod.getBody().addDetectedName(detectedName);
+    return ASTVisitor.PROCESS_CONTINUE;
+  }
+  
 }

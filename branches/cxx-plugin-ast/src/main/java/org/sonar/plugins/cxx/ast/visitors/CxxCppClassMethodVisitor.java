@@ -23,6 +23,7 @@ import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.eclipse.cdt.core.dom.ast.IASTParameterDeclaration;
+import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 import org.sonar.plugins.cxx.ast.cpp.impl.CppClassMethod;
@@ -41,12 +42,13 @@ public class CxxCppClassMethodVisitor extends ClassVisitor {
     super(classToVisit);
     this.shouldVisitParameterDeclarations = true;
     this.shouldVisitDeclarators = true;
+    this.shouldVisitStatements = true;
     this.shouldVisitNames = true;
   }
       
   public int leave(IASTDeclarator node) {
     getVisitingClass().addMethod(producedMethod);
-    return ASTVisitor.PROCESS_ABORT;
+    return ASTVisitor.PROCESS_CONTINUE;
   }
   
   public int visit(IASTParameterDeclaration node) {
@@ -61,8 +63,10 @@ public class CxxCppClassMethodVisitor extends ClassVisitor {
     return ASTVisitor.PROCESS_CONTINUE;
   }
   
-  
-  
-  
-  
+  public int visit(IASTStatement node) {
+    CxxCppMethodBodyVisitor bodyVisitor = new CxxCppMethodBodyVisitor(producedMethod);
+    node.accept(bodyVisitor);
+    return ASTVisitor.PROCESS_SKIP;
+  }
+
 }
