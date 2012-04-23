@@ -17,27 +17,30 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp.impl.common;
+package org.sonar.plugins.cxx.ast.cpp;
 
-public abstract class CommonType extends CommonName {
+import java.util.Set;
 
-  protected String type;
-
-  /**
-   * Ctor
-   * @param name  element name
-   * @param type  element type
-   */
-  public CommonType(String name, String type) {
-    super(name);
-    this.type = validateString(type, "Can't set empty/null type");
-  }
+/**
+ * Translation unit is basically a source file, containing classes
+ * @author Przemyslaw Kociolek
+ */
+public interface CxxTranslationUnit {
 
   /**
-   * @return element type
+   * @return  translation unit file name
    */
-  public String getType() {
-    return type;
-  }
-
+  String getFilename();
+  
+  /**
+   * @return  classes in a translation unit file
+   */
+  Set<CxxClass> getClasses();
+  
+  /**
+   * adds a class to this compilation unit 
+   * @param newClass  class to add
+   */
+  void addClass(CxxClass newClass);
+  
 }

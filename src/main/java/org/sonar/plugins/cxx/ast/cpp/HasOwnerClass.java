@@ -19,8 +19,14 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
+/**
+ * @author Przemyslaw Kociolek
+ */
 public interface HasOwnerClass {
 
+  /**
+   * @return  class that owns this element 
+   */
   CxxClass getOwnerClass();
   
 }

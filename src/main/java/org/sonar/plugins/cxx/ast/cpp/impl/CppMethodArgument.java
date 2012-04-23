@@ -20,7 +20,7 @@
 package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import org.sonar.plugins.cxx.ast.cpp.CxxMethodArgument;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonType;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonType;
 
 /**
  * Cpp method argument
@@ -57,5 +57,5 @@ public class CppMethodArgument extends CommonType implements CxxMethodArgument  
   public int hashCode() {
     return getFullName().hashCode();
   }
-  
+    
 }

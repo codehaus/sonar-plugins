@@ -25,7 +25,7 @@ import java.util.List;
 import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxMethodArgument;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonName;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonName;
 
 /**
  * Cpp class method
@@ -100,6 +100,11 @@ public class CppClassMethod extends CommonName implements CxxClassMethod {
   @Override
   public int hashCode() {
     return getFullName().hashCode();
+  }
+  
+  @Override
+  public String toString() {
+    return getFullName();
   }
   
   private CxxClass validateClass(CxxClass ownerClass) {

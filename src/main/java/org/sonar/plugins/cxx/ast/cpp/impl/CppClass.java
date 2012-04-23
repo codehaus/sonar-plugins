@@ -22,10 +22,11 @@ package org.sonar.plugins.cxx.ast.cpp.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.sonar.plugins.cxx.ast.cpp.CxxClassMember;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMember;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonNamespace;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonNamespace;
 
 /**
  * CppClass holds information about class members and methods
@@ -35,6 +36,7 @@ public class CppClass extends CommonNamespace implements CxxClass {
     
   public static final String DEFAULT_NAME = "CxxCppDefaultClassName";  
   private Set<CxxClassMember> members = new HashSet<CxxClassMember>();
+  private Set<CxxClassMethod> methods = new HashSet<CxxClassMethod>();
   
   /**
    * Default ctor, sets everything to default values (name, namespace)
@@ -65,26 +67,27 @@ public class CppClass extends CommonNamespace implements CxxClass {
     return namespace == null ? CppNamespace.DEFAULT_NAMESPACE : namespace;
   }
 
-  /**
-   * @return full class name, with namespaces
-   */
   public String getFullName() {
     return namespace.getFullName() + CppNamespace.SEPARATOR + getName();
   }
   
-  /**
-   * @return  class members, or empty set if none
-   */
   public Set<CxxClassMember> getMembers() {
     return members;
   }
 
-  /**
-   * @param classMember class member to add
-   */
   public void addMember(CxxClassMember classMember) {
     if(classMember != null) {
       members.add(classMember);
+    }
+  }
+
+  public Set<CxxClassMethod> getMethods() {
+    return methods;
+  }
+
+  public void addMethod(CxxClassMethod newMethod) {
+    if(newMethod != null) {
+      methods.add(newMethod);
     }
   }
   
@@ -100,6 +103,11 @@ public class CppClass extends CommonNamespace implements CxxClass {
   @Override
   public int hashCode() {
     return getFullName().hashCode();
+  }
+  
+  @Override
+  public String toString() {
+    return getFullName();
   }
   
 }

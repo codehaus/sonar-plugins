@@ -17,7 +17,7 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp.impl.common;
+package org.sonar.plugins.cxx.ast.cpp.impl.internal;
 
 import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.cxx.ast.cpp.HasFullName;
@@ -67,6 +67,11 @@ public abstract class CommonName implements HasFullName {
       throw new IllegalArgumentException(msg);
     }
     return StringUtils.trimToEmpty(str);
+  }
+  
+  @Override
+  public String toString() {
+    return getFullName();
   }
 
 }

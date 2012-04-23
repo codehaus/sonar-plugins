@@ -19,10 +19,20 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
+/**
+ * @author Przemyslaw Kociolek
+ */
 public interface HasNamespace {
   
+  /**
+   * @return  parent namespace
+   */
   CxxNamespace getNamespace();
   
-  void setNamespace(CxxNamespace namespace);
+  /**
+   * sets parent namespace
+   * @param parentNamespace parent namespace
+   */
+  void setNamespace(CxxNamespace parentNamespace);
   
 }

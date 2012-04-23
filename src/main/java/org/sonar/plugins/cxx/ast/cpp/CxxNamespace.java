@@ -21,10 +21,20 @@ package org.sonar.plugins.cxx.ast.cpp;
 
 import java.util.Set;
 
+/**
+ * @author Przemyslaw Kociolek
+ */
 public interface CxxNamespace extends HasFullName, HasNamespace {
 
+  /**
+   * @return  classes in the namespace
+   */
   Set<CxxClass> getClasses();
 
+  /**
+   * add class to namespace
+   * @param cppClass  class to add
+   */
   void addClass(CxxClass cppClass);
 
 }
