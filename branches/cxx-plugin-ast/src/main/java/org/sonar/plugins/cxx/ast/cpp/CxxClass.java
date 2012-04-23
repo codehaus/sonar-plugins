@@ -21,9 +21,31 @@ package org.sonar.plugins.cxx.ast.cpp;
 
 import java.util.Set;
 
+/**
+ * @author Przemyslaw Kociolek
+ */
 public interface CxxClass extends HasFullName, HasNamespace {
 
+  /**
+   * @return  set of class members
+   */
   Set<CxxClassMember> getMembers();
+  
+  /**
+   * add a class member
+   * @param classMember class member
+   */
   void addMember(CxxClassMember classMember);
+  
+  /**
+   * @return set of class methods
+   */  
+  Set<CxxClassMethod> getMethods();
+  
+  /**
+   * add a method to current class
+   * @param newMethod method to add
+   */
+  void addMethod(CxxClassMethod newMethod);
   
 }

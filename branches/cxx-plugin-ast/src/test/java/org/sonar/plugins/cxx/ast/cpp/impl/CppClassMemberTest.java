@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonType;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonType;
 
 public class CppClassMemberTest {
 

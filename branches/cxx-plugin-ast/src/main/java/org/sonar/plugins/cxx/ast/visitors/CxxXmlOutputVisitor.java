@@ -19,6 +19,9 @@
  */
 package org.sonar.plugins.cxx.ast.visitors;
 
+import static org.mockito.Mockito.mock; //TODO erase
+import static org.mockito.Mockito.when; //TODO erase
+
 import java.io.File;
 import java.io.IOException;
 
@@ -44,6 +47,10 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCapture;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamespaceDefinition;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
+import org.sonar.api.resources.InputFile;
+import org.sonar.plugins.cxx.ast.CxxCppParser;
+import org.sonar.plugins.cxx.ast.CxxCppParserException;
+import org.sonar.plugins.cxx.ast.visitors.internal.XmlNodeWriter;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
 /**
@@ -53,14 +60,13 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
  */
 public class CxxXmlOutputVisitor extends ASTVisitor {
 
-  private CxxXmlNodeWriter nodeWriter = null;
+  private XmlNodeWriter nodeWriter = null;
 
   //TODO erase, for testing only
-/*  public static void main(String args[]) {
+  public static void main(String args[]) {
     InputFile inputFile = mock(InputFile.class);
-    when(inputFile.getFile()).thenReturn( new File("C:/Source.cpp") );
-    
-    File outputFile = new File("C:/SourceCpp.xml");
+    when(inputFile.getFile()).thenReturn( new File("C:\\Dev\\cxx-codehaus\\src\\test\\resources\\org\\sonar\\plugins\\cxx\\ast\\VisitorTest.cpp") );
+    File outputFile = new File("C:\\Output.xml");
       
     CxxXmlOutputVisitor visitor = new CxxXmlOutputVisitor(outputFile);    
     CxxCppParser parser = new CxxCppParser();
@@ -72,7 +78,7 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
       e.printStackTrace();
     }
   }
- */ 
+ 
   
   /**
    * Ctor
@@ -90,7 +96,7 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
     super(true);
     this.shouldVisitAmbiguousNodes = false;
     try {
-      this.nodeWriter = new CxxXmlNodeWriter(fileName);
+      this.nodeWriter = new XmlNodeWriter(fileName);
     } catch (IOException e) {
       CxxUtils.LOG.error(e.getMessage());
     }
@@ -101,79 +107,79 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
     if(!nodeWriter.isValid()) {
       return ASTVisitor.PROCESS_ABORT;
     }
-    return nodeWriter.openNode(node.getClass().getSimpleName(), node.getFilePath());
+    return nodeWriter.openNode(node, node.getFilePath());
   }
 
   public int visit(IASTName node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTDeclaration node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTInitializer node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTParameterDeclaration node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTDeclarator node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTDeclSpecifier node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTArrayModifier node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTPointerOperator node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTExpression node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTStatement node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTTypeId node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(IASTEnumerator node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
   
   public int visit( IASTProblem node ){
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(ICPPASTBaseSpecifier node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(ICPPASTNamespaceDefinition node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(ICPPASTTemplateParameter node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(ICPPASTCapture node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
 
   public int visit(ICASTDesignator node) {
-    return nodeWriter.openNode(node.getClass().getSimpleName(), getNodeToken(node));
+    return nodeWriter.openNode(node, getNodeToken(node));
   }
   
   //leave methods

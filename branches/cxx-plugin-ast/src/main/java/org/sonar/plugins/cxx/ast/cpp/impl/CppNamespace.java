@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonNamespace;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonNamespace;
 
 /**
  * Cpp namespace class. Holds information about classes in that namespace.

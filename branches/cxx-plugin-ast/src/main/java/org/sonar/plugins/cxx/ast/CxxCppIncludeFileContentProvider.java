@@ -25,6 +25,7 @@ import org.eclipse.cdt.core.index.IIndexFileLocation;
 import org.eclipse.cdt.core.parser.FileContent;
 import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContent;
 import org.eclipse.cdt.internal.core.parser.scanner.InternalFileContentProvider;
+import org.sonar.plugins.cxx.utils.CxxUtils;
 
 /**
  * A custom IncludeFileContentProvider class is used. We could use org.eclipse.cdt.internal.core.parser.SavedFilesProvider
@@ -37,6 +38,7 @@ public class CxxCppIncludeFileContentProvider extends InternalFileContentProvide
   public InternalFileContent getContentForInclusion(String path) {
     File includeFile = new File(path);
     if(includeFile.isAbsolute() && !includeFile.exists()) {
+      CxxUtils.LOG.debug("No include file: " + path);
       return null;
     }
      

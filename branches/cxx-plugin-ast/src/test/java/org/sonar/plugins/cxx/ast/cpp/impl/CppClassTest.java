@@ -26,11 +26,24 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonName;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonNamespace;
 
 public class CppClassTest {
 
+  @Test
+  public void addMethodsTest() {
+    CxxClass myClass = new CppClass();
+    assertEquals(0, myClass.getMethods().size());
+    
+    myClass.addMethod( new CppClassMethod(myClass, "method1") );
+    assertEquals(1, myClass.getMethods().size());
+    
+    myClass.addMethod( new CppClassMethod(myClass, "method1") );
+    assertEquals(1, myClass.getMethods().size());
+    
+    myClass.addMethod( new CppClassMethod(myClass, "method2") );
+    assertEquals(2, myClass.getMethods().size());
+  }
+  
   @Test
   public void addMemberTest() {
     CxxClass myClass = new CppClass();

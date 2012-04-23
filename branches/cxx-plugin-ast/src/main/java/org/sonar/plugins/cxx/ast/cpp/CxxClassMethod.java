@@ -19,6 +19,9 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
+/**
+ * @author Przemyslaw Kociolek
+ */
 public interface CxxClassMethod extends HasOwnerClass, HasFullName, HasArguments {
 
 }

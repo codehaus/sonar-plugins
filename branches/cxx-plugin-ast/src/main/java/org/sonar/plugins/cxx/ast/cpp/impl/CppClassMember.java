@@ -20,7 +20,7 @@
 package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import org.sonar.plugins.cxx.ast.cpp.CxxClassMember;
-import org.sonar.plugins.cxx.ast.cpp.impl.common.CommonType;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonType;
 
 /**
  * Class member
@@ -56,6 +56,11 @@ public class CppClassMember extends CommonType implements CxxClassMember {
   @Override
   public int hashCode() {
     return getFullName().hashCode();
+  }
+  
+  @Override
+  public String toString() {
+     return getFullName();
   }
   
 }

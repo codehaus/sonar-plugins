@@ -24,10 +24,20 @@ package org.sonar.plugins.cxx.ast.cpp;
  */
 public interface HasFullName {
 
+  /**
+   * @return  normal, short name
+   */
   String getName();
  
+  /**
+   * @return  full name, with namespaces
+   */
   String getFullName();
   
+  /**
+   * sets short name
+   * @param newName new short name
+   */
   void setName(String newName);
   
 }

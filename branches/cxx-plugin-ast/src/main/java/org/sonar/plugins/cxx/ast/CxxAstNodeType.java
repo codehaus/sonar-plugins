@@ -30,7 +30,6 @@ import org.eclipse.cdt.core.dom.ast.IASTEnumerationSpecifier.IASTEnumerator;
 import org.eclipse.cdt.core.dom.ast.IASTExpression;
 import org.eclipse.cdt.core.dom.ast.IASTInitializer;
 import org.eclipse.cdt.core.dom.ast.IASTName;
-import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.IASTParameterDeclaration;
 import org.eclipse.cdt.core.dom.ast.IASTPointerOperator;
 import org.eclipse.cdt.core.dom.ast.IASTProblem;
@@ -41,7 +40,6 @@ import org.eclipse.cdt.core.dom.ast.c.ICASTDesignator;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCapture;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamespaceDefinition;
-import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateDeclaration;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
 
 /**
@@ -98,7 +96,7 @@ public enum CxxAstNodeType {
    * @param node AST node
    * @return  type of node
    */
-  public CxxAstNodeType nodeToType(IASTNode node) {
+  static public CxxAstNodeType nodeToType(Class node) {
     if(cache == null) {
       cache = createCache();
     }
@@ -110,7 +108,7 @@ public enum CxxAstNodeType {
     return cache.get(node);
   }
   
-  private Map<Object, CxxAstNodeType> createCache() {
+  static private Map<Object, CxxAstNodeType> createCache() {
     Map<Object, CxxAstNodeType> result = new HashMap<Object, CxxAstNodeType>();
     for(CxxAstNodeType nodeType : CxxAstNodeType.values()) {
      cache.put(nodeType.getClazz(), nodeType);

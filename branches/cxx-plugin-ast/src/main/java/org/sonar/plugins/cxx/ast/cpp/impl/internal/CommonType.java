@@ -17,24 +17,27 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl.internal;
 
-import java.util.List;
+public abstract class CommonType extends CommonName {
 
-/**
- * @author Przemyslaw Kociolek
- */
-public interface HasArguments {
+  protected String type;
 
   /**
-   * @return  list of method arguments
+   * Ctor
+   * @param name  element name
+   * @param type  element type
    */
-  List<CxxMethodArgument> getArguments();
-  
+  public CommonType(String name, String type) {
+    super(name);
+    this.type = validateString(type, "Can't set empty/null type");
+  }
+
   /**
-   * add new argument
-   * @param argument  argument to add
+   * @return element type
    */
-  void addArgument(CxxMethodArgument argument);
-  
+  public String getType() {
+    return type;
+  }
+
 }
