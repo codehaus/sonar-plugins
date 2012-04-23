@@ -19,8 +19,8 @@
  */
 package org.sonar.plugins.cxx.ast.visitors;
 
-import static org.mockito.Mockito.mock; //TODO erase
-import static org.mockito.Mockito.when; //TODO erase
+//import static org.mockito.Mockito.mock; //TODO erase
+//import static org.mockito.Mockito.when; //TODO erase
 
 import java.io.File;
 import java.io.IOException;
@@ -47,9 +47,6 @@ import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCapture;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTNamespaceDefinition;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTTemplateParameter;
-import org.sonar.api.resources.InputFile;
-import org.sonar.plugins.cxx.ast.CxxCppParser;
-import org.sonar.plugins.cxx.ast.CxxCppParserException;
 import org.sonar.plugins.cxx.ast.visitors.internal.XmlNodeWriter;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
@@ -62,7 +59,7 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
 
   private XmlNodeWriter nodeWriter = null;
 
-  //TODO erase, for testing only
+ /* //TODO erase, for testing only
   public static void main(String args[]) {
     InputFile inputFile = mock(InputFile.class);
     when(inputFile.getFile()).thenReturn( new File("C:\\Dev\\cxx-codehaus\\src\\test\\resources\\org\\sonar\\plugins\\cxx\\ast\\VisitorTest.cpp") );
@@ -77,7 +74,7 @@ public class CxxXmlOutputVisitor extends ASTVisitor {
       System.out.println(e.getMessage());
       e.printStackTrace();
     }
-  }
+  }*/
  
   
   /**
