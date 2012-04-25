@@ -19,7 +19,12 @@
  */
 package org.sonar.plugins.cxx.cohesion;
 
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -29,7 +34,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
 import org.sonar.plugins.cxx.TestUtils;
 
 public class CxxCohesionSensorTest {
@@ -46,14 +54,22 @@ public class CxxCohesionSensorTest {
     List<File> testDirs = new ArrayList<File>();
     sourceDirs.add(baseDir);
     
-    project = TestUtils.mockProject(baseDir, sourceDirs, testDirs);
     context = mock(SensorContext.class);
+    Resource<?> resource = mock(Resource.class);
+    when(context.getResource((Resource)anyObject())).thenReturn(resource);
+    
+    project = TestUtils.mockProject(baseDir, sourceDirs, testDirs);
+    
     sensor = new CxxCohesionSensor();
   }
   
   @Test
   public void analyseTest() {
     sensor.analyse(project, context);
+    verify(context).saveMeasure((Resource)anyObject(), eq(CoreMetrics.LCOM4), eq(1.0));
+    verify(context).saveMeasure((Resource)anyObject(), eq(CoreMetrics.LCOM4), eq(2.0));
+    verify(context).saveMeasure((Resource)anyObject(), eq(CoreMetrics.LCOM4), eq(3.0));
+    verify(context, times(3)).saveMeasure((Resource)anyObject(), (Measure)anyObject());
   }
   
 }

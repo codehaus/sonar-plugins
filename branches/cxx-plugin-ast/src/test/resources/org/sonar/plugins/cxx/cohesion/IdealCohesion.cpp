@@ -1,4 +1,4 @@
-
+//LCOM4 = 1.0
 class IdealCohesion 
 {
 public:

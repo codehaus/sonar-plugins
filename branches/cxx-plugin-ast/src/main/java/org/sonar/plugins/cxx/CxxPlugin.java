@@ -30,6 +30,7 @@ import org.sonar.plugins.cxx.cppcheck.CxxCppCheckProfile;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckRuleRepository;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckSensor;
 import org.sonar.plugins.cxx.cppncss.CxxCppNcssSensor;
+import org.sonar.plugins.cxx.cohesion.CxxCohesionSensor;
 import org.sonar.plugins.cxx.coverage.CxxGcovrSensor;
 import org.sonar.plugins.cxx.rats.CxxRatsProfile;
 import org.sonar.plugins.cxx.rats.CxxRatsRuleRepository;
@@ -142,6 +143,7 @@ public final class CxxPlugin implements Plugin {
     List<Class<? extends Extension>> l = new ArrayList<Class<? extends Extension>>();
     l.add(CxxLanguage.class);
     l.add(CxxSourceImporter.class);
+    l.add(CxxCohesionSensor.class);
     l.add(CxxColorizer.class);
     l.add(CxxSquidSensor.class);
     l.add(CxxCpdMapping.class);

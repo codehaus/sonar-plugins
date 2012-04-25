@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
@@ -40,10 +41,16 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
 
 public class CxxCohesionSensor extends CxxSensor {
 
-  private static final Number[] LCOM4_DISTRIB_BOTTOM_LIMITS = { 0, 1, 2, 3, 4, 5, 10 };
-  private RangeDistributionBuilder builder = new RangeDistributionBuilder(CoreMetrics.LCOM4_DISTRIBUTION, LCOM4_DISTRIB_BOTTOM_LIMITS);
+  private static final Number[] LCOM4_LIMITS = { 2, 3, 4, 5, 10 };
+  
+  private RangeDistributionBuilder builder = new RangeDistributionBuilder(CoreMetrics.LCOM4_DISTRIBUTION, LCOM4_LIMITS);
+  private Project project = null;
+  private SensorContext context = null;
   
   public void analyse(Project project, SensorContext context) {
+    this.project = project;
+    this.context = context;
+    
     CxxCppParser parser = new CxxCppParser();
     List<InputFile> sourceFiles = project.getFileSystem().mainFiles(CxxLanguage.KEY);
     
@@ -56,33 +63,52 @@ public class CxxCohesionSensor extends CxxSensor {
   private void parseFile(CxxCppParser parser, InputFile inputFile) {
     try {
       CxxCppParsedFile parsedFile = parser.parseFile(inputFile);
-      System.out.println(parsedFile);
-      Set<CxxClass> classes = parsedFile.getClasses();
-      Iterator<CxxClass> it = classes.iterator();
-      while(it.hasNext()) {
-        CxxClass clazz = it.next();
-        int classRfc = analyzeClass(clazz);
-        System.out.println(clazz + " " + classRfc);
-      }
+      saveFileMeasure(inputFile, analyzeFileCohesion(parsedFile.getClasses()));
     } catch (CxxCppParserException e) {
       CxxUtils.LOG.error(e.getMessage());
     }
   }
 
-  private int analyzeClass(CxxClass clazz) {
-    int rfc = 0;
-    Set<CxxClassMember> members = clazz.getMembers();
-    Set<CxxClassMethod> methods = clazz.getMethods();
-    Iterator<CxxClassMember> memberIt = members.iterator();
-    while(memberIt.hasNext()) {
-      if(!isMemberUsed(memberIt.next(), methods)) {
-        ++rfc;
-      }
+  private void saveFileMeasure(InputFile inputFile, double fileCohesion) {
+    org.sonar.api.resources.File resource =org.sonar.api.resources.File.fromIOFile(inputFile.getFile(), project);
+    if(context.getResource(resource) != null) {
+      context.saveMeasure(resource, CoreMetrics.LCOM4, fileCohesion);
+      context.saveMeasure(resource, builder.build().setPersistenceMode(PersistenceMode.MEMORY));
+    } else {
+      CxxUtils.LOG.error("Resource not indexed: " + inputFile.getFile().getAbsolutePath());
     }
-    return rfc;
   }
 
-  private boolean isMemberUsed(CxxClassMember member, Set<CxxClassMethod> methods) {
+  private double analyzeFileCohesion(Set<CxxClass> classes) {
+    double fileCohesion = 0;
+    Iterator<CxxClass> it = classes.iterator();
+    while(it.hasNext()) {
+      CxxClass clazz = it.next();
+      double classCohesion = analyzeClassCohesion(clazz);
+      builder.add(classCohesion);
+      fileCohesion += classCohesion;
+    }
+    return fileCohesion;
+  }
+
+  private double analyzeClassCohesion(CxxClass clazz) {
+    Set<CxxClassMember> members = clazz.getMembers();
+    Set<CxxClassMethod> methods = clazz.getMethods();
+    if(methods.isEmpty()) {
+      return 0;
+    }
+    
+    double lcom4 = members.size();
+    Iterator<CxxClassMember> memberIt = members.iterator();
+    while(memberIt.hasNext()) {
+      if(isMemberUsedInMethods(memberIt.next(), methods)) {
+        lcom4 = Math.max(1, lcom4-1);
+      }
+    }
+    return lcom4;
+  }
+
+  private boolean isMemberUsedInMethods(CxxClassMember member, Set<CxxClassMethod> methods) {
     Iterator<CxxClassMethod> methodIt = methods.iterator();
     while(methodIt.hasNext()) {
       CxxClassMethod method = methodIt.next();

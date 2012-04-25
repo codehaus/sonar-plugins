@@ -17,21 +17,16 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
 
-import java.util.Set;
+package org.sonar.plugins.cxx.rfc;
 
-public interface HasClasses {
+import org.junit.Test;
 
-  /**
-   * @return  classes in a translation unit file
-   */
-  public abstract Set<CxxClass> getClasses();
-
-  /**
-   * adds a class to this compilation unit 
-   * @param newClass  class to add
-   */
-  public abstract void addClass(CxxClass newClass);
-
+public class ResponseForClassSensorTest {
+  
+  @Test
+  public void analyzeTest() {
+    
+  }
+  
 }
