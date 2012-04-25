@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.cxx;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -33,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.tools.ant.DirectoryScanner;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
@@ -42,6 +42,7 @@ import org.sonar.api.rules.RuleQuery;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
 public class TestUtils{
+  
   public static RuleFinder mockRuleFinder(){
     Rule ruleMock = Rule.create("", "", "");
     RuleFinder ruleFinder = mock(RuleFinder.class);
@@ -50,7 +51,17 @@ public class TestUtils{
     when(ruleFinder.find((RuleQuery) anyObject())).thenReturn(ruleMock);
     return ruleFinder;
   }
-
+  
+  public static CxxLanguage mockCxxLanguage(){
+    return new CxxLanguage(mock(Configuration.class));
+  }
+  
+  /**
+   * Loads a resource with a given name
+   * @param resourceName  resource name
+   * @return  loaded resource, or exception is thrown
+   * @throws URISyntaxException thrown when resource file could not be found
+   */
   public static File loadResource(String resourceName) throws URISyntaxException {
       URL resource = TestUtils.class.getResource(resourceName);
       if(resource == null) {
@@ -58,37 +69,52 @@ public class TestUtils{
       }
       return new File(resource.toURI());
   }
-
+  
+  /**
+   * @return  default mock project
+   */
   public static Project mockProject() {
-    File baseDir;
-
     try{
-      baseDir = loadResource("/org/sonar/plugins/cxx/");
+      File baseDir;
+      baseDir = loadResource("/org/sonar/plugins/cxx/");  //we skip "SampleProject" dir because report dirs as here
+    
+      List<File> sourceDirs = new ArrayList<File>();
+      sourceDirs.add(loadResource("/org/sonar/plugins/cxx/SampleProject/sources/application/") );
+      sourceDirs.add(loadResource("/org/sonar/plugins/cxx/SampleProject/sources/utils/")); 
+      
+      List<File> testDirs = new ArrayList<File>();      
+      testDirs.add(loadResource("/org/sonar/plugins/cxx/SampleProject/sources/tests/"));
+      
+      return mockProject(baseDir, sourceDirs, testDirs);
     }
     catch(java.net.URISyntaxException e){
-      System.out.println("Got exception mocking project: " + e);
+      CxxUtils.LOG.error("Got exception mocking project: " + e);
       return null;
     }
-
-    List<File> sourceFiles = new ArrayList<File>();
-    sourceFiles.add(new File(baseDir, "sources/application/main.cpp"));
-    sourceFiles.add(new File(baseDir, "sources/tests/SAMPLE-test.cpp"));
-    sourceFiles.add(new File(baseDir, "sources/tests/SAMPLE-test.h"));
-    sourceFiles.add(new File(baseDir, "sources/tests/main.cpp"));
-    sourceFiles.add(new File(baseDir, "sources/utils/code_chunks.cpp"));
-    sourceFiles.add(new File(baseDir, "sources/utils/utils.cpp"));
-
-    List<InputFile> mainFiles = fromSourceFiles(sourceFiles);
-
-    List<File> sourceDirs = new ArrayList<File>();
-    sourceDirs.add(new File(baseDir, "sources"));
-
+  }
+  
+  /**
+   * Mock project
+   * @param baseDir project base dir
+   * @param sourceFiles project source files
+   * @return  mocked project
+   */
+  public static Project mockProject(File baseDir, List<File> sourceDirs, List<File> testDirs) {
+    List<File> mainSourceFiles = scanForSourceFiles(sourceDirs);
+    List<File> testSourceFiles = scanForSourceFiles(testDirs);
+    
+    List<InputFile> mainFiles = fromSourceFiles(mainSourceFiles);
+    List<InputFile> testFiles = fromSourceFiles(testSourceFiles);
+    
     ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
     when(fileSystem.getBasedir()).thenReturn(baseDir);
     when(fileSystem.getSourceCharset()).thenReturn(Charset.defaultCharset());
-    when(fileSystem.getSourceFiles(mockCxxLanguage())).thenReturn(sourceFiles);
+    when(fileSystem.getSourceFiles(mockCxxLanguage())).thenReturn(mainSourceFiles);
+    when(fileSystem.getTestFiles(mockCxxLanguage())).thenReturn(testSourceFiles);
     when(fileSystem.mainFiles(CxxLanguage.KEY)).thenReturn(mainFiles);
+    when(fileSystem.testFiles(CxxLanguage.KEY)).thenReturn(testFiles);
     when(fileSystem.getSourceDirs()).thenReturn(sourceDirs);
+    when(fileSystem.getTestDirs()).thenReturn(testDirs);
 
     Project project = mock(Project.class);
     when(project.getFileSystem()).thenReturn(fileSystem);
@@ -108,7 +134,26 @@ public class TestUtils{
     return result;
   }
 
-  public static CxxLanguage mockCxxLanguage(){
-    return new CxxLanguage(mock(Configuration.class));
+  private static List<File> scanForSourceFiles(List<File> sourceDirs) {
+    List<File> result = new ArrayList<File>();
+    String[] suffixes = mockCxxLanguage().getFileSuffixes();
+    String[] includes = new String[ suffixes.length ];
+    for(int i = 0; i < includes.length; ++i) {
+      includes[i] = "**/*." + suffixes[i];
+    }
+    
+    DirectoryScanner scanner = new DirectoryScanner();
+    for(File baseDir : sourceDirs) {
+      scanner.setBasedir(baseDir);
+      scanner.setIncludes(includes);  
+      scanner.scan();
+      for (String relPath : scanner.getIncludedFiles()) {
+        File f = new File(baseDir, relPath);
+        result.add(f);
+      }  
+    }
+    
+    return result;
   }
+
 }
