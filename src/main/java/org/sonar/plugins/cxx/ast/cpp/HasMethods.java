@@ -19,16 +19,29 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
+import java.util.Set;
 
 /**
- * Translation unit is basically a source file, containing classes
  * @author Przemyslaw Kociolek
  */
-public interface CxxTranslationUnit extends HasClasses {
+public interface HasMethods {
 
   /**
-   * @return  translation unit file name
+   * @return set of class methods
    */
-  String getFilename();
+  public Set<CxxClassMethod> getMethods();
+
+  /**
+   * add a method to current class
+   * @param newMethod method to add
+   */
+  public void addMethod(CxxClassMethod newMethod);
+  
+  /**
+   * Finds method by its name
+   * @param methodName  method name
+   * @return  class method if found, null otherwise
+   */
+  public CxxClassMethod findMethodByName(String methodName);
   
 }

@@ -22,9 +22,9 @@ package org.sonar.plugins.cxx.ast.visitors;
 import java.util.Set;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
-import org.eclipse.cdt.core.dom.ast.ExpansionOverlapsBoundaryException;
 import org.eclipse.cdt.core.dom.ast.IASTDeclSpecifier;
-import org.eclipse.cdt.core.dom.ast.IASTNode;
+import org.eclipse.cdt.core.dom.ast.IASTDeclarator;
+import org.eclipse.cdt.core.dom.ast.IASTFunctionDeclarator;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxTranslationUnit;
@@ -45,6 +45,7 @@ public class CxxCppTranslationUnitVisitor extends ASTVisitor implements CxxTrans
   public CxxCppTranslationUnitVisitor() {
     this.shouldVisitTranslationUnit = true;
     this.shouldVisitDeclSpecifiers = true;
+    this.shouldVisitDeclarators = true;
   }
 
   public int visit(IASTTranslationUnit node) {  //main translation unit node
@@ -57,6 +58,14 @@ public class CxxCppTranslationUnitVisitor extends ASTVisitor implements CxxTrans
     node.accept(classVisitor);
     CxxClass pc = classVisitor.getProducedClass();
     unit.addClass(pc);
+    return ASTVisitor.PROCESS_SKIP;
+  }
+  
+  public int visit(IASTDeclarator node) { //method declaration
+    if(node instanceof IASTFunctionDeclarator) {
+     CxxCppMethodDeclarationVisitor visitor = new CxxCppMethodDeclarationVisitor(this, node.getParent());
+     node.accept(visitor);
+    }
     return ASTVisitor.PROCESS_SKIP;
   }
   

@@ -1,3 +1,4 @@
+
 /*
  * Sonar Cxx Plugin, open source software quality management tool.
  * Copyright (C) 2010 - 2011, Neticoa SAS France - Tous droits reserves.
@@ -16,19 +17,21 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
- */
-package org.sonar.plugins.cxx.ast.cpp;
+ */package org.sonar.plugins.cxx.ast.cpp;
 
+import java.util.Set;
 
-/**
- * Translation unit is basically a source file, containing classes
- * @author Przemyslaw Kociolek
- */
-public interface CxxTranslationUnit extends HasClasses {
+public interface HasClasses {
 
   /**
-   * @return  translation unit file name
+   * @return  classes in a translation unit file
    */
-  String getFilename();
-  
+  public abstract Set<CxxClass> getClasses();
+
+  /**
+   * adds a class to this compilation unit 
+   * @param newClass  class to add
+   */
+  public abstract void addClass(CxxClass newClass);
+
 }

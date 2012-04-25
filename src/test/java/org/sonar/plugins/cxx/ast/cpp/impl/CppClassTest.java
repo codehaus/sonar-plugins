@@ -26,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
+import org.sonar.plugins.cxx.ast.cpp.HasMembers;
+import org.sonar.plugins.cxx.ast.cpp.HasMethods;
 
 public class CppClassTest {
 
@@ -46,7 +48,7 @@ public class CppClassTest {
   
   @Test
   public void addMemberTest() {
-    CxxClass myClass = new CppClass();
+    HasMembers myClass = new CppClass();
     assertEquals(0, myClass.getMembers().size());
     
     myClass.addMember(null);
@@ -121,10 +123,10 @@ public class CppClassTest {
     
   @Test
   public void equalsTest() {
-    CxxClass class1 = new CppClass();
-    CxxClass class2 = new CppClass("MyClass");
-    CxxClass class3 = new CppClass("   MyClass   ");
-    CxxClass class4 = new CppClass("myclass");
+    HasMethods class1 = new CppClass();
+    HasMethods class2 = new CppClass("MyClass");
+    HasMethods class3 = new CppClass("   MyClass   ");
+    HasMethods class4 = new CppClass("myclass");
     
     assertFalse(class4.equals(class2));
     assertFalse(class1.equals(class2));

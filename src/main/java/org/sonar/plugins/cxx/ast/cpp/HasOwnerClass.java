@@ -27,6 +27,6 @@ public interface HasOwnerClass {
   /**
    * @return  class that owns this element 
    */
-  CxxClass getOwnerClass();
+  HasMethods getOwnerClass();
   
 }

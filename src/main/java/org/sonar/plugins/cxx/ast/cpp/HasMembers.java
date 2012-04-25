@@ -19,16 +19,28 @@
  */
 package org.sonar.plugins.cxx.ast.cpp;
 
+import java.util.Set;
 
 /**
- * Translation unit is basically a source file, containing classes
  * @author Przemyslaw Kociolek
  */
-public interface CxxTranslationUnit extends HasClasses {
+public interface HasMembers {
 
   /**
-   * @return  translation unit file name
+   * @return  set of class members
    */
-  String getFilename();
-  
+  public Set<CxxClassMember> getMembers();
+
+  /**
+   * add a class member
+   * @param classMember class member
+   */
+  public void addMember(CxxClassMember classMember);
+
+  /**
+   * Finds member by its name 
+   * @param memberName  member name
+   * @return  class member, or null if not found
+   */
+  public CxxClassMember findMemberByName(String memberName);
 }

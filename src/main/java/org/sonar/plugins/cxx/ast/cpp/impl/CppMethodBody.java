@@ -20,7 +20,9 @@
 package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.sonar.plugins.cxx.ast.cpp.CxxMethodBody;
@@ -30,15 +32,22 @@ import org.sonar.plugins.cxx.ast.cpp.CxxMethodBody;
  */
 public class CppMethodBody implements CxxMethodBody {
   
-  private List<String> detectedNames = new ArrayList<String>();
-
+  private boolean dirty = true;
+  private Set<String> detectedNames = new HashSet<String>();
+  private List<String> cachedNames = null;
+  
   public List<String> getDetectedNames() {
-    return detectedNames;
+    if(dirty) {
+      cachedNames = new ArrayList<String>(detectedNames);
+      dirty = false;
+    }
+    return cachedNames;
   }
 
   public CxxMethodBody addDetectedName(String name) {
     if(!StringUtils.isEmpty( StringUtils.trimToEmpty(name) )) {
       detectedNames.add(name);
+      dirty = true;
     }
     return this;
   }
@@ -49,12 +58,17 @@ public class CppMethodBody implements CxxMethodBody {
       return false;
     }
     
-    return ((CxxMethodBody)o).getDetectedNames().equals(detectedNames);
+    return ((CxxMethodBody)o).getDetectedNames().equals( getDetectedNames() );
   }
   
   @Override
   public int hashCode() {
     return detectedNames.hashCode();
+  }
+  
+  @Override
+  public String toString() {
+    return detectedNames.toString();
   }
   
 }

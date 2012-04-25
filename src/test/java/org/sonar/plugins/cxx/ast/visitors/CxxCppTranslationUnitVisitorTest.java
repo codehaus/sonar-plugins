@@ -80,12 +80,19 @@ public class CxxCppTranslationUnitVisitorTest {
     doSomething.addArgument( new CppMethodArgument("b","double") );
     doSomething.addArgument( new CppMethodArgument("c","float") );
     doSomething.addArgument( new CppMethodArgument("d","MyStruct") );
+    doSomething.getBody().addDetectedName("member4");
     secondClass.addMethod(doSomething);
     
     CxxClass thirdClass = new CppClass("ThirdClass");
-    thirdClass.addMethod( new CppClassMethod(thirdClass, "ThirdClass") );
+    CxxClassMethod calculate = new CppClassMethod(thirdClass, "calculate");
+    CxxClassMethod ctor = new CppClassMethod(thirdClass, "ThirdClass");
+    calculate.getBody().addDetectedName("member1").addDetectedName("member2");
+    ctor.getBody().addDetectedName("member1").addDetectedName("member2").addDetectedName("member3").addDetectedName("member4")
+                  .addDetectedName("i").addDetectedName("f");
+    
+    thirdClass.addMethod(ctor);
     thirdClass.addMethod( new CppClassMethod(thirdClass, "~ThirdClass") );
-    thirdClass.addMethod( new CppClassMethod(thirdClass, "calculate") );
+    thirdClass.addMethod(calculate);
     
     TEST_CLASSES.put(myStruct.getFullName(), myStruct);
     TEST_CLASSES.put(firstClass.getFullName(), firstClass);
@@ -118,14 +125,23 @@ public class CxxCppTranslationUnitVisitorTest {
       
       Iterator<CxxClassMember> memberIt = actualClass.getMembers().iterator();
       while(memberIt.hasNext()) {
-        CxxClassMember member = memberIt.next();
-        assertTrue("class " + actualClass + " member " + member + " is invalid", expectedClass.getMembers().contains(member) );
+        CxxClassMember actualMember = memberIt.next();
+        CxxClassMember expectedMember = expectedClass.findMemberByName(actualMember.getName());
+        assertEquals("Member names don't match", expectedMember.getName(), actualMember.getName());
+        assertEquals("Member full names don't match", expectedMember.getFullName(), actualMember.getFullName());
+        assertEquals("Member types don't match", expectedMember.getType(), actualMember.getType());
+        assertEquals("Member's don't match", expectedMember, actualMember);
       } 
       
       Iterator<CxxClassMethod> methodIt = actualClass.getMethods().iterator();
       while(methodIt.hasNext()) {
-        CxxClassMethod method = methodIt.next();
-        assertTrue("class " + actualClass + " method " + method + " is invalid", expectedClass.getMethods().contains(method) );
+        CxxClassMethod actualMethod = methodIt.next();
+        CxxClassMethod expectedMethod = expectedClass.findMethodByName(actualMethod.getName());
+        assertEquals("Method names for " + actualClass + "dont match", expectedMethod.getName(), actualMethod.getName());
+        assertEquals("Method full names for " + actualClass + "dont match", expectedMethod.getFullName(), actualMethod.getFullName());
+        assertEquals("Method arguments don't match", expectedMethod.getArguments(), actualMethod.getArguments());
+        assertEquals("Method bodies don't match", expectedMethod.getBody(), actualMethod.getBody());
+        assertEquals("Methods don't match", expectedMethod, actualMethod);
       } 
       
     }

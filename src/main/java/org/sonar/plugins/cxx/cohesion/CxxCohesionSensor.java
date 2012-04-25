@@ -19,22 +19,79 @@
  */
 package org.sonar.plugins.cxx.cohesion;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.cxx.CxxLanguage;
+import org.sonar.plugins.cxx.ast.CxxCppParsedFile;
+import org.sonar.plugins.cxx.ast.CxxCppParser;
+import org.sonar.plugins.cxx.ast.CxxCppParserException;
+import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMember;
+import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 import org.sonar.plugins.cxx.utils.CxxSensor;
+import org.sonar.plugins.cxx.utils.CxxUtils;
 
 public class CxxCohesionSensor extends CxxSensor {
 
-  public void analyse(Project project, SensorContext context) {
-    List<InputFile> sourceFiles = project.getFileSystem().mainFiles(CxxLanguage.KEY);
-    for(InputFile file : sourceFiles) {
-      System.out.println(file.getFile().getAbsolutePath());
-    }
+  private static final Number[] LCOM4_DISTRIB_BOTTOM_LIMITS = { 0, 1, 2, 3, 4, 5, 10 };
+  private RangeDistributionBuilder builder = new RangeDistributionBuilder(CoreMetrics.LCOM4_DISTRIBUTION, LCOM4_DISTRIB_BOTTOM_LIMITS);
   
+  public void analyse(Project project, SensorContext context) {
+    CxxCppParser parser = new CxxCppParser();
+    List<InputFile> sourceFiles = project.getFileSystem().mainFiles(CxxLanguage.KEY);
+    
+    for(InputFile inputFile : sourceFiles) {
+        parseFile(parser, inputFile);
+    }
+    
   }
 
+  private void parseFile(CxxCppParser parser, InputFile inputFile) {
+    try {
+      CxxCppParsedFile parsedFile = parser.parseFile(inputFile);
+      System.out.println(parsedFile);
+      Set<CxxClass> classes = parsedFile.getClasses();
+      Iterator<CxxClass> it = classes.iterator();
+      while(it.hasNext()) {
+        CxxClass clazz = it.next();
+        int classRfc = analyzeClass(clazz);
+        System.out.println(clazz + " " + classRfc);
+      }
+    } catch (CxxCppParserException e) {
+      CxxUtils.LOG.error(e.getMessage());
+    }
+  }
+
+  private int analyzeClass(CxxClass clazz) {
+    int rfc = 0;
+    Set<CxxClassMember> members = clazz.getMembers();
+    Set<CxxClassMethod> methods = clazz.getMethods();
+    Iterator<CxxClassMember> memberIt = members.iterator();
+    while(memberIt.hasNext()) {
+      if(!isMemberUsed(memberIt.next(), methods)) {
+        ++rfc;
+      }
+    }
+    return rfc;
+  }
+
+  private boolean isMemberUsed(CxxClassMember member, Set<CxxClassMethod> methods) {
+    Iterator<CxxClassMethod> methodIt = methods.iterator();
+    while(methodIt.hasNext()) {
+      CxxClassMethod method = methodIt.next();
+      List<String> usedNames = method.getBody().getDetectedNames();
+      if(usedNames.contains(member.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
 }
