@@ -30,6 +30,7 @@ import org.sonar.plugins.cxx.TestUtils;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxNamespace;
 import org.sonar.plugins.cxx.ast.cpp.CxxTranslationUnit;
+import org.sonar.plugins.cxx.ast.cpp.HasClasses;
 
 public class CppTranslationUnitTest {
 
@@ -48,7 +49,7 @@ public class CppTranslationUnitTest {
     CxxClass myClass = new CppClass("test");
     myClass.setNamespace(myNamespace);
     
-    CxxTranslationUnit unit = new CppTranslationUnit(cppFile);
+    HasClasses unit = new CppTranslationUnit(cppFile);
     assertEquals(0, unit.getClasses().size());
     
     unit.addClass( new CppClass() );

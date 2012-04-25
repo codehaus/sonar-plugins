@@ -26,6 +26,7 @@ import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxMethodArgument;
 import org.sonar.plugins.cxx.ast.cpp.CxxMethodBody;
+import org.sonar.plugins.cxx.ast.cpp.HasMethods;
 import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonName;
 
 /**
@@ -51,7 +52,7 @@ public class CppClassMethod extends CommonName implements CxxClassMethod {
   /**
    * @return class that owns this method
    */
-  public CxxClass getOwnerClass() {
+  public HasMethods getOwnerClass() {
     return ownerClass;
   }
 

@@ -39,13 +39,18 @@ public class CxxCppClassMethodVisitor extends ClassVisitor {
   private String methodName = null;
   
   public CxxCppClassMethodVisitor(CxxClass classToVisit) {
-    super(classToVisit);
+    this(classToVisit, null);
+  }
+      
+  public CxxCppClassMethodVisitor(CxxClass foundClass, CxxClassMethod foundMethod) {
+    super(foundClass);
     this.shouldVisitParameterDeclarations = true;
     this.shouldVisitDeclarators = true;
     this.shouldVisitStatements = true;
     this.shouldVisitNames = true;
+    this.producedMethod = foundMethod;
   }
-      
+
   public int leave(IASTDeclarator node) {
     getVisitingClass().addMethod(producedMethod);
     return ASTVisitor.PROCESS_CONTINUE;
@@ -59,7 +64,9 @@ public class CxxCppClassMethodVisitor extends ClassVisitor {
   
   public int visit(IASTName node) {
     methodName = node.getRawSignature(); 
-    producedMethod = new CppClassMethod(getVisitingClass(), methodName);
+    if(producedMethod == null) {
+      producedMethod = new CppClassMethod(getVisitingClass(), methodName);
+    }
     return ASTVisitor.PROCESS_CONTINUE;
   }
   

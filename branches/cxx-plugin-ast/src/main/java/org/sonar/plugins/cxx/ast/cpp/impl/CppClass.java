@@ -20,6 +20,7 @@
 package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
@@ -108,6 +109,28 @@ public class CppClass extends CommonNamespace implements CxxClass {
   @Override
   public String toString() {
     return getFullName();
+  }
+
+  public CxxClassMethod findMethodByName(String methodName) {
+    Iterator<CxxClassMethod> it = methods.iterator();
+    while(it.hasNext()) {
+      CxxClassMethod method = it.next();
+      if(method.getName().equals(methodName)) {
+        return method;
+      }
+    }
+    return null;
+  }
+
+  public CxxClassMember findMemberByName(String memberName) {
+    Iterator<CxxClassMember> it = members.iterator();
+    while(it.hasNext()) {
+      CxxClassMember member = it.next();
+      if(member.getName().equals(memberName)) {
+        return member;
+      }
+    }
+    return null;
   }
   
 }

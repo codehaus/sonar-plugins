@@ -21,6 +21,7 @@ package org.sonar.plugins.cxx.ast.visitors;
 
 import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTName;
+import org.eclipse.cdt.core.dom.ast.IASTStatement;
 import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 
 /**
@@ -30,6 +31,7 @@ import org.sonar.plugins.cxx.ast.cpp.CxxClassMethod;
 public class CxxCppMethodBodyVisitor extends ASTVisitor {
 
   private CxxClassMethod visitedMethod;
+  private int statementDepth = 0;
 
   public CxxCppMethodBodyVisitor(CxxClassMethod visitedMethod) {
     if(visitedMethod == null) {
@@ -37,11 +39,24 @@ public class CxxCppMethodBodyVisitor extends ASTVisitor {
     }
     this.visitedMethod = visitedMethod;
     this.shouldVisitNames = true;
+    this.shouldVisitStatements = true;
+  }
+  
+  public int visit(IASTStatement node) {
+    statementDepth++;
+    return ASTVisitor.PROCESS_CONTINUE;
+  }
+  
+  public int leave(IASTStatement node) {
+    statementDepth--;
+    return ASTVisitor.PROCESS_CONTINUE;
   }
   
   public int visit(IASTName node) {
-    String detectedName = node.getRawSignature();
-    visitedMethod.getBody().addDetectedName(detectedName);
+    if(statementDepth > 0) {
+      String detectedName = node.getRawSignature();
+      visitedMethod.getBody().addDetectedName(detectedName);
+    }
     return ASTVisitor.PROCESS_CONTINUE;
   }
   

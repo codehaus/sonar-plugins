@@ -21,12 +21,16 @@ package org.sonar.plugins.cxx.cohesion;
 
 import static org.mockito.Mockito.mock;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.cxx.TestUtils;
-import org.sonar.plugins.cxx.cohesion.CxxCohesionSensor;
 
 public class CxxCohesionSensorTest {
 
@@ -35,8 +39,14 @@ public class CxxCohesionSensorTest {
   CxxCohesionSensor sensor;
   
   @Before
-  public void setup() {
-    project = TestUtils.mockProject();
+  public void setup() throws URISyntaxException {
+    File baseDir = TestUtils.loadResource("/org/sonar/plugins/cxx/cohesion");
+    
+    List<File> sourceDirs = new ArrayList<File>();
+    List<File> testDirs = new ArrayList<File>();
+    sourceDirs.add(baseDir);
+    
+    project = TestUtils.mockProject(baseDir, sourceDirs, testDirs);
     context = mock(SensorContext.class);
     sensor = new CxxCohesionSensor();
   }
@@ -44,8 +54,6 @@ public class CxxCohesionSensorTest {
   @Test
   public void analyseTest() {
     sensor.analyse(project, context);
-    
-    
   }
   
 }
