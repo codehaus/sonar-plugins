@@ -30,15 +30,6 @@ import org.sonar.api.web.*;
 @WidgetCategory({"Reviews"})
 public class ManualSeverityWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
-  @Override
-  protected String getTemplatePath() {
-    if (ShawWidgetsPlugin.getTemplatePathBase() != null && ShawWidgetsPlugin.getTemplatePathBase().length() > 0)
-    {
-      return ShawWidgetsPlugin.getTemplatePathBase() + "/manual_severity_reviews_widget.html.erb";
-    }
-    return "/manual_severity_reviews_widget.html.erb";
-  }
-
   public String getId() {
     return "manual_severity_reviews";
   }
@@ -46,4 +37,10 @@ public class ManualSeverityWidget extends AbstractRubyTemplate implements RubyRa
   public String getTitle() {
     return "Manual Severity Reviews";
   }
+
+  @Override
+  protected String getTemplatePath() {
+    return "/manual_severity_reviews_widget.html.erb";
+  }
+
 }

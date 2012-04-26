@@ -34,8 +34,4 @@ public class ShawWidgetsPlugin extends SonarPlugin {
       ManualSeverityWidget.class);
   }
 
-  public static String getTemplatePathBase() {
-    return "";
-//    return "C:/workspaces/sonarPlugins/shaw-widgets/src/main/resources/";
-  }
 }

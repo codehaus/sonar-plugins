@@ -36,11 +36,7 @@ public class AltRulesComplianceWidget extends AbstractRubyTemplate implements Ru
 
   @Override
   protected String getTemplatePath() {
-    if (ShawWidgetsPlugin.getTemplatePathBase() != null && ShawWidgetsPlugin.getTemplatePathBase().length() > 0)
-    {
-      return ShawWidgetsPlugin.getTemplatePathBase() + "/alt_rules_compliance_widget.html.erb";
-    }
     return "/alt_rules_compliance_widget.html.erb";
-
   }
+
 }
