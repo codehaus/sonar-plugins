@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>sonar-tab-metrics-plugin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Tab Metrics Plugin</name>
@@ -68,7 +68,6 @@
     <sonar.version>2.12</sonar.version>
     <sonar.pluginName>Sonar Tab Metrics Plugin</sonar.pluginName>
     <sonar.pluginClass>org.codehaus.sonar.plugins.tabmetrics.TabMetricsPlugin</sonar.pluginClass>
-    <sonar.pluginKey>sonarTabMetricsPlugin</sonar.pluginKey>
   </properties>
 
   <dependencies>
