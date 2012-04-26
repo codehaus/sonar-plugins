@@ -244,6 +244,14 @@ public class DataMetricsTab {
 
       // Sort metrics
       Collections.sort(metrics, new Comparator<MetricTab>() {
+
+        /**
+         * Compares metric names
+         * 
+         * @param mTab1
+         * @param mTab2
+         * @return
+         */
         public final int compare(MetricTab mTab1, MetricTab mTab2) {
           return mTab1.getName().compareTo(mTab2.getName());
         }
