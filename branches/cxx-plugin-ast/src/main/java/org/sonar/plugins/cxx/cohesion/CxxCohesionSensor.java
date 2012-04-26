@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.cxx.cohesion;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -55,9 +56,20 @@ public class CxxCohesionSensor extends CxxSensor {
     List<InputFile> sourceFiles = project.getFileSystem().mainFiles(CxxLanguage.KEY);
     
     for(InputFile inputFile : sourceFiles) {
+      if(isSourceFile(inputFile.getFile())) {  
         parseFile(parser, inputFile);
+      }
     }
     
+  }
+
+  private boolean isSourceFile(File file) {
+    
+    
+    //if(file.getAbsolutePath().endsWith(suffix)) {
+      return true;
+    //}
+    //return false;
   }
 
   private void parseFile(CxxCppParser parser, InputFile inputFile) {

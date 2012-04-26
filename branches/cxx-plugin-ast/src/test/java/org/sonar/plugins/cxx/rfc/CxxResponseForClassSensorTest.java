@@ -20,9 +20,22 @@
 
 package org.sonar.plugins.cxx.rfc;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.resources.Project;
 
-public class ResponseForClassSensorTest {
+public class CxxResponseForClassSensorTest {
+  
+  private CxxResponseForClassSensor sensor;
+  private SensorContext context;
+  private Project project;
+  
+  @Before
+  public void setup() {
+    
+    
+  }
   
   @Test
   public void analyzeTest() {

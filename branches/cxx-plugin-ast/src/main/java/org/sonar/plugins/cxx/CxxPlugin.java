@@ -46,12 +46,19 @@ import org.sonar.plugins.cxx.squid.CxxSquidSensor;
 
 @Properties({
     @Property(
-      key = CxxPlugin.FILE_SUFFIXES_KEY,
-      defaultValue = CxxLanguage.DEFAULT_FILE_SUFFIXES,
-      name = "File suffixes",
-      description = "Comma-separated list of suffixes for files to analyze. Leave empty to use the default.",
+      key = CxxPlugin.SOURCE_FILE_SUFFIXES_KEY,
+      defaultValue = CxxLanguage.DEFAULT_SOURCE_SUFFIXES,
+      name = "Source files suffixes",
+      description = "Comma-separated list of suffixes for source files to analyze. Leave empty to use the default.",
       global = true,
       project = true),
+    @Property(
+        key = CxxPlugin.HEADER_FILE_SUFFIXES_KEY,
+        defaultValue = CxxLanguage.DEFAULT_HEADER_SUFFIXES,
+        name = "Header files suffixes",
+        description = "Comma-separated list of suffixes for header files to analyze. Leave empty to use the default.",
+        global = true,
+        project = true),
     @Property(
       key = CxxCppCheckSensor.REPORT_PATH_KEY,
       defaultValue = "",
@@ -110,7 +117,8 @@ import org.sonar.plugins.cxx.squid.CxxSquidSensor;
       project = true)
       })
 public final class CxxPlugin implements Plugin {
-  static final String FILE_SUFFIXES_KEY = "sonar.cxx.suffixes";
+  static final String SOURCE_FILE_SUFFIXES_KEY = "sonar.cxx.suffixes.sources";
+  static final String HEADER_FILE_SUFFIXES_KEY = "sonar.cxx.suffixes.headers";
 
   /**
    * @deprecated this is not used anymore
