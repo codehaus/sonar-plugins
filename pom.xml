@@ -1,134 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>12</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>abacus</module>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>cutoff</module>
-        <module>emma</module>
-        <module>csv-export</module>
-        <module>fb-contrib</module>
-        <module>flex</module>
-        <module>google-analytics</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>javascript</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>l10n</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>php</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>python</module>
-        <module>radiator</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>sonar-runner</module>
-        <module>switch-off-violations</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>stableProjects-jdk6</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>dotnet</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>cxx</module>
-        <module>debug</module>
-        <module>delphi</module>
-        <module>devkit</module>
-        <module>doxygen</module>
-        <module>drools</module>
-        <module>scala</module>
-        <module>tab-metrics</module>
-        <module>violation-density</module>
-        <module>w3c-markup-validation</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>cql</module>
-        <module>jlint</module>
-        <module>profiler</module>
-        <module>sonar-replay</module>
-        <module>sonarj</module>
-        <module>testability-explorer</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-      </modules>
-    </profile>
-  </profiles>
+  <artifactId>sonar-tab-metrics-plugin</artifactId>
+  <version>1.0.1</version>
+  <packaging>sonar-plugin</packaging>
+
+  <name>Sonar Tab Metrics Plugin</name>
+  <description>Sonar Tab Metrics Plugin</description>
+  <url>http://docs.codehaus.org/display/SONAR/Tab+Metrics+Plugin</url>
+  <inceptionYear>2012</inceptionYear>
+
+  <organization>
+    <name>eXcentia</name>
+    <url>http://www.excentia.es</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>jbadenas</id>
+      <name>Jesús Badenas Martínez</name>
+      <email>jbadenas@excentia.es</email>
+      <organization>eXcentia</organization>
+      <organizationUrl>http://www.excentia.es</organizationUrl>
+    </developer>
+    <developer>
+      <id>mlujan</id>
+      <name>Míriam Luján Mares</name>
+      <email>mlujan@excentia.es</email>
+      <organization>eXcentia</organization>
+      <organizationUrl>http://www.excentia.es</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-tab-metrics-plugin-1.0.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-tab-metrics-plugin-1.0.1</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-tab-metrics-plugin-1.0.1</url>
+  </scm>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/15477</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-TABMETRICS</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>2.12</sonar.version>
+    <sonar.pluginName>Sonar Tab Metrics Plugin</sonar.pluginName>
+    <sonar.pluginClass>org.codehaus.sonar.plugins.tabmetrics.TabMetricsPlugin</sonar.pluginClass>
+  </properties>
+
+  <dependencies>
+    <!-- Sonar plugin -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Unit tests -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- GWT -->
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-gwt-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>2.0.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-incubator</artifactId>
+      <version>2.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
-      <!-- Workaround for Maven 3.0.0 - 3.0.4 : see http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
       <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <modules>
+                <module>org.codehaus.sonar.plugins.tabmetrics.resourcetab.TabMetricsPluginTab</module>
+              </modules>
+              <webappDirectory>target/classes</webappDirectory>
+              <!-- do not break the following property on two lines -->
+              <extraJvmArgs>-Xmx512m -Dgwt.jjs.permutationWorkerFactory=com.google.gwt.dev.ThreadedPermutationWorkerFactory</extraJvmArgs>
+            </configuration>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.8</version>
       </plugin>
     </plugins>
   </build>
+
 </project>
