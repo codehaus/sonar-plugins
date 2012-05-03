@@ -59,13 +59,13 @@ public class StrutsIT {
   @Test
   public void projectsMetrics() {
     // Cater for big change of duplicated line from Sonar 2.2
-    assertThat(getProjectMeasure("qi-quality-index").getValue(), anyOf(is(0.3), is(7.8)));
+    assertThat(getProjectMeasure("qi-quality-index").getValue(), anyOf(is(0.3), is(7.8), is(7.7)));
     assertThat(getProjectMeasure("qi-coding-violations").getValue(), anyOf(is(4.5), is(0.4)));
     assertThat(getProjectMeasure("qi-coding-weighted-violations").getIntValue(), anyOf(is(2042), is(2048)));
     assertThat(getProjectMeasure("qi-style-violations").getValue(), anyOf(is(1.5), is(0.0)));
     assertThat(getProjectMeasure("qi-style-weighted-violations").getIntValue(), anyOf(is(6801), is(6802)));
     assertThat(getProjectMeasure("qi-test-coverage").getValue(), is(1.7));
-    assertThat(getProjectMeasure("qi-complexity").getValue(), anyOf(is(2.0), is(0.1)));
+    assertThat(getProjectMeasure("qi-complexity").getValue(), anyOf(is(2.0), is(0.1), is(0.2)));
     assertThat(getProjectMeasure("qi-complexity-factor").getValue(), anyOf(is(15.2), is(15.3))); // < 2.6, >= 2.6
     assertThat(getProjectMeasure("qi-complexity-factor-methods").getIntValue(), is(37));
     assertThat(getProjectMeasure("qi-complex-distrib").getData(),
