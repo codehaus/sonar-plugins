@@ -22,6 +22,7 @@ package org.sonar.plugins.cxx.cohesion;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,20 +57,22 @@ public class CxxCohesionSensorTest {
     
     context = mock(SensorContext.class);
     Resource<?> resource = mock(Resource.class);
-    when(context.getResource((Resource)anyObject())).thenReturn(resource);
+    when(context.getResource(any(Resource.class))).thenReturn(resource);
     
     project = TestUtils.mockProject(baseDir, sourceDirs, testDirs);
     
-    sensor = new CxxCohesionSensor();
+    sensor = new CxxCohesionSensor( TestUtils.mockCxxLanguage() );
   }
   
   @Test
   public void analyseTest() {
     sensor.analyse(project, context);
-    verify(context).saveMeasure((Resource)anyObject(), eq(CoreMetrics.LCOM4), eq(1.0));
-    verify(context).saveMeasure((Resource)anyObject(), eq(CoreMetrics.LCOM4), eq(2.0));
-    verify(context).saveMeasure((Resource)anyObject(), eq(CoreMetrics.LCOM4), eq(3.0));
-    verify(context, times(3)).saveMeasure((Resource)anyObject(), (Measure)anyObject());
+    verify(context).saveMeasure(any(Resource.class), eq(CoreMetrics.LCOM4), eq(0.0)); //NoMethodsClass.cpp
+    verify(context).saveMeasure(any(Resource.class), eq(CoreMetrics.LCOM4), eq(1.0)); //IdealCohesion.cpp
+    verify(context).saveMeasure(any(Resource.class), eq(CoreMetrics.LCOM4), eq(2.0)); //LowCohesion.cpp
+    verify(context).saveMeasure(any(Resource.class), eq(CoreMetrics.LCOM4), eq(3.0)); //Driver.cpp
+    verify(context).saveMeasure(any(Resource.class), eq(CoreMetrics.LCOM4), eq(5.0)); //HighCohesion.cpp
+    verify(context, times(5)).saveMeasure(any(Resource.class), (Measure)anyObject());
   }
   
 }

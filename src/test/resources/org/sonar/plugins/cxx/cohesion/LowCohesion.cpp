@@ -1,11 +1,10 @@
-//LCOM4 = 2.0
+//LCOM4 = 3.0
 class LowCohesion
 {
 public:
 	int a;
 	int b;
 	int c;
-	int d;
 	
 	void doSomething() {
 		a = 0;
