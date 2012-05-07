@@ -22,17 +22,22 @@ package org.sonar.plugins.cxx.rfc;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.cxx.CxxLanguage;
 
 
-public class CxxResponseForClassSensor implements Sensor {
+public class CxxRfcSensor implements Sensor {
+
+  private CxxLanguage language;
+  
+  public CxxRfcSensor(CxxLanguage language) {
+    this.language = language;
+  }
 
   public boolean shouldExecuteOnProject(Project project) {
-    // TODO Auto-generated method stub
-    return false;
+    return CxxLanguage.KEY.equals(project.getLanguageKey());
   }
 
   public void analyse(Project project, SensorContext context) {
-    // TODO Auto-generated method stub
     
   }
 

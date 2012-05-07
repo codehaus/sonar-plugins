@@ -20,25 +20,58 @@
 
 package org.sonar.plugins.cxx.rfc;
 
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Resource;
+import org.sonar.plugins.cxx.TestUtils;
+import org.sonar.plugins.cxx.cohesion.CxxCohesionSensor;
 
-public class CxxResponseForClassSensorTest {
+public class CxxRfcSensorTest {
   
-  private CxxResponseForClassSensor sensor;
+  private CxxRfcSensor sensor;
   private SensorContext context;
   private Project project;
   
   @Before
-  public void setup() {
+  public void setup() throws URISyntaxException {
+    File baseDir = TestUtils.loadResource("/org/sonar/plugins/cxx/rfc");
     
+    List<File> sourceDirs = new ArrayList<File>();
+    List<File> testDirs = new ArrayList<File>();
+    sourceDirs.add(baseDir);
     
+    context = mock(SensorContext.class);
+    Resource<?> resource = mock(Resource.class);
+    when(context.getResource(any(Resource.class))).thenReturn(resource);
+    
+    project = TestUtils.mockProject(baseDir, sourceDirs, testDirs);
+    
+    sensor = new CxxRfcSensor( TestUtils.mockCxxLanguage() );
+  }
+  
+  @Test
+  public void shouldExecuteOnProjectTest() {
+    assertTrue(!sensor.shouldExecuteOnProject(project));
   }
   
   @Test
   public void analyzeTest() {
+    sensor.analyse(project, context);
+    
+    
+    
     
   }
   
