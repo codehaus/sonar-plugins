@@ -23,9 +23,10 @@
         <module>clirr</module>
         <module>clover</module>
         <module>crowd</module>
-        <module>cutoff</module>
-        <module>emma</module>
         <module>csv-export</module>
+        <module>cutoff</module>
+        <module>delphi</module>
+        <module>emma</module>
         <module>fb-contrib</module>
         <module>flex</module>
         <module>google-analytics</module>
@@ -53,6 +54,7 @@
         <module>sonargraph</module>
         <module>sonar-runner</module>
         <module>switch-off-violations</module>
+        <module>tab-metrics</module>
         <module>taglist</module>
         <module>technical-debt</module>
         <module>timeline</module>
@@ -83,12 +85,10 @@
         <module>codesize</module>
         <module>cxx</module>
         <module>debug</module>
-        <module>delphi</module>
         <module>devkit</module>
         <module>doxygen</module>
         <module>drools</module>
         <module>scala</module>
-        <module>tab-metrics</module>
         <module>violation-density</module>
         <module>w3c-markup-validation</module>
         <module>widget-lab</module>
