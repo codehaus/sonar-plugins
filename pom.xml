@@ -91,6 +91,7 @@
         <module>tab-metrics</module>
         <module>violation-density</module>
         <module>w3c-markup-validation</module>
+        <module>widget-lab</module>
       </modules>
     </profile>
     <profile>
