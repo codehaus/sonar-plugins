@@ -28,12 +28,13 @@ import org.jdom.input.SAXBuilder;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
-import org.sonar.plugins.cxx.utils.CxxSensor;
+import org.sonar.plugins.cxx.utils.CxxReportSensor;
 
 /**
  * {@inheritDoc}
  */
-public final class CxxRatsSensor extends CxxSensor {
+public final class CxxRatsSensor extends CxxReportSensor {
+  private static final String MISSING_RATS_TYPE = "fixed size global buffer";
   public static final String REPORT_PATH_KEY = "sonar.cxx.rats.reportPath";
   private static final String DEFAULT_REPORT_PATH = "rats-reports/rats-result-*.xml";
 
@@ -54,27 +55,34 @@ public final class CxxRatsSensor extends CxxSensor {
   
   protected void parseReport(Project project, SensorContext context, File report)
     throws org.jdom.JDOMException, java.io.IOException
-  {
-    SAXBuilder builder = new SAXBuilder(false);
-    Element root = builder.build(report).getRootElement();
+    {    
+      SAXBuilder builder = new SAXBuilder(false);
+      Element root = builder.build(report).getRootElement();
 
-    List<Element> vulnerabilities = root.getChildren("vulnerability");
-    for (Element vulnerability : vulnerabilities) {
-      String type = vulnerability.getChild("type").getTextTrim();
-      String message = vulnerability.getChild("message").getTextTrim();
+      List<Element> vulnerabilities = root.getChildren("vulnerability");
+      for (Element vulnerability : vulnerabilities) {
+        String type = getVulnerabilityType(vulnerability.getChild("type"));
+        String message = vulnerability.getChild("message").getTextTrim();
 
-      List<Element> files = vulnerability.getChildren("file");
+        List<Element> files = vulnerability.getChildren("file");
 
-      for (Element file : files) {
-        String fileName = file.getChild("name").getTextTrim();
+        for (Element file : files) {
+          String fileName = file.getChild("name").getTextTrim();
 
-        List<Element> lines = file.getChildren("line");
-        for (Element lineElem : lines) {
-          int line = Integer.parseInt(lineElem.getTextTrim());
-          saveViolation(project, context, CxxRatsRuleRepository.KEY,
-                        fileName, line, type, message);
+          List<Element> lines = file.getChildren("line");
+          for (Element lineElem : lines) {
+            int line = Integer.parseInt(lineElem.getTextTrim());
+            saveViolation(project, context, CxxRatsRuleRepository.KEY,
+                          fileName, line, type, message);
+          }
         }
       }
     }
+  
+  private String getVulnerabilityType(Element child) {
+    if(child != null) {
+      return child.getTextTrim();
+    }
+    return MISSING_RATS_TYPE;
   }
 }

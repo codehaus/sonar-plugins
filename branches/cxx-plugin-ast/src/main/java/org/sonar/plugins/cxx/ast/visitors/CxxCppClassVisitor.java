@@ -28,6 +28,7 @@ import org.eclipse.cdt.core.dom.ast.IASTNode;
 import org.eclipse.cdt.core.dom.ast.cpp.ICPPASTCompositeTypeSpecifier.ICPPASTBaseSpecifier;
 import org.eclipse.cdt.internal.core.dom.parser.cpp.CPPASTFunctionDeclarator;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.CxxTranslationUnit;
 import org.sonar.plugins.cxx.ast.cpp.impl.CppClass;
 
 /**
@@ -39,12 +40,14 @@ public class CxxCppClassVisitor extends ASTVisitor {
   private static final String[] CLASS_TOKENS = {"struct", "class"};
 
   private CxxClass producedClass = null;
+  private CxxTranslationUnit translationUnit = null;
 
-  public CxxCppClassVisitor() {
+  public CxxCppClassVisitor(CxxTranslationUnit translationUnit) {
     this.shouldVisitNames = true;
     this.shouldVisitDeclSpecifiers = true;
     this.shouldVisitDeclarations = true;
     this.shouldVisitBaseSpecifiers = true;
+    this.translationUnit = translationUnit;
   }
 
   public CxxClass getProducedClass() {
@@ -60,7 +63,7 @@ public class CxxCppClassVisitor extends ASTVisitor {
   }
 
   public int visit(ICPPASTBaseSpecifier node) { //visit class inheritance list
-    CxxCppClassInheritanceVisitor inheritanceVisitor = new CxxCppClassInheritanceVisitor(producedClass);
+    CxxCppClassInheritanceVisitor inheritanceVisitor = new CxxCppClassInheritanceVisitor(translationUnit, producedClass);
     node.accept(inheritanceVisitor);
     return ASTVisitor.PROCESS_SKIP;
   }

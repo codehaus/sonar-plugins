@@ -28,12 +28,12 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.StaxParser;
-import org.sonar.plugins.cxx.utils.CxxSensor;
+import org.sonar.plugins.cxx.utils.CxxReportSensor;
 
 /**
  * {@inheritDoc}
  */
-public class CxxVeraxxSensor extends CxxSensor {
+public class CxxVeraxxSensor extends CxxReportSensor {
   public static final String REPORT_PATH_KEY = "sonar.cxx.vera.reportPath";
   private static final String DEFAULT_REPORT_PATH = "vera++-reports/vera++-result-*.xml";
   

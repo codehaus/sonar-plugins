@@ -120,6 +120,7 @@ public class TestUtils{
     when(project.getFileSystem()).thenReturn(fileSystem);
     CxxLanguage lang = mockCxxLanguage();
     when(project.getLanguage()).thenReturn(lang);
+    when(project.getLanguageKey()).thenReturn(lang.getKey());
 
     return project;
   }

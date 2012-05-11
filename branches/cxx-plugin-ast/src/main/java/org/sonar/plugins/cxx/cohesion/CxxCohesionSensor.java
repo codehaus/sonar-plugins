@@ -19,6 +19,7 @@
  */
 package org.sonar.plugins.cxx.cohesion;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -41,60 +42,37 @@ import org.sonar.plugins.cxx.ast.cpp.HasFullName;
 import org.sonar.plugins.cxx.cohesion.graph.Edge;
 import org.sonar.plugins.cxx.cohesion.graph.Graph;
 import org.sonar.plugins.cxx.cohesion.graph.Node;
-import org.sonar.plugins.cxx.utils.CxxSensor;
+import org.sonar.plugins.cxx.utils.CxxFileSensor;
+import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
-public class CxxCohesionSensor extends CxxSensor {
+public class CxxCohesionSensor extends CxxFileSensor {
 
   private static final Number[] LCOM4_LIMITS = { 2, 3, 4, 5, 10 };
 
-  private Project project = null;
-  private SensorContext context = null;
   private CxxLanguage language = null;
+  private CxxCppParser parser = new CxxCppParser();
   private RangeDistributionBuilder builder = new RangeDistributionBuilder(CoreMetrics.LCOM4_DISTRIBUTION, LCOM4_LIMITS);
 
   public CxxCohesionSensor(CxxLanguage language) {
     this.language = language;
   }
-
-  public void analyse(Project project, SensorContext context) {
-    this.project = project;
-    this.context = context;
-
-    CxxCppParser parser = new CxxCppParser();
-    List<InputFile> sourceFiles = project.getFileSystem().mainFiles(CxxLanguage.KEY);
-
-    for(InputFile inputFile : sourceFiles) {      
-      if(isSourceFile(inputFile.getFile().getAbsolutePath())) {  
-        parseFile(parser, inputFile);
-      }
-    }
-
-  }
-
-  private boolean isSourceFile(String filePath) {
-    for(String suffix : language.getSourceFileSuffixes()) {
-      if(filePath.endsWith("."+suffix)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private void parseFile(CxxCppParser parser, InputFile inputFile) {
+  
+  @Override
+  protected void parseFile(InputFile file, Project project, SensorContext context) {
     try {
-      CxxCppParsedFile parsedFile = parser.parseFile(inputFile);
+      CxxCppParsedFile parsedFile = parser.parseFile(file);
 
       double lcom4 =  analyzeFileCohesion(parsedFile.getClasses());
 
       CxxUtils.LOG.debug(parsedFile + " " + lcom4);
-      saveFileMeasure(inputFile, lcom4);
+      saveFileMeasure(file, lcom4, project, context);
     } catch (CxxCppParserException e) {
       CxxUtils.LOG.error(e.getMessage());
     }
   }
 
-  private void saveFileMeasure(InputFile inputFile, double fileCohesion) {
+  private void saveFileMeasure(InputFile inputFile, double fileCohesion, Project project, SensorContext context) {
     org.sonar.api.resources.File resource =org.sonar.api.resources.File.fromIOFile(inputFile.getFile(), project);
     if(context.getResource(resource) != null) {
       context.saveMeasure(resource, CoreMetrics.LCOM4, fileCohesion);

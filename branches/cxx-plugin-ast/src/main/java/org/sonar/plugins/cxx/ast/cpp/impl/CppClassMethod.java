@@ -36,9 +36,10 @@ import org.sonar.plugins.cxx.ast.cpp.impl.internal.CommonName;
 public class CppClassMethod extends CommonName implements CxxClassMethod {
 
   private CxxClass ownerClass;
+  private boolean implemented = false;
   private List<CxxMethodArgument> arguments = new ArrayList<CxxMethodArgument>();
   private CxxMethodBody methodBody  = new CppMethodBody();
-
+  
   /**
    * Ctor
    * @param ownerClass cpp class that owns this method
@@ -119,6 +120,14 @@ public class CppClassMethod extends CommonName implements CxxClassMethod {
       throw new IllegalArgumentException("Method owner class can't be null.");
     }
     return ownerClass;
+  }
+
+  public boolean isImplemented() {
+    return implemented;
+  }
+
+  public void setImplemented(boolean value) {
+    implemented = value;
   }
 
 }

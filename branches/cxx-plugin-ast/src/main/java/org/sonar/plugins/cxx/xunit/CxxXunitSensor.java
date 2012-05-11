@@ -49,13 +49,13 @@ import org.sonar.api.resources.Resource;
 import org.sonar.api.utils.ParsingUtils;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.cxx.utils.CxxSensor;
+import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
 /**
  * {@inheritDoc}
  */
-public class CxxXunitSensor extends CxxSensor {
+public class CxxXunitSensor extends CxxReportSensor {
   //
   // This is basically a copy of sonar-surefire-plugin with xsl transformation
   // thrown in and a small change allowing the 'time'-attribute to be empty

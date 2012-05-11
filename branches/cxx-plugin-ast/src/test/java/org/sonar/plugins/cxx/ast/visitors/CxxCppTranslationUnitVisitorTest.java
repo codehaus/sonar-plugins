@@ -94,6 +94,9 @@ public class CxxCppTranslationUnitVisitorTest {
     thirdClass.addMethod( new CppClassMethod(thirdClass, "~ThirdClass") );
     thirdClass.addMethod(calculate);
     
+    thirdClass.addAncestor(firstClass);
+    thirdClass.addAncestor(secondClass);
+    
     TEST_CLASSES.put(myStruct.getFullName(), myStruct);
     TEST_CLASSES.put(firstClass.getFullName(), firstClass);
     TEST_CLASSES.put(secondClass.getFullName(), secondClass);
@@ -122,6 +125,7 @@ public class CxxCppTranslationUnitVisitorTest {
       assertEquals(expectedClass.getFullName(), actualClass.getFullName());
       assertEquals(actualClass + " member count", expectedClass.getMembers().size(), actualClass.getMembers().size());
       assertEquals(actualClass + " method count", expectedClass.getMethods().size(), actualClass.getMethods().size());
+      assertEquals(actualClass + " ancestor count", expectedClass.getAncestors().size(), actualClass.getAncestors().size());
       
       Iterator<CxxClassMember> memberIt = actualClass.getMembers().iterator();
       while(memberIt.hasNext()) {

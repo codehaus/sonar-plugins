@@ -38,6 +38,7 @@ public class CppClass extends CommonNamespace implements CxxClass {
   public static final String DEFAULT_NAME = "CxxCppDefaultClassName";  
   private Set<CxxClassMember> members = new HashSet<CxxClassMember>();
   private Set<CxxClassMethod> methods = new HashSet<CxxClassMethod>();
+  private Set<CxxClass> ancestors = new HashSet<CxxClass>();
   
   /**
    * Default ctor, sets everything to default values (name, namespace)
@@ -92,25 +93,6 @@ public class CppClass extends CommonNamespace implements CxxClass {
     }
   }
   
-  @Override
-  public boolean equals(Object o) {
-    if(!(o instanceof CxxClass)) {
-      return false;
-    }
-    
-    return ((CxxClass)o).getFullName().equals( getFullName() );
-  }
-  
-  @Override
-  public int hashCode() {
-    return getFullName().hashCode();
-  }
-  
-  @Override
-  public String toString() {
-    return getFullName();
-  }
-
   public CxxClassMethod findMethodByName(String methodName) {
     Iterator<CxxClassMethod> it = methods.iterator();
     while(it.hasNext()) {
@@ -132,5 +114,39 @@ public class CppClass extends CommonNamespace implements CxxClass {
     }
     return null;
   }
+
+  public Set<CxxClass> getAncestors() {
+    return ancestors;
+  }
+
+  public void addAncestor(CxxClass ancestor) {
+    if(ancestor != null && !this.equals(ancestor)) {
+      ancestors.add(ancestor);
+    }
+  }
+    
   
+  @Override
+  public boolean equals(Object o) {
+    if(!(o instanceof CxxClass)) {
+      return false;
+    }
+    
+    CxxClass other = (CxxClass) o;
+    boolean nameOk = other.getFullName().equals( getFullName() );
+    boolean ancestorsOk = other.getAncestors().equals(getAncestors());
+  
+    return nameOk && ancestorsOk;
+  }
+  
+  @Override
+  public int hashCode() {
+    return getFullName().hashCode();
+  }
+  
+  @Override
+  public String toString() {
+    return getFullName();
+  }
+
 }

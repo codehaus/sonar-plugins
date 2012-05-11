@@ -26,7 +26,7 @@ protected:
 	double member4;
 };
 
-class ThirdClass : public FirstClass, public SecondClass
+class ThirdClass : public FirstClass, public global::SecondClass
 {
 public:
 	ThirdClass();	

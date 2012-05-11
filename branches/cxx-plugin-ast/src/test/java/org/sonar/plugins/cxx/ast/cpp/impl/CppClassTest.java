@@ -21,6 +21,7 @@ package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -121,6 +122,30 @@ public class CppClassTest {
     assertEquals("NewName", cppClass.getName());
   }
     
+  @Test
+  public void addAncestorTest() {
+    CxxClass class1 = new CppClass("Base");
+    CxxClass class2 = new CppClass("Derived");
+    CxxClass class3 = new CppClass("Derived");
+    
+    assertEquals(0, class1.getAncestors().size());
+    assertEquals(0, class2.getAncestors().size());
+    assertEquals(0, class3.getAncestors().size());
+    assertEquals(class2, class3);
+    
+    class2.addAncestor(class1);
+    assertEquals(0, class1.getAncestors().size());
+    assertEquals(1, class2.getAncestors().size());
+    assertEquals(0, class3.getAncestors().size());
+    assertFalse(class2.equals(class3));
+    
+    class3.addAncestor(class1);
+    assertEquals(0, class1.getAncestors().size());
+    assertEquals(1, class2.getAncestors().size());
+    assertEquals(1, class3.getAncestors().size());
+    assertTrue(class2.equals(class3));
+  }
+  
   @Test
   public void equalsTest() {
     HasMethods class1 = new CppClass();

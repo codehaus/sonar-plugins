@@ -20,22 +20,18 @@
 package org.sonar.plugins.cxx.ast.cpp.impl;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.plexus.util.FileUtils;
-import org.sonar.plugins.cxx.ast.cpp.CxxClass;
 import org.sonar.plugins.cxx.ast.cpp.CxxTranslationUnit;
+import org.sonar.plugins.cxx.ast.cpp.impl.internal.ClassHolder;
 
 /**
  * @author Przemyslaw Kociolek
  */
-public class CppTranslationUnit implements CxxTranslationUnit {
+public class CppTranslationUnit extends ClassHolder implements CxxTranslationUnit {
 
   private String fileName;
-  private Set<CxxClass> classes = new HashSet<CxxClass>();
-
   /**
    * @param sourceFile  c++ source file
    */
@@ -55,16 +51,6 @@ public class CppTranslationUnit implements CxxTranslationUnit {
     return fileName;
   }
 
-  public Set<CxxClass> getClasses() {
-    return classes;
-  }
-
-  public void addClass(CxxClass newClass) {
-    if(newClass != null) {
-      classes.add(newClass);
-    }
-  }    
-  
   private String validateFileName(String fileName) {
     if(StringUtils.isEmpty( StringUtils.trimToEmpty(fileName) )) {
       throw new IllegalArgumentException("C++ source file path not found: " + fileName);
