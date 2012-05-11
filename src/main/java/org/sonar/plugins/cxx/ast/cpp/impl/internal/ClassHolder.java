@@ -17,18 +17,47 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.ast.cpp;
+package org.sonar.plugins.cxx.ast.cpp.impl.internal;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.HasClasses;
 
 /**
+ * Holds C++ classes
  * @author Przemyslaw Kociolek
  */
-public interface CxxClass extends HasFullName, HasNamespace, HasMethods, HasMembers {
-  
-  Set<CxxClass> getAncestors();
-  
-  void addAncestor(CxxClass ancestor); 
-  
+public class ClassHolder implements HasClasses {
+
+  private Set<CxxClass> classes = new HashSet<CxxClass>();
+
+  public ClassHolder() {
+    super();
+  }
+
+  public Set<CxxClass> getClasses() {
+    return classes;
+  }
+
+  public void addClass(CxxClass newClass) {
+    if(newClass != null) {
+      classes.add(newClass);
+    }
+  }
+
+  public CxxClass findClassByName(String className) {
+    Iterator<CxxClass> it = classes.iterator();
+    while(it.hasNext()) {
+      CxxClass clazz = it.next();
+      if(clazz.getFullName().equals(className) || clazz.getName().equals(className)) {
+        return clazz;
+      }
+    }
+    
+    return null;
+  }
+
 }

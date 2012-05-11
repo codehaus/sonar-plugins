@@ -35,13 +35,6 @@ public final class CxxLanguage extends AbstractLanguage {
   private String[] headerSuffixes;
   private String[] fileSuffixes;
 
-  public String[] mergeArrays(String[] array1, String[] array2) {
-    String[] result = new String[array1.length + array2.length];
-    System.arraycopy(sourceSuffixes, 0, result, 0, array1.length);
-    System.arraycopy(headerSuffixes, 0, result, array1.length, array2.length);
-    return result;
-  }
-
   /**
    * {@inheritDoc}
    */
@@ -50,6 +43,20 @@ public final class CxxLanguage extends AbstractLanguage {
     sourceSuffixes = createStringArray(config.getStringArray(CxxPlugin.SOURCE_FILE_SUFFIXES_KEY), DEFAULT_SOURCE_SUFFIXES); 
     headerSuffixes = createStringArray(config.getStringArray(CxxPlugin.HEADER_FILE_SUFFIXES_KEY), DEFAULT_HEADER_SUFFIXES);
     fileSuffixes = mergeArrays(sourceSuffixes, headerSuffixes);
+  }
+  
+  public CxxLanguage() {
+    super(KEY, "c++");
+    sourceSuffixes = createStringArray(null, DEFAULT_SOURCE_SUFFIXES); 
+    headerSuffixes = createStringArray(null, DEFAULT_HEADER_SUFFIXES);
+    fileSuffixes = mergeArrays(sourceSuffixes, headerSuffixes);
+  }
+  
+  public String[] mergeArrays(String[] array1, String[] array2) {
+    String[] result = new String[array1.length + array2.length];
+    System.arraycopy(sourceSuffixes, 0, result, 0, array1.length);
+    System.arraycopy(headerSuffixes, 0, result, array1.length, array2.length);
+    return result;
   }
 
   /**

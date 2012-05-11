@@ -25,13 +25,15 @@ import java.io.File;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.StaxParser;
-import org.sonar.plugins.cxx.utils.CxxSensor;
+import org.sonar.plugins.cxx.utils.CxxReportSensor;
+import org.sonar.plugins.cxx.utils.CxxUtils;
 
 /**
  * Sensor for CppCheck external tool.
@@ -43,7 +45,7 @@ import org.sonar.plugins.cxx.utils.CxxSensor;
  * @todo enable include dirs (-I)
  * @todo allow configuration of path to analyze
  */
-public class CxxCppCheckSensor extends CxxSensor {
+public class CxxCppCheckSensor extends CxxReportSensor {
   public static final String REPORT_PATH_KEY = "sonar.cxx.cppcheck.reportPath";
   private static final String DEFAULT_REPORT_PATH = "cppcheck-reports/cppcheck-result-*.xml";
   
@@ -79,9 +81,18 @@ public class CxxCppCheckSensor extends CxxSensor {
           String id = errorCursor.getAttrValue("id");
           String msg = errorCursor.getAttrValue("msg");
           
-          saveViolation(project, context, CxxCppCheckRuleRepository.KEY,
+          if(isInputValid(file, line, id, msg)) {
+            saveViolation(project, context, CxxCppCheckRuleRepository.KEY,
                         file, Integer.parseInt(line), id, msg);
+          } else {
+            CxxUtils.LOG.warn("CppCheck warning: {}", msg );
+          }
         }
+      }
+
+      private boolean isInputValid(String file, String line, String id, String msg) {
+        return !StringUtils.isEmpty(file) && !StringUtils.isEmpty(line) 
+          && !StringUtils.isEmpty(id) && !StringUtils.isEmpty(msg);
       }
     });
 

@@ -54,7 +54,7 @@ public class CxxCppTranslationUnitVisitor extends ASTVisitor implements CxxTrans
   }
   
   public int visit(IASTDeclSpecifier node) {  //class/struct nodes
-    CxxCppClassVisitor classVisitor = new CxxCppClassVisitor(); 
+    CxxCppClassVisitor classVisitor = new CxxCppClassVisitor(this); 
     node.accept(classVisitor);
     CxxClass pc = classVisitor.getProducedClass();
     unit.addClass(pc);
@@ -88,6 +88,10 @@ public class CxxCppTranslationUnitVisitor extends ASTVisitor implements CxxTrans
     if(unit == null) {
       throw new IllegalStateException("No translation unit has been visited.");
     }
+  }
+
+  public CxxClass findClassByName(String className) {
+    return unit.findClassByName(className);
   }
   
 }

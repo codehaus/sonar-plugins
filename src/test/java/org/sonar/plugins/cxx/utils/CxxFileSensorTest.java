@@ -17,51 +17,49 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+package org.sonar.plugins.cxx.utils;
 
-package org.sonar.plugins.cxx.rfc;
-
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
 import org.sonar.plugins.cxx.TestUtils;
 
-public class CxxRfcSensorTest {
+class CxxFileSensorImpl extends CxxFileSensor
+{
+
+  List<InputFile> files = new ArrayList<InputFile>();
   
-  private CxxRfcSensor sensor;
-  private SensorContext context;
+  @Override
+  protected void parseFile(InputFile file, Project project, SensorContext context) {
+    files.add(file);
+  }
+  
+  public List<InputFile> getParsedFilesList() {
+    return files;
+  }
+  
+
+}
+
+public class CxxFileSensorTest {
+
+  private static final int PARSED_FILE_COUNT = 3;
+  
+  private CxxFileSensorImpl sensor;
   private Project project;
   
   @Before
-  public void setup() throws URISyntaxException {
-    File baseDir = TestUtils.loadResource("/org/sonar/plugins/cxx/rfc");
-    
-    List<File> sourceDirs = new ArrayList<File>();
-    List<File> testDirs = new ArrayList<File>();
-    sourceDirs.add(baseDir);
-    
-    context = mock(SensorContext.class);
-    Resource<?> resource = mock(Resource.class);
-    when(context.getResource(any(Resource.class))).thenReturn(resource);
-    
-    project = TestUtils.mockProject(baseDir, sourceDirs, testDirs);
-    
-    sensor = new CxxRfcSensor();
+  public void setup() {
+    sensor = new CxxFileSensorImpl();
+    project = TestUtils.mockProject();
   }
   
   @Test
@@ -70,10 +68,10 @@ public class CxxRfcSensorTest {
   }
   
   @Test
-  public void analyzeTest() {
-    sensor.analyse(project, context);
-    verify(context).saveMeasure(any(Resource.class), eq(CoreMetrics.RFC), eq(8.0)); //RfcClass.cpp
-    verify(context, times(2)).saveMeasure(any(Resource.class), eq(CoreMetrics.RFC), eq(2.0)); //RfcClass.cpp, AncestorClass.cpp
+  public void analyseTest() {
+    sensor.analyse(project, null);
+    assertEquals(PARSED_FILE_COUNT, sensor.getParsedFilesList().size());
   }
+  
   
 }

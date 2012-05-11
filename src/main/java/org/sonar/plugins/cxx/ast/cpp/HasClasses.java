@@ -33,5 +33,13 @@ public interface HasClasses {
    * @param newClass  class to add
    */
   public abstract void addClass(CxxClass newClass);
+  
+  /**
+   * finds a class by name
+   * @param className class name
+   * @return found class, or null if not found
+   */
+  
+  public CxxClass findClassByName(String className);
 
 }

@@ -28,5 +28,16 @@ public interface CxxClassMethod extends HasOwnerClass, HasFullName, HasArguments
    * @return  method body
    */
   CxxMethodBody getBody();
+  
+  /**
+   * @return  true if the method is implemented in this translation unit
+   * 
+   */
+  boolean isImplemented();
+
+  /**
+   * @param value true if method is implemented
+   */
+  void setImplemented(boolean value);
 
 }

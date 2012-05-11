@@ -39,11 +39,15 @@
       <name>JP Chemali</name>
       <email>jshemali@hotmail.com</email>
     </contributor>
+    <contributor>
+      <name>Przemyslaw Kociolek</name>
+      <email>przemyslaw.kociolek@sabre.com</email>
+    </contributor>
   </contributors>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/cxx</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/cxx</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/branches/cxx-plugin-ast</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/branches/cxx-plugin-ast</developerConnection>
     <url>http://svn.codehaus.org/sonar-plugins</url>
   </scm>
   <issueManagement>

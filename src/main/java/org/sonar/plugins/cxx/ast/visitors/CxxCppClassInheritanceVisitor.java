@@ -19,8 +19,12 @@
  */
 package org.sonar.plugins.cxx.ast.visitors;
 
+import org.eclipse.cdt.core.dom.ast.ASTVisitor;
+import org.eclipse.cdt.core.dom.ast.IASTName;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
+import org.sonar.plugins.cxx.ast.cpp.CxxTranslationUnit;
 import org.sonar.plugins.cxx.ast.visitors.internal.ClassVisitor;
+import org.sonar.plugins.cxx.utils.CxxUtils;
 
 /**
  * Analyzes class parents
@@ -29,10 +33,24 @@ import org.sonar.plugins.cxx.ast.visitors.internal.ClassVisitor;
  */
 public class CxxCppClassInheritanceVisitor extends ClassVisitor {
 
-  public CxxCppClassInheritanceVisitor(CxxClass producedClass) {
-    super(producedClass);
-  }
-
+  private CxxTranslationUnit translationUnit = null;
   
+  public CxxCppClassInheritanceVisitor(CxxTranslationUnit translationUnit, CxxClass producedClass) {
+    super(producedClass);
+    this.shouldVisitNames = true;
+    this.translationUnit = translationUnit;
+  }
+  
+  public int visit(IASTName node) {
+    String ancestorName = node.getRawSignature();
+    CxxClass ancestorClass = translationUnit.findClassByName(ancestorName);
+    if(ancestorClass != null) {
+      getVisitingClass().addAncestor(ancestorClass);
+    } else {
+      CxxUtils.LOG.warn("Could not find base class ({}) for {} class)", ancestorName, getVisitingClass());
+    }
+    
+    return ASTVisitor.PROCESS_ABORT;
+  }
   
 }

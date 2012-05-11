@@ -21,7 +21,6 @@ package org.sonar.plugins.cxx.ast;
 
 import java.util.Set;
 
-import org.eclipse.cdt.core.dom.ast.ASTVisitor;
 import org.eclipse.cdt.core.dom.ast.IASTTranslationUnit;
 import org.sonar.api.resources.InputFile;
 import org.sonar.plugins.cxx.ast.cpp.CxxClass;
@@ -88,6 +87,10 @@ public class CxxCppParsedFile implements CxxTranslationUnit {
 
   public void addClass(CxxClass newClass) {
     visitor.addClass(newClass);
+  }
+
+  public CxxClass findClassByName(String className) {
+    return visitor.findClassByName(className);
   }
 
 }

@@ -40,6 +40,7 @@ public class CxxCppMethodBodyVisitor extends ASTVisitor {
     this.visitedMethod = visitedMethod;
     this.shouldVisitNames = true;
     this.shouldVisitStatements = true;
+    visitedMethod.setImplemented(true);
   }
   
   public int visit(IASTStatement node) {
