@@ -1,5 +1,5 @@
 /*
- * Sonar JIRA-Reviews Plugin
+ * Sonar JIRA Reviews Plugin
  * Copyright (C) 2012 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -39,16 +39,18 @@ public class SOAPSession {
   private JiraSoapServiceService jiraSoapServiceLocator;
   private JiraSoapService jiraSoapService;
   private String token;
+  private URL webServiceUrl;
 
-  public SOAPSession(URL webServicePort) {
+  public SOAPSession(URL url) {
+    this.webServiceUrl = url;
     jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
     try {
-      if (webServicePort == null) {
+      if (webServiceUrl == null) {
         jiraSoapService = jiraSoapServiceLocator.getJirasoapserviceV2();
       }
       else {
-        jiraSoapService = jiraSoapServiceLocator.getJirasoapserviceV2(webServicePort);
-        LOG.debug("SOAP Session service endpoint at {}", webServicePort.toExternalForm());
+        jiraSoapService = jiraSoapServiceLocator.getJirasoapserviceV2(webServiceUrl);
+        LOG.debug("SOAP Session service endpoint at {}", webServiceUrl.toExternalForm());
       }
     } catch (ServiceException e) {
       throw new RuntimeException("ServiceException during JiraSOAPClient contruction", e);
@@ -75,5 +77,9 @@ public class SOAPSession {
 
   public JiraSoapServiceService getJiraSoapServiceLocator() {
     return jiraSoapServiceLocator;
+  }
+
+  protected URL getWebServiceUrl() {
+    return webServiceUrl;
   }
 }

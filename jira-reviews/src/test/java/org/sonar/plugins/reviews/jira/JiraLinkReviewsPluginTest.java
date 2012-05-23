@@ -1,5 +1,5 @@
 /*
- * Sonar JIRA-Reviews Plugin
+ * Sonar JIRA Reviews Plugin
  * Copyright (C) 2012 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -19,23 +19,17 @@
  */
 package org.sonar.plugins.reviews.jira;
 
-import com.google.common.collect.Lists;
-import org.sonar.api.Extension;
-import org.sonar.api.SonarPlugin;
-import org.sonar.plugins.reviews.jira.soap.JiraSOAPClient;
+import org.junit.Test;
 
-import java.util.List;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-public final class JiraReviewsPlugin extends SonarPlugin {
+public class JiraLinkReviewsPluginTest {
 
-  @SuppressWarnings({"rawtypes", "unchecked"})
-  public List<Class<? extends Extension>> getExtensions() {
-    List extensions = Lists.newLinkedList();
-
-    extensions.add(JiraLinkReviewCommand.class);
-    extensions.add(JiraLinkReviewAction.class);
-    extensions.add(JiraSOAPClient.class);
-
-    return extensions;
+  @Test
+  public void checkExtensions() throws Exception {
+    JiraLinkReviewsPlugin plugin = new JiraLinkReviewsPlugin();
+    assertThat(plugin.getExtensions().size(), is(3));
   }
+
 }

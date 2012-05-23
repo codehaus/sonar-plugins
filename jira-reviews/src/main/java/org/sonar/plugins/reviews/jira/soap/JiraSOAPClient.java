@@ -1,5 +1,5 @@
 /*
- * Sonar JIRA-Reviews Plugin
+ * Sonar JIRA Reviews Plugin
  * Copyright (C) 2012 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -21,78 +21,115 @@ package org.sonar.plugins.reviews.jira.soap;
 
 import com.atlassian.jira.rpc.soap.client.JiraSoapService;
 import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 import org.sonar.api.ServerExtension;
 import org.sonar.api.config.Settings;
-import org.sonar.core.review.ReviewDto;
+import org.sonar.core.review.workflow.review.Review;
+import org.sonar.plugins.reviews.jira.JiraLinkReviewsConstants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 /**
  * SOAP client class that is used for creating issues on a JIRA server
  */
+@Properties({
+  @Property(
+    key = JiraLinkReviewsConstants.SERVER_URL_PROPERTY,
+    defaultValue = "",
+    name = "Server URL",
+    description = "Example : http://jira.codehaus.org",
+    global = true,
+    project = true
+  ),
+  @Property(
+    key = JiraLinkReviewsConstants.USERNAME_PROPERTY,
+    defaultValue = "",
+    name = "Username",
+    global = true,
+    project = true
+  ),
+  @Property(
+    key = JiraLinkReviewsConstants.PASSWORD_PROPERTY,
+    defaultValue = "",
+    name = "Password",
+    global = true,
+    project = true
+  ),
+  @Property(
+    key = JiraLinkReviewsConstants.SOAP_BASE_URL_PROPERTY,
+    defaultValue = JiraLinkReviewsConstants.SOAP_BASE_URL_DEF_VALUE,
+    name = "SOAP base URL",
+    description = "Base URL for the SOAP API of the JIRA server",
+    global = true,
+    project = true
+  ),
+  @Property(
+    key = JiraLinkReviewsConstants.JIRA_PROJECT_KEY_PROPERTY,
+    defaultValue = "",
+    name = "JIRA project key",
+    description = "Key of the JIRA project on which the issues should be created.",
+    global = true,
+    project = true
+  )
+})
 public class JiraSOAPClient implements ServerExtension {
 
   private static final Logger LOG = LoggerFactory.getLogger(JiraSOAPClient.class);
+  private static final String TASK_ISSUE_TYPE = "3";
+  private static final Map<String, String> sonarSeverityToJiraPriority = Maps.newHashMap();
 
-  public static final String TASK_ISSUE_TYPE = "3";
-  public static final String DEFAULT_SOAP_BASE_URL = "/rpc/soap/jirasoapservice-v2";
+  static {
+    sonarSeverityToJiraPriority.put("BLOCKER", "1");
+    sonarSeverityToJiraPriority.put("CRITICAL", "2");
+    sonarSeverityToJiraPriority.put("MAJOR", "3");
+    sonarSeverityToJiraPriority.put("MINOR", "4");
+    sonarSeverityToJiraPriority.put("INFO", "5");
+  }
 
-  private Settings settings;
-
-  public JiraSOAPClient(Settings settings) {
-    this.settings = settings;
+  public JiraSOAPClient() {
   }
 
   @SuppressWarnings("rawtypes")
-  public RemoteIssue createIssue(ReviewDto review) throws RemoteException {
-    SOAPSession soapSession = createSoapSession();
+  public RemoteIssue createIssue(Review review, Settings settings, String commentText) throws RemoteException {
+    SOAPSession soapSession = createSoapSession(settings);
 
-    return doCreateIssue(review, soapSession);
+    return doCreateIssue(review, soapSession, settings, commentText);
   }
 
-  protected SOAPSession createSoapSession() {
-    // TODO : must get the appropriate property
-    String baseUrl = "http://localhost:8080" + DEFAULT_SOAP_BASE_URL;
+  protected SOAPSession createSoapSession(Settings settings) {
+    String jiraUrl = settings.getString(JiraLinkReviewsConstants.SERVER_URL_PROPERTY);
+    String baseUrl = settings.getString(JiraLinkReviewsConstants.SOAP_BASE_URL_PROPERTY);
 
     // get handle to the JIRA SOAP Service from a client point of view
     SOAPSession soapSession = null;
     try {
-      soapSession = new SOAPSession(new URL(baseUrl));
+      soapSession = new SOAPSession(new URL(jiraUrl + baseUrl));
     } catch (MalformedURLException e) {
       throw new IllegalStateException("The JIRA server URL is not a valid one: " + baseUrl, e);
     }
     return soapSession;
   }
 
-  protected RemoteIssue doCreateIssue(ReviewDto review, SOAPSession soapSession) throws RemoteException {
-    // connect to JIRA
-    // TODO : must get the appropriate properties
-    soapSession.connect("admin", "admin");
+  protected RemoteIssue doCreateIssue(Review review, SOAPSession soapSession, Settings settings, String commentText) throws RemoteException {
+    // Connect to JIRA
+    String userName = settings.getString(JiraLinkReviewsConstants.USERNAME_PROPERTY);
+    String password = settings.getString(JiraLinkReviewsConstants.PASSWORD_PROPERTY);
+    soapSession.connect(userName, password);
 
-    // the JIRA SOAP Service and authentication token are used to make authentication calls
+    // The JIRA SOAP Service and authentication token are used to make authentication calls
     JiraSoapService jiraSoapService = soapSession.getJiraSoapService();
     String authToken = soapSession.getAuthenticationToken();
 
-    // Create the issue
-    RemoteIssue issue = new RemoteIssue();
-    issue.setProject(getJiraProjectKey());
-    issue.setType(TASK_ISSUE_TYPE);
-    issue.setPriority("3");
-
-    issue.setSummary("Sonar Review #" + review.getId());
-
-    StringBuilder description = new StringBuilder(review.getTitle());
-    description.append("\n\nCheck it on Sonar: ");
-    description.append(settings.getString("sonar.core.serverBaseURL"));
-    description.append("/project_reviews/view/");
-    description.append(review.getId());
-    issue.setDescription(description.toString());
-
-    // Run the create issue code
+    // And create the issue
+    RemoteIssue issue = initRemoteIssue(review, settings, commentText);
     RemoteIssue returnedIssue = jiraSoapService.createIssue(authToken, issue);
     String issueKey = returnedIssue.getKey();
     LOG.debug("Successfully created issue {}", issueKey);
@@ -100,9 +137,40 @@ public class JiraSOAPClient implements ServerExtension {
     return returnedIssue;
   }
 
-  private String getJiraProjectKey() {
-    // TODO : must get the appropriate property
-    return "FOO";
+  protected RemoteIssue initRemoteIssue(Review review, Settings settings, String commentText) {
+    RemoteIssue issue = new RemoteIssue();
+    issue.setProject(settings.getString(JiraLinkReviewsConstants.JIRA_PROJECT_KEY_PROPERTY));
+    issue.setType(TASK_ISSUE_TYPE);
+    issue.setPriority(sonarSeverityToJiraPriority(review.getSeverity()));
+
+    issue.setSummary("Sonar Review #" + review.getReviewId());
+
+    StringBuilder description = new StringBuilder("Violation detail:");
+    description.append("\n{quote}\n");
+    description.append(review.getMessage());
+    description.append("\n{quote}\n");
+    if (StringUtils.isNotBlank(commentText)) {
+      description.append("\nMessage from reviewer:");
+      description.append("\n{quote}\n");
+      description.append(commentText);
+      description.append("\n{quote}\n");
+    }
+    description.append("\n\nCheck it on Sonar: ");
+    description.append(settings.getString("sonar.core.serverBaseURL"));
+    description.append("/project_reviews/view/");
+    description.append(review.getReviewId());
+    issue.setDescription(description.toString());
+
+    return issue;
+  }
+
+  protected String sonarSeverityToJiraPriority(String reviewSeverity) {
+    String priority = sonarSeverityToJiraPriority.get(reviewSeverity);
+    if (priority == null) {
+      // default to MAJOR
+      priority = "3";
+    }
+    return priority;
   }
 
 }

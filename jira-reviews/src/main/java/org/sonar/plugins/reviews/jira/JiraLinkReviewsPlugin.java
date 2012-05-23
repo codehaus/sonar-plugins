@@ -1,5 +1,5 @@
 /*
- * Sonar JIRA-Reviews Plugin
+ * Sonar JIRA Reviews Plugin
  * Copyright (C) 2012 SonarSource
  * dev@sonar.codehaus.org
  *
@@ -19,12 +19,21 @@
  */
 package org.sonar.plugins.reviews.jira;
 
+import com.google.common.collect.Lists;
+import org.sonar.api.Extension;
+import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.reviews.jira.soap.JiraSOAPClient;
 
-/**
- * @since 3.1
- */
-public final class JiraLinkReviewConstants {
+import java.util.List;
 
-  public static final String REVIEW_DATA_PROPERTY_KEY = "jira-issue-key";
+public final class JiraLinkReviewsPlugin extends SonarPlugin {
 
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public List<Class<? extends Extension>> getExtensions() {
+    List extensions = Lists.newLinkedList();
+    extensions.add(JiraSOAPClient.class);
+    extensions.add(LinkFunction.class);
+    extensions.add(WorkflowBuilder.class);
+    return extensions;
+  }
 }

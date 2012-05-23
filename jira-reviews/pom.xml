@@ -13,7 +13,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
-  <name>Sonar JIRA-Reviews Plugin</name>
+  <name>Sonar JIRA Reviews Plugin</name>
   <description>Plugin that allows to create links between Sonar reviews and JIRA</description>
   
   <url>http://docs.codehaus.org/display/SONAR/JIRA+Reviews+Plugin</url>
@@ -54,7 +54,7 @@
   <properties>
     <sonar.version>3.1-SNAPSHOT</sonar.version>
     <sonar.pluginKey>jirareviews</sonar.pluginKey>
-    <sonar.pluginClass>org.sonar.plugins.reviews.jira.JiraReviewsPlugin</sonar.pluginClass>
+    <sonar.pluginClass>org.sonar.plugins.reviews.jira.JiraLinkReviewsPlugin</sonar.pluginClass>
   </properties>
 
   <dependencies>
