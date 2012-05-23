@@ -44,9 +44,9 @@ public class WorkflowBuilder implements ServerExtension {
     workflow.setScreen(LINK_TO_JIRA_ID, new CommentScreen());
     workflow.addFunction(LINK_TO_JIRA_ID, linkFunction);
     // conditions for this function
-    // - on the review
+    // - on the review ("IDLE" is the non-persisted status of an non-existing review = when a violation does have a review yet)
     workflow.addCondition(LINK_TO_JIRA_ID, not(hasReviewProperty(JiraLinkReviewsConstants.REVIEW_DATA_PROPERTY_KEY)));
-    workflow.addCondition(LINK_TO_JIRA_ID, statuses("OPEN", "REOPENED"));
+    workflow.addCondition(LINK_TO_JIRA_ID, statuses("IDLE", "OPEN", "REOPENED"));
     // - on the project
     workflow.addCondition(LINK_TO_JIRA_ID, hasProjectProperty(JiraLinkReviewsConstants.SERVER_URL_PROPERTY));
     workflow.addCondition(LINK_TO_JIRA_ID, hasProjectProperty(JiraLinkReviewsConstants.SOAP_BASE_URL_PROPERTY));
