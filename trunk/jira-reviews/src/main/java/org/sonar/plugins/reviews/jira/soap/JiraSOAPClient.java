@@ -20,7 +20,9 @@
 package org.sonar.plugins.reviews.jira.soap;
 
 import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException;
 import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+import com.atlassian.jira.rpc.soap.client.RemotePermissionException;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -107,22 +109,29 @@ public class JiraSOAPClient implements ServerExtension {
   protected SOAPSession createSoapSession(Settings settings) {
     String jiraUrl = settings.getString(JiraLinkReviewsConstants.SERVER_URL_PROPERTY);
     String baseUrl = settings.getString(JiraLinkReviewsConstants.SOAP_BASE_URL_PROPERTY);
+    String completeUrl = jiraUrl + baseUrl;
 
     // get handle to the JIRA SOAP Service from a client point of view
     SOAPSession soapSession = null;
     try {
-      soapSession = new SOAPSession(new URL(jiraUrl + baseUrl));
+      soapSession = new SOAPSession(new URL(completeUrl));
     } catch (MalformedURLException e) {
-      throw new IllegalStateException("The JIRA server URL is not a valid one: " + baseUrl, e);
+      LOG.error("The JIRA server URL is not a valid one: " + completeUrl, e);
+      throw new IllegalStateException("The JIRA server URL is not a valid one: " + completeUrl, e);
     }
     return soapSession;
   }
 
-  protected RemoteIssue doCreateIssue(Review review, SOAPSession soapSession, Settings settings, String commentText) throws RemoteException {
+  protected RemoteIssue doCreateIssue(Review review, SOAPSession soapSession, Settings settings, String commentText) {
     // Connect to JIRA
+    String jiraUrl = settings.getString(JiraLinkReviewsConstants.SERVER_URL_PROPERTY);
     String userName = settings.getString(JiraLinkReviewsConstants.USERNAME_PROPERTY);
     String password = settings.getString(JiraLinkReviewsConstants.PASSWORD_PROPERTY);
-    soapSession.connect(userName, password);
+    try {
+      soapSession.connect(userName, password);
+    } catch (RemoteException e) {
+      throw new IllegalStateException("Impossible to connect to the JIRA server (" + jiraUrl + ").", e);
+    }
 
     // The JIRA SOAP Service and authentication token are used to make authentication calls
     JiraSoapService jiraSoapService = soapSession.getJiraSoapService();
@@ -130,11 +139,24 @@ public class JiraSOAPClient implements ServerExtension {
 
     // And create the issue
     RemoteIssue issue = initRemoteIssue(review, settings, commentText);
-    RemoteIssue returnedIssue = jiraSoapService.createIssue(authToken, issue);
+    RemoteIssue returnedIssue = sendRequest(jiraSoapService, authToken, issue, jiraUrl, userName);
+
     String issueKey = returnedIssue.getKey();
     LOG.debug("Successfully created issue {}", issueKey);
 
     return returnedIssue;
+  }
+
+  protected RemoteIssue sendRequest(JiraSoapService jiraSoapService, String authToken, RemoteIssue issue, String jiraUrl, String userName) {
+    try {
+      return jiraSoapService.createIssue(authToken, issue);
+    } catch (RemoteAuthenticationException e) {
+      throw new IllegalStateException("Impossible to connect to the JIRA server (" + jiraUrl + ") because of invalid credentials for user " + userName, e);
+    } catch (RemotePermissionException e) {
+      throw new IllegalStateException("Impossible to create the issue on the JIRA server (" + jiraUrl + ") because user " + userName + " does not have enough rights.", e);
+    } catch (RemoteException e) {
+      throw new IllegalStateException("Impossible to create the issue on the JIRA server (" + jiraUrl + ")", e);
+    }
   }
 
   protected RemoteIssue initRemoteIssue(Review review, Settings settings, String commentText) {
