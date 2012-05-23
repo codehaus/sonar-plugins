@@ -20,7 +20,9 @@
 package org.sonar.plugins.reviews.jira.soap;
 
 import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException;
 import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+import com.atlassian.jira.rpc.soap.client.RemotePermissionException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,10 +31,13 @@ import org.sonar.api.config.Settings;
 import org.sonar.core.review.workflow.review.DefaultReview;
 import org.sonar.plugins.reviews.jira.JiraLinkReviewsConstants;
 
+import java.rmi.RemoteException;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -70,13 +75,66 @@ public class JiraSOAPClientTest {
   }
 
   @Test
-  public void shouldFailtToCreateSoapSessionWithIncorrectUrl() throws Exception {
+  public void shouldFailToCreateSoapSessionWithIncorrectUrl() throws Exception {
     settings.removeProperty(JiraLinkReviewsConstants.SERVER_URL_PROPERTY);
+    settings.appendProperty(JiraLinkReviewsConstants.SERVER_URL_PROPERTY, "my.server");
 
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("The JIRA server URL is not a valid one: /rpc/soap/jirasoapservice-v2");
+    thrown.expectMessage("The JIRA server URL is not a valid one: my.server/rpc/soap/jirasoapservice-v2");
 
     soapClient.createSoapSession(settings);
+  }
+
+  @Test
+  public void shouldFailToCreateIssueIfCantConnect() throws Exception {
+    // Given that
+    SOAPSession soapSession = mock(SOAPSession.class);
+    doThrow(RemoteException.class).when(soapSession).connect(anyString(), anyString());
+
+    // Verify
+    thrown.expect(IllegalStateException.class);
+    thrown.expectMessage("Impossible to connect to the JIRA server");
+
+    soapClient.doCreateIssue(review, soapSession, settings, null);
+  }
+
+  @Test
+  public void shouldFailToCreateIssueIfCantAuthenticate() throws Exception {
+    // Given that
+    JiraSoapService jiraSoapService = mock(JiraSoapService.class);
+    doThrow(RemoteAuthenticationException.class).when(jiraSoapService).createIssue(anyString(), any(RemoteIssue.class));
+
+    // Verify
+    thrown.expect(IllegalStateException.class);
+    thrown.expectMessage("Impossible to connect to the JIRA server (my.jira) because of invalid credentials for user foo");
+
+    soapClient.sendRequest(jiraSoapService, "", null, "my.jira", "foo");
+  }
+
+  @Test
+  public void shouldFailToCreateIssueIfNotEnoughRights() throws Exception {
+    // Given that
+    JiraSoapService jiraSoapService = mock(JiraSoapService.class);
+    doThrow(RemotePermissionException.class).when(jiraSoapService).createIssue(anyString(), any(RemoteIssue.class));
+
+    // Verify
+    thrown.expect(IllegalStateException.class);
+    thrown.expectMessage("Impossible to create the issue on the JIRA server (my.jira) because user foo does not have enough rights.");
+
+    soapClient.sendRequest(jiraSoapService, "", null, "my.jira", "foo");
+  }
+
+  @Test
+  public void shouldFailToCreateIssueIfRemoteError() throws Exception {
+    // Given that
+    JiraSoapService jiraSoapService = mock(JiraSoapService.class);
+    doThrow(RemoteException.class).when(jiraSoapService).createIssue(anyString(), any(RemoteIssue.class));
+
+    // Verify
+    thrown.expect(IllegalStateException.class);
+    thrown.expectMessage("Impossible to create the issue on the JIRA server (my.jira)");
+
+    soapClient.sendRequest(jiraSoapService, "", null, "my.jira", "foo");
   }
 
   @Test
