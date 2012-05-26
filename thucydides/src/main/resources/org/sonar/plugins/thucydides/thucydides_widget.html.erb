@@ -1,0 +1,38 @@
+<%
+  thucydides=measure('thucydides-tests')
+  if thucydides
+%>
+<table width="100%">
+  <tbody>
+    <tr>
+      <td align="left">
+        <div class="dashbox" >
+          <p class="title"><%= message('widget.thucydides.name') -%></p>
+          <p><span class="big"><%= format_measure('thucydides-success-density', :suffix =>  ' ' + message('widget.thucydides.param.success'))%></span><%= trend_icon('thucydides-success-density') %></span></p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <div class="dashbox">
+          
+          <p><%= format_measure(measure('thucydides-tests'), :suffix =>  ' ' + message('widget.thucydides.param.tests'))%><%= trend_icon('thucydides-tests') %></p>
+          <p><%= format_measure(measure('thucydides-tests-passed'), :suffix => ' ' + message('widget.thucydides.param.passed'))%><%= trend_icon('thucydides-tests-passed') %></p>
+          <p><%= format_measure(measure('thucydides-tests-pending'), :suffix =>  ' ' + message('widget.thucydides.param.pending'))%><%= trend_icon('thucydides-tests-pedning') %></p>
+          <p><%= format_measure(measure('thucydides-tests-failed'), :suffix =>  ' ' + message('widget.thucydides.param.failed'))%><%= trend_icon('thucydides-tests-failed') %></p>
+          <p><%= format_measure(measure('thucydides-tests-duration'))%><%= trend_icon('thucydides-tests-duration') %></p>
+        </div>
+      </td>
+      <td valign="top">
+        <div class="dashbox">
+          <p class="title"></p>
+          <p><%= format_measure(measure('thucydides-features'), :suffix =>  ' ' + message('widget.thucydides.param.features'))%><%= trend_icon('thucydides-features') %></p>
+          <p><%= format_measure(measure('thucydides-stories'), :suffix =>  ' ' + message('widget.thucydides.param.user_stories'))%><%= trend_icon('thucydides-stories') %></p>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<%
+  end
+%>

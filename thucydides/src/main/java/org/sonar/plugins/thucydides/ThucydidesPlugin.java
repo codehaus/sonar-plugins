@@ -28,6 +28,9 @@ public final class ThucydidesPlugin extends SonarPlugin {
 
   @Override
   public List getExtensions() {
-    return Arrays.asList(ThucydidesResultSiteParser.class,ThucydidesSensor.class);
+    return Arrays.asList(ThucydidesResultSiteParser.class,
+            ThucydidesSensor.class,
+            ThucydidesMetrics.class, 
+            ThucydidesWidget.class);
   }
 }

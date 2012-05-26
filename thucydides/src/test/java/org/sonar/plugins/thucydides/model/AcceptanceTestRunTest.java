@@ -26,35 +26,11 @@ import java.util.List;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.plugins.thucydides.utils.XStreamFactory;
 
 public class AcceptanceTestRunTest {
 
-  private final XStream xstream = new XStream();
-
-  @Before
-  public void setUp() {
-
-    xstream.alias("acceptance-test-run", AcceptanceTestRun.class);
-    xstream.aliasField("user-story", AcceptanceTestRun.class, "userStory");
-    xstream.alias("user-story", UserStory.class);
-    xstream.alias("test-group", TestGroup.class);
-    xstream.alias("screenshot", ScreenShot.class);
-    xstream.alias("test-step", TestStep.class);
-    xstream.useAttributeFor("id", String.class);
-    xstream.useAttributeFor("name", String.class);
-    xstream.useAttributeFor("title", String.class);
-    xstream.useAttributeFor("pending", Integer.class);
-    xstream.useAttributeFor("skipped", Integer.class);
-    xstream.useAttributeFor("failures", Integer.class);
-    xstream.useAttributeFor("successful", Integer.class);
-    xstream.useAttributeFor("steps", Integer.class);
-    xstream.useAttributeFor("result", String.class);
-    xstream.useAttributeFor("image", String.class);
-    xstream.useAttributeFor("source", String.class);
-
-    xstream.addImplicitCollection(AcceptanceTestRun.class, "testGroups");
-    xstream.addImplicitCollection(TestGroup.class, "testSteps");
-  }
+  private final XStream xstream = new XStreamFactory().createXStream();
 
   @Test
   public void testGetUserStory() {
@@ -62,11 +38,13 @@ public class AcceptanceTestRunTest {
     AcceptanceTestRun acceptanceTestRun = new AcceptanceTestRun();
     acceptanceTestRun.setName("searching_by_ambiguious_keyword_should_display_the_disambiguation_page");
     acceptanceTestRun.setTitle("Searching by ambiguious keyword should display the disambiguation page");
-    acceptanceTestRun.setSteps(0);
+    acceptanceTestRun.setSteps(3);
     acceptanceTestRun.setFailures(0);
     acceptanceTestRun.setPending(0);
     acceptanceTestRun.setSkipped(0);
-    acceptanceTestRun.setSuccesful(0);
+    acceptanceTestRun.setSuccessful(2);
+    acceptanceTestRun.setIgnored(0);
+    acceptanceTestRun.setDuration(1000L);
     acceptanceTestRun.setResult("PENDING");
 
     UserStory userStory = new UserStory();
@@ -95,13 +73,31 @@ public class AcceptanceTestRunTest {
     testStep.setResult("SUCCESS");
     testStep.setScreenshots(screenShots);
     testStep.setDescription("Is the home page");
+    testStep.setDuration(1234L);
     List<TestStep> testSteps = new ArrayList<TestStep>();
     testSteps.add(testStep);
     testGroup.setTestSteps(testSteps);
     List<TestGroup> testGroups = new ArrayList<TestGroup>();
     testGroups.add(testGroup);
     acceptanceTestRun.setTestGroups(testGroups);
-
+    
+    List<Tag> tags = new ArrayList<Tag>();
+    Tag tag1 = new Tag();
+    tag1.setName("Search");
+    tag1.setType("feature");
+    Tag tag2 = new Tag();
+    tag2.setName("Search by Keyword");
+    tag2.setType("story");
+    
+    tags.add(tag1);
+    tags.add(tag2);
+    acceptanceTestRun.setTags(tags);
+    
+    Issue issue = new Issue();
+    List<String> issues = new ArrayList<String>();
+    issues.add("adasdasd");
+    acceptanceTestRun.setIssues(issues);
+    
     userStory.setFeature(feature);
     acceptanceTestRun.setUserStory(userStory);
 
@@ -147,4 +143,41 @@ public class AcceptanceTestRunTest {
     Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(1).getScreenshots().size());
     Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(2).getScreenshots().size());
   }
+  
+  @Test
+  public void testParseSampleReport2() {
+    InputStream sampleReport = this.getClass().getClassLoader().getResourceAsStream("search_by_keyword_looking_up_the_definition_of__apple_.xml");
+    AcceptanceTestRun acceptanceTestRun = (AcceptanceTestRun) xstream.fromXML(sampleReport);
+    Assert.assertNotNull(acceptanceTestRun);
+    Assert.assertNotNull(acceptanceTestRun.getUserStory());
+    Assert.assertEquals(0, acceptanceTestRun.getPending().intValue());
+    Assert.assertEquals(0, acceptanceTestRun.getIgnored().intValue());
+    Assert.assertEquals(0, acceptanceTestRun.getSkipped().intValue());
+    Assert.assertEquals(0, acceptanceTestRun.getFailures().intValue());
+    Assert.assertEquals(4L, acceptanceTestRun.getSuccessful().longValue());
+    Assert.assertEquals(4, acceptanceTestRun.getSteps().intValue());
+    Assert.assertEquals("SUCCESS", acceptanceTestRun.getResult());
+    Assert.assertEquals("Looking up the definition of 'apple'", acceptanceTestRun.getTitle());
+    Assert.assertEquals("Looking up the definition of 'apple'", acceptanceTestRun.getName());
+    Assert.assertEquals(3, acceptanceTestRun.getTestGroups().size());
+    Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(0).getScreenshots().size());
+    Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(0).getTestSteps().size());
+    Assert.assertEquals("SUCCESS", acceptanceTestRun.getTestGroups().get(0).getTestSteps().get(0).getResult());
+    Assert.assertEquals(10335L, acceptanceTestRun.getTestGroups().get(0).getTestSteps().get(0).getDuration().longValue());
+    Assert.assertEquals("Is the home page", acceptanceTestRun.getTestGroups().get(0).getTestSteps().get(0).getDescription());
+    Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(0).getTestSteps().get(0).getScreenshots().size());
+    Assert.assertEquals("screenshot-1d7423cacdd08b678934e84ffcc1b642.png", 
+            acceptanceTestRun.getTestGroups().get(0).getScreenshots().get(0).getImage());
+    Assert.assertEquals("screenshot-1d7423cacdd08b678934e84ffcc1b642.html", 
+            acceptanceTestRun.getTestGroups().get(0).getScreenshots().get(0).getSource());
+    Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(1).getScreenshots().size());
+    Assert.assertEquals(1, acceptanceTestRun.getTestGroups().get(2).getScreenshots().size());
+  }
+  
+  @Test
+  public void testParsesearch_by_keyword_looking_up_the_definition_of_apple_should_display_the_corresponding_article() {
+    InputStream sampleReport = this.getClass().getClassLoader().getResourceAsStream("search_by_keyword_looking_up_the_definition_of_apple_should_display_the_corresponding_article.xml");
+    AcceptanceTestRun acceptanceTestRun = (AcceptanceTestRun) xstream.fromXML(sampleReport);
+    Assert.assertNotNull(acceptanceTestRun);
+  }  
 }

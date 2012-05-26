@@ -18,19 +18,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.thucydides;
+package org.sonar.plugins.thucydides.model;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.Locale;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class XmlFileFilter implements FileFilter {
-
-  @Override
-  public boolean accept(File pathname) {
-    if (pathname.getName().toUpperCase(Locale.getDefault()).endsWith(".XML")) {
-      return true;
-    }
-    return false;
-  }
+@XmlRootElement(name = "issue")
+public class Issue extends AbstractThucydidesBaseObject{
+  
 }

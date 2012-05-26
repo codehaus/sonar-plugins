@@ -28,13 +28,17 @@ public class AcceptanceTestRun extends AbstractThucydidesBaseObject{
   
   private String title;
   private String result;
+  private Long duration;
   private Integer pending;
   private Integer skipped;
+  private Integer ignored;
   private Integer failures;
-  private Integer succesful;
+  private Integer successful;
   private Integer steps;
   private UserStory userStory;
   private List<TestGroup> testGroups;
+  private List<Tag> tags;
+  private List<String> issues;
 
   public Integer getFailures() {
     return failures;
@@ -60,7 +64,7 @@ public class AcceptanceTestRun extends AbstractThucydidesBaseObject{
     this.result = result;
   }
 
-  public int getSkipped() {
+  public Integer getSkipped() {
     return skipped;
   }
 
@@ -76,12 +80,12 @@ public class AcceptanceTestRun extends AbstractThucydidesBaseObject{
     this.steps = steps;
   }
 
-  public Integer getSuccesful() {
-    return succesful;
+  public Integer getSuccessful() {
+    return successful;
   }
 
-  public void setSuccesful(Integer succesful) {
-    this.succesful = succesful;
+  public void setSuccessful(Integer successful) {
+    this.successful = successful;
   }
 
   public String getTitle() {
@@ -106,6 +110,38 @@ public class AcceptanceTestRun extends AbstractThucydidesBaseObject{
 
   public void setTestGroups(List<TestGroup> testGroups) {
     this.testGroups = testGroups;
+  }
+
+  public List<Tag> getTags() {
+    return tags;
+  }
+
+  public void setTags(List<Tag> tags) {
+    this.tags = tags;
+  }
+
+  public Long getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Long duration) {
+    this.duration = duration;
+  }
+
+  public Integer getIgnored() {
+    return ignored;
+  }
+
+  public void setIgnored(Integer ignored) {
+    this.ignored = ignored;
+  }
+
+  public List<String> getIssues() {
+    return issues;
+  }
+
+  public void setIssues(List<String> issues) {
+    this.issues = issues;
   }
   
 }
