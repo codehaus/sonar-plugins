@@ -16,10 +16,6 @@
   <description>Plugin for the acceptance testing tool Thucydides</description>
   <url>http://docs.codehaus.org/display/SONAR/Thucydides+Plugin</url>
   <inceptionYear>2012</inceptionYear>
-  <organization>
-    <name>OTS SA</name>
-    <url>http://www.ots.gr</url>
-  </organization>
   
   <licenses>
     <license>
@@ -29,12 +25,16 @@
     </license>
   </licenses>
   
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/thucydides</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/thucydides</developerConnection>
+    <url>http://svn.sonar-plugins.codehaus.org</url>
+  </scm>
   <developers>
     <developer>
       <name>Papapetrou P.Patroklos</name>
       <email>ppapapetrou76@gmail.com</email>
       <url>http://gr.linkedin.com/in/ppapapetrou</url>
-      <organization>OTS SA</organization>
       <timezone>+3</timezone>
     </developer>
   </developers>
