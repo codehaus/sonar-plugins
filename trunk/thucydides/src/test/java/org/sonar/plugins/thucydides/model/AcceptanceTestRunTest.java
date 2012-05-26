@@ -1,6 +1,6 @@
 /*
  * Sonar Thucydides Plugin
- * Copyright (C) 2012 OTS SA
+ * Copyright (C) 2012 Patroklos PAPAPETROU
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+
 package org.sonar.plugins.thucydides.model;
 
 import com.thoughtworks.xstream.XStream;
@@ -24,7 +25,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.sonar.plugins.thucydides.utils.XStreamFactory;
 

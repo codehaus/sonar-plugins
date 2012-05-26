@@ -1,6 +1,6 @@
 /*
  * Sonar Thucydides Plugin
- * Copyright (C) 2012 OTS SA
+ * Copyright (C) 2012 Patroklos PAPAPETROU
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
  */
 package org.sonar.plugins.thucydides.utils;
 
-import org.sonar.plugins.thucydides.utils.XmlFileFilter;
 import java.io.File;
 import org.junit.*;
 import static org.junit.Assert.*;

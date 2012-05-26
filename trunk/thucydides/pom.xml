@@ -17,6 +17,10 @@
   <url>http://docs.codehaus.org/display/SONAR/Thucydides+Plugin</url>
   <inceptionYear>2012</inceptionYear>
   
+  <organization>
+    <name>Patroklos PAPAPETROU</name>
+  </organization>
+  
   <licenses>
     <license>
       <name>GNU LGPL v3</name>
