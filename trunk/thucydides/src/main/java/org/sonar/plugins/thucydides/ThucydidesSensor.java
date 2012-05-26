@@ -26,7 +26,6 @@ import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
-import org.sonar.api.utils.SonarException;
 
 public class ThucydidesSensor implements Sensor {
 
@@ -39,25 +38,28 @@ public class ThucydidesSensor implements Sensor {
 
   @Override
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getAnalysisType().isDynamic(true)
-            && Java.KEY.equals(project.getLanguageKey());
+    System.out.println ( Java.KEY);
+    System.out.println ( project.getLanguageKey());
+    return Java.KEY.equals(project.getLanguageKey());
   }
 
   @Override
   public void analyse(Project project, SensorContext context) {
 
     File reportsPath = project.getFileSystem().resolvePath("target/site/thucydides");
-    LOG.debug(reportsPath.getAbsolutePath());
 
-    if (!reportsPath.exists() || !reportsPath.isDirectory()) {
-      LOG.warn("Thucidides reports not found in {}", reportsPath);
+    if (reportsPath.exists() && reportsPath.isDirectory()) {
+      final ThucydidesReport thucydidesReport = resultsSiteParser.parseThucydidesReports(reportsPath);
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_TESTS, (double) thucydidesReport.getTests());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_TESTS_FAILED, (double) thucydidesReport.getFailed());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_TESTS_PASSED, (double) thucydidesReport.getPassed());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_TESTS_PENDING, (double) thucydidesReport.getPending());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_TESTS_DURATION, (double) thucydidesReport.getDuration());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_SUCCESS_DENSITY, (double) thucydidesReport.getSuccesRate());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_STORIES, (double) thucydidesReport.getStoriesCount());
+      context.saveMeasure(ThucydidesMetrics.THUCYDIDES_FEATURES, (double) thucydidesReport.getFeaturesCount());
     } else {
-      File[] listOfFiles = reportsPath.listFiles(new XmlFileFilter());
-      for (File file : listOfFiles) {
-        LOG.debug(file.getName());
-        resultsSiteParser.parseThucydidesReportFile(reportsPath);
-      }
+      LOG.warn("Thucydides reports not found in {}", reportsPath);
     }
-
   }
 }

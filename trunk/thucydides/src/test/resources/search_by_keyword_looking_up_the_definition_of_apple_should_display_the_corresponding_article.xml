@@ -1,0 +1,42 @@
+<acceptance-test-run title="Looking up the definition of apple should display the corresponding article" name="looking_up_the_definition_of_apple_should_display_the_corresponding_article" steps="4" successful="4" failures="0" skipped="0" ignored="0" pending="0" result="SUCCESS" duration="17482">
+  <user-story id="org.patros.requirements.Application.Search.SearchByKeyword" name="Search by keyword">
+    <feature id="org.patros.requirements.Application.Search" name="Search"/>
+  </user-story>
+  <issues>
+    <issue>#WIKI-1</issue>
+  </issues>
+  <tags>
+    <tag name="Search" type="feature"/>
+    <tag name="Search by keyword" type="story"/>
+  </tags>
+  <test-step result="SUCCESS" duration="10077">
+    <screenshots>
+      <screenshot image="screenshot-1d7423cacdd08b678934e84ffcc1b641.png" source="screenshot-1d7423cacdd08b678934e84ffcc1b641.html"/>
+    </screenshots>
+    <description>Is the home page</description>
+  </test-step>
+  <test-group name="Looks for: &lt;span class=&apos;single-parameter&apos;&gt;apple&lt;/span&gt;" result="SUCCESS">
+    <screenshots>
+      <screenshot image="screenshot-77be96f8b5f31c4715879caf28f6faf12.png" source="screenshot-77be96f8b5f31c4715879caf28f6faf12.html"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="2192">
+      <screenshots>
+        <screenshot image="screenshot-df26f325c795b0d5ed62b0f4a135f8d83.png" source="screenshot-df26f325c795b0d5ed62b0f4a135f8d83.html"/>
+      </screenshots>
+      <description>Enters: &lt;span class=&apos;single-parameter&apos;&gt;apple&lt;/span&gt;</description>
+    </test-step>
+    <test-step result="SUCCESS" duration="3708">
+      <screenshots>
+        <screenshot image="screenshot-1a6adb61bc6dce86cd297e8ba3a45b7.png" source="screenshot-1a6adb61bc6dce86cd297e8ba3a45b7.html"/>
+        <screenshot image="screenshot-1a6adb61bc6dce86cd297e8ba3a45b9.png" source="screenshot-1a6adb61bc6dce86cd297e8ba3a45b9.html"/>
+      </screenshots>
+      <description>Starts search</description>
+    </test-step>
+  </test-group>
+  <test-step result="SUCCESS" duration="776">
+    <screenshots>
+      <screenshot image="screenshot-f9987dfaf49d07d9284f6b14166461412.png" source="screenshot-f9987dfaf49d07d9284f6b14166461412.html"/>
+    </screenshots>
+    <description>Should see definition containing words: &lt;span class=&apos;single-parameter&apos;&gt;A common, round fruit&lt;/span&gt;</description>
+  </test-step>
+</acceptance-test-run>

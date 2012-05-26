@@ -17,19 +17,68 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.thucydides;
 
+import org.sonar.plugins.thucydides.utils.XmlFileFilter;
+import org.sonar.plugins.thucydides.utils.XStreamFactory;
+import com.thoughtworks.xstream.XStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.BatchExtension;
+import org.sonar.plugins.thucydides.model.AcceptanceTestRun;
+import org.sonar.plugins.thucydides.model.Feature;
+import org.sonar.plugins.thucydides.model.UserStory;
 
 public class ThucydidesResultSiteParser implements BatchExtension {
-  private static final Logger LOG = LoggerFactory.getLogger(ThucydidesResultSiteParser.class);
 
-  public void parseThucydidesReportFile (File reportFile){
-    LOG.debug("Parsing " + reportFile.getName());
-    
+  private static final Logger LOG = LoggerFactory.getLogger(ThucydidesResultSiteParser.class);
+  private final XStream xstream = new XStreamFactory().createXStream();
+
+  public ThucydidesReport parseThucydidesReports(final File reportsPath) {
+    ThucydidesReport thucydidesReport = new ThucydidesReport();
+    final File[] listOfFiles = reportsPath.listFiles(new XmlFileFilter());
+    for (File file : listOfFiles) {
+      try {
+        thucydidesReport.addThucydidesReport(parseOneReport(new FileInputStream(file.getAbsolutePath())));
+      } catch (FileNotFoundException ex) {
+        LOG.error(ex.getLocalizedMessage());
+      }
+    }
+    return thucydidesReport;
+  }
+
+  public ThucydidesReport parseOneReport(final InputStream reportFile) {
+    final ThucydidesReport thucydidesReport = new ThucydidesReport();
+    try {
+      AcceptanceTestRun acceptanceTestRun = (AcceptanceTestRun) xstream.fromXML(reportFile);
+
+      if (acceptanceTestRun != null) {
+        if (acceptanceTestRun.getResult().equals("SUCCESS")) {
+          thucydidesReport.setPassed(1);
+        } else if (acceptanceTestRun.getResult().equals("PENDING")) {
+          thucydidesReport.setPending(1);
+        } else if (acceptanceTestRun.getResult().equals("FAILURE")) {
+          thucydidesReport.setFailed(1);
+        }
+        thucydidesReport.setTests(1);
+        thucydidesReport.setDuration(acceptanceTestRun.getDuration());
+        List<UserStory> stories = new ArrayList<UserStory>();
+        stories.add(acceptanceTestRun.getUserStory());
+        thucydidesReport.addUserStories(stories);
+
+        List<Feature> features = new ArrayList<Feature>();
+        features.add(acceptanceTestRun.getUserStory().getFeature());
+        thucydidesReport.addFeatures(features);
+      }
+    } catch (Exception ex) {
+      LOG.error(ex.getLocalizedMessage());
+    }
+    return thucydidesReport;
   }
 }
