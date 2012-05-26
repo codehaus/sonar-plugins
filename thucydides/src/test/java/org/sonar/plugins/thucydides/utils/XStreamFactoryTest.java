@@ -1,6 +1,6 @@
 /*
  * Sonar Thucydides Plugin
- * Copyright (C) 2012 OTS SA
+ * Copyright (C) 2012 Patroklos PAPAPETROU
  * dev@sonar.codehaus.org
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
 
 package org.sonar.plugins.thucydides.utils;
 
-import org.sonar.plugins.thucydides.utils.XStreamFactory;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
