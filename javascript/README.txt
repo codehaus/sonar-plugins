@@ -1,1 +1,1 @@
-Please go to https://github.com/SonarCommunity/javascript
+Please go to https://github.com/SonarCommunity/sonar-javascript
