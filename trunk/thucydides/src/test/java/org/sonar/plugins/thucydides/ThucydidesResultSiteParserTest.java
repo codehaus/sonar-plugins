@@ -53,7 +53,7 @@ public class ThucydidesResultSiteParserTest {
   
    @Test
   public void testParseAllThucydidesReports() throws IOException {
-    ThucydidesReport result = siteParser.parseThucydidesReports(new File("src\\test\\resources"));
+    ThucydidesReport result = siteParser.parseThucydidesReports(new File("src/test/resources"));
     assertThat ( result ,notNullValue() );
     assertThat ( result.getTests(), equalTo (4));
     assertThat ( result.getFailed(), equalTo (0));
