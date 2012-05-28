@@ -26,7 +26,6 @@ import java.util.Locale;
 
 public class XmlFileFilter implements FileFilter {
 
-  @Override
   public boolean accept(final File pathname) {
     return pathname.getName().toUpperCase(Locale.getDefault()).endsWith(".XML");
   }

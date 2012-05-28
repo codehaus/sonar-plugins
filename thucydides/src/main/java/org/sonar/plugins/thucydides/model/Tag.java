@@ -19,9 +19,6 @@
  */
 package org.sonar.plugins.thucydides.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "tag")
 public class Tag extends AbstractThucydidesBaseObject{
   private String type;
 

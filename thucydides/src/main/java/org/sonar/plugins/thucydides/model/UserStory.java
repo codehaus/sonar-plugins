@@ -20,9 +20,6 @@
 
 package org.sonar.plugins.thucydides.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "user-story")
 public class UserStory extends AbstractThucydidesBaseObject{
   
   private Feature feature;

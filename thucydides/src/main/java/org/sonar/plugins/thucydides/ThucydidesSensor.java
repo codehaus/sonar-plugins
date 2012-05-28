@@ -37,14 +37,12 @@ public class ThucydidesSensor implements Sensor {
     this.resultsSiteParser = parser;
   }
 
-  @Override
   public boolean shouldExecuteOnProject(Project project) {
     System.out.println ( Java.KEY);
     System.out.println ( project.getLanguageKey());
     return Java.KEY.equals(project.getLanguageKey());
   }
 
-  @Override
   public void analyse(Project project, SensorContext context) {
 
     File reportsPath = project.getFileSystem().resolvePath("target/site/thucydides");

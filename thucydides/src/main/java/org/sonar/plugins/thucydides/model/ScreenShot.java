@@ -20,9 +20,6 @@
 
 package org.sonar.plugins.thucydides.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "screenshot")
 public class ScreenShot{
   
   private String image;
