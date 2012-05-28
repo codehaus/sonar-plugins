@@ -21,9 +21,6 @@
 package org.sonar.plugins.thucydides.model;
 
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "test-group")
 public class TestGroup{
   
   private String result;

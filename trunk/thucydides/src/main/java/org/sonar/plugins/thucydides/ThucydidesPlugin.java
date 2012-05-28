@@ -26,7 +26,6 @@ import org.sonar.api.SonarPlugin;
 
 public final class ThucydidesPlugin extends SonarPlugin {
 
-  @Override
   public List getExtensions() {
     return Arrays.asList(ThucydidesResultSiteParser.class,
             ThucydidesSensor.class,
