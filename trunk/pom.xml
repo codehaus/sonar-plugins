@@ -47,7 +47,6 @@
         <module>piwik</module>
         <module>quality-index</module>
         <module>python</module>
-        <module>radiator</module>
         <module>security-rules</module>
         <module>sigmm</module>
         <module>sonargraph</module>
@@ -88,6 +87,7 @@
         <module>doxygen</module>
         <module>drools</module>
         <module>scala</module>
+        <module>thucydides</module>
         <module>violation-density</module>
         <module>w3c-markup-validation</module>
         <module>widget-lab</module>
@@ -99,6 +99,7 @@
         <module>cql</module>
         <module>jlint</module>
         <module>profiler</module>
+        <module>radiator</module>
         <module>sonar-replay</module>
         <module>sonarj</module>
         <module>testability-explorer</module>
