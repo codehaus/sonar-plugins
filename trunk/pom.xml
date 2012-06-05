@@ -42,7 +42,6 @@
         <module>parent</module>
         <module>pam</module>
         <module>pdf-report</module>
-        <module>php</module>
         <module>piwik</module>
         <module>quality-index</module>
         <module>python</module>
