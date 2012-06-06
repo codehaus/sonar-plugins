@@ -20,8 +20,6 @@
 
 package org.sonar.plugins.thucydides;
 
-import org.sonar.plugins.thucydides.utils.XmlFileFilter;
-import org.sonar.plugins.thucydides.utils.XStreamFactory;
 import com.thoughtworks.xstream.XStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +33,8 @@ import org.sonar.api.BatchExtension;
 import org.sonar.plugins.thucydides.model.AcceptanceTestRun;
 import org.sonar.plugins.thucydides.model.Feature;
 import org.sonar.plugins.thucydides.model.UserStory;
+import org.sonar.plugins.thucydides.utils.XStreamFactory;
+import org.sonar.plugins.thucydides.utils.XmlFileFilter;
 
 public class ThucydidesResultSiteParser implements BatchExtension {
 
@@ -60,11 +60,11 @@ public class ThucydidesResultSiteParser implements BatchExtension {
       AcceptanceTestRun acceptanceTestRun = (AcceptanceTestRun) xstream.fromXML(reportFile);
 
       if (acceptanceTestRun != null) {
-        if (acceptanceTestRun.getResult().equals("SUCCESS")) {
+        if ("SUCCESS".equals(acceptanceTestRun.getResult())) {
           thucydidesReport.setPassed(1);
-        } else if (acceptanceTestRun.getResult().equals("PENDING")) {
+        } else if ("PENDING".equals(acceptanceTestRun.getResult())) {
           thucydidesReport.setPending(1);
-        } else if (acceptanceTestRun.getResult().equals("FAILURE")) {
+        } else if ("FAILURE".equals(acceptanceTestRun.getResult())) {
           thucydidesReport.setFailed(1);
         }
         thucydidesReport.setTests(1);
