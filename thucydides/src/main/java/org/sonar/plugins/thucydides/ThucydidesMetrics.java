@@ -58,7 +58,6 @@ public final class ThucydidesMetrics implements Metrics {
       .setQualitative(false)
       .setWorstValue(0.0)
       .setBestValue(100.0)
-      .setOptimizedBestValue(true)
       .setDomain(THUCYDIDES_DOMAIN)
       .create();
 
