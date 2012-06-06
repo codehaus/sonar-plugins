@@ -42,10 +42,4 @@ public class ThucydidesSensorTest {
     ThucydidesSensor sensor = new ThucydidesSensor(null);
     assertTrue(sensor.shouldExecuteOnProject(project));
   }
-
-  @Test
-  public void shouldExecuteOnProjectReturnsFalse() {
-    ThucydidesSensor sensor = new ThucydidesSensor(null);
-    assertFalse(sensor.shouldExecuteOnProject(project));
-  }
 }
