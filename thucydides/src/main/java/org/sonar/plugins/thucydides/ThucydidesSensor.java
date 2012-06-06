@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 
 public class ThucydidesSensor implements Sensor {
@@ -38,9 +37,7 @@ public class ThucydidesSensor implements Sensor {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    System.out.println ( Java.KEY);
-    System.out.println ( project.getLanguageKey());
-    return Java.KEY.equals(project.getLanguageKey());
+    return true;
   }
 
   public void analyse(Project project, SensorContext context) {
