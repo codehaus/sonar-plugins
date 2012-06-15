@@ -1,133 +1,140 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>13</version>
+    <relativePath>../parent</relativePath>
+  </parent>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <artifactId>sonar-ldap-plugin</artifactId>
+  <version>1.2</version>
+  <packaging>sonar-plugin</packaging>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>abacus</module>
-        <module>ant-task</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>csv-export</module>
-        <module>cutoff</module>
-        <module>delphi</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>google-analytics</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>groovy</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>l10n</module>
-        <module>ldap</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>python</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>sonar-runner</module>
-        <module>switch-off-violations</module>
-        <module>tab-metrics</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>thucydides</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>stableProjects-jdk6</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>dotnet</module>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>cxx</module>
-        <module>debug</module>
-        <module>devkit</module>
-        <module>doxygen</module>
-        <module>drools</module>
-        <module>scala</module>
-        <module>violation-density</module>
-        <module>w3c-markup-validation</module>
-        <module>widget-lab</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>cql</module>
-        <module>jlint</module>
-        <module>profiler</module>
-        <module>radiator</module>
-        <module>sonar-replay</module>
-        <module>sonarj</module>
-        <module>testability-explorer</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-      </modules>
-    </profile>
-  </profiles>
+  <name>Sonar LDAP Plugin</name>
+  <description>Enables the delegation of Sonar authentication to LDAP.</description>
+  <url>http://docs.codehaus.org/display/SONAR/LDAP+Plugin</url>
+  <inceptionYear>2009</inceptionYear>
+  <organization>
+    <name>SonarSource</name>
+    <url>http://www.sonarsource.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-  <build>
-    <plugins>
-      <!-- Workaround for Maven 3.0.0 - 3.0.4 : see http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
-      </plugin>
+  <developers>
+    <developer>
+      <id>godin</id>
+      <name>Evgeny Mandrikov</name>
+      <timezone>+3</timezone>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Henri Gomez</name>
+      <timezone>+1</timezone>
+    </contributor>
+  </contributors>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-ldap-plugin-1.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-ldap-plugin-1.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-ldap-plugin-1.2</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14293</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://ci.codehaus.org/browse/SONAR-LDAP</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>2.14</sonar.version>
+    <sonar.pluginName>LDAP</sonar.pluginName>
+    <sonar.pluginClass>org.sonar.plugins.ldap.LdapPlugin</sonar.pluginClass>
+
+    <version.org.apache.directory.server>1.5.5</version.org.apache.directory.server>
+    <version.org.opends>2.2.0</version.org.opends>
+
+    <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.9</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.30</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- ApacheDS -->
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-core</artifactId>
+      <version>${version.org.apache.directory.server}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-server-jndi</artifactId>
+      <version>${version.org.apache.directory.server}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-protocol-kerberos</artifactId>
+      <version>${version.org.apache.directory.server}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- OpenDS -->
+    <!--
+    <dependency>
+        <groupId>org.opends</groupId>
+        <artifactId>opends</artifactId>
+        <version>${version.org.opends}</version>
+        <scope>test</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>berkeleydb</groupId>
+        <artifactId>je</artifactId>
+        <version>3.2.76</version>
+        <scope>test</scope>
+    </dependency>
+    -->
+  </dependencies>
+
 </project>
