@@ -46,6 +46,10 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/switch-off-violations</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14708</url>
+  </issueManagement>
 
   <properties>
     <sonar.buildVersion>2.5</sonar.buildVersion>
