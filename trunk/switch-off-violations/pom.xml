@@ -14,17 +14,12 @@
   <version>1.2-SNAPSHOT</version>
   <name>Sonar Switch Off Violations Plugin</name>
   <description>Filter out chosen violations from analysis</description>
-  <properties>
-    <sonar.buildVersion>2.5</sonar.buildVersion>
-  </properties>
-
+  <url>http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin</url>
   <inceptionYear>2011</inceptionYear>
-
   <organization>
     <name>SonarSource</name>
     <url>http://www.sonarsource.com</url>
   </organization>
-
   <licenses>
     <license>
       <name>GNU LGPL 3</name>
@@ -51,6 +46,10 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/switch-off-violations</developerConnection>
     <url>http://svn.sonar-plugins.codehaus.org</url>
   </scm>
+
+  <properties>
+    <sonar.buildVersion>2.5</sonar.buildVersion>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -170,6 +169,5 @@
       </build>
     </profile>
   </profiles>
-
 
 </project>
