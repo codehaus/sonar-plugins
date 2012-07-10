@@ -19,9 +19,9 @@
  */
 package org.codehaus.sonar.plugins.tabmetrics.l10n;
 
-import org.junit.Test;
-
 import static org.sonar.test.i18n.I18nMatchers.assertAllBundlesUpToDate;
+
+import org.junit.Test;
 
 public class LocalizedBundlesTest {
 
@@ -29,5 +29,4 @@ public class LocalizedBundlesTest {
   public void test() throws Exception {
     assertAllBundlesUpToDate();
   }
-
 }

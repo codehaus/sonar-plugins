@@ -20,6 +20,8 @@
 package org.codehaus.sonar.plugins.tabmetrics.resourcetab.client;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -37,9 +39,16 @@ public class MetricTabTest {
     assertEquals(metricTab.getName(), "Code lines");
     assertEquals(metricTab.getDescription(), "Number of code lines");
     assertTrue(metricTab.getValue().equals(100.0));
+    assertNull(metricTab.getData());
+    assertTrue(metricTab.isNumeric());
 
-    metricTab = new MetricTab(null, null, null, null);
+    metricTab = new MetricTab("test_data", "Test data", null, "All test has been successfull");
 
+    assertEquals(metricTab.getKey(), "test_data");
+    assertEquals(metricTab.getName(), "Test data");
     assertEquals(metricTab.getDescription(), "");
+    assertNull(metricTab.getValue());
+    assertEquals(metricTab.getData(), "All test has been successfull");
+    assertFalse(metricTab.isNumeric());
   }
 }
