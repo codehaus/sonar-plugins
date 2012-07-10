@@ -62,7 +62,13 @@ public final class TabUtil {
 
     // Value with bold type
     buffer.append(": <b>");
-    buffer.append(metricTab.getValue());
+
+    if (metricTab.isNumeric()) {
+      buffer.append(metricTab.getValue());
+    } else {
+      buffer.append(metricTab.getData());
+    }
+
     buffer.append("</b>");
 
     return buffer.toString();

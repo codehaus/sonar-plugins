@@ -28,10 +28,12 @@ public class MetricTab {
   private final String key;
   private final String name;
   private final String description;
-  private final Double value;
+  private Double value;
+  private String data;
+  private final boolean numeric;
 
   /**
-   * Constructor
+   * Constructor with numeric value
    * 
    * @param key
    * @param name
@@ -43,6 +45,23 @@ public class MetricTab {
     this.name = name;
     this.description = (description == null) ? "" : description;
     this.value = value;
+    this.numeric = true;
+  }
+
+  /**
+   * Constructor with data value
+   * 
+   * @param key
+   * @param name
+   * @param description
+   * @param data
+   */
+  public MetricTab(String key, String name, String description, String data) {
+    this.key = key;
+    this.name = name;
+    this.description = (description == null) ? "" : description;
+    this.data = data;
+    this.numeric = false;
   }
 
   /**
@@ -71,5 +90,19 @@ public class MetricTab {
    */
   public final Double getValue() {
     return value;
+  }
+
+  /**
+   * @return the data
+   */
+  public final String getData() {
+    return data;
+  }
+
+  /**
+   * @return the isNumeric
+   */
+  public final boolean isNumeric() {
+    return numeric;
   }
 }
