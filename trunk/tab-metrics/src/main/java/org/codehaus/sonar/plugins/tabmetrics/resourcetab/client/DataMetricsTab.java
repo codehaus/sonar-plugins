@@ -234,27 +234,20 @@ public class DataMetricsTab {
       for (Metric metric : metricsList) {
         if (metric != null) {
 
-          // Valid types: INT, FLOAT, PERCENT, BOOL, MILLISEC, LEVEL, DISTRIB, RATING
-          // Not valid types: STRING, DATA
-          String metricType = metric.getType();
+          Measure measure = resource.getMeasure(metric.getKey());
 
-          if ( !"STRING".equals(metricType) && !"DATA".equals(metricType)) {
-
-            Measure measure = resource.getMeasure(metric.getKey());
-
-            if (measure != null) {
-              // NUMERIC
-              if (measure.getValue() != null) {
-                MetricTab metricTab = new MetricTab(metric.getKey(), metric.getName(), metric.getDescription(), measure.getValue());
-                metrics = data.get(metric.getDomain());
-                metrics.add(metricTab);
-              }
-              // DATA
-              else if (measure.getData() != null) {
-                MetricTab metricTab = new MetricTab(metric.getKey(), metric.getName(), metric.getDescription(), measure.getData());
-                metrics = data.get(metric.getDomain());
-                metrics.add(metricTab);
-              }
+          if (measure != null) {
+            // NUMERIC
+            if (measure.getValue() != null) {
+              MetricTab metricTab = new MetricTab(metric.getKey(), metric.getName(), metric.getDescription(), measure.getValue());
+              metrics = data.get(metric.getDomain());
+              metrics.add(metricTab);
+            }
+            // DATA
+            else if (measure.getData() != null && !"".equals(measure.getData())) {
+              MetricTab metricTab = new MetricTab(metric.getKey(), metric.getName(), metric.getDescription(), measure.getData());
+              metrics = data.get(metric.getDomain());
+              metrics.add(metricTab);
             }
           }
         }

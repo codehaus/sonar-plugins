@@ -104,9 +104,9 @@ public class SimpleHeaderTabMetrics extends Composite {
     buffer.append("<table width=\"100%\"><tbody>");
 
     for (int i = 0; i < metricsList.size(); i++) {
-      buffer.append("<tr><td nowrap width=\"25%\">");
+      buffer.append("<tr><td nowrap width=\"35%\">");
       buffer.append(TabUtil.createCell(metricsList.get(i)));
-      buffer.append("</td><td width=\"75%\"><span style=\"font-style:italic\">" + metricsList.get(i).getDescription() + "</span></td></tr>");
+      buffer.append("</td><td width=\"65%\"><span style=\"font-style:italic\">" + metricsList.get(i).getDescription() + "</span></td></tr>");
     }
 
     buffer.append("</tbody></table>");
