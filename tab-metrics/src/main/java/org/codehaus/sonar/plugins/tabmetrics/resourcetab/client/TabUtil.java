@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Panel;
 public final class TabUtil {
 
   public static final int BUFFERSIZE = 512;
+  public static final int MAXLENGTH = 24;
 
   /**
    * The only instance to be created
@@ -61,15 +62,19 @@ public final class TabUtil {
     buffer.append(metricTab.getName());
 
     // Value with bold type
-    buffer.append(": <b>");
+    buffer.append(": ");
 
+    // NUMERIC
     if (metricTab.isNumeric()) {
-      buffer.append(metricTab.getValue());
-    } else {
-      buffer.append(metricTab.getData());
+      buffer.append("<b>" + metricTab.getValue() + "</b>");
     }
+    // DATA
+    else {
+      String data = metricTab.getData();
 
-    buffer.append("</b>");
+      buffer.append("<input type=\"text\" style=\"background-color: #EFEFEF; font-weight: bold\" readonly=\"readonly\" size=\"" + MAXLENGTH
+          + "\" value=\"" + data + "\"/>");
+    }
 
     return buffer.toString();
   }

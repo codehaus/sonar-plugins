@@ -40,7 +40,9 @@ public class TabUtilTest {
 
     htmlCell = TabUtil.createCell(metricTab);
 
-    assertEquals(htmlCell, "My distribution: <b>distribution</b>");
+    assertEquals(htmlCell,
+        "My distribution: <input type=\"text\" style=\"background-color: #EFEFEF; font-weight: bold\" readonly=\"readonly\" size=\""
+            + TabUtil.MAXLENGTH + "\" value=\"distribution\"/>");
   }
 
   @Test
