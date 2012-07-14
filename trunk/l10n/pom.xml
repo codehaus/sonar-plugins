@@ -15,9 +15,10 @@
   <name>L10n</name>
 
   <modules>
-    <module>fr</module>
-    <module>es</module>
     <module>el</module>
+    <module>es</module>
+    <module>fr</module>
+    <module>ja</module>
     <module>ru</module>
     <module>zh</module>
   </modules>
