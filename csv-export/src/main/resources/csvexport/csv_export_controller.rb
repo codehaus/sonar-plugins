@@ -46,13 +46,18 @@ class Api::CsvExportWebServiceController < Api::ApiController
       end
     end
     if !@metrics.empty? || @includerules
-      @violation_metric=Metric.by_key('violations')
       measure_conditions=['project_measures.metric_id IN (:metrics) AND project_measures.characteristic_id IS NULL']
       measure_values={}
       if @includerules
-        @metrics<<@violation_metric unless @metrics.include?(@violation_metric)
-        measure_conditions<<'(project_measures.rule_id IS NULL OR project_measures.metric_id=:violationid)'
-        measure_values[:violationid]=@violation_metric.id
+        metrics_to_consider = ['violations', 'info_violations', 'minor_violations', 'major_violations', 'critical_violations', 'blocker_violations']
+        metric_ids = []
+        metrics_to_consider.each do |metric_key|
+          metric = Metric.by_key(metric_key)
+          @metrics<<metric unless @metrics.include?(metric)
+          metric_ids<<metric.id.to_s
+        end
+        measure_conditions<<'(project_measures.rule_id IS NULL OR project_measures.metric_id IN (:violation_metric_ids))'
+        measure_values[:violation_metric_ids] = metric_ids
       else
         measure_conditions<<'project_measures.rule_id IS NULL AND project_measures.rule_priority IS NULL'
       end
@@ -66,7 +71,7 @@ class Api::CsvExportWebServiceController < Api::ApiController
       measures.each do |measure|
         if measure.rule_id
           @violations_hash_by_sid[measure.snapshot_id]||={}
-          @violations_hash_by_sid[measure.snapshot_id][measure.rule_id]=measure.value
+          @violations_hash_by_sid[measure.snapshot_id][measure.rule_id]=measure.value.to_i
         elsif measure.rule_priority.nil?
           @measures_hash_by_sid[measure.snapshot_id]||={}
           @measures_hash_by_sid[measure.snapshot_id][measure.metric_id]=measure
