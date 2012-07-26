@@ -46,7 +46,7 @@ class Api::CsvExportWebServiceController < Api::ApiController
       end
     end
     if !@metrics.empty? || @includerules
-      measure_conditions=['project_measures.metric_id IN (:metrics) AND project_measures.characteristic_id IS NULL']
+      measure_conditions=['project_measures.metric_id IN (:metrics) AND project_measures.characteristic_id IS NULL AND person_id IS NULL']
       measure_values={}
       if @includerules
         metrics_to_consider = ['violations', 'info_violations', 'minor_violations', 'major_violations', 'critical_violations', 'blocker_violations']
