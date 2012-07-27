@@ -81,12 +81,17 @@ class Api::CsvExportWebServiceController < Api::ApiController
 
     @rules=[]
     if @includerules
+      # Include rules from the profile
       profile_measure=snapshot.root_snapshot.measure('profile')
       profile=Profile.find(:first, :include => {:active_rules => :rule}, :conditions => ['id=?', profile_measure.value.to_i]) if profile_measure && profile_measure.value
-
       if profile
         @rules=profile.active_rules.map { |ar| ar.rule }.sort_by { |r| r.name }
       end
+      
+      # And potential manual rules
+      @rules += Rule.manual_rules() 
+      
+      @rules = Api::Utils.insensitive_sort(@rules) {|rule| rule.name}
     end
 
     respond_to do |format|
