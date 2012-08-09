@@ -1,0 +1,60 @@
+<% @widget_title = 'Number of LOC / Language'
+   measures = ProjectMeasure.find(:all, :conditions => ['snapshot_id IS NULL AND metric_id = ?', metric('global_ncloc').id]) 
+
+   def createGlobalWidget(measure)
+     nb_all = 0
+     measures_by_language = measure.data.split('|')
+     
+     for measure_by_language in measures_by_language
+       measure_split = measure_by_language.split('=')
+       nb_all += measure_split[1].to_i
+     end
+
+     cell =  '  <table width="100%"><tr><td valign="top" width="30%"><div class="dashbox">'
+     cell += '      <table align="left" class="data">'
+     measure_piechart = ''
+     position = 0
+     for measure_by_language in measures_by_language 
+       measure_split = measure_by_language.split('=')
+       if (position % 2) == 1
+         cell += '       <tr class="odd">'
+       else
+         cell += '       <tr class="even">'
+       end
+       position += 1
+       cell += '           <td align="left" width="30px"><h4 style="font-size: 12px;">'
+       cell += measure_split[0].to_s
+       cell += '        </h4></td><td align="right" width="80px">'
+       cell += number_with_delimiter(measure_split[1]).to_s
+       cell += '        </td></tr>'
+       the_percentage = ((measure_split[1].to_f/nb_all)*100).round(1)
+       measure_piechart += measure_split[0] + '=' + the_percentage.to_s + ';'
+     end
+     if (position % 2) == 1
+       cell += '         <tr class="odd">'
+     else
+       cell += '         <tr class="even">'
+     end
+     cell += '             <td align="left"><h4 style="font-size: 12px;">Total</h4></td>'
+     cell += '             <td align="right">'
+     cell += number_with_delimiter(nb_all).to_s
+     cell += '             </td></tr>'
+     query="ck=languagesPie&w=280&h=200&v=" + u(measure_piechart)
+     cell += '      </table>'
+     cell += '    </div></td><td width="70%">'
+     cell += '    <div class="dashbox" id="div_chart">'
+     cell += '      <div id="div_percentage" class="chart">'
+     cell += chart(query)
+     cell += '      </div>'
+     cell += '    </div>'
+     cell += '  </td></tr></table>'
+
+     cell
+
+   end %>
+
+<% if measures[0] == nil %>
+   <p>No data</p>
+<% else %>
+   <%= createGlobalWidget(measures[0]) %>
+<% end %>
