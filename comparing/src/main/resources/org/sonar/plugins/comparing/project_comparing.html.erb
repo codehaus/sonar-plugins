@@ -207,7 +207,7 @@
           <br />
           Choose a project to compare measures: 
           <form method="GET" action="<%= url_for :id => @resource.id -%>" style="display: inline" class="spacer-left">
-            <input type="hidden" name="page" value="project_overview"/>
+            <input type="hidden" name="page" value="project_comparing"/>
 <%          projects = Project.find(:all, 
                 :conditions => ["root_id IS NULL AND scope = 'PRJ' AND qualifier = 'TRK' AND language = ?", @project.language],
                 :order => 'name ASC') %>
