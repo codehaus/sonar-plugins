@@ -19,40 +19,22 @@
  */
 package org.sonar.plugins.comparing;
 
+import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.comparing.chart.LanguagesPieChart;
+import org.sonar.plugins.comparing.database.MeasureByLanguageDao;
 import org.sonar.plugins.comparing.widget.LocByLanguageWidget;
 import org.sonar.plugins.comparing.widget.ProjectComparingPage;
 import org.sonar.plugins.comparing.widget.ProjectsByLanguageWidget;
 
-import org.sonar.plugins.comparing.database.MeasureByLanguageDao;
-
-import org.sonar.plugins.comparing.chart.LanguagesPieChart;
-
-import org.sonar.api.Plugin;
-
 import java.util.Arrays;
 import java.util.List;
 
-public class ComparingPlugin implements Plugin {
-
-  @Deprecated
-  public String getKey() {
-    return "overview";
-  }
-
-  @Deprecated
-  public String getName() {
-    return "Overview";
-  }
-
-  @Deprecated
-  public String getDescription() {
-    return "This plug-in helps you to compare differents metrics between projects";
-  }
+public class ComparingPlugin extends SonarPlugin {
 
   public List getExtensions() {
     return Arrays.asList(AggregatePostJob.class, ComparingMetrics.class, MeasureByLanguageDao.class,
-        LanguagesPieChart.class, ProjectComparingPage.class,
-        LocByLanguageWidget.class, ProjectsByLanguageWidget.class);
+      LanguagesPieChart.class, ProjectComparingPage.class,
+      LocByLanguageWidget.class, ProjectsByLanguageWidget.class);
   }
 
   @Override
