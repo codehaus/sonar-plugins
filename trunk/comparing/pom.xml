@@ -32,11 +32,11 @@
   
   <issueManagement>
     <system>JIRA</system>
-    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/xxx</url>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/15588</url>
   </issueManagement>
   <ciManagement>
     <system>BAMBOO</system>
-    <url>http://bamboo.ci.codehaus.org/browse/xxx</url>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-SONARCOMPARING</url>
   </ciManagement>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/comparing</connection>
