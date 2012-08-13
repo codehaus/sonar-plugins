@@ -28,8 +28,7 @@ import org.jfree.util.Rotation;
 import org.sonar.api.charts.AbstractChart;
 import org.sonar.api.charts.ChartParameters;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 
 /**
  *
@@ -46,7 +45,6 @@ public class LanguagesPieChart extends AbstractChart {
     Color.decode("#0678BF"), Color.decode("#48A1D9"), Color.decode("#82B8D9"),
     Color.decode("#C4E1F2"), Color.decode("#F2F2F2")};
 
-  @Override
   public String getKey() {
     return "languagesPie";
   }
