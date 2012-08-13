@@ -36,7 +36,7 @@ import java.awt.Font;
  */
 public class LanguagesPieChart extends AbstractChart {
 
-  public static final Font DEFAULT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+  public static final Font DEFAULT_FONT = new Font("SansSerif", Font.PLAIN, 12);
 
   public static final String DEFAULT_MESSAGE_NODATA = "No data available";
   public static final String PARAM_VALUES = "v";
