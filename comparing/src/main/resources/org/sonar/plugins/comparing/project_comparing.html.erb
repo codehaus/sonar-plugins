@@ -2,7 +2,7 @@
    def get_values_for_language(project, metric) 
      result = nil
 
-     measure = ProjectMeasure.find(:first, :conditions => ['snapshot_id IS NULL AND metric_id = ?', metric.id])
+     measure = ProjectMeasure.find(:first, :conditions => ['snapshot_id IS NULL AND metric_id = ? AND person_id is null AND characteristic_id is null', metric.id])
      if measure != nil
        aggregates_tab = measure.data.split('|')
        for aggregate in aggregates_tab
@@ -23,7 +23,7 @@
         :conditions => ['projects.id = ? AND islast = ?', projectId, true])
      measure = ProjectMeasure.find(:first, 
         :joins => :snapshot,
-        :conditions => ['snapshots.id = ? and metric_id = ?', snapshot_project.id, metric.id])
+        :conditions => ['snapshots.id = ? and metric_id = ? AND person_id is null AND characteristic_id is null', snapshot_project.id, metric.id])
      result = nil
      
      if measure != nil
