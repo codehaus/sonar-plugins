@@ -1,5 +1,5 @@
 <% @widget_title = 'Number of LOC / Language'
-   measures = ProjectMeasure.find(:all, :conditions => ['snapshot_id IS NULL AND metric_id = ?', metric('global_ncloc').id]) 
+   measures = ProjectMeasure.find(:all, :conditions => ['snapshot_id IS NULL AND metric_id = ? AND person_id is null AND characteristic_id is null', metric('global_ncloc').id])
 
    def createGlobalWidget(measure)
      nb_all = 0
