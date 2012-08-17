@@ -17,7 +17,7 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.comparing.chart;
+package org.sonar.plugins.comparing;
 
 import org.apache.commons.lang.StringUtils;
 import org.jfree.chart.plot.PiePlot3D;
@@ -28,7 +28,8 @@ import org.jfree.util.Rotation;
 import org.sonar.api.charts.AbstractChart;
 import org.sonar.api.charts.ChartParameters;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  *
