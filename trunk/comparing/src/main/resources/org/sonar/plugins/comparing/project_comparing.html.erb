@@ -1,41 +1,29 @@
-<% # Define utils method
-   def get_values_for_language(project, metric) 
-     result = nil
-
-     measure = ProjectMeasure.find(:first, :conditions => ['snapshot_id IS NULL AND metric_id = ? AND person_id is null AND characteristic_id is null', metric.id])
-     if measure != nil
-       aggregates_tab = measure.data.split('|')
-       for aggregate in aggregates_tab
-         aggregate_split = aggregate.split('=')
-         if project.language == aggregate_split[0]
-           tampon = aggregate_split[1].split(';')
-           result = tampon[0]
-         end
-       end
-     end
-
-     result
+<% 
+   # Define utils method
+   def get_values_for_language(metric, snapshot_ids)
+     ProjectMeasure.average(:value,
+        :conditions => ['snapshot_id IN (:snapshot_id) AND metric_id = :metric_id', {:snapshot_id => snapshot_ids, :metric_id => metric.id}])
    end 
 
    def get_values_for_project(metric, projectId)
      snapshot_project = Snapshot.find(:first, 
+        :select => 'snapshots.id',
         :include => 'project', 
-        :conditions => ['projects.id = ? AND islast = ?', projectId, true])
-     measure = ProjectMeasure.find(:first, 
-        :joins => :snapshot,
-        :conditions => ['snapshots.id = ? and metric_id = ? AND person_id is null AND characteristic_id is null', snapshot_project.id, metric.id])
-     result = nil
+        :conditions => ['projects.id = ? AND islast = ? AND root_snapshot_id IS NULL AND snapshots.qualifier = ?', projectId, true, 'TRK'])
      
-     if measure != nil
-       result = measure.value
-     else
-       result = 3
+     project_measure = ProjectMeasure.find(:first, 
+        :select => 'value',
+        :conditions => ['rule_id is null AND person_id is null AND characteristic_id is null AND snapshot_id = ? AND metric_id = ?', snapshot_project.id, metric.id])
+
+     result = nil
+     if project_measure != nil
+       result = project_measure.value
      end
 
-     result     
+     result
    end
 
-   def create_overview_widget(project, metrics_tab, title, qualitative)
+   def create_overview_widget(project, metrics_tab, title, qualitative, snapshot_ids)
      widget =  '<div class="block"><div class="widget-title" id="widget_title">'
      widget += title
      widget += '</div>'
@@ -45,8 +33,7 @@
      widget += '<th align="center" class="center" width="150px"><h4 style="font-size: 12px;">Project value</h4></th>'
      widget += '<th align="center" class="center" width="150px"><h4 style="font-size: 12px;">'
      if params[:projectId] != nil && params[:projectId] != ''
-       project = Project.find(:first, 
-            :conditions => ["id = ?", params[:projectId]])
+       project = Project.find(:first, :conditions => ["id = ?", params[:projectId]])
        widget += project.name
        widget += ' value'
      else
@@ -55,7 +42,7 @@
      widget += '</h4></th></thead><tbody>'
      position = 0
      for metric in metrics_tab
-       cell = create_gridline(project, metric, position)
+       cell = create_gridline(project, metric, position, snapshot_ids)
        if cell != nil
          widget += cell
          position += 1
@@ -66,7 +53,7 @@
      widget
    end
 
-   def create_gridline(project, metric_key, position)
+   def create_gridline(project, metric_key, position, snapshot_ids)
      # Load the metric matches with the metric_key
      metric = metric(metric_key)
      measure = measure(metric_key)
@@ -76,7 +63,7 @@
        measure_tab = get_values_for_project(metric, params[:projectId])
      else
        # Load the aggregate nbloc value for the language use by the current project
-       measure_tab = get_values_for_language(project, metric('aggregate_' + metric_key))
+       measure_tab = get_values_for_language(metric, snapshot_ids)
      end
 
      cell = nil
@@ -149,52 +136,47 @@
       measure_tmp = measure(metric)
       if measure_tmp != nil
         if metric.qualitative == true
-          if measure(metric).value > valueCompare
-             if metric.direction < 0
-                color = 'red'
+          if measure(metric).value == valueCompare
+             color = 'green'
+          else 
+             if measure(metric).value > valueCompare
+                if metric.direction < 0
+                   color = 'red'
+                else
+                   color = 'green'
+                end
              else
-                color = 'green'
-             end
-          else
-             if metric.direction < 0
-                color = 'green'
-             else
-                color = 'red'
+                if metric.direction < 0
+                   color = 'green'
+                else
+                   color = 'red'
+                end
              end
           end
        end
      end
 
      color
-   end
-
-   def get_imagename_for_compare(metric, valueCompare) 
-     image_name = nil
-     measure = measure(metric)
-     if measure.value > valueCompare
-       image_name = 'plus_'
-     else
-       image_name = 'minus_'
-     end
-     image_name += get_color(metric, valueCompare)
-     image_name += '.png'
-
-     image_name
-   end 
-
-%>
+   end %>
 
 <div id="dashboard">
   <div style="width: 100%;display: block; float: none">
 
-<% measure_test = ProjectMeasure.find(:all, :conditions => ['snapshot_id IS NULL AND metric_id = ?', metric('global_project').id])
-   if measure_test[0] == nil   %>
+<% last_snapshot_ids_by_language = Project.find(:all,
+        :select => 'language, snapshots.id AS root_id',
+        :joins => :snapshots,
+        :conditions => ['snapshots.islast = ? AND snapshots.root_snapshot_id IS NULL AND snapshots.qualifier = ?', true, 'TRK'],
+        :order => 'language ASC')
 
-    <div class="warning" id="warning">
-       <span id="warningmsg">Run one analysis to compute the aggregate values.</span>
-    </div>
+   hash = {}
 
-<% else %>
+   for last_snapshot_ids in last_snapshot_ids_by_language
+     if hash[last_snapshot_ids.language] == nil 
+       hash[last_snapshot_ids.language] = [last_snapshot_ids.root_id]
+     else
+       hash[last_snapshot_ids.language] = hash[last_snapshot_ids.language] << last_snapshot_ids.root_id
+     end
+   end %>
 
     <!-- the right margin with 1px is a trick for IE. See SONAR-2637 -->
     <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
@@ -202,15 +184,18 @@
         <div class="block"><div class="widget-title" id="widget_title">Informations</div>
         <div class="widget1" style="height:100%;"><div class="widget">
           <div class="notice" id="info">
-             <span id="infomsg">Average values computed from <b><%= get_values_for_language(@project, metric('global_project')) -%></b> projects</span>
+             <span id="infomsg">Average values computed from <b><%= hash[@project.language].length -%></b> projects</span>
           </div>
           <br />
           Choose a project to compare measures: 
           <form method="GET" action="<%= url_for :id => @resource.id -%>" style="display: inline" class="spacer-left">
             <input type="hidden" name="page" value="project_comparing"/>
+
 <%          projects = Project.find(:all, 
+                :select => 'id, name',
                 :conditions => ["root_id IS NULL AND scope = 'PRJ' AND qualifier = 'TRK' AND language = ?", @project.language],
                 :order => 'name ASC') %>
+
             <select id="project-id" name="projectId" onchange="submit()" class="small">
               <option value="">Average</option>
 <%            for project in projects %>
@@ -220,22 +205,23 @@
 <%              end %>><%= project.name -%></option>
 <%            end %>
             </select>
+
           </form>
         </div></div></div>
-        <%= create_overview_widget(@project, ['ncloc', 'files', 'functions', 'statements'], 'Size', false) %>
-        <%= create_overview_widget(@project, ['violations_density', 'violations', 'blocker_violations', 'critical_violations', 'major_violations', 'minor_violations', 'info_violations'], 'Violations', true) %>
+
+<%      snapshot_ids = hash[@project.language] %>
+        <%= create_overview_widget(@project, ['ncloc', 'files', 'functions', 'statements'], 'Size', false, snapshot_ids) %>
+        <%= create_overview_widget(@project, ['violations_density', 'violations', 'blocker_violations', 'critical_violations', 'major_violations', 'minor_violations', 'info_violations'], 'Violations', true, snapshot_ids) %>
       </div>
     </div>
 
     <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
       <div class="dashboard-column" id="dashboard-column-2" style="margin: 0 0px 0 5px;">
-        <%= create_overview_widget(@project, ['complexity', 'function_complexity', 'file_complexity'], 'Complexity', true) %>
-        <%= create_overview_widget(@project, ['duplicated_lines_density', 'duplicated_lines', 'duplicated_blocks', 'duplicated_files'], 'Duplication', true) %>
-        <%= create_overview_widget(@project, ['comment_lines_density', 'comment_lines', 'public_documented_api_density', 'public_undocumented_api'], 'Documentation', true) %>
+        <%= create_overview_widget(@project, ['complexity', 'function_complexity', 'file_complexity'], 'Complexity', true, snapshot_ids) %>
+        <%= create_overview_widget(@project, ['duplicated_lines_density', 'duplicated_lines', 'duplicated_blocks', 'duplicated_files'], 'Duplication', true, snapshot_ids) %>
+        <%= create_overview_widget(@project, ['comment_lines_density', 'comment_lines', 'public_documented_api_density', 'public_undocumented_api'], 'Documentation', true, snapshot_ids) %>
       </div>
     </div>
-
-<% end %>
 
   </div>
 </div>

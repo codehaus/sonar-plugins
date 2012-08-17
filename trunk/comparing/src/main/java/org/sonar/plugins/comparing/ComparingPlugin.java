@@ -20,11 +20,6 @@
 package org.sonar.plugins.comparing;
 
 import org.sonar.api.SonarPlugin;
-import org.sonar.plugins.comparing.chart.LanguagesPieChart;
-import org.sonar.plugins.comparing.database.MeasureByLanguageDao;
-import org.sonar.plugins.comparing.widget.LocByLanguageWidget;
-import org.sonar.plugins.comparing.widget.ProjectComparingPage;
-import org.sonar.plugins.comparing.widget.ProjectsByLanguageWidget;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +27,7 @@ import java.util.List;
 public class ComparingPlugin extends SonarPlugin {
 
   public List getExtensions() {
-    return Arrays.asList(AggregatePostJob.class, ComparingMetrics.class, MeasureByLanguageDao.class,
-      LanguagesPieChart.class, ProjectComparingPage.class,
+    return Arrays.asList(LanguagesPieChart.class, ProjectComparingPage.class,
       LocByLanguageWidget.class, ProjectsByLanguageWidget.class);
   }
 

@@ -1,21 +1,37 @@
 <% @widget_title = 'Number of LOC / Language'
-   measures = ProjectMeasure.find(:all, :conditions => ['snapshot_id IS NULL AND metric_id = ? AND person_id is null AND characteristic_id is null', metric('global_ncloc').id])
 
-   def createGlobalWidget(measure)
+   def createGlobalWidget(metric_name)
      nb_all = 0
-     measures_by_language = measure.data.split('|')
-     
-     for measure_by_language in measures_by_language
-       measure_split = measure_by_language.split('=')
-       nb_all += measure_split[1].to_i
+     last_snapshot_ids_by_language = Project.find(:all,
+        :select => 'language, snapshots.id AS root_id',
+        :joins => :snapshots,
+        :conditions => ['snapshots.islast = ? AND snapshots.root_snapshot_id IS NULL AND snapshots.qualifier = ?', true, 'TRK'],
+        :order => 'language ASC')
+
+     hash = {}
+
+     for last_snapshot_ids in last_snapshot_ids_by_language
+       if hash[last_snapshot_ids.language] == nil 
+         hash[last_snapshot_ids.language] = [last_snapshot_ids.root_id]
+       else
+         hash[last_snapshot_ids.language] = hash[last_snapshot_ids.language] << last_snapshot_ids.root_id
+       end
      end
+
+     metric_measure_value = ''
+     hash.each_key { |key|
+       metric_measure_value = ProjectMeasure.sum(:value,
+        :conditions => ['snapshot_id IN (:snapshot_id) AND metric_id = :metric_id', {:snapshot_id => hash[key], :metric_id => metric(metric_name).id}])
+       nb_all += metric_measure_value.to_i
+       hash[key] = metric_measure_value.round
+     }
 
      cell =  '  <table width="100%"><tr><td valign="top" width="30%"><div class="dashbox">'
      cell += '      <table align="left" class="data">'
      measure_piechart = ''
      position = 0
-     for measure_by_language in measures_by_language 
-       measure_split = measure_by_language.split('=')
+
+     hash.each { |key, value|
        if (position % 2) == 1
          cell += '       <tr class="odd">'
        else
@@ -23,13 +39,14 @@
        end
        position += 1
        cell += '           <td align="left" width="30px"><h4 style="font-size: 12px;">'
-       cell += measure_split[0].to_s
+       cell += key
        cell += '        </h4></td><td align="right" width="80px">'
-       cell += number_with_delimiter(measure_split[1]).to_s
+       cell += number_with_delimiter(value.to_i).to_s
        cell += '        </td></tr>'
-       the_percentage = ((measure_split[1].to_f/nb_all)*100).round(1)
-       measure_piechart += measure_split[0] + '=' + the_percentage.to_s + ';'
-     end
+       the_percentage = ((value.to_f/nb_all)*100).round(1)
+       measure_piechart += key + '=' + the_percentage.to_s + ';'
+     }
+
      if (position % 2) == 1
        cell += '         <tr class="odd">'
      else
@@ -50,11 +67,6 @@
      cell += '  </td></tr></table>'
 
      cell
-
    end %>
 
-<% if measures[0] == nil %>
-   <p>No data</p>
-<% else %>
-   <%= createGlobalWidget(measures[0]) %>
-<% end %>
+<%= createGlobalWidget('ncloc') %>

@@ -17,28 +17,30 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.comparing.widget;
+package org.sonar.plugins.comparing;
 
 import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.NavigationSection;
-import org.sonar.api.web.RubyRailsPage;
+import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
+import org.sonar.api.web.WidgetCategory;
+import org.sonar.api.web.WidgetScope;
 
-@NavigationSection({NavigationSection.RESOURCE})
-@UserRole(UserRole.ADMIN)
-public class ProjectComparingPage extends AbstractRubyTemplate implements RubyRailsPage {
+@WidgetScope(WidgetScope.GLOBAL)
+@WidgetCategory("Global")
+@UserRole(UserRole.USER)
+public class LocByLanguageWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   public String getId() {
-    return "project_comparing";
+    return "loc_by_language";
   }
 
   public String getTitle() {
-    return "Comparing";
+    return "LOC by Language";
   }
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/comparing/project_comparing.html.erb";
+    return "/org/sonar/plugins/comparing/loc_by_language.html.erb";
   }
 
 }
