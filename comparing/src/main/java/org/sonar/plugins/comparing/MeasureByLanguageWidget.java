@@ -23,24 +23,36 @@ import org.sonar.api.web.AbstractRubyTemplate;
 import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 import org.sonar.api.web.WidgetCategory;
+import org.sonar.api.web.WidgetProperties;
+import org.sonar.api.web.WidgetProperty;
+import org.sonar.api.web.WidgetPropertyType;
 import org.sonar.api.web.WidgetScope;
 
 @WidgetScope(WidgetScope.GLOBAL)
 @WidgetCategory("Global")
 @UserRole(UserRole.USER)
-public class LocByLanguageWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+@WidgetProperties(
+{
+  @WidgetProperty(key = "metricDisplay", description=MeasureByLanguageWidget.PROPERTY_DESC, 
+        type = WidgetPropertyType.STRING, defaultValue = "PRJ")
+})
+public class MeasureByLanguageWidget extends AbstractRubyTemplate implements RubyRailsWidget {
+    
+  public static final String PROPERTY_DESC = "<ul class=\"bullet\">"
+          + "<li>PRJ to display the number of projects by language</li>"
+          + "<li>LOC to display the sum of number of lines of code by language</li></ul>";
 
   public String getId() {
-    return "loc_by_language";
+    return "measure_by_language";
   }
 
   public String getTitle() {
-    return "LOC by Language";
+    return "Measure by Language";
   }
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/comparing/loc_by_language.html.erb";
+    return "/org/sonar/plugins/comparing/measure_by_language.html.erb";
   }
 
 }
