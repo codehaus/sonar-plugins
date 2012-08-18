@@ -1,29 +1,4 @@
-<% 
-   # Define utils method
-   def get_values_for_language(metric, snapshot_ids)
-     ProjectMeasure.average(:value,
-        :conditions => ['snapshot_id IN (:snapshot_id) AND metric_id = :metric_id', {:snapshot_id => snapshot_ids, :metric_id => metric.id}])
-   end 
-
-   def get_values_for_project(metric, projectId)
-     snapshot_project = Snapshot.find(:first, 
-        :select => 'snapshots.id',
-        :include => 'project', 
-        :conditions => ['projects.id = ? AND islast = ? AND root_snapshot_id IS NULL AND snapshots.qualifier = ?', projectId, true, 'TRK'])
-     
-     project_measure = ProjectMeasure.find(:first, 
-        :select => 'value',
-        :conditions => ['rule_id is null AND person_id is null AND characteristic_id is null AND snapshot_id = ? AND metric_id = ?', snapshot_project.id, metric.id])
-
-     result = nil
-     if project_measure != nil
-       result = project_measure.value
-     end
-
-     result
-   end
-
-   def create_overview_widget(project, metrics_tab, title, qualitative, snapshot_ids)
+<% def create_overview_widget(project, loader, metrics_tab, title, qualitative)
      widget =  '<div class="block"><div class="widget-title" id="widget_title">'
      widget += title
      widget += '</div>'
@@ -33,8 +8,7 @@
      widget += '<th align="center" class="center" width="150px"><h4 style="font-size: 12px;">Project value</h4></th>'
      widget += '<th align="center" class="center" width="150px"><h4 style="font-size: 12px;">'
      if params[:projectId] != nil && params[:projectId] != ''
-       project = Project.find(:first, :conditions => ["id = ?", params[:projectId]])
-       widget += project.name
+       widget += loader.get_project_name_by_id(params[:projectId])
        widget += ' value'
      else
        widget += 'Average value'
@@ -42,7 +16,7 @@
      widget += '</h4></th></thead><tbody>'
      position = 0
      for metric in metrics_tab
-       cell = create_gridline(project, metric, position, snapshot_ids)
+       cell = create_gridline(project, loader, metric, position)
        if cell != nil
          widget += cell
          position += 1
@@ -53,17 +27,17 @@
      widget
    end
 
-   def create_gridline(project, metric_key, position, snapshot_ids)
+   def create_gridline(project, loader, metric_key, position)
      # Load the metric matches with the metric_key
      metric = metric(metric_key)
      measure = measure(metric_key)
 
      measure_tab = nil
      if params[:projectId] != nil && params[:projectId] != ''
-       measure_tab = get_values_for_project(metric, params[:projectId])
+       measure_tab = loader.get_measure_value_for_other_project(metric_key, params[:projectId])
      else
        # Load the aggregate nbloc value for the language use by the current project
-       measure_tab = get_values_for_language(metric, snapshot_ids)
+       measure_tab = loader.get_avg_measure_for_language(metric_key, project.language)
      end
 
      cell = nil
@@ -162,64 +136,69 @@
 <div id="dashboard">
   <div style="width: 100%;display: block; float: none">
 
-<% last_snapshot_ids_by_language = Project.find(:all,
-        :select => 'language, snapshots.id AS root_id',
-        :joins => :snapshots,
-        :conditions => ['snapshots.islast = ? AND snapshots.root_snapshot_id IS NULL AND snapshots.qualifier = ?', true, 'TRK'],
-        :order => 'language ASC')
-
-   hash = {}
-
-   for last_snapshot_ids in last_snapshot_ids_by_language
-     if hash[last_snapshot_ids.language] == nil 
-       hash[last_snapshot_ids.language] = [last_snapshot_ids.root_id]
-     else
-       hash[last_snapshot_ids.language] = hash[last_snapshot_ids.language] << last_snapshot_ids.root_id
-     end
-   end %>
+<% loader = ComparingLoader.new %>
 
     <!-- the right margin with 1px is a trick for IE. See SONAR-2637 -->
     <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
       <div class="dashboard-column" id="dashboard-column-1" style="margin: 0 5px 0 0px;">
-        <div class="block"><div class="widget-title" id="widget_title">Informations</div>
+        <div class="block"><div class="widget-title" id="widget_title"><%= message('comparing.informations.title') -%></div>
         <div class="widget1" style="height:100%;"><div class="widget">
           <div class="notice" id="info">
-             <span id="infomsg">Average values computed from <b><%= hash[@project.language].length -%></b> projects</span>
+             <span id="infomsg"><%= message('comparing.average.projects', :params => [loader.get_nb_projects_for_language(@project.language)]) -%></span>
           </div>
-          <br />
-          Choose a project to compare measures: 
           <form method="GET" action="<%= url_for :id => @resource.id -%>" style="display: inline" class="spacer-left">
-            <input type="hidden" name="page" value="project_comparing"/>
-
-<%          projects = Project.find(:all, 
-                :select => 'id, name',
-                :conditions => ["root_id IS NULL AND scope = 'PRJ' AND qualifier = 'TRK' AND language = ?", @project.language],
-                :order => 'name ASC') %>
-
-            <select id="project-id" name="projectId" onchange="submit()" class="small">
-              <option value="">Average</option>
+          <input type="hidden" name="page" value="project_comparing"/>
+          <table align="center" cellspacing="5px" cellpadding="5px" class="data">
+            <tr class="even">
+              <td align="left"><%= message('comparing.choose.project') -%></td>
+              <td align="left">
+<%            projects = loader.get_projects_for_language(@project.language) %>
+                <select id="project-id" name="projectId" onchange="submit()" class="small">
+                  <option value="">Average</option>
 <%            for project in projects %>
-                <option value="<%= project.id -%>"
+                  <option value="<%= project.id -%>"
 <%              if project.id.to_s == params[:projectId] %>
-                  selected
+                     selected
 <%              end %>><%= project.name -%></option>
 <%            end %>
-            </select>
-
+                </select>
+              </td>
+            </tr>
+            <tr class="odd">
+              <td align="left"><%= message('comparing.show.quantitative') -%></td>
+              <td align="left">
+                <input type="checkbox" id="quantitative" name="quantitative" value="qual" onchange="submit()" 
+ <%         if params[:quantitative] != nil && params[:quantitative] != '' %> checked <% end %> />
+              </td>
+            </tr>
+          </table>
           </form>
         </div></div></div>
 
-<%      snapshot_ids = hash[@project.language] %>
-        <%= create_overview_widget(@project, ['ncloc', 'files', 'functions', 'statements'], 'Size', false, snapshot_ids) %>
-        <%= create_overview_widget(@project, ['violations_density', 'violations', 'blocker_violations', 'critical_violations', 'major_violations', 'minor_violations', 'info_violations'], 'Violations', true, snapshot_ids) %>
+<% size_metric_tab = ['ncloc', 'files'] 
+   violation_metric_tab = ['violations_density']
+   complexity_metric_tab = ['function_complexity', 'file_complexity']
+   duplication_metric_tab = ['duplicated_lines_density']
+   documentation_metric_tab = ['comment_lines_density', 'public_documented_api_density']
+
+   if params[:quantitative] != nil && params[:quantitative] != ''
+     size_metric_tab.push('functions', 'statements')
+     violation_metric_tab.push('violations', 'blocker_violations', 'critical_violations', 'major_violations', 'minor_violations', 'info_violations')
+     complexity_metric_tab.push('complexity')
+     duplication_metric_tab.push('duplicated_lines', 'duplicated_blocks', 'duplicated_files')
+     documentation_metric_tab.push('comment_lines', 'public_undocumented_api')
+   end %>
+
+<%= create_overview_widget(@project, loader, size_metric_tab, message('comparing.size.title'), false) %>
+<%= create_overview_widget(@project, loader, violation_metric_tab, message('comparing.violations.title'), true) %>
       </div>
     </div>
 
     <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
       <div class="dashboard-column" id="dashboard-column-2" style="margin: 0 0px 0 5px;">
-        <%= create_overview_widget(@project, ['complexity', 'function_complexity', 'file_complexity'], 'Complexity', true, snapshot_ids) %>
-        <%= create_overview_widget(@project, ['duplicated_lines_density', 'duplicated_lines', 'duplicated_blocks', 'duplicated_files'], 'Duplication', true, snapshot_ids) %>
-        <%= create_overview_widget(@project, ['comment_lines_density', 'comment_lines', 'public_documented_api_density', 'public_undocumented_api'], 'Documentation', true, snapshot_ids) %>
+<%= create_overview_widget(@project, loader, complexity_metric_tab, message('comparing.complexity.title'), true) %>
+<%= create_overview_widget(@project, loader, duplication_metric_tab, message('comparing.duplication.title'), true) %>
+<%= create_overview_widget(@project, loader, documentation_metric_tab, message('comparing.documentation.title'), true) %>
       </div>
     </div>
 

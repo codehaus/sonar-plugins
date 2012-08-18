@@ -28,7 +28,7 @@ public class ComparingPlugin extends SonarPlugin {
 
   public List getExtensions() {
     return Arrays.asList(LanguagesPieChart.class, ProjectComparingPage.class,
-      LocByLanguageWidget.class, ProjectsByLanguageWidget.class);
+      MeasureByLanguageWidget.class);
   }
 
   @Override
