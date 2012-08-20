@@ -20,12 +20,12 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Properties({
   @Property(
@@ -42,12 +42,12 @@ import org.sonar.api.Property;
     project = true,
     global = true),
   @Property(
-      key = Constants.LOCATION_PARAMETER_KEY,
-      defaultValue = "",
-      name = "Configuration file for exclusion patterns",
-      description = "Location of a file that would contain the exclusion patterns and that would be store along with the source code.",
-      project = true,
-      global = true)
+    key = Constants.LOCATION_PARAMETER_KEY,
+    defaultValue = "",
+    name = "Configuration file for exclusion patterns",
+    description = "Location of a file that would contain the exclusion patterns and that would be stored along with the source code.",
+    project = true,
+    global = true)
 })
 public final class SwitchOffViolationsPlugin implements Plugin {
   public String getKey() {
