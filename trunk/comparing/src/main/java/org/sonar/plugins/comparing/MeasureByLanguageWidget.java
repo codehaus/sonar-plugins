@@ -33,14 +33,14 @@ import org.sonar.api.web.WidgetScope;
 @UserRole(UserRole.USER)
 @WidgetProperties(
 {
-  @WidgetProperty(key = "metricDisplay", description=MeasureByLanguageWidget.PROPERTY_DESC, 
-        type = WidgetPropertyType.STRING, defaultValue = "PRJ")
+  @WidgetProperty(key = "metricDisplay", description = MeasureByLanguageWidget.PROPERTY_DESC,
+    type = WidgetPropertyType.STRING, defaultValue = "PRJ")
 })
 public class MeasureByLanguageWidget extends AbstractRubyTemplate implements RubyRailsWidget {
-    
+
   public static final String PROPERTY_DESC = "<ul class=\"bullet\">"
-          + "<li>PRJ to display the number of projects by language</li>"
-          + "<li>LOC to display the sum of number of lines of code by language</li></ul>";
+    + "<li>PRJ to display the number of projects by language</li>"
+    + "<li>LOC to display the sum of number of lines of code by language</li></ul>";
 
   public String getId() {
     return "measure_by_language";
