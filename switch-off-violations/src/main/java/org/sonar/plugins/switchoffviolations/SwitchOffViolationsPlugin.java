@@ -20,9 +20,9 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,21 +49,11 @@ import java.util.List;
     project = true,
     global = true)
 })
-public final class SwitchOffViolationsPlugin implements Plugin {
-  public String getKey() {
-    return Constants.PLUGIN_KEY;
-  }
-
-  public String getName() {
-    return Constants.PLUGIN_NAME;
-  }
-
-  public String getDescription() {
-    return "";
-  }
+public final class SwitchOffViolationsPlugin extends SonarPlugin {
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   public List getExtensions() {
     return Arrays.asList(SwitchOffViolationsFilter.class);
   }
+
 }

@@ -20,19 +20,14 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class SwitchOffViolationsPluginTest {
   @Test
   public void justForCoverage() {
-    // ;-)
     assertThat(new SwitchOffViolationsPlugin().getExtensions().size(), is(1));
-    assertThat(new SwitchOffViolationsPlugin().getKey(), not(nullValue()));
-    assertThat(new SwitchOffViolationsPlugin().getName(), not(nullValue()));
   }
 }
