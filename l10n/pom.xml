@@ -21,6 +21,7 @@
     <module>ja</module>
     <module>ru</module>
     <module>zh</module>
+    <module>pt</module>
   </modules>
   
   <build>
