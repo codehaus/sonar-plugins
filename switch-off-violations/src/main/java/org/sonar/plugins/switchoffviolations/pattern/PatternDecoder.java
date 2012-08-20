@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.switchoffviolations;
+package org.sonar.plugins.switchoffviolations.pattern;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
@@ -30,14 +30,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-final class PatternDecoder {
+public final class PatternDecoder {
 
   static final String LINE_RANGE_REGEXP = "\\[((\\d+|\\d+-\\d+),?)*\\]";
 
   /**
    * Main method that decodes a line which defines a pattern
    */
-  Pattern decodeLine(String line) {
+  public Pattern decodeLine(String line) {
     if (isBlankOrComment(line)) {
       return null;
     }
@@ -105,7 +105,7 @@ final class PatternDecoder {
     return StringUtils.isNotBlank(field);
   }
 
-  List<Pattern> decode(String patternsList) {
+  public List<Pattern> decode(String patternsList) {
     List<Pattern> patterns = Lists.newLinkedList();
     String[] patternsLines = StringUtils.split(patternsList, "\n");
     for (String patternLine : patternsLines) {
@@ -117,7 +117,7 @@ final class PatternDecoder {
     return patterns;
   }
 
-  List<Pattern> decode(File file) {
+  public List<Pattern> decode(File file) {
     try {
       List<String> lines = FileUtils.readLines(file);
       List<Pattern> patterns = Lists.newLinkedList();
