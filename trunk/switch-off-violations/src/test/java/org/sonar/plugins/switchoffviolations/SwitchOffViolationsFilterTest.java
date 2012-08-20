@@ -20,41 +20,48 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.config.PropertyDefinitions;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.SonarException;
 import org.sonar.test.TestUtils;
 
+import java.io.File;
+import java.io.IOException;
+
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+
 public class SwitchOffViolationsFilterTest {
 
   public static final Rule CHECKSTYLE_RULE = Rule.create("checkstyle", "IllegalRegexp", "");
   public static final JavaFile JAVA_FILE = new JavaFile("org.foo.Bar");
 
+  private Settings settings;
+
+  @Before
+  public void init() {
+    settings = new Settings(new PropertyDefinitions(new SwitchOffViolationsPlugin()));
+  }
+
   @Test
   public void shouldBeDeactivatedWhenPropertyIsMissing() {
-    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(new PropertiesConfiguration());
+    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(settings);
     assertThat(filter.getPatterns().length, is(0));
     assertFalse(filter.isIgnored(Violation.create(CHECKSTYLE_RULE, JAVA_FILE)));
   }
 
   @Test
   public void shouldUsePatternsPluginParameter() throws IOException {
-    String patternsList = "org.foo.Bar;*;*\norg.foo.Hello;checkstyle:MagicNumber;[15-200]";
-    PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(Constants.PATTERNS_PARAMETER_KEY, patternsList);
+    settings.setProperty(Constants.PATTERNS_PARAMETER_KEY, "org.foo.Bar;*;*\norg.foo.Hello;checkstyle:MagicNumber;[15-200]");
 
-    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(conf);
+    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(settings);
     assertThat(filter.getPatterns().length, is(2));
     assertTrue(filter.isIgnored(Violation.create(CHECKSTYLE_RULE, JAVA_FILE).setLineId(150)));
   }
@@ -62,33 +69,29 @@ public class SwitchOffViolationsFilterTest {
   @Test
   public void shouldLoadConfigurationFile() throws IOException {
     File file = TestUtils.getResource(getClass(), "filter.txt");
+    settings.setProperty(Constants.LOCATION_PARAMETER_KEY, file.getCanonicalPath());
 
-    PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(Constants.LOCATION_PARAMETER_KEY, file.getCanonicalPath());
-
-    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(conf);
+    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(settings);
     assertThat(filter.getPatterns().length, is(2));
     assertTrue(filter.isIgnored(Violation.create(CHECKSTYLE_RULE, JAVA_FILE).setLineId(150)));
   }
 
   @Test
   public void shouldUsePatternsPluginParameterBeforeConfigurationFile() throws IOException {
-    PropertiesConfiguration conf = new PropertiesConfiguration();
     // filter.txt defines 2 patterns
     File file = TestUtils.getResource(getClass(), "filter.txt");
-    conf.setProperty(Constants.LOCATION_PARAMETER_KEY, file.getCanonicalPath());
+    settings.setProperty(Constants.LOCATION_PARAMETER_KEY, file.getCanonicalPath());
     // but there's actually only 1 pattern defined directly via the plugin parameter
     String patternsList = "org.foo.Bar;*;*";
-    conf.setProperty(Constants.PATTERNS_PARAMETER_KEY, patternsList);
+    settings.setProperty(Constants.PATTERNS_PARAMETER_KEY, patternsList);
 
-    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(conf);
+    SwitchOffViolationsFilter filter = new SwitchOffViolationsFilter(settings);
     assertThat(filter.getPatterns().length, is(1));
   }
 
   @Test(expected = SonarException.class)
   public void shouldFailIfFileNotFound() {
-    PropertiesConfiguration conf = new PropertiesConfiguration();
-    conf.setProperty(Constants.LOCATION_PARAMETER_KEY, "/path/to/unknown/file");
-    new SwitchOffViolationsFilter(conf);
+    settings.setProperty(Constants.LOCATION_PARAMETER_KEY, "/path/to/unknown/file");
+    new SwitchOffViolationsFilter(settings);
   }
 }

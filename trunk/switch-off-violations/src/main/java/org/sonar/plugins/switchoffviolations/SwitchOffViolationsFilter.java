@@ -20,28 +20,27 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import java.io.File;
-import java.util.List;
-
-import org.apache.commons.configuration.Configuration;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.config.Settings;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.rules.ViolationFilter;
-import org.sonar.api.utils.Logs;
 import org.sonar.api.utils.SonarException;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.List;
 
 public final class SwitchOffViolationsFilter implements ViolationFilter {
   private static final Logger LOG = LoggerFactory.getLogger(SwitchOffViolationsFilter.class);
 
   private Pattern[] patterns;
 
-  public SwitchOffViolationsFilter(Configuration conf) {
-    String patternConf = conf.getString(Constants.PATTERNS_PARAMETER_KEY);
-    String fileLocation = conf.getString(Constants.LOCATION_PARAMETER_KEY);
+  public SwitchOffViolationsFilter(Settings settings) {
+    String patternConf = settings.getString(Constants.PATTERNS_PARAMETER_KEY);
+    String fileLocation = settings.getString(Constants.LOCATION_PARAMETER_KEY);
     List<Pattern> list = Lists.newArrayList();
     if (StringUtils.isNotBlank(patternConf)) {
       list = new PatternDecoder().decode(patternConf);
@@ -53,15 +52,16 @@ public final class SwitchOffViolationsFilter implements ViolationFilter {
     patterns = list.toArray(new Pattern[list.size()]);
   }
 
+  @VisibleForTesting
   Pattern[] getPatterns() {
     return patterns;
   }
 
-  void logConfiguration(File file) {
-    Logs.INFO.info("Switch Off Violations plugin configured with: " + file.getAbsolutePath());
+  private void logConfiguration(File file) {
+    LOG.info("Switch Off Violations plugin configured with: " + file.getAbsolutePath());
   }
 
-  File locateFile(String location) {
+  private File locateFile(String location) {
     File file = new File(location);
     if (!file.exists() || !file.isFile()) {
       throw new SonarException("File not found. Please check the parameter " + Constants.LOCATION_PARAMETER_KEY + ": " + location);
@@ -80,7 +80,7 @@ public final class SwitchOffViolationsFilter implements ViolationFilter {
     return false;
   }
 
-  void logExclusion(Violation violation, Pattern pattern) {
+  private void logExclusion(Violation violation, Pattern pattern) {
     if (LOG.isDebugEnabled()) {
       LOG.debug("Violation " + violation + " switched off by " + pattern);
     }

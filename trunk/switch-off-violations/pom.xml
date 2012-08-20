@@ -52,7 +52,9 @@
   </issueManagement>
 
   <properties>
-    <sonar.buildVersion>2.5</sonar.buildVersion>
+    <sonar.buildVersion>3.0</sonar.buildVersion>
+    <sonar.pluginClass>org.sonar.plugins.switchoffviolations.SwitchOffViolationsPlugin</sonar.pluginClass>
+    <sonar.pluginName>Switch Off Violations</sonar.pluginName>
   </properties>
 
   <dependencies>
@@ -70,108 +72,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-ws-client</artifactId>
-      <version>${sonar.buildVersion}</version>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
+      <version>1.4</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
-      <scope>test</scope>
-    </dependency>
-
-
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.0</version>
-        <extensions>true</extensions>
-        <configuration>
-          <pluginName>Switch Off Violations</pluginName>
-          <pluginClass>org.sonar.plugins.switchoffviolations.SwitchOffViolationsPlugin</pluginClass>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>run-its</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.sonar</groupId>
-            <artifactId>sonar-dev-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start-server</id>
-                <phase>pre-integration-test</phase>
-                <configuration>
-                  <background>true</background>
-                  <clean>true</clean>
-                </configuration>
-                <goals>
-                  <goal>start-war</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>analyze-projects</id>
-                <phase>pre-integration-test</phase>
-                <configuration>
-                  <projectsDir>${project.basedir}/src/test/projects</projectsDir>
-                </configuration>
-                <goals>
-                  <goal>analyze</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop-server</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop-war</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.6</version>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>verify</id>
-                <goals>
-                  <goal>verify</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>

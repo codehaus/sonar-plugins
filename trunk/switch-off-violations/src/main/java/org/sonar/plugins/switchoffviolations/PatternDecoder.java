@@ -20,20 +20,23 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.utils.SonarException;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 final class PatternDecoder {
 
   static final String LINE_RANGE_REGEXP = "\\[((\\d+|\\d+-\\d+),?)*\\]";
 
+  /**
+   * Main method that decodes a line which defines a pattern
+   */
   Pattern decodeLine(String line) {
     if (isBlankOrComment(line)) {
       return null;
@@ -48,7 +51,7 @@ final class PatternDecoder {
     return pattern;
   }
 
-  void checkLineConstraints(String line, String[] fields) {
+  private void checkLineConstraints(String line, String[] fields) {
     if (fields.length != 3) {
       throw new SonarException("Unvalid format. The following line does not define 3 fields separated by comma: " + line);
     }
@@ -64,7 +67,7 @@ final class PatternDecoder {
     }
   }
 
-  void decodeRangeOfLines(Pattern pattern, String field) {
+  private void decodeRangeOfLines(Pattern pattern, String field) {
     if (StringUtils.equals(field, "*")) {
       pattern.setCheckLines(false);
     } else {
@@ -82,18 +85,22 @@ final class PatternDecoder {
     }
   }
 
+  @VisibleForTesting
   boolean isLinesRange(String field) {
     return StringUtils.equals(field, "*") || java.util.regex.Pattern.matches(LINE_RANGE_REGEXP, field);
   }
 
+  @VisibleForTesting
   boolean isBlankOrComment(String line) {
     return StringUtils.isBlank(line) || StringUtils.startsWith(line, "#");
   }
 
+  @VisibleForTesting
   boolean isResource(String field) {
     return StringUtils.isNotBlank(field);
   }
 
+  @VisibleForTesting
   boolean isRule(String field) {
     return StringUtils.isNotBlank(field);
   }
@@ -112,7 +119,6 @@ final class PatternDecoder {
 
   List<Pattern> decode(File file) {
     try {
-      @SuppressWarnings("unchecked")
       List<String> lines = FileUtils.readLines(file);
       List<Pattern> patterns = Lists.newLinkedList();
       for (String line : lines) {
