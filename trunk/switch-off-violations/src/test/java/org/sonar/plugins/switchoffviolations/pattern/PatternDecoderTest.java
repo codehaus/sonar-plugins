@@ -18,11 +18,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.switchoffviolations;
+package org.sonar.plugins.switchoffviolations.pattern;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.internal.matchers.IsCollectionContaining.hasItems;
+
+import org.sonar.plugins.switchoffviolations.pattern.Pattern;
+import org.sonar.plugins.switchoffviolations.pattern.PatternDecoder;
 
 import java.io.File;
 import java.util.List;

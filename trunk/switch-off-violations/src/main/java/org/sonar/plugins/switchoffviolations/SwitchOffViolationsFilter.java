@@ -20,6 +20,9 @@
 
 package org.sonar.plugins.switchoffviolations;
 
+import org.sonar.plugins.switchoffviolations.pattern.Pattern;
+import org.sonar.plugins.switchoffviolations.pattern.PatternDecoder;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;

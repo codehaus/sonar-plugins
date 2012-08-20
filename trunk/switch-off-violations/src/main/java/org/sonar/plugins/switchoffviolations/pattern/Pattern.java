@@ -18,18 +18,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
 
-package org.sonar.plugins.switchoffviolations;
+package org.sonar.plugins.switchoffviolations.pattern;
 
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.utils.WildcardPattern;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
 
-final class Pattern {
+public final class Pattern {
 
   private WildcardPattern resourcePattern;
   private WildcardPattern rulePattern;
@@ -37,7 +36,7 @@ final class Pattern {
   private Set<LineRange> lineRanges = Sets.newLinkedHashSet();
   private boolean checkLines = true;
 
-  Pattern(String resourcePattern, String rulePattern) {
+  public Pattern(String resourcePattern, String rulePattern) {
     this.resourcePattern = WildcardPattern.create(resourcePattern);
     this.rulePattern = WildcardPattern.create(rulePattern);
   }
@@ -77,7 +76,7 @@ final class Pattern {
     return allLines;
   }
 
-  boolean match(Violation violation) {
+  public boolean match(Violation violation) {
     boolean match = matchResource(violation.getResource()) && matchRule(violation.getRule());
     if (match && checkLines && violation.getLineId() != null) {
       match = matchLine(violation.getLineId());
