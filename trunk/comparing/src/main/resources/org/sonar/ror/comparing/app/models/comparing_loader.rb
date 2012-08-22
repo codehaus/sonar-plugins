@@ -55,7 +55,7 @@ class ComparingLoader
 
    def get_avg_measure_for_language(metric_name, language)
      ProjectMeasure.average(:value,
-        :conditions => ['snapshot_id IN (:snapshot_id) AND metric_id = :metric_id', 
+        :conditions => ['rule_id is null AND person_id is null AND characteristic_id is null AND snapshot_id IN (:snapshot_id) AND metric_id = :metric_id', 
             {:snapshot_id => @last_snapshot_ids_by_language[language], :metric_id => Metric.by_key(metric_name).id}])
    end
 
@@ -63,6 +63,13 @@ class ComparingLoader
      Project.find(:all, 
         :select => 'id, name',
         :conditions => ["root_id IS NULL AND scope = 'PRJ' AND qualifier = 'TRK' AND language = ?", language],
+        :order => 'name ASC')
+   end
+
+   def get_views()
+     Project.find(:all, 
+        :select => 'id, name',
+        :conditions => ["root_id IS NULL AND scope = 'PRJ' AND qualifier = 'VW'"],
         :order => 'name ASC')
    end
 
