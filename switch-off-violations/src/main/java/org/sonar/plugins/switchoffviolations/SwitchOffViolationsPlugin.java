@@ -25,7 +25,6 @@ import org.sonar.api.Property;
 import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.switchoffviolations.pattern.PatternsInitializer;
-import org.sonar.plugins.switchoffviolations.scanner.FileToResource;
 import org.sonar.plugins.switchoffviolations.scanner.RegexpScanner;
 import org.sonar.plugins.switchoffviolations.scanner.SourceScanner;
 
@@ -60,7 +59,6 @@ public final class SwitchOffViolationsPlugin extends SonarPlugin {
   @SuppressWarnings({"rawtypes", "unchecked"})
   public List getExtensions() {
     return Arrays.asList(
-        FileToResource.class,
         PatternsInitializer.class,
         RegexpScanner.class,
         SourceScanner.class,
