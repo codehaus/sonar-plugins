@@ -1,4 +1,4 @@
-<% def create_overview_widget(project, loader, metrics_tab, title, qualitative)
+<% def create_overview_widget(project, loader, metrics_tab, title)
      widget =  '<div class="block"><div class="widget-title" id="widget_title">'
      widget += title
      widget += '</div>'
@@ -62,9 +62,7 @@
          cell += create_project_cell(metric, measure_average)
          cell += '  </td>'
          cell += '  <td align="right">'
-         cell += '    <table align="center" width="65px"><tr><td align="right" width="100%"><b>'
-         cell += number_with_delimiter(measure_average)
-         cell += '    </b></td></tr></table>'
+         cell += create_compared_cell(metric, measure_average)
          cell += '  </td></tr>'
 
        end
@@ -73,12 +71,19 @@
      cell     
    end
 
+   def create_compared_cell(metric, value)
+     cell =  '<table align="center" width="65px"><tr><td align="right" width="100%"><b>'
+     if metric.name != 'sqale_rating'
+       cell += number_with_delimiter(value)
+     else
+       cell += get_sqale_representation(value)
+     end
+     cell += '</b></td></tr></table>'
+   end
+
    def create_project_cell(metric, valueCompare) 
      cell =  '<table align="center" width="150px">'
      color = get_color(metric, valueCompare)
-     cell += '  <tr><td style="color: '
-     cell += color
-     cell += ';" align="right" width="50%"><b>'
      measure = nil
      variation = nil
      if metric.val_type == 'INT'
@@ -88,7 +93,18 @@
        measure = measure(metric).value.to_f
        variation = (measure - valueCompare).round(1)
      end
-     cell += number_with_delimiter(measure)
+     value = ''
+     cell += '  <tr><td '
+     if metric.name != 'sqale_rating'
+       cell += 'style="color: '
+       cell += color
+       cell += ';" '
+       value = number_with_delimiter(measure)
+     else
+       value = get_sqale_representation(measure)
+     end
+     cell += 'align="right" width="50%"><b>'
+     cell += value
      cell += '  </b>&nbsp;</td>'
      variation_str = nil
      if variation < 0
@@ -103,6 +119,19 @@
      cell += '</table>'
 
      cell
+   end
+
+   def get_sqale_representation(measure)
+     tab_rating = ['A', 'B', 'C', 'D', 'E']
+     rating = tab_rating[(measure.to_i - 1)]
+     
+     result =  '<span class="rating '
+     result += rating
+     result += '">'
+     result += rating
+     result += '</span>'
+
+     result
    end
 
    def get_color(metric, valueCompare)
@@ -132,6 +161,27 @@
 
      color
    end %>
+
+<style>
+  .rating {
+    padding: 2px 5px;
+  }
+  .A {
+    background-color: #00AA00;
+  }
+  .B {
+    background-color: #80CC00;
+  }
+  .C {
+    background-color: #FFEE00;
+  }
+  .D {
+    background-color: #F77700;
+  }
+  .E {
+    background-color: #EE0000;
+  }
+</style>
 
 <div id="dashboard">
   <div style="width: 100%;display: block; float: none">
@@ -175,13 +225,15 @@
           </form>
         </div></div></div>
 
-<% size_metric_tab = ['ncloc', 'files'] 
+<% sqale_metric_tab = ['sqale_rating']
+   size_metric_tab = ['ncloc', 'files'] 
    violation_metric_tab = ['violations_density']
    complexity_metric_tab = ['function_complexity', 'file_complexity']
    duplication_metric_tab = ['duplicated_lines_density']
    documentation_metric_tab = ['comment_lines_density', 'public_documented_api_density']
 
    if params[:quantitative] != nil && params[:quantitative] != ''
+     sqale_metric_tab.push('sqale_index')
      size_metric_tab.push('functions', 'statements')
      violation_metric_tab.push('violations', 'blocker_violations', 'critical_violations', 'major_violations', 'minor_violations', 'info_violations')
      complexity_metric_tab.push('complexity')
@@ -189,16 +241,20 @@
      documentation_metric_tab.push('comment_lines', 'public_undocumented_api')
    end %>
 
-<%= create_overview_widget(@project, loader, size_metric_tab, message('comparing.size.title'), false) %>
-<%= create_overview_widget(@project, loader, violation_metric_tab, message('comparing.violations.title'), true) %>
+<% metric_sqale = metric('ncloc')
+   if metric('sqale_rating') %>
+     <%= create_overview_widget(@project, loader, sqale_metric_tab, message('comparing.sqale.title')) %>
+<% end %>
+<%= create_overview_widget(@project, loader, size_metric_tab, message('comparing.size.title')) %>
+<%= create_overview_widget(@project, loader, violation_metric_tab, message('comparing.violations.title')) %>
       </div>
     </div>
 
     <div class="dashboard-column-wrapper" style="width: 50%;margin: 0 -1px 0 0;">
       <div class="dashboard-column" id="dashboard-column-2" style="margin: 0 0px 0 5px;">
-<%= create_overview_widget(@project, loader, complexity_metric_tab, message('comparing.complexity.title'), true) %>
-<%= create_overview_widget(@project, loader, duplication_metric_tab, message('comparing.duplication.title'), true) %>
-<%= create_overview_widget(@project, loader, documentation_metric_tab, message('comparing.documentation.title'), true) %>
+<%= create_overview_widget(@project, loader, complexity_metric_tab, message('comparing.complexity.title')) %>
+<%= create_overview_widget(@project, loader, duplication_metric_tab, message('comparing.duplication.title')) %>
+<%= create_overview_widget(@project, loader, documentation_metric_tab, message('comparing.documentation.title')) %>
       </div>
     </div>
 
