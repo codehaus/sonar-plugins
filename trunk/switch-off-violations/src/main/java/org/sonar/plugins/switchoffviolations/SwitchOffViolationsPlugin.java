@@ -22,7 +22,12 @@ package org.sonar.plugins.switchoffviolations;
 
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.switchoffviolations.pattern.PatternsInitializer;
+import org.sonar.plugins.switchoffviolations.scanner.FileToResource;
+import org.sonar.plugins.switchoffviolations.scanner.RegexpScanner;
+import org.sonar.plugins.switchoffviolations.scanner.SourceScanner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +45,8 @@ import java.util.List;
       +
       "<br/>More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/><br/>",
     project = true,
-    global = true),
+    global = true,
+    type = PropertyType.TEXT),
   @Property(
     key = Constants.LOCATION_PARAMETER_KEY,
     defaultValue = "",
@@ -53,7 +59,12 @@ public final class SwitchOffViolationsPlugin extends SonarPlugin {
 
   @SuppressWarnings({"rawtypes", "unchecked"})
   public List getExtensions() {
-    return Arrays.asList(SwitchOffViolationsFilter.class);
+    return Arrays.asList(
+        FileToResource.class,
+        PatternsInitializer.class,
+        RegexpScanner.class,
+        SourceScanner.class,
+        SwitchOffViolationsFilter.class);
   }
 
 }

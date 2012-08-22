@@ -63,6 +63,11 @@
       <artifactId>sonar-plugin-api</artifactId>
       <version>${sonar.buildVersion}</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-batch</artifactId>
+      <version>${sonar.buildVersion}</version>
+    </dependency>
 
     <!-- unit tests -->
     <dependency>
@@ -75,6 +80,12 @@
       <groupId>org.easytesting</groupId>
       <artifactId>fest-assert</artifactId>
       <version>1.4</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.0.9</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

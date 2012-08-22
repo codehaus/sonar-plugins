@@ -20,60 +20,31 @@
 
 package org.sonar.plugins.switchoffviolations;
 
-import org.sonar.plugins.switchoffviolations.pattern.Pattern;
-import org.sonar.plugins.switchoffviolations.pattern.PatternDecoder;
-
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.config.Settings;
 import org.sonar.api.rules.Violation;
 import org.sonar.api.rules.ViolationFilter;
-import org.sonar.api.utils.SonarException;
-
-import java.io.File;
-import java.util.List;
+import org.sonar.plugins.switchoffviolations.pattern.Pattern;
+import org.sonar.plugins.switchoffviolations.pattern.PatternsInitializer;
 
 public final class SwitchOffViolationsFilter implements ViolationFilter {
+
   private static final Logger LOG = LoggerFactory.getLogger(SwitchOffViolationsFilter.class);
 
-  private Pattern[] patterns;
+  private PatternsInitializer patternsInitializer;
 
-  public SwitchOffViolationsFilter(Settings settings) {
-    String patternConf = settings.getString(Constants.PATTERNS_PARAMETER_KEY);
-    String fileLocation = settings.getString(Constants.LOCATION_PARAMETER_KEY);
-    List<Pattern> list = Lists.newArrayList();
-    if (StringUtils.isNotBlank(patternConf)) {
-      list = new PatternDecoder().decode(patternConf);
-    } else if (StringUtils.isNotBlank(fileLocation)) {
-      File file = locateFile(fileLocation);
-      logConfiguration(file);
-      list = new PatternDecoder().decode(file);
-    }
-    patterns = list.toArray(new Pattern[list.size()]);
-  }
-
-  @VisibleForTesting
-  Pattern[] getPatterns() {
-    return patterns;
-  }
-
-  private void logConfiguration(File file) {
-    LOG.info("Switch Off Violations plugin configured with: " + file.getAbsolutePath());
-  }
-
-  private File locateFile(String location) {
-    File file = new File(location);
-    if (!file.exists() || !file.isFile()) {
-      throw new SonarException("File not found. Please check the parameter " + Constants.LOCATION_PARAMETER_KEY + ": " + location);
-    }
-
-    return file;
+  public SwitchOffViolationsFilter(PatternsInitializer patternsInitializer) {
+    this.patternsInitializer = patternsInitializer;
   }
 
   public boolean isIgnored(Violation violation) {
+    Pattern extraPattern = patternsInitializer.getExtraPattern(violation.getResource());
+    if (extraPattern != null && extraPattern.match(violation)) {
+      logExclusion(violation, extraPattern);
+      return true;
+    }
+
+    Pattern[] patterns = patternsInitializer.getStandardPatterns();
     for (int index = 0; index < patterns.length; index++) {
       if (patterns[index].match(violation)) {
         logExclusion(violation, patterns[index]);
@@ -84,9 +55,7 @@ public final class SwitchOffViolationsFilter implements ViolationFilter {
   }
 
   private void logExclusion(Violation violation, Pattern pattern) {
-    if (LOG.isDebugEnabled()) {
-      LOG.debug("Violation " + violation + " switched off by " + pattern);
-    }
+    LOG.debug("Violation {} switched off by {}", violation, pattern);
   }
 
 }

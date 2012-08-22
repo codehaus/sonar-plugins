@@ -21,6 +21,7 @@
 package org.sonar.plugins.switchoffviolations.pattern;
 
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.Violation;
@@ -28,25 +29,44 @@ import org.sonar.api.utils.WildcardPattern;
 
 import java.util.Set;
 
-public final class Pattern {
+public class Pattern {
 
   private WildcardPattern resourcePattern;
   private WildcardPattern rulePattern;
   private Set<Integer> lines = Sets.newLinkedHashSet();
   private Set<LineRange> lineRanges = Sets.newLinkedHashSet();
+  private String regexp1;
+
+  private String regexp2;
   private boolean checkLines = true;
+
+  public Pattern() {
+  }
 
   public Pattern(String resourcePattern, String rulePattern) {
     this.resourcePattern = WildcardPattern.create(resourcePattern);
     this.rulePattern = WildcardPattern.create(rulePattern);
   }
 
-  WildcardPattern getResourcePattern() {
+  public Pattern(String resourcePattern, String rulePattern, Set<LineRange> lineRanges) {
+    this(resourcePattern, rulePattern);
+    this.lineRanges = lineRanges;
+  }
+
+  public WildcardPattern getResourcePattern() {
     return resourcePattern;
   }
 
-  WildcardPattern getRulePattern() {
+  public WildcardPattern getRulePattern() {
     return rulePattern;
+  }
+
+  public String getRegexp1() {
+    return regexp1;
+  }
+
+  public String getRegexp2() {
+    return regexp2;
   }
 
   Pattern addLineRange(int fromLineId, int toLineId) {
@@ -65,6 +85,16 @@ public final class Pattern {
 
   Pattern setCheckLines(boolean b) {
     this.checkLines = b;
+    return this;
+  }
+
+  Pattern setRegexp1(String regexp1) {
+    this.regexp1 = regexp1;
+    return this;
+  }
+
+  Pattern setRegexp2(String regexp2) {
+    this.regexp2 = regexp2;
     return this;
   }
 
@@ -108,27 +138,8 @@ public final class Pattern {
     return resource != null && resource.getKey() != null && resourcePattern.match(resource.getKey());
   }
 
-  static final class LineRange {
-    int from, to;
-
-    LineRange(int from, int to) {
-      if (to < from) {
-        throw new IllegalArgumentException("Line range is not valid: " + from + " must be greater than " + to);
-      }
-      this.from = from;
-      this.to = to;
-    }
-
-    boolean in(int lineId) {
-      return from <= lineId && lineId <= to;
-    }
-
-    Set<Integer> toLines() {
-      Set<Integer> lines = Sets.newLinkedHashSet();
-      for (int index = from; index <= to; index++) {
-        lines.add(index);
-      }
-      return lines;
-    }
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 }

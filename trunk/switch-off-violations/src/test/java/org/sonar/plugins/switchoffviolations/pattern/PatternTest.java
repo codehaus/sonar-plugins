@@ -20,40 +20,14 @@
 
 package org.sonar.plugins.switchoffviolations.pattern;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.hasItems;
-
-import org.sonar.plugins.switchoffviolations.pattern.Pattern;
-
 import org.junit.Test;
 import org.sonar.api.resources.JavaFile;
 import org.sonar.api.rules.Rule;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 public class PatternTest {
-
-  @Test(expected = IllegalArgumentException.class)
-  public void lineRangeShouldBeOrdered() {
-    new Pattern.LineRange(25, 12);
-  }
-
-  @Test
-  public void shouldConvertLineRangeToLines() {
-    Pattern.LineRange range = new Pattern.LineRange(12, 15);
-    assertThat(range.toLines().size(), is(4));
-    assertThat(range.toLines(), hasItems(12, 13, 14, 15));
-  }
-
-  @Test
-  public void shouldTestInclusionInRangeOfLines() {
-    Pattern.LineRange range = new Pattern.LineRange(12, 15);
-    assertThat(range.in(3), is(false));
-    assertThat(range.in(12), is(true));
-    assertThat(range.in(13), is(true));
-    assertThat(range.in(14), is(true));
-    assertThat(range.in(15), is(true));
-    assertThat(range.in(16), is(false));
-  }
 
   @Test
   public void shouldMatchLines() {
@@ -93,6 +67,5 @@ public class PatternTest {
     assertThat(new Pattern("*", "pmd:IllegalRegexp").matchRule(rule), is(false));
     assertThat(new Pattern("*", "pmd:*").matchRule(rule), is(false));
     assertThat(new Pattern("*", "*:Foo*IllegalRegexp").matchRule(rule), is(false));
-
   }
 }
