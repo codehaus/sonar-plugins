@@ -28,6 +28,6 @@ import static org.junit.Assert.assertThat;
 public class SwitchOffViolationsPluginTest {
   @Test
   public void justForCoverage() {
-    assertThat(new SwitchOffViolationsPlugin().getExtensions().size(), is(1));
+    assertThat(new SwitchOffViolationsPlugin().getExtensions().size(), is(5));
   }
 }

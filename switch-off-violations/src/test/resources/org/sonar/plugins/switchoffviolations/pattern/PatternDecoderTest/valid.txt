@@ -16,3 +16,8 @@ com.foo.*;*;*
 # exclude a specific rule on a specific file
 com.foo.Bar;checkstyle:IllegalRegexp;*
 
+# exclude violations contained between SONAR-OFF and SONAR-ON markers
+SONAR-OFF;SONAR-OFF
+
+# exclude violations contained in files that have the SONAR-ALL-OFF marker
+SONAR-ALL-OFF

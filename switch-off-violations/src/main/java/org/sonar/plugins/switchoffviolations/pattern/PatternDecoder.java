@@ -30,9 +30,38 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public final class PatternDecoder {
+public class PatternDecoder {
 
   static final String LINE_RANGE_REGEXP = "\\[((\\d+|\\d+-\\d+),?)*\\]";
+
+  public List<Pattern> decode(String patternsList) {
+    List<Pattern> patterns = Lists.newLinkedList();
+    String[] patternsLines = StringUtils.split(patternsList, "\n");
+    for (String patternLine : patternsLines) {
+      Pattern pattern = decodeLine(patternLine.trim());
+      if (pattern != null) {
+        patterns.add(pattern);
+      }
+    }
+    return patterns;
+  }
+
+  public List<Pattern> decode(File file) {
+    try {
+      List<String> lines = FileUtils.readLines(file);
+      List<Pattern> patterns = Lists.newLinkedList();
+      for (String line : lines) {
+        Pattern pattern = decodeLine(line);
+        if (pattern != null) {
+          patterns.add(pattern);
+        }
+      }
+      return patterns;
+
+    } catch (IOException e) {
+      throw new SonarException("Fail to load the file: " + file.getAbsolutePath(), e);
+    }
+  }
 
   /**
    * Main method that decodes a line which defines a pattern
@@ -42,20 +71,27 @@ public final class PatternDecoder {
       return null;
     }
 
-    String[] fields = StringUtils.split(line, ';');
-    checkLineConstraints(line, fields);
+    String[] fields = StringUtils.splitPreserveAllTokens(line, ';');
+    if (fields.length > 3) {
+      throw new SonarException("Unvalid format. The following line has more than 3 fields separated by comma: " + line);
+    }
 
-    Pattern pattern = new Pattern(StringUtils.trim(fields[0]), StringUtils.trim(fields[1]));
-    decodeRangeOfLines(pattern, fields[2]);
+    Pattern pattern = null;
+    if (fields.length == 3) {
+      checkRegularLineConstraints(line, fields);
+      pattern = new Pattern(StringUtils.trim(fields[0]), StringUtils.trim(fields[1]));
+      decodeRangeOfLines(pattern, fields[2]);
+    } else if (fields.length == 2) {
+      checkDoubleRegexpLineConstraints(line, fields);
+      pattern = new Pattern().setRegexp1(fields[0]).setRegexp2(fields[1]);
+    } else {
+      pattern = new Pattern().setRegexp1(fields[0]);
+    }
 
     return pattern;
   }
 
-  private void checkLineConstraints(String line, String[] fields) {
-    if (fields.length != 3) {
-      throw new SonarException("Unvalid format. The following line does not define 3 fields separated by comma: " + line);
-    }
-
+  private void checkRegularLineConstraints(String line, String[] fields) {
     if (!isResource(fields[0])) {
       throw new SonarException("Unvalid format. The first field does not define a resource pattern: " + line);
     }
@@ -64,6 +100,15 @@ public final class PatternDecoder {
     }
     if (!isLinesRange(fields[2])) {
       throw new SonarException("Unvalid format. The third field does not define a range of lines: " + line);
+    }
+  }
+
+  private void checkDoubleRegexpLineConstraints(String line, String[] fields) {
+    if (!isRegexp(fields[0])) {
+      throw new SonarException("Unvalid format. The first field does not define a regular expression: " + line);
+    }
+    if (!isRegexp(fields[1])) {
+      throw new SonarException("Unvalid format. The second field does not define a regular expression: " + line);
     }
   }
 
@@ -105,32 +150,8 @@ public final class PatternDecoder {
     return StringUtils.isNotBlank(field);
   }
 
-  public List<Pattern> decode(String patternsList) {
-    List<Pattern> patterns = Lists.newLinkedList();
-    String[] patternsLines = StringUtils.split(patternsList, "\n");
-    for (String patternLine : patternsLines) {
-      Pattern pattern = decodeLine(patternLine.trim());
-      if (pattern != null) {
-        patterns.add(pattern);
-      }
-    }
-    return patterns;
-  }
-
-  public List<Pattern> decode(File file) {
-    try {
-      List<String> lines = FileUtils.readLines(file);
-      List<Pattern> patterns = Lists.newLinkedList();
-      for (String line : lines) {
-        Pattern pattern = decodeLine(line);
-        if (pattern != null) {
-          patterns.add(pattern);
-        }
-      }
-      return patterns;
-
-    } catch (IOException e) {
-      throw new SonarException("Fail to load the file: " + file.getAbsolutePath(), e);
-    }
+  @VisibleForTesting
+  boolean isRegexp(String field) {
+    return StringUtils.isNotBlank(field);
   }
 }
