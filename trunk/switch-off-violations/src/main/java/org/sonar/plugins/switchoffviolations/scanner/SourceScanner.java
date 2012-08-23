@@ -55,11 +55,11 @@ public final class SourceScanner implements Sensor {
    * {@inheritDoc}
    */
   public void analyse(Project project, SensorContext context) {
-    parseDirs(context, project, false);
-    parseDirs(context, project, true);
+    parseDirs(project, false);
+    parseDirs(project, true);
   }
 
-  protected void parseDirs(SensorContext context, Project project, boolean isTest) {
+  protected void parseDirs(Project project, boolean isTest) {
     ProjectFileSystem fileSystem = project.getFileSystem();
     Charset sourcesEncoding = fileSystem.getSourceCharset();
 

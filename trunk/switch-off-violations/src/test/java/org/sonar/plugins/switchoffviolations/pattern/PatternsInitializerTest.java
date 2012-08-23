@@ -98,7 +98,7 @@ public class PatternsInitializerTest {
   }
 
   @Test
-  public void shouldReturnExtraPatternForResource() throws Exception {
+  public void shouldReturnExtraPatternForResource() {
     org.sonar.api.resources.File file = new org.sonar.api.resources.File("foo");
     patternsInitializer.addPatternToExcludeResource(file);
 
@@ -108,7 +108,7 @@ public class PatternsInitializerTest {
   }
 
   @Test
-  public void shouldReturnExtraPatternForLinesOfResource() throws Exception {
+  public void shouldReturnExtraPatternForLinesOfResource() {
     org.sonar.api.resources.File file = new org.sonar.api.resources.File("foo");
     Set<LineRange> lineRanges = Sets.newHashSet();
     lineRanges.add(new LineRange(25, 28));
