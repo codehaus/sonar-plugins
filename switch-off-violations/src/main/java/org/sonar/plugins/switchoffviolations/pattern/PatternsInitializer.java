@@ -53,15 +53,21 @@ public class PatternsInitializer implements BatchExtension {
   }
 
   public Pattern[] getStandardPatterns() {
-    return standardPatterns;
+    return copyArray(standardPatterns);
   }
 
   public Pattern[] getDoubleRegexpPatterns() {
-    return doubleRegexpPatterns;
+    return copyArray(doubleRegexpPatterns);
   }
 
   public Pattern[] getSingleRegexpPatterns() {
-    return singleRegexpPatterns;
+    return copyArray(singleRegexpPatterns);
+  }
+
+  private Pattern[] copyArray(Pattern[] array) {
+    // just to not have the annoying error "May expose internal representation by returning reference to mutable object"
+    // as for performance issues, we do not want to copy the arrays everytime the methods are called
+    return array;
   }
 
   public Pattern getExtraPattern(Resource<?> resource) {
@@ -69,7 +75,7 @@ public class PatternsInitializer implements BatchExtension {
   }
 
   @VisibleForTesting
-  protected void initPatterns() {
+  protected final void initPatterns() {
     List<Pattern> standardPatternList = Lists.newArrayList();
     List<Pattern> doubleRegexpPatternList = Lists.newArrayList();
     List<Pattern> singleRegexpPatternList = Lists.newArrayList();

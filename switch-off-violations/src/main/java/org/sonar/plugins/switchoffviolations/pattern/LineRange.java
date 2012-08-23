@@ -63,17 +63,28 @@ public class LineRange {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
-    LineRange other = (LineRange) obj;
-    if (from != other.from)
+    }
+    if (fieldsDiffer((LineRange) obj)) {
       return false;
-    if (to != other.to)
-      return false;
+    }
     return true;
+  }
+
+  private boolean fieldsDiffer(LineRange other) {
+    if (from != other.from) {
+      return true;
+    }
+    if (to != other.to) {
+      return true;
+    }
+    return false;
   }
 }

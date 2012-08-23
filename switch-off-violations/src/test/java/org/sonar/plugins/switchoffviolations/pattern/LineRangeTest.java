@@ -65,7 +65,7 @@ public class LineRangeTest {
     assertThat(range).isNotEqualTo(new LineRange(12, 2000));
     assertThat(range).isNotEqualTo(new LineRange(1000, 2000));
     assertThat(range).isNotEqualTo(null);
-    assertThat(range).isNotEqualTo(new String());
+    assertThat(range).isNotEqualTo(new StringBuffer());
   }
 
   @Test
