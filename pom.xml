@@ -64,7 +64,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>dotnet</module>
         <module>xml</module>
       </modules>
     </profile>
