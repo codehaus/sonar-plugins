@@ -44,7 +44,6 @@
         <module>security-rules</module>
         <module>sigmm</module>
         <module>sonargraph</module>
-        <module>sonar-runner</module>
         <module>switch-off-violations</module>
         <module>tab-metrics</module>
         <module>taglist</module>
