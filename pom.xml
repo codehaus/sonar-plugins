@@ -1,127 +1,95 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>13</version>
+    <relativePath>../../parent</relativePath>
+  </parent>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>abacus</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>csv-export</module>
-        <module>cutoff</module>
-        <module>delphi</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>google-analytics</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>l10n</module>
-        <module>mantis</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>switch-off-violations</module>
-        <module>tab-metrics</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>thucydides</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>stableProjects-jdk6</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>cxx</module>
-        <module>debug</module>
-        <module>devkit</module>
-        <module>doxygen</module>
-        <module>drools</module>
-        <module>scala</module>
-        <module>violation-density</module>
-        <module>w3c-markup-validation</module>
-        <module>widget-lab</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-        <module>cql</module>
-        <module>jlint</module>
-        <module>profiler</module>
-        <module>radiator</module>
-        <module>sonar-replay</module>
-        <module>sonarj</module>
-        <module>testability-explorer</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-      </modules>
-    </profile>
-  </profiles>
+  <groupId>org.codehaus.sonar-plugins.l10n</groupId>
+  <artifactId>sonar-l10n-es-plugin</artifactId>
+  <version>1.7</version>
+  <packaging>sonar-plugin</packaging>
+  
+  <name>L10n :: Spanish Pack</name>
+  <url>http://docs.codehaus.org/display/SONAR/Spanish+Pack</url>
+  <inceptionYear>2011</inceptionYear>
+
+  <organization>
+    <name>eXcentia</name>
+    <url>http://www.excentia.es</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-l10n-es-plugin-1.7</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-l10n-es-plugin-1.7</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-l10n-es-plugin-1.7</url>
+  </scm>
+
+  <properties>
+    <sonar.pluginClass>org.sonar.plugins.l10n.SpanishPackPlugin</sonar.pluginClass>
+    <sonar.version>3.2</sonar.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-testing-harness</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+  </dependencies>
+
+  <developers>
+    <developer>
+      <name>Antonio Calero</name>
+      <organizationUrl>http://www.excentia.es</organizationUrl>
+    </developer>
+    <developer>
+      <name>Paco Castro</name>
+      <organizationUrl>http://www.excentia.es</organizationUrl>
+    </developer>
+  </developers>
 
   <build>
     <plugins>
-      <!-- Workaround for Maven 3.0.0 - 3.0.4 : see http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
         <extensions>true</extensions>
+        <configuration>
+          <basePlugin>l10nen</basePlugin>
+          <pluginName>Spanish Pack</pluginName>
+        </configuration>
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>native2ascii-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>native2ascii</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
+
 </project>
