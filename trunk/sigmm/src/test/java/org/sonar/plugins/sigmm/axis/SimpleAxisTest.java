@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 
 public class SimpleAxisTest {
 
-
   @Test
   public void testGetRank() {
     int[] bLimits = {40, 30, 20, 10, 0};
@@ -49,4 +48,5 @@ public class SimpleAxisTest {
       thenReturn(new Measure(CoreMetrics.ACCESSORS, value));
     return context;
   }
+
 }

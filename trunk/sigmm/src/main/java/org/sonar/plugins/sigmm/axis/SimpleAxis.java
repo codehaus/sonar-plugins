@@ -51,4 +51,5 @@ public class SimpleAxis implements MMAxis {
     }
     throw new IllegalStateException("Should not be here... Not being able to rank a simple Axis");
   }
+
 }

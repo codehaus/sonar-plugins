@@ -53,4 +53,5 @@ public class AdvancedAxisTest {
       thenReturn(new Measure(CoreMetrics.NCLOC, ncloc));
     return context;
   }
+
 }

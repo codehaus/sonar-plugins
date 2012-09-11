@@ -51,4 +51,5 @@ public class TestBridgeWithOutsideWorld {
   public void testDistributionDecoratorDependedUpon() {
     assertThat(new MMDistributionDecorator().dependedUpon().size(), equalTo(2));
   }
+
 }
