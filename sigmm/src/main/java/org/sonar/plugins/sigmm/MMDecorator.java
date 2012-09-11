@@ -64,7 +64,7 @@ public final class MMDecorator implements org.sonar.api.batch.Decorator {
     if (!MMPlugin.shouldPersistMeasures(resource)) {
       return;
     }
-    
+
     MMConfiguration config = new MMConfiguration(context);
 
     saveMeasure(context, config.getTestabilityAxis(), MMMetrics.TESTABILITY);

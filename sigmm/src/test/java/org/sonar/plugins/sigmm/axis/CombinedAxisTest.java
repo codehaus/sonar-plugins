@@ -30,6 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CombinedAxisTest {
+
   @Test
   public void testGetRank() {
     int[] bLimits = {40, 30, 20, 10, 0};
