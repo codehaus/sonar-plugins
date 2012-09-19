@@ -112,20 +112,22 @@ public class DataMetricsTab {
       Map<String, List<Metric>> domainMetrics = new HashMap<String, List<Metric>>();
 
       for (Metric metric : metrics) {
-        String domain = metric.getDomain();
+        if (metric != null) {
+          String domain = metric.getDomain();
 
-        // Null or empty domain
-        if (domain == null || domain.length() == 0) {
-          domain = "Other";
-        }
+          // Null or empty domain
+          if (domain == null || domain.length() == 0) {
+            domain = "Other";
+          }
 
-        if (domainMetrics.containsKey(domain)) {
-          List<Metric> auxMetrics = domainMetrics.get(domain);
-          auxMetrics.add(metric);
-        } else {
-          List<Metric> auxMetrics = new ArrayList<Metric>();
-          auxMetrics.add(metric);
-          domainMetrics.put(domain, auxMetrics);
+          if (domainMetrics.containsKey(domain)) {
+            List<Metric> auxMetrics = domainMetrics.get(domain);
+            auxMetrics.add(metric);
+          } else {
+            List<Metric> auxMetrics = new ArrayList<Metric>();
+            auxMetrics.add(metric);
+            domainMetrics.put(domain, auxMetrics);
+          }
         }
       }
 
@@ -264,7 +266,7 @@ public class DataMetricsTab {
          * @return
          */
         public final int compare(MetricTab mTab1, MetricTab mTab2) {
-          return mTab1.getName().compareTo(mTab2.getName());
+          return mTab1.getName().compareToIgnoreCase(mTab2.getName());
         }
       });
 
