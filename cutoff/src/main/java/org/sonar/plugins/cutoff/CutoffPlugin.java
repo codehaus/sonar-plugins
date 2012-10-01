@@ -17,38 +17,29 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.cutoff;
 
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.PropertyType;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-    @Property(key=CutoffConstants.DATE_PROPERTY, name="Cutoff date",
-        description = "Only source files updated after this date are analyzed. Format is yyyy-MM-dd, for example 2010-12-25.",
-        global = true, project = true, module = true),
-    @Property(key=CutoffConstants.PERIOD_IN_DAYS_PROPERTY, name="Cutoff period",
-        description = "Only source files updated during the last X days are analyzed. For example, the value '7' means " +
-            "that all the files updated before the last week are excluded from analysis. This property is ignored if " + CutoffConstants.DATE_PROPERTY + " is defined.", 
-        global = true, project = true, module = true)
+  @Property(
+    key = CutoffConstants.DATE_PROPERTY,
+    name = "Cutoff date",
+    description = "Only source files updated after this date are analyzed. Format is yyyy-MM-dd, for example 2010-12-25.",
+    global = true, project = true, module = true),
+  @Property(key = CutoffConstants.PERIOD_IN_DAYS_PROPERTY, name = "Cutoff period",
+    description = "Only source files updated during the last X days are analyzed. For example, the value '7' means " +
+      "that all the files updated before the last week are excluded from analysis. This property is ignored if " + CutoffConstants.DATE_PROPERTY + " is defined.",
+    type = PropertyType.INTEGER,
+    global = true, project = true, module = true)
 })
-public final class CutoffPlugin implements Plugin {
-
-  public String getKey() {
-    return "cutoff";
-  }
-
-  public String getName() {
-    return "Cutoff";
-  }
-
-  public String getDescription() {
-    return "";
-  }
+public final class CutoffPlugin extends SonarPlugin {
 
   public List getExtensions() {
     return Arrays.asList(CutoffFilter.class);

@@ -57,7 +57,7 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.3</sonar.version>
+    <sonar.version>3.0</sonar.version>
     <sonar.pluginName>Cutoff</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.cutoff.CutoffPlugin</sonar.pluginClass>
   </properties>

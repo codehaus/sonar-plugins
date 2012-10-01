@@ -20,12 +20,9 @@
 
 package org.sonar.plugins.cutoff;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 import org.sonar.api.utils.SonarException;
-import org.sonar.plugins.cutoff.CutoffConstants;
-import org.sonar.plugins.cutoff.CutoffFilter;
 
 import java.io.File;
 
@@ -38,30 +35,40 @@ import static org.junit.Assert.assertThat;
 public class CutoffFilterTest {
   @Test
   public void shouldParseDate() {
-    Configuration conf = new PropertiesConfiguration();
-    conf.setProperty(CutoffConstants.DATE_PROPERTY, "2009-05-18");
-    assertThat(new CutoffFilter(conf).getCutoffDate().getDate(), is(18));
+    Settings settings = new Settings();
+    settings.setProperty(CutoffConstants.DATE_PROPERTY, "2009-05-18");
+
+    CutoffFilter filter = new CutoffFilter(settings);
+    filter.start();
+
+    assertThat(filter.getCutoffDate().getDate(), is(18));
   }
 
-  @Test(expected= SonarException.class)
+  @Test(expected = SonarException.class)
   public void shouldFailIfDateIsBadlyFormed() {
-    Configuration conf = new PropertiesConfiguration();
-    conf.setProperty(CutoffConstants.DATE_PROPERTY, "2009/18/05");
-    new CutoffFilter(conf);
+    Settings settings = new Settings();
+    settings.setProperty(CutoffConstants.DATE_PROPERTY, "2009/18/05");
+
+    new CutoffFilter(settings).start();
   }
 
   @Test
   public void shouldUsePeriodIfDateIsNotSet() {
-    Configuration conf = new PropertiesConfiguration();
-    conf.setProperty(CutoffConstants.PERIOD_IN_DAYS_PROPERTY, "10");
-    assertThat(new CutoffFilter(conf).getCutoffDate().getTime(), greaterThan(System.currentTimeMillis() - 11 * 24 * 60 * 60 * 1000));
-    assertThat(new CutoffFilter(conf).getCutoffDate().getTime(), lessThan(System.currentTimeMillis() - 9 * 24 * 60 * 60 * 1000));
+    Settings settings = new Settings();
+    settings.setProperty(CutoffConstants.PERIOD_IN_DAYS_PROPERTY, "10");
+
+    CutoffFilter filter = new CutoffFilter(settings);
+    filter.start();
+
+    assertThat(filter.getCutoffDate().getTime(), greaterThan(System.currentTimeMillis() - 11 * 24 * 60 * 60 * 1000));
+    assertThat(filter.getCutoffDate().getTime(), lessThan(System.currentTimeMillis() - 9 * 24 * 60 * 60 * 1000));
   }
 
   @Test
   public void shouldBeInactiveIfNoCutoffDate() {
-    Configuration conf = new PropertiesConfiguration();
-    CutoffFilter filter = new CutoffFilter(conf);
+    Settings settings = new Settings();
+    CutoffFilter filter = new CutoffFilter(settings);
+    filter.start();
     assertThat(filter.getCutoffDate(), nullValue());
     assertThat(filter.accept(new File("pom.xml")), is(true));
   }
