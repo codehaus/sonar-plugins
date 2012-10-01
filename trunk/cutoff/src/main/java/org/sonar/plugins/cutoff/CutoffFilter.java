@@ -17,15 +17,15 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.cutoff;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.FileFilter;
-import org.sonar.api.utils.Logs;
+import org.sonar.api.config.Settings;
 import org.sonar.api.utils.SonarException;
 
 import java.io.File;
@@ -35,42 +35,37 @@ import java.util.Date;
 
 public final class CutoffFilter extends FileFilter {
 
+  private Settings settings;
   private Date cutoffDate = null;
 
-  public CutoffFilter(Configuration conf) {
-    if (!parseDate(conf)) {
-      parsePeriod(conf);
+  public CutoffFilter(Settings settings) {
+    this.settings = settings;
+  }
+
+  public void start() {
+    String property = settings.getString(CutoffConstants.DATE_PROPERTY);
+    if (StringUtils.isNotBlank(property)) {
+      try {
+        cutoffDate = new SimpleDateFormat(CutoffConstants.DATE_FORMAT).parse(property);
+      } catch (ParseException e) {
+        throw new SonarException(
+          "The parameter " + CutoffConstants.DATE_PROPERTY + " is badly formed ('" + property + "'). Format is " + CutoffConstants.DATE_FORMAT, e);
+      }
+    } else {
+      property = settings.getString(CutoffConstants.PERIOD_IN_DAYS_PROPERTY);
+      if (StringUtils.isNotBlank(property)) {
+        cutoffDate = new Date(System.currentTimeMillis() - Long.parseLong(property) * 24 * 60 * 60 * 1000);
+      }
     }
     logConfiguration();
   }
 
-  boolean parseDate(Configuration conf) {
-    String property = conf.getString(CutoffConstants.DATE_PROPERTY);
-    if (StringUtils.isNotBlank(property)) {
-      try {
-        cutoffDate = new SimpleDateFormat(CutoffConstants.DATE_FORMAT).parse(property);
-        return true;
-
-      } catch (ParseException e) {
-        throw new SonarException(
-            "The parameter " + CutoffConstants.DATE_PROPERTY + " is badly formed ('" + property + "'). Format is " + CutoffConstants.DATE_FORMAT, e);
-      }
-    }
-    return false;
-  }
-
-  void parsePeriod(Configuration conf) {
-    String property = conf.getString(CutoffConstants.PERIOD_IN_DAYS_PROPERTY);
-    if (StringUtils.isNotBlank(property)) {
-      cutoffDate = new Date(System.currentTimeMillis() - Long.parseLong(property) * 24 * 60 * 60 * 1000);
-    }
-  }
-
-  void logConfiguration() {
+  private void logConfiguration() {
+    Logger logger = LoggerFactory.getLogger(CutoffFilter.class);
     if (cutoffDate != null) {
-      Logs.INFO.info("Cutoff date: " + DateFormatUtils.ISO_DATETIME_FORMAT.format(cutoffDate));
+      logger.info("Cutoff date: " + DateFormatUtils.ISO_DATETIME_FORMAT.format(cutoffDate));
     } else {
-      Logs.INFO.info("Cutoff date not set");
+      logger.info("Cutoff date not set");
     }
   }
 
