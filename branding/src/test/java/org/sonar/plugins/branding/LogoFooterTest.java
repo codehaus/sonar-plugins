@@ -83,4 +83,22 @@ public class LogoFooterTest {
     assertThat(html, containsString("http://example.org/"));
   }
 
+  @Test
+  public void shouldSetImageHeight() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://images.example.org/logo.png");
+    conf.setProperty(BrandingPlugin.IMAGE_HEIGHT, 20);
+    String html = footer.getHtml();
+    assertThat(html, containsString("height"));
+    assertThat(html, containsString("20"));
+  }
+  
+  @Test
+  public void shouldSetImageWieght() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://images.example.org/logo.png");
+    conf.setProperty(BrandingPlugin.IMAGE_WIDTH, 80);
+    String html = footer.getHtml();
+    assertThat(html, containsString("width"));
+    assertThat(html, containsString("80"));
+  }
+
 }
