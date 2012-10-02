@@ -17,46 +17,30 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.artifactsize;
 
-import org.sonar.api.Extension;
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-    @Property(
-        key = ArtifactSizePlugin.ARTIFACT_PATH,
-        name = "Path of the project artifact",
-        project = true,
-        module = true,
-        global = false
-    )
+  @Property(
+    key = ArtifactSizePlugin.ARTIFACT_PATH,
+    name = "Path to the project artifact",
+    project = true,
+    module = true,
+    global = false
+  )
 })
+public class ArtifactSizePlugin extends SonarPlugin {
 
-public class ArtifactSizePlugin implements Plugin {
-
-  public static final String KEY = "artifactsize";
   public static final String ARTIFACT_PATH = "sonar.artifact.path";
 
-  public String getDescription() {
-    return "Monitor project artifact size";
-  }
-
-  public List<Class<? extends Extension>> getExtensions() {
+  public List getExtensions() {
     return Arrays.asList(ArtifactSizeMetrics.class, ArtifactSizeSensor.class, ArtifactSizeWidget.class);
-  }
-
-  public String getKey() {
-    return KEY;
-  }
-
-  public String getName() {
-    return "Artifact Size";
   }
 
 }

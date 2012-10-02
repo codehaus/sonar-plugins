@@ -20,22 +20,28 @@
 
 package org.sonar.plugins.artifactsize;
 
-import java.io.File;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.maven.project.MavenProject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.maven.project.MavenProject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 
+import java.io.File;
+
 public class ArtifactSizeSensor implements Sensor {
+
+  private final Settings settings;
+
+  public ArtifactSizeSensor(Settings settings) {
+    this.settings = settings;
+  }
 
   @DependedUpon
   public Metric generatesArtifactSize() {
@@ -50,7 +56,7 @@ public class ArtifactSizeSensor implements Sensor {
   }
 
   public void analyse(Project project, SensorContext context) {
-    File file = searchArtifactFile(project.getPom(), project.getFileSystem(), project.getConfiguration());
+    File file = searchArtifactFile(project.getPom(), project.getFileSystem());
 
     final Logger logger = LoggerFactory.getLogger(ArtifactSizeSensor.class);
     if (file == null || !file.exists()) {
@@ -64,9 +70,9 @@ public class ArtifactSizeSensor implements Sensor {
     }
   }
 
-  protected File searchArtifactFile(MavenProject pom, ProjectFileSystem fileSystem, Configuration configuration) {
+  protected File searchArtifactFile(MavenProject pom, ProjectFileSystem fileSystem) {
     File file = null;
-    String artifactPath = configuration.getString(ArtifactSizePlugin.ARTIFACT_PATH);
+    String artifactPath = settings.getString(ArtifactSizePlugin.ARTIFACT_PATH);
 
     if (StringUtils.isNotEmpty(artifactPath)) {
       file = buildPathFromConfig(fileSystem, artifactPath);
