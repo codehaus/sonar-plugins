@@ -38,6 +38,11 @@
       <name>Julien HENRY</name>
       <timezone>+1</timezone>
     </developer>
+    <developer>
+      <id>ppapapetrou</id>
+      <name>Patroklos PAPAPETROU</name>
+      <timezone>+3</timezone>
+    </developer>
   </developers>
 
   <scm>
