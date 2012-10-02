@@ -40,6 +40,14 @@ public class LogoFooter implements Footer {
     return configuration.getString(BrandingPlugin.IMAGE_PROPERTY, "");
   }
 
+  private Integer getImageWidth() {
+    return configuration.getInt(BrandingPlugin.IMAGE_WIDTH, 0);
+  }
+  
+  private Integer getImageHeight() {
+    return configuration.getInt(BrandingPlugin.IMAGE_HEIGHT, 0);
+  }
+
   private String getLinkUrl() {
     return configuration.getString(BrandingPlugin.LINK_PROPERTY, "");
   }
@@ -58,6 +66,9 @@ public class LogoFooter implements Footer {
 
   public String getHtml() {
     String imageUrl = getImageUrl();
+    Integer imageHeight = getImageHeight();
+    Integer imageWidth = getImageWidth();
+
     if (StringUtils.isEmpty(imageUrl)) {
       return "";
     }
@@ -68,6 +79,12 @@ public class LogoFooter implements Footer {
 
     sb.append("        var companyLogo = document.createElement('img');\n");
     sb.append("        companyLogo.setAttribute('src', '").append(imageUrl).append("');\n");
+    if (imageHeight > 0){
+      sb.append("        companyLogo.setAttribute('height', ").append(imageHeight).append(");\n");
+    }
+    if (imageWidth > 0){
+      sb.append("        companyLogo.setAttribute('width', ").append(imageWidth).append(");\n");
+    }
     sb.append("        companyLogo.setAttribute('alt', '');\n");
     sb.append("        companyLogo.setAttribute('title', '');\n");
 

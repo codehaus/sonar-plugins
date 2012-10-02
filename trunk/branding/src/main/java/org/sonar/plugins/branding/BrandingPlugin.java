@@ -30,6 +30,14 @@ import org.sonar.api.SonarPlugin;
   @Property(key = BrandingPlugin.IMAGE_PROPERTY,
     name = "Image URL",
     description = "Example : http://codehaus.org/codehaus-small.gif"),
+  @Property(key = BrandingPlugin.IMAGE_WIDTH,
+    name = "Image width in pixels",
+    description = "Example : 80 - If empty or zero image is displayed in default width",
+    defaultValue = "0"),
+  @Property(key = BrandingPlugin.IMAGE_HEIGHT,
+    name = "Image height in pixels",
+    description = "Example : 80 - If empty or zero image is displayed in default height",
+    defaultValue = "0"),
   @Property(key = BrandingPlugin.LINK_PROPERTY,
     name = "Link URL",
     description = "Example : http://codehaus.org/"),
@@ -39,6 +47,8 @@ import org.sonar.api.SonarPlugin;
 public class BrandingPlugin extends SonarPlugin {
 
   public static final String IMAGE_PROPERTY = "sonar.branding.image";
+  public static final String IMAGE_WIDTH = "sonar.branding.image.width";
+  public static final String IMAGE_HEIGHT = "sonar.branding.image.height";
   public static final String LINK_PROPERTY = "sonar.branding.link";
   public static final String LOGO_LOCATION_PROPERTY = "sonar.branding.logo.location";
 
