@@ -17,7 +17,6 @@
  * License along with Sonar; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.artifactsize;
 
 import org.sonar.api.measures.CoreMetrics;
@@ -27,12 +26,14 @@ import org.sonar.api.measures.Metrics;
 import java.util.Arrays;
 import java.util.List;
 
-public class ArtifactSizeMetrics implements Metrics {
+public final class ArtifactSizeMetrics implements Metrics {
 
-  public final static Metric ARTIFACT_SIZE = new Metric(
-      "artifact-size", "Artifact Size (Kb)", "Artifact Size",
-      Metric.ValueType.FLOAT, Metric.DIRECTION_BETTER, false, CoreMetrics.DOMAIN_SIZE
-  );
+  public final static Metric ARTIFACT_SIZE = new Metric.Builder("artifact-size", "Artifact Size", Metric.ValueType.FLOAT)
+    .setDescription("Artifact Size (Kb)")
+    .setDirection(Metric.DIRECTION_BETTER)
+    .setDomain(CoreMetrics.DOMAIN_SIZE)
+    .setQualitative(false)
+    .create();
 
   public List<Metric> getMetrics() {
     return Arrays.asList(ARTIFACT_SIZE);

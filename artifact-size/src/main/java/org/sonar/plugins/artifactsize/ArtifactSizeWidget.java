@@ -35,6 +35,6 @@ public class ArtifactSizeWidget extends AbstractRubyTemplate implements RubyRail
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/artifactsize/artifactSizeWidget.erb";
+    return "/org/sonar/plugins/artifactsize/widget.html.erb";
   }
 }

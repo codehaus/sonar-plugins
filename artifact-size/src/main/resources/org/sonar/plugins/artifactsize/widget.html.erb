@@ -1,0 +1,10 @@
+<% measure=measure('artifact-size')
+   if measure
+%>
+  <div class="dashbox">
+    <h3>
+    Artifact Size : <%= format_measure(measure, :suffix => ' Kb') %>
+    <%= dashboard_configuration.selected_period? ? format_variation(measure) : trend_icon(measure) -%>
+    </h3>
+  </div>
+<% end %>
