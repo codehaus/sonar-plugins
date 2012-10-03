@@ -19,9 +19,9 @@
 <!--    <module>es</module> -->
 <!--    <module>fr</module> Migrated to Github -->
 <!--    <module>ja</module> -->
-    <module>ru</module>
+<!--    <module>ru</module> -->
     <module>zh</module>
-    <module>pt</module>
+<!--    <module>pt</module> -->
   </modules>
   
   <build>
