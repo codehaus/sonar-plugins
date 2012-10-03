@@ -15,7 +15,7 @@
   <name>L10n</name>
 
   <modules>
-    <module>el</module>
+<!--    <module>el</module> -->
     <module>es</module>
 <!--    <module>fr</module> Migrated to Github -->
     <module>ja</module>
