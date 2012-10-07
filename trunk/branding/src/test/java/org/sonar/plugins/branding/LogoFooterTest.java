@@ -101,4 +101,17 @@ public class LogoFooterTest {
     assertThat(html, containsString("80"));
   }
 
+  @Test(expected=org.apache.commons.configuration.ConversionException.class)
+  public void shouldThrowConversionExceptionIfWidthIsInvalid() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://images.example.org/logo.png");
+    conf.setProperty(BrandingPlugin.IMAGE_WIDTH, "invalid");
+    footer.getHtml();
+  }
+  @Test(expected=org.apache.commons.configuration.ConversionException.class)
+  public void shouldThrowConversionExceptionIfHeightIsInvalid() {
+    conf.setProperty(BrandingPlugin.IMAGE_PROPERTY, "http://images.example.org/logo.png");
+    conf.setProperty(BrandingPlugin.IMAGE_HEIGHT, "invalid");
+    footer.getHtml();
+  }
+
 }
