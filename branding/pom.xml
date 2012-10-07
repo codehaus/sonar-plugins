@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>sonar-branding-plugin</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.4</version>
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Branding Plugin</name>
@@ -46,9 +46,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/branding</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/branding</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-branding-plugin-0.4</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-branding-plugin-0.4</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-branding-plugin-0.4</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
