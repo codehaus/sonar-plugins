@@ -24,8 +24,18 @@ public interface Constants {
   String PLUGIN_KEY = "switchoffviolations";
   String PLUGIN_NAME = "Switch Off Violations";
 
-  // Properties
-  String LOCATION_PARAMETER_KEY = "sonar.switchoffviolations.configFile";
+  // New Properties
+  String PATTERNS_A1_KEY = "sonar.switchoffviolations.a1";
+  String RESOURCE_KEY = "resourceKey";
+  String RULE_KEY = "ruleKey";
+  String LINE_RANGE_KEY = "lineRange";
+  String PATTERNS_A2_KEY = "sonar.switchoffviolations.a2";
+  String REGEXP1 = "regexp1";
+  String REGEXP2 = "regexp2";
+  String PATTERNS_A3_KEY = "sonar.switchoffviolations.a3";
+  String REGEXP = "regexp";
 
+  // Deprecated Properties
+  String LOCATION_PARAMETER_KEY = "sonar.switchoffviolations.configFile";
   String PATTERNS_PARAMETER_KEY = "sonar.switchoffviolations.patterns";
 }
