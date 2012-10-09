@@ -52,7 +52,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.buildVersion>3.0</sonar.buildVersion>
+    <sonar.buildVersion>3.3-SNAPSHOT</sonar.buildVersion>
     <sonar.pluginClass>org.sonar.plugins.switchoffviolations.SwitchOffViolationsPlugin</sonar.pluginClass>
     <sonar.pluginName>Switch Off Violations</sonar.pluginName>
   </properties>

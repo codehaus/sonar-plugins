@@ -80,7 +80,11 @@ public class PatternsInitializer implements BatchExtension {
     List<Pattern> doubleRegexpPatternList = Lists.newArrayList();
     List<Pattern> singleRegexpPatternList = Lists.newArrayList();
 
-    for (Pattern pattern : loadInitialListOfPatterns()) {
+    List<Pattern> patterns = Lists.newArrayList();
+    patterns.addAll(loadPatternsFromNewProperties());
+    patterns.addAll(loadPatternsFromDeprecatedProperties());
+
+    for (Pattern pattern : patterns) {
       if (pattern.getResourcePattern() != null) {
         standardPatternList.add(pattern);
       } else if (pattern.getRegexp2() != null) {
@@ -95,7 +99,44 @@ public class PatternsInitializer implements BatchExtension {
     singleRegexpPatterns = singleRegexpPatternList.toArray(new Pattern[singleRegexpPatternList.size()]);
   }
 
-  private List<Pattern> loadInitialListOfPatterns() {
+  private List<Pattern> loadPatternsFromNewProperties() {
+    List<Pattern> patterns = Lists.newArrayList();
+
+    // Patterns A1
+    String patternConf = StringUtils.defaultIfBlank(settings.getString(Constants.PATTERNS_A1_KEY), "");
+    for (String id : StringUtils.split(patternConf, ',')) {
+      String propPrefix = Constants.PATTERNS_A1_KEY + "." + id + ".";
+      String resourceKeyPattern = settings.getString(propPrefix + Constants.RESOURCE_KEY);
+      String ruleKeyPattern = settings.getString(propPrefix + Constants.RULE_KEY);
+      Pattern pattern = new Pattern(resourceKeyPattern == null ? "*" : resourceKeyPattern, ruleKeyPattern == null ? "*" : ruleKeyPattern);
+      String lineRange = settings.getString(propPrefix + Constants.LINE_RANGE_KEY);
+      PatternDecoder.decodeRangeOfLines(pattern, lineRange == null ? "*" : lineRange);
+      patterns.add(pattern);
+    }
+
+    // Patterns A2
+    patternConf = StringUtils.defaultIfBlank(settings.getString(Constants.PATTERNS_A2_KEY), "");
+    for (String id : StringUtils.split(patternConf, ',')) {
+      String propPrefix = Constants.PATTERNS_A2_KEY + "." + id + ".";
+      String regexp1 = settings.getString(propPrefix + Constants.REGEXP1);
+      String regexp2 = settings.getString(propPrefix + Constants.REGEXP2);
+      Pattern pattern = new Pattern().setRegexp1(regexp1 == null ? "" : regexp1).setRegexp2(regexp2 == null ? "" : regexp2);
+      patterns.add(pattern);
+    }
+
+    // Patterns A3
+    patternConf = StringUtils.defaultIfBlank(settings.getString(Constants.PATTERNS_A3_KEY), "");
+    for (String id : StringUtils.split(patternConf, ',')) {
+      String propPrefix = Constants.PATTERNS_A3_KEY + "." + id + ".";
+      String regexp = settings.getString(propPrefix + Constants.REGEXP);
+      Pattern pattern = new Pattern().setRegexp1(regexp == null ? "" : regexp);
+      patterns.add(pattern);
+    }
+
+    return patterns;
+  }
+
+  private List<Pattern> loadPatternsFromDeprecatedProperties() {
     String patternConf = settings.getString(Constants.PATTERNS_PARAMETER_KEY);
     String fileLocation = settings.getString(Constants.LOCATION_PARAMETER_KEY);
     List<Pattern> list = Lists.newArrayList();

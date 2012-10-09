@@ -112,7 +112,7 @@ public class PatternDecoder {
     }
   }
 
-  private void decodeRangeOfLines(Pattern pattern, String field) {
+  public static void decodeRangeOfLines(Pattern pattern, String field) {
     if (StringUtils.equals(field, "*")) {
       pattern.setCheckLines(false);
     } else {
