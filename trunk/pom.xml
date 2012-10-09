@@ -73,7 +73,6 @@
         <module>ada</module>
         <module>basic-cocomo</module>
         <module>codesize</module>
-        <module>cxx</module>
         <module>debug</module>
         <module>devkit</module>
         <module>doxygen</module>
