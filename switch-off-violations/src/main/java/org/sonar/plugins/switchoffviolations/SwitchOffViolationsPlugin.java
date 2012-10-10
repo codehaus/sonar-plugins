@@ -22,7 +22,6 @@ package org.sonar.plugins.switchoffviolations;
 
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
-import org.sonar.api.PropertyField;
 import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.switchoffviolations.pattern.PatternsInitializer;
@@ -33,66 +32,67 @@ import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-  @Property(
-    key = Constants.PATTERNS_A1_KEY,
-    name = "Exclusion patterns",
-    description = "Patterns used to identify which violations to switch off." +
-      "More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/>",
-    project = true,
-    global = true,
-    fields = {
-      @PropertyField(
-        key = Constants.RESOURCE_KEY,
-        name = "Resource Key Pattern",
-        description = "Pattern used to match resources which should be ignored.",
-        type = PropertyType.STRING,
-        indicativeSize = 20),
-      @PropertyField(
-        key = Constants.RULE_KEY,
-        name = "Rule Key Pattern",
-        description = "Pattern used to match rules which should be ignored.",
-        type = PropertyType.STRING,
-        indicativeSize = 20),
-      @PropertyField(
-        key = Constants.LINE_RANGE_KEY,
-        name = "Line Range",
-        description = "Range of lines that should be ignored.",
-        type = PropertyType.STRING,
-        indicativeSize = 10)}),
-  @Property(
-    key = Constants.PATTERNS_A2_KEY,
-    name = "Exclusion patterns",
-    description = "Patterns used to identify which violations to switch off." +
-      "More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/>",
-    project = true,
-    global = true,
-    fields = {
-      @PropertyField(
-        key = Constants.REGEXP1,
-        name = "Regular Expression #1",
-        description = "If this regular expression is found in a resource, then this resource is ignored.",
-        type = PropertyType.STRING,
-        indicativeSize = 20),
-      @PropertyField(
-        key = Constants.REGEXP2,
-        name = "Regular Expression #2",
-        description = "If specified, this regular expression is used in conjunction with the regexp #1 to determine the limits of code blocks to ignore.",
-        type = PropertyType.STRING,
-        indicativeSize = 20)}),
-  @Property(
-    key = Constants.PATTERNS_A3_KEY,
-    name = "Exclusion patterns",
-    description = "Patterns used to identify which violations to switch off." +
-      "More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/>",
-    project = true,
-    global = true,
-    fields = {
-      @PropertyField(
-        key = Constants.REGEXP,
-        name = "Regular Expression #1",
-        description = "If this regular expression is found in a resource, then this resource is ignored.",
-        type = PropertyType.STRING,
-        indicativeSize = 20)}),
+  // @Property(
+  // key = Constants.PATTERNS_A1_KEY,
+  // name = "Exclusion patterns",
+  // description = "Patterns used to identify which violations to switch off." +
+  // "More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/>",
+  // project = true,
+  // global = true,
+  // fields = {
+  // @PropertyField(
+  // key = Constants.RESOURCE_KEY,
+  // name = "Resource Key Pattern",
+  // description = "Pattern used to match resources which should be ignored.",
+  // type = PropertyType.STRING,
+  // indicativeSize = 20),
+  // @PropertyField(
+  // key = Constants.RULE_KEY,
+  // name = "Rule Key Pattern",
+  // description = "Pattern used to match rules which should be ignored.",
+  // type = PropertyType.STRING,
+  // indicativeSize = 20),
+  // @PropertyField(
+  // key = Constants.LINE_RANGE_KEY,
+  // name = "Line Range",
+  // description = "Range of lines that should be ignored.",
+  // type = PropertyType.STRING,
+  // indicativeSize = 10)}),
+  // @Property(
+  // key = Constants.PATTERNS_A2_KEY,
+  // name = "Exclusion patterns",
+  // description = "Patterns used to identify which violations to switch off." +
+  // "More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/>",
+  // project = true,
+  // global = true,
+  // fields = {
+  // @PropertyField(
+  // key = Constants.REGEXP1,
+  // name = "Regular Expression #1",
+  // description = "If this regular expression is found in a resource, then this resource is ignored.",
+  // type = PropertyType.STRING,
+  // indicativeSize = 20),
+  // @PropertyField(
+  // key = Constants.REGEXP2,
+  // name = "Regular Expression #2",
+  // description =
+  // "If specified, this regular expression is used in conjunction with the regexp #1 to determine the limits of code blocks to ignore.",
+  // type = PropertyType.STRING,
+  // indicativeSize = 20)}),
+  // @Property(
+  // key = Constants.PATTERNS_A3_KEY,
+  // name = "Exclusion patterns",
+  // description = "Patterns used to identify which violations to switch off." +
+  // "More information on the <a href=\"http://docs.codehaus.org/display/SONAR/Switch+Off+Violations+Plugin\">documentation page of the plugin</a>.<br/>",
+  // project = true,
+  // global = true,
+  // fields = {
+  // @PropertyField(
+  // key = Constants.REGEXP,
+  // name = "Regular Expression #1",
+  // description = "If this regular expression is found in a resource, then this resource is ignored.",
+  // type = PropertyType.STRING,
+  // indicativeSize = 20)}),
   @Property(
     key = Constants.PATTERNS_PARAMETER_KEY,
     defaultValue = "",
