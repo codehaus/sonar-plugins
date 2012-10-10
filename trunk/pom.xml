@@ -38,6 +38,7 @@
         <module>parent</module>
         <module>pam</module>
         <module>pdf-report</module>
+        <module>pitest</module>
         <module>piwik</module>
         <module>quality-index</module>
         <module>security-rules</module>
