@@ -97,9 +97,7 @@ import java.util.List;
     key = Constants.PATTERNS_PARAMETER_KEY,
     defaultValue = "",
     name = "Exclusion patterns",
-    description = "Patterns used to identify which violations to switch off.<br/>Each pattern must be defined on a new line. "
-      +
-      "Comments start with #. Blank lines are allowed. A line defines 3 fields: resource key, rule key and range of lines.<br/><br/>"
+    description = "Patterns used to identify which violations to switch off."
       +
       "Example:<br/><pre># exclude a specific rule on a specific file on specific lines\ncom.foo.Bar;pmd:AvoidPrintStackTrace;[10,25,90]</pre>"
       +
