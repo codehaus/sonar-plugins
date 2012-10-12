@@ -1,3 +1,0 @@
-org.foo.Bar;*;*
-org.foo.Hello;checkstyle:MagicNumber;[15-200]
-*;pmd:*;*
