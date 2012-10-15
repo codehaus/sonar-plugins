@@ -25,6 +25,8 @@
         <module>csv-export</module>
         <module>cutoff</module>
         <module>delphi</module>
+        <module>doxygen</module>
+        <module>drools</module>
         <module>emma</module>
         <module>fb-contrib</module>
         <module>google-analytics</module>
@@ -38,7 +40,6 @@
         <module>parent</module>
         <module>pam</module>
         <module>pdf-report</module>
-        <module>pitest</module>
         <module>piwik</module>
         <module>quality-index</module>
         <module>security-rules</module>
@@ -53,6 +54,7 @@
         <module>trac</module>
         <module>useless-code-tracker</module>
         <module>web</module>
+        <module>widget-lab</module>
       </modules>
     </profile>
     <profile>
@@ -75,12 +77,11 @@
         <module>codesize</module>
         <module>debug</module>
         <module>devkit</module>
-        <module>doxygen</module>
-        <module>drools</module>
+        <module>pitest</module>
         <module>scala</module>
+        <module>toxicity-chart</module>
         <module>violation-density</module>
         <module>w3c-markup-validation</module>
-        <module>widget-lab</module>
       </modules>
     </profile>
     <profile>
