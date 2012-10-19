@@ -20,15 +20,16 @@
 
 package org.sonar.plugins.clover;
 
-import org.apache.commons.configuration.Configuration;
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.utils.SonarException;
 import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
 import org.sonar.api.batch.maven.MavenSurefireUtils;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
+import org.sonar.api.utils.SonarException;
 import org.sonar.java.api.JavaUtils;
 
 import java.io.File;
@@ -37,10 +38,10 @@ import java.util.Collection;
 
 public class CloverMavenPluginHandler implements MavenPluginHandler {
 
-  private Configuration conf;
+  private Settings settings;
 
-  public CloverMavenPluginHandler(Configuration conf) {
-    this.conf = conf;
+  public CloverMavenPluginHandler(Settings settings) {
+    this.settings = settings;
   }
 
   public String getGroupId() {
@@ -52,7 +53,7 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String getVersion() {
-    return conf.getString(CloverConstants.VERSION_PROPERTY, CloverConstants.MAVEN_DEFAULT_VERSION);
+    return settings.getString(CloverConstants.VERSION_PROPERTY);
   }
 
   public boolean isFixedVersion() {
@@ -60,7 +61,7 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
   }
 
   public String[] getGoals() {
-    return new String[] { "instrument", "clover" };
+    return new String[] {"instrument", "clover"};
   }
 
   public void configure(Project project, MavenPlugin cloverPlugin) {
@@ -71,13 +72,13 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
 
   private void configureSurefire(Project project, MavenPlugin cloverPlugin) {
     MavenSurefireUtils.configure(project);
-    boolean skipCloverLaunch = project.getConfiguration().getBoolean("maven.clover.skip", false);
+    boolean skipCloverLaunch = settings.getBoolean("maven.clover.skip");
     if (!skipCloverLaunch) {
       String skipInPomConfig = cloverPlugin.getParameter("skip");
       skipCloverLaunch = StringUtils.isNotBlank(skipInPomConfig) ? Boolean.parseBoolean(skipInPomConfig) : false;
     }
-    if (!project.getConfiguration().containsKey(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY) && !skipCloverLaunch) {
-      project.getConfiguration().setProperty(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY,
+    if (!settings.hasKey(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY) && !skipCloverLaunch) {
+      settings.setProperty(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY,
           new File(project.getFileSystem().getBuildDir(), "clover/surefire-reports").getAbsolutePath());
     }
   }
@@ -105,7 +106,7 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
 
   private boolean hasLicense(MavenPlugin cloverPlugin) {
     return StringUtils.isNotBlank(cloverPlugin.getParameter("license"))
-        || StringUtils.isNotBlank(cloverPlugin.getParameter("licenseLocation"));
+      || StringUtils.isNotBlank(cloverPlugin.getParameter("licenseLocation"));
   }
 
   private File writeLicenseToDisk(Project project, String license) {
@@ -129,6 +130,11 @@ public class CloverMavenPluginHandler implements MavenPluginHandler {
       }
     }
     return null;
+  }
+
+  @VisibleForTesting
+  Settings getSettings() {
+    return settings;
   }
 
 }

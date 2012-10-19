@@ -20,9 +20,9 @@
 
 package org.sonar.plugins.clover;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 
 import static org.hamcrest.Matchers.nullValue;
@@ -39,7 +39,7 @@ public class CloverMavenInitializerTest {
   @Before
   public void setUp() {
     project = mock(Project.class);
-    initializer = new CloverMavenInitializer(new CloverMavenPluginHandler(new PropertiesConfiguration()));
+    initializer = new CloverMavenInitializer(new CloverMavenPluginHandler(new Settings()));
   }
 
   @Test
