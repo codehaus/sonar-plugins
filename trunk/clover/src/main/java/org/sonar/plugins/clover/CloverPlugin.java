@@ -28,21 +28,21 @@ import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-    @Property(
-        key = CloverConstants.LICENSE_PROPERTY,
-        name = "License",
-        description = "You can obtain a free 30 day evaluation license or purchase a commercial license at <a href='http://my.atlassian.com'>http://my.atlassian.com</a>.",
-        project = true, global = true),
-    @Property(
-        key = CloverConstants.REPORT_PATH_PROPERTY,
-        name = "Report path",
-        description = "Absolute or relative path to XML report file.",
-        project = true, global = true),
-    @Property(
-        key = CloverConstants.VERSION_PROPERTY,
-        name = "Clover version",
-        description = "Override the Clover version to use. Default value is read from pom, else " + CloverConstants.MAVEN_DEFAULT_VERSION,
-        project = true, global = true)})
+  @Property(
+    key = CloverConstants.LICENSE_PROPERTY,
+    name = "License",
+    description = "You can obtain a free 30 day evaluation license or purchase a commercial license at <a href='http://my.atlassian.com'>http://my.atlassian.com</a>.",
+    project = true, global = true),
+  @Property(
+    key = CloverConstants.REPORT_PATH_PROPERTY,
+    name = "Report path",
+    description = "Absolute or relative path to XML report file.",
+    project = true, global = true),
+  @Property(
+    key = CloverConstants.VERSION_PROPERTY,
+    name = "Clover version",
+    description = "Override the Clover version to use. Default value is read from pom, else " + CloverConstants.MAVEN_DEFAULT_VERSION,
+    project = true, global = true, defaultValue = CloverConstants.MAVEN_DEFAULT_VERSION)})
 public final class CloverPlugin extends SonarPlugin {
 
   public List getExtensions() {
