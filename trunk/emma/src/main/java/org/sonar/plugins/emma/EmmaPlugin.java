@@ -20,48 +20,32 @@
 
 package org.sonar.plugins.emma;
 
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-    @Property(
-        key = EmmaPlugin.REPORT_PATH_PROPERTY,
-        name = "Report file",
-        description = "Path (absolute or relative) of directory where the .ec and the .em Emma files are generated. Do not set value when using default maven settings.",
-        module = true,
-        project = true,
-        global = false
-    )
+  @Property(
+    key = EmmaPlugin.REPORT_PATH_PROPERTY,
+    name = "Report file",
+    description = "Path (absolute or relative) of directory where the .ec and the .em Emma files are generated. Do not set value when using default maven settings.",
+    module = true,
+    project = true,
+    global = false
+  )
 })
-public class EmmaPlugin implements Plugin {
+public class EmmaPlugin extends SonarPlugin {
 
   public static final String REPORT_PATH_PROPERTY = "sonar.emma.reportPath";
   public static final String META_DATA_SUFFIX = ".em";
   public static final String COVERAGE_DATA_SUFFIX = ".ec";
-
-  public String getKey() {
-    return "emma";
-  }
-
-  public String getName() {
-    return "Emma";
-  }
-
-  public String getDescription() {
-    return "<a href='http://emma.sourceforge.net'>Emma</a> calculates coverage of unit tests." +
-        " Set the parameter 'Code coverage plugin' to <code>emma</code> in the General plugin.";
-  }
+  public static final String JAVA_LANGUAGE_KEY = "java";
 
   public List getExtensions() {
     return Arrays.asList(EmmaMavenInitializer.class, EmmaMavenPluginHandler.class, EmmaSensor.class);
   }
 
-  @Override
-  public String toString() {
-    return getKey();
-  }
 }

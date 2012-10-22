@@ -20,18 +20,21 @@
 
 package org.sonar.plugins.emma;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.resources.Project;
-import org.sonar.api.utils.Logs;
 
 import java.io.File;
 
 public class EmmaSensor implements Sensor, CoverageExtension {
 
+  private final static Logger LOGGER = LoggerFactory.getLogger(EmmaSensor.class);
+
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getFileSystem().hasJavaSourceFiles();
+    return !project.getFileSystem().mainFiles(EmmaPlugin.JAVA_LANGUAGE_KEY).isEmpty();
   }
 
   public void analyse(Project project, SensorContext context) {
@@ -42,7 +45,7 @@ public class EmmaSensor implements Sensor, CoverageExtension {
     }
     File reportsPath = project.getFileSystem().resolvePath(path);
     if (!reportsPath.exists() || !reportsPath.isDirectory()) {
-      Logs.INFO.warn("Emma reports not found in {}", reportsPath);
+      LOGGER.warn("Emma reports not found in {}", reportsPath);
       return;
     }
 
