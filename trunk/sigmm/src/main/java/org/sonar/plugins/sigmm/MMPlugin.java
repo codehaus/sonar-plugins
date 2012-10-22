@@ -21,6 +21,7 @@
 package org.sonar.plugins.sigmm;
 
 import org.sonar.api.Extension;
+import org.sonar.api.SonarPlugin;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 
@@ -30,14 +31,7 @@ import java.util.List;
 /**
  * {@inheritDoc}
  */
-public final class MMPlugin implements org.sonar.api.Plugin {
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getDescription() {
-    return "Calculates Maintainability Index";
-  }
+public final class MMPlugin extends SonarPlugin {
 
   /**
    * {@inheritDoc}
@@ -50,20 +44,6 @@ public final class MMPlugin implements org.sonar.api.Plugin {
     list.add(MMWidget.class);
 
     return list;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getKey() {
-    return "sigmm";
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getName() {
-    return "SIG Maintainability Model";
   }
 
   protected static boolean shouldPersistMeasures(Resource resource) {

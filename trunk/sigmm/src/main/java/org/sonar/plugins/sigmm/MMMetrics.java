@@ -30,21 +30,55 @@ import java.util.List;
  * {@inheritDoc}
  */
 public final class MMMetrics implements org.sonar.api.measures.Metrics {
-  public static final Metric ANALYSABILITY = new Metric("sigmm-analysability", "Analysability Value",
-      "Analysability in an interval of [--, ++]", Metric.ValueType.INT, 1, true, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric CHANGEABILITY = new Metric("sigmm-changeability", "Changeability Value",
-      "Changeability in an interval of [--, ++]", Metric.ValueType.INT, 1, true, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric TESTABILITY = new Metric("sigmm-testability", "Testability Value", "Testability in an interval of [--, ++]",
-      Metric.ValueType.INT, 1, true, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric STABILITY = new Metric("sigmm-stability", "Stability Value", "Stability in an interval of [--, ++]",
-      Metric.ValueType.INT, 1, true, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric MAINTAINABILIY = new Metric("sigmm-maintainability", "SIG MM", "Maintainability in an interval of [--, ++]",
-      Metric.ValueType.INT, 1, true, CoreMetrics.DOMAIN_GENERAL);
 
-  public static final Metric NCLOC_BY_CC_DISTRIB = new Metric("sigmm-ncloc-by-cc", "SIG NCLOC by CC",
-      "Repartition of the ncloc on cc range", Metric.ValueType.DISTRIB, -1, false, CoreMetrics.DOMAIN_GENERAL);
-  public static final Metric NCLOC_BY_NCLOC_DISTRIB = new Metric("sigmm-ncloc-by-ncloc", "SIG NCLOC by CC",
-      "Repartition of the ncloc on ncloc range", Metric.ValueType.DISTRIB, -1, false, CoreMetrics.DOMAIN_GENERAL);
+  public static final Metric ANALYSABILITY = new Metric.Builder("sigmm-analysability", "Analysability Value", Metric.ValueType.INT)
+      .setDescription("Analysability in an interval of [--, ++]")
+      .setDirection(Metric.DIRECTION_BETTER)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
+
+  public static final Metric CHANGEABILITY = new Metric.Builder("sigmm-changeability", "Changeability Value", Metric.ValueType.INT)
+      .setDescription("Changeability in an interval of [--, ++]")
+      .setDirection(Metric.DIRECTION_BETTER)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
+
+  public static final Metric TESTABILITY = new Metric.Builder("sigmm-testability", "Testability Value", Metric.ValueType.INT)
+      .setDescription("Testability in an interval of [--, ++]")
+      .setDirection(Metric.DIRECTION_BETTER)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
+
+  public static final Metric STABILITY = new Metric.Builder("sigmm-stability", "Stability Value", Metric.ValueType.INT)
+      .setDescription("Stability in an interval of [--, ++]")
+      .setDirection(Metric.DIRECTION_BETTER)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
+
+  public static final Metric MAINTAINABILIY = new Metric.Builder("sigmm-maintainability", "SIG MM", Metric.ValueType.INT)
+      .setDescription("Maintainability in an interval of [--, ++]")
+      .setDirection(Metric.DIRECTION_BETTER)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
+
+  public static final Metric NCLOC_BY_CC_DISTRIB = new Metric.Builder("sigmm-ncloc-by-cc", "SIG NCLOC by CC", Metric.ValueType.DISTRIB)
+      .setDescription("Repartition of the ncloc on cc range")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
+
+  public static final Metric NCLOC_BY_NCLOC_DISTRIB = new Metric.Builder("sigmm-ncloc-by-ncloc", "SIG NCLOC by NCLOC", Metric.ValueType.DISTRIB)
+      .setDescription("Repartition of the ncloc on ncloc range")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
 
   /**
    * {@inheritDoc}
