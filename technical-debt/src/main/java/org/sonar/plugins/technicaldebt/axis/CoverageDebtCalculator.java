@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
@@ -41,8 +41,8 @@ public final class CoverageDebtCalculator extends AxisDebtCalculator {
   /**
    * {@inheritDoc}
    */
-  public CoverageDebtCalculator(Configuration configuration) {
-    super(configuration);
+  public CoverageDebtCalculator(Settings settings) {
+    super(settings);
   }
 
   /**
@@ -60,7 +60,8 @@ public final class CoverageDebtCalculator extends AxisDebtCalculator {
     double gap = (COVERAGE_TARGET - coverage.getValue() / 100) * complexity.getValue();
 
     // technicaldebt is calculate in man days
-    return (gap > 0.0 ? gap : 0.0) * configuration.getDouble(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return (gap > 0.0 ? gap : 0.0) * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY)) / HOURS_PER_DAY;
   }
 
   /**
@@ -74,7 +75,9 @@ public final class CoverageDebtCalculator extends AxisDebtCalculator {
     }
 
     // technicaldebt is calculate in man days
-    return COVERAGE_TARGET * complexity.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY, TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return COVERAGE_TARGET * complexity.getValue() * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY))
+      / HOURS_PER_DAY;
   }
 
   /**

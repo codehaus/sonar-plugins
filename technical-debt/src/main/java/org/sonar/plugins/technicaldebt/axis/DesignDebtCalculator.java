@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
@@ -33,8 +33,8 @@ import java.util.List;
 
 public final class DesignDebtCalculator extends AxisDebtCalculator {
 
-  public DesignDebtCalculator(Configuration configuration) {
-    super(configuration);
+  public DesignDebtCalculator(Settings settings) {
+    super(settings);
   }
 
   @Override
@@ -44,7 +44,8 @@ public final class DesignDebtCalculator extends AxisDebtCalculator {
       return 0.0;
     }
     // technicaldebt is calculated in man days
-    return measure.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_CYCLE, TechnicalDebtPlugin.COST_CYCLE_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return measure.getValue() * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_CYCLE)) / HOURS_PER_DAY;
   }
 
   @Override
@@ -53,7 +54,8 @@ public final class DesignDebtCalculator extends AxisDebtCalculator {
     if (!MeasureUtils.hasValue(measure)) {
       return 0.0;
     }
-    return measure.getValue() / 2 * configuration.getDouble(TechnicalDebtPlugin.COST_CYCLE, TechnicalDebtPlugin.COST_CYCLE_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return measure.getValue() / 2 * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_CYCLE)) / HOURS_PER_DAY;
   }
 
   @Override

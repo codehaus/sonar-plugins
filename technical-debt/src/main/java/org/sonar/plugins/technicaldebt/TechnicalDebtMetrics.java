@@ -32,55 +32,41 @@ import java.util.List;
  */
 public final class TechnicalDebtMetrics implements Metrics {
 
-  public static final Metric TECHNICAL_DEBT = new Metric(
-      "technical_debt",
-      "Technical Debt ($)",
-      "Technical debt ($)",
-      Metric.ValueType.INT,
-      Metric.DIRECTION_WORST,
-      false,
-      CoreMetrics.DOMAIN_GENERAL
-  );
+  public static final Metric TECHNICAL_DEBT = new Metric.Builder("technical_debt", "Technical Debt ($)", Metric.ValueType.INT)
+      .setDescription("Technical debt ($)")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
 
-  public static final Metric TECHNICAL_DEBT_RATIO = new Metric(
-      "technical_debt_ratio",
-      "Technical Debt ratio",
-      "This is the debt ratio",
-      Metric.ValueType.PERCENT,
-      Metric.DIRECTION_WORST,
-      true,
-      CoreMetrics.DOMAIN_GENERAL
-  );
+  public static final Metric TECHNICAL_DEBT_RATIO = new Metric.Builder("technical_debt_ratio", "Technical Debt ratio", Metric.ValueType.PERCENT)
+      .setDescription("This is the debt ratio")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(true)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
 
-  public static final Metric TECHNICAL_DEBT_DAYS = new Metric(
-      "technical_debt_days",
-      "Technical Debt in days",
-      "This is the technical debt of the component in man days",
-      Metric.ValueType.INT,
-      Metric.DIRECTION_WORST,
-      false,
-      CoreMetrics.DOMAIN_GENERAL
-  );
+  public static final Metric TECHNICAL_DEBT_DAYS = new Metric.Builder("technical_debt_days", "Technical Debt in days", Metric.ValueType.INT)
+      .setDescription("This is the technical debt of the component in man days")
+      .setDirection(Metric.DIRECTION_WORST)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
 
-  public static final Metric TECHNICAL_DEBT_REPARTITION = new Metric(
-      "technical_debt_repart",
-      "Technical debt repartition",
-      "This is the detail of the technical debt",
-      Metric.ValueType.DISTRIB,
-      Metric.DIRECTION_NONE,
-      false,
-      CoreMetrics.DOMAIN_GENERAL
-  );
+  public static final Metric TECHNICAL_DEBT_REPARTITION = new Metric.Builder("technical_debt_repart", "Technical debt repartition", Metric.ValueType.DISTRIB)
+      .setDescription("This is the detail of the technical debt")
+      .setDirection(Metric.DIRECTION_NONE)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .create();
 
-  public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric(
-      "technical_debt_complexity",
-      "Technical debt complexity",
-      "This is the technical debt of methods and classes above thresholds",
-      Metric.ValueType.FLOAT,
-      Metric.DIRECTION_NONE,
-      false,
-      CoreMetrics.DOMAIN_GENERAL
-  ).setHidden(true);
+  public static final Metric TECHNICAL_DEBT_COMPLEXITY = new Metric.Builder("technical_debt_complexity", "Technical debt complexity", Metric.ValueType.FLOAT)
+      .setDescription("This is the technical debt of methods and classes above thresholds")
+      .setDirection(Metric.DIRECTION_NONE)
+      .setQualitative(false)
+      .setDomain(CoreMetrics.DOMAIN_GENERAL)
+      .setHidden(true)
+      .create();
 
   /**
    * {@inheritDoc}
@@ -92,6 +78,6 @@ public final class TechnicalDebtMetrics implements Metrics {
         TECHNICAL_DEBT_REPARTITION,
         TECHNICAL_DEBT_RATIO,
         TECHNICAL_DEBT_COMPLEXITY
-    );
+        );
   }
 }

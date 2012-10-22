@@ -26,9 +26,7 @@ import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
 
 public class StrutsIT {
@@ -54,10 +52,9 @@ public class StrutsIT {
 
   @Test
   public void projectsMetrics() {
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), 
-        is("Comments=4.68;Complexity=12.63;Coverage=32.63;Design=3.49;Duplication=29.87;Violations=16.66")        
-    );
-    
+    assertThat(getProjectMeasure("technical_debt_repart").getData(),
+        is("Comments=4.68;Complexity=12.63;Coverage=32.63;Design=3.49;Duplication=29.87;Violations=16.66"));
+
     assertThat(getProjectMeasure("technical_debt").getValue(), is(278655.3));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(22.7));
     assertThat(getProjectMeasure("technical_debt_days").getValue(), is(557.3));
@@ -65,7 +62,7 @@ public class StrutsIT {
 
   @Test
   public void modulesMetrics() {
-    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(), 
+    assertThat(getCoreModuleMeasure("technical_debt_repart").getData(),
         is("Comments=10.15;Complexity=20.72;Coverage=34.71;Design=14.45;Duplication=1.2;Violations=18.74"));
     assertThat(getCoreModuleMeasure("technical_debt").getValue(), is(62265.1));
     assertThat(getCoreModuleMeasure("technical_debt_ratio").getValue(), is(17.4));

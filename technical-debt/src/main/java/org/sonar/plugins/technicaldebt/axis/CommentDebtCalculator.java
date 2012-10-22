@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
@@ -39,8 +39,8 @@ public final class CommentDebtCalculator extends AxisDebtCalculator {
   /**
    * {@inheritDoc}
    */
-  public CommentDebtCalculator(Configuration configuration) {
-    super(configuration);
+  public CommentDebtCalculator(Settings settings) {
+    super(settings);
   }
 
   /**
@@ -63,7 +63,8 @@ public final class CommentDebtCalculator extends AxisDebtCalculator {
     if (!MeasureUtils.hasValue(measure)) {
       return 0.0;
     }
-    return measure.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_UNDOCUMENTED_API, TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getFloat() ?
+    return measure.getValue() * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_UNDOCUMENTED_API)) / HOURS_PER_DAY;
   }
 
   /**

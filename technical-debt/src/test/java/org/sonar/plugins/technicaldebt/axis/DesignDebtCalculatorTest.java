@@ -20,10 +20,11 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.PropertyDefinitions;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
@@ -31,7 +32,8 @@ import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class DesignDebtCalculatorTest {
   private DecoratorContext context;
@@ -39,9 +41,8 @@ public class DesignDebtCalculatorTest {
 
   @Before
   public void setUp() throws Exception {
-    Configuration configuration = mock(Configuration.class);
-    when(configuration.getDouble(anyString(), anyDouble())).thenReturn(TechnicalDebtPlugin.COST_CYCLE_DEFVAL);
-    calculator = new DesignDebtCalculator(configuration);
+    Settings settings = new Settings(new PropertyDefinitions(TechnicalDebtPlugin.class));
+    calculator = new DesignDebtCalculator(settings);
     context = mock(DecoratorContext.class);
   }
 

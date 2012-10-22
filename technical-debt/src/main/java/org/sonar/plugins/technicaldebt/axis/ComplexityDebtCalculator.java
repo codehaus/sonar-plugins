@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
@@ -41,8 +41,8 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
 
   private boolean isJava;
 
-  public ComplexityDebtCalculator(Configuration configuration, Project project) {
-    super(configuration);
+  public ComplexityDebtCalculator(Settings settings, Project project) {
+    super(settings);
     isJava = Java.INSTANCE.equals(project.getLanguage());
   }
 
@@ -57,8 +57,11 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
     Measure classes = context.getMeasure((isJava ? CoreMetrics.CLASSES : CoreMetrics.FILES));
     Measure functions = context.getMeasure(CoreMetrics.FUNCTIONS);
 
-    double debt = MeasureUtils.hasValue(classes) ? classes.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_CLASS_COMPLEXITY, TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL) : 0;
-    debt += MeasureUtils.hasValue(functions) ? functions.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_METHOD_COMPLEXITY, TechnicalDebtPlugin.COST_METHOD_COMPLEXITY_DEFVAL) : 0;
+    // FIXME Why no settings.getDouble() ?
+    double debt = MeasureUtils.hasValue(classes) ? classes.getValue()
+      * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_CLASS_COMPLEXITY)) : 0;
+    debt += MeasureUtils.hasValue(functions) ? functions.getValue()
+      * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_METHOD_COMPLEXITY)) : 0;
 
     // technicaldebt is calculated in man days
     return debt / HOURS_PER_DAY;

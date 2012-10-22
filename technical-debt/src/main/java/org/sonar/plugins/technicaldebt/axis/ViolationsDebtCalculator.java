@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
@@ -35,8 +35,8 @@ import java.util.List;
  * {@inheritDoc}
  */
 public final class ViolationsDebtCalculator extends AxisDebtCalculator {
-  public ViolationsDebtCalculator(Configuration configuration) {
-    super(configuration);
+  public ViolationsDebtCalculator(Settings settings) {
+    super(settings);
   }
 
   /**
@@ -50,10 +50,11 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
     Measure mInfoViolations = context.getMeasure(CoreMetrics.INFO_VIOLATIONS);
 
     double violations = (MeasureUtils.hasValue(mViolations) ? mViolations.getValue() : 0.0)
-        - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
+      - (MeasureUtils.hasValue(mInfoViolations) ? mInfoViolations.getValue() : 0.0);
 
     // technicaldebt is calculate in man days
-    return violations * configuration.getDouble(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return violations * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_VIOLATION)) / HOURS_PER_DAY;
   }
 
   /**
@@ -75,11 +76,13 @@ public final class ViolationsDebtCalculator extends AxisDebtCalculator {
 
     if (violations == 0 || weightedViolations == 0) {
       // In that case, we say that a major violation every 3 lines of code in average means a RCI of 0%
-      return loc / 3 * configuration.getDouble(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFVAL) / HOURS_PER_DAY;
+      // FIXME Why no settings.getDouble() ?
+      return loc / 3 * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_VIOLATION)) / HOURS_PER_DAY;
     }
 
     // Otherwise we calculate based on existing violations
-    return loc / weightedViolations * violations * configuration.getDouble(TechnicalDebtPlugin.COST_VIOLATION, TechnicalDebtPlugin.COST_VIOLATION_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return loc / weightedViolations * violations * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_VIOLATION)) / HOURS_PER_DAY;
   }
 
   private double getValue(DecoratorContext context, Metric metric) {
