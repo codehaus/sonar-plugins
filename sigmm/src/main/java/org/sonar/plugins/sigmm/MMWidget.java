@@ -20,13 +20,22 @@
 
 package org.sonar.plugins.sigmm;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWidget;
 
 /**
  * {@inheritDoc}
  */
-public final class MMWidget extends AbstractDashboardWidget {
+public final class MMWidget extends AbstractRubyTemplate implements RubyRailsWidget {
   protected String getTemplatePath() {
     return "/org/sonar/plugins/sigmm/mm_widget.erb";
+  }
+
+  public String getId() {
+    return "sigmm";
+  }
+
+  public String getTitle() {
+    return "SIG MM";
   }
 }

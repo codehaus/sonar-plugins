@@ -52,18 +52,19 @@ public class AdvancedAxis implements MMAxis {
     if (!MeasureUtils.hasData(measure)) {
       return null;
     }
-    Map<Integer, Integer> map = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
+    Map<Integer, Integer> map = KeyValueFormat.parse(measure.getData(), KeyValueFormat.newIntegerConverter(),
+        KeyValueFormat.newIntegerConverter());
 
-    int[] moderateLimits = { 25, 30, 40, 50 };
-    int[] highLimits = { 0, 5, 10, 15 };
-    int[] veryHighLimits = { 0, 0, 0, 5 };
+    int[] moderateLimits = {25, 30, 40, 50};
+    int[] highLimits = {0, 5, 10, 15};
+    int[] veryHighLimits = {0, 0, 0, 5};
 
     MMRank[] sortedRanks = MMRank.descSortedRanks();
 
     for (int i = 0; i < 4; i++) {
       if (map.get(Integer.valueOf(bottomLimits[2].intValue())) / ncloc * 100 <= moderateLimits[i]
-          && map.get(Integer.valueOf(bottomLimits[1].intValue())) / ncloc * 100 <= highLimits[i]
-          && map.get(Integer.valueOf(bottomLimits[0].intValue())) / ncloc * 100 <= veryHighLimits[i]) {
+        && map.get(Integer.valueOf(bottomLimits[1].intValue())) / ncloc * 100 <= highLimits[i]
+        && map.get(Integer.valueOf(bottomLimits[0].intValue())) / ncloc * 100 <= veryHighLimits[i]) {
         return sortedRanks[i];
       }
     }
