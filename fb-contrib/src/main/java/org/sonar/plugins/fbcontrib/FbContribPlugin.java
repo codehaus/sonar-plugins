@@ -20,24 +20,12 @@
 
 package org.sonar.plugins.fbcontrib;
 
-import org.sonar.api.Plugin;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
 
-public final class FbContribPlugin implements Plugin {
-
-  public String getKey() {
-    return "fbcontrib";
-  }
-
-  public String getName() {
-    return "fb-contrib";
-  }
-
-  public String getDescription() {
-    return "";
-  }
+public final class FbContribPlugin extends SonarPlugin {
 
   public List getExtensions() {
     return Arrays.asList(FbContribRuleRepository.class);
