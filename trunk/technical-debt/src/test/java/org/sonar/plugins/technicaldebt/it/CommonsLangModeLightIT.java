@@ -26,8 +26,6 @@ import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import static junit.framework.Assert.assertNull;
-import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -55,7 +53,7 @@ public class CommonsLangModeLightIT {
     assertThat(getProjectMeasure("technical_debt").getValue(), is(40493.8));
     assertThat(getProjectMeasure("technical_debt_ratio").getValue(), is(10.0));
     assertThat(getProjectMeasure("technical_debt_days").getValue(), is(81.0));
-    assertThat(getProjectMeasure("technical_debt_repart").getData(), 
+    assertThat(getProjectMeasure("technical_debt_repart").getData(),
         is("Complexity=52.55;Design=6.17;Duplication=14.5;Violations=26.76"));
   }
 

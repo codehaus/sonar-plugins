@@ -26,8 +26,6 @@ import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.ResourceQuery;
 
-import static junit.framework.Assert.assertNull;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -67,8 +65,7 @@ public class CommonsCollectionsIT {
   public void packagesMetrics() {
     System.out.println("Coverage is : " + getPackageMeasure("coverage").getValue() + " on package " + PROJECT_COMMONS_COLLECTIONS);
     assertThat(getPackageMeasure("technical_debt_repart").getData(),
-        is("Comments=14.11;Complexity=46.68;Coverage=7.23;Duplication=11.64;Violations=20.32")
-    );
+        is("Comments=14.11;Complexity=46.68;Coverage=7.23;Duplication=11.64;Violations=20.32"));
     assertThat(getPackageMeasure("technical_debt").getValue(), is(25771.6));
     assertThat(getPackageMeasure("technical_debt_ratio").getValue(), is(13.1));
     assertThat(getPackageMeasure("technical_debt_days").getValue(), is(51.5));

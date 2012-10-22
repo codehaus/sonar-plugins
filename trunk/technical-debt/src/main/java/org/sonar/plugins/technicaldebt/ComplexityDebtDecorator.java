@@ -26,7 +26,11 @@ import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
-import org.sonar.api.measures.*;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.MeasureUtils;
+import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
@@ -42,7 +46,8 @@ public final class ComplexityDebtDecorator implements Decorator {
 
   public ComplexityDebtDecorator(Configuration configuration) {
     String complexityConfiguration = configuration.getString(TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS, TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS_DEFVAL);
-    Map<String, Double> complexityLimits = KeyValueFormat.parse(complexityConfiguration, new KeyValueFormat.StringNumberPairTransformer());
+    Map<String, Double> complexityLimits = KeyValueFormat.parse(complexityConfiguration, KeyValueFormat.newStringConverter(),
+        KeyValueFormat.newDoubleConverter());
     classThreshold = (Double) ObjectUtils.defaultIfNull(complexityLimits.get("CLASS"), Double.MAX_VALUE);
     methodThreshold = (Double) ObjectUtils.defaultIfNull(complexityLimits.get("METHOD"), Double.MAX_VALUE);
 

@@ -20,18 +20,18 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Metric;
 
 import java.util.List;
 
 public abstract class AxisDebtCalculator {
-  protected Configuration configuration;
+  protected Settings settings;
   public static final double HOURS_PER_DAY = 8.0;
 
-  public AxisDebtCalculator(Configuration configuration) {
-    this.configuration = configuration;
+  public AxisDebtCalculator(Settings settings) {
+    this.settings = settings;
   }
 
   public abstract double calculateAbsoluteDebt(DecoratorContext context);

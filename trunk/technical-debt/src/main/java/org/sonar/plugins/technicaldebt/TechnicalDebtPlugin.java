@@ -20,63 +20,72 @@
 
 package org.sonar.plugins.technicaldebt;
 
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.PropertyType;
+import org.sonar.api.SonarPlugin;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Properties({
-    @Property(
-        key = TechnicalDebtPlugin.DAILY_RATE,
-        defaultValue = "" + TechnicalDebtPlugin.DAILY_RATE_DEFVAL,
-        name = "Daily rate of a developer (in $)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS,
-        defaultValue = TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS_DEFVAL,
-        name = "Maximum complexity above which component should be broken",
-        global = true,
-        project = true
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_CLASS_COMPLEXITY,
-        defaultValue = "" + TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL,
-        name = "Average time to split a class that has a too high complexity (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_METHOD_COMPLEXITY,
-        defaultValue = "" + TechnicalDebtPlugin.COST_METHOD_COMPLEXITY_DEFVAL,
-        name = "Average time to split a method that has a too high complexity (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS,
-        defaultValue = "" + TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS_DEFVAL,
-        name = "Average time to fix one block duplication block (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_VIOLATION,
-        defaultValue = "" + TechnicalDebtPlugin.COST_VIOLATION_DEFVAL,
-        name = "Average time to fix a coding violation (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY,
-        defaultValue = "" + TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFVAL,
-        name = "Average time to cover complexity of one (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_UNDOCUMENTED_API,
-        defaultValue = "" + TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFVAL,
-        name = "Average time to document 1 API (in hours)"
-    ),
-    @Property(
-        key = TechnicalDebtPlugin.COST_CYCLE,
-        defaultValue = "" + TechnicalDebtPlugin.COST_CYCLE_DEFVAL,
-        name = "Average time to cut a dependency between two files (in hours)"
-    )
+  @Property(
+    key = TechnicalDebtPlugin.DAILY_RATE,
+    defaultValue = "" + TechnicalDebtPlugin.DAILY_RATE_DEFVAL,
+    name = "Daily rate of a developer (in $)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS,
+    defaultValue = TechnicalDebtPlugin.COMPLEXITY_THRESHOLDS_DEFVAL,
+    name = "Maximum complexity above which component should be broken",
+    global = true,
+    project = true
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_CLASS_COMPLEXITY,
+    defaultValue = "" + TechnicalDebtPlugin.COST_CLASS_COMPLEXITY_DEFVAL,
+    name = "Average time to split a class that has a too high complexity (in hours)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_METHOD_COMPLEXITY,
+    defaultValue = "" + TechnicalDebtPlugin.COST_METHOD_COMPLEXITY_DEFVAL,
+    name = "Average time to split a method that has a too high complexity (in hours)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS,
+    defaultValue = "" + TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS_DEFVAL,
+    name = "Average time to fix one block duplication block (in hours)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_VIOLATION,
+    defaultValue = "" + TechnicalDebtPlugin.COST_VIOLATION_DEFVAL,
+    name = "Average time to fix a coding violation (in hours)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY,
+    defaultValue = "" + TechnicalDebtPlugin.COST_UNCOVERED_COMPLEXITY_DEFVAL,
+    name = "Average time to cover complexity of one (in hours)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_UNDOCUMENTED_API,
+    defaultValue = "" + TechnicalDebtPlugin.COST_UNDOCUMENTED_API_DEFVAL,
+    name = "Average time to document 1 API (in hours)",
+    type = PropertyType.FLOAT
+  ),
+  @Property(
+    key = TechnicalDebtPlugin.COST_CYCLE,
+    defaultValue = "" + TechnicalDebtPlugin.COST_CYCLE_DEFVAL,
+    name = "Average time to cut a dependency between two files (in hours)",
+    type = PropertyType.FLOAT
+  )
 })
-public final class TechnicalDebtPlugin implements Plugin {
+public final class TechnicalDebtPlugin extends SonarPlugin {
   public static final String DAILY_RATE = "technicaldebt.daily.rate";
   public static final double DAILY_RATE_DEFVAL = 500.0;
 
@@ -104,14 +113,6 @@ public final class TechnicalDebtPlugin implements Plugin {
   public static final String COMPLEXITY_THRESHOLDS = "technicaldebt.complexity.max";
   public static final String COMPLEXITY_THRESHOLDS_DEFVAL = "CLASS=60;METHOD=8";
 
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getDescription() {
-    return "Calculate the technical debt.";
-  }
-
   /**
    * {@inheritDoc}
    */
@@ -121,20 +122,6 @@ public final class TechnicalDebtPlugin implements Plugin {
         TechnicalDebtDecorator.class,
         TechnicalDebtWidget.class,
         ComplexityDebtDecorator.class
-    );
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getKey() {
-    return "technical-debt";
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public String getName() {
-    return "Technical Debt";
+        );
   }
 }

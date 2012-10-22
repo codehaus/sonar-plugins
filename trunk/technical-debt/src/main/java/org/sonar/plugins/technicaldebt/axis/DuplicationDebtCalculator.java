@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.technicaldebt.axis;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
@@ -40,8 +40,8 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
   /**
    * {@inheritDoc}
    */
-  public DuplicationDebtCalculator(Configuration configuration) {
-    super(configuration);
+  public DuplicationDebtCalculator(Settings settings) {
+    super(settings);
   }
 
   /**
@@ -53,7 +53,8 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
       return 0.0;
     }
     // technicaldebt is calculate in man days
-    return measure.getValue() * configuration.getDouble(TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS, TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS_DEFVAL) / HOURS_PER_DAY;
+    // FIXME Why no settings.getDouble() ?
+    return measure.getValue() * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS)) / HOURS_PER_DAY;
   }
 
   /**
@@ -66,7 +67,8 @@ public final class DuplicationDebtCalculator extends AxisDebtCalculator {
     if (duplicationDensity == 0 && absoluteDebt == 0) {
       return 0;
     } else if (duplicationDensity == 0 || absoluteDebt == 0) {
-      return getValue(context, CoreMetrics.LINES) / NUMBER_OF_LINES_PER_BLOCK * configuration.getDouble(TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS, TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS_DEFVAL) / HOURS_PER_DAY;
+      // FIXME Why no settings.getDouble() ?
+      return getValue(context, CoreMetrics.LINES) / NUMBER_OF_LINES_PER_BLOCK * Double.valueOf(settings.getString(TechnicalDebtPlugin.COST_DUPLICATED_BLOCKS)) / HOURS_PER_DAY;
     }
 
     return absoluteDebt * 100 / duplicationDensity;

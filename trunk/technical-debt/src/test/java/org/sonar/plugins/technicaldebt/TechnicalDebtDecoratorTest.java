@@ -20,9 +20,9 @@
 
 package org.sonar.plugins.technicaldebt;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,7 +36,7 @@ public class TechnicalDebtDecoratorTest {
 
   @Before
   public void setUp() {
-    decorator = new TechnicalDebtDecorator(new PropertiesConfiguration(), new Project("project"));
+    decorator = new TechnicalDebtDecorator(new Settings(), new Project("project"));
   }
 
   @Test

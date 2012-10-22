@@ -21,16 +21,22 @@
 package org.sonar.plugins.technicaldebt;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
-import org.sonar.plugins.technicaldebt.axis.*;
+import org.sonar.plugins.technicaldebt.axis.AxisDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.CommentDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.ComplexityDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.CoverageDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.DesignDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.DuplicationDebtCalculator;
+import org.sonar.plugins.technicaldebt.axis.ViolationsDebtCalculator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,21 +47,21 @@ import java.util.List;
 public final class TechnicalDebtDecorator implements Decorator {
 
   private List<AxisDebtCalculator> axisList;
-  private Configuration configuration;
+  private Settings settings;
 
   /**
    * {@inheritDoc}
    */
-  public TechnicalDebtDecorator(Configuration configuration, Project project) {
-    this.configuration = configuration;
+  public TechnicalDebtDecorator(Settings settings, Project project) {
+    this.settings = settings;
     axisList = Arrays.asList(
-        new CommentDebtCalculator(configuration),
-        new ComplexityDebtCalculator(configuration, project),
-        new CoverageDebtCalculator(configuration),
-        new DuplicationDebtCalculator(configuration),
-        new ViolationsDebtCalculator(configuration),
-        new DesignDebtCalculator(configuration)
-    );
+        new CommentDebtCalculator(settings),
+        new ComplexityDebtCalculator(settings, project),
+        new CoverageDebtCalculator(settings),
+        new DuplicationDebtCalculator(settings),
+        new ViolationsDebtCalculator(settings),
+        new DesignDebtCalculator(settings)
+        );
   }
 
   /**
@@ -102,8 +108,8 @@ public final class TechnicalDebtDecorator implements Decorator {
       addToRepartition(techDebtRepartition, axis.getName(), axis.calculateAbsoluteDebt(context) / sonarDebt * 100);
     }
 
-    double dailyRate = configuration.getDouble(TechnicalDebtPlugin.DAILY_RATE, TechnicalDebtPlugin.DAILY_RATE_DEFVAL);
-
+    // FIXME Why no settings.getDouble() ?
+    double dailyRate = Double.valueOf(settings.getString(TechnicalDebtPlugin.DAILY_RATE));
 
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT, sonarDebt * dailyRate);
     saveMeasure(context, TechnicalDebtMetrics.TECHNICAL_DEBT_DAYS, sonarDebt);

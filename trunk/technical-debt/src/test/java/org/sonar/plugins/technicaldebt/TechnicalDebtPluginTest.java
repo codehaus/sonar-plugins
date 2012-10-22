@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class TechnicalDebtPluginTest {
@@ -39,16 +38,6 @@ public class TechnicalDebtPluginTest {
   @Test
   public void defineExtensions() {
     assertThat(plugin.getExtensions().size(), is(4));
-  }
-
-  /**
-   * see SONAR-1898
-   */
-  @Test
-  public void testDeprecatedMethods() {
-    assertThat(plugin.getKey(), notNullValue());
-    assertThat(plugin.getName(), notNullValue());
-    assertThat(plugin.getDescription(), notNullValue());
   }
 
 }
