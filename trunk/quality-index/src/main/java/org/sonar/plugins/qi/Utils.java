@@ -21,6 +21,7 @@
 package org.sonar.plugins.qi;
 
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
 
 public final class Utils {
@@ -44,7 +45,7 @@ public final class Utils {
    * @return whether the context resource should be decorated
    */
   public static boolean shouldSaveMeasure(final Resource resource) {
-    return !Resource.QUALIFIER_UNIT_TEST_CLASS.equals(resource.getQualifier());
+    return !Qualifiers.UNIT_TEST_FILE.equals(resource.getQualifier());
   }
 
 }

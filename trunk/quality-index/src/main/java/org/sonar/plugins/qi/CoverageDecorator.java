@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.qi;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
@@ -40,9 +40,8 @@ public class CoverageDecorator extends AbstractDecorator {
    *
    * @param configuration the config
    */
-  public CoverageDecorator(Configuration configuration) {
-    super(configuration, QIMetrics.QI_TEST_COVERAGE,
-        QIPlugin.QI_COVERAGE_AXIS_WEIGHT, QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT);
+  public CoverageDecorator(Settings settings) {
+    super(settings, QIMetrics.QI_TEST_COVERAGE, QIPlugin.QI_COVERAGE_AXIS_WEIGHT);
   }
 
   /**

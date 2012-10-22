@@ -20,9 +20,9 @@
 
 package org.sonar.plugins.qi;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Metric;
 
 public class StyleViolationsDecorator extends AbstractViolationsDecorator {
@@ -33,11 +33,9 @@ public class StyleViolationsDecorator extends AbstractViolationsDecorator {
    *
    * @param configuration the configuration
    */
-  public StyleViolationsDecorator(Configuration configuration) {
-    super(configuration, QIMetrics.QI_STYLE_VIOLATIONS,
-        QIPlugin.QI_STYLE_AXIS_WEIGHT, QIPlugin.QI_STYLE_AXIS_WEIGHT_DEFAULT);
+  public StyleViolationsDecorator(Settings settings) {
+    super(settings, QIMetrics.QI_STYLE_VIOLATIONS, QIPlugin.QI_STYLE_AXIS_WEIGHT);
   }
-
 
   /**
    * Multiplies the "normal" valid lines by 10 to decrease the effect of style errors
@@ -56,14 +54,6 @@ public class StyleViolationsDecorator extends AbstractViolationsDecorator {
   @Override
   public String getConfigurationKey() {
     return QIPlugin.QI_STYLE_PRIORITY_WEIGHTS;
-  }
-
-  /**
-   * @return the style axis default weight config key
-   */
-  @Override
-  public String getDefaultConfigurationKey() {
-    return QIPlugin.QI_STYLE_PRIORITY_WEIGHTS_DEFAULT;
   }
 
   /**

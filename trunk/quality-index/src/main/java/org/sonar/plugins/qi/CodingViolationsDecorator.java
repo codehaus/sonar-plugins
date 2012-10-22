@@ -20,8 +20,8 @@
 
 package org.sonar.plugins.qi;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.CoreProperties;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Metric;
 
 public class CodingViolationsDecorator extends AbstractViolationsDecorator {
@@ -32,9 +32,8 @@ public class CodingViolationsDecorator extends AbstractViolationsDecorator {
    *
    * @param configuration the configuration
    */
-  public CodingViolationsDecorator(Configuration configuration) {
-    super(configuration, QIMetrics.QI_CODING_VIOLATIONS,
-        QIPlugin.QI_CODING_AXIS_WEIGHT, QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT);
+  public CodingViolationsDecorator(Settings settings) {
+    super(settings, QIMetrics.QI_CODING_VIOLATIONS, QIPlugin.QI_CODING_AXIS_WEIGHT);
   }
 
   /**
@@ -43,14 +42,6 @@ public class CodingViolationsDecorator extends AbstractViolationsDecorator {
   @Override
   public String getConfigurationKey() {
     return QIPlugin.QI_CODING_PRIORITY_WEIGHTS;
-  }
-
-  /**
-   * @return the coding axis default weight config key
-   */
-  @Override
-  public String getDefaultConfigurationKey() {
-    return QIPlugin.QI_CODING_PRIORITY_WEIGHTS_DEFAULT;
   }
 
   /**

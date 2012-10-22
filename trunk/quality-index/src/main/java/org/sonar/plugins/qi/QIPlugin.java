@@ -21,9 +21,10 @@
 package org.sonar.plugins.qi;
 
 import org.sonar.api.Extension;
-import org.sonar.api.Plugin;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.PropertyType;
+import org.sonar.api.SonarPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +37,18 @@ import java.util.List;
     name = "A weight is associated to each STYLE violation, depending on the priority", description = ""),
 
   @Property(key = QIPlugin.QI_CODING_AXIS_WEIGHT, defaultValue = QIPlugin.QI_CODING_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the CODING axis is given", description = ""),
+    name = "The weight the CODING axis is given", description = "", type = PropertyType.FLOAT),
 
   @Property(key = QIPlugin.QI_STYLE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_STYLE_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the STYLE axis is given", description = ""),
+    name = "The weight the STYLE axis is given", description = "", type = PropertyType.FLOAT),
 
   @Property(key = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the COMPLEXITY axis is given", description = ""),
+    name = "The weight the COMPLEXITY axis is given", description = "", type = PropertyType.FLOAT),
 
   @Property(key = QIPlugin.QI_COVERAGE_AXIS_WEIGHT, defaultValue = QIPlugin.QI_COVERAGE_AXIS_WEIGHT_DEFAULT,
-    name = "The weight the COVERAGE axis is given", description = "")
+    name = "The weight the COVERAGE axis is given", description = "", type = PropertyType.FLOAT)
 })
-
-public class QIPlugin implements Plugin {
+public class QIPlugin extends SonarPlugin {
   /**
    * The violation weights for each priority on the coding axis
    */
@@ -110,30 +110,9 @@ public class QIPlugin implements Plugin {
   public static final String QI_COVERAGE_AXIS_WEIGHT_DEFAULT = "2.0";
 
   /**
-   * The complexity ranges bootm limits
+   * The complexity ranges bottom limits
    */
   public static final Number[] COMPLEXITY_BOTTOM_LIMITS = {30, 20, 10, 2, 1};
-
-  /**
-   * @return the plugin key
-   */
-  public String getKey() {
-    return "quality-index";
-  }
-
-  /**
-   * @return the plugin name
-   */
-  public String getName() {
-    return "Quality Index";
-  }
-
-  /**
-   * @return the plugin description
-   */
-  public String getDescription() {
-    return "Quality Index";
-  }
 
   /**
    * @return the list of extensions of the plugin
