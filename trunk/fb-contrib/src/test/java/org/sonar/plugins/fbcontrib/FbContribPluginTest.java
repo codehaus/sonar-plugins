@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 
 public class FbContribPluginTest {
   private FbContribPlugin plugin;
@@ -33,16 +32,6 @@ public class FbContribPluginTest {
   @Before
   public void setUp() {
     plugin = new FbContribPlugin();
-  }
-
-  /**
-   * see SONAR-1898
-   */
-  @Test
-  public void testDeprecatedMethods() {
-    assertThat(plugin.getKey(), notNullValue());
-    assertThat(plugin.getName(), notNullValue());
-    assertThat(plugin.getDescription(), notNullValue());
   }
 
   @Test
