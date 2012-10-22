@@ -19,36 +19,36 @@
  */
 package org.sonar.plugins.emma;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.apache.commons.configuration.Configuration;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.test.MavenTestUtils;
 
 import java.io.File;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class EmmaMavenInitializerTest {
 
   private Project project;
   private EmmaMavenInitializer initializer;
+  private Settings settings;
+  private MavenProject mavenProject;
 
   @Before
   public void setUp() {
     project = mock(Project.class);
-    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler());
+    settings = new Settings();
+    mavenProject = new MavenProject();
+    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, mavenProject);
   }
 
   @Test
@@ -72,32 +72,26 @@ public class EmmaMavenInitializerTest {
 
   @Test
   public void doNotSetReportPathIfAlreadyConfigured() {
-    Configuration configuration = mock(Configuration.class);
-    when(configuration.containsKey(EmmaPlugin.REPORT_PATH_PROPERTY)).thenReturn(true);
-    when(project.getConfiguration()).thenReturn(configuration);
+    settings.setProperty(EmmaPlugin.REPORT_PATH_PROPERTY, "foo");
     initializer.execute(project);
-    verify(configuration, never()).setProperty(eq(EmmaPlugin.REPORT_PATH_PROPERTY), anyString());
+    assertThat(settings.getString(EmmaPlugin.REPORT_PATH_PROPERTY), is("foo"));
   }
 
   @Test
   public void shouldSetReportPathFromPom() throws Exception {
-    Configuration configuration = mock(Configuration.class);
-    when(project.getConfiguration()).thenReturn(configuration);
-    MavenProject pom = MavenTestUtils.loadPom("/org/sonar/plugins/emma/EmmaSensorTest/shouldGetReportPathFromPom/pom.xml");
-    when(project.getPom()).thenReturn(pom);
+    mavenProject = MavenTestUtils.loadPom("/org/sonar/plugins/emma/EmmaSensorTest/shouldGetReportPathFromPom/pom.xml");
+    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, mavenProject);
     initializer.execute(project);
-    verify(configuration).setProperty(eq(EmmaPlugin.REPORT_PATH_PROPERTY), eq("overridden/dir"));
+    assertThat(settings.getString(EmmaPlugin.REPORT_PATH_PROPERTY), is("overridden/dir"));
   }
 
   @Test
   public void shouldSetDefaultReportPath() {
     ProjectFileSystem pfs = mock(ProjectFileSystem.class);
     when(pfs.getBuildDir()).thenReturn(new File("buildDir"));
-    Configuration configuration = mock(Configuration.class);
-    when(project.getConfiguration()).thenReturn(configuration);
     when(project.getFileSystem()).thenReturn(pfs);
     initializer.execute(project);
-    verify(configuration).setProperty(eq(EmmaPlugin.REPORT_PATH_PROPERTY), eq("buildDir"));
+    assertThat(settings.getString(EmmaPlugin.REPORT_PATH_PROPERTY), is("buildDir"));
   }
 
 }

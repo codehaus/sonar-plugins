@@ -20,21 +20,6 @@
 
 package org.sonar.plugins.emma;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Properties;
-
-import org.apache.commons.lang.StringUtils;
-import org.sonar.api.batch.SensorContext;
-import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.PersistenceMode;
-import org.sonar.api.measures.PropertiesBuilder;
-import org.sonar.api.resources.JavaFile;
-import org.sonar.api.utils.Logs;
-import org.sonar.api.utils.SonarException;
-
 import com.vladium.emma.data.CoverageOptionsFactory;
 import com.vladium.emma.data.DataFactory;
 import com.vladium.emma.data.ICoverageData;
@@ -48,12 +33,28 @@ import com.vladium.emma.report.IReportDataView;
 import com.vladium.emma.report.PackageItem;
 import com.vladium.emma.report.SrcFileItem;
 import com.vladium.util.IntObjectMap;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.SensorContext;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.PersistenceMode;
+import org.sonar.api.measures.PropertiesBuilder;
+import org.sonar.api.resources.JavaFile;
+import org.sonar.api.utils.SonarException;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class EmmaProcessor {
 
+  private final static Logger LOGGER = LoggerFactory.getLogger(EmmaProcessor.class);
   private final PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
 
   private final SensorContext context;
@@ -74,9 +75,9 @@ public class EmmaProcessor {
           coverageData.merge(mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA]);
         }
       } else {
-        Logs.INFO.warn("No coverage (*.ec) file found in {}", buildDir);
+        LOGGER.warn("No coverage (*.ec) file found in {}", buildDir);
       }
-      
+
       // Merge all files with meta-data extension
       IMetaData metaData = DataFactory.newMetaData(CoverageOptionsFactory.create(new Properties()));
       File[] metaDataFiles = buildDir.listFiles(new FilenameFilter() {
@@ -90,9 +91,9 @@ public class EmmaProcessor {
           metaData.merge(mergeableMetadata[DataFactory.TYPE_METADATA]);
         }
       } else {
-        Logs.INFO.warn("No metadata (*.em) file found in {}", buildDir);
+        LOGGER.warn("No metadata (*.em) file found in {}", buildDir);
       }
-      
+
       this.model = IReportDataModel.Factory.create(metaData, coverageData);
       this.context = context;
     } catch (IOException e) {
