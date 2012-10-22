@@ -20,24 +20,27 @@
 
 package org.sonar.plugins.qi;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.measures.Metric.ValueType;
 import org.sonar.api.resources.Project;
+import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.resources.Resource;
-import org.apache.commons.configuration.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AbstractDecoratorTest {
   private AbstractDecorator decorator;
@@ -61,9 +64,9 @@ public class AbstractDecoratorTest {
   public void testStandardValidLines() {
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 233.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 233.0));
     when(context.getMeasure(CoreMetrics.NCLOC)).
-      thenReturn(new Measure(CoreMetrics.NCLOC, 1344.0));
+        thenReturn(new Measure(CoreMetrics.NCLOC, 1344.0));
 
     assertThat(decorator.getValidLines(context), is(1111.0));
   }
@@ -72,79 +75,70 @@ public class AbstractDecoratorTest {
   public void testNegativeValidLines() {
     DecoratorContext context = mock(DecoratorContext.class);
     when(context.getMeasure(CoreMetrics.DUPLICATED_LINES)).
-      thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 1344.0));
+        thenReturn(new Measure(CoreMetrics.DUPLICATED_LINES, 1344.0));
     when(context.getMeasure(CoreMetrics.NCLOC)).
-      thenReturn(new Measure(CoreMetrics.NCLOC, 344.0));
+        thenReturn(new Measure(CoreMetrics.NCLOC, 344.0));
 
     assertThat(decorator.getValidLines(context), is(1.0));
   }
 
   @Test
   public void testComputeAxisWeight() {
-    String defaultValue = "2.0";
     double otherValue = 2.4;
-    Configuration configuration = mock(Configuration.class);
+    Settings settings = new Settings();
 
-    when(configuration.getDouble(anyString(), eq(Double.valueOf(defaultValue)))).
-      thenReturn(otherValue);
-    decorator = new DecoratorImpl(configuration, Double.toString(otherValue), defaultValue);
+    settings.setProperty(Double.toString(otherValue), otherValue);
+    decorator = new DecoratorImpl(settings, Double.toString(otherValue));
     assertThat(decorator.computeAxisWeight(), is(otherValue));
-
-    when(configuration.getDouble(null, Double.valueOf(defaultValue))).
-      thenReturn(Double.valueOf(defaultValue));
-    decorator = new DecoratorImpl(configuration, null, defaultValue);
-    assertThat(decorator.computeAxisWeight(), is(Double.valueOf(defaultValue)));
   }
 
   @Test
   public void testSaveMeasure() {
-    Metric metric = new Metric("foo");
+    Metric metric = new Metric.Builder("foo", "Foo", ValueType.INT).create();
 
     DecoratorContext context = mock(DecoratorContext.class);
-    Configuration configuration = mock(Configuration.class);
-    decorator = new DecoratorImpl(metric, configuration);
+    Settings settings = new Settings();
+    decorator = new DecoratorImpl(metric, settings);
 
-    mockMeasure(context, configuration, Resource.QUALIFIER_UNIT_TEST_CLASS, metric, 0.4);
+    mockMeasure(context, settings, Qualifiers.UNIT_TEST_FILE, metric, 0.4);
     decorator.saveMeasure(context, 0.4);
-    verify(context,never()).saveMeasure(new Measure(metric, 0.4, "1.0"));
+    verify(context, never()).saveMeasure(new Measure(metric, 0.4, "1.0"));
 
-    mockMeasure(context, configuration, Resource.QUALIFIER_UNIT_TEST_CLASS, metric, 0.04);
+    mockMeasure(context, settings, Qualifiers.UNIT_TEST_FILE, metric, 0.04);
     decorator.saveMeasure(context, 0.04);
-    verify(context,never()).saveMeasure(new Measure(metric, 0.04, "1.0"));
+    verify(context, never()).saveMeasure(new Measure(metric, 0.04, "1.0"));
 
-    mockMeasure(context, configuration, Resource.QUALIFIER_PACKAGE, metric, 0.4);
+    mockMeasure(context, settings, Qualifiers.PACKAGE, metric, 0.4);
     decorator.saveMeasure(context, 0.4);
     verify(context).saveMeasure(new Measure(metric, 0.4, "1.0"));
   }
 
-  private void mockMeasure(DecoratorContext context, Configuration configuration, String qualifier, Metric metric, double value) {
+  private void mockMeasure(DecoratorContext context, Settings settings, String qualifier, Metric metric, double value) {
     Resource resource = mock(Resource.class);
     when(context.getResource()).thenReturn(resource);
     when(resource.getQualifier()).thenReturn(qualifier);
     when(context.getMeasure(metric)).thenReturn(new Measure(metric, value));
-    when(configuration.getDouble(anyString(), anyDouble())).thenReturn(1.0);
-
+    settings.setProperty("fooAxis", 1.0);
   }
-
 
   public class DecoratorImpl extends AbstractDecorator {
     public DecoratorImpl() {
-      super(null, null, null, null);
+      super(null, null, null);
     }
 
-    public DecoratorImpl(Configuration configuration, String axisWeight, String defaultAxisWeight) {
-      super(configuration, null, axisWeight, defaultAxisWeight);
+    public DecoratorImpl(Settings settings, String axisWeight) {
+      super(settings, null, axisWeight);
     }
 
-    public DecoratorImpl(Metric metric, Configuration configuration) {
-      super(configuration, metric, null, "1.0");
+    public DecoratorImpl(Metric metric, Settings settings) {
+      super(settings, metric, "fooAxis");
     }
 
     public void decorate(Resource resource, DecoratorContext context) {
     }
 
     public List<Metric> dependsUpon() {
-      return Arrays.asList(new Metric("foo"));
+      return Arrays.asList(new Metric.Builder("foo", "Foo", ValueType.INT).create());
     }
 
     public boolean shouldExecuteOnProject(Project project) {

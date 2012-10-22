@@ -20,10 +20,10 @@
 
 package org.sonar.plugins.qi;
 
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Resource;
@@ -43,9 +43,8 @@ public class ComplexityDecorator extends AbstractDecorator {
    *
    * @param configuration the config
    */
-  public ComplexityDecorator(Configuration configuration) {
-    super(configuration, QIMetrics.QI_COMPLEXITY,
-        QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT, QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT_DEFAULT);
+  public ComplexityDecorator(Settings settings) {
+    super(settings, QIMetrics.QI_COMPLEXITY, QIPlugin.QI_COMPLEXITY_AXIS_WEIGHT);
   }
 
   /**
@@ -132,7 +131,8 @@ public class ComplexityDecorator extends AbstractDecorator {
     if (measure == null) {
       return 0;
     }
-    Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
+    Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), KeyValueFormat.newIntegerConverter(),
+        KeyValueFormat.newIntegerConverter());
     double methodWithComplexityCount;
     if (weighted) {
       methodWithComplexityCount = distribution.get(2) + 3 * distribution.get(10) + 5 * distribution.get(20) + 10 * distribution.get(30);
@@ -151,7 +151,8 @@ public class ComplexityDecorator extends AbstractDecorator {
     if (measure == null) {
       return 0;
     }
-    Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), new KeyValueFormat.IntegerNumbersPairTransformer());
+    Map<Integer, Integer> distribution = KeyValueFormat.parse(measure.getData(), KeyValueFormat.newIntegerConverter(),
+        KeyValueFormat.newIntegerConverter());
     return distribution.get(30);
   }
 

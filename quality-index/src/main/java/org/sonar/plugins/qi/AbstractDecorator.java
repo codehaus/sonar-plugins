@@ -21,17 +21,17 @@
 package org.sonar.plugins.qi;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorContext;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.batch.DependsUpon;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
-import org.sonar.api.resources.Resource;
+import org.sonar.api.resources.Qualifiers;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,22 +42,19 @@ import java.util.List;
 public abstract class AbstractDecorator implements Decorator {
   private Metric metric;
   private String axisWeight;
-  private String defaultAxisWeight;
-  protected Configuration configuration;
+  protected Settings settings;
 
   /**
    * Creates Abstract Decorator
    *
-   * @param configuration     the configuration
+   * @param settings          the settings
    * @param metric            the axis metric
    * @param axisWeight        the key to retrieve the axis weight
-   * @param defaultAxisWeight the key to retrieve the default axis weight
    */
-  public AbstractDecorator(Configuration configuration, Metric metric, String axisWeight, String defaultAxisWeight) {
+  public AbstractDecorator(Settings settings, Metric metric, String axisWeight) {
     this.metric = metric;
     this.axisWeight = axisWeight;
-    this.defaultAxisWeight = defaultAxisWeight;
-    this.configuration = configuration;
+    this.settings = settings;
   }
 
   /**
@@ -112,7 +109,7 @@ public abstract class AbstractDecorator implements Decorator {
     String qualifier = context.getResource().getQualifier();
     // if < 0.05, we do not record at file level to avoid storing and displaying 0.0 values
     if (value < 0.05
-        && (qualifier.equals(Resource.QUALIFIER_FILE) || qualifier.equals(Resource.QUALIFIER_CLASS))) {
+      && (qualifier.equals(Qualifiers.FILE) || qualifier.equals(Qualifiers.CLASS))) {
       return;
     }
 
@@ -130,7 +127,7 @@ public abstract class AbstractDecorator implements Decorator {
    * @return the weight if exists, the default value otherwise
    */
   protected double computeAxisWeight() {
-    return configuration.getDouble(axisWeight, Double.valueOf(defaultAxisWeight));
+    return Double.valueOf(settings.getString(axisWeight));// TODO Why no settings.getFloat()?
   }
 
   /**

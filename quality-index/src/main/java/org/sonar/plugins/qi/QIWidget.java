@@ -26,7 +26,7 @@ import org.sonar.api.web.RubyRailsWidget;
 import org.sonar.api.web.UserRole;
 
 @NavigationSection(NavigationSection.RESOURCE)
-@UserRole(UserRole.VIEWER)
+@UserRole(UserRole.USER)
 public class QIWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   public String getId() {

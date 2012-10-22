@@ -23,8 +23,8 @@ package org.sonar.plugins.qi;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import org.apache.commons.configuration.Configuration;
 import org.sonar.api.batch.DecoratorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
@@ -44,25 +44,19 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
   /**
    * Creates an AbstractViolationsDecorator
    *
-   * @param configuration     the config
+   * @param settings          the config
    * @param metric            the metric that should be used for decoration
    * @param axisWeight        the axis weight key
-   * @param defaultAxisWeight the axis weight default value
    */
-  public AbstractViolationsDecorator(Configuration configuration, Metric metric,
-                                     String axisWeight, String defaultAxisWeight) {
-    super(configuration, metric, axisWeight, defaultAxisWeight);
+  public AbstractViolationsDecorator(Settings settings, Metric metric,
+      String axisWeight) {
+    super(settings, metric, axisWeight);
   }
 
   /**
    * @return the key to retrieve the weights by rule priority
    */
   public abstract String getConfigurationKey();
-
-  /**
-   * @return the key to retrieve the defaults weights by rule priority
-   */
-  public abstract String getDefaultConfigurationKey();
 
   /**
    * @return the metric the weighted violations should be stored under
@@ -105,7 +99,7 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
     Multiset<RulePriority> violationsBySeverity = HashMultiset.create();
 
     for (Violation violation : violations) {
-      if (violation.getRule().getPluginName().equals(getPluginKey())) {
+      if (violation.getRule().getRepositoryKey().equals(getPluginKey())) {
         violationsBySeverity.add(violation.getSeverity());
       }
     }
@@ -135,9 +129,9 @@ public abstract class AbstractViolationsDecorator extends AbstractDecorator {
    * @return the weights by priority
    */
   protected Map<RulePriority, Integer> getWeightsByPriority() {
-    String property = configuration.getString(getConfigurationKey(), getDefaultConfigurationKey());
+    String property = settings.getString(getConfigurationKey());
 
-    return KeyValueFormat.parse(property, new KeyValueFormat.RulePriorityNumbersPairTransformer());
+    return KeyValueFormat.parse(property, KeyValueFormat.newPriorityConverter(), KeyValueFormat.newIntegerConverter());
   }
 
   /**
