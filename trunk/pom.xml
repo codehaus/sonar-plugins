@@ -72,28 +72,16 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>ada</module>
-        <module>basic-cocomo</module>
-        <module>codesize</module>
-        <module>debug</module>
         <module>devkit</module>
         <module>pitest</module>
         <module>scala</module>
         <module>toxicity-chart</module>
         <module>violation-density</module>
-        <module>w3c-markup-validation</module>
       </modules>
     </profile>
     <profile>
       <id>unmaintained</id>
       <modules>
-        <module>cql</module>
-        <module>jlint</module>
-        <module>profiler</module>
-        <module>radiator</module>
-        <module>sonar-replay</module>
-        <module>sonarj</module>
-        <module>testability-explorer</module>
       </modules>
     </profile>
     <profile>
