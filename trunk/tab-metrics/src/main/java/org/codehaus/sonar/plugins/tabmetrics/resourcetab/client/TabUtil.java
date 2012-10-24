@@ -72,8 +72,10 @@ public final class TabUtil {
     else {
       String data = metricTab.getData();
 
+      String replacedData = data.replace("\"", "\'").trim();
+
       buffer.append("<input type=\"text\" style=\"background-color: #EFEFEF; font-weight: bold\" readonly=\"readonly\" size=\"" + MAXLENGTH
-          + "\" value=\"" + data + "\"/>");
+          + "\" value=\"" + replacedData + "\"/>");
     }
 
     return buffer.toString();

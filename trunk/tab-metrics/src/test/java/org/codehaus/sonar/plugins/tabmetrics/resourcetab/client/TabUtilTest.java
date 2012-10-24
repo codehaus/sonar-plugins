@@ -35,14 +35,16 @@ public class TabUtilTest {
     String htmlCell = TabUtil.createCell(metricTab);
 
     assertEquals(htmlCell, "Code lines: <b>230.0</b>");
+    
+    String duplicationsData = "<duplications><g><b s=\"9\" l=\"6\" r=\"A\"/><b s=\"1\" l=\"6\" r=\"B\"/></g></duplications>";
 
-    metricTab = new MetricTab("mydistrib", "My distribution", null, "distribution");
+    metricTab = new MetricTab("duplicationsdata", "Duplications data", null, duplicationsData);
 
     htmlCell = TabUtil.createCell(metricTab);
 
     assertEquals(htmlCell,
-        "My distribution: <input type=\"text\" style=\"background-color: #EFEFEF; font-weight: bold\" readonly=\"readonly\" size=\""
-            + TabUtil.MAXLENGTH + "\" value=\"distribution\"/>");
+        "Duplications data: <input type=\"text\" style=\"background-color: #EFEFEF; font-weight: bold\" readonly=\"readonly\" size=\""
+            + TabUtil.MAXLENGTH + "\" value=\"<duplications><g><b s='9' l='6' r='A'/><b s='1' l='6' r='B'/></g></duplications>\"/>");
   }
 
   @Test
