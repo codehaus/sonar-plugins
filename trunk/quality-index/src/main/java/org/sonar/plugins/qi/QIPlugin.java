@@ -20,13 +20,12 @@
 
 package org.sonar.plugins.qi;
 
-import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Properties({
@@ -117,22 +116,9 @@ public class QIPlugin extends SonarPlugin {
   /**
    * @return the list of extensions of the plugin
    */
-  public List<Class<? extends Extension>> getExtensions() {
-    List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
-    list.add(CodingViolationsDecorator.class);
-    list.add(ComplexityDistributionDecorator.class);
-    list.add(ComplexityDecorator.class);
-    list.add(CoverageDecorator.class);
-    list.add(QIDecorator.class);
-    list.add(QIMetrics.class);
-    list.add(QIWidget.class);
-    list.add(StyleViolationsDecorator.class);
-    return list;
-  }
-
-  @Override
-  public String toString() {
-    return getKey();
+  public List getExtensions() {
+    return Arrays.asList(CodingViolationsDecorator.class, ComplexityDistributionDecorator.class, ComplexityDecorator.class,
+      CoverageDecorator.class, QIDecorator.class, QIMetrics.class, QIWidget.class, StyleViolationsDecorator.class);
   }
 
 }
