@@ -74,7 +74,6 @@
       <modules>
         <module>devkit</module>
         <module>pitest</module>
-        <module>scala</module>
         <module>toxicity-chart</module>
         <module>violation-density</module>
       </modules>
