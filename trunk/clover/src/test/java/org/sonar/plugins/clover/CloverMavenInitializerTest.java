@@ -39,7 +39,10 @@ public class CloverMavenInitializerTest {
   @Before
   public void setUp() {
     project = mock(Project.class);
-    initializer = new CloverMavenInitializer(new CloverMavenPluginHandler(new Settings()));
+    CloverSettings settings = mock(CloverSettings.class);
+    when(settings.isEnabled()).thenReturn(true);
+    CloverMavenPluginHandler handler = mock(CloverMavenPluginHandler.class);
+    initializer = new CloverMavenInitializer(handler, settings);
   }
 
   @Test
