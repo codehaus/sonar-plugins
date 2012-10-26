@@ -36,9 +36,11 @@ import org.sonar.api.resources.Project;
 public class CloverMavenInitializer extends Initializer implements CoverageExtension, DependsUponMavenPlugin {
 
   private CloverMavenPluginHandler handler;
+  private CloverSettings settings;
 
-  public CloverMavenInitializer(CloverMavenPluginHandler handler) {
+  public CloverMavenInitializer(CloverMavenPluginHandler handler, CloverSettings settings) {
     this.handler = handler;
+    this.settings = settings;
   }
 
   public MavenPluginHandler getMavenPluginHandler(Project project) {
@@ -50,7 +52,9 @@ public class CloverMavenInitializer extends Initializer implements CoverageExten
 
   @Override
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getAnalysisType().isDynamic(true) && !project.getFileSystem().mainFiles(Java.KEY).isEmpty();
+    return settings.isEnabled()
+      && project.getAnalysisType().isDynamic(true)
+      && !project.getFileSystem().mainFiles(Java.KEY).isEmpty();
   }
 
   @Override

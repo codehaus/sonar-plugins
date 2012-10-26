@@ -31,8 +31,16 @@ import org.sonar.api.resources.Project;
 
 public class CloverSensor implements Sensor, CoverageExtension {
 
+  private CloverSettings settings;
+
+  public CloverSensor(CloverSettings settings) {
+    this.settings = settings;
+  }
+
   public boolean shouldExecuteOnProject(Project project) {
-    return !project.getFileSystem().mainFiles(Java.KEY).isEmpty();
+    return settings.isEnabled()
+      && !project.getFileSystem().mainFiles(Java.KEY).isEmpty()
+      && project.getAnalysisType().isDynamic(true);
   }
 
   public void analyse(Project project, SensorContext context) {

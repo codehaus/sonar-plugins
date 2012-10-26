@@ -17,17 +17,28 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.clover;
 
-public interface CloverConstants {
+import org.apache.commons.lang.ArrayUtils;
+import org.sonar.api.BatchExtension;
+import org.sonar.api.config.Settings;
 
-  String LICENSE_PROPERTY = "sonar.clover.license.secured";
-  String VERSION_PROPERTY = "sonar.clover.version";
-  String REPORT_PATH_PROPERTY = "sonar.clover.reportPath";
-  
-  String MAVEN_GROUP_ID = "com.atlassian.maven.plugins";
-  String MAVEN_ARTIFACT_ID = "maven-clover2-plugin";
-  String MAVEN_DEFAULT_VERSION = "3.0.5";
-  String PLUGIN_KEY = "clover";
+public class CloverSettings implements BatchExtension {
+
+  private Settings settings;
+
+  public CloverSettings(Settings settings) {
+    this.settings = settings;
+  }
+
+  public boolean isEnabled() {
+    // backward-compatibility with the property that has been deprecated in sonar 3.4.
+    String[] keys = settings.getStringArray("sonar.core.codeCoveragePlugin");
+    if (keys.length>0) {
+      return ArrayUtils.contains(keys, CloverConstants.PLUGIN_KEY);
+    }
+
+    // should use org.sonar.plugins.java.api.JavaSettings#getEnabledCoveragePlugin() introduced in sonar-java-plugin 1.1 with sonar 3.4
+    return CloverConstants.PLUGIN_KEY.equals(settings.getString("sonar.java.coveragePlugin"));
+  }
 }

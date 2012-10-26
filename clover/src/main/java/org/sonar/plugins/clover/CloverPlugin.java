@@ -46,6 +46,6 @@ import java.util.List;
 public final class CloverPlugin extends SonarPlugin {
 
   public List getExtensions() {
-    return Arrays.asList(CloverMavenPluginHandler.class, CloverMavenInitializer.class, CloverSensor.class);
+    return Arrays.asList(CloverSettings.class, CloverMavenPluginHandler.class, CloverMavenInitializer.class, CloverSensor.class);
   }
 }
