@@ -33,8 +33,14 @@ public class EmmaSensor implements Sensor, CoverageExtension {
 
   private final static Logger LOGGER = LoggerFactory.getLogger(EmmaSensor.class);
 
+  private EmmaSettings settings;
+
+  public EmmaSensor(EmmaSettings settings) {
+    this.settings = settings;
+  }
+
   public boolean shouldExecuteOnProject(Project project) {
-    return !project.getFileSystem().mainFiles(EmmaPlugin.JAVA_LANGUAGE_KEY).isEmpty();
+    return settings.isEnabled(project);
   }
 
   public void analyse(Project project, SensorContext context) {

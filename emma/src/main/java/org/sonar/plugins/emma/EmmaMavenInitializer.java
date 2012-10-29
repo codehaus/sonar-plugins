@@ -19,13 +19,13 @@
  */
 package org.sonar.plugins.emma;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.project.MavenProject;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Initializer;
 import org.sonar.api.batch.maven.DependsUponMavenPlugin;
 import org.sonar.api.batch.maven.MavenPlugin;
 import org.sonar.api.batch.maven.MavenPluginHandler;
-import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 
 /**
@@ -35,10 +35,10 @@ import org.sonar.api.resources.Project;
 public class EmmaMavenInitializer extends Initializer implements CoverageExtension, DependsUponMavenPlugin {
 
   private EmmaMavenPluginHandler handler;
-  private Settings settings;
+  private EmmaSettings settings;
   private MavenProject mavenProject;
 
-  public EmmaMavenInitializer(EmmaMavenPluginHandler handler, Settings settings, MavenProject mavenProject) {
+  public EmmaMavenInitializer(EmmaMavenPluginHandler handler, EmmaSettings settings, MavenProject mavenProject) {
     this.handler = handler;
     this.settings = settings;
     this.mavenProject = mavenProject;
@@ -46,29 +46,25 @@ public class EmmaMavenInitializer extends Initializer implements CoverageExtensi
 
   @Override
   public boolean shouldExecuteOnProject(Project project) {
-    return project.getAnalysisType().isDynamic(true) &&
-      !project.getFileSystem().mainFiles(EmmaPlugin.JAVA_LANGUAGE_KEY).isEmpty();
+    return settings.isEnabled(project);
   }
 
   public MavenPluginHandler getMavenPluginHandler(Project project) {
-    if (project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC)) {
-      return handler;
-    }
-    return null;
+    return project.getAnalysisType().equals(Project.AnalysisType.DYNAMIC) ? handler : null;
   }
 
   @Override
   public void execute(Project project) {
-    if (!settings.hasKey(EmmaPlugin.REPORT_PATH_PROPERTY)) {
-      String report = getReportFromPluginConfiguration(project);
+    if (StringUtils.isBlank(settings.getReportPath())) {
+      String report = getReportFromMavenPlugin();
       if (report == null) {
         report = getReportFromDefaultPath(project);
       }
-      settings.setProperty(EmmaPlugin.REPORT_PATH_PROPERTY, report);
+      settings.setReportPath(report);
     }
   }
 
-  private String getReportFromPluginConfiguration(Project project) {
+  private String getReportFromMavenPlugin() {
     MavenPlugin mavenPlugin = MavenPlugin.getPlugin(mavenProject, EmmaMavenPluginHandler.GROUP_ID, EmmaMavenPluginHandler.ARTIFACT_ID);
     if (mavenPlugin != null) {
       return mavenPlugin.getParameter("outputDirectory");
