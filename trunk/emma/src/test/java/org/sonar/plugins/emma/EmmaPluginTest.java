@@ -20,25 +20,13 @@
 
 package org.sonar.plugins.emma;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 
-/**
- * @author Evgeny Mandrikov
- */
 public class EmmaPluginTest {
-  private EmmaPlugin plugin;
-
-  @Before
-  public void setUp() throws Exception {
-    plugin = new EmmaPlugin();
-  }
-
   @Test
-  public void testGetExtensions() throws Exception {
-    assertThat(plugin.getExtensions().size(), is(3));
+  public void testGetExtensions() {
+    assertThat(new EmmaPlugin().getExtensions()).hasSize(4);
   }
 }

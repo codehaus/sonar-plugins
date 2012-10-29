@@ -43,9 +43,10 @@ public class EmmaPlugin extends SonarPlugin {
   public static final String META_DATA_SUFFIX = ".em";
   public static final String COVERAGE_DATA_SUFFIX = ".ec";
   public static final String JAVA_LANGUAGE_KEY = "java";
+  public static final String PLUGIN_KEY = "emma";
 
   public List getExtensions() {
-    return Arrays.asList(EmmaMavenInitializer.class, EmmaMavenPluginHandler.class, EmmaSensor.class);
+    return Arrays.asList(EmmaSettings.class, EmmaMavenInitializer.class, EmmaMavenPluginHandler.class, EmmaSensor.class);
   }
 
 }

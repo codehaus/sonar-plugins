@@ -22,67 +22,55 @@ package org.sonar.plugins.emma;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.ProjectFileSystem;
 import org.sonar.api.test.MavenTestUtils;
 
 import java.io.File;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class EmmaMavenInitializerTest {
 
-  private Project project;
-  private EmmaMavenInitializer initializer;
-  private Settings settings;
-  private MavenProject mavenProject;
+  Project project;
+  EmmaMavenInitializer initializer;
+  EmmaSettings settings;
 
   @Before
-  public void setUp() {
+  public void init() {
+    ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.getBuildDir()).thenReturn(new File("target"));
     project = mock(Project.class);
-    settings = new Settings();
-    mavenProject = new MavenProject();
-    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, mavenProject);
-  }
-
-  @Test
-  public void doNotExecuteMavenPluginIfReuseReports() {
-    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS);
-    assertThat(initializer.getMavenPluginHandler(project), nullValue());
-  }
-
-  @Test
-  public void doNotExecuteMavenPluginIfStaticAnalysis() {
-    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.STATIC);
-    assertThat(initializer.getMavenPluginHandler(project), nullValue());
-  }
-
-  @Test
-  public void executeMavenPluginIfDynamicAnalysis() {
     when(project.getAnalysisType()).thenReturn(Project.AnalysisType.DYNAMIC);
-    assertThat(initializer.getMavenPluginHandler(project), not(nullValue()));
-    assertThat(initializer.getMavenPluginHandler(project).getArtifactId(), is("emma-maven-plugin"));
+    when(project.getFileSystem()).thenReturn(fileSystem);
+    settings = mock(EmmaSettings.class);
+    when(settings.isEnabled(project)).thenReturn(true);
+    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, new MavenProject());
   }
 
   @Test
-  public void doNotSetReportPathIfAlreadyConfigured() {
-    settings.setProperty(EmmaPlugin.REPORT_PATH_PROPERTY, "foo");
-    initializer.execute(project);
-    assertThat(settings.getString(EmmaPlugin.REPORT_PATH_PROPERTY), is("foo"));
+  public void should_execute_maven_plugin() {
+    assertThat(initializer.getMavenPluginHandler(project).getArtifactId()).isEqualTo("emma-maven-plugin");
   }
 
   @Test
-  public void shouldSetReportPathFromPom() throws Exception {
-    mavenProject = MavenTestUtils.loadPom("/org/sonar/plugins/emma/EmmaSensorTest/shouldGetReportPathFromPom/pom.xml");
-    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, mavenProject);
+  public void should_not_override_existing_report_path() {
+    when(settings.getReportPath()).thenReturn("path/to/report");
     initializer.execute(project);
-    assertThat(settings.getString(EmmaPlugin.REPORT_PATH_PROPERTY), is("overridden/dir"));
+    verify(settings, never()).setReportPath(anyString());
+  }
+
+  @Test
+  public void should_use_report_path_declared_in_pom() throws Exception {
+    MavenProject pom = MavenTestUtils.loadPom("/org/sonar/plugins/emma/EmmaSensorTest/shouldGetReportPathFromPom/pom.xml");
+    initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, pom);
+    initializer.execute(project);
+    verify(settings).setReportPath("overridden/dir");
   }
 
   @Test
@@ -91,7 +79,7 @@ public class EmmaMavenInitializerTest {
     when(pfs.getBuildDir()).thenReturn(new File("buildDir"));
     when(project.getFileSystem()).thenReturn(pfs);
     initializer.execute(project);
-    assertThat(settings.getString(EmmaPlugin.REPORT_PATH_PROPERTY), is("buildDir"));
+    verify(settings).setReportPath("buildDir");
   }
 
 }

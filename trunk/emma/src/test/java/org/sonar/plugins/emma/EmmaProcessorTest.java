@@ -48,20 +48,20 @@ public class EmmaProcessorTest {
     new EmmaProcessor(dir, context).process();
     // first class
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.MessageResourcesFactory")),
+        argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.MessageResourcesFactory")),
         eq(CoreMetrics.LINES_TO_COVER),
         eq(22d));
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.MessageResourcesFactory")),
+        argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.MessageResourcesFactory")),
         eq(CoreMetrics.UNCOVERED_LINES),
         eq(9d));
     // second class
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.ResponseUtils")),
+        argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.ResponseUtils")),
         eq(CoreMetrics.LINES_TO_COVER),
         eq(47d));
     verify(context).saveMeasure(
-        argThat(new IsResource(Resource.SCOPE_ENTITY, Resource.QUALIFIER_CLASS, "org.apache.struts.util.ResponseUtils")),
+        argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.ResponseUtils")),
         eq(CoreMetrics.UNCOVERED_LINES),
         eq(39d));
   }

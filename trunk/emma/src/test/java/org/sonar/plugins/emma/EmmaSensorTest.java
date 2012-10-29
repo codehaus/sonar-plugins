@@ -20,12 +20,6 @@
 
 package org.sonar.plugins.emma;
 
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.measures.CoreMetrics;
@@ -35,6 +29,12 @@ import org.sonar.api.resources.Scopes;
 import org.sonar.api.test.IsResource;
 import org.sonar.api.test.MavenTestUtils;
 
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 public class EmmaSensorTest {
 
   @Test
@@ -42,11 +42,11 @@ public class EmmaSensorTest {
     SensorContext context = mock(SensorContext.class);
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromProperty/pom.xml");
 
-    new EmmaSensor().analyse(project, context);
+    new EmmaSensor(mock(EmmaSettings.class)).analyse(project, context);
 
     verify(context).saveMeasure(
-            argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.MessageResourcesFactory")),
-            eq(CoreMetrics.LINES_TO_COVER), anyDouble());
+      argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.MessageResourcesFactory")),
+      eq(CoreMetrics.LINES_TO_COVER), anyDouble());
   }
 
 }
