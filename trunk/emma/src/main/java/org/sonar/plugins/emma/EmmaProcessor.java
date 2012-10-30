@@ -54,7 +54,7 @@ import java.util.Properties;
  */
 public class EmmaProcessor {
 
-  private final static Logger LOGGER = LoggerFactory.getLogger(EmmaProcessor.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(EmmaProcessor.class);
   private final PropertiesBuilder<Integer, Integer> lineHitsBuilder = new PropertiesBuilder<Integer, Integer>(CoreMetrics.COVERAGE_LINE_HITS_DATA);
 
   private final SensorContext context;
@@ -62,43 +62,51 @@ public class EmmaProcessor {
 
   public EmmaProcessor(File buildDir, SensorContext context) {
     try {
-      // Merge all files with coverage extension
-      ICoverageData coverageData = DataFactory.newCoverageData();
-      File[] coverageDataFiles = buildDir.listFiles(new FilenameFilter() {
-        public boolean accept(File dir, String name) {
-          return name.endsWith(EmmaPlugin.COVERAGE_DATA_SUFFIX);
-        }
-      });
-      if (coverageDataFiles != null && coverageDataFiles.length > 0) {
-        for (File coverageDataFile : coverageDataFiles) {
-          IMergeable[] mergeableCoverageData = DataFactory.load(coverageDataFile);
-          coverageData.merge(mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA]);
-        }
-      } else {
-        LOGGER.warn("No coverage (*.ec) file found in {}", buildDir);
-      }
-
-      // Merge all files with meta-data extension
-      IMetaData metaData = DataFactory.newMetaData(CoverageOptionsFactory.create(new Properties()));
-      File[] metaDataFiles = buildDir.listFiles(new FilenameFilter() {
-        public boolean accept(File dir, String name) {
-          return name.endsWith(EmmaPlugin.META_DATA_SUFFIX);
-        }
-      });
-      if (metaDataFiles != null && metaDataFiles.length > 0) {
-        for (File metaDataFile : metaDataFiles) {
-          IMergeable[] mergeableMetadata = DataFactory.load(metaDataFile);
-          metaData.merge(mergeableMetadata[DataFactory.TYPE_METADATA]);
-        }
-      } else {
-        LOGGER.warn("No metadata (*.em) file found in {}", buildDir);
-      }
-
+      ICoverageData coverageData = mergeCoverageData(buildDir);
+      IMetaData metaData = mergeMetadata(buildDir);
       this.model = IReportDataModel.Factory.create(metaData, coverageData);
       this.context = context;
     } catch (IOException e) {
       throw new SonarException(e);
     }
+  }
+
+  private IMetaData mergeMetadata(File buildDir) throws IOException {
+    // Merge all files with meta-data extension
+    IMetaData metaData = DataFactory.newMetaData(CoverageOptionsFactory.create(new Properties()));
+    File[] metaDataFiles = buildDir.listFiles(new FilenameFilter() {
+      public boolean accept(File dir, String name) {
+        return name.endsWith(EmmaPlugin.META_DATA_SUFFIX);
+      }
+    });
+    if (metaDataFiles != null && metaDataFiles.length > 0) {
+      for (File metaDataFile : metaDataFiles) {
+        IMergeable[] mergeableMetadata = DataFactory.load(metaDataFile);
+        metaData.merge(mergeableMetadata[DataFactory.TYPE_METADATA]);
+      }
+    } else {
+      LOGGER.warn("No metadata (*.em) file found in {}", buildDir);
+    }
+    return metaData;
+  }
+
+  private ICoverageData mergeCoverageData(File buildDir) throws IOException {
+    // Merge all files with coverage extension
+    ICoverageData coverageData = DataFactory.newCoverageData();
+    File[] coverageDataFiles = buildDir.listFiles(new FilenameFilter() {
+      public boolean accept(File dir, String name) {
+        return name.endsWith(EmmaPlugin.COVERAGE_DATA_SUFFIX);
+      }
+    });
+    if (coverageDataFiles != null && coverageDataFiles.length > 0) {
+      for (File coverageDataFile : coverageDataFiles) {
+        IMergeable[] mergeableCoverageData = DataFactory.load(coverageDataFile);
+        coverageData.merge(mergeableCoverageData[DataFactory.TYPE_COVERAGEDATA]);
+      }
+    } else {
+      LOGGER.warn("No coverage (*.ec) file found in {}", buildDir);
+    }
+    return coverageData;
   }
 
   public void process() {
