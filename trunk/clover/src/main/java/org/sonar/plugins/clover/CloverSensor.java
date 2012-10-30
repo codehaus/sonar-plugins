@@ -22,6 +22,7 @@ package org.sonar.plugins.clover;
 
 import java.io.File;
 
+import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
@@ -38,9 +39,7 @@ public class CloverSensor implements Sensor, CoverageExtension {
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return settings.isEnabled()
-      && !project.getFileSystem().mainFiles(Java.KEY).isEmpty()
-      && project.getAnalysisType().isDynamic(true);
+    return settings.isEnabled(project);
   }
 
   public void analyse(Project project, SensorContext context) {
@@ -53,8 +52,8 @@ public class CloverSensor implements Sensor, CoverageExtension {
   }
 
   private File getReportFromProperty(Project project) {
-    String path = (String) project.getProperty(CloverConstants.REPORT_PATH_PROPERTY);
-    if (path != null) {
+    String path = settings.getReportPath();
+    if (StringUtils.isNotEmpty(path)) {
       return project.getFileSystem().resolvePath(path);
     }
     return null;

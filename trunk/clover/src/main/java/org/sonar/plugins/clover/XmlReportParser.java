@@ -153,7 +153,7 @@ public class XmlReportParser {
 
     while (lineCursor.getNext() != null) {
       // skip class elements on format 2_3_2
-      if (lineCursor.getLocalName().equals("class")) {
+      if ("class".equals(lineCursor.getLocalName())) {
         continue;
       }
       final int lineId = Integer.parseInt(lineCursor.getAttrValue("num"));
@@ -180,7 +180,7 @@ public class XmlReportParser {
   }
 
   private boolean canBeIncludedInFileMetrics(SMInputCursor metricsCursor) throws ParseException, XMLStreamException {
-    while (metricsCursor.getNext() != null && metricsCursor.getLocalName().equals("class")) {
+    while (metricsCursor.getNext() != null && "class".equals(metricsCursor.getLocalName())) {
       // skip class elements on 1.x xml format
     }
     return ParsingUtils.parseNumber(metricsCursor.getAttrValue("elements")) > 0;
