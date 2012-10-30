@@ -20,15 +20,14 @@
 
 package org.sonar.plugins.clover;
 
-import java.io.File;
-
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
+
+import java.io.File;
 
 public class CloverSensor implements Sensor, CoverageExtension {
 
