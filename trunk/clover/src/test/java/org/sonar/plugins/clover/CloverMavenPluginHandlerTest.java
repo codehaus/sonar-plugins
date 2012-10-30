@@ -29,11 +29,7 @@ import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 import org.sonar.api.test.MavenTestUtils;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class CloverMavenPluginHandlerTest {
 
@@ -53,24 +49,31 @@ public class CloverMavenPluginHandlerTest {
     plugin = MavenPlugin.getPlugin(project.getPom(), handler.getGroupId(), handler.getArtifactId());
     handler.configure(project, plugin);
   }
+  
+  @Test
+  public void test_metadata() {
+    assertThat(handler.getGroupId()).isEqualTo("com.atlassian.maven.plugins");
+    assertThat(handler.getArtifactId()).isEqualTo("maven-clover2-plugin");
+    assertThat(handler.getVersion()).isEqualTo("3.0.5");
+  }
 
   @Test
   public void overrideConfiguration() throws Exception {
     configurePluginHandler("overrideConfiguration.xml");
 
-    assertThat(plugin.getParameter("generateXml"), is("true"));
-    assertThat(plugin.getParameter("foo"), is("bar"));
+    assertThat(plugin.getParameter("generateXml")).isEqualTo("true");
+    assertThat(plugin.getParameter("foo")).isEqualTo("bar");
     String configuredReportPath = handler.getSettings().getString(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY);
-    assertThat(configuredReportPath, notNullValue());
+    assertThat(configuredReportPath).isNotNull();
     configuredReportPath = configuredReportPath.replace('\\', '/');
-    assertThat(configuredReportPath, endsWith("clover/surefire-reports"));
+    assertThat(configuredReportPath).endsWith("clover/surefire-reports");
   }
 
   @Test
   public void shouldSkipCloverWithPomConfig() throws Exception {
     configurePluginHandler("shouldSkipCloverWithPomConfig.xml");
 
-    assertThat(handler.getSettings().getString(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY), nullValue());
+    assertThat(handler.getSettings().getString(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY)).isNull();
   }
 
   @Test
@@ -78,7 +81,7 @@ public class CloverMavenPluginHandlerTest {
     // Because we are using a mocked Settings, Maven properties will not be present in Settings so we set it manually
     settings.setProperty("maven.clover.skip", true);
     configurePluginHandler("shouldSkipCloverWithPomProperty.xml");
-    assertThat(handler.getSettings().getString(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY), nullValue());
+    assertThat(handler.getSettings().getString(CoreProperties.SUREFIRE_REPORTS_PATH_PROPERTY)).isNull();
   }
 
 }
