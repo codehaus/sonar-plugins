@@ -19,34 +19,81 @@
  */
 package org.sonar.plugins.clover;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.config.Settings;
+import org.sonar.api.resources.InputFileUtils;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
+import org.sonar.api.resources.ProjectFileSystem;
+
+import java.util.Arrays;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class CloverSettingsTest {
+
+  Settings settings;
+  CloverSettings cloverSettings;
+  Project javaProject;
+
+  @Before
+  public void init() {
+    settings = new Settings();
+    settings.setProperty("sonar.java.coveragePlugin", "clover");
+    cloverSettings = new CloverSettings(settings);
+    ProjectFileSystem fileSystem = mock(ProjectFileSystem.class);
+    when(fileSystem.mainFiles(Java.KEY)).thenReturn(Arrays.asList(InputFileUtils.create(null, "")));
+    javaProject = mock(Project.class);
+    when(javaProject.getLanguageKey()).thenReturn(Java.KEY);
+    when(javaProject.getAnalysisType()).thenReturn(Project.AnalysisType.DYNAMIC);
+    when(javaProject.getFileSystem()).thenReturn(fileSystem);
+  }
 
   @Test
   public void should_support_deprecated_property() {
     // before sonar 3.4
-    Settings settings = new Settings();
-
     settings.setProperty("sonar.core.codeCoveragePlugin", "clover,phpunit");
-    assertThat(new CloverSettings(settings).isEnabled()).isTrue();
+    assertThat(cloverSettings.isEnabled(javaProject)).isTrue();
 
     settings.setProperty("sonar.core.codeCoveragePlugin", "cobertura");
-    assertThat(new CloverSettings(settings).isEnabled()).isFalse();
+    assertThat(cloverSettings.isEnabled(javaProject)).isFalse();
   }
 
   @Test
-    public void should_support_sonar_3_4_property() {
-      // since sonar 3.4
-      Settings settings = new Settings();
-
-      settings.setProperty("sonar.java.coveragePlugin", "clover");
-      assertThat(new CloverSettings(settings).isEnabled()).isTrue();
+  public void should_support_sonar_3_4_property() {
+    // since sonar 3.4
+    settings.setProperty("sonar.java.coveragePlugin", "clover");
+    assertThat(cloverSettings.isEnabled(javaProject)).isTrue();
 
     settings.setProperty("sonar.java.coveragePlugin", "jacoco");
-      assertThat(new CloverSettings(settings).isEnabled()).isFalse();
-    }
+    assertThat(cloverSettings.isEnabled(javaProject)).isFalse();
+  }
+
+  @Test
+  public void should_be_disabled_if_static_analysis() {
+    when(javaProject.getAnalysisType()).thenReturn(Project.AnalysisType.STATIC);
+    assertThat(cloverSettings.isEnabled(javaProject)).isFalse();
+  }
+
+  @Test
+  public void should_be_enabled_if_reuse_report_mode() {
+    when(javaProject.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS);
+    assertThat(cloverSettings.isEnabled(javaProject)).isTrue();
+  }
+
+  @Test
+  public void should_change_report_path() {
+    assertThat(cloverSettings.getReportPath()).isNull();
+    cloverSettings.setReportPath("path/to/report");
+    assertThat(cloverSettings.getReportPath()).isEqualTo("path/to/report");
+  }
+
+  @Test
+  public void should_get_report_path() {
+    settings.setProperty(CloverConstants.REPORT_PATH_PROPERTY, "path/to/report");
+    assertThat(cloverSettings.getReportPath()).isEqualTo("path/to/report");
+  }
 }

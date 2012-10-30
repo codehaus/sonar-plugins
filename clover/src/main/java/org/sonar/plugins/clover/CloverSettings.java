@@ -22,6 +22,8 @@ package org.sonar.plugins.clover;
 import org.apache.commons.lang.ArrayUtils;
 import org.sonar.api.BatchExtension;
 import org.sonar.api.config.Settings;
+import org.sonar.api.resources.Java;
+import org.sonar.api.resources.Project;
 
 public class CloverSettings implements BatchExtension {
 
@@ -31,14 +33,26 @@ public class CloverSettings implements BatchExtension {
     this.settings = settings;
   }
 
-  public boolean isEnabled() {
-    // backward-compatibility with the property that has been deprecated in sonar 3.4.
-    String[] keys = settings.getStringArray("sonar.core.codeCoveragePlugin");
-    if (keys.length>0) {
-      return ArrayUtils.contains(keys, CloverConstants.PLUGIN_KEY);
-    }
+  public boolean isEnabled(Project project) {
+    if (project.getAnalysisType().isDynamic(true) && !project.getFileSystem().mainFiles(Java.KEY).isEmpty()) {
+      // backward-compatibility with the property that has been deprecated in sonar 3.4.
+      String[] keys = settings.getStringArray("sonar.core.codeCoveragePlugin");
+      if (keys.length > 0) {
+        return ArrayUtils.contains(keys, CloverConstants.PLUGIN_KEY);
+      }
 
-    // should use org.sonar.plugins.java.api.JavaSettings#getEnabledCoveragePlugin() introduced in sonar-java-plugin 1.1 with sonar 3.4
-    return CloverConstants.PLUGIN_KEY.equals(settings.getString("sonar.java.coveragePlugin"));
+      // should use org.sonar.plugins.java.api.JavaSettings#getEnabledCoveragePlugin() introduced in sonar-java-plugin 1.1 with sonar 3.4
+      return CloverConstants.PLUGIN_KEY.equals(settings.getString("sonar.java.coveragePlugin"));
+    }
+    return false;
+  }
+
+  public String getReportPath() {
+    return settings.getString(CloverConstants.REPORT_PATH_PROPERTY);
+  }
+
+  public CloverSettings setReportPath(String s) {
+    settings.setProperty(CloverConstants.REPORT_PATH_PROPERTY, s);
+    return this;
   }
 }

@@ -20,7 +20,7 @@
 
 package org.sonar.plugins.clover;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.sonar.api.batch.CoverageExtension;
 import org.sonar.api.batch.Initializer;
 import org.sonar.api.batch.maven.DependsUponMavenPlugin;
@@ -52,20 +52,17 @@ public class CloverMavenInitializer extends Initializer implements CoverageExten
 
   @Override
   public boolean shouldExecuteOnProject(Project project) {
-    return settings.isEnabled()
-      && project.getAnalysisType().isDynamic(true)
-      && !project.getFileSystem().mainFiles(Java.KEY).isEmpty();
+    return settings.isEnabled(project);
   }
 
   @Override
   public void execute(Project project) {
-    Configuration conf = project.getConfiguration();
-    if (!conf.containsKey(CloverConstants.REPORT_PATH_PROPERTY)) {
-      String report = getReportPathFromPluginConfiguration(project);
+    if (StringUtils.isEmpty(settings.getReportPath())) {
+      String report = getReportPathFromMavenPlugin(project);
       if (report == null) {
         report = getDefaultReportPath(project);
       }
-      conf.setProperty(CloverConstants.REPORT_PATH_PROPERTY, report);
+      settings.setReportPath(report);
     }
   }
 
@@ -73,7 +70,7 @@ public class CloverMavenInitializer extends Initializer implements CoverageExten
     return project.getFileSystem().getReportOutputDir() + "/clover/clover.xml";
   }
 
-  private String getReportPathFromPluginConfiguration(Project project) {
+  private String getReportPathFromMavenPlugin(Project project) {
     MavenPlugin plugin = MavenPlugin.getPlugin(project.getPom(), CloverConstants.MAVEN_GROUP_ID, CloverConstants.MAVEN_ARTIFACT_ID);
     if (plugin != null) {
       String path = plugin.getParameter("outputDirectory");

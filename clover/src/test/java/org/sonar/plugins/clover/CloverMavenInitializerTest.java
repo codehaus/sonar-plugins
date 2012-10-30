@@ -22,45 +22,43 @@ package org.sonar.plugins.clover;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonar.api.config.Settings;
 import org.sonar.api.resources.Project;
 
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CloverMavenInitializerTest {
 
-  private Project project;
-  private CloverMavenInitializer initializer;
+  Project project;
+  CloverMavenInitializer initializer;
+  CloverSettings settings;
 
   @Before
-  public void setUp() {
+  public void init() {
     project = mock(Project.class);
-    CloverSettings settings = mock(CloverSettings.class);
-    when(settings.isEnabled()).thenReturn(true);
+    settings = mock(CloverSettings.class);
+    when(settings.isEnabled(project)).thenReturn(true);
     CloverMavenPluginHandler handler = mock(CloverMavenPluginHandler.class);
     initializer = new CloverMavenInitializer(handler, settings);
   }
 
   @Test
-  public void doNotExecuteMavenPluginIfReuseReports() {
-    when(project.getAnalysisType()).thenReturn(Project.AnalysisType.REUSE_REPORTS);
-    assertThat(initializer.getMavenPluginHandler(project), nullValue());
+  public void should_not_execute_maven_plugin_if_clover_is_disabled() {
+    when(settings.isEnabled(project)).thenReturn(false);
+    assertThat(initializer.shouldExecuteOnProject(project)).isFalse();
   }
 
   @Test
-  public void doNotExecuteMavenPluginIfStaticAnalysis() {
+  public void should_not_execute_maven_plugin_if_static_mode() {
     when(project.getAnalysisType()).thenReturn(Project.AnalysisType.STATIC);
-    assertThat(initializer.getMavenPluginHandler(project), nullValue());
+    assertThat(initializer.getMavenPluginHandler(project)).isNull();
   }
 
   @Test
-  public void executeMavenPluginIfDynamicAnalysis() {
+  public void should_execute_maven_plugin_if_dynamic_mode() {
     when(project.getAnalysisType()).thenReturn(Project.AnalysisType.DYNAMIC);
-    assertThat(initializer.getMavenPluginHandler(project), not(nullValue()));
+    assertThat(initializer.getMavenPluginHandler(project)).isNotNull();
   }
 
 }
