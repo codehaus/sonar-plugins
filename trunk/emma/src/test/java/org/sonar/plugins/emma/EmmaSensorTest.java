@@ -34,15 +34,18 @@ import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EmmaSensorTest {
 
   @Test
   public void shouldAnalyse() {
     SensorContext context = mock(SensorContext.class);
-    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "shouldGetReportPathFromProperty/pom.xml");
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "project/pom.xml");
 
-    new EmmaSensor(mock(EmmaSettings.class)).analyse(project, context);
+    EmmaSettings settings = mock(EmmaSettings.class);
+    when(settings.getReportPath()).thenReturn("target/emma");
+    new EmmaSensor(settings).analyse(project, context);
 
     verify(context).saveMeasure(
       argThat(new IsResource(Scopes.FILE, Qualifiers.CLASS, "org.apache.struts.util.MessageResourcesFactory")),
