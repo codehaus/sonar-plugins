@@ -67,7 +67,7 @@ public class EmmaMavenInitializerTest {
 
   @Test
   public void should_use_report_path_declared_in_pom() throws Exception {
-    MavenProject pom = MavenTestUtils.loadPom("/org/sonar/plugins/emma/EmmaSensorTest/shouldGetReportPathFromPom/pom.xml");
+    MavenProject pom = MavenTestUtils.loadPom("/org/sonar/plugins/emma/EmmaMavenInitializerTest/shouldGetReportPathFromPom/pom.xml");
     initializer = new EmmaMavenInitializer(new EmmaMavenPluginHandler(), settings, pom);
     initializer.execute(project);
     verify(settings).setReportPath("overridden/dir");

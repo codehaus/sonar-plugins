@@ -20,6 +20,7 @@
 
 package org.sonar.plugins.emma;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.CoverageExtension;
@@ -44,8 +45,8 @@ public class EmmaSensor implements Sensor, CoverageExtension {
   }
 
   public void analyse(Project project, SensorContext context) {
-    String path = (String) project.getProperty(EmmaPlugin.REPORT_PATH_PROPERTY);
-    if (path == null) {
+    String path = settings.getReportPath();
+    if (StringUtils.isEmpty(path)) {
       // wasn't configured - skip
       return;
     }
@@ -55,6 +56,7 @@ public class EmmaSensor implements Sensor, CoverageExtension {
       return;
     }
 
+    LOGGER.info("Parse reports: " + reportsPath);
     EmmaProcessor processor = new EmmaProcessor(reportsPath, context);
     processor.process();
   }
