@@ -29,17 +29,19 @@ import org.sonar.api.resources.Scopes;
 import org.sonar.api.test.IsResource;
 import org.sonar.api.test.MavenTestUtils;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EmmaSensorTest {
 
   @Test
-  public void shouldAnalyse() {
+  public void should_load_report() {
     SensorContext context = mock(SensorContext.class);
     Project project = MavenTestUtils.loadProjectFromPom(getClass(), "project/pom.xml");
 
@@ -52,4 +54,61 @@ public class EmmaSensorTest {
       eq(CoreMetrics.LINES_TO_COVER), anyDouble());
   }
 
+  @Test
+  public void should_do_nothing_if_no_report() {
+    SensorContext context = mock(SensorContext.class);
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "project/pom.xml");
+
+    EmmaSettings settings = mock(EmmaSettings.class);
+    new EmmaSensor(settings).analyse(project, context);
+
+    verifyZeroInteractions(context);
+  }
+
+  @Test
+  public void should_not_fail_if_report_path_is_bad() {
+    SensorContext context = mock(SensorContext.class);
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "project/pom.xml");
+    EmmaSettings settings = mock(EmmaSettings.class);
+    when(settings.getReportPath()).thenReturn("target/unknown");
+
+    new EmmaSensor(settings).analyse(project, context);
+
+    verifyZeroInteractions(context);
+  }
+
+  @Test
+  public void should_not_fail_if_report_path_is_a_file() {
+    SensorContext context = mock(SensorContext.class);
+    Project project = MavenTestUtils.loadProjectFromPom(getClass(), "project/pom.xml");
+    EmmaSettings settings = mock(EmmaSettings.class);
+    when(settings.getReportPath()).thenReturn("target/emma/coverage-0.ec");
+
+    new EmmaSensor(settings).analyse(project, context);
+
+    verifyZeroInteractions(context);
+  }
+
+  @Test
+  public void should_be_disabled() {
+    EmmaSettings settings = mock(EmmaSettings.class);
+    Project project = new Project("foo");
+    when(settings.isEnabled(project)).thenReturn(false);
+
+    assertThat(new EmmaSensor(settings).shouldExecuteOnProject(project)).isFalse();
+  }
+
+  @Test
+  public void should_be_enabled() {
+    EmmaSettings settings = mock(EmmaSettings.class);
+    Project project = new Project("foo");
+    when(settings.isEnabled(project)).thenReturn(true);
+
+    assertThat(new EmmaSensor(settings).shouldExecuteOnProject(project)).isTrue();
+  }
+
+  @Test
+  public void test_toString() {
+    assertThat(new EmmaSensor(mock(EmmaSettings.class)).toString()).isEqualTo("EmmaSensor");
+  }
 }
