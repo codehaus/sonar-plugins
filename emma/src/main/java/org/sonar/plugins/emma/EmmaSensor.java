@@ -32,7 +32,7 @@ import java.io.File;
 
 public class EmmaSensor implements Sensor, CoverageExtension {
 
-  private final static Logger LOGGER = LoggerFactory.getLogger(EmmaSensor.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(EmmaSensor.class);
 
   private EmmaSettings settings;
 
