@@ -19,29 +19,41 @@
  */
 package org.sonar.plugins.pam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sonar.api.config.Settings;
 import org.sonar.api.security.LoginPasswordAuthenticator;
+import org.sonar.api.security.SecurityRealm;
 
 /**
  *
  * @author Marco Tizzoni
  */
-public class PamAuthenticator implements LoginPasswordAuthenticator {
+public class PamRealm extends SecurityRealm {
 
-  private PamConfiguration settings;
+  private static final Logger LOG = LoggerFactory.getLogger(PamRealm.class);
+  private final Settings settings;
+  private PamAuthenticator authenticator;
+
+  public PamRealm(Settings settings) {
+    this.settings = settings;
+  }
+
+  @Override
+  public String getName() {
+    return "Sonar Pam Authenticator plugin";
+  }
 
   /**
-   * Creates a new instance of PamAuthenticator with specified configuration.
-   *
-   * @param configuration PAM configuration
+   * Initializes PAM realm.
    */
-  public PamAuthenticator(PamConfiguration configuration) {
-    this.settings = configuration;
-  }
-
+  @Override
   public void init() {
+    authenticator = new PamAuthenticator(new PamConfiguration(settings));
   }
 
-  public boolean authenticate(final String login, final String password) {
-    return settings.getPAM().authenticateSuccessful(login, password);
+  @Override
+  public LoginPasswordAuthenticator getLoginPasswordAuthenticator() {
+    throw new UnsupportedOperationException("Not supported yet.");
   }
 }
