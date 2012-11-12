@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>13</version>
+    <version>14</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -42,7 +42,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/pam</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/pam</developerConnection>
-    <url>http://svn.sonar-plugins.codehaus.org</url>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/pam</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
@@ -50,11 +50,11 @@
   </issueManagement>
   <ciManagement>
     <system>Bamboo</system>
-    <url>http://ci.codehaus.org/browse/SONAR-PAM</url>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-PAM</url>
   </ciManagement>
 
   <properties>
-    <sonar.version>1.12</sonar.version>
+    <sonar.version>2.14</sonar.version>
     <sonar.pluginClass>org.sonar.plugins.pam.PamAuthPlugin</sonar.pluginClass>
     <sonar.pluginName>PAM</sonar.pluginName>
     <license.owner>Marco Tizzoni</license.owner>
@@ -78,5 +78,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+
   </dependencies>
+
 </project>

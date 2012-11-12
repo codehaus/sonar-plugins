@@ -17,15 +17,13 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.pam;
 
-import net.sf.jpam.Pam;
-import org.sonar.api.ServerExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.apache.commons.configuration.Configuration;
+import org.sonar.api.ServerExtension;
+import org.sonar.api.config.Settings;
+import net.sf.jpam.Pam;
 
 /**
  *
@@ -34,16 +32,16 @@ import org.apache.commons.configuration.Configuration;
 public class PamConfiguration implements ServerExtension {
 
   private static final String PAM_SERVICE_NAME = "pam.serviceName";
-  private Configuration configuration;
+  private Settings settings;
   private Pam pam = null;
 
   /**
-   * Creates new instance of LdapConfiguration.
+   * Creates new instance of PamConfiguration.
    *
-   * @param configuration configuration
+   * @param settings settings
    */
-  public PamConfiguration(Configuration configuration) {
-    this.configuration = configuration;
+  public PamConfiguration(Settings settings) {
+    this.settings = settings;
   }
 
   public Pam getPAM() {
@@ -55,7 +53,7 @@ public class PamConfiguration implements ServerExtension {
 
   private Pam newInstance() {
     Pam result = null;
-    String serviceName = configuration.getString(PAM_SERVICE_NAME, null);
+    String serviceName = settings.getString(PAM_SERVICE_NAME);
     if (serviceName == null) {
       Logger logger = LoggerFactory.getLogger(getClass());
       logger.error("Unable to determine PAM service name. Please check that '" + PAM_SERVICE_NAME + "' property is set in 'sonar.properties' in ");

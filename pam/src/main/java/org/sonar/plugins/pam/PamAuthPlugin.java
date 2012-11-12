@@ -17,44 +17,19 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-
 package org.sonar.plugins.pam;
 
-import java.util.ArrayList;
-import org.sonar.api.Plugin;
+import com.google.common.collect.ImmutableList;
+import org.sonar.api.SonarPlugin;
 
 import java.util.List;
-import org.sonar.api.Extension;
-
 /**
  *
  * @author Marco Tizzoni
  */
-public class PamAuthPlugin implements Plugin {
+public class PamAuthPlugin extends SonarPlugin {
 
-  public String getKey() {
-    return "pam";
-  }
-
-  public String getName() {
-    return "Sonar Pam Authenticator plugin";
-  }
-
-  public String getDescription() {
-    return "Delegate password management to underlying PAM.";
-  }
-
-  // Declare all your Sonar extensions
   public List getExtensions() {
-    List<Class<? extends Extension>> extensions = new ArrayList<Class<? extends Extension>>();
-    extensions.add(PamAuthenticator.class);
-    extensions.add(PamConfiguration.class);
-    return extensions;
-
-  }
-
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
+    return ImmutableList.of(PamRealm.class);
   }
 }
