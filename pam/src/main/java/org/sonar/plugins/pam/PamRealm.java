@@ -41,7 +41,7 @@ public class PamRealm extends SecurityRealm {
 
   @Override
   public String getName() {
-    return "Sonar Pam Authenticator plugin";
+    return "PAM";
   }
 
   /**
@@ -54,6 +54,6 @@ public class PamRealm extends SecurityRealm {
 
   @Override
   public LoginPasswordAuthenticator getLoginPasswordAuthenticator() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return authenticator;
   }
 }
