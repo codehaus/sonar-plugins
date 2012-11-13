@@ -26,7 +26,6 @@
         <module>cutoff</module>
         <module>delphi</module>
         <module>doxygen</module>
-        <module>drools</module>
         <module>emma</module>
         <module>fb-contrib</module>
         <module>google-analytics</module>
