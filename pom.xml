@@ -34,7 +34,6 @@
         <module>greenpepper</module>
         <module>jira</module>
         <module>jmeter</module>
-        <module>mantis</module>
         <module>maven-report</module>
         <module>motion-chart</module>
         <module>parent</module>
