@@ -20,13 +20,21 @@
 
 package org.sonar.plugins.greenpepper;
 
-import org.sonar.api.web.AbstractDashboardWidget;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.RubyRailsWidget;
 
-public class GreenPepperWidget extends AbstractDashboardWidget {
+public class GreenPepperWidget extends AbstractRubyTemplate implements RubyRailsWidget {
 
   @Override
   protected String getTemplatePath() {
-    return "/org/sonar/plugins/greenpepper/greenpepperWidget.erb";
+    return "/org/sonar/plugins/greenpepper/greenpepper_widget.html.erb";
   }
 
+  public String getId() {
+    return "greenpepper";
+  }
+
+  public String getTitle() {
+    return "Greenpepper";
+  }
 }

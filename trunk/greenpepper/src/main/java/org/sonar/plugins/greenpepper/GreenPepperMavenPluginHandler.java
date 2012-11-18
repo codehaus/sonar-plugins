@@ -49,11 +49,6 @@ public class GreenPepperMavenPluginHandler implements MavenPluginHandler {
     return new String[]{"run"};
   }
 
-  public boolean dependsUponCustomRules() {
-    return false;
-  }
-
-
   public void configure(Project project, MavenPlugin mavenPlugin) {
   }
 }
