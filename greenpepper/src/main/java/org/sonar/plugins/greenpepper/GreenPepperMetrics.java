@@ -20,33 +20,51 @@
 
 package org.sonar.plugins.greenpepper;
 
+import com.google.common.collect.ImmutableList;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GreenPepperMetrics implements Metrics {
 
-  public static final Metric GREENPEPPER_TESTS = new Metric("greenpepper_tests", "GreenPepper tests", "Number of GreenPepper tests",
-      Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_TESTS);
-  public static final Metric GREENPEPPER_TEST_FAILURES = new Metric("greenpepper_test_failures", "GreenPepper test failures",
-      "Number of GreenPepper test failures", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_TESTS);
-  public static final Metric GREENPEPPER_TEST_ERRORS = new Metric("greenpepper_test_errors", "GreenPepper test errors",
-      "Number of GreenPepper test errors", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_TESTS);
-  public static final Metric GREENPEPPER_SKIPPED_TESTS = new Metric("greenpepper_skipped_tests", "GreenPepper skipped tests",
-      "Number of skipped GreenPepper tests", Metric.ValueType.INT, -1, false, CoreMetrics.DOMAIN_TESTS);
-  public static final Metric GREENPEPPER_TEST_SUCCESS_DENSITY = new Metric("greenpepper_test_success_density",
-      "GreenPepper test success (%)", "Ratio of successful GreenPepper tests", Metric.ValueType.PERCENT, 1, true, CoreMetrics.DOMAIN_TESTS);
+  public static final Metric TESTS = new Metric.Builder("greenpepper_tests", "GreenPepper tests", Metric.ValueType.INT)
+    .setDescription("Number of GreenPepper tests")
+    .setDirection(-1)
+    .setQualitative(false)
+    .setDomain(CoreMetrics.DOMAIN_TESTS)
+    .create();
+
+  public static final Metric TEST_FAILURES = new Metric.Builder("greenpepper_test_failures", "GreenPepper test failures", Metric.ValueType.INT)
+    .setDescription("Number of GreenPepper test failures")
+    .setDirection(-1)
+    .setQualitative(false)
+    .setDomain(CoreMetrics.DOMAIN_TESTS)
+    .create();
+
+  public static final Metric TEST_ERRORS = new Metric.Builder("greenpepper_test_errors", "GreenPepper test errors", Metric.ValueType.INT)
+    .setDescription("Number of GreenPepper test errors")
+    .setDirection(-1)
+    .setQualitative(false)
+    .setDomain(CoreMetrics.DOMAIN_TESTS)
+    .create();
+
+  public static final Metric SKIPPED_TESTS = new Metric.Builder("greenpepper_skipped_tests", "GreenPepper skipped tests", Metric.ValueType.INT)
+    .setDescription("Number of skipped GreenPepper tests")
+    .setDirection(-1)
+    .setQualitative(false)
+    .setDomain(CoreMetrics.DOMAIN_TESTS)
+    .create();
+
+  public static final Metric TEST_SUCCESS_DENSITY = new Metric.Builder("greenpepper_test_success_density", "GreenPepper test success (%)", Metric.ValueType.PERCENT)
+    .setDescription("Ratio of successful GreenPepper tests")
+    .setDirection(1)
+    .setQualitative(true)
+    .setDomain(CoreMetrics.DOMAIN_TESTS)
+    .create();
 
   public List<Metric> getMetrics() {
-    ArrayList<Metric> metrics = new ArrayList<Metric>();
-    metrics.add(GREENPEPPER_TESTS);
-    metrics.add(GREENPEPPER_TEST_ERRORS);
-    metrics.add(GREENPEPPER_TEST_FAILURES);
-    metrics.add(GREENPEPPER_SKIPPED_TESTS);
-    metrics.add(GREENPEPPER_TEST_SUCCESS_DENSITY);
-    return metrics;
+    return ImmutableList.of(TESTS, TEST_ERRORS, TEST_FAILURES, SKIPPED_TESTS, TEST_SUCCESS_DENSITY);
   }
 }

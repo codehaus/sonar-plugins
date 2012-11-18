@@ -32,11 +32,11 @@ public class GreenPepperSensor implements Sensor {
   public void analyse(Project project, SensorContext context) {
     GreenPepperReport testsReport = GreenPepperReportsParser.parseReports(getReportsDirectory(project));
 
-    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TEST_SUCCESS_DENSITY, testsReport.getTestSuccessPercentage() * 100);
-    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TESTS, (double) testsReport.getTests());
-    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TEST_ERRORS, (double) testsReport.getTestErrors());
-    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_TEST_FAILURES, (double) testsReport.getTestFailures());
-    context.saveMeasure(GreenPepperMetrics.GREENPEPPER_SKIPPED_TESTS, (double) testsReport.getSkippedTests());
+    context.saveMeasure(GreenPepperMetrics.TEST_SUCCESS_DENSITY, testsReport.getTestSuccessPercentage() * 100);
+    context.saveMeasure(GreenPepperMetrics.TESTS, (double) testsReport.getTests());
+    context.saveMeasure(GreenPepperMetrics.TEST_ERRORS, (double) testsReport.getTestErrors());
+    context.saveMeasure(GreenPepperMetrics.TEST_FAILURES, (double) testsReport.getTestFailures());
+    context.saveMeasure(GreenPepperMetrics.SKIPPED_TESTS, (double) testsReport.getSkippedTests());
   }
 
   public boolean shouldExecuteOnProject(Project project) {

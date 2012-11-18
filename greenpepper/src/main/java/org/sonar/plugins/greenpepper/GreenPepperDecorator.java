@@ -20,20 +20,22 @@
 
 package org.sonar.plugins.greenpepper;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.sonar.api.batch.AbstractSumChildrenDecorator;
 import org.sonar.api.batch.DependedUpon;
 import org.sonar.api.measures.Metric;
+
+import java.util.List;
 
 public class GreenPepperDecorator extends AbstractSumChildrenDecorator {
 
   @DependedUpon
   public List<Metric> generatesMetrics() {
-    return Arrays.asList(GreenPepperMetrics.GREENPEPPER_SKIPPED_TESTS, GreenPepperMetrics.GREENPEPPER_TEST_ERRORS,
-        GreenPepperMetrics.GREENPEPPER_TEST_FAILURES, GreenPepperMetrics.GREENPEPPER_TEST_SUCCESS_DENSITY,
-        GreenPepperMetrics.GREENPEPPER_TESTS);
+    return ImmutableList.of(
+      GreenPepperMetrics.SKIPPED_TESTS, GreenPepperMetrics.TEST_ERRORS,
+      GreenPepperMetrics.TEST_FAILURES, GreenPepperMetrics.TEST_SUCCESS_DENSITY,
+      GreenPepperMetrics.TESTS
+    );
   }
 
   @Override
