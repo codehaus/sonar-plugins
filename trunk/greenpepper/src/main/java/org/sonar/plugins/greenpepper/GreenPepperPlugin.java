@@ -27,17 +27,10 @@ import java.util.List;
 
 public class GreenPepperPlugin extends SonarPlugin {
 
-  public static final String EXEC_GREENPEPPER_KEY = "EXEC_GREENPEPPER_MAVEN_KEY";
-  public static final String EXEC_GREENPEPPER_VALUE = "No";
-
   public List<?> getExtensions() {
     return ImmutableList.of(
       GreenPepperSensor.class, GreenPepperMavenPluginHandler.class,
       GreenPepperMetrics.class, GreenPepperWidget.class, GreenPepperDecorator.class
     );
-  }
-
-  public String toString() {
-    return getKey();
   }
 }
