@@ -21,12 +21,7 @@
 package org.sonar.plugins.googlecalendar;
 
 import com.google.api.client.googleapis.GoogleUrl;
-import com.google.api.client.http.HttpExecuteIntercepter;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpResponseException;
-import com.google.api.client.http.HttpTransport;
-
+import com.google.api.client.http.*;
 import java.io.IOException;
 
 /**

@@ -25,7 +25,6 @@ import com.google.api.client.util.DataUtil;
 import com.google.api.client.util.Key;
 import com.google.api.client.xml.XmlNamespaceDictionary;
 import com.google.api.client.xml.atom.AtomContent;
-
 import java.io.IOException;
 import java.util.List;
 

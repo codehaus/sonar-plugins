@@ -20,11 +20,11 @@
 
 package org.sonar.plugins.googlecalendar;
 
-import org.sonar.api.Plugin;
 import java.util.Arrays;
 import java.util.List;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.SonarPlugin;
 
 /**
  * @author Papapetrou P.Patroklos
@@ -37,6 +37,7 @@ import org.sonar.api.Property;
         global = false, project = true, module = false),
     @Property(
         key = GoogleCalendarPublisher.PASSWORD_PROP,
+        type = org.sonar.api.PropertyType.PASSWORD,
         name = "Google Account Password",
         global = false, project = true, module = false),
     @Property(
@@ -49,27 +50,10 @@ import org.sonar.api.Property;
         description = "Example:c4o4i7m2lbamc4k26sc2vokh5g@group.calendar.google.com",
         global = false, project = true, module = false) })
 
-public class GoogleCalendarPlugin implements Plugin {
+public class GoogleCalendarPlugin extends SonarPlugin {
 
   public final List getExtensions() {
     return Arrays.asList(GoogleCalendarPublisher.class);
-  }
-
-  @Override
-  public final String toString() {
-    return getClass().getSimpleName();
-  }
-
-  public final String getKey() {
-    return "googleCalendar";
-  }
-
-  public final String getName() {
-    return "Google Calendar";
-  }
-
-  public final String getDescription() {
-    return "Google Calendar Plugin";
   }
 }
 

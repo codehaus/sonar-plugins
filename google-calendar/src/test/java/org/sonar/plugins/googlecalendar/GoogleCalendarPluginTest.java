@@ -20,13 +20,12 @@
 
 package org.sonar.plugins.googlecalendar;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Assert;
-
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.notNullValue;
+import org.junit.Assert;
 import static org.junit.Assert.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 public class GoogleCalendarPluginTest {
   private transient GoogleCalendarPlugin plugin;
@@ -43,14 +42,4 @@ public class GoogleCalendarPluginTest {
             contains(GoogleCalendarPublisher.class));
   }
 
-
-  /**
-   * see SONAR-1898.
-   */
-  @Test
-  public final void testDeprecatedMethods() {
-    assertThat(plugin.getKey(), notNullValue());
-    assertThat(plugin.getName(), notNullValue());
-    assertThat(plugin.getDescription(), notNullValue());
-  }
 }

@@ -22,16 +22,14 @@ package org.sonar.plugins.googlecalendar;
 
 import com.google.api.client.googleapis.auth.clientlogin.ClientLogin;
 import com.google.api.client.http.HttpResponseException;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.sonar.api.batch.PostJob;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.resources.Project;
-
-import java.io.IOException;
-import org.apache.commons.configuration.Configuration;
+import org.sonar.api.config.Settings;
 import org.sonar.api.platform.Server;
+import org.sonar.api.resources.Project;
 
 /**
  * @author Papapetrou P.Patroklos
@@ -58,18 +56,20 @@ public class GoogleCalendarPublisher implements PostJob {
           LoggerFactory.getLogger(GoogleCalendarPublisher.class);
   /** Sonar Server. */
   private final Server server;
+  /** Project Settings. */
+  private final Settings settings;
 
-  public GoogleCalendarPublisher(final Server serverPrm) {
+  public GoogleCalendarPublisher(final Server serverPrm, Settings settings) {
     this.server = serverPrm;
+    this.settings = settings;
   }
 
   public final void executeOn(final Project prj,
           final SensorContext sensorContext) {
-    final Configuration configuration = prj.getConfiguration();
-    final String username = configuration.getString(ACCOUNT_PROP);
-    final String password = configuration.getString(PASSWORD_PROP);
-    final String calendarID = configuration.getString(CALENDAR_ID_PROP);
-    final String isEnabled = configuration.getString(ENABLED_PROP);
+    final String username = settings.getString(ACCOUNT_PROP);
+    final String password = settings.getString(PASSWORD_PROP);
+    final String calendarID = settings.getString(CALENDAR_ID_PROP);
+    final String isEnabled = settings.getString(ENABLED_PROP);
 
     if (isEnabled != null && isEnabled.equals("true")) {
 
