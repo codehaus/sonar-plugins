@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
+import org.sonar.api.PropertyType;
 import org.sonar.api.SonarPlugin;
 
 /**
@@ -37,12 +38,13 @@ import org.sonar.api.SonarPlugin;
         global = false, project = true, module = false),
     @Property(
         key = GoogleCalendarPublisher.PASSWORD_PROP,
-        type = org.sonar.api.PropertyType.PASSWORD,
+        type = PropertyType.PASSWORD,
         name = "Google Account Password",
         global = false, project = true, module = false),
     @Property(
         key = GoogleCalendarPublisher.ENABLED_PROP,
         name = "Enabled", defaultValue = "false",
+        type = PropertyType.BOOLEAN,
         global = false, project = true, module = false),
      @Property(
         key = GoogleCalendarPublisher.CALENDAR_ID_PROP,

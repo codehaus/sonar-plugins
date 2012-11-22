@@ -4,17 +4,16 @@
   <parent>
     <groupId>org.codehaus.sonar-plugins</groupId>
     <artifactId>parent</artifactId>
-    <version>13</version>
-    <relativePath>../parent</relativePath>
+    <version>15</version>
   </parent>
-  
+
   <artifactId>sonar-google-calendar-plugin</artifactId>
   <version>0.2-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
   
   <name>Google Calendar Plugin</name>
   <description>Plugin that integrates Sonar with Google Calendar providing simple functionality</description>
-  <url />
+  <url>http://docs.codehaus.org/display/SONAR/Google+Calendar+Plugin</url>
   <inceptionYear>2011</inceptionYear>
   <organization>
     <name>OTS SA</name>
@@ -85,5 +84,12 @@
       <version>${sonar.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
+      <version>1.4</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 </project>
