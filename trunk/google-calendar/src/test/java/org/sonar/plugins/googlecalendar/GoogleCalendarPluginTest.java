@@ -20,26 +20,14 @@
 
 package org.sonar.plugins.googlecalendar;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.notNullValue;
-import org.junit.Assert;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
 import org.junit.Test;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 public class GoogleCalendarPluginTest {
-  private transient GoogleCalendarPlugin plugin;
-
-  @Before
-  public final void setUp() {
-    plugin = new GoogleCalendarPlugin();
-  }
-
   @Test
   public final void testPluginDefinition() {
-    assertThat(plugin.getExtensions().size(), greaterThan(0));
-    Assert.assertTrue(plugin.getExtensions().
-            contains(GoogleCalendarPublisher.class));
+    assertThat(new GoogleCalendarPlugin().getExtensions()).containsOnly(GoogleCalendarPublisher.class);
   }
 
 }
