@@ -1,111 +1,84 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.codehaus.sonar-plugins</groupId>
+    <artifactId>parent</artifactId>
+    <version>14</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
   <groupId>org.codehaus.sonar-plugins</groupId>
-  <artifactId>all</artifactId>
-  <packaging>pom</packaging>
-  <version>0.1-SNAPSHOT</version>
-  <name>All Sonar plugins</name>
+  <artifactId>sonar-pam-plugin</artifactId>
+  <version>0.2</version>
+  <packaging>sonar-plugin</packaging>
 
-  <profiles>
-    <profile>
-      <id>stableProjects</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>abacus</module>
-        <module>artifact-size</module>
-        <module>branding</module>
-        <module>build-breaker</module>
-        <module>build-stability</module>
-        <module>clirr</module>
-        <module>clover</module>
-        <module>crowd</module>
-        <module>csv-export</module>
-        <module>cutoff</module>
-        <module>delphi</module>
-        <module>doxygen</module>
-        <module>emma</module>
-        <module>fb-contrib</module>
-        <module>google-analytics</module>
-        <module>google-calendar</module>
-        <module>greenpepper</module>
-        <module>jira</module>
-        <module>jmeter</module>
-        <module>maven-report</module>
-        <module>motion-chart</module>
-        <module>parent</module>
-        <module>pam</module>
-        <module>pdf-report</module>
-        <module>piwik</module>
-        <module>quality-index</module>
-        <module>security-rules</module>
-        <module>sigmm</module>
-        <module>sonargraph</module>
-        <module>tab-metrics</module>
-        <module>taglist</module>
-        <module>technical-debt</module>
-        <module>thucydides</module>
-        <module>timeline</module>
-        <module>total-quality</module>
-        <module>trac</module>
-        <module>useless-code-tracker</module>
-        <module>web</module>
-        <module>widget-lab</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>stableProjects-jdk6</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>xml</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unreleased</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>devkit</module>
-        <module>pitest</module>
-        <module>toxicity-chart</module>
-        <module>violation-density</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>unmaintained</id>
-      <modules>
-      </modules>
-    </profile>
-    <profile>
-      <id>unstableProjects</id>
-      <modules>
-      </modules>
-    </profile>
-  </profiles>
+  <name>Sonar PAM plugin</name>
+  <description>Allow Sonar to use PAM authentication on *nix box.</description>
+  <url>http://docs.codehaus.org/display/SONAR/PAM+Plugin</url>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>Freaknet</name>
+    <url>http://www.freaknet.org</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>GNU LGPL 3</name>
+      <url>http://www.gnu.org/licenses/lgpl.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-  <build>
-    <plugins>
-      <!-- Workaround for Maven 3.0.0 - 3.0.4 : see http://jira.codehaus.org/browse/SONARPLUGINS-991 -->
-      <plugin>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.1</version>
-        <extensions>true</extensions>
-      </plugin>
+  <developers>
+    <developer>
+      <id>mtizzoni</id>
+      <name>Marco Tizzoni</name>
+      <email>marco.tizzoni@gmail.com</email>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-pam-plugin-0.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-pam-plugin-0.2</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-pam-plugin-0.2</url>
+  </scm>
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://jira.codehaus.org/browse/SONARPLUGINS/component/14697</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Bamboo</system>
+    <url>http://bamboo.ci.codehaus.org/browse/SONAR-PAM</url>
+  </ciManagement>
+
+  <properties>
+    <sonar.version>3.0</sonar.version>
+    <sonar.pluginClass>org.sonar.plugins.pam.PamAuthPlugin</sonar.pluginClass>
+    <sonar.pluginName>PAM</sonar.pluginName>
+    <license.owner>Marco Tizzoni</license.owner>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.jpam</groupId>
+      <artifactId>jpam</artifactId>
+      <version>1.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+  </dependencies>
+
 </project>
