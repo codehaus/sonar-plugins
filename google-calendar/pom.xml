@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>sonar-google-calendar-plugin</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.2-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
   
   <name>Google Calendar Plugin</name>
