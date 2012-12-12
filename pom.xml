@@ -31,7 +31,6 @@
         <module>google-analytics</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
-        <module>jira</module>
         <module>jmeter</module>
         <module>maven-report</module>
         <module>motion-chart</module>
