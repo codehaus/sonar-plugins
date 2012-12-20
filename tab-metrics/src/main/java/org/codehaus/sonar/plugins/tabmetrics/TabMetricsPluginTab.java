@@ -17,30 +17,45 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.sonar.plugins.tabmetrics.resourcetab;
+package org.codehaus.sonar.plugins.tabmetrics;
 
-import org.sonar.api.web.GwtPage;
+import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.resources.Qualifiers;
+import org.sonar.api.web.AbstractRubyTemplate;
+import org.sonar.api.web.DefaultTab;
 import org.sonar.api.web.NavigationSection;
+import org.sonar.api.web.ResourceQualifier;
+import org.sonar.api.web.RubyRailsPage;
 import org.sonar.api.web.UserRole;
 
 /**
- * Gwt TabMetrics Resource Tab
+ * Metrics Tab
  */
 @NavigationSection(NavigationSection.RESOURCE_TAB)
-@UserRole(UserRole.USER)
-public class GwtTabMetricsResourceTab extends GwtPage {
+@ResourceQualifier({ Qualifiers.FILE, Qualifiers.CLASS })
+@UserRole(UserRole.CODEVIEWER)
+@DefaultTab(metrics = { CoreMetrics.NCLOC_KEY })
+public class TabMetricsPluginTab extends AbstractRubyTemplate implements RubyRailsPage {
 
   /**
-   * Gets the TabMetrics Tab Title
+   * Tab ID
+   */
+  public final String getId() {
+    return "metrics";
+  }
+
+  /**
+   * Tab Title
    */
   public final String getTitle() {
     return "Metrics";
   }
 
   /**
-   * Obtains the TabMetrics Tab Id
+   * Tab Template path
    */
-  public final String getGwtId() {
-    return "org.codehaus.sonar.plugins.tabmetrics.resourcetab.TabMetricsPluginTab";
+  @Override
+  protected final String getTemplatePath() {
+    return "/TabMetrics.html.erb";
   }
 }

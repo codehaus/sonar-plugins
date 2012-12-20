@@ -23,7 +23,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import org.codehaus.sonar.plugins.tabmetrics.resourcetab.GwtTabMetricsResourceTab;
 import org.junit.Test;
 
 /**
@@ -34,7 +33,7 @@ public class TabMetricsPluginTest {
   @Test
   public void testGetExtensions() {
     TabMetricsPlugin plugin = new TabMetricsPlugin();
-    
-    assertEquals(plugin.getExtensions(), Arrays.asList(GwtTabMetricsResourceTab.class));
+
+    assertEquals(plugin.getExtensions(), Arrays.asList(TabMetricsPluginTab.class));
   }
 }

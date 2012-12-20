@@ -17,22 +17,37 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.codehaus.sonar.plugins.tabmetrics.resourcetab;
+package org.codehaus.sonar.plugins.tabmetrics;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Gwt TabMetrics Resource Tab Test
+ * Metrics Tab Test
  */
-public class GwtTabMetricsResourceTabTest {
+public class TabMetricsPluginTabTest {
+
+  private static TabMetricsPluginTab tab;
+
+  @BeforeClass
+  public static void setUp() {
+    tab = new TabMetricsPluginTab();
+  }
 
   @Test
-  public void testGwtTab() {
-    GwtTabMetricsResourceTab gwtTabMetrics = new GwtTabMetricsResourceTab();
+  public void testWidgetsId() {
+    assertEquals(tab.getId(), "metrics");
+  }
 
-    assertEquals(gwtTabMetrics.getTitle(), "Metrics");
-    assertEquals(gwtTabMetrics.getGwtId(), "org.codehaus.sonar.plugins.tabmetrics.resourcetab.TabMetricsPluginTab");
+  @Test
+  public void testWidgetsTitle() {
+    assertEquals(tab.getTitle(), "Metrics");
+  }
+
+  @Test
+  public void testWidgetsPath() {
+    assertEquals(tab.getTemplatePath(), "/TabMetrics.html.erb");
   }
 }

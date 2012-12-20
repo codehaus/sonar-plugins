@@ -22,10 +22,8 @@ package org.codehaus.sonar.plugins.tabmetrics;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.sonar.plugins.tabmetrics.resourcetab.GwtTabMetricsResourceTab;
 import org.sonar.api.Extension;
 import org.sonar.api.SonarPlugin;
-
 
 /**
  * Implements TabMetricsPlugin for Sonar
@@ -40,7 +38,7 @@ public class TabMetricsPlugin extends SonarPlugin {
   public final List<Class<? extends Extension>> getExtensions() {
     List<Class<? extends Extension>> list = new ArrayList<Class<? extends Extension>>();
 
-    list.add(GwtTabMetricsResourceTab.class);
+    list.add(TabMetricsPluginTab.class);
 
     return list;
   }

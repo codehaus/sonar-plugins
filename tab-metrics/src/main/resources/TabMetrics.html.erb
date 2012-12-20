@@ -1,0 +1,77 @@
+<%
+	# Collect all domains
+	all_domains = Metric.domains;
+	
+	metrics_by_domain = {};
+	measures_by_domain = {};
+	
+	# Collect all metrics and measures
+	all_domains.each do |domain|
+		if(!domain.nil? && domain.length > 0)
+			# Initialize
+			metrics_by_domain[domain] = [];
+			measures_by_domain[domain] = [];
+						
+			# Metrics by domain
+			metrics_of_domain = Metric.by_domain(domain);
+			
+			metrics_of_domain.each do |metricObj|
+				if(!metricObj.nil?)
+					measureObj = measure(metricObj.key);
+					
+					if(!measureObj.nil?)
+						metrics_by_domain[domain] << metricObj;
+						measures_by_domain[domain] << measureObj;
+					end
+				end
+			end
+		end
+	end
+	
+%>
+<div style="width: 100%">
+	<% 
+		all_domains.each do |domain|
+			
+			if(!domain.nil? && domain.length > 0)
+				metricsArray = metrics_by_domain[domain];
+				measuresArray = measures_by_domain[domain];
+				
+				if(metricsArray.length > 0 && measuresArray.length > 0)
+	%>
+					<div class="tab_header">
+						<div>
+							<h3><%= domain -%> </h3>
+						</div>
+						<div>
+							<table width="100%">
+								<tbody>
+									<% 
+										mcount = 0;
+										metricsArray.each do |metric|
+									%>
+											<tr>
+												<td nowrap width="35%">
+													<p>
+														<%= metric.short_name -%>: 
+														<% if (metric.numeric?) %>
+															<b><%= format_measure(metric.key) -%></b>
+														<% elsif (metric.data?) %>
+															<input type="text" style="background-color: #EFEFEF; font-weight: bold" readonly="readonly" value="<%= measuresArray[mcount].data -%>">
+														<% end %> 
+													</p>
+												</td>
+												<td width="65%">
+													<span style="font-style: italic"><%= metric.description -%></span>
+												</td>
+											</tr>
+											<% mcount = mcount + 1 %>
+									<% end %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				<% end %>
+			<% end %>
+		<% end %>
+</div>
