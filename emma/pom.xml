@@ -28,6 +28,7 @@
     </license>
   </licenses>
 
+
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/emma</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/emma</developerConnection>
