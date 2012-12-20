@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -36,13 +37,6 @@
       <id>jbadenas</id>
       <name>Jesús Badenas Martínez</name>
       <email>jbadenas@excentia.es</email>
-      <organization>eXcentia</organization>
-      <organizationUrl>http://www.excentia.es</organizationUrl>
-    </developer>
-    <developer>
-      <id>mlujan</id>
-      <name>Míriam Luján Mares</name>
-      <email>mlujan@excentia.es</email>
       <organization>eXcentia</organization>
       <organizationUrl>http://www.excentia.es</organizationUrl>
     </developer>
@@ -85,48 +79,10 @@
       <version>${sonar.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- GWT -->
-    <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-gwt-api</artifactId>
-      <version>${sonar.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <version>2.0.4</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-incubator</artifactId>
-      <version>2.0.1</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <configuration>
-              <modules>
-                <module>org.codehaus.sonar.plugins.tabmetrics.resourcetab.TabMetricsPluginTab</module>
-              </modules>
-              <webappDirectory>target/classes</webappDirectory>
-              <!-- do not break the following property on two lines -->
-              <extraJvmArgs>-Xmx512m -Dgwt.jjs.permutationWorkerFactory=com.google.gwt.dev.ThreadedPermutationWorkerFactory</extraJvmArgs>
-            </configuration>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
