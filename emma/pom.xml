@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>sonar-emma-plugin</artifactId>
-  <version>1.3</version>
+  <version>1.4-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
   <name>Sonar Emma plugin</name>
@@ -29,9 +29,9 @@
 
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/tags/sonar-emma-plugin-1.3</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-emma-plugin-1.3</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/sonar-plugins/tags/sonar-emma-plugin-1.3</url>
+    <connection>scm:svn:http://svn.codehaus.org/sonar-plugins/trunk/emma</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/sonar-plugins/trunk/emma</developerConnection>
+    <url>http://svn.codehaus.org/sonar-plugins</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
