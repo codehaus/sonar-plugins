@@ -20,8 +20,12 @@
 					measureObj = measure(metricObj.key);
 					
 					if(!measureObj.nil?)
-						metrics_by_domain[domain] << metricObj;
-						measures_by_domain[domain] << measureObj;
+						
+						# NUMERIC or DATA
+						if ( (metricObj.numeric? && !measureObj.value.nil?) || (metricObj.data? && !measureObj.data.nil? && measureObj.data.length > 0) )
+							metrics_by_domain[domain] << metricObj;
+							measures_by_domain[domain] << measureObj;
+						end
 					end
 				end
 			end
@@ -48,21 +52,21 @@
 								<tbody>
 									<% 
 										mcount = 0;
-										metricsArray.each do |metric|
+										metricsArray.each do |metricObj|
 									%>
 											<tr>
 												<td nowrap width="35%">
 													<p>
-														<%= metric.short_name -%>: 
-														<% if (metric.numeric?) %>
-															<b><%= format_measure(metric.key) -%></b>
-														<% elsif (metric.data?) %>
+														<%= metricObj.short_name -%>: 
+														<% if (metricObj.numeric?) %>
+															<b><%= format_measure(metricObj.key) -%></b>
+														<% elsif (metricObj.data?) %>
 															<input type="text" style="background-color: #EFEFEF; font-weight: bold" readonly="readonly" value="<%= measuresArray[mcount].data -%>">
 														<% end %> 
 													</p>
 												</td>
 												<td width="65%">
-													<span style="font-style: italic"><%= metric.description -%></span>
+													<span style="font-style: italic"><%= metricObj.description -%></span>
 												</td>
 											</tr>
 											<% mcount = mcount + 1 %>
@@ -71,7 +75,9 @@
 							</table>
 						</div>
 					</div>
-				<% end %>
-			<% end %>
-		<% end %>
+	<% 			
+				end 
+			end 
+		end 
+	%>
 </div>

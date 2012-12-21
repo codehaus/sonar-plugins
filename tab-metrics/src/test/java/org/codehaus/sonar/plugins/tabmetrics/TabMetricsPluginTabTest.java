@@ -38,7 +38,7 @@ public class TabMetricsPluginTabTest {
 
   @Test
   public void testWidgetsId() {
-    assertEquals(tab.getId(), "metrics");
+    assertEquals(tab.getId(), "metricsTab");
   }
 
   @Test
