@@ -41,7 +41,7 @@ public class TabMetricsPluginTab extends AbstractRubyTemplate implements RubyRai
    * Tab ID
    */
   public final String getId() {
-    return "metrics";
+    return "metricsTab";
   }
 
   /**
