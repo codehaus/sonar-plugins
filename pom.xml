@@ -17,7 +17,6 @@
         <module>abacus</module>
         <module>artifact-size</module>
         <module>branding</module>
-        <module>build-breaker</module>
         <module>build-stability</module>
         <module>clirr</module>
         <module>clover</module>
