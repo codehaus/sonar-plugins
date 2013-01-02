@@ -13,8 +13,8 @@
   <version>1.3-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
 
-  <name>Sonar Tab Metrics Plugin</name>
-  <description>Sonar Tab Metrics Plugin</description>
+  <name>Tab Metrics</name>
+  <description>Add a new tab containing metrics information at file level</description>
   <url>http://docs.codehaus.org/display/SONAR/Tab+Metrics+Plugin</url>
   <inceptionYear>2012</inceptionYear>
 
@@ -59,7 +59,7 @@
 
   <properties>
     <sonar.version>2.12</sonar.version>
-    <sonar.pluginName>Sonar Tab Metrics Plugin</sonar.pluginName>
+    <sonar.pluginName>Tab Metrics</sonar.pluginName>
     <sonar.pluginClass>org.codehaus.sonar.plugins.tabmetrics.TabMetricsPlugin</sonar.pluginClass>
   </properties>
 
