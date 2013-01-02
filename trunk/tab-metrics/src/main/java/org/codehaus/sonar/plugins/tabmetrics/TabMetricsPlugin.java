@@ -1,5 +1,5 @@
 /*
- * Sonar Tab Metrics Plugin
+ * Tab Metrics
  * Copyright (C) 2012 eXcentia
  * dev@sonar.codehaus.org
  *
