@@ -57,7 +57,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>xml</module>
       </modules>
     </profile>
     <profile>
