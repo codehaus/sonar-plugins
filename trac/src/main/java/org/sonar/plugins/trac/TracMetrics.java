@@ -24,25 +24,30 @@
 
 package org.sonar.plugins.trac;
 
+import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class TracMetrics implements Metrics {
 
   public static final String DOMAIN = "Issues";
 
-  public static final Metric ISSUES = new Metric("trac_issues", "Trac issues", "Number of Trac issues", Metric.ValueType.INT,
-      Metric.DIRECTION_NONE, false, DOMAIN);
+  public static final Metric ISSUES = new Metric.Builder("trac_issues", "Trac issues", Metric.ValueType.INT)
+      .setDescription("Number of Trac issues")
+      .setQualitative(false)
+      .setDomain(DOMAIN)
+      .create();
 
-  public static final Metric TICKET_COMPONENT = new Metric("trac_ticket_component", "Project component", "Project component specified",
-      Metric.ValueType.STRING, Metric.DIRECTION_NONE, false, DOMAIN);
+  public static final Metric TICKET_COMPONENT = new Metric.Builder("trac_ticket_component", "Project component", Metric.ValueType.STRING)
+      .setDescription("Project component specified")
+      .setQualitative(false)
+      .setDomain(DOMAIN)
+      .create();
 
   // getMetrics() method is defined in the Metrics interface and is used by
   // Sonar to retrieve the list of new Metric
   public final List<Metric> getMetrics() {
-    return Arrays.asList(ISSUES, TICKET_COMPONENT);
+    return ImmutableList.of(ISSUES, TICKET_COMPONENT);
   }
 }

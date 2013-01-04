@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package org.sonar.plugins.trac;
 
 import java.net.MalformedURLException;
@@ -35,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Project;
@@ -42,21 +42,25 @@ import org.sonar.api.resources.Project;
 public class TracSensor implements Sensor {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TracSensor.class);
-
+  private final Settings settings;
+  
+  public TracSensor (final Settings settings){
+    this.settings = settings;
+  }
+  
   public final boolean shouldExecuteOnProject(Project project) {
     // this sensor is executed on any type of project
     return true;
   }
 
   /**
-   * Builds a map of the possible ticket priorities and the number of tickets (active, not closed) for each.
-   * 
-   * @param client
-   *          valid XmlRpcClient
-   * @param distribution
-   *          PropertiesBuilder<String, Integer> object to build the ticket priority/count distribution
-   * @param component
-   *          optional component to search by
+   * Builds a map of the possible ticket priorities and the number of tickets
+   * (active, not closed) for each.
+   *
+   * @param client valid XmlRpcClient
+   * @param distribution PropertiesBuilder<String, Integer> object to build the
+   * ticket priority/count distribution
+   * @param component optional component to search by
    * @return total count of all active tickets (not closed)
    */
   public final int getPriorityCount(XmlRpcClient client, PropertiesBuilder<String, Integer> distribution, String component) {
@@ -83,9 +87,9 @@ public class TracSensor implements Sensor {
             // (usually to 100).
             String startQuery = "max=0&status!=closed&priority=" + priority;
             if (null == component) {
-              params = new Object[] { startQuery };
+              params = new Object[]{startQuery};
             } else {
-              params = new Object[] { startQuery + "&component=" + component };
+              params = new Object[]{startQuery + "&component=" + component};
             }
 
             priorityResult = (Object[]) client.execute("ticket.query", params);
@@ -110,10 +114,10 @@ public class TracSensor implements Sensor {
   }
 
   /**
-   * If a Trac URL is specified in the project's pom.xml file it is returned, null otherwise.
-   * 
-   * @param im
-   *          IssueManagement object from project's pom.xml
+   * If a Trac URL is specified in the project's pom.xml file it is returned,
+   * null otherwise.
+   *
+   * @param im IssueManagement object from project's pom.xml
    * @return Trac URL
    */
   public final String getTracURLFromPOM(IssueManagement im) {
@@ -131,7 +135,7 @@ public class TracSensor implements Sensor {
 
     // Trac URL specified in project configuration overrides the URL
     // specified in the project's pom.xml file.
-    String tracURL = project.getConfiguration().getString(TracPlugin.TRAC_URL_KEY);
+    String tracURL = settings.getString(TracPlugin.TRAC_URL_KEY);
 
     if (null == tracURL) {
       LOGGER.info("Trac: No URL specified in Sonar configuration - trying project's pom.xml file instead.");
@@ -144,9 +148,9 @@ public class TracSensor implements Sensor {
       LOGGER.warn("Trac: No URL specified, not gathering metrics from Trac.");
     } else {
       // Still try and get username/password from Sonar config.
-      String tracUsername = project.getConfiguration().getString(TracPlugin.TRAC_USERNAME_KEY);
-      String tracPassword = project.getConfiguration().getString(TracPlugin.TRAC_PASSWORD_KEY);
-      String tracTicketComponent = project.getConfiguration().getString(TracPlugin.TRAC_TICKET_COMPONENT_KEY);
+      String tracUsername = settings.getString(TracPlugin.TRAC_USERNAME_KEY);
+      String tracPassword = settings.getString(TracPlugin.TRAC_PASSWORD_KEY);
+      String tracTicketComponent = settings.getString(TracPlugin.TRAC_TICKET_COMPONENT_KEY);
 
       String fullTracUrl = tracURL;
 
