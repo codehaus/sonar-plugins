@@ -5,7 +5,7 @@
   <parent>
     <artifactId>parent</artifactId>
     <groupId>org.codehaus.sonar-plugins</groupId>
-    <version>13</version>
+    <version>15</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -33,6 +33,11 @@
       <id>dmcdonald</id>
       <name>Duncan McDonald</name>
     </developer>
+    <developer>
+      <id>ppapapetrou</id>
+      <name>Patroklos PAPAPETROU</name>
+      <email>ppapapetrou76@gmail.com</email>
+    </developer>
   </developers>
 
   <scm>
@@ -50,7 +55,7 @@
   </ciManagement>
 
   <properties>
-    <sonar.version>2.2</sonar.version>
+    <sonar.version>3.0</sonar.version>
     <sonar.pluginKey>trac</sonar.pluginKey>
     <sonar.pluginName>Trac</sonar.pluginName>
     <sonar.pluginClass>org.sonar.plugins.trac.TracPlugin</sonar.pluginClass>
@@ -80,6 +85,16 @@
       <artifactId>junit</artifactId>
       <version>4.8.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <version>2.0.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <version>2.0.9</version>
     </dependency>
   </dependencies>
 </project>

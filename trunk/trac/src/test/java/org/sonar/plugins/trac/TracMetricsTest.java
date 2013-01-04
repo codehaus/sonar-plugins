@@ -27,14 +27,14 @@ package org.sonar.plugins.trac;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 
 public class TracMetricsTest {
 
   @Test
   public void testMetricsDefinition() {
     TracMetrics metrics = new TracMetrics();
-    assertThat(metrics.getMetrics().size(), greaterThan(0));
+    assertThat(metrics.getMetrics().size(), is(2));
   }
 
 }

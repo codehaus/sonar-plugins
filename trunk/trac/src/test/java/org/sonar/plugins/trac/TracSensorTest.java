@@ -36,9 +36,9 @@ import org.apache.xmlrpc.client.XmlRpcClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.PropertiesBuilder;
 import org.sonar.api.resources.Project;
-import org.sonar.plugins.trac.TracSensor;
 
 public class TracSensorTest {
 
@@ -46,7 +46,8 @@ public class TracSensorTest {
 
   @Before
   public void setUp() {
-    tracSensor = new TracSensor();
+    Settings settings = new Settings();
+    tracSensor = new TracSensor(settings);
   }
 
   @After
