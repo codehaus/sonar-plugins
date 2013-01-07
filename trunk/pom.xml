@@ -46,7 +46,6 @@
         <module>thucydides</module>
         <module>timeline</module>
         <module>total-quality</module>
-        <module>trac</module>
         <module>useless-code-tracker</module>
         <module>widget-lab</module>
       </modules>
