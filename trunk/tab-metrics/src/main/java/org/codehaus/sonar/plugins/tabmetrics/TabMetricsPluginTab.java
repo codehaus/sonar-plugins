@@ -19,10 +19,8 @@
  */
 package org.codehaus.sonar.plugins.tabmetrics;
 
-import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.api.web.AbstractRubyTemplate;
-import org.sonar.api.web.DefaultTab;
 import org.sonar.api.web.NavigationSection;
 import org.sonar.api.web.ResourceQualifier;
 import org.sonar.api.web.RubyRailsPage;
@@ -34,7 +32,6 @@ import org.sonar.api.web.UserRole;
 @NavigationSection(NavigationSection.RESOURCE_TAB)
 @ResourceQualifier({ Qualifiers.FILE, Qualifiers.CLASS })
 @UserRole(UserRole.CODEVIEWER)
-@DefaultTab(metrics = { CoreMetrics.NCLOC_KEY })
 public class TabMetricsPluginTab extends AbstractRubyTemplate implements RubyRailsPage {
 
   /**
