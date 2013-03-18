@@ -53,11 +53,11 @@ public class ViolationsDecorator implements Decorator {
   @DependedUpon
   public List<Metric> dependedUpon() {
     return Arrays.asList(TaglistMetrics.TAGS, TaglistMetrics.OPTIONAL_TAGS, TaglistMetrics.MANDATORY_TAGS, TaglistMetrics.NOSONAR_TAGS,
-            TaglistMetrics.TAGS_DISTRIBUTION);
+        TaglistMetrics.TAGS_DISTRIBUTION);
   }
 
   public boolean shouldExecuteOnProject(Project project) {
-    return Java.INSTANCE.equals(project.getLanguage());
+    return "java".equals(project.getLanguage().getKey());
   }
 
   public void decorate(Resource resource, DecoratorContext context) {
