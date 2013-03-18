@@ -26,7 +26,6 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.technicaldebt.TechnicalDebtMetrics;
 import org.sonar.plugins.technicaldebt.TechnicalDebtPlugin;
@@ -43,7 +42,7 @@ public final class ComplexityDebtCalculator extends AxisDebtCalculator {
 
   public ComplexityDebtCalculator(Settings settings, Project project) {
     super(settings);
-    isJava = Java.INSTANCE.equals(project.getLanguage());
+    isJava = project.getLanguage() != null ? "java".equals(project.getLanguage().getKey()) : false;
   }
 
   /**
