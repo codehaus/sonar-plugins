@@ -31,7 +31,6 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.PersistenceMode;
-import org.sonar.api.resources.Java;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Scopes;
@@ -78,14 +77,14 @@ public final class ComplexityDebtDecorator implements Decorator {
         debt += methodSplitCost;
       }
 
-    } else if (Scopes.isProgramUnit(resource) && Java.INSTANCE.equals(resource.getLanguage())) {
+    } else if (Scopes.isProgramUnit(resource) && "java".equals(resource.getLanguage().getKey())) {
       // file debt of Java projects is calculated on classes, not files
       double classComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
       if (classComplexity >= classThreshold) {
         debt += classSplitCost;
       }
 
-    } else if (Scopes.isFile(resource) && !Java.INSTANCE.equals(resource.getLanguage())) {
+    } else if (Scopes.isFile(resource) && !"java".equals(resource.getLanguage().getKey())) {
       double fileComplexity = MeasureUtils.getValue(context.getMeasure(CoreMetrics.COMPLEXITY), 0.0);
       if (fileComplexity >= classThreshold) {
         debt = classSplitCost;
