@@ -49,14 +49,6 @@
       </modules>
     </profile>
     <profile>
-      <id>stableProjects-jdk6</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-      </modules>
-    </profile>
-    <profile>
       <id>unreleased</id>
       <activation>
         <activeByDefault>true</activeByDefault>
