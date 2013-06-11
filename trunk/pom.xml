@@ -17,7 +17,6 @@
         <module>abacus</module>
         <module>artifact-size</module>
         <module>branding</module>
-        <module>clirr</module>
         <module>clover</module>
         <module>crowd</module>
         <module>csv-export</module>
