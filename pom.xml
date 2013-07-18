@@ -37,7 +37,6 @@
         <module>security-rules</module>
         <module>sigmm</module>
         <module>sonargraph</module>
-        <module>tab-metrics</module>
         <module>taglist</module>
         <module>technical-debt</module>
         <module>thucydides</module>
