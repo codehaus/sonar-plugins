@@ -24,7 +24,6 @@
         <module>delphi</module>
         <module>doxygen</module>
         <module>emma</module>
-        <module>fb-contrib</module>
         <module>google-analytics</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
