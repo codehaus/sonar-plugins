@@ -18,7 +18,6 @@
         <module>artifact-size</module>
         <module>branding</module>
         <module>clover</module>
-        <module>crowd</module>
         <module>csv-export</module>
         <module>cutoff</module>
         <module>doxygen</module>
