@@ -21,7 +21,6 @@
         <module>crowd</module>
         <module>csv-export</module>
         <module>cutoff</module>
-        <module>delphi</module>
         <module>doxygen</module>
         <module>emma</module>
         <module>google-analytics</module>
