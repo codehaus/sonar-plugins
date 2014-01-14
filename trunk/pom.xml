@@ -20,14 +20,12 @@
         <module>clover</module>
         <module>csv-export</module>
         <module>cutoff</module>
-        <module>doxygen</module>
         <module>emma</module>
         <module>google-analytics</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
         <module>jmeter</module>
         <module>maven-report</module>
-        <module>parent</module>
         <module>pam</module>
         <module>piwik</module>
         <module>quality-index</module>
