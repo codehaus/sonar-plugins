@@ -35,7 +35,6 @@
         <module>technical-debt</module>
         <module>thucydides</module>
         <module>timeline</module>
-        <module>useless-code-tracker</module>
       </modules>
     </profile>
     <profile>
