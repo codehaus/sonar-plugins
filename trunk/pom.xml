@@ -19,7 +19,6 @@
         <module>branding</module>
         <module>clover</module>
         <module>csv-export</module>
-        <module>emma</module>
         <module>google-analytics</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
