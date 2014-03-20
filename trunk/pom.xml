@@ -17,7 +17,6 @@
         <module>abacus</module>
         <module>artifact-size</module>
         <module>branding</module>
-        <module>clover</module>
         <module>csv-export</module>
         <module>google-analytics</module>
         <module>google-calendar</module>
