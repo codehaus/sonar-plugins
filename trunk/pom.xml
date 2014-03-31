@@ -14,7 +14,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>abacus</module>
         <module>artifact-size</module>
         <module>branding</module>
         <module>csv-export</module>
