@@ -19,8 +19,6 @@
         <module>csv-export</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
-        <module>jmeter</module>
-        <module>maven-report</module>
         <module>pam</module>
         <module>piwik</module>
         <module>quality-index</module>
