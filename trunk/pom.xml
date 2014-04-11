@@ -18,7 +18,6 @@
         <module>csv-export</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
-        <module>pam</module>
         <module>quality-index</module>
         <module>security-rules</module>
         <module>sonargraph</module>
