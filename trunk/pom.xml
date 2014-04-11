@@ -23,7 +23,6 @@
         <module>sonargraph</module>
         <module>taglist</module>
         <module>technical-debt</module>
-        <module>timeline</module>
       </modules>
     </profile>
     <profile>
