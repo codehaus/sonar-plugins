@@ -19,7 +19,6 @@
         <module>greenpepper</module>
         <module>quality-index</module>
         <module>security-rules</module>
-        <module>sonargraph</module>
         <module>taglist</module>
         <module>technical-debt</module>
       </modules>
