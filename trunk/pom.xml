@@ -20,7 +20,6 @@
         <module>google-calendar</module>
         <module>greenpepper</module>
         <module>pam</module>
-        <module>piwik</module>
         <module>quality-index</module>
         <module>security-rules</module>
         <module>sonargraph</module>
