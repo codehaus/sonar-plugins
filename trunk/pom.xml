@@ -15,7 +15,6 @@
       </activation>
       <modules>
         <module>artifact-size</module>
-        <module>branding</module>
         <module>csv-export</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
