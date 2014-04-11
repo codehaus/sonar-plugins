@@ -25,7 +25,6 @@
         <module>sonargraph</module>
         <module>taglist</module>
         <module>technical-debt</module>
-        <module>thucydides</module>
         <module>timeline</module>
       </modules>
     </profile>
