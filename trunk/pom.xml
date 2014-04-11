@@ -14,7 +14,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>artifact-size</module>
         <module>csv-export</module>
         <module>google-calendar</module>
         <module>greenpepper</module>
